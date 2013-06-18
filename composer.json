@@ -7,5 +7,10 @@
             "name": "thulium",
             "email": "programisci@thulium.pl"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-0": {
+            "Thulium": "lib/"
+        }
+    }
 }
