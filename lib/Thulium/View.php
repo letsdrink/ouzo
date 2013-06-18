@@ -18,7 +18,7 @@ class View
             $this->$name = $value;
         }
 
-        require_once(ROOT_PATH . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'thulium' . DIRECTORY_SEPARATOR . 'ViewHelper.php');
+        require_once('ViewHelper.php');
         require_once(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'ApplicationHelper.php');
         require_once(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'FormHelper.php');
         require_once(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'UrlHelper.php');
