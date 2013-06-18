@@ -1,0 +1,11 @@
+{
+    "name": "thulium/framework",
+    "description": "framework",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "thulium",
+            "email": "programisci@thulium.pl"
+        }
+    ]
+}
