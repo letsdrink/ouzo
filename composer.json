@@ -12,5 +12,8 @@
         "psr-0": {
             "Thulium": "lib/"
         }
+    },
+    "require": {
+        "phpunit/phpunit": "3.7.19"
     }
 }
