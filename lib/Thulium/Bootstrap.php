@@ -9,8 +9,6 @@ class Bootstrap
 
         putenv('environment=prod');
 
-        define('ROOT_PATH', realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
-
         set_exception_handler('\Thulium\Error::exceptionHandler');
         set_error_handler('\Thulium\Error::errorHandler');
         register_shutdown_function('\Thulium\Error::shutdownHandler');
