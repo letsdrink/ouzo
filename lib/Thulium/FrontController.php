@@ -92,6 +92,10 @@ class FrontController
     {
         foreach ($this->_currentController->before as $method) {
             $this->_currentController->$method();
+
+            if ($this->_isRedirect()) {
+                return;
+            }
         }
     }
 
@@ -151,6 +155,10 @@ class FrontController
             ->addInfo('[Request:/' . $this->_uri->getRawController() . '/' . $this->_uriAction . ']', array_merge($_POST, $_GET, $this->_uri->getParams()));
     }
 
+    private function _isRedirect()
+    {
+        return in_array($this->_currentController->getStatusResponse(), array('redirect', 'redirectOld'));
+    }
 }
 
 class FrontControllerException extends \Exception
