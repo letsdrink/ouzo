@@ -18,10 +18,10 @@ class View
             $this->$name = $value;
         }
 
-        require_once('ViewHelper.php');
-        require_once(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'ApplicationHelper.php');
-        require_once(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'FormHelper.php');
-        require_once(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'UrlHelper.php');
+        require_once('Helper' . DIRECTORY_SEPARATOR . 'ViewHelper.php');
+        $this->_tryLoad(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'ApplicationHelper.php');
+        require_once('Helper' . DIRECTORY_SEPARATOR . 'FormHelper.php');
+        $this->_tryLoad(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'UrlHelper.php');
     }
 
     public function render($viewName = '')
@@ -55,6 +55,13 @@ class View
             }
         }
         return false;
+    }
+
+    private function _tryLoad($file)
+    {
+        if (file_exists($file)) {
+            $this->requireWithoutInspection($file, true);
+        }
     }
 
     private function requireWithoutInspection($name, $loadOnce)
