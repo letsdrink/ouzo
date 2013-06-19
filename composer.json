@@ -15,5 +15,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.19"
+    },
+    "archive": {
+        "exclude": ["test", "build", "config", "vendor"]
     }
 }
