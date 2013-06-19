@@ -1,7 +1,7 @@
 <?php
 use Thulium\Config;
 
-require_once ROOT_PATH . 'vendor/thulium/framework/lib/Thulium/ViewHelper.php';
+require_once ROOT_PATH . 'lib/Thulium/ViewHelper.php';
 
 class ViewHelperTest extends PHPUnit_Framework_TestCase
 {

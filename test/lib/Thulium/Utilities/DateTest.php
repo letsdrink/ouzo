@@ -1,5 +1,5 @@
 <?php
-use Model\Clock;
+use Thulium\Utilities\Clock;
 use Thulium\Utilities\Date;
 
 class DateTest extends PHPUnit_Framework_TestCase
