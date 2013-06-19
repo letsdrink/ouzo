@@ -13,5 +13,6 @@ require_once ROOT_PATH . 'lib/Thulium/Error.php';
 
 $loader = new \Thulium\Loader();
 $loader
+    ->setIncludePath('test/')
     ->setIncludePath('lib/')
     ->register();
