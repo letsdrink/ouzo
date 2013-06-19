@@ -4,3 +4,4 @@ syntax: regexp
 .settings$
 .idea$
 .iml$
+vendor$
