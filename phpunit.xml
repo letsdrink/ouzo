@@ -1,4 +1,4 @@
-<phpunit bootstrap="panel/panel2.0/bootstrap_test.php">
+<phpunit bootstrap="bootstrap_test.php">
 <logging>
  <log type="coverage-html" target="build/coverage" title="Thulium-Panel"
       charset="UTF-8" yui="true" highlight="true"
