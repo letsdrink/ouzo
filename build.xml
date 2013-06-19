@@ -41,13 +41,13 @@
   <apply executable="php" failonerror="true">
    <arg value="-l" />
 
-   <fileset dir="${basedir}/panel/panel2.0">
+   <fileset dir="${basedir}/lib/Thulium">
     <include name="**/*.php" />
     <exclude name="**/vendor/**" />
     <modified />
    </fileset>
 
-   <fileset dir="${basedir}/panel/panel2.0/test">
+   <fileset dir="${basedir}/test">
     <include name="**/*.php" />
     <exclude name="**/vendor/**" />
     <modified />
