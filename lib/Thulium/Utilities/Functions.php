@@ -31,6 +31,13 @@ class Functions
         };
     }
 
+    public static function trim()
+    {
+        return function ($string) {
+            return trim($string);
+        };
+    }
+
     public static function not($predicate)
     {
         return function ($object) use ($predicate) {
