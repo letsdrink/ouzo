@@ -3,6 +3,12 @@
 use Thulium\Config;
 use Thulium\Utilities\Arrays;
 
+function escapeText($text)
+{
+    $text = htmlspecialchars($text);
+    return nl2br($text);
+}
+
 function linkButton($params)
 {
     $defaultParams = array('class' => 'buttonLong');
