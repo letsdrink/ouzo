@@ -20,6 +20,6 @@
         "phpunit/phpunit": "3.7.19"
     },
     "archive": {
-        "exclude": ["test", "build", "config", "vendor"]
+        "exclude": ["/test", "/build", "/config", "/vendor", "/*.xml", "/*.sh", "/bootstrap_test.php"]
     }
 }
