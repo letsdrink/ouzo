@@ -123,8 +123,7 @@ class ModelQueryBuilder
             return 0;
         }
 
-        $queryBuilder = $this->queryBuilderDelete();
-        $queryBuilder->from($this->_model->getTableName())
+        $this->queryBuilderDelete()->from($this->_model->getTableName())
             ->where($this->_where, $this->_whereValues)
             ->delete();
         return $this->rowAffected();
