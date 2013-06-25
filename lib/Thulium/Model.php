@@ -81,11 +81,6 @@ class Model
         }
     }
 
-    private function _all()
-    {
-        return $this->convert($this->_db->select()->from($this->_tableName)->fetchAll());
-    }
-
     public function isValid()
     {
         $this->validate();
@@ -241,7 +236,7 @@ class Model
      */
     static public function all()
     {
-        return static::newInstanceOfCalledClass()->_all();
+        return static::where()->fetchAll();
     }
 
     /**
