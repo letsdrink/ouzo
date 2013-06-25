@@ -89,16 +89,6 @@ class ModelQueryBuilder
         return Arrays::firstOrNull($object);
     }
 
-    private function queryBuilderSelect(array $columns = array())
-    {
-        return new QueryBuilder($this->_db, $columns);
-    }
-
-    private function queryBuilderCount()
-    {
-        return $this->queryBuilderSelect(array('count(*)'));
-    }
-
     /**
      * @return Model[]
      */
@@ -133,7 +123,7 @@ class ModelQueryBuilder
             return 0;
         }
 
-        $queryBuilder = new QueryBuilder($this->_db, array(), true);
+        $queryBuilder = $this->queryBuilderDelete();
         $queryBuilder->from($this->_model->getTableName())
             ->where($this->_where, $this->_whereValues)
             ->delete();
@@ -185,6 +175,21 @@ class ModelQueryBuilder
                 }
             }
         }
+    }
+
+    private function queryBuilderSelect(array $columns = array())
+    {
+        return new QueryBuilder($this->_db, $columns);
+    }
+
+    private function queryBuilderCount()
+    {
+        return $this->queryBuilderSelect(array('count(*)'));
+    }
+
+    public function queryBuilderDelete()
+    {
+        return new QueryBuilder($this->_db, array(), true);
     }
 
 }
