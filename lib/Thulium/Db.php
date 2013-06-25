@@ -1,10 +1,8 @@
 <?php
 namespace Thulium;
 
-use Exception;
 use InvalidArgumentException;
 use PDO;
-use Thulium\Db\Select;
 use Thulium\Db\Stats;
 use Thulium\Utilities\Arrays;
 use Thulium\Utilities\Objects;
@@ -43,16 +41,6 @@ class Db
         $this->_dbHandle = new PDO($dns, $params['user'], $params['pass']);
 
         return $this;
-    }
-
-    public function select(array $columns = array())
-    {
-        return new Select($this, $columns);
-    }
-
-    public function count()
-    {
-        return $this->select(array('count(*)'));
     }
 
     static public function callFunction($functionName, $parameters)

@@ -6,18 +6,14 @@ use PDO;
 use Thulium\Db;
 use Thulium\DbException;
 use Thulium\Logger;
+use Thulium\Utilities\FluentArray;
+use Thulium\Utilities\Joiner;
 use Thulium\Utilities\Objects;
 
-class Select
+class QueryBuilder
 {
-    private $_columns = '';
-    private $_offset = null;
-    private $_limit = null;
-    private $_from = '';
-    private $_where = '';
-    private $_order = '';
     private $_db = null;
-    private $_query = '';
+    private $_query = 'SELECT ';
     private $_queryValues = array();
     public $_fetchStyle = PDO::FETCH_ASSOC;
 
@@ -31,16 +27,7 @@ class Select
             throw new DbSelectException('Wrong database handler');
         }
 
-        $this->_query = 'SELECT ';
         $this->columns($columns);
-    }
-
-    public function _prepareAndBind()
-    {
-        $this->queryPrepared = $this->_db->_dbHandle->prepare($this->_query);
-        foreach ($this->_queryValues as $key => $valueBind) {
-            $this->queryPrepared->bindValue($key + 1, $valueBind);
-        }
     }
 
     private function _addBindValue($value)
@@ -48,105 +35,52 @@ class Select
         if (is_array($value)) {
             $this->_queryValues = array_merge($this->_queryValues, $value);
         } else {
-            if (is_bool($value)) {
-                $this->_queryValues[] = Objects::booleanToString($value);
-            } else {
-                $this->_queryValues[] = $value;
-            }
+            $this->_queryValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
         }
     }
 
-    public function columns(array $columns = array())
+    private function columns(array $columns = array())
     {
         if (!empty($columns)) {
             $this->_fetchStyle = PDO::FETCH_NUM;
-            $buildColumns = '';
-            foreach ($columns as $alias => $columnName) {
-                if (is_string($alias)) {
-                    $buildColumns .= $columnName . ' AS ' . $alias . ', ';
-                } else
-                    $buildColumns .= $columnName . ', ';
-            }
-
-            $buildColumns = rtrim($buildColumns, ', ');
-        } else
-            $buildColumns = 'main.*';
-
-        $this->_columns = $buildColumns;
-        $this->_query .= $buildColumns;
+            $this->_query .= Joiner::on(', ')->map($this->addAliases())->join($columns);
+        } else {
+            $this->_query .= 'main.*';
+        }
         return $this;
     }
 
     public function from($table = null)
     {
         if (empty($table)) {
-            throw new InvalidArgumentException('$table cannot be empty');
+            throw new InvalidArgumentException("$table cannot be empty");
         }
-
-        $buildTable = '';
-        $this->_query .= ' FROM ';
-
-        if (is_array($table)) {
-            foreach ($table as $tableName => $alias) {
-                $buildTable .= $tableName . ' AS ' . $alias;
-            }
-        } else if (is_string($table)) {
-            $buildTable .= $table . ' AS main ';
-        }
-
-        $this->_from = $buildTable;
-        $this->_query .= $buildTable;
+        $this->_query .= ' FROM ' . $table . ' AS main ';
         return $this;
     }
 
     public function where($columnValue = '', $value)
     {
         if (!empty($columnValue)) {
-            if (empty($this->_where))
-                $this->_query .= ' WHERE ';
-            else
-                $this->_query .= ' AND ';
-
-            if (stripos($columnValue, 'OR'))
-                $this->_query .= '(' . $columnValue . ')';
-            else
-                $this->_query .= $columnValue;
-
+            $this->_query .= ' WHERE ' . (stripos($columnValue, 'OR') ? '(' . $columnValue . ')' : $columnValue);
             $this->_addBindValue($value);
-
-            $this->_where .= $columnValue;
         }
-
         return $this;
     }
 
     public function order($value)
     {
-        if (!empty($value)) {
-            if (empty($this->_order))
-                $this->_query .= ' ORDER BY ';
-            else
-                $this->_query .= ', ';
-            if (is_array($value))
-                $order = implode(', ', $value);
-            else
-                $order = $value;
-            $this->_query .= $order;
-            $this->_order .= $order;
+        if ($value) {
+            $this->_query .= ' ORDER BY ' . (is_array($value) ? implode(', ', $value) : $value);
         }
-
         return $this;
     }
 
     public function offset($value)
     {
         if ($value) {
-            $offset = intval($value);
-            if ($this->_offset === null) {
-                $this->_offset = $offset;
-                $this->_query .= " OFFSET ? ";
-                $this->_addBindValue($value);
-            }
+            $this->_query .= " OFFSET ? ";
+            $this->_addBindValue($value);
         }
         return $this;
     }
@@ -154,12 +88,8 @@ class Select
     public function limit($value)
     {
         if ($value) {
-            $limit = intval($value);
-            if ($this->_limit === null) {
-                $this->_limit = $limit;
-                $this->_query .= " LIMIT ? ";
-                $this->_addBindValue($value);
-            }
+            $this->_query .= " LIMIT ? ";
+            $this->_addBindValue($value);
         }
         return $this;
     }
@@ -193,6 +123,14 @@ class Select
         });
     }
 
+    public function _prepareAndBind()
+    {
+        $this->queryPrepared = $this->_db->_dbHandle->prepare($this->_query);
+        foreach ($this->_queryValues as $key => $valueBind) {
+            $this->queryPrepared->bindValue($key + 1, $valueBind);
+        }
+    }
+
     public function getQuery()
     {
         return $this->_query;
@@ -216,6 +154,13 @@ class Select
     public function fetchAll()
     {
         return $this->_fetch('fetchAll');
+    }
+
+    private function addAliases()
+    {
+        return function ($alias, $column) {
+            return $column . (is_string($alias) ? ' AS ' . $alias : '');
+        };
     }
 }
 
