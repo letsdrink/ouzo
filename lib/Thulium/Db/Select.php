@@ -6,11 +6,12 @@ use PDO;
 use Thulium\Db;
 use Thulium\DbException;
 use Thulium\Logger;
+use Thulium\Utilities\FluentArray;
+use Thulium\Utilities\Joiner;
 use Thulium\Utilities\Objects;
 
 class Select
 {
-    private $_columns = '';
     private $_offset = null;
     private $_limit = null;
     private $_from = '';
@@ -47,31 +48,20 @@ class Select
         if (is_array($value)) {
             $this->_queryValues = array_merge($this->_queryValues, $value);
         } else {
-            if (is_bool($value)) {
-                $this->_queryValues[] = Objects::booleanToString($value);
-            } else {
-                $this->_queryValues[] = $value;
-            }
+            $this->_queryValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
         }
     }
 
-    public function columns(array $columns = array())
+    private function columns(array $columns = array())
     {
         if (!empty($columns)) {
             $this->_fetchStyle = PDO::FETCH_NUM;
-            $buildColumns = '';
-            foreach ($columns as $alias => $columnName) {
-                if (is_string($alias)) {
-                    $buildColumns .= $columnName . ' AS ' . $alias . ', ';
-                } else
-                    $buildColumns .= $columnName . ', ';
-            }
 
-            $buildColumns = rtrim($buildColumns, ', ');
-        } else
+            $buildColumns = Joiner::on(', ')->map($this->addAliases())->join($columns);
+        } else {
             $buildColumns = 'main.*';
+        }
 
-        $this->_columns = $buildColumns;
         $this->_query .= $buildColumns;
         return $this;
     }
@@ -79,7 +69,7 @@ class Select
     public function from($table = null)
     {
         if (empty($table)) {
-            throw new InvalidArgumentException('$table cannot be empty');
+            throw new InvalidArgumentException("$table cannot be empty");
         }
 
         $buildTable = '';
@@ -215,6 +205,13 @@ class Select
     public function fetchAll()
     {
         return $this->_fetch('fetchAll');
+    }
+
+    private function addAliases()
+    {
+        return function ($alias, $column) {
+            return $column . (is_string($alias) ? ' AS ' . $alias : '');
+        };
     }
 }
 
