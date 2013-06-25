@@ -4,6 +4,7 @@ use Model\Order;
 use Model\OrderProduct;
 use Model\Product;
 use Model\Category;
+use Thulium\Db\ModelQueryBuilder;
 use Thulium\Db\Stats;
 use Thulium\Tests\DbTransactionalTestCase;
 
@@ -328,5 +329,24 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('bob', $result[0][1]);
         $this->assertEquals('c', $result[1][0]);
         $this->assertEquals('bob', $result[1][1]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotTryToDeleteIfEmptyInClause()
+    {
+        //given
+        $mockDb = $this->getMock('\Thulium\Db', array('query'));
+        $builder = new ModelQueryBuilder(new Product(), $mockDb);
+
+        $mockDb->expects($this->never())->method('query');
+
+        //when
+        $affectedRows = $builder->where(array('name' => array()))->deleteAll();
+
+        //then
+        $this->assertEquals(0, $affectedRows);
+        //no interaction with db
     }
 }

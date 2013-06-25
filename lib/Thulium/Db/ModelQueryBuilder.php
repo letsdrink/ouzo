@@ -150,6 +150,10 @@ class ModelQueryBuilder
 
     public function deleteAll()
     {
+        if ($this->_returnEmpty) {
+            return 0;
+        }
+
         $sql = 'DELETE FROM ' . $this->_model->getTableName() . ' WHERE ' . $this->_where;
         $this->_db->query($sql, $this->_whereValues);
         return $this->rowAffected();
