@@ -143,11 +143,7 @@ class ModelQueryBuilder
             ->limit($this->_limit)
             ->offset($this->_offset)
             ->fetchAll();
-        if ($this->_selectedColumns) {
-            return $result;
-        } else {
-            return $this->_transform($this->_model->convert($result));
-        }
+        return $this->_selectedColumns ? $result : $this->_transform($this->_model->convert($result));
     }
 
     private function _transform($results)
