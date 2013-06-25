@@ -16,7 +16,6 @@ class Select
     private $_limit = null;
     private $_from = '';
     private $_where = '';
-    private $_order = '';
     private $_db = null;
     private $_query = 'SELECT ';
     private $_queryValues = array();
@@ -91,18 +90,9 @@ class Select
     public function where($columnValue = '', $value)
     {
         if (!empty($columnValue)) {
-            if (empty($this->_where))
-                $this->_query .= ' WHERE ';
-            else
-                $this->_query .= ' AND ';
-
-            if (stripos($columnValue, 'OR'))
-                $this->_query .= '(' . $columnValue . ')';
-            else
-                $this->_query .= $columnValue;
-
+            $this->_query .= empty($this->_where) ? ' WHERE ' : ' AND ';
+            $this->_query .= stripos($columnValue, 'OR') ? '(' . $columnValue . ')' : $columnValue;
             $this->_addBindValue($value);
-
             $this->_where .= $columnValue;
         }
 
@@ -111,19 +101,9 @@ class Select
 
     public function order($value)
     {
-        if (!empty($value)) {
-            if (empty($this->_order))
-                $this->_query .= ' ORDER BY ';
-            else
-                $this->_query .= ', ';
-            if (is_array($value))
-                $order = implode(', ', $value);
-            else
-                $order = $value;
-            $this->_query .= $order;
-            $this->_order .= $order;
+        if ($value) {
+            $this->_query .= ' ORDER BY ' . (is_array($value) ? implode(', ', $value) : $value);
         }
-
         return $this;
     }
 
