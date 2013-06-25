@@ -12,9 +12,6 @@ use Thulium\Utilities\Objects;
 
 class Select
 {
-    private $_offset = null;
-    private $_limit = null;
-    private $_where = '';
     private $_db = null;
     private $_query = 'SELECT ';
     private $_queryValues = array();
@@ -33,14 +30,6 @@ class Select
         $this->columns($columns);
     }
 
-    public function _prepareAndBind()
-    {
-        $this->queryPrepared = $this->_db->_dbHandle->prepare($this->_query);
-        foreach ($this->_queryValues as $key => $valueBind) {
-            $this->queryPrepared->bindValue($key + 1, $valueBind);
-        }
-    }
-
     private function _addBindValue($value)
     {
         if (is_array($value)) {
@@ -54,13 +43,10 @@ class Select
     {
         if (!empty($columns)) {
             $this->_fetchStyle = PDO::FETCH_NUM;
-
-            $buildColumns = Joiner::on(', ')->map($this->addAliases())->join($columns);
+            $this->_query = Joiner::on(', ')->map($this->addAliases())->join($columns);
         } else {
-            $buildColumns = 'main.*';
+            $this->_query = 'main.*';
         }
-
-        $this->_query .= $buildColumns;
         return $this;
     }
 
@@ -69,30 +55,16 @@ class Select
         if (empty($table)) {
             throw new InvalidArgumentException("$table cannot be empty");
         }
-
-        $buildTable = '';
-
-        if (is_array($table)) {
-            foreach ($table as $tableName => $alias) {
-                $buildTable .= $tableName . ' AS ' . $alias;
-            }
-        } else if (is_string($table)) {
-            $buildTable .= $table . ' AS main ';
-        }
-
-        $this->_query .= ' FROM ' . $buildTable;
+        $this->_query .= ' FROM ' . $table . ' AS main ';
         return $this;
     }
 
     public function where($columnValue = '', $value)
     {
         if (!empty($columnValue)) {
-            $this->_query .= empty($this->_where) ? ' WHERE ' : ' AND ';
-            $this->_query .= stripos($columnValue, 'OR') ? '(' . $columnValue . ')' : $columnValue;
+            $this->_query .= ' WHERE ' . (stripos($columnValue, 'OR') ? '(' . $columnValue . ')' : $columnValue);
             $this->_addBindValue($value);
-            $this->_where .= $columnValue;
         }
-
         return $this;
     }
 
@@ -107,12 +79,8 @@ class Select
     public function offset($value)
     {
         if ($value) {
-            $offset = intval($value);
-            if ($this->_offset === null) {
-                $this->_offset = $offset;
-                $this->_query .= " OFFSET ? ";
-                $this->_addBindValue($value);
-            }
+            $this->_query .= " OFFSET ? ";
+            $this->_addBindValue($value);
         }
         return $this;
     }
@@ -120,12 +88,8 @@ class Select
     public function limit($value)
     {
         if ($value) {
-            $limit = intval($value);
-            if ($this->_limit === null) {
-                $this->_limit = $limit;
-                $this->_query .= " LIMIT ? ";
-                $this->_addBindValue($value);
-            }
+            $this->_query .= " LIMIT ? ";
+            $this->_addBindValue($value);
         }
         return $this;
     }
@@ -157,6 +121,14 @@ class Select
             }
             return $obj->queryPrepared->$function($obj->_fetchStyle);
         });
+    }
+
+    public function _prepareAndBind()
+    {
+        $this->queryPrepared = $this->_db->_dbHandle->prepare($this->_query);
+        foreach ($this->_queryValues as $key => $valueBind) {
+            $this->queryPrepared->bindValue($key + 1, $valueBind);
+        }
     }
 
     public function getQuery()
