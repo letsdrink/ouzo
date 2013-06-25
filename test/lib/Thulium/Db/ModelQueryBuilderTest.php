@@ -349,4 +349,20 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals(0, $affectedRows);
         //no interaction with db
     }
+
+    /**
+     * @test
+     */
+    public function shouldDeleteRecord()
+    {
+        //given
+        $product = Product::create(array('name' => 'a', 'description' => 'bob'));
+
+        //when
+        $product->delete();
+
+        //then
+        $allProducts = Product::all();
+        $this->assertCount(0, $allProducts);
+    }
 }

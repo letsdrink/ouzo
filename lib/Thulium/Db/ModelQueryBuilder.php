@@ -133,8 +133,10 @@ class ModelQueryBuilder
             return 0;
         }
 
-        $sql = 'DELETE FROM ' . $this->_model->getTableName() . ' WHERE ' . $this->_where;
-        $this->_db->query($sql, $this->_whereValues);
+        $queryBuilder = new QueryBuilder($this->_db, array(), true);
+        $queryBuilder->from($this->_model->getTableName())
+            ->where($this->_where, $this->_whereValues)
+            ->delete();
         return $this->rowAffected();
     }
 

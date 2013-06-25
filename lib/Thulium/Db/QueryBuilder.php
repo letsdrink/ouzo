@@ -14,19 +14,23 @@ use Thulium\Utilities\Objects;
 class QueryBuilder
 {
     private $_db = null;
-    private $_query = 'SELECT ';
+    private $_query;
     private $_queryValues = array();
     public $_fetchStyle = PDO::FETCH_ASSOC;
+    private $_delete;
 
     public $queryPrepared = null;
 
-    public function __construct(Db $dbHandle, array $columns = array())
+    public function __construct(Db $dbHandle, array $columns = array(), $delete = false)
     {
         if ($dbHandle instanceof Db) {
             $this->_db = $dbHandle;
         } else {
             throw new DbSelectException('Wrong database handler');
         }
+
+        $this->_delete = $delete;
+        $this->_query = $delete ? 'DELETE ' : 'SELECT ';
 
         $this->columns($columns);
     }
@@ -42,11 +46,13 @@ class QueryBuilder
 
     private function columns(array $columns = array())
     {
-        if (!empty($columns)) {
-            $this->_fetchStyle = PDO::FETCH_NUM;
-            $this->_query .= Joiner::on(', ')->map($this->addAliases())->join($columns);
-        } else {
-            $this->_query .= 'main.*';
+        if (!$this->_delete) {
+            if (!empty($columns)) {
+                $this->_fetchStyle = PDO::FETCH_NUM;
+                $this->_query .= Joiner::on(', ')->map($this->addAliases())->join($columns);
+            } else {
+                $this->_query .= 'main.*';
+            }
         }
         return $this;
     }
@@ -157,6 +163,11 @@ class QueryBuilder
     public function fetchAll()
     {
         return $this->_fetch('fetchAll');
+    }
+
+    public function delete()
+    {
+        $this->_db->query($this->_query, $this->_queryValues);
     }
 
     private function addAliases()
