@@ -17,7 +17,7 @@ class Select
     private $_where = '';
     private $_order = '';
     private $_db = null;
-    private $_query = '';
+    private $_query = 'SELECT ';
     private $_queryValues = array();
     public $_fetchStyle = PDO::FETCH_ASSOC;
 
@@ -31,7 +31,6 @@ class Select
             throw new DbSelectException('Wrong database handler');
         }
 
-        $this->_query = 'SELECT ';
         $this->columns($columns);
     }
 
