@@ -23,7 +23,7 @@ class ModelQueryBuilder
 
     public function __construct($model, $db = null)
     {
-        $this->_db = $db ? $db : Db::getInstance();;
+        $this->_db = $db ? $db : Db::getInstance();
         $this->_model = $model;
         $this->_transformers = array();
     }
