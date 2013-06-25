@@ -10,7 +10,7 @@ use Thulium\Utilities\FluentArray;
 use Thulium\Utilities\Joiner;
 use Thulium\Utilities\Objects;
 
-class Select
+class QueryBuilder
 {
     private $_db = null;
     private $_query = 'SELECT ';
@@ -43,9 +43,9 @@ class Select
     {
         if (!empty($columns)) {
             $this->_fetchStyle = PDO::FETCH_NUM;
-            $this->_query = Joiner::on(', ')->map($this->addAliases())->join($columns);
+            $this->_query .= Joiner::on(', ')->map($this->addAliases())->join($columns);
         } else {
-            $this->_query = 'main.*';
+            $this->_query .= 'main.*';
         }
         return $this;
     }

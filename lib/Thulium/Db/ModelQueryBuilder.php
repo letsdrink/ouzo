@@ -99,7 +99,7 @@ class ModelQueryBuilder
             return 0;
         }
 
-        $count = $this->dbCount()
+        $count = $this->queryBuilderCount()
             ->from($this->_model->getTableName())
             ->join($this->_joinTable, $this->_joinKey, $this->_originalKey)
             ->where($this->_where, $this->_whereValues)
@@ -116,14 +116,14 @@ class ModelQueryBuilder
         return Arrays::firstOrNull($object);
     }
 
-    private function dbSelect(array $columns = array())
+    private function queryBuilderSelect(array $columns = array())
     {
-        return new Select($this->_db, $columns);
+        return new QueryBuilder($this->_db, $columns);
     }
 
-    private function dbCount()
+    private function queryBuilderCount()
     {
-        return $this->dbSelect(array('count(*)'));
+        return $this->queryBuilderSelect(array('count(*)'));
     }
 
     /**
@@ -135,7 +135,7 @@ class ModelQueryBuilder
             return array();
         }
 
-        $result = $this->dbSelect($this->_selectedColumns)
+        $result = $this->queryBuilderSelect($this->_selectedColumns)
             ->from($this->_model->getTableName())
             ->join($this->_joinTable, $this->_joinKey, $this->_originalKey)
             ->where($this->_where, $this->_whereValues)
