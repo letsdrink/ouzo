@@ -33,36 +33,9 @@ class ModelQueryBuilder
      */
     public function where($params, $values = null)
     {
-        return is_array($params) ? $this->whereArray($params) : $this->whereString($params, $values);
-    }
-
-    private function whereArray($params)
-    {
-        $values = array_values($params);
-        $whereKeys = array();
-
-        foreach ($params as $key => $value) {
-            if (is_array($value)) {
-                if (sizeof($value) == 0) {
-                    $this->_returnEmpty = true;
-                    return $this;
-                }
-                $in = implode(', ', array_fill(0, count($value), '?'));
-                $whereKeys[] = $key . ' IN (' . $in . ')';
-            } else {
-                $whereKeys[] = $key . ' = ?';
-            }
-        }
-
-        $this->_where = implode(' AND ', $whereKeys);
-        $this->_whereValues = Arrays::flatten($values);
-        return $this;
-    }
-
-    private function whereString($where, $whereValues)
-    {
-        $this->_where = $where;
-        $this->_whereValues = $whereValues;
+        $this->_setReturnEmptyIfNeeded($params);
+        $this->_where = $params;
+        $this->_whereValues = $values;
         return $this;
     }
 
@@ -198,6 +171,18 @@ class ModelQueryBuilder
     {
         $this->_selectedColumns = is_array($columns) ? $columns : array($columns);
         return $this;
+    }
+
+    private function _setReturnEmptyIfNeeded($params)
+    {
+        if (is_array($params)) {
+            foreach ($params as $value) {
+                if (is_array($value) && sizeof($value) == 0) {
+                    $this->_returnEmpty = true;
+                    break;
+                }
+            }
+        }
     }
 
 }

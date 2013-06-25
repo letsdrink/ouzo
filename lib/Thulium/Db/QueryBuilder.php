@@ -6,6 +6,7 @@ use PDO;
 use Thulium\Db;
 use Thulium\DbException;
 use Thulium\Logger;
+use Thulium\Utilities\Arrays;
 use Thulium\Utilities\FluentArray;
 use Thulium\Utilities\Joiner;
 use Thulium\Utilities\Objects;
@@ -59,11 +60,13 @@ class QueryBuilder
         return $this;
     }
 
-    public function where($columnValue = '', $value)
+    public function where($where = '', $values)
     {
-        if (!empty($columnValue)) {
-            $this->_query .= ' WHERE ' . (stripos($columnValue, 'OR') ? '(' . $columnValue . ')' : $columnValue);
-            $this->_addBindValue($value);
+        list ($where, $values) = $this->_buildWhereQuery($where, $values);
+
+        if (!empty($where)) {
+            $this->_query .= ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
+            $this->_addBindValue($values);
         }
         return $this;
     }
@@ -161,6 +164,32 @@ class QueryBuilder
         return function ($alias, $column) {
             return $column . (is_string($alias) ? ' AS ' . $alias : '');
         };
+    }
+
+    private function _buildWhereQuery($where, $values)
+    {
+        return is_array($where) ? $this->_whereArray($where) : array($where, $values);
+    }
+
+    private function _whereArray($params)
+    {
+        $where = implode(' AND ', $this->_buildWhereKeys($params));
+        $values = Arrays::flatten(array_values($params));
+        return array($where, $values);
+    }
+
+    private function _buildWhereKeys($params)
+    {
+        $keys = array();
+        foreach ($params as $key => $value) {
+            if (is_array($value)) {
+                $in = implode(', ', array_fill(0, count($value), '?'));
+                $keys[] = $key . ' IN (' . $in . ')';
+            } else {
+                $keys[] = $key . ' = ?';
+            }
+        }
+        return $keys;
     }
 }
 
