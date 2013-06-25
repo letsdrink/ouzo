@@ -14,7 +14,6 @@ class Select
 {
     private $_offset = null;
     private $_limit = null;
-    private $_from = '';
     private $_where = '';
     private $_db = null;
     private $_query = 'SELECT ';
@@ -72,7 +71,6 @@ class Select
         }
 
         $buildTable = '';
-        $this->_query .= ' FROM ';
 
         if (is_array($table)) {
             foreach ($table as $tableName => $alias) {
@@ -82,8 +80,7 @@ class Select
             $buildTable .= $table . ' AS main ';
         }
 
-        $this->_from = $buildTable;
-        $this->_query .= $buildTable;
+        $this->_query .= ' FROM ' . $buildTable;
         return $this;
     }
 
