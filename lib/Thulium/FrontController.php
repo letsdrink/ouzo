@@ -23,7 +23,6 @@ class FrontController
         self::$requestId = uniqid();
 
         $this->_uri = new Uri();
-        $this->_uriAction = $this->_uri->getAction();
         $this->_defaults = Config::load()->getConfig('global');
 
         $this->redirectHandler = new RedirectHandler();
@@ -34,6 +33,8 @@ class FrontController
 
     public function init()
     {
+        $this->_uriAction = $this->_uri->getAction();
+
         if ($this->_isNoAction()) {
             $this->_redirectToIndex();
         } else {

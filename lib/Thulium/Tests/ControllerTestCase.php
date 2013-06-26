@@ -19,6 +19,11 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_redirectHandler = new MockRedirectHandler();
         $this->_sessionInitializer = new MockSessionInitializer();
         $this->_downloadHandler = new MockDownloadHandler();
+
+        $this->_frontController = new \Thulium\FrontController();
+        $this->_frontController->redirectHandler = $this->_redirectHandler;
+        $this->_frontController->sessionInitializer = $this->_sessionInitializer;
+        $this->_frontController->downloadHandler = $this->_downloadHandler;
     }
 
     public function get($url)
@@ -45,10 +50,6 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     private function _initFrontController()
     {
-        $this->_frontController = new \Thulium\FrontController();
-        $this->_frontController->redirectHandler = $this->_redirectHandler;
-        $this->_frontController->sessionInitializer = $this->_sessionInitializer;
-        $this->_frontController->downloadHandler = $this->_downloadHandler;
         $this->_frontController->init();
     }
 
