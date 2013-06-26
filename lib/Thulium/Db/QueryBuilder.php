@@ -1,6 +1,7 @@
 <?php
 namespace Thulium\Db;
 
+use Exception;
 use InvalidArgumentException;
 use PDO;
 use Thulium\Db;
@@ -16,19 +17,17 @@ class QueryBuilder
     private $_db = null;
     private $_query;
     private $_queryValues = array();
-    public $_fetchStyle = PDO::FETCH_ASSOC;
     private $_delete;
-
-    public $queryPrepared = null;
+    public $_fetchStyle = PDO::FETCH_ASSOC;
+    public $_queryPrepared;
 
     public function __construct(Db $dbHandle, array $columns = array(), $delete = false)
     {
-        if ($dbHandle instanceof Db) {
-            $this->_db = $dbHandle;
-        } else {
-            throw new DbSelectException('Wrong database handler');
+        if (!$dbHandle instanceof Db) {
+            throw new Exception('Wrong database handler');
         }
 
+        $this->_db = $dbHandle;
         $this->_delete = $delete;
         $this->_query = $delete ? 'DELETE ' : 'SELECT ';
 
@@ -125,18 +124,18 @@ class QueryBuilder
             Logger::getSqlLogger()
                 ->addInfo($obj->getQuery(), $obj->getQueryValues());
 
-            if (!$obj->queryPrepared->execute()) {
+            if (!$obj->_queryPrepared->execute()) {
                 throw new DbException('Exception: query: ' . $obj->getQuery() . ' with params: (' . implode(', ', $obj->getQueryValues()) . ') failed: ' . $obj->lastErrorMessage());
             }
-            return $obj->queryPrepared->$function($obj->_fetchStyle);
+            return $obj->_queryPrepared->$function($obj->_fetchStyle);
         });
     }
 
     public function _prepareAndBind()
     {
-        $this->queryPrepared = $this->_db->_dbHandle->prepare($this->_query);
+        $this->_queryPrepared = $this->_db->_dbHandle->prepare($this->_query);
         foreach ($this->_queryValues as $key => $valueBind) {
-            $this->queryPrepared->bindValue($key + 1, $valueBind);
+            $this->_queryPrepared->bindValue($key + 1, $valueBind);
         }
     }
 
@@ -193,17 +192,17 @@ class QueryBuilder
     {
         $keys = array();
         foreach ($params as $key => $value) {
-            if (is_array($value)) {
-                $in = implode(', ', array_fill(0, count($value), '?'));
-                $keys[] = $key . ' IN (' . $in . ')';
-            } else {
-                $keys[] = $key . ' = ?';
-            }
+            $keys[] = $this->_buildWhereKey($value, $key);
         }
         return $keys;
     }
-}
 
-class DbSelectException extends \Exception
-{
+    private function _buildWhereKey($value, $key)
+    {
+        if (is_array($value)) {
+            $in = implode(', ', array_fill(0, count($value), '?'));
+            return $key . ' IN (' . $in . ')';
+        }
+        return $key . ' = ?';
+    }
 }
