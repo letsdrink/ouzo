@@ -14,7 +14,6 @@ class ModelQueryBuilder
     private $_orderBy;
     private $_offset;
     private $_limit;
-    private $_returnEmpty;
     private $_joinTable;
     private $_joinKey;
     private $_originalKey;
@@ -33,7 +32,6 @@ class ModelQueryBuilder
      */
     public function where($params, $values = null)
     {
-        $this->_setReturnEmptyIfNeeded($params);
         $this->_where = $params;
         $this->_whereValues = $values;
         return $this;
@@ -68,16 +66,11 @@ class ModelQueryBuilder
 
     public function count()
     {
-        if ($this->_returnEmpty) {
-            return 0;
-        }
-
-        $count = $this->queryBuilderCount()
+        return $this->queryBuilderCount()
             ->from($this->_model->getTableName())
             ->join($this->_joinTable, $this->_joinKey, $this->_originalKey)
             ->where($this->_where, $this->_whereValues)
-            ->fetch();
-        return $count[0];
+            ->fetchFirst();
     }
 
     /**
@@ -94,10 +87,6 @@ class ModelQueryBuilder
      */
     public function fetchAll()
     {
-        if ($this->_returnEmpty) {
-            return array();
-        }
-
         $result = $this->queryBuilderSelect($this->_selectedColumns)
             ->from($this->_model->getTableName())
             ->join($this->_joinTable, $this->_joinKey, $this->_originalKey)
@@ -119,19 +108,9 @@ class ModelQueryBuilder
 
     public function deleteAll()
     {
-        if ($this->_returnEmpty) {
-            return 0;
-        }
-
-        $this->queryBuilderDelete()->from($this->_model->getTableName())
+        return $this->queryBuilderDelete()->from($this->_model->getTableName())
             ->where($this->_where, $this->_whereValues)
             ->delete();
-        return $this->rowAffected();
-    }
-
-    public function rowAffected()
-    {
-        return $this->_db->query->rowCount();
     }
 
     /**
@@ -164,21 +143,9 @@ class ModelQueryBuilder
         return $this;
     }
 
-    private function _setReturnEmptyIfNeeded($params)
-    {
-        if (is_array($params)) {
-            foreach ($params as $value) {
-                if (is_array($value) && sizeof($value) == 0) {
-                    $this->_returnEmpty = true;
-                    break;
-                }
-            }
-        }
-    }
-
     private function queryBuilderSelect(array $columns = array())
     {
-        return new QueryBuilder($this->_db, $columns);
+        return new PostgresQueryBuilder($this->_db, $columns);
     }
 
     private function queryBuilderCount()
@@ -188,7 +155,7 @@ class ModelQueryBuilder
 
     public function queryBuilderDelete()
     {
-        return new QueryBuilder($this->_db, array(), true);
+        return new PostgresQueryBuilder($this->_db, array(), true);
     }
 
 }
