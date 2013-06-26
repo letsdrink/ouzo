@@ -1,5 +1,4 @@
 <?php
-
 namespace Thulium;
 
 class ControllerResolver
