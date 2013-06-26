@@ -5,8 +5,8 @@ use Thulium\Config;
 
 class ControllerTestCase extends DbTransactionalTestCase
 {
+    protected $_frontController;
     private $_prefixSystem;
-    private $_frontController;
     private $_redirectHandler;
     private $_sessionInitializer;
     private $_downloadHandler;
