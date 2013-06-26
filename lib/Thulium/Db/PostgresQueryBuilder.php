@@ -14,14 +14,9 @@ class PostgresQueryBuilder extends DbQueryBuilder
 {
     private $_delete;
 
-    public function __construct(Db $dbHandle, array $columns = array(), $delete = false)
+    public function __construct(Db $dbHandle)
     {
         parent::__construct($dbHandle);
-
-        $this->_delete = $delete;
-        $this->_query = $delete ? 'DELETE ' : 'SELECT ';
-
-        $this->_columns($columns);
     }
 
     private function _columns(array $columns = array())
@@ -142,5 +137,19 @@ class PostgresQueryBuilder extends DbQueryBuilder
             }
         }
         return false;
+    }
+
+    public function select($columns)
+    {
+        $this->_query = 'SELECT ';
+        $this->_columns($columns);
+        return $this;
+    }
+
+    public function deleteQuery()
+    {
+        $this->_query = 'DELETE ';
+        $this->_delete = true;
+        return $this;
     }
 }

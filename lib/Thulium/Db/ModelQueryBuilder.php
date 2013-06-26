@@ -145,7 +145,8 @@ class ModelQueryBuilder
 
     private function queryBuilderSelect(array $columns = array())
     {
-        return new PostgresQueryBuilder($this->_db, $columns);
+        $queryBuilder = new PostgresQueryBuilder($this->_db);
+        return $queryBuilder->select($columns);
     }
 
     private function queryBuilderCount()
@@ -155,7 +156,8 @@ class ModelQueryBuilder
 
     public function queryBuilderDelete()
     {
-        return new PostgresQueryBuilder($this->_db, array(), true);
+        $queryBuilder = new PostgresQueryBuilder($this->_db);
+        return $queryBuilder->deleteQuery();
     }
 
 }
