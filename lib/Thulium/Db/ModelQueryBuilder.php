@@ -62,11 +62,6 @@ class ModelQueryBuilder
     public function count()
     {
         return QueryExecutor::prepare($this->_db, $this->_query)->count();
-//        return $this->queryBuilderCount()
-//            ->from($this->_model->getTableName())
-//            ->join($this->_joinTable, $this->_joinKey, $this->_originalKey)
-//            ->where($this->_where, $this->_whereValues)
-//            ->fetchFirst();
     }
 
     /**
@@ -83,14 +78,6 @@ class ModelQueryBuilder
      */
     public function fetchAll()
     {
-//        $result = $this->queryBuilderSelect($this->_selectedColumns)
-//            ->from($this->_model->getTableName())
-//            ->join($this->_joinTable, $this->_joinKey, $this->_originalKey)
-//            ->where($this->_where, $this->_whereValues)
-//            ->order($this->_orderBy)
-//            ->limit($this->_limit)
-//            ->offset($this->_offset)
-//            ->fetchAll();
         $result = QueryExecutor::prepare($this->_db, $this->_query)->fetchAll();
         return $this->_query->selectColumns ? $result : $this->_transform($this->_model->convert($result));
     }
@@ -106,9 +93,6 @@ class ModelQueryBuilder
     public function deleteAll()
     {
         return QueryExecutor::prepare($this->_db, $this->_query)->delete();
-//        return $this->queryBuilderDelete()->from($this->_model->getTableName())
-//            ->where($this->_where, $this->_whereValues)
-//            ->delete();
     }
 
     /**
@@ -140,22 +124,5 @@ class ModelQueryBuilder
         $this->_query->selectColumns = is_array($columns) ? $columns : array($columns);
         return $this;
     }
-
-//    private function queryBuilderSelect(array $columns = array())
-//    {
-//        $queryBuilder = new DbQueryBuilder($this->_db);
-//        return $queryBuilder->select($columns);
-//    }
-//
-//    private function queryBuilderCount()
-//    {
-//        return $this->queryBuilderSelect(array('count(*)'));
-//    }
-//
-//    public function queryBuilderDelete()
-//    {
-//        $queryBuilder = new DbQueryBuilder($this->_db);
-//        return $queryBuilder->deleteQuery();
-//    }
 
 }
