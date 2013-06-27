@@ -40,7 +40,7 @@ class DbQueryBuilder implements QueryBuilder
         }
 
         $this->_db = $db;
-        $this->_adapter = new PostgresAdapter();
+        $this->_adapter = new PostgresDialect();
     }
 
     public function __toString()

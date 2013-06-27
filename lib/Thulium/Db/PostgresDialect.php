@@ -5,7 +5,7 @@ namespace Thulium\Db;
 
 use Thulium\Utilities\Joiner;
 
-class PostgresAdapter
+class PostgresDialect
 {
 
     public function buildQuery($delete, $columns, $table, $joinTable, $joinKey, $idName, $order, $limit, $offset, $where)
@@ -26,6 +26,11 @@ class PostgresAdapter
             $query .= ' LEFT JOIN ' . $joinTable . ' AS joined ON joined.' . $joinKey . ' = main.' . $idName;
         }
 
+        $where = $this->_buildWhereQuery($where);
+        if ($where) {
+            $query .= ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
+        }
+
         if ($order) {
             $query .= ' ORDER BY ' . (is_array($order) ? implode(', ', $order) : $order);
         }
@@ -36,11 +41,6 @@ class PostgresAdapter
 
         if ($limit) {
             $query .= ' LIMIT ? ';
-        }
-
-        $where = $this->_buildWhereQuery($where);
-        if ($where) {
-            $query .= ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
         }
 
         return $query;
