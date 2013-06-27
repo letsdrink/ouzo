@@ -1,9 +1,9 @@
 <?php
 
-use Thulium\Db\PostgresQueryBuilder;
+use Thulium\Db\DbQueryBuilder;
 use Thulium\Tests\DbTransactionalTestCase;
 
-class QueryBuilderTest extends DbTransactionalTestCase
+class DbQueryBuilderTest extends DbTransactionalTestCase
 {
 
     /**
@@ -12,7 +12,7 @@ class QueryBuilderTest extends DbTransactionalTestCase
      */
     public function shouldThrowExceptionIfDbNotGiven()
     {
-        new PostgresQueryBuilder('not db object');
+        new DbQueryBuilder('not db object');
     }
 
 }
