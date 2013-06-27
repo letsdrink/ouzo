@@ -8,42 +8,46 @@ use Thulium\Utilities\Joiner;
 class PostgresDialect
 {
 
-    public function buildQuery($delete, $columns, $table, $joinTable, $joinKey, $idName, $order, $limit, $offset, $where)
+    public function buildQuery($select, $query)
     {
-        $query = $delete ? 'DELETE ' : 'SELECT ';
+        $sql = $select ? 'SELECT ' : 'DELETE ';
 
-        if (!$delete) {
-            if (!empty($columns)) {
-                $query .= Joiner::on(', ')->map($this->addAliases())->join($columns);
+        if ($select) {
+            if (!empty($query->selectColumns)) {
+                if (is_array($query->selectColumns)) {
+                    $sql .= Joiner::on(', ')->map($this->addAliases())->join($query->selectColumns);
+                } else {
+                    $sql .= $query->selectColumns;
+                }
             } else {
-                $query .= 'main.*';
+                $sql .= 'main.*';
             }
         }
 
-        $query .= ' FROM ' . $table . ' AS main ';
+        $sql .= ' FROM ' . $query->table . ' AS main ';
 
-        if (!empty($joinTable)) {
-            $query .= ' LEFT JOIN ' . $joinTable . ' AS joined ON joined.' . $joinKey . ' = main.' . $idName;
+        if (!empty($query->joinTable)) {
+            $sql .= ' LEFT JOIN ' . $query->joinTable . ' AS joined ON joined.' . $query->joinKey . ' = main.' . $query->idName;
         }
 
-        $where = $this->_buildWhereQuery($where);
+        $where = $this->_buildWhereQuery($query->where);
         if ($where) {
-            $query .= ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
+            $sql .= ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
         }
 
-        if ($order) {
-            $query .= ' ORDER BY ' . (is_array($order) ? implode(', ', $order) : $order);
+        if ($query->order) {
+            $sql .= ' ORDER BY ' . (is_array($query->order) ? implode(', ', $query->order) : $query->order);
         }
 
-        if ($offset) {
-            $query .= ' OFFSET ? ';
+        if ($query->limit) {
+            $sql .= ' LIMIT ? ';
         }
 
-        if ($limit) {
-            $query .= ' LIMIT ? ';
+        if ($query->offset) {
+            $sql .= ' OFFSET ? ';
         }
 
-        return $query;
+        return $sql;
     }
 
     private function addAliases()

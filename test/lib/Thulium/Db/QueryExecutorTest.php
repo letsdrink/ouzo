@@ -1,9 +1,10 @@
 <?php
 
 use Thulium\Db\DbQueryBuilder;
+use Thulium\Db\QueryExecutor;
 use Thulium\Tests\DbTransactionalTestCase;
 
-class DbQueryBuilderTest extends DbTransactionalTestCase
+class QueryExecutorTest extends DbTransactionalTestCase
 {
 
     /**
@@ -12,7 +13,7 @@ class DbQueryBuilderTest extends DbTransactionalTestCase
      */
     public function shouldThrowExceptionIfDbNotGiven()
     {
-        new DbQueryBuilder('not db object');
+        QueryExecutor::prepare(null, null);
     }
 
 }
