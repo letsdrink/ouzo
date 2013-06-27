@@ -16,7 +16,7 @@ class DbQueryBuilder implements QueryBuilder
 {
 
     private $_adapter;
-    private $_db = null;
+    private $_db;
     private $_query;
     private $_queryValues = array();
     public $_fetchStyle = PDO::FETCH_ASSOC;
@@ -33,13 +33,13 @@ class DbQueryBuilder implements QueryBuilder
     private $_sql_offset;
     private $_sql_where;
 
-    public function __construct(Db $dbHandle)
+    public function __construct(Db $db)
     {
-        if (!$dbHandle instanceof Db) {
+        if (!$db instanceof Db) {
             throw new Exception('Wrong database handler');
         }
 
-        $this->_db = $dbHandle;
+        $this->_db = $db;
         $this->_adapter = new PostgresAdapter();
     }
 
@@ -138,7 +138,7 @@ class DbQueryBuilder implements QueryBuilder
         return $this;
     }
 
-    public function from($table = null)
+    public function from($table)
     {
         if (empty($table)) {
             throw new InvalidArgumentException("$table cannot be empty");

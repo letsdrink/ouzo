@@ -8,7 +8,7 @@ use Thulium\Utilities\Objects;
 interface QueryBuilder
 {
 
-    public function from($table = null);
+    public function from($table);
 
     public function where($where = '', $values);
 

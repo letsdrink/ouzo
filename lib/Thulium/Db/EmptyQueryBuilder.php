@@ -6,7 +6,7 @@ namespace Thulium\Db;
 class EmptyQueryBuilder implements QueryBuilder {
 
 
-    public function from($table = null)
+    public function from($table)
     {
         return $this;
     }
