@@ -14,17 +14,17 @@ class QueryExecutor {
 
     private $_db;
     private $_adapter;
-    private $query;
+    private $_query;
+    private $_boundValues = array();
 
-    private $_queryValues = array();
-    public $_fetchStyle = PDO::FETCH_ASSOC;
-    public $_queryPrepared;
     public $_sql;
+    public $_preparedQuery;
+    public $_fetchStyle = PDO::FETCH_ASSOC;
 
     function __construct($db, $query)
     {
         $this->_db = $db;
-        $this->query = $query;
+        $this->_query = $query;
 
         $this->_adapter = new PostgresDialect();
     }
@@ -62,37 +62,37 @@ class QueryExecutor {
     public function delete()
     {
         $this->_buildQuery(false);
-        $this->_db->query($this->_sql, $this->_queryValues);
+        $this->_db->query($this->_sql, $this->_boundValues);
         return $this->_db->query->rowCount();
     }
 
     public function count()
     {
-        $this->query->selectColumns = 'count(*)';
+        $this->_query->selectColumns = 'count(*)';
         return $this->fetchFirst();
     }
 
     private function _fetch($function)
     {
         $obj = $this;
-        return Stats::trace($this->_sql, $this->_queryValues, function () use ($obj, $function) {
+        return Stats::trace($this->_sql, $this->_boundValues, function () use ($obj, $function) {
             $obj->_prepareAndBind();
 
             Logger::getSqlLogger()
-                ->addInfo($obj->getSql(), $obj->getQueryValues());
+                ->addInfo($obj->getSql(), $obj->getBoundValues());
 
-            if (!$obj->_queryPrepared->execute()) {
-                throw new DbException('Exception: query: ' . $obj->getSql() . ' with params: (' . implode(', ', $obj->getQueryValues()) . ') failed: ' . $obj->lastErrorMessage());
+            if (!$obj->_preparedQuery->execute()) {
+                throw new DbException('Exception: query: ' . $obj->getSql() . ' with params: (' . implode(', ', $obj->getBoundValues()) . ') failed: ' . $obj->lastErrorMessage());
             }
-            return $obj->_queryPrepared->$function($obj->_fetchStyle);
+            return $obj->_preparedQuery->$function($obj->_fetchStyle);
         });
     }
 
     public function _prepareAndBind()
     {
-        $this->_queryPrepared = $this->_db->_dbHandle->prepare($this->_sql);
-        foreach ($this->_queryValues as $key => $valueBind) {
-            $this->_queryPrepared->bindValue($key + 1, $valueBind);
+        $this->_preparedQuery = $this->_db->_dbHandle->prepare($this->_sql);
+        foreach ($this->_boundValues as $key => $valueBind) {
+            $this->_preparedQuery->bindValue($key + 1, $valueBind);
         }
     }
 
@@ -101,9 +101,9 @@ class QueryExecutor {
         return $this->_sql;
     }
 
-    public function getQueryValues()
+    public function getBoundValues()
     {
-        return $this->_queryValues;
+        return $this->_boundValues;
     }
 
     public function lastErrorMessage()
@@ -113,31 +113,31 @@ class QueryExecutor {
 
     private function _buildQuery($select)
     {
-        if (!empty($this->query->selectColumns)) {
+        if (!empty($this->_query->selectColumns)) {
             $this->_fetchStyle = PDO::FETCH_NUM;
         }
 
-        $values = $this->_buildWhereValues($this->query->where, $this->query->whereValues);
-        if (!empty($this->query->where)) {
+        $values = $this->_buildWhereValues($this->_query->where, $this->_query->whereValues);
+        if (!empty($this->_query->where)) {
             $this->_addBindValue($values);
         }
 
-        if ($this->query->limit) {
-            $this->_addBindValue($this->query->limit);
+        if ($this->_query->limit) {
+            $this->_addBindValue($this->_query->limit);
         }
-        if ($this->query->offset) {
-            $this->_addBindValue($this->query->offset);
+        if ($this->_query->offset) {
+            $this->_addBindValue($this->_query->offset);
         }
 
-        $this->_sql = $this->_adapter->buildQuery($select, $this->query);
+        $this->_sql = $this->_adapter->buildQuery($select, $this->_query);
     }
 
     public function _addBindValue($value)
     {
         if (is_array($value)) {
-            $this->_queryValues = array_merge($this->_queryValues, $value);
+            $this->_boundValues = array_merge($this->_boundValues, $value);
         } else {
-            $this->_queryValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
+            $this->_boundValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
         }
     }
 
