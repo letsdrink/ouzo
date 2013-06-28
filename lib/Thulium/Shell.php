@@ -78,7 +78,7 @@ class Shell
 
     public function getArgument($name)
     {
-        return $this->_inputDefinition->getArgument($name);
+        return $this->_inputDefinition ? $this->_inputDefinition->getArgument($name) : null;
     }
 
     public function main()
