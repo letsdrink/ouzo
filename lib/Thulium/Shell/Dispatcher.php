@@ -56,7 +56,7 @@ class Dispatcher
 
     protected function _bootstrap()
     {
-        define('APP', $this->params['app']);
+        defined('APP') or define('APP', $this->params['app']);
     }
 
     private function _extractArgs($arg, $type)
