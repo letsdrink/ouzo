@@ -25,7 +25,7 @@ class ModelQueryBuilder
     /**
      * @return ModelQueryBuilder
      */
-    public function where($params, $values = null)
+    public function where($params = '', $values = null)
     {
         $this->_query->where = $params;
         $this->_query->whereValues = $values;

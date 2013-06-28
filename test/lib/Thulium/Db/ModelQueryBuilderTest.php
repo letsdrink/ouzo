@@ -1,9 +1,9 @@
 <?php
 
+use Model\Category;
 use Model\Order;
 use Model\OrderProduct;
 use Model\Product;
-use Model\Category;
 use Thulium\Db\ModelQueryBuilder;
 use Thulium\Db\Stats;
 use Thulium\Tests\DbTransactionalTestCase;
@@ -289,9 +289,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         try {
             Product::where()->with('Category', 'description', 'category', 'name')->fetchAll();
             $this->fail();
-        }
-        //then
-        catch(InvalidArgumentException $e) {
+        } //then
+        catch (InvalidArgumentException $e) {
         }
     }
 
@@ -305,7 +304,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'a', 'description' => 'desc'));
 
         //when
-        $products =  Product::where()->with('Category', 'description', 'category', 'name', true)->fetchAll();
+        $products = Product::where()->with('Category', 'description', 'category', 'name', true)->fetchAll();
 
         //then
         $this->assertNull($products[0]->category);
@@ -401,5 +400,14 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $allProducts = Product::all();
         $this->assertCount(0, $allProducts);
+    }
+
+    /**
+     * @test
+     * @expectedException \Thulium\DbException
+     */
+    public function shouldThrowExceptionOnInvalidQuery()
+    {
+        Product::select('non existing column')->where()->fetchAll();
     }
 }
