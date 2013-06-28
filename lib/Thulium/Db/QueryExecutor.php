@@ -113,19 +113,7 @@ class QueryExecutor
         if (!empty($this->_query->selectColumns)) {
             $this->_fetchStyle = PDO::FETCH_NUM;
         }
-
-        $values = $this->_buildWhereValues($this->_query->where, $this->_query->whereValues);
-        if (!empty($this->_query->where)) {
-            $this->_addBindValue($values);
-        }
-
-        if ($this->_query->limit) {
-            $this->_addBindValue($this->_query->limit);
-        }
-        if ($this->_query->offset) {
-            $this->_addBindValue($this->_query->offset);
-        }
-
+        $this->_addBindValues();
         $this->_sql = $this->_adapter->buildQuery($this->_query);
     }
 
@@ -153,5 +141,19 @@ class QueryExecutor
             }
         }
         return false;
+    }
+
+    private function _addBindValues()
+    {
+        $values = $this->_buildWhereValues($this->_query->where, $this->_query->whereValues);
+        if (!empty($this->_query->where)) {
+            $this->_addBindValue($values);
+        }
+        if ($this->_query->limit) {
+            $this->_addBindValue($this->_query->limit);
+        }
+        if ($this->_query->offset) {
+            $this->_addBindValue($this->_query->offset);
+        }
     }
 }
