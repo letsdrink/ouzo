@@ -25,8 +25,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
     public function shouldThrowExceptionIfNoDbGiven()
     {
         // given
-        $query = new Query();
-        $query->table = 'table_name';
+        $query = Query::select()->from('table_name');
 
         // when
         QueryExecutor::prepare(null, $query);
@@ -51,9 +50,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
     public function shouldReturnEmptyQueryExecutorForEmptyWhereValues()
     {
         // given
-        $query = new Query();
-        $query->table = 'table_name';
-        $query->where = array('column' => array());
+        $query = Query::select()->from('table_name')->where(array('column' => array()));
 
         // when
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
