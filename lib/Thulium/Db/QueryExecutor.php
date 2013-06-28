@@ -42,12 +42,6 @@ class QueryExecutor
         return new QueryExecutor($db, $query);
     }
 
-    public function fetchFirst()
-    {
-        $result = $this->fetch();
-        return Arrays::firstOrNull($result);
-    }
-
     public function fetch()
     {
         $this->_buildQuery();
@@ -72,7 +66,7 @@ class QueryExecutor
     {
         $this->_query->type = QueryType::$COUNT;
         $this->_query->selectColumns = 'count(*)';
-        return $this->fetchFirst();
+        return Arrays::firstOrNull($this->fetch());
     }
 
     private function _fetch($function)

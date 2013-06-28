@@ -25,9 +25,9 @@ class ModelQueryBuilder
     /**
      * @return ModelQueryBuilder
      */
-    public function where($params = '', $values = null)
+    public function where($where = '', $values = null)
     {
-        $this->_query->where = $params;
+        $this->_query->where = $where;
         $this->_query->whereValues = $values;
         return $this;
     }
@@ -69,8 +69,11 @@ class ModelQueryBuilder
      */
     public function fetch()
     {
-        $object = $this->fetchAll();
-        return Arrays::firstOrNull($object);
+        $result = QueryExecutor::prepare($this->_db, $this->_query)->fetch();
+        if (!$result) {
+            return null;
+        }
+        return $this->_query->selectColumns ? $result : Arrays::firstOrNull($this->_transform($this->_model->convert(array($result))));
     }
 
     /**

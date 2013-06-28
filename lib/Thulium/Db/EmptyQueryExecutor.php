@@ -8,7 +8,7 @@ class EmptyQueryExecutor {
 
     public function fetch()
     {
-        return array();
+        return null;
     }
 
     public function fetchAll()
@@ -17,11 +17,6 @@ class EmptyQueryExecutor {
     }
 
     public function delete()
-    {
-        return 0;
-    }
-
-    public function fetchFirst()
     {
         return 0;
     }
