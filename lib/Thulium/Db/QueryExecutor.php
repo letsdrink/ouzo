@@ -5,6 +5,7 @@ namespace Thulium\Db;
 
 use InvalidArgumentException;
 use PDO;
+use Thulium\Db;
 use Thulium\DbException;
 use Thulium\Logger;
 use Thulium\Utilities\Arrays;
@@ -32,7 +33,13 @@ class QueryExecutor
 
     public static function prepare($db, $query)
     {
-        if (empty($query->table)) {
+        if (empty($db) || !$db instanceof Db) {
+            throw new InvalidArgumentException("Database handler not provided or is of wrong type");
+        }
+        if (!$query) {
+            throw new InvalidArgumentException("Query object not provided");
+        }
+        if (!$query->table) {
             throw new InvalidArgumentException($query->table . " cannot be empty");
         }
         if (QueryExecutor::isEmptyResult($query->where)) {
