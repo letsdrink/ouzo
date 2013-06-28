@@ -13,15 +13,9 @@ class PostgresDialect
         $sql = $this->_buildQueryPrefix($query->type);
 
         if ($query->type == QueryType::$SELECT) {
-            if (!empty($query->selectColumns)) {
-                if (is_array($query->selectColumns)) {
-                    $sql .= Joiner::on(', ')->map($this->addAliases())->join($query->selectColumns);
-                } else {
-                    $sql .= $query->selectColumns;
-                }
-            } else {
-                $sql .= 'main.*';
-            }
+            $sql .= empty($query->selectColumns) ? 'main.*' : Joiner::on(', ')->map($this->_addAliases())->join($query->selectColumns);
+        } else if ($query->type == QueryType::$COUNT) {
+            $sql .= 'count(*)';
         }
 
         $sql .= ' FROM ' . $query->table . ' AS main ';
@@ -50,7 +44,7 @@ class PostgresDialect
         return $sql;
     }
 
-    private function addAliases()
+    private function _addAliases()
     {
         return function ($alias, $column) {
             return $column . (is_string($alias) ? ' AS ' . $alias : '');
@@ -82,12 +76,6 @@ class PostgresDialect
 
     private function _buildQueryPrefix($type)
     {
-        if ($type == QueryType::$DELETE) {
-            return 'DELETE ';
-        }
-        if ($type == QueryType::$COUNT) {
-            return 'SELECT count(*) ';
-        }
-        return 'SELECT ';
+        return $type == QueryType::$DELETE ? 'DELETE ' : 'SELECT ';
     }
 }

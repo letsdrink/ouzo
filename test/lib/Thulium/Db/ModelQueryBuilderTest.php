@@ -96,16 +96,36 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldOrderResults()
     {
         //given
-        $product1 = Product::create(array('name' => 'a', 'description' => 'aa'));
         $product2 = Product::create(array('name' => 'b', 'description' => 'bb'));
+        $product1 = Product::create(array('name' => 'a', 'description' => 'aa'));
 
         //when
-        $loadedProducts = Product::where()->order(array('name asc', 'name asc'))->fetchAll();
+        $loadedProducts = Product::where()->order(array('name asc'))->fetchAll();
 
         //then
         $this->assertCount(2, $loadedProducts);
         $this->assertEquals($product1, $loadedProducts[0]);
         $this->assertEquals($product2, $loadedProducts[1]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldOrderResultsByTwoColumns()
+    {
+        //given
+        $product1 = Product::create(array('name' => 'b', 'description' => 'bb'));
+        $product2 = Product::create(array('name' => 'a', 'description' => 'aa'));
+        $product3 = Product::create(array('name' => 'a', 'description' => 'bb'));
+
+        //when
+        $loadedProducts = Product::where()->order(array('name asc', 'description desc'))->fetchAll();
+
+        //then
+        $this->assertCount(3, $loadedProducts);
+        $this->assertEquals($product3, $loadedProducts[0]);
+        $this->assertEquals($product2, $loadedProducts[1]);
+        $this->assertEquals($product1, $loadedProducts[2]);
     }
 
     /**
@@ -329,6 +349,23 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('bob', $result[0][1]);
         $this->assertEquals('c', $result[1][0]);
         $this->assertEquals('bob', $result[1][1]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSpecifiedColumnByStringAsArrayOfArrays()
+    {
+        //given
+        Product::create(array('name' => 'a', 'description' => 'bob'));
+
+        //when
+        $result = Product::select('name')->where(array('description' => 'bob'))->fetchAll();
+
+        //then
+        $this->assertCount(1, $result);
+        $this->assertEquals(1, sizeof($result[0]));
+        $this->assertEquals('a', $result[0][0]);
     }
 
     /**
