@@ -5,6 +5,11 @@ use Thulium\Utilities\Arrays;
 
 function escapeText($text)
 {
+    return htmlspecialchars($text);
+}
+
+function escapeNewLine($text)
+{
     $text = htmlspecialchars($text);
     return nl2br($text);
 }
@@ -31,16 +36,17 @@ function formButton($params)
 {
     $defaultParams = array('class' => 'buttonLong');
     $params = array_merge($defaultParams, $params);
+    $value = escapeText($params['value']);
 
     return <<<HTML
-        <input type="button" name="${params['name']}" id="${params['name']}" value="${params['value']}" class="{$params['class']}"/>
+        <input type="button" name="${params['name']}" id="${params['name']}" value="$value" class="{$params['class']}"/>
 HTML;
 }
 
 function hiddenField($params)
 {
     $name = $params['name'];
-    $value = $params['value'];
+    $value = escapeText($params['value']);
     $id = isset($params['id']) ? $params['id'] : $params['name'];
 
     return <<<HTML
@@ -50,6 +56,9 @@ HTML;
 
 function textField($label, $name, $value, $options = array())
 {
+    $label = escapeNewLine($label);
+    $value = escapeText($value);
+
     $predefined = array('id' => '', 'new_row' => true, 'width' => null, 'label_width' => null, 'label_margin' => null, 'class' => null, 'error' => false, 'hide_label' => false);
     $id = Arrays::getValue($options, 'id', cleanHtmlId($name));
     $options = array_merge($predefined, $options);
@@ -100,6 +109,8 @@ function textArea($label, $id, $value, array $size, array $options = array())
     $id = cleanHtmlId($id);
     $rows = $size['rows'];
     $cols = $size['cols'];
+    $label = escapeNewLine($label);
+    $value = escapeText($value);
 
     $inputStyle = '';
     if (isset($options['error']) && $options['error']) {
@@ -116,10 +127,12 @@ HTML;
 
 function selectListHtml($label, $id, $name, array $items, array $selected, array $attr)
 {
+    $label = escapeNewLine($label);
     $labelHtml = $label ? '<label for="' . $id . '">' . $label . '</label>' : '';
     $optionsHtml = '';
 
     foreach ($items as $optionKey => $optionValue) {
+        $optionValue = escapeText($optionValue);
         $selectedAttr = Arrays::findKeyByValue($selected, $optionKey) !== FALSE ? ' selected' : '';
         $optionsHtml .= "<option value=\"$optionKey\"$selectedAttr>$optionValue</option>\n";
     }
@@ -143,6 +156,8 @@ function selectField($label, $id, $value, array $options, $defaultOption = null,
 {
     $name = $id;
     $id = cleanHtmlId($id);
+    $label = escapeNewLine($label);
+    $value = escapeText($value);
 
     if ($defaultOption !== null) {
         $options = array(null => $defaultOption) + $options;
