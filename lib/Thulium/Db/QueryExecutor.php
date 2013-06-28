@@ -10,7 +10,8 @@ use Thulium\Logger;
 use Thulium\Utilities\Arrays;
 use Thulium\Utilities\Objects;
 
-class QueryExecutor {
+class QueryExecutor
+{
 
     private $_db;
     private $_adapter;
@@ -49,25 +50,27 @@ class QueryExecutor {
 
     public function fetch()
     {
-        $this->_buildQuery(true);
+        $this->_buildQuery();
         return $this->_fetch('fetch');
     }
 
     public function fetchAll()
     {
-        $this->_buildQuery(true);
+        $this->_buildQuery();
         return $this->_fetch('fetchAll');
     }
 
     public function delete()
     {
-        $this->_buildQuery(false);
+        $this->_query->type = QueryType::$DELETE;
+        $this->_buildQuery();
         $this->_db->query($this->_sql, $this->_boundValues);
         return $this->_db->query->rowCount();
     }
 
     public function count()
     {
+        $this->_query->type = QueryType::$COUNT;
         $this->_query->selectColumns = 'count(*)';
         return $this->fetchFirst();
     }
@@ -111,7 +114,7 @@ class QueryExecutor {
         return $this->_db->lastErrorMessage();
     }
 
-    private function _buildQuery($select)
+    private function _buildQuery()
     {
         if (!empty($this->_query->selectColumns)) {
             $this->_fetchStyle = PDO::FETCH_NUM;
@@ -129,7 +132,7 @@ class QueryExecutor {
             $this->_addBindValue($this->_query->offset);
         }
 
-        $this->_sql = $this->_adapter->buildQuery($select, $this->_query);
+        $this->_sql = $this->_adapter->buildQuery($this->_query);
     }
 
     public function _addBindValue($value)

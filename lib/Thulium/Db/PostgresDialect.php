@@ -8,11 +8,11 @@ use Thulium\Utilities\Joiner;
 class PostgresDialect
 {
 
-    public function buildQuery($select, $query)
+    public function buildQuery($query)
     {
-        $sql = $select ? 'SELECT ' : 'DELETE ';
+        $sql = $this->_buildQueryPrefix($query->type);
 
-        if ($select) {
+        if ($query->type == QueryType::$SELECT) {
             if (!empty($query->selectColumns)) {
                 if (is_array($query->selectColumns)) {
                     $sql .= Joiner::on(', ')->map($this->addAliases())->join($query->selectColumns);
@@ -78,5 +78,16 @@ class PostgresDialect
             return $key . ' IN (' . $in . ')';
         }
         return $key . ' = ?';
+    }
+
+    private function _buildQueryPrefix($type)
+    {
+        if ($type == QueryType::$DELETE) {
+            return 'DELETE ';
+        }
+        if ($type == QueryType::$COUNT) {
+            return 'SELECT count(*) ';
+        }
+        return 'SELECT ';
     }
 }

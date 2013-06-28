@@ -3,7 +3,8 @@
 namespace Thulium\Db;
 
 
-class Query {
+class Query
+{
 
     public $table;
     public $selectColumns;
@@ -15,4 +16,11 @@ class Query {
     public $offset;
     public $where;
     public $whereValues;
+    public $type;
+
+    function __construct()
+    {
+        $this->type = QueryType::$SELECT;
+    }
+
 }
