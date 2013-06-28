@@ -40,7 +40,7 @@ class QueryExecutor
             throw new InvalidArgumentException("Query object not provided");
         }
         if (!$query->table) {
-            throw new InvalidArgumentException($query->table . " cannot be empty");
+            throw new InvalidArgumentException("Table name cannot be empty");
         }
         if (QueryExecutor::isEmptyResult($query->where)) {
             return new EmptyQueryExecutor();
