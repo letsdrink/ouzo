@@ -42,10 +42,10 @@ class QueryExecutor
         if (!$query->table) {
             throw new InvalidArgumentException("Table name cannot be empty");
         }
+
         if (QueryExecutor::isEmptyResult($query->where)) {
             return new EmptyQueryExecutor();
         }
-
         return new QueryExecutor($db, $query);
     }
 
