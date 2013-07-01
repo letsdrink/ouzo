@@ -5,13 +5,10 @@ use Exception;
 use InvalidArgumentException;
 use Thulium\Db;
 use Thulium\Db\ModelQueryBuilder;
-use Thulium\Utilities\Arrays;
 use Thulium\Utilities\Objects;
 
-class Model
+class Model extends Validatable
 {
-    protected $_errors = array();
-    protected $_errorFields = array();
     private $_db;
     private $_attributes;
     private $_tableName;
@@ -79,27 +76,6 @@ class Model
         if (empty($params['fields'])) {
             throw new InvalidArgumentException("Fields are required");
         }
-    }
-
-    public function isValid()
-    {
-        $this->validate();
-        return empty($this->_errors);
-    }
-
-    public function getErrors()
-    {
-        return $this->_errors;
-    }
-
-    public function getErrorFields()
-    {
-        return $this->_errorFields;
-    }
-
-    public function validate()
-    {
-        $this->_errors = array();
     }
 
     public function getTableName()
