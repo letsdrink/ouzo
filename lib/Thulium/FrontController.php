@@ -47,9 +47,10 @@ class FrontController
             $this->_startOutputBuffer();
 
             $this->_invokeInit();
-            $this->_invokeBeforeMethods();
-            $this->_invokeAction();
-            $this->_invokeAfterMethods();
+            if ($this->_invokeBeforeMethods()) {
+                $this->_invokeAction();
+                $this->_invokeAfterMethods();
+            }
 
             $this->_doActionOnResponse();
         }
@@ -92,12 +93,15 @@ class FrontController
     private function _invokeBeforeMethods()
     {
         foreach ($this->_currentController->before as $method) {
-            $this->_currentController->$method();
+            if (!$this->_currentController->$method()) {
+                return false;
+            }
 
             if ($this->_isRedirect()) {
-                return;
+                return false;
             }
         }
+        return true;
     }
 
     private function _invokeAfterMethods()
