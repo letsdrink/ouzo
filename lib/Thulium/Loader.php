@@ -1,6 +1,8 @@
 <?php
 namespace Thulium;
 
+use Thulium\Utilities\Strings;
+
 class Loader
 {
     private $_includePath = array();
@@ -33,7 +35,7 @@ class Loader
             $lastPosition = strripos($className, '\\');
 
             if ($lastPosition != null) {
-                $namespace = strtolower(substr($class, 0, $lastPosition));
+                $namespace = Strings::camelCaseToUnderscore(substr($class, 0, $lastPosition));
                 $class = substr($class, $lastPosition + 1);
 
                 $filePath = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
