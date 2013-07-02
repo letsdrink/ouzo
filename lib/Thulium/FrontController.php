@@ -138,6 +138,9 @@ class FrontController
             case 'file':
                 $this->downloadHandler->downloadFile($controller->getFileData());
                 break;
+            case 'stream':
+                $this->downloadHandler->streamMediaFile($controller->getFileData());
+                break;
         }
     }
 

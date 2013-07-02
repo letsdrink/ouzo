@@ -48,10 +48,10 @@ class Controller
             $this->_redirectLocation .= '?' . http_build_query($params);
     }
 
-    public function downloadFile($label, $mime, $path)
+    public function downloadFile($label, $mime, $path, $type = 'file')
     {
         $this->_fileData = array('label' => $label, 'mime' => $mime, 'path' => $path);
-        $this->_statusResponse = 'file';
+        $this->_statusResponse = $type;
     }
 
     public function getStatusResponse()
