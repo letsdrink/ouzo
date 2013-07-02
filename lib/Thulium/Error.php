@@ -13,11 +13,18 @@ class Error
         throw new \Exception("$errfile:$errline - $errstr ERRNO($errno)");
     }
 
+    private static function _clearOutputBuffers()
+    {
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+    }
+
     private static function _handleError($errorMessage, $errorTrace)
     {
         Logger::getPanelLogger()->addError($errorMessage, array($errorTrace));
         /** @noinspection PhpIncludeInspection */
-
+        self::_clearOutputBuffers();
         header("HTTP/1.1 500 Internal Server Error");
         require_once(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.phtml');
     }
