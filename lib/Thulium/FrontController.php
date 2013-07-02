@@ -35,7 +35,9 @@ class FrontController
     {
         $this->_uriAction = $this->_uri->getAction();
 
-        if ($this->_isNoAction()) {
+        if ($this->_isNoController()) {
+            $this->_redirectToDefault();
+        } else if ($this->_isNoAction()) {
             $this->_redirectToIndex();
         } else {
             $this->_currentController = $this->controllerResolver->getCurrentController();
@@ -59,6 +61,16 @@ class FrontController
     public function getCurrentController()
     {
         return $this->_currentController;
+    }
+
+    private function _isNoController()
+    {
+        return !$this->_uri->getRawController();
+    }
+
+    private function _redirectToDefault()
+    {
+        $this->_redirect('/' . $this->_defaults['controller'] . '/' . $this->_defaults['action']);
     }
 
     private function _isNoAction()
