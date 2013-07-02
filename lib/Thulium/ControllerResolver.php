@@ -1,6 +1,8 @@
 <?php
 namespace Thulium;
 
+use Thulium\Utilities\Strings;
+
 class ControllerResolver
 {
     function __construct()
@@ -14,8 +16,8 @@ class ControllerResolver
     {
         $controllerName = $this->_uri->getController();
 
-        $controller = $controllerName ? "\Controller\\" . $controllerName . "Controller" : "\Controller\\" . ucfirst($this->_defaultController) . "Controller";
-        $controllerCustom = $controllerName ? "\Controller\\" . $controllerName . "ControllerCustom" : null;
+        $controller = $controllerName ? "\\Controller\\" . $controllerName . "Controller" : "\\Controller\\" . Strings::underscoreToCamelCase($this->_defaultController) . "Controller";
+        $controllerCustom = $controllerName ? "\\Controller\\" . $controllerName . "ControllerCustom" : null;
 
         $this->_validateControllerExists($controller, $controllerCustom);
 
