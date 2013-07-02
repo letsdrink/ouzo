@@ -68,17 +68,11 @@ class FrontControllerTest extends ControllerTestCase
      */
     public function shouldNotInvokeActionWhenBeforeFilterReturnFalse()
     {
-        //given
-        $actionIsInvoked = false;
-
         //when
         try {
             $this->get('/sample/action');
         } catch (SampleControllerException $exception) {
-            $actionIsInvoked = true;
+            $this->fail();
         }
-
-        //then
-        $this->assertEquals(false, $actionIsInvoked);
     }
 }
