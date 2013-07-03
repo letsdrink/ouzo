@@ -17,6 +17,11 @@ class Output
         return fwrite($this->_output, $message . str_repeat(self::NL, $newLines));
     }
 
+    public function overwrite($message)
+    {
+        return fwrite($this->_output, $message . "\r");
+    }
+
     public function __destruct()
     {
         fclose($this->_output);
