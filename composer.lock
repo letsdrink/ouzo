@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "aaa2c6e70317782f151aa4240f2de8ed",
+    "hash": "cdfd05e9f55ba5bba2f723b7b00fbd54",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -113,12 +113,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "8d0a47217af4a0ed74ac0e155ec2007205d1408f"
+                "reference": "56ad5a88f7503b9ecee4e1799cd7c48e31ada517"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/8d0a47217af4a0ed74ac0e155ec2007205d1408f",
-                "reference": "8d0a47217af4a0ed74ac0e155ec2007205d1408f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/56ad5a88f7503b9ecee4e1799cd7c48e31ada517",
+                "reference": "56ad5a88f7503b9ecee4e1799cd7c48e31ada517",
                 "shasum": ""
             },
             "require": {
@@ -128,13 +128,18 @@
                 "phpunit/php-token-stream": ">=1.1.3@stable"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "3.7.*@dev"
             },
             "suggest": {
                 "ext-dom": "*",
                 "ext-xdebug": ">=2.0.5"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "PHP/"
@@ -161,7 +166,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-06-12 07:14:37"
+            "time": "2013-06-27 08:20:15"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -421,22 +426,31 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "8e9d897b39ca6310ccc2d81b8f29cabd5ce12786"
+                "reference": "977c5327c5f9e2a0f08728a59389ee604e5b2f47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/8e9d897b39ca6310ccc2d81b8f29cabd5ce12786",
-                "reference": "8e9d897b39ca6310ccc2d81b8f29cabd5ce12786",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/977c5327c5f9e2a0f08728a59389ee604e5b2f47",
+                "reference": "977c5327c5f9e2a0f08728a59389ee604e5b2f47",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "phpunit/php-text-template": ">=1.1.1@stable"
             },
+            "require-dev": {
+                "pear-pear/pear": "1.9.4",
+                "phpunit/phpunit": "3.7.*@dev"
+            },
             "suggest": {
                 "ext-soap": "*"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "PHPUnit/"
@@ -462,7 +476,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2013-05-07 12:11:45"
+            "time": "2013-06-23 05:41:31"
         },
         {
             "name": "symfony/yaml",
@@ -471,12 +485,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "v2.2.2"
+                "reference": "v2.2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/v2.2.2",
-                "reference": "v2.2.2",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/v2.2.3",
+                "reference": "v2.2.3",
                 "shasum": ""
             },
             "require": {

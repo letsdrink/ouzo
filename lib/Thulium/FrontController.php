@@ -17,6 +17,7 @@ class FrontController
     public $redirectHandler;
     public $sessionInitializer;
     public $downloadHandler;
+    public $outputDisplayer;
 
     public function __construct()
     {
@@ -29,6 +30,7 @@ class FrontController
         $this->sessionInitializer = new SessionInitializer();
         $this->downloadHandler = new DownloadHandler();
         $this->controllerResolver = new ControllerResolver();
+        $this->outputDisplayer = new OutputDisplayer();
     }
 
     public function init()
@@ -165,7 +167,7 @@ class FrontController
     {
         $page = ob_get_contents();
         ob_end_clean();
-        echo $page;
+        $this->outputDisplayer->display($page);
     }
 
     private function _logRequest()

@@ -24,6 +24,7 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_frontController->redirectHandler = $this->_redirectHandler;
         $this->_frontController->sessionInitializer = $this->_sessionInitializer;
         $this->_frontController->downloadHandler = $this->_downloadHandler;
+        $this->_frontController->outputDisplayer = new MockOutoutDisplayer();
     }
 
     public function get($url)

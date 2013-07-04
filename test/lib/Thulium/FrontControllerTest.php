@@ -1,29 +1,18 @@
 <?php
-
 use Thulium\Config;
 use Thulium\Controller;
 use Thulium\Tests\ControllerTestCase;
+use Thulium\Tests\MockOutoutDisplayer;
 
 class SampleControllerException extends Exception
 {
-
 }
 
 class SampleController extends Controller
 {
-    public function init()
-    {
-        $this->before[] = 'beforeAction';
-    }
-
-    public function beforeAction()
-    {
-        return false;
-    }
-
     public function action()
     {
-        throw new SampleControllerException("This action shouldn't be called!");
+        echo "OUTPUT";
     }
 }
 
@@ -37,7 +26,6 @@ class MockControllerResolver
 
 class FrontControllerTest extends ControllerTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -66,13 +54,12 @@ class FrontControllerTest extends ControllerTestCase
     /**
      * @test
      */
-    public function shouldNotInvokeActionWhenBeforeFilterReturnFalse()
+    public function shouldNoDisplayOutput()
     {
         //when
-        try {
-            $this->get('/sample/action');
-        } catch (SampleControllerException $exception) {
-            $this->fail();
-        }
+        $this->get('/sample/action');
+
+        //then
+        $this->expectOutputString('');
     }
 }
