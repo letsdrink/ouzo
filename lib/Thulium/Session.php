@@ -45,4 +45,16 @@ class Session
 
         return $this;
     }
+
+    public function push($value)
+    {
+        $_SESSION[$this->_sessionNamespace][] = $value;
+        return $this;
+    }
+
+    public function delete()
+    {
+        unset($_SESSION[$this->_sessionNamespace]);
+        return $this;
+    }
 }
