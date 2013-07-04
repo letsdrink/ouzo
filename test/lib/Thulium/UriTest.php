@@ -136,6 +136,21 @@ class UriTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($paramsExpected, $params);
     }
 
+    /**
+     * @test
+     */
+    public function shouldReturnTrueWhenAjaxRequest()
+    {
+        //given
+        $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+
+        //when
+        $isAjax = $this->_uri->isAjax();
+
+        //then
+        $this->assertTrue($isAjax);
+    }
+
     private function _path($path)
     {
         $this->_pathProviderMock->expects($this->any())

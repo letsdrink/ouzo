@@ -20,15 +20,15 @@ class Controller
 
     public function __construct()
     {
-        $uri = new \Thulium\Uri();
+        $uri = new Uri();
 
         $viewName = ucfirst($uri->getController()) . DIRECTORY_SEPARATOR . $uri->getAction();
 
         $this->uri = $uri;
         $this->currentController = $uri->getController();
         $this->currentAction = $uri->getAction();
-        $this->view = new \Thulium\View($viewName);
-        $this->layout = new \Thulium\Layout();
+        $this->view = new View($viewName);
+        $this->layout = new Layout();
         $this->params = array_merge($_POST, $_GET, $this->uri->getParams());
     }
 
@@ -103,5 +103,10 @@ class Controller
         $noController = str_replace('Controller', '', get_called_class());
         $noSlashes = str_replace('\\', '', $noController);
         return Strings::camelCaseToUnderscore($noSlashes);
+    }
+
+    public function isAjax()
+    {
+        return $this->uri->isAjax();
     }
 }

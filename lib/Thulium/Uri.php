@@ -61,7 +61,6 @@ class Uri
         return isset($rawController) ? Strings::underscoreToCamelCase($rawController) : null;
     }
 
-
     public function getAction()
     {
         $path = $this->_pathProvider->getPath();
@@ -81,5 +80,10 @@ class Uri
         }
 
         return $parsedPath;
+    }
+
+    public function isAjax()
+    {
+        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
 }
