@@ -1,14 +1,19 @@
 <?php
+use Thulium\Config;
+use Thulium\Uri;
+
 class UriTest extends PHPUnit_Framework_TestCase
 {
-    private $_pathProviderMock;
+    /**
+     * @var Uri
+     */
     private $_uri;
+    private $_pathProviderMock;
 
     public function setUp()
     {
         $this->_pathProviderMock = $this->getMock('\Thulium\Uri\PathProvider', array('getPath'));
-
-        $this->_uri = new \Thulium\Uri($this->_pathProviderMock);
+        $this->_uri = new Uri($this->_pathProviderMock);
     }
 
     /**
@@ -17,7 +22,7 @@ class UriTest extends PHPUnit_Framework_TestCase
     public function shouldExtractController()
     {
         //given
-        $this->_path( \Thulium\Config::getPrefixSystem().'/user/add/id/5/name/john' );
+        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
 
         //then
         $this->assertEquals('User', $this->_uri->getController());
@@ -30,7 +35,7 @@ class UriTest extends PHPUnit_Framework_TestCase
     public function shouldExtractAction()
     {
         //given
-        $this->_path( \Thulium\Config::getPrefixSystem().'/user/add/id/5/name/john' );
+        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
 
         //then
         $this->assertEquals('add', $this->_uri->getAction());
@@ -42,7 +47,7 @@ class UriTest extends PHPUnit_Framework_TestCase
     public function shouldGetParamValueByName()
     {
         //given
-        $this->_path( \Thulium\Config::getPrefixSystem().'/user/add/id/5/name/john' );
+        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
 
         //then
         $this->assertEquals('john', $this->_uri->getParam('name'));
@@ -55,7 +60,7 @@ class UriTest extends PHPUnit_Framework_TestCase
     public function shouldGetNullValueByNonExistingNameWhenAnyParamsPassed()
     {
         //given
-        $this->_path( \Thulium\Config::getPrefixSystem().'/user/add/id/5' );
+        $this->_path(Config::getPrefixSystem() . '/user/add/id/5');
 
         //then
         $this->assertNull($this->_uri->getParam('surname'));
@@ -67,7 +72,7 @@ class UriTest extends PHPUnit_Framework_TestCase
     public function shouldGetNullValueByNonExistingNameWhenNoParamsPassed()
     {
         //given
-        $this->_path( \Thulium\Config::getPrefixSystem().'/user/add' );
+        $this->_path(Config::getPrefixSystem() . '/user/add');
 
         //then
         $this->assertNull($this->_uri->getParam('surname'));
@@ -79,7 +84,7 @@ class UriTest extends PHPUnit_Framework_TestCase
     public function shouldHandleOddNumberOfParameters()
     {
         //given
-        $this->_path( \Thulium\Config::getPrefixSystem().'/user/add/id/5/name' );
+        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name');
 
         //when
         $param = $this->_uri->getParam('name');
@@ -98,7 +103,7 @@ class UriTest extends PHPUnit_Framework_TestCase
 
         //when
         $paramsExpected = array('user', 'add', 'id', '5', 'name', 'john');
-        $callMethod = $reflectionOfUri->invoke(new \Thulium\Uri(), '/user/add/id/5/name/john');
+        $callMethod = $reflectionOfUri->invoke(new Uri(), '/user/add/id/5/name/john');
 
         //then
         $this->assertEquals($paramsExpected, $callMethod);
@@ -114,7 +119,7 @@ class UriTest extends PHPUnit_Framework_TestCase
 
         //when
         $paramsExpected = array('user', 'add', 'id/5/name/john');
-        $callMethod = $reflectionOfUri->invoke(new \Thulium\Uri(), '/user/add/id/5/name/john', 3);
+        $callMethod = $reflectionOfUri->invoke(new Uri(), '/user/add/id/5/name/john', 3);
 
         //then
         $this->assertEquals($paramsExpected, $callMethod);
@@ -126,7 +131,7 @@ class UriTest extends PHPUnit_Framework_TestCase
     public function shouldGetAllParams()
     {
         //given
-        $this->_path( \Thulium\Config::getPrefixSystem().'/user/add/id/5/name/john/surname/smith/' );
+        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name/john/surname/smith/');
 
         //when
         $params = $this->_uri->getParams();
@@ -149,6 +154,22 @@ class UriTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertTrue($isAjax);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldParseUrlWhenGETDataAdded()
+    {
+        //given
+        $this->_path(Config::getPrefixSystem() . '/user/add/id/5?param1=val1&param2=val2');
+
+        //when
+        $params = $this->_uri->getParams();
+        $paramsExpected = array('id' => 5, 'param1' => 'val1', 'param2' => 'val2');
+
+        //then
+        $this->assertEquals($paramsExpected, $params);
     }
 
     private function _path($path)

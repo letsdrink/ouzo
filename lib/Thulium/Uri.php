@@ -22,24 +22,43 @@ class Uri
     private function _splitParamsKeyValueMap($pathElements)
     {
         $paramsArray = array();
-
         if (!empty($pathElements[2])) {
-            $paramsParts = explode('/', $pathElements[2]);
+            $params = strstr($pathElements[2], '?', true) ? : $pathElements[2];
+            $paramsArray = array_merge($paramsArray, $this->_parseParams($params));
 
-            $k = 0;
-            for ($i = 0; $i < (int)floor((count($paramsParts) / 2)); $i++) {
-                $tmpKey = $paramsParts[$k];
-                $tmpValue = $paramsParts[$k + 1];
-
-                if (!empty($tmpValue)) {
-                    $paramsArray[$tmpKey] = $tmpValue;
-                }
-
-                $k = $k + 2;
-            }
-            return $paramsArray;
+            $getParams = str_replace('?', '', strstr($pathElements[2], '?'));
+            $paramsArray = array_merge($paramsArray, $this->_parseGetParams($getParams));
         }
         return $paramsArray;
+    }
+
+    private function _parseParams($params)
+    {
+        $paramsArray = array();
+        $paramsParts = explode('/', $params);
+        $k = 0;
+        for ($i = 0; $i < (int)floor((count($paramsParts) / 2)); $i++) {
+            $tmpKey = $paramsParts[$k];
+            $tmpValue = $paramsParts[$k + 1];
+            if (!empty($tmpValue)) {
+                $paramsArray[$tmpKey] = $tmpValue;
+            }
+            $k = $k + 2;
+        }
+        return $paramsArray;
+    }
+
+    private function _parseGetParams($params)
+    {
+        $paramsArray = array();
+        if ($params) {
+            foreach (explode('&', $params) as $paramKeyValue) {
+                $tmp = explode('=', $paramKeyValue);
+                $paramsArray[$tmp[0]] = $tmp[1];
+            }
+        }
+        return $paramsArray;
+
     }
 
     public function getParam($param)
