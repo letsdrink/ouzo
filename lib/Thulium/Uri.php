@@ -78,7 +78,7 @@ class Uri
         $prefixSystem = Config::load()->getConfig('global');
         if ($path != null) {
             $pathWithoutPrefix = str_replace($prefixSystem['prefix_system'], '', $path);
-            $translatedGetPatams = str_replace(array('/?', '?', '=', '&'), '/', $pathWithoutPrefix);
+            $translatedGetPatams = str_replace(array('/?', '?', '=', '&'), '/', urldecode($pathWithoutPrefix));
             $parsedPath = preg_split('#/#', $translatedGetPatams, $limit, PREG_SPLIT_NO_EMPTY);
 
         }

@@ -178,11 +178,11 @@ class UriTest extends PHPUnit_Framework_TestCase
     public function shouldParseUrlWithoutParamsWhenGETDataAdded()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add?param1=val1&param2=val2');
+        $this->_path(Config::getPrefixSystem() . '/user/add?param1=val1&param2=val2&param3=t1%2Ct2%2Ct3');
 
         //when
         $params = $this->_uri->getParams();
-        $paramsExpected = array('param1' => 'val1', 'param2' => 'val2');
+        $paramsExpected = array('param1' => 'val1', 'param2' => 'val2', 'param3' => 't1,t2,t3');
 
         //then
         $this->assertEquals($paramsExpected, $params);
