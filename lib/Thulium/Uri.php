@@ -23,11 +23,8 @@ class Uri
     {
         $paramsArray = array();
         if (!empty($pathElements[2])) {
-            $params = strstr($pathElements[2], '?', true) ? : $pathElements[2];
+            $params = $pathElements[2];
             $paramsArray = array_merge($paramsArray, $this->_parseParams($params));
-
-            $getParams = str_replace('?', '', strstr($pathElements[2], '?'));
-            $paramsArray = array_merge($paramsArray, $this->_parseGetParams($getParams));
         }
         return $paramsArray;
     }
@@ -46,19 +43,6 @@ class Uri
             $k = $k + 2;
         }
         return $paramsArray;
-    }
-
-    private function _parseGetParams($params)
-    {
-        $paramsArray = array();
-        if ($params) {
-            foreach (explode('&', $params) as $paramKeyValue) {
-                $tmp = explode('=', $paramKeyValue);
-                $paramsArray[$tmp[0]] = $tmp[1];
-            }
-        }
-        return $paramsArray;
-
     }
 
     public function getParam($param)
@@ -92,12 +76,12 @@ class Uri
     {
         $parsedPath = null;
         $prefixSystem = Config::load()->getConfig('global');
-
         if ($path != null) {
             $pathWithoutPrefix = str_replace($prefixSystem['prefix_system'], '', $path);
-            $parsedPath = preg_split('#/#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);
-        }
+            $translatedGetPatams = str_replace(array('/?', '?', '=', '&'), '/', $pathWithoutPrefix);
+            $parsedPath = preg_split('#/#', $translatedGetPatams, $limit, PREG_SPLIT_NO_EMPTY);
 
+        }
         return $parsedPath;
     }
 
