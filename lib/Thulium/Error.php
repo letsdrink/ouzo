@@ -22,11 +22,18 @@ class Error
 
     private static function _handleError($errorMessage, $errorTrace)
     {
-        Logger::getPanelLogger()->addError($errorMessage, array($errorTrace));
-        /** @noinspection PhpIncludeInspection */
-        self::_clearOutputBuffers();
-        header("HTTP/1.1 500 Internal Server Error");
-        require_once(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.phtml');
+        try {
+            Logger::getPanelLogger()->addError($errorMessage, array($errorTrace));
+            /** @noinspection PhpIncludeInspection */
+            self::_clearOutputBuffers();
+            header("HTTP/1.1 500 Internal Server Error");
+            require_once(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.phtml');
+        } catch (\Exception $e) {
+            echo "Framework critical error. Exception thrown in exception handler.<br>\n";
+            echo "<hr>\n";
+            echo "Message: " . $e->getMessage() . "<br>\n";
+            echo "Trace: " . $e->getTraceAsString() . "<br>\n";
+        }
     }
 
     static public function shutdownHandler()
