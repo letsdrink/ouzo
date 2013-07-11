@@ -24,7 +24,10 @@ class Uri
         $paramsArray = array();
         if (!empty($pathElements[2])) {
             $params = $pathElements[2];
-            $paramsArray = array_merge($paramsArray, $this->_parseParams($params));
+            $paramsGet = strpos($params, '&') ? str_replace('?', '', (strstr($params, '?') ?: $params)) : '';
+            $paramsUrl = strstr($params, '?', true) ?: $params;
+            parse_str($paramsGet, $parsedParamsGet);
+            $paramsArray = array_merge($paramsArray, $this->_parseParams($paramsUrl), $parsedParamsGet);
         }
         return $paramsArray;
     }
@@ -77,10 +80,8 @@ class Uri
         $parsedPath = null;
         $prefixSystem = Config::load()->getConfig('global');
         if ($path != null) {
-            $pathWithoutPrefix = str_replace($prefixSystem['prefix_system'], '', $path);
-            $translatedGetPatams = str_replace(array('/?', '?', '=', '&'), '/', urldecode($pathWithoutPrefix));
-            $parsedPath = preg_split('#/#', $translatedGetPatams, $limit, PREG_SPLIT_NO_EMPTY);
-
+            $pathWithoutPrefix = urldecode(str_replace($prefixSystem['prefix_system'], '', $path));
+            $parsedPath = preg_split('#/|\?#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);
         }
         return $parsedPath;
     }

@@ -188,6 +188,22 @@ class UriTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($paramsExpected, $params);
     }
 
+    /**
+     * @test
+     */
+    public function shouldParseUrlWhenSlashInGET()
+    {
+        //given
+        $this->_path(Config::getPrefixSystem() . '/user/add/id/4?param1=path/to/file&param2=val2');
+
+        //when
+        $params = $this->_uri->getParams();
+        $paramsExpected = array('id' => 4, 'param1' => 'path/to/file', 'param2' => 'val2');
+
+        //then
+        $this->assertEquals($paramsExpected, $params);
+    }
+
     private function _path($path)
     {
         $this->_pathProviderMock->expects($this->any())
