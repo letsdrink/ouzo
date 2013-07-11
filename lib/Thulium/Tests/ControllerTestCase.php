@@ -78,6 +78,7 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function assertRenders($string)
     {
         $this->assertEquals($string, $this->_frontController->getCurrentController()->view->getViewName());
+        $this->assertEquals('show', $this->_frontController->getCurrentController()->getStatusResponse());
     }
 
     public function assertAssignsModel($variable, $modelObject)
