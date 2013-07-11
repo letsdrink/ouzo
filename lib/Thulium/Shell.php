@@ -26,6 +26,16 @@ class Shell
         $this->out(str_repeat('-', $width));
     }
 
+    public function progressbar($number,$limit)
+    {
+        $width = 50;
+        $percent = $number/$limit;
+        $fill = round($percent*$width,0);
+        $string = '['.str_repeat('=',$fill).str_repeat(' ',$width-$fill).']';
+        $string .= ' '.$number.'/'.$limit;
+        return $this->stdout->overwrite($string);
+    }
+
     public function runCommand($method, $args)
     {
         $isConfig = $this->hasMethod('configure');
