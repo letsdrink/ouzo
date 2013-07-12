@@ -12,7 +12,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     {
         $url = url(array('controller' => 'users', 'action' => 'show', 'extraParams' => array('id' => 3, 'age' => 34)));
 
-        $this->assertEquals( \Thulium\Config::getPrefixSystem().'/users/show/id/3/age/34', $url );
+        $this->assertEquals(\Thulium\Config::getPrefixSystem() . '/users/show/id/3/age/34', $url);
     }
 
     /**
@@ -22,7 +22,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     {
         $url = url(array('string' => '/users/show'));
 
-        $this->assertEquals( \Thulium\Config::getPrefixSystem().'/users/show', $url );
+        $this->assertEquals(\Thulium\Config::getPrefixSystem() . '/users/show', $url);
     }
 
     /**
@@ -84,6 +84,22 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 
         //when
         $expected = '<script type="text/javascript" src="' . $prefixSystem['prefix_system'] . '/public/js/test.js"></script>' . PHP_EOL;
+        $actual = addFile(array('type' => 'script', 'params' => array('url' => '/public/js/test.js')));
+
+        //then
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddCacheSuffix()
+    {
+        //given
+        $defaults = Config::load()->getConfig('global');
+
+        //when
+        $expected = '<script type="text/javascript" src="' . $defaults['prefix_system'] . '/public/js/test.js?' . $defaults['suffix_cache'] . '"></script>' . PHP_EOL;
         $actual = addFile(array('type' => 'script', 'params' => array('url' => '/public/js/test.js')));
 
         //then

@@ -52,13 +52,14 @@ function renderPartial($name, array $values = array())
 function addFile(array $fileInfo = array(), $panel2_0 = true)
 {
     if (!empty($fileInfo)) {
+        $defaults = Config::load()->getConfig('global');
 
-        $prefixSystem = Config::load()->getConfig('global');
+        if (!$panel2_0) {
+            $defaults['prefix_system'] = str_replace('/panel2.0', '', $defaults['prefix_system']);
+        }
 
-        if(!$panel2_0)
-            $prefixSystem['prefix_system'] = str_replace('/panel2.0','',$prefixSystem['prefix_system']);
-
-        $url = $prefixSystem['prefix_system'] . $fileInfo['params']['url'];
+        $suffixCache = !empty($defaults['suffix_cache']) ? '?' . $defaults['suffix_cache'] : '';
+        $url = $defaults['prefix_system'] . $fileInfo['params']['url'] . $suffixCache;
 
         switch ($fileInfo['type']) {
             case 'link':
@@ -67,7 +68,6 @@ function addFile(array $fileInfo = array(), $panel2_0 = true)
                 return '<script type="text/javascript" src="' . $url . '"></script>' . PHP_EOL;
         }
     }
-
     return null;
 }
 
