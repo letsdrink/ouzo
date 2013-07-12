@@ -1,9 +1,17 @@
 <?php
 namespace Thulium;
 
+use Thulium\Config\CustomConfig;
+
 class Bootstrap
 {
-    public static function runApplication()
+    public function setConfig($config, $path = '')
+    {
+        Config::registerConfig(new CustomConfig($config, $path));
+        return $this;
+    }
+
+    public function runApplication()
     {
         error_reporting(E_ALL);
 

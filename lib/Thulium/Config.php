@@ -1,11 +1,17 @@
 <?php
 namespace Thulium;
 
+use Thulium\Config\CustomConfig;
+
 class Config
 {
     static protected $_config = array();
-
     static private $_configInstance;
+
+    /**
+     * @var CustomConfig
+     */
+    private static $_customConfigs = array();
 
     private function __construct()
     {
@@ -17,8 +23,8 @@ class Config
     private function _loadConfig()
     {
         $configEnv = $this->_getConfigEnv();
-        $configGlobal = $this->_getConfigGlobal();
-        return array_replace_recursive($configEnv, $configGlobal);
+        $configCustom = $this->_getConfigCustom();
+        return array_replace_recursive($configEnv, $configCustom);
     }
 
     private function _getConfigEnv()
@@ -31,14 +37,15 @@ class Config
         return $configEnv;
     }
 
-    private function _getConfigGlobal()
+    private function _getConfigCustom()
     {
-        $configGlobal = array();
-        $configPath = '/etc/thulium/ConfigPanel.php';
-        if (file_exists($configPath)) {
-            $configGlobal = include($configPath);
+        $configCustom = array();
+        foreach (self::$_customConfigs as $customConfig) {
+            $className = $customConfig->getConfig();
+            $configClass = new $className();
+            $configCustom = array_replace_recursive($configCustom, $configClass->getConfig());
         }
-        return $configGlobal;
+        return $configCustom;
     }
 
     public function getConfig($section)
@@ -63,5 +70,25 @@ class Config
     {
         self::load();
         return self::$_config['global']['prefix_system'];
+    }
+
+    /**
+     * @param CustomConfig $customConfig
+     * @return Config
+     */
+    public static function registerConfig(CustomConfig $customConfig)
+    {
+        self::$_customConfigs[] = $customConfig;
+        if (empty(self::$_config)) {
+            return self::load();
+        } else {
+            return self::$_configInstance->_addConfig();
+        }
+    }
+
+    private function _addConfig()
+    {
+        self::$_config = $this->_loadConfig();
+        return self::$_configInstance;
     }
 }
