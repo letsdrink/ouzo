@@ -64,10 +64,10 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     public function shouldReturnHtmlToCssFile()
     {
         //given
-        $prefixSystem = Config::load()->getConfig('global');
+        $defaults = Config::load()->getConfig('global');
 
         //when
-        $expected = '<link rel="stylesheet" href="' . $prefixSystem['prefix_system'] . '/public/css/style.css" type="text/css" />' . PHP_EOL;
+        $expected = '<link rel="stylesheet" href="' . $defaults['prefix_system'] . '/public/css/style.css?' . $defaults['suffix_cache'] . '" type="text/css" />' . PHP_EOL;
         $actual = addFile(array('type' => 'link', 'params' => array('url' => '/public/css/style.css')));
 
         //then
@@ -80,10 +80,10 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     public function shouldReturnHtmlToJsFile()
     {
         //given
-        $prefixSystem = Config::load()->getConfig('global');
+        $defaults = Config::load()->getConfig('global');
 
         //when
-        $expected = '<script type="text/javascript" src="' . $prefixSystem['prefix_system'] . '/public/js/test.js"></script>' . PHP_EOL;
+        $expected = '<script type="text/javascript" src="' . $defaults['prefix_system'] . '/public/js/test.js?' . $defaults['suffix_cache'] . '"></script>' . PHP_EOL;
         $actual = addFile(array('type' => 'script', 'params' => array('url' => '/public/js/test.js')));
 
         //then
