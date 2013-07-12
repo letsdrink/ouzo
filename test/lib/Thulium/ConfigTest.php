@@ -1,6 +1,5 @@
 <?php
 use Thulium\Config;
-use Thulium\Config\CustomConfig;
 
 class SampleConfig
 {
@@ -48,7 +47,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     public function shouldReadSampleConfig()
     {
         //given
-        $config = Config::registerConfig(new CustomConfig('SampleConfig'));
+        $config = Config::registerConfig(new SampleConfig);
 
         //when
         $value = $config->getConfig('default');
@@ -64,7 +63,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         //given
         $this->_createSampleConfigFile();
-        $config = Config::registerConfig(new CustomConfig('SampleConfigFile', '/tmp/SampleConfigFile.php'));
+        include_once '/tmp/SampleConfigFile.php';
+        $config = Config::registerConfig(new SampleConfigFile);
 
         //when
         $value = $config->getConfig('default');
@@ -81,8 +81,9 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         //given
         $this->_createSampleConfigFile();
-        Config::registerConfig(new CustomConfig('SampleConfigFile', '/tmp/SampleConfigFile.php'));
-        $config = Config::registerConfig(new CustomConfig('SampleConfig'));
+        include_once '/tmp/SampleConfigFile.php';
+        Config::registerConfig(new SampleConfigFile);
+        $config = Config::registerConfig(new SampleConfig);
 
 
         //when

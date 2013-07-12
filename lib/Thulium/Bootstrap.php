@@ -1,13 +1,11 @@
 <?php
 namespace Thulium;
 
-use Thulium\Config\CustomConfig;
-
 class Bootstrap
 {
-    public function setConfig($config, $path = '')
+    public function setConfig($config)
     {
-        Config::registerConfig(new CustomConfig($config, $path));
+        Config::registerConfig($config);
         return $this;
     }
 

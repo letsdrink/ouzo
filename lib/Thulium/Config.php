@@ -1,16 +1,10 @@
 <?php
 namespace Thulium;
 
-use Thulium\Config\CustomConfig;
-
 class Config
 {
     static protected $_config = array();
     static private $_configInstance;
-
-    /**
-     * @var CustomConfig
-     */
     private static $_customConfigs = array();
 
     private function __construct()
@@ -41,13 +35,7 @@ class Config
     {
         $customConfigs = array();
         foreach (self::$_customConfigs as $config) {
-            $classPath = $config->getPath();
-            if (file_exists($classPath)) {
-                include_once $classPath;
-            }
-            $className = $config->getConfig();
-            $configClass = new $className();
-            $customConfigs = array_replace_recursive($customConfigs, $configClass->getConfig());
+            $customConfigs = array_replace_recursive($customConfigs, $config->getConfig());
         }
         return $customConfigs;
     }
@@ -77,10 +65,9 @@ class Config
     }
 
     /**
-     * @param CustomConfig $customConfig
      * @return Config
      */
-    public static function registerConfig(CustomConfig $customConfig)
+    public static function registerConfig($customConfig)
     {
         self::$_customConfigs[] = $customConfig;
         if (empty(self::$_config)) {
