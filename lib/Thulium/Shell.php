@@ -26,13 +26,14 @@ class Shell
         $this->out(str_repeat('-', $width));
     }
 
-    public function progressbar($number,$limit)
+    public function progressBar($number, $limit, $message = '')
     {
         $width = 50;
-        $percent = $number/$limit;
-        $fill = round($percent*$width,0);
-        $string = '['.str_repeat('=',$fill).str_repeat(' ',$width-$fill).']';
-        $string .= ' '.$number.'/'.$limit;
+        $percent = $number / $limit;
+        $fill = round($percent * $width, 0);
+        $string = '[' . str_repeat('=', $fill) . str_repeat(' ', $width - $fill) . ']';
+        $string .= ' ' . $number . '/' . $limit;
+        $string .= $message;
         return $this->stdout->overwrite($string);
     }
 
