@@ -39,13 +39,17 @@ class Config
 
     private function _getConfigCustom()
     {
-        $configCustom = array();
-        foreach (self::$_customConfigs as $customConfig) {
-            $className = $customConfig->getConfig();
+        $customConfigs = array();
+        foreach (self::$_customConfigs as $config) {
+            $classPath = $config->getPath();
+            if (file_exists($classPath)) {
+                include_once $classPath;
+            }
+            $className = $config->getConfig();
             $configClass = new $className();
-            $configCustom = array_replace_recursive($configCustom, $configClass->getConfig());
+            $customConfigs = array_replace_recursive($customConfigs, $configClass->getConfig());
         }
-        return $configCustom;
+        return $customConfigs;
     }
 
     public function getConfig($section)
