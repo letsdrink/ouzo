@@ -3,6 +3,12 @@ namespace Thulium;
 
 class Bootstrap
 {
+    public function __construct()
+    {
+        error_reporting(E_ALL);
+        putenv('environment=prod');
+    }
+
     public function setConfig($config)
     {
         Config::registerConfig($config);
@@ -11,10 +17,6 @@ class Bootstrap
 
     public function runApplication()
     {
-        error_reporting(E_ALL);
-
-        putenv('environment=prod');
-
         set_exception_handler('\Thulium\Error::exceptionHandler');
         set_error_handler('\Thulium\Error::errorHandler');
         register_shutdown_function('\Thulium\Error::shutdownHandler');
