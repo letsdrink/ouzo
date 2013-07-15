@@ -44,6 +44,21 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnEmptyArrayForMissingSections()
+    {
+        //given
+        $config = Config::load();
+
+        //when
+        $section = $config->getConfig('missing');
+
+        //then
+        $this->assertEquals(array(), $section);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReadSampleConfig()
     {
         //given

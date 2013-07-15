@@ -9,7 +9,7 @@ class Bootstrap
         putenv('environment=prod');
     }
 
-    public function setConfig($config)
+    public function addConfig($config)
     {
         Config::registerConfig($config);
         return $this;
