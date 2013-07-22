@@ -19,7 +19,7 @@ class Product extends Model
 
     public function validate()
     {
-        $this->_errors = array();
+        parent::validate();
         if (!$this->name ) {
             $this->_errors[] = 'Empty name';
             $this->_errorFields[] = 'name';
