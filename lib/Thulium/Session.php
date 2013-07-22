@@ -1,6 +1,9 @@
 <?php
 namespace Thulium;
 
+use Exception;
+use Thulium\Utilities\Functions;
+
 class Session
 {
     private $_sessionNamespace;
@@ -25,6 +28,22 @@ class Session
             if (session_id() == '') {
                 session_start();
             }
+        }
+    }
+
+    static public function runWithoutSession($callable)
+    {
+        $sessionIsOpened = (session_id() != '');
+        if ($sessionIsOpened) {
+            session_write_close();
+        }
+        try {
+            return Functions::call($callable, null);
+        } catch (Exception $e) {
+            if ($sessionIsOpened) {
+                session_start();
+            }
+            throw $e;
         }
     }
 
