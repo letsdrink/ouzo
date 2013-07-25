@@ -3,13 +3,20 @@ namespace Thulium;
 
 use InvalidArgumentException;
 use PDO;
+use PDOStatement;
 use Thulium\Db\Stats;
 use Thulium\Utilities\Arrays;
 use Thulium\Utilities\Objects;
 
 class Db
 {
+    /**
+     * @var PDOStatement
+     */
     public $query = '';
+    /**
+     * @var PDO
+     */
     public $_dbHandle = null;
 
     protected $_fetchMode = PDO::FETCH_ASSOC;
@@ -138,15 +145,15 @@ class Db
         return $this;
     }
 
-    public function runInTransaction($function)
+    public function runInTransaction($callable)
     {
         if (!$this->_startedTransaction) {
             $this->_dbHandle->beginTransaction();
-            $result = $function();
+            $result = call_user_func($callable);
             $this->_dbHandle->commit();
             return $result;
         }
-        return $function();
+        return call_user_func($callable);
     }
 
     public function beginTransaction()
