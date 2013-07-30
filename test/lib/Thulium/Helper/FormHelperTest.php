@@ -116,37 +116,37 @@ HTML;
     /**
      * @test
      */
-    public function shouldAddDisabled()
+    public function shouldAddReadOnly()
     {
         //when
-        $result = textField('Gender', 'gender', 'val', array('disabled' => true));
+        $result = textField('Gender', 'gender', 'val', array('readonly' => true));
 
         //then
-        $this->assertContains('<input type="text" id="gender" name="gender" value="val" style="" disabled="1" ', $result);
+        $this->assertContains('<input type="text" id="gender" name="gender" value="val" style="" readonly="1" ', $result);
     }
 
     /**
      * @test
      */
-    public function shouldNotAddDisabledIfFalse()
+    public function shouldNotAddReadOnlyIfFalse()
     {
         //when
-        $result = textField('Gender', 'gender', 'val', array('disabled' => false));
+        $result = textField('Gender', 'gender', 'val', array('readonly' => false));
 
         //then
-        $this->assertNotContains('disabled', $result);
+        $this->assertNotContains('readonly', $result);
     }
 
     /**
      * @test
      */
-    public function shouldNotAddDisabledNoDisabledOption()
+    public function shouldNotAddReadOnlyNoReadOnlyOption()
     {
         //when
         $result = textField('Gender', 'gender', 'val');
 
         //then
-        $this->assertNotContains('disabled', $result);
+        $this->assertNotContains('readonly', $result);
     }
 
 }

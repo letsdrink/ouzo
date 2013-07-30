@@ -63,8 +63,8 @@ function textField($label, $name, $value, $options = array())
     $id = Arrays::getValue($options, 'id', cleanHtmlId($name));
     $options = array_merge($predefined, $options);
 
-    if (!Arrays::getValue($options, 'disabled')) {
-        unset($options['disabled']);
+    if (!Arrays::getValue($options, 'readonly')) {
+        unset($options['readonly']);
     }
 
     $inputStyle = '';
