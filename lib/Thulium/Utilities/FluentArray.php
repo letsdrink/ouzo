@@ -45,6 +45,12 @@ class FluentArray
         return $this;
     }
 
+    public function flatten()
+    {
+        $this->_array = Arrays::flatten($this->_array);
+        return $this;
+    }
+
     public function toMap($keyFunction, $valueFunction = null)
     {
         return Arrays::toMap($keyFunction, $valueFunction);
