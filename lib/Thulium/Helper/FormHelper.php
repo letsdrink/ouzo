@@ -63,6 +63,10 @@ function textField($label, $name, $value, $options = array())
     $id = Arrays::getValue($options, 'id', cleanHtmlId($name));
     $options = array_merge($predefined, $options);
 
+    if (!Arrays::getValue($options, 'disabled')) {
+        unset($options['disabled']);
+    }
+
     $inputStyle = '';
     if (isset($options['width']) && $options['width'] > 0) {
         $inputStyle .= 'margin-left: 2px; width: ' . $options['width'] . 'px;';

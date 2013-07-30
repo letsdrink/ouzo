@@ -113,4 +113,40 @@ HTML;
         $this->assertContains('<input type="text" id="gender" name="gender" value="val" style="" custom_attribute="custom_value" ', $result);
     }
 
+    /**
+     * @test
+     */
+    public function shouldAddDisabled()
+    {
+        //when
+        $result = textField('Gender', 'gender', 'val', array('disabled' => true));
+
+        //then
+        $this->assertContains('<input type="text" id="gender" name="gender" value="val" style="" disabled="1" ', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotAddDisabledIfFalse()
+    {
+        //when
+        $result = textField('Gender', 'gender', 'val', array('disabled' => false));
+
+        //then
+        $this->assertNotContains('disabled', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotAddDisabledNoDisabledOption()
+    {
+        //when
+        $result = textField('Gender', 'gender', 'val');
+
+        //then
+        $this->assertNotContains('disabled', $result);
+    }
+
 }
