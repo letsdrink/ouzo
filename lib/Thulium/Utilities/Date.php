@@ -29,10 +29,18 @@ class Date
         return $date->format($format);
     }
 
-    public static function modify($interval, $format = self::DEFAULT_TIME_FORMAT)
+    public static function modifyNow($interval, $format = self::DEFAULT_TIME_FORMAT)
     {
-        $date = Clock::now();
-        $date->modify($interval);
-        return $date->format($format);
+        return Clock::now()->modify($interval)->format($format);
+    }
+
+    public static function modify($dateAsString, $interval, $format = self::DEFAULT_TIME_FORMAT)
+    {
+        // support for Postgres interval type (hours)
+        if (preg_match('/^([0-9]{2}):00:00$/', $interval, $hour)) {
+            $interval = $hour[1] . ' hours';
+        }
+        $dateTime = new DateTime($dateAsString);
+        return $dateTime->modify($interval)->format($format);
     }
 }

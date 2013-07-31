@@ -82,9 +82,37 @@ class DateTest extends PHPUnit_Framework_TestCase
     public function shouldModifyCurrentDate()
     {
         //when
-        $date = Date::modify('2 days');
+        $date = Date::modifyNow('2 days');
 
         //then
         $this->assertGreaterThan(Clock::nowAsString(), $date);
+    }
+
+    public function intervalsAndDates()
+    {
+        return array(
+            array('1 day', '2010-01-21 12:00'),
+            array('2 days', '2010-01-22 12:00'),
+            array('1 hour', '2010-01-20 13:00'),
+            array('2 hours', '2010-01-20 14:00'),
+            array('25 hours', '2010-01-21 13:00'),
+            // support for Postgres interval type (hours)
+            array('01:00:00', '2010-01-20 13:00'),
+            array('02:00:00', '2010-01-20 14:00'),
+            array('25:00:00', '2010-01-21 13:00')
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider intervalsAndDates
+     */
+    public function shouldModifyDate($interval, $expectedDate)
+    {
+        //when
+        $date = Date::modify('2010-01-20 12:00', $interval);
+
+        //then
+        $this->assertEquals($expectedDate, $date);
     }
 }
