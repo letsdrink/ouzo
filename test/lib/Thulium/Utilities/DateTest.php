@@ -95,11 +95,7 @@ class DateTest extends PHPUnit_Framework_TestCase
             array('2 days', '2010-01-22 12:00'),
             array('1 hour', '2010-01-20 13:00'),
             array('2 hours', '2010-01-20 14:00'),
-            array('25 hours', '2010-01-21 13:00'),
-            // support for Postgres interval type (hours)
-            array('01:00:00', '2010-01-20 13:00'),
-            array('02:00:00', '2010-01-20 14:00'),
-            array('25:00:00', '2010-01-21 13:00')
+            array('25 hours', '2010-01-21 13:00')
         );
     }
 
