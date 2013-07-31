@@ -73,6 +73,18 @@ class DateTest extends PHPUnit_Framework_TestCase
         $date = Date::addInterval('P2Y');
 
         //then
-        $this->assertGreaterThan(Clock::now(), $date);
+        $this->assertGreaterThan(Clock::nowAsString(), $date);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldModifyCurrentDate()
+    {
+        //when
+        $date = Date::modify('2 days');
+
+        //then
+        $this->assertGreaterThan(Clock::nowAsString(), $date);
     }
 }
