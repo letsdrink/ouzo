@@ -16,11 +16,15 @@ class Clock
 
     public static function nowAsString()
     {
-        return self::$freeze ? self::$freezeDate->format('Y-m-d H:i:s') : date('Y-m-d H:i:s');
+        return self::now()->format('Y-m-d H:i:s');
     }
 
     public static function now()
     {
-        return self::$freeze ? self::$freezeDate : new DateTime();
+        $date = new DateTime();
+        if (self::$freeze) {
+            $date->setTimestamp(self::$freezeDate->getTimestamp());
+        }
+        return $date;
     }
 }
