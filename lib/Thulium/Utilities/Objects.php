@@ -58,11 +58,16 @@ class Objects
         $model = $object instanceOf Model;
         $fields = explode('->', $names);
         foreach ($fields as $field) {
-            if (($model && !$object->$field) || (!$model && !property_exists($object, $field))) {
+            if (self::_fieldNotExistOrNull($model, $object, $field)) {
                 return $default;
             }
             $object = $object->$field;
         }
         return $object;
+    }
+
+    private static function _fieldNotExistOrNull($model, $object, $field)
+    {
+        return ($model && !$object->$field) || (!$model && !property_exists($object, $field));
     }
 }
