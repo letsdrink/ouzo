@@ -293,4 +293,9 @@ class Model extends Validatable
         }
     }
 
+    public function get($names, $default = null)
+    {
+        return Objects::getFieldRecursively($this, $names, $default);
+    }
+
 }
