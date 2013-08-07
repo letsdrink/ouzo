@@ -13,7 +13,6 @@ use Thulium\Utilities\Objects;
 
 class QueryExecutor
 {
-
     private $_db;
     private $_adapter;
     private $_query;
@@ -43,7 +42,7 @@ class QueryExecutor
             throw new InvalidArgumentException("Table name cannot be empty");
         }
 
-        if (QueryExecutor::isEmptyResult($query->whereClause)) {
+        if (QueryExecutor::isEmptyResult($query->whereClauses)) {
             return new EmptyQueryExecutor();
         }
         return new QueryExecutor($db, $query);
@@ -133,21 +132,30 @@ class QueryExecutor
         }
     }
 
-    private static function isEmptyResult($whereClause)
+    private static function isEmptyResult($whereClauses)
     {
-        return $whereClause->isNeverTrue();
+        return Arrays::any($whereClauses, function($whereClause) {
+            return $whereClause->isNeverTrue();
+        });
     }
 
     private function _addBindValues()
     {
-        if (!$this->_query->whereClause->isEmpty()) {
-            $this->_addBindValue($this->_query->whereClause->values);
+        foreach ($this->_query->whereClauses as $whereClause) {
+            $this->_addBindValuesFromWhereClause($whereClause);
         }
         if ($this->_query->limit) {
             $this->_addBindValue($this->_query->limit);
         }
         if ($this->_query->offset) {
             $this->_addBindValue($this->_query->offset);
+        }
+    }
+
+    private function _addBindValuesFromWhereClause($whereClause)
+    {
+        if (!$whereClause->isEmpty()) {
+            $this->_addBindValue($whereClause->values);
         }
     }
 }

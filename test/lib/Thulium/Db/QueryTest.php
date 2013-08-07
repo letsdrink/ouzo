@@ -51,7 +51,7 @@ class QueryTest extends PHPUnit_Framework_TestCase {
 
         // then
         $this->assertEquals('table', $query->table);
-        $this->assertEquals(array('name' => 'bob'), $query->whereClause->where);
+        $this->assertEquals(array('name' => 'bob'), $query->whereClauses[0]->where);
         $this->assertEquals(5, $query->limit);
         $this->assertEquals(10, $query->offset);
         $this->assertEquals(array('name asc'), $query->order);

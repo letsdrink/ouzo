@@ -27,7 +27,7 @@ class ModelQueryBuilder
      */
     public function where($where = '', $values = null)
     {
-        $this->_query->whereClause = new WhereClause($where, $values);
+        $this->_query->whereClauses[] = new WhereClause($where, $values);
         return $this;
     }
 

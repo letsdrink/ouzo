@@ -2,7 +2,6 @@
 
 namespace Thulium\Db;
 
-
 use Thulium\Utilities\Joiner;
 
 class PostgresDialect
@@ -24,7 +23,7 @@ class PostgresDialect
             $sql .= ' LEFT JOIN ' . $query->joinTable . ' AS joined ON joined.' . $query->joinKey . ' = main.' . $query->idName;
         }
 
-        $where = $this->_buildWhereQuery($query->whereClause);
+        $where = $this->_buildWhereQuery($query->whereClauses);
         if ($where) {
             $sql .= ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
         }
@@ -51,7 +50,13 @@ class PostgresDialect
         };
     }
 
-    private function _buildWhereQuery($whereClause)
+    private function _buildWhereQuery($whereClauses)
+    {
+        $parts = array_map(array($this, '_buildWhereQueryPart'), $whereClauses);
+        return implode(' AND ', $parts);
+    }
+
+    function _buildWhereQueryPart($whereClause)
     {
         return is_array($whereClause->where) ? implode(' AND ', $this->_buildWhereKeys($whereClause->where)) : $whereClause->where;
     }

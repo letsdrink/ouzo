@@ -5,7 +5,6 @@ namespace Thulium\Db;
 
 class Query
 {
-
     public $table;
     public $selectColumns;
     public $joinTable;
@@ -14,13 +13,12 @@ class Query
     public $order;
     public $limit;
     public $offset;
-    public $whereClause;
+    public $whereClauses = array();
     public $type;
 
     function __construct($type = null)
     {
         $this->type = $type ? $type : QueryType::$SELECT;
-        $this->where();
     }
 
     static function select($selectColumns = null)
@@ -66,7 +64,7 @@ class Query
 
     function where($where = '', $whereValues = null)
     {
-        $this->whereClause = new WhereClause($where, $whereValues);
+        $this->whereClauses[] = new WhereClause($where, $whereValues);
         return $this;
     }
 
