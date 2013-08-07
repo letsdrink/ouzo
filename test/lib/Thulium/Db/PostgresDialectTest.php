@@ -218,4 +218,22 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // then
         $this->assertEquals('SELECT main.* FROM products AS main LEFT JOIN categories AS joined ON joined.id_category = main.id_category', $sql);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectForChainedWhere()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->where(array('name' => 'james'));
+        $query->where('id = ?', 1);
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ?', $sql);
+    }
 }
