@@ -1,35 +1,12 @@
 <?php
 use Thulium\Config;
+use Thulium\ControllerUrl;
 use Thulium\I18n;
 use Thulium\Utilities\Date;
 
 function url(array $params)
 {
-    $prefixSystem = Config::load()->getConfig('global');
-
-    if (!empty($params['controller']) && !empty($params['action'])) {
-        $returnUrl = $prefixSystem['prefix_system'];
-        $returnUrl .= '/' . $params['controller'];
-        $returnUrl .= '/' . $params['action'];
-
-        if (!empty($params['extraParams'])) {
-            $returnUrl .= _mergeParams($params['extraParams']);
-        }
-        return $returnUrl;
-    }
-    if (!empty($params['string'])) {
-        return $prefixSystem['prefix_system'] . $params['string'];
-    }
-    throw new InvalidArgumentException('Illegal arguments');
-}
-
-function _mergeParams(array $params)
-{
-    $merged = '';
-    foreach ($params as $param => $value) {
-        $merged .= '/' . $param . '/' . $value;
-    }
-    return $merged;
+    return ControllerUrl::createUrl($params);
 }
 
 function renderWidget($widgetName)

@@ -1,6 +1,8 @@
 <?php
 namespace Thulium\Utilities;
 
+use Thulium\Model;
+
 class Objects
 {
     public static function toString($var)
@@ -51,15 +53,21 @@ class Objects
         return $var ? 'true' : 'false';
     }
 
-    public static function getFieldRecursively($object, $names)
+    public static function getFieldRecursively($object, $names, $default = null)
     {
+        $model = $object instanceOf Model;
         $fields = explode('->', $names);
         foreach ($fields as $field) {
-            if (!$object->$field) {
-                return null;
+            if (self::_fieldNotExistOrNull($model, $object, $field)) {
+                return $default;
             }
             $object = $object->$field;
         }
         return $object;
+    }
+
+    private static function _fieldNotExistOrNull($model, $object, $field)
+    {
+        return ($model && !$object->$field) || (!$model && !property_exists($object, $field));
     }
 }

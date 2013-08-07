@@ -24,6 +24,36 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getFieldRecursivelyShouldReturnDefaultValueWhenFieldNotFound()
+    {
+        //given
+        $object = new stdClass();
+
+        //when
+        $result = Objects::getFieldRecursively($object, 'field1->field2', 'default');
+
+        //then
+        $this->assertEquals('default', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getFieldRecursivelyShouldReturnNullWhenFieldNotFoundAndNoDefaultValueWasSpecified()
+    {
+        //given
+        $object = new stdClass();
+
+        //when
+        $result = Objects::getFieldRecursively($object, 'field1->field2');
+
+        //then
+        $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldStringifyBool()
     {
         //given

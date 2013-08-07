@@ -1,6 +1,8 @@
 <?php
 namespace Thulium\Utilities;
 
+use DateTime;
+
 class Clock
 {
     static $freeze = false;
@@ -12,8 +14,17 @@ class Clock
         self::$freeze = true;
     }
 
+    public static function nowAsString()
+    {
+        return self::now()->format('Y-m-d H:i:s');
+    }
+
     public static function now()
     {
-        return self::$freeze ? self::$freezeDate : date('Y-m-d H:i:s');
+        $date = new DateTime();
+        if (self::$freeze) {
+            $date->setTimestamp(self::$freezeDate->getTimestamp());
+        }
+        return $date;
     }
 }

@@ -200,4 +200,34 @@ class ModelTest extends DbTransactionalTestCase
         //then
         $this->assertEquals($product->attributes(), $loadedProduct->attributes());
     }
+
+    /**
+     * @test
+     */
+    public function getShouldReturnFieldValue()
+    {
+        //given
+        $product = new Product(array('name' => 'Sport'));
+
+        //when
+        $value = $product->get('name');
+
+        //then
+        $this->assertEquals('Sport', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function getShouldReturnDefaultWhenNull()
+    {
+        //given
+        $product = new Product(array());
+
+        //when
+        $value = $product->get('type->name', 'default');
+
+        //then
+        $this->assertEquals('default', $value);
+    }
 }

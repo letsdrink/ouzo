@@ -24,8 +24,19 @@ class Date
 
     public static function addInterval($interval, $format = self::DEFAULT_TIME_FORMAT)
     {
-        $date = new DateTime();
+        $date = Clock::now();
         $date->add(new DateInterval($interval));
         return $date->format($format);
+    }
+
+    public static function modifyNow($interval, $format = self::DEFAULT_TIME_FORMAT)
+    {
+        return Clock::now()->modify($interval)->format($format);
+    }
+
+    public static function modify($dateAsString, $interval, $format = self::DEFAULT_TIME_FORMAT)
+    {
+        $dateTime = new DateTime($dateAsString);
+        return $dateTime->modify($interval)->format($format);
     }
 }
