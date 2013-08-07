@@ -127,4 +127,14 @@ class ModelQueryBuilder
         return $this;
     }
 
+    function __clone()
+    {
+        $this->_query = clone $this->_query;
+    }
+
+    function copy()
+    {
+        return clone $this;
+    }
+
 }

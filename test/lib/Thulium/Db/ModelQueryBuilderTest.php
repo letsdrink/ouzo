@@ -449,4 +449,21 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(1, $products);
         $this->assertEquals($product, $products[0]);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCloneBuilder()
+    {
+        //given
+        $product = Product::create(array('name' => 'a'));
+        $query = Product::where();
+
+        //when
+        $query->copy()->where(array('name' => 'other'))->count();
+
+        //then
+        $this->assertEquals($product, $query->fetch());
+    }
+
 }
