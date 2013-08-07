@@ -236,4 +236,22 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // then
         $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ?', $sql);
     }
+
+    /**
+     * @test
+     */
+    public function shouldSkipEmptyWheres()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->where();
+        $query->where('id = ?', 1);
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT main.* FROM products AS main WHERE id = ?', $sql);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Thulium\Db;
 
+use Thulium\Utilities\FluentArray;
 use Thulium\Utilities\Joiner;
 
 class PostgresDialect
@@ -52,7 +53,10 @@ class PostgresDialect
 
     private function _buildWhereQuery($whereClauses)
     {
-        $parts = array_map(array($this, '_buildWhereQueryPart'), $whereClauses);
+        $parts = FluentArray::from($whereClauses)
+            ->filter(WhereClause::isNotEmptyFunction())
+            ->map(array($this, '_buildWhereQueryPart'))
+            ->toArray();
         return implode(' AND ', $parts);
     }
 

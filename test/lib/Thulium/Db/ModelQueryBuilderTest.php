@@ -414,7 +414,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldAllowChainWheres()
+    public function shouldAllowChainedWheres()
     {
         //given
         $product = Product::create(array('name' => 'a', 'description' => 'bob1'));
@@ -424,6 +424,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //when
         $products = Product::where(array('name' => 'a'))
             ->where('description like(?)', 'bob%')
+            ->fetchAll();
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertEquals($product, $products[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAllowEmptyWheres()
+    {
+        //given
+        $product = Product::create(array('name' => 'a'));
+        Product::create(array('name' => 'c'));
+
+        //when
+        $products = Product::where()
+            ->where(array('name' => 'a'))
             ->fetchAll();
 
         //then

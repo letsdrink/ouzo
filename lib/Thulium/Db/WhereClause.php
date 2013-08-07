@@ -31,4 +31,11 @@ class WhereClause
         }
         return false;
     }
+
+    public static function isNotEmptyFunction()
+    {
+        return function ($whereClause) {
+            return !$whereClause->isEmpty();
+        };
+    }
 }
