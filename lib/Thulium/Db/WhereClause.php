@@ -20,7 +20,7 @@ class WhereClause
         return empty($this->where);
     }
 
-    public function isNeverTrue()
+    public function isNeverSatisfied()
     {
         if (is_array($this->where)) {
             foreach ($this->where as $value) {

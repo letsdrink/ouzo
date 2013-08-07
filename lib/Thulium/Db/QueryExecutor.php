@@ -135,7 +135,7 @@ class QueryExecutor
     private static function isEmptyResult($whereClauses)
     {
         return Arrays::any($whereClauses, function($whereClause) {
-            return $whereClause->isNeverTrue();
+            return $whereClause->isNeverSatisfied();
         });
     }
 
