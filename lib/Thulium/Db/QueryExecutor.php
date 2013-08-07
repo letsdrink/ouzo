@@ -133,28 +133,15 @@ class QueryExecutor
         }
     }
 
-    private function _buildWhereValues($whereClause)
-    {
-        return is_array($whereClause->where) ? Arrays::flatten(array_values($whereClause->where)) : $whereClause->values;
-    }
-
     private static function isEmptyResult($whereClause)
     {
-        if (is_array($whereClause->where)) {
-            foreach ($whereClause->where as $value) {
-                if (is_array($value) && sizeof($value) == 0) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return $whereClause->isNeverTrue();
     }
 
     private function _addBindValues()
     {
-        $values = $this->_buildWhereValues($this->_query->whereClause);
-        if (!empty($this->_query->whereClause->where)) {
-            $this->_addBindValue($values);
+        if (!$this->_query->whereClause->isEmpty()) {
+            $this->_addBindValue($this->_query->whereClause->values);
         }
         if ($this->_query->limit) {
             $this->_addBindValue($this->_query->limit);
