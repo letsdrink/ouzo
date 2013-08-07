@@ -14,13 +14,13 @@ class Query
     public $order;
     public $limit;
     public $offset;
-    public $where;
-    public $whereValues;
+    public $whereClause;
     public $type;
 
     function __construct($type = null)
     {
         $this->type = $type ? $type : QueryType::$SELECT;
+        $this->where();
     }
 
     static function select($selectColumns = null)
@@ -66,8 +66,7 @@ class Query
 
     function where($where = '', $whereValues = null)
     {
-        $this->where = $where;
-        $this->whereValues = $whereValues;
+        $this->whereClause = new WhereClause($where, $whereValues);
         return $this;
     }
 

@@ -24,7 +24,7 @@ class PostgresDialect
             $sql .= ' LEFT JOIN ' . $query->joinTable . ' AS joined ON joined.' . $query->joinKey . ' = main.' . $query->idName;
         }
 
-        $where = $this->_buildWhereQuery($query->where);
+        $where = $this->_buildWhereQuery($query->whereClause);
         if ($where) {
             $sql .= ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
         }
@@ -51,9 +51,9 @@ class PostgresDialect
         };
     }
 
-    private function _buildWhereQuery($where)
+    private function _buildWhereQuery($whereClause)
     {
-        return is_array($where) ? implode(' AND ', $this->_buildWhereKeys($where)) : $where;
+        return is_array($whereClause->where) ? implode(' AND ', $this->_buildWhereKeys($whereClause->where)) : $whereClause->where;
     }
 
     private function _buildWhereKeys($params)

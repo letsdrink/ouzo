@@ -157,7 +157,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where = 'name = ?';
+        $query->where('name = ?');
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -174,7 +174,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where = array('name' => 'bob', 'id' => '1');
+        $query->where(array('name' => 'bob', 'id' => '1'));
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -191,7 +191,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where = array('name' => array('james', 'bob'));
+        $query->where(array('name' => array('james', 'bob')));
 
         // when
         $sql = $this->dialect->buildQuery($query);

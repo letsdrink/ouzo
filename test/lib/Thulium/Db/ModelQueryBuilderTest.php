@@ -410,4 +410,24 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     {
         Product::select('non existing column')->where()->fetchAll();
     }
+
+    /**
+     * @test
+     */
+    public function shouldAllowChainWheres()
+    {
+        //given
+        $product = Product::create(array('name' => 'a', 'description' => 'bob1'));
+        Product::create(array('name' => 'a', 'description' => 'smith'));
+        Product::create(array('name' => 'c', 'description' => 'bob3'));
+
+        //when
+        $products = Product::where(array('name' => 'a'))
+            ->where('description like(?)', 'bob%')
+            ->fetchAll();
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertEquals($product, $products[0]);
+    }
 }

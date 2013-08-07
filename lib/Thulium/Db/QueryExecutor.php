@@ -43,7 +43,7 @@ class QueryExecutor
             throw new InvalidArgumentException("Table name cannot be empty");
         }
 
-        if (QueryExecutor::isEmptyResult($query->where)) {
+        if (QueryExecutor::isEmptyResult($query->whereClause)) {
             return new EmptyQueryExecutor();
         }
         return new QueryExecutor($db, $query);
@@ -133,15 +133,15 @@ class QueryExecutor
         }
     }
 
-    private function _buildWhereValues($where, $values)
+    private function _buildWhereValues($whereClause)
     {
-        return is_array($where) ? Arrays::flatten(array_values($where)) : $values;
+        return is_array($whereClause->where) ? Arrays::flatten(array_values($whereClause->where)) : $whereClause->values;
     }
 
-    private static function isEmptyResult($where)
+    private static function isEmptyResult($whereClause)
     {
-        if (is_array($where)) {
-            foreach ($where as $value) {
+        if (is_array($whereClause->where)) {
+            foreach ($whereClause->where as $value) {
                 if (is_array($value) && sizeof($value) == 0) {
                     return true;
                 }
@@ -152,8 +152,8 @@ class QueryExecutor
 
     private function _addBindValues()
     {
-        $values = $this->_buildWhereValues($this->_query->where, $this->_query->whereValues);
-        if (!empty($this->_query->where)) {
+        $values = $this->_buildWhereValues($this->_query->whereClause);
+        if (!empty($this->_query->whereClause->where)) {
             $this->_addBindValue($values);
         }
         if ($this->_query->limit) {
