@@ -87,4 +87,14 @@ class Arrays
     {
         return array_intersect_key($map, array_flip($allowed));
     }
+
+    public static function groupBy(array $elements, $keyFunction)
+    {
+        $map = array();
+        foreach($elements as $element) {
+            $key = Functions::call($keyFunction, $element);
+            $map[$key][] = $element;
+        }
+        return $map;
+    }
 }
