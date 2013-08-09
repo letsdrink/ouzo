@@ -101,4 +101,35 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($validatable->isValid());
     }
 
+    /**
+     * @test
+     */
+    public function shouldValidateWrongDateTime()
+    {
+        // given
+        $validatable = new Validatable();
+
+        // when
+        $validatable->validateDateTime('wrong-date-format', 'Wrong date.');
+
+        // then
+        $errors = $validatable->getErrors();
+        $this->assertCount(1, $errors);
+        $this->assertEquals('Wrong date.', $errors[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldValidateCorrectDateTime()
+    {
+        // given
+        $validatable = new Validatable();
+
+        // when
+        $validatable->validateDateTime('2011-02-05', 'Wrong date.');
+
+        // then
+        $this->assertEmpty($validatable->getErrors());
+    }
 }

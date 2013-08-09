@@ -30,7 +30,7 @@ class Validatable
         $this->_errors = array();
     }
 
-    protected function validateAssociated(Validatable $validatable)
+    public function validateAssociated(Validatable $validatable)
     {
         $validatable->validate();
         $this->_errors = array_merge($this->_errors, $validatable->getErrors());
@@ -40,32 +40,38 @@ class Validatable
     /**
      * @param Validatable[]
      */
-    protected function validateAssociatedCollection($validatables)
+    public function validateAssociatedCollection($validatables)
     {
         foreach ($validatables as $validatable) {
             $this->validateAssociated($validatable);
         }
     }
 
-    protected function validateNotBlank($value, $errorMessage)
+    public function validateNotBlank($value, $errorMessage)
     {
         if (!$value) {
             $this->_errors[] = $errorMessage;
         }
     }
 
-    protected function validateTrue($value, $errorMessage)
+    public function validateTrue($value, $errorMessage)
     {
         if (!$value) {
             $this->_errors[] = $errorMessage;
         }
     }
 
-    protected function validateUnique(array $values, $errorMessage)
+    public function validateUnique(array $values, $errorMessage)
     {
         if (count($values) != count(array_unique($values))) {
             $this->_errors[] = $errorMessage;
         }
     }
 
+    public function validateDateTime($value, $errorMessage)
+    {
+        if (!strtotime($value)) {
+            $this->_errors[] = $errorMessage;
+        }
+    }
 }
