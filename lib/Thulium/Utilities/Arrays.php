@@ -88,13 +88,26 @@ class Arrays
         return array_intersect_key($map, array_flip($allowed));
     }
 
-    public static function groupBy(array $elements, $keyFunction)
+    public static function groupBy(array $elements, $keyFunction, $orderField = null)
     {
         $map = array();
-        foreach($elements as $element) {
+        foreach ($elements as $element) {
             $key = Functions::call($keyFunction, $element);
             $map[$key][] = $element;
         }
+        if ($orderField) {
+            foreach ($map as $key => $value) {
+                $map[$key] = self::orderBy($value, $orderField);
+            }
+        }
         return $map;
+    }
+
+    public static function orderBy(array $elements, $orderField)
+    {
+        usort($elements, function ($a, $b) use ($orderField) {
+            return $a->$orderField < $b->$orderField ? -1 : 1;
+        });
+        return $elements;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 use Model\Product;
 use Thulium\Utilities\Arrays;
 use Thulium\Utilities\Functions;
@@ -130,8 +131,8 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(
-            '1' => array($product1),
-            '2' => array($product2, $product3))
+                '1' => array($product1),
+                '2' => array($product2, $product3))
             , $grouped);
     }
 
@@ -150,4 +151,42 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($grouped);
     }
 
+    /**
+     * @test
+     */
+    public function shouldGroupByAndSort()
+    {
+        //given
+        $product1 = new Product(array('name' => 'a', 'description' => '1', 'id_category' => '1'));
+        $product2 = new Product(array('name' => 'b', 'description' => '2', 'id_category' => '2'));
+        $product3 = new Product(array('name' => 'c', 'description' => '2', 'id_category' => '1'));
+        $array = array($product1, $product2, $product3);
+
+        //when
+        $grouped = Arrays::groupBy($array, Functions::extractField('description'), 'id_category');
+
+        //then
+        $this->assertEquals(array(
+                '1' => array($product1),
+                '2' => array($product3, $product2))
+            , $grouped);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSortArray()
+    {
+        //given
+        $product1 = new Product(array('id_category' => '2'));
+        $product2 = new Product(array('id_category' => '3'));
+        $product3 = new Product(array('id_category' => '1'));
+        $array = array($product1, $product2, $product3);
+
+        //when
+        $sorted = Arrays::orderBy($array, 'id_category');
+
+        //then
+        $this->assertEquals(array($product3, $product1, $product2), $sorted);
+    }
 }
