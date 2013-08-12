@@ -95,7 +95,7 @@ class Arrays
             $key = Functions::call($keyFunction, $element);
             $map[$key][] = $element;
         }
-        if ($orderField) {
+        if (!empty($orderField)) {
             foreach ($map as $key => $value) {
                 $map[$key] = self::orderBy($value, $orderField);
             }
