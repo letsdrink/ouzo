@@ -72,7 +72,7 @@ class QueryExecutor
     {
         $this->_query->type = QueryType::$COUNT;
         $this->_query->selectColumns = 'count(*)';
-        return Arrays::firstOrNull($this->fetch());
+        return intval(Arrays::first($this->fetch()));
     }
 
     private function _fetch($function)
