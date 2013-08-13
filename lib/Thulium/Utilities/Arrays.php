@@ -91,14 +91,12 @@ class Arrays
     public static function groupBy(array $elements, $keyFunction, $orderField = null)
     {
         $map = array();
+        if (!empty($orderField)) {
+            $elements = self::orderBy($elements, $orderField);
+        }
         foreach ($elements as $element) {
             $key = Functions::call($keyFunction, $element);
             $map[$key][] = $element;
-        }
-        if (!empty($orderField)) {
-            foreach ($map as $key => $value) {
-                $map[$key] = self::orderBy($value, $orderField);
-            }
         }
         return $map;
     }
