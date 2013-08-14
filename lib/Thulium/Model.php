@@ -278,6 +278,8 @@ class Model extends Validatable
     }
 
     /**
+     * Should be used for tests purposes only.
+     *
      * @return static
      */
     static public function createWithoutValidation($attributes)
