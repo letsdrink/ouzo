@@ -1,4 +1,5 @@
 <?php
+
 use Model\Product;
 use Thulium\DbException;
 use Thulium\Model;
@@ -134,7 +135,10 @@ class ModelTest extends DbTransactionalTestCase
         try {
             Product::findById($invalidId);
             $this->fail();
-        } catch (DbException $e) {
+        }
+
+        // then
+        catch (DbException $e) {
         }
     }
 

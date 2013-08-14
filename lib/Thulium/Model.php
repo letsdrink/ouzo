@@ -280,6 +280,16 @@ class Model extends Validatable
     /**
      * @return static
      */
+    static public function createWithoutValidation($attributes)
+    {
+        $instance = static::newInstanceOfCalledClass($attributes);
+        $instance->insert();
+        return $instance;
+    }
+
+    /**
+     * @return static
+     */
     public function reload()
     {
         $this->_attributes = $this->findById($this->getId())->attributes();
