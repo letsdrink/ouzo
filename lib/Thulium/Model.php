@@ -56,7 +56,7 @@ class Model extends Validatable
 
     public function attributes()
     {
-        return $this->_attributes;
+        return array_replace(array_map(function() { return null; }, array_flip($this->_fields)), $this->_attributes);
     }
 
     private function _prepareParameters(array &$params)

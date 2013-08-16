@@ -1,6 +1,7 @@
 <?php
 
 use Model\Product;
+use Thulium\Db\Stats;
 use Thulium\DbException;
 use Thulium\Model;
 use Thulium\Tests\DbTransactionalTestCase;
@@ -233,5 +234,23 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals('default', $value);
+    }
+
+
+    /**
+     * @test
+     */
+    public function attributesShouldReturnAllFieldsIncludingNulls()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport'))->reload();
+
+        //when
+        $attributes = $product->attributes();
+
+        //then
+        $this->assertArrayHasKey('description', $attributes);
+        $this->assertArrayHasKey('id_category', $attributes);
+        $this->assertArrayHasKey('name', $attributes);
     }
 }
