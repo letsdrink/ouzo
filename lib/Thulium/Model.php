@@ -294,7 +294,7 @@ class Model extends Validatable
      */
     public function reload()
     {
-        $this->_attributes = $this->findById($this->getId())->attributes();
+        $this->_attributes = $this->findById($this->getId())->_attributes;
         return $this;
     }
 
