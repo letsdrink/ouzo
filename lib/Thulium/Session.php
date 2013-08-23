@@ -31,22 +31,6 @@ class Session
         }
     }
 
-    static public function runWithoutSession($callable)
-    {
-        $sessionIsOpened = (session_id() != '');
-        if ($sessionIsOpened) {
-            session_write_close();
-        }
-        try {
-            return Functions::call($callable, null);
-        } catch (Exception $e) {
-            if ($sessionIsOpened) {
-                session_start();
-            }
-            throw $e;
-        }
-    }
-
     public function get($key)
     {
         $sessionValue = null;
