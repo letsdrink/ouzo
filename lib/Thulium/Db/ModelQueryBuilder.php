@@ -97,6 +97,14 @@ class ModelQueryBuilder
         return QueryExecutor::prepare($this->_db, $this->_query)->delete();
     }
 
+    public function deleteEach()
+    {
+        $objects = $this->fetchAll();
+        return array_map(function ($object) {
+            return !$object->delete();
+        }, $objects);
+    }
+
     /**
      * @return ModelQueryBuilder
      */
