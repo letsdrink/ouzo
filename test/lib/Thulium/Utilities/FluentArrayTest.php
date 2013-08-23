@@ -1,5 +1,6 @@
 <?php
 use Thulium\Utilities\FluentArray;
+use Thulium\Utilities\Functions;
 
 class FluentArrayTest extends PHPUnit_Framework_TestCase
 {
@@ -57,5 +58,40 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(1, 2, 3, 4), $flattened);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToMap()
+    {
+        //given
+        $obj[0] = new stdClass();
+        $obj[0]->field1 = 'key1';
+        $obj[0]->field2 = 'value1';
+        $obj[1] = new stdClass();
+        $obj[1]->field1 = 'key2';
+        $obj[1]->field2 = 'value2';
+
+        //when
+        $toMap = FluentArray::from($obj)->toMap(Functions::extractField('field1'), Functions::extractField('field2'))->toArray();
+
+        //then
+        $this->assertEquals(array('key1' => 'value1', 'key2' => 'value2'), $toMap);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToJson()
+    {
+        //given
+        $array = array(1 => 'a', 2 => 'b', 3 => 'c');
+
+        //when
+        $json = FluentArray::from($array)->toJson();
+
+        //then
+        $this->assertEquals('{"1":"a","2":"b","3":"c"}', $json);
     }
 }
