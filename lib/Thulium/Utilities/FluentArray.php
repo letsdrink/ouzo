@@ -53,11 +53,17 @@ class FluentArray
 
     public function toMap($keyFunction, $valueFunction = null)
     {
-        return Arrays::toMap($keyFunction, $valueFunction);
+        $this->_array = Arrays::toMap($this->_array, $keyFunction, $valueFunction);
+        return $this;
     }
 
     public function toArray()
     {
         return $this->_array;
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->_array);
     }
 }
