@@ -34,6 +34,22 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldGetPrefixToOldPanel()
+    {
+        //given
+        Config::registerConfig(new SampleConfigController);
+
+        //when
+        $prefix = Controller::getPrefixToOldPanel();
+
+        //then
+        $this->assertEquals('/panel/', $prefix);
+
+    }
+
+    /**
+     * @test
+     */
     public function shouldRedirectToOldPanel()
     {
         //given
@@ -42,7 +58,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 
         //when
         $controller->redirectOld('index.php', array('param1' => 'abc', 'param2' => 'def'));
-        $redirect_location =  $controller->getRedirectLocation();
+        $redirect_location = $controller->getRedirectLocation();
 
         //then
         $this->assertEquals('/panel/index.php?param1=abc&param2=def', $redirect_location);
