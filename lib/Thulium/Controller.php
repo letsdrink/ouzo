@@ -43,9 +43,15 @@ class Controller
     public function redirectOld($url, $params = Array())
     {
         $this->_statusResponse = 'redirectOld';
-        $this->_redirectLocation = $url;
+        $this->_redirectLocation = self::getPrefixToOldPanel() . $url;
         if (!empty($params))
             $this->_redirectLocation .= '?' . http_build_query($params);
+    }
+
+    public static function getPrefixToOldPanel()
+    {
+        $config = Config::load()->getConfig('global');
+        return str_replace('panel2.0', '', $config['prefix_system']);
     }
 
     public function downloadFile($label, $mime, $path, $type = 'file')
