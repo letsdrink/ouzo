@@ -1,16 +1,18 @@
 <?php
 
 use Thulium\Controller;
+use Thulium\Config;
 
 class SimpleTestController extends Controller
 {
 }
 
-class SampleConfig
+class SampleConfigController
 {
     public function getConfig()
     {
-        $config['global']['prefix_system'] = '/path/to/panel/';
+        $config['global']['prefix_system'] = '/panel/panel2.0';
+        $config['global']['action'] = 'index';
         return $config;
     }
 }
@@ -35,15 +37,14 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     public function shouldRedirectToOldPanel()
     {
         //given
-        Thulium\Config::registerConfig(new SampleConfig);
+        Config::registerConfig(new SampleConfigController);
         $controller = new Controller();
 
         //when
-        $controller->redirectOld('test.php', array('param1' => 'abc', 'param2' => 'def'));
+        $controller->redirectOld('index.php', array('param1' => 'abc', 'param2' => 'def'));
         $redirect_location =  $controller->getRedirectLocation();
 
         //then
-        $this->assertEquals('/path/to/panel/test.php?param1=abc&param2=def', $redirect_location);
-
+        $this->assertEquals('/panel/index.php?param1=abc&param2=def', $redirect_location);
     }
 }
