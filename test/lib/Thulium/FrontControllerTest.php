@@ -1,8 +1,10 @@
 <?php
+namespace Thulium;
+
+use Exception;
 use Thulium\Config;
 use Thulium\Controller;
 use Thulium\Tests\ControllerTestCase;
-use Thulium\Tests\MockOutoutDisplayer;
 
 class SampleControllerException extends Exception
 {
@@ -14,13 +16,10 @@ class SampleController extends Controller
     {
         echo "OUTPUT";
     }
-}
-
-class MockControllerResolver
-{
-    public function getCurrentController()
+    public function index()
     {
-        return new SampleController();
+        $this->layout->renderAjax('index');
+        $this->layout->unsetLayout();
     }
 }
 
@@ -29,32 +28,30 @@ class FrontControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->_frontController->controllerResolver = new MockControllerResolver();
+        $this->_frontController->controllerResolver = new ControllerResolver('\\Thulium\\');
         $this->_frontController->redirectHandler = $this->getMock('\Thulium\RedirectHandler', array('redirect'));
     }
 
     /**
      * @test
      */
-    public function shouldRedirectToIndexWhenNoAction()
+    public function shouldRenderIndexIfNoAction()
     {
         //given
         $config = Config::load()->getConfig('global');
-        $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/crm";
-
-        $this->_frontController->redirectHandler
-            ->expects($this->once())
-            ->method('redirect')
-            ->with("{$config['prefix_system']}/crm/index");
+        $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/sample";
 
         //when
-        $this->_frontController->init();
+        $this->get('/sample');
+
+        //then
+        $this->assertRendersContent('index');
     }
 
     /**
      * @test
      */
-    public function shouldNoDisplayOutput()
+    public function shouldNotDisplayOutput()
     {
         //when
         $this->get('/sample/action');

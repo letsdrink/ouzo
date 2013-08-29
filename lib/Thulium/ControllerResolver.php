@@ -1,32 +1,34 @@
 <?php
 namespace Thulium;
 
-use Thulium\Utilities\Strings;
-
 class ControllerResolver
 {
-    function __construct()
+    function __construct($controllerPath = "\\Controller\\")
     {
         $globalConfig = Config::load()->getConfig('global');
-        $this->_defaultController = $globalConfig['controller'];
+        $this->_defaultAction = $globalConfig['action'];
+        $this->controllerPath = $controllerPath;
         $this->_uri = new Uri();
     }
 
     public function getCurrentController()
     {
         $controllerName = $this->_uri->getController();
+        $controller = $this->controllerPath . $controllerName . "Controller";
 
-        $controller = $controllerName ? "\\Controller\\" . $controllerName . "Controller" : "\\Controller\\" . Strings::underscoreToCamelCase($this->_defaultController) . "Controller";
-        $controllerCustom = $controllerName ? "\\Controller\\" . $controllerName . "ControllerCustom" : null;
+        $this->_validateControllerExists($controller);
 
-        $this->_validateControllerExists($controller, $controllerCustom);
-
-        return class_exists($controllerCustom) ? new $controllerCustom() : new $controller();
+        return new $controller($this->_getCurrentAction());
     }
 
-    private function _validateControllerExists($controller, $controllerCustom)
+    private function _getCurrentAction()
     {
-        if (!class_exists($controllerCustom) && !class_exists($controller)) {
+        return $this->_uri->getAction() ?: $this->_defaultAction;
+    }
+
+    private function _validateControllerExists($controller)
+    {
+        if (!class_exists($controller)) {
             throw new FrontControllerException('Controller does not exist: ' . $controller);
         }
     }

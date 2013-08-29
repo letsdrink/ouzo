@@ -39,8 +39,6 @@ class FrontController
 
         if ($this->_isNoController()) {
             $this->_redirectToDefault();
-        } else if ($this->_isNoAction()) {
-            $this->_redirectToIndex();
         } else {
             $this->_currentController = $this->controllerResolver->getCurrentController();
 
@@ -75,26 +73,11 @@ class FrontController
         $this->_redirect('/' . $this->_defaults['controller'] . '/' . $this->_defaults['action']);
     }
 
-    private function _isNoAction()
-    {
-        return !$this->_uriAction;
-    }
-
-    private function _redirectToIndex()
-    {
-        $this->_redirect('/' . $this->_uri->getRawController() . '/index');
-    }
-
     private function _redirect($url)
     {
         $prefixSystem = Config::load()->getConfig('global');
         $url = $prefixSystem['prefix_system'] . $url;
         $this->redirectHandler->redirect($url);
-    }
-
-    private function _getCurrentAction()
-    {
-        return $this->_uriAction ? $this->_uriAction : $this->_defaults['action'];
     }
 
     private function _invokeInit()
@@ -127,7 +110,7 @@ class FrontController
 
     private function _invokeAction()
     {
-        $currentAction = $this->_getCurrentAction();
+        $currentAction = $this->_currentController->currentAction;
         if (method_exists($this->_currentController, $currentAction)) {
             $this->_currentController->$currentAction();
         } else {

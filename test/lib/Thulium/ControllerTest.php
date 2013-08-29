@@ -54,7 +54,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     {
         //given
         Config::registerConfig(new SampleConfigController);
-        $controller = new Controller();
+        $controller = new Controller('index');
 
         //when
         $controller->redirectOld('index.php', array('param1' => 'abc', 'param2' => 'def'));

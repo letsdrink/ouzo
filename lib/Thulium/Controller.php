@@ -18,15 +18,15 @@ class Controller
     private $_redirectLocation = '';
     private $_fileData = array();
 
-    public function __construct()
+    public function __construct($currentAction)
     {
         $uri = new Uri();
-
-        $viewName = ucfirst($uri->getController()) . DIRECTORY_SEPARATOR . $uri->getAction();
-
         $this->uri = $uri;
         $this->currentController = $uri->getController();
-        $this->currentAction = $uri->getAction();
+        $this->currentAction = $currentAction;
+
+        $viewName = ucfirst($uri->getController()) . DIRECTORY_SEPARATOR . $this->currentAction;
+
         $this->view = new View($viewName);
         $this->layout = new Layout();
         $this->params = array_merge($_POST, $_GET, $this->uri->getParams());
