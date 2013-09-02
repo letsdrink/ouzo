@@ -10,7 +10,7 @@ class Error
 
     static public function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        throw new \Exception("$errfile:$errline - $errstr ERRNO($errno)");
+        self::_handleError("$errstr ERRNO($errno)", "$errfile:$errline");
     }
 
     private static function _clearOutputBuffers()
