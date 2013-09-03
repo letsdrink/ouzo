@@ -453,6 +453,44 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldAllowEmptyParametersInWhere()
+    {
+        //given
+        $product = Product::create(array('name' => 'a'));
+        Product::create(array('name' => 'c'));
+
+        //when
+        $products = Product::where()
+            ->where("name = 'a'")
+            ->fetchAll();
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertEquals($product, $products[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAllowEmptyStringAsParameterInWhere()
+    {
+        //given
+        $product = Product::create(array('name' => 'a', 'description' => ''));
+        Product::create(array('name' => 'c', 'description' => 'a'));
+
+        //when
+        $products = Product::where()
+            ->where("description = ''")
+            ->fetchAll();
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertEquals($product, $products[0]);
+    }
+
+    /**
+     * @test
+     */
     public function shouldCloneBuilder()
     {
         //given

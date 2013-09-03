@@ -127,7 +127,7 @@ class QueryExecutor
     {
         if (is_array($value)) {
             $this->_boundValues = array_merge($this->_boundValues, $value);
-        } else {
+        } else if ($value !== null) {
             $this->_boundValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
         }
     }
