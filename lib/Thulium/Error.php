@@ -27,7 +27,8 @@ class Error
             /** @noinspection PhpIncludeInspection */
             self::_clearOutputBuffers();
             header("HTTP/1.1 500 Internal Server Error");
-            require_once(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.phtml');
+
+            require_once(ViewPathResolver::resolveViewPath('exception'));
         } catch (\Exception $e) {
             echo "Framework critical error. Exception thrown in exception handler.<br>\n";
             echo "<hr>\n";
