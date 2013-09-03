@@ -491,6 +491,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldAcceptNullParametersInWhere()
+    {
+        //it will return nothing but we don't want to force users to add null checks
+
+        //given
+        Product::create(array('name' => 'c'));
+
+        //when
+        $products = Product::where()
+            ->where("name = ?", null)
+            ->fetchAll();
+
+        //then
+        $this->assertEmpty($products);
+    }
+
+    /**
+     * @test
+     */
     public function shouldCloneBuilder()
     {
         //given
