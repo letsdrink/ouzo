@@ -95,13 +95,15 @@ class Model extends Validatable
     public function insert()
     {
         $primaryKey = $this->_primaryKeyName;
-        $this->$primaryKey = $this->_db->insert($this->_tableName, $this->_attributes, $this->_sequenceName);
+        $attributes = $this->filterAttributesPreserveNull($this->_attributes);
+        $this->$primaryKey = $this->_db->insert($this->_tableName, $attributes, $this->_sequenceName);
         return $this->$primaryKey;
     }
 
     public function update()
     {
-        $this->_db->update($this->_tableName, $this->_attributes, array($this->_primaryKeyName => $this->getId()));
+        $attributes = $this->filterAttributesPreserveNull($this->_attributes);
+        $this->_db->update($this->_tableName, $attributes, array($this->_primaryKeyName => $this->getId()));
     }
 
     public function insertOrUpdate()
