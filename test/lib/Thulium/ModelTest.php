@@ -78,6 +78,57 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldFilterAttributesForInsert()
+    {
+        //given
+        $product = new Product(array('name' => 'Sport'));
+        $product->junk = 'junk';
+
+        // when
+        $id = $product->insert(); //insert with junk would fail
+
+        // then
+        $actual = Product::findById($id);
+        $this->assertEquals('Sport', $actual->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFilterAttributesForUpdate()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport'));
+        $product->junk = 'junk';
+
+        // when
+        $product->update(); //update with junk would fail
+
+        // then
+        $actual = Product::findById($product->getId());
+        $this->assertEquals('Sport', $actual->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldUpdateAttributesToNull()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport', 'description' => 'dsc'));
+        $product->assignAttributes(array('description' => null));
+
+        // when
+        $product->update();
+
+        // then
+        $actual = Product::findById($product->getId());
+        $this->assertNull($actual->description);
+    }
+
+    /**
+     * @test
+     */
     public function shouldHaveNoErrorsWhenModelIsValid()
     {
         //given
