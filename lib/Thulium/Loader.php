@@ -9,6 +9,13 @@ class Loader
 
     private $_classPath = array();
 
+    private $_loadPath;
+
+    function __construct($loadPath = ROOT_PATH)
+    {
+        $this->_loadPath = $loadPath;
+    }
+
     public function setIncludePath($path)
     {
         $this->_includePath[] = $path;
@@ -45,9 +52,9 @@ class Loader
         }
 
         foreach ($this->_includePath as $key) {
-            if (file_exists(ROOT_PATH . $key . $filePath)) {
+            if (file_exists($this->_loadPath . $key . $filePath)) {
                 /** @noinspection PhpIncludeInspection */
-                require_once(ROOT_PATH . $key . $filePath);
+                require_once($this->_loadPath . $key . $filePath);
                 return true;
             }
         }
