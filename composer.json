@@ -2,6 +2,7 @@
     "name": "letsdrink/ouzo",
     "description": "Ouzo PHP MVC framework",
     "minimum-stability": "dev",
+    "license": "MIT",
     "authors": [
         {
             "name": "Thulium",
