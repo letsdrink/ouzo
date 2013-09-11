@@ -1,11 +1,11 @@
 {
-    "name": "thulium/framework",
-    "description": "framework",
+    "name": "letsdrink/ouzo",
+    "description": "Ouzo PHP MVC framework",
     "minimum-stability": "dev",
     "authors": [
         {
-            "name": "thulium",
-            "email": "programisci@thulium.pl"
+            "name": "Thulium",
+            "email": "letsdrink@thulium.pl"
         }
     ],
     "autoload": {

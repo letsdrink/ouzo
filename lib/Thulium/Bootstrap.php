@@ -24,7 +24,7 @@ class Bootstrap
         $loader = new \Thulium\Loader();
         $loader
             ->setIncludePath('application/')
-            ->setIncludePath('vendor/thulium/framework/lib/')
+            ->setIncludePath('vendor/letsdrink/ouzo/lib/')
             ->setIncludePath('locales/')
             ->register();
 
