@@ -3,6 +3,7 @@
     "description": "Ouzo PHP MVC framework",
     "minimum-stability": "dev",
     "license": "MIT",
+    "keywords": ["php", "mvc", "framework", "orm", "tdd"],
     "authors": [
         {
             "name": "Thulium",
