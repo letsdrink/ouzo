@@ -1,7 +1,7 @@
 <?php
 $config['db']['dbname'] = 'framework_test';
-$config['db']['user'] = 'user';
-$config['db']['pass'] = 'pass';
+$config['db']['user'] = 'thulium_1';
+$config['db']['pass'] = 'a';
 $config['db']['driver'] = 'pgsql';
 $config['db']['host'] = '127.0.0.1';
 $config['db']['port'] = '5432';
