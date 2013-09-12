@@ -1,7 +1,7 @@
 <?php
 namespace Model;
 
-use Thulium\Model;
+use Ouzo\Model;
 
 class Product extends Model
 {

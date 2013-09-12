@@ -2,7 +2,7 @@
 
 namespace Model;
 
-use Thulium\Model;
+use Ouzo\Model;
 
 class Order extends Model
 {

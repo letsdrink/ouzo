@@ -7,11 +7,11 @@ define('ROOT_PATH', realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 
 require 'vendor/autoload.php';
 
-require_once ROOT_PATH . 'lib/Thulium/Loader.php';
-require_once ROOT_PATH . 'lib/Thulium/FrontController.php';
-require_once ROOT_PATH . 'lib/Thulium/Error.php';
+require_once ROOT_PATH . 'lib/Ouzo/Loader.php';
+require_once ROOT_PATH . 'lib/Ouzo/FrontController.php';
+require_once ROOT_PATH . 'lib/Ouzo/Error.php';
 
-$loader = new \Thulium\Loader();
+$loader = new \Ouzo\Loader();
 $loader
     ->setIncludePath('test/')
     ->setIncludePath('lib/')
