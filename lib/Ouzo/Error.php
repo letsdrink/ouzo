@@ -16,7 +16,7 @@ class Error
     private static function _clearOutputBuffers()
     {
         while (ob_get_level()) {
-            if (!ob_end_clean()){
+            if (!ob_end_clean()) {
                 break;
             }
         }
