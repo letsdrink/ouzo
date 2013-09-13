@@ -41,7 +41,7 @@ class QueryExecutor
             throw new InvalidArgumentException("Table name cannot be empty");
         }
 
-        if (QueryExecutor::isEmptyResult($query->whereClauses)) {
+        if (self::isEmptyResult($query->whereClauses)) {
             return new EmptyQueryExecutor();
         }
         return new QueryExecutor($db, $query);
