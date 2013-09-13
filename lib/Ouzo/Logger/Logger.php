@@ -7,6 +7,9 @@ class Logger
 {
     private static $_logger;
 
+    /**
+     * @return LoggerInterface
+     */
     public static function getLogger($name)
     {
         if (!self::$_logger) {
