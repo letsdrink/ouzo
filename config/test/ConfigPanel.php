@@ -11,6 +11,5 @@ $config['global']['prefix_system'] = '/panel/panel2.0';
 $config['global']['suffix_cache'] = '1234';
 $config['default']['auth'] = 'Database';
 $config['debug'] = true;
-$config['logger'] = '\Ouzo\Logger\SyslogLogger';
 
 return $config;
