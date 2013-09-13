@@ -18,7 +18,7 @@ class Logger
     private static function _loadLogger($name)
     {
         $logger = Config::load()->getConfig('logger');
-        if (!$logger) {
+        if (!$logger && !isset($logger['class'])) {
             return new SyslogLogger($name);
         }
         return new $logger['class']($name);
