@@ -1,9 +1,7 @@
 <phpdox xmlns="http://phpdox.de/config">
- <project name="Thulium-Panel" source="panel/panel2.0/" workdir="build/phpdox">
+ <project name="Ouzo" source="lib/" workdir="build/phpdox">
   <collector publiconly="false">
    <include mask="*.php" />
-   <exclude mask="*Autoload.php" />
-   <exclude mask="**/vendor/**" />
   </collector>
 
   <generator output="build">

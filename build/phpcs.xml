@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Thulium">
+<ruleset name="Ouzo">
  <description>Ouzo coding standard</description>
 
  <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>

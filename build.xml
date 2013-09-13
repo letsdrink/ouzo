@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Thulium-Framework" default="build">
+<project name="Ouzo" default="build">
  <target name="build"
    depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,phpcb"/>
 
@@ -104,7 +104,7 @@
    <arg value="--standard=${basedir}/build/phpcs.xml" />
    <arg value="--extensions=php" />
    <arg value="--ignore=${basedir}/vendor" />
-   <arg path="${basedir}/panel/panel2.0" />
+   <arg path="${basedir}/lib/Ouzo" />
   </exec>
  </target>
 
