@@ -25,7 +25,7 @@ class Error
     private static function _handleError($errorMessage, $errorTrace)
     {
         try {
-            Logger::getPanelLogger()->addError($errorMessage, array($errorTrace));
+            LoggerInterface::getFrameworkLogger()->addError($errorMessage, array($errorTrace));
             /** @noinspection PhpIncludeInspection */
             self::_clearOutputBuffers();
             header("HTTP/1.1 500 Internal Server Error");

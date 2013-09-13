@@ -2,12 +2,13 @@
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
-use PDO;
 use Ouzo\Db;
 use Ouzo\DbException;
-use Ouzo\Logger;
+use Ouzo\Logger\Logger;
+use Ouzo\LoggerInterface;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
+use PDO;
 
 class QueryExecutor
 {
@@ -79,8 +80,7 @@ class QueryExecutor
         return Stats::trace($this->_sql, $this->_boundValues, function () use ($obj, $function) {
             $obj->_prepareAndBind();
 
-            Logger::getSqlLogger()
-                ->addInfo($obj->getSql(), $obj->getBoundValues());
+            Logger::getLogger(__CLASS__)->info($obj->getSql(), $obj->getBoundValues());
 
             if (!$obj->_preparedQuery->execute()) {
                 throw new DbException('Exception: query: ' . $obj->getSql() . ' with params: (' . implode(', ', $obj->getBoundValues()) . ') failed: ' . $obj->lastErrorMessage());

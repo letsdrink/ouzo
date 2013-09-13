@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use InvalidArgumentException;
+use Ouzo\Logger\Logger;
 use PDO;
 use PDOStatement;
 use Ouzo\Db\Stats;
@@ -107,8 +108,7 @@ class Db
 
             $obj->_bindQueryParams($params);
 
-            Logger::getSqlLogger()
-                ->addInfo($query, $params);
+            Logger::getLogger(__CLASS__)->info($query, $params);
 
             if (!$obj->query->execute()) {
                 throw new DbException('Exception: query: ' . $query . ' with params: (' . implode(', ', $params) . ') failed: ' . $obj->lastErrorMessage());
