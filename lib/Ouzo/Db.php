@@ -53,7 +53,7 @@ class Db
 
     static public function callFunction($functionName, $parameters)
     {
-        $db = new Db();
+        $db = self::getInstance();
         if (is_array($parameters)) {
             $bindParams = $parameters;
         } else {

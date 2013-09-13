@@ -1,4 +1,5 @@
 <?php
+use Model\Category;
 use Ouzo\Db;
 use Ouzo\Tests\DbTransactionalTestCase;
 
@@ -22,5 +23,20 @@ class DbTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals('OK', $return);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCallDbFunction()
+    {
+        //given
+        $category = Category::create(array('name' => 'test'));
+
+        //when
+        $name = $category->getName('test');
+
+        //then
+        $this->assertEquals('test', $name);
     }
 }

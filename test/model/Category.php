@@ -2,6 +2,7 @@
 
 namespace Model;
 
+use Ouzo\Db;
 use Ouzo\Model;
 
 class Category extends Model
@@ -18,4 +19,8 @@ class Category extends Model
             'fields' => $this->_fields));
     }
 
+    public function getName($name)
+    {
+        return Db::callFunction('get_name', array($name));
+    }
 }
