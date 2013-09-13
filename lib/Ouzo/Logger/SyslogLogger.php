@@ -7,16 +7,31 @@ use Ouzo\FrontController;
 class SyslogLogger implements LoggerInterface
 {
 
-    private $name;
+    private $_name;
+    private $_logger;
 
     function __construct($name)
     {
-        $this->name = $name;
+        $this->_name = $name;
+
+        $logger = Config::load()->getConfig('logger');
+        if ($logger) {
+            openlog($logger['ident'], $logger['option'], $logger['facility']);
+        }
+
+        $this->_logger = $logger;
+    }
+
+    function __destruct()
+    {
+        if ($this->_logger) {
+            closelog();
+        }
     }
 
     private function log($level, $levelName, $message)
     {
-        $message = sprintf("%s %s: [ID: %s] [UserID: %s] %s", $this->name, $levelName, FrontController::$requestId, FrontController::$userId, $message);
+        $message = sprintf("%s %s: [ID: %s] [UserID: %s] %s", $this->_name, $levelName, FrontController::$requestId, FrontController::$userId, $message);
         syslog($level, $message);
     }
 
