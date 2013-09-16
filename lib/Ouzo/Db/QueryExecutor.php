@@ -5,7 +5,6 @@ use InvalidArgumentException;
 use Ouzo\Db;
 use Ouzo\DbException;
 use Ouzo\Logger\Logger;
-use Ouzo\LoggerInterface;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;

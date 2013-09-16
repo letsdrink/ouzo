@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Logger\Logger;
+
 class Error
 {
     static public function exceptionHandler(\Exception $exception)
@@ -25,7 +27,7 @@ class Error
     private static function _handleError($errorMessage, $errorTrace)
     {
         try {
-            LoggerInterface::getFrameworkLogger()->addError($errorMessage, array($errorTrace));
+            Logger::getLogger(__CLASS__)->error($errorMessage, array($errorTrace));
             /** @noinspection PhpIncludeInspection */
             self::_clearOutputBuffers();
             header("HTTP/1.1 500 Internal Server Error");
