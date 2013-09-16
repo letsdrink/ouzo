@@ -1,0 +1,16 @@
+{
+    "packages": {
+        "thulium/framework-skeleton": {
+            "dev-default": {
+                "name": "thulium/framework-skeleton",
+                "version": "dev-default",
+                "source": {
+                    "type": "hg",
+                    "url": "https://jenkins:12j3nkins50@hg/framework-skeleton",
+                    "reference": "585637bc536f"
+                }
+            }
+        }
+
+    }
+}
