@@ -132,4 +132,21 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
         // then
         $this->assertEmpty($validatable->getErrors());
     }
+
+    /**
+     * @test
+     */
+    public function shouldClearErrorBeforeValidation()
+    {
+        // given
+        $validatable = new Validatable();
+        $validatable->validateAssociated(new ValidatableChild(array('error'), array('errorField')));
+
+        // when
+        $validatable->validate();
+
+        // then
+        $this->assertEmpty($validatable->getErrors());
+        $this->assertEmpty($validatable->getErrorFields());
+    }
 }
