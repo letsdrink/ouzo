@@ -74,6 +74,36 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnConfigValue()
+    {
+        //given
+        Config::registerConfig(new SampleConfig);
+
+        //when
+        $value = Config::getValue('default');
+
+        //then
+        $this->assertEquals('SampleAuth', $value['auth']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNestedConfigValue()
+    {
+        //given
+        Config::registerConfig(new SampleConfig);
+
+        //when
+        $value = Config::getValue('default', 'auth');
+
+        //then
+        $this->assertEquals('SampleAuth', $value);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReadSampleConfigFromFile()
     {
         //given

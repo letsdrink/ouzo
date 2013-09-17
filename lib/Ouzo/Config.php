@@ -50,9 +50,19 @@ class Config
         return self::$_configInstance;
     }
 
-    public function getConfig($section)
+    public static function getValue()
     {
-        return Arrays::getValue($this->_config, $section, array());
+        return call_user_func_array(array(self::load(), 'getConfig'), func_get_args());
+    }
+
+    public function getConfig()
+    {
+        $configValue = $this->_config;
+        $args = func_get_args();
+        foreach ($args as $arg) {
+            $configValue = Arrays::getValue($configValue, $arg, array());
+        }
+        return $configValue;
     }
 
     public function getAllConfig()
