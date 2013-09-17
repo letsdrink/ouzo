@@ -26,6 +26,7 @@ class Validatable
     public function validate()
     {
         $this->_errors = array();
+        $this->_errorFields = array();
     }
 
     public function validateAssociated(Validatable $validatable)
