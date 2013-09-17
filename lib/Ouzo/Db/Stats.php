@@ -26,7 +26,7 @@ class Stats
 
     public static function trace($query, $params, $function)
     {
-        if (Config::load()->getConfig('debug')) {
+        if (Config::getValue('debug')) {
             self::initializeIfUnset();
 
             $startTime = microtime(true);

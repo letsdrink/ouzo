@@ -78,7 +78,7 @@ class Uri
     private function _parsePath($path = null, $limit = null)
     {
         $parsedPath = null;
-        $prefixSystem = Config::load()->getConfig('global');
+        $prefixSystem = Config::getValue('global');
         if ($path != null) {
             $pathWithoutPrefix = urldecode(str_replace($prefixSystem['prefix_system'], '', $path));
             $parsedPath = preg_split('#/|\?#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);

@@ -24,7 +24,7 @@ class FrontController
         self::$requestId = uniqid();
 
         $this->_uri = new Uri();
-        $this->_defaults = Config::load()->getConfig('global');
+        $this->_defaults = Config::getValue('global');
 
         $this->redirectHandler = new RedirectHandler();
         $this->sessionInitializer = new SessionInitializer();
@@ -75,7 +75,7 @@ class FrontController
 
     private function _redirect($url)
     {
-        $prefixSystem = Config::load()->getConfig('global');
+        $prefixSystem = Config::getValue('global');
         $url = $prefixSystem['prefix_system'] . $url;
         $this->redirectHandler->redirect($url);
     }

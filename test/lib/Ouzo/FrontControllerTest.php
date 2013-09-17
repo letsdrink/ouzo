@@ -38,7 +38,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRenderIndexIfNoAction()
     {
         //given
-        $config = Config::load()->getConfig('global');
+        $config = Config::getValue('global');
         $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/sample";
 
         //when

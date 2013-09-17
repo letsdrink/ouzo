@@ -29,7 +29,7 @@ function renderPartial($name, array $values = array())
 function addFile(array $fileInfo = array(), $panel2_0 = true)
 {
     if (!empty($fileInfo)) {
-        $defaults = Config::load()->getConfig('global');
+        $defaults = Config::getValue('global');
 
         if (!$panel2_0) {
             $defaults['prefix_system'] = str_replace('/panel2.0', '', $defaults['prefix_system']);

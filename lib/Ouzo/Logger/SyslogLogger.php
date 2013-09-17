@@ -14,7 +14,7 @@ class SyslogLogger implements LoggerInterface
     {
         $this->_name = $name;
 
-        $logger = Config::load()->getConfig('logger');
+        $logger = Config::getValue('logger');
         if ($logger) {
             openlog($logger['ident'], $logger['option'], $logger['facility']);
         }
@@ -64,6 +64,6 @@ class SyslogLogger implements LoggerInterface
 
     private function _isDebug()
     {
-        return Config::load()->getConfig('debug');
+        return Config::getValue('debug');
     }
 }
