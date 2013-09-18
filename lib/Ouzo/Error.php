@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use Ouzo\Logger\Logger;
+use Ouzo\Utilities\Objects;
 
 class Error
 {
@@ -27,7 +28,8 @@ class Error
     private static function _handleError($errorMessage, $errorTrace)
     {
         try {
-            Logger::getLogger(__CLASS__)->error($errorMessage, array($errorTrace));
+            Logger::getLogger(__CLASS__)->error($errorMessage);
+            Logger::getLogger(__CLASS__)->error(Objects::toString($errorTrace));
             /** @noinspection PhpIncludeInspection */
             self::_clearOutputBuffers();
             header("HTTP/1.1 500 Internal Server Error");
