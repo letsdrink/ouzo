@@ -304,4 +304,19 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertArrayHasKey('id_category', $attributes);
         $this->assertArrayHasKey('name', $attributes);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDerivedClassNameInInspect()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport'));
+
+        //when
+        $string = $product->inspect();
+
+        //then
+        $this->assertStringStartsWith('Model\Product', $string);
+    }
 }
