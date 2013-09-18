@@ -9,7 +9,8 @@ abstract class Dialect
 {
     function _buildWhereQueryPart($whereClause)
     {
-        return is_array($whereClause->where) ? implode(' AND ', $this->_buildWhereKeys($whereClause->where)) : $whereClause->where;
+        $wherePart = is_array($whereClause->where) ? implode(' AND ', $this->_buildWhereKeys($whereClause->where)) : $whereClause->where;
+        return stripos($wherePart, 'OR') ? '(' . $wherePart . ')' : $wherePart;
     }
 
     protected function _addAliases()

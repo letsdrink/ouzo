@@ -54,7 +54,7 @@ class PostgresDialect extends Dialect
     {
         $where = $this->_buildWhereQuery($this->_query->whereClauses);
         if ($where) {
-            return ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
+            return ' WHERE ' . $where;
         }
         return '';
     }
