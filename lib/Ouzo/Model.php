@@ -157,9 +157,12 @@ class Model extends Validatable
         return $result;
     }
 
+    /**
+     * Returns model object as a nicely formatted string.
+     */
     public function inspect()
     {
-        return __CLASS__ . "\n" . print_r($this->attributes(), true);
+        return get_called_class() . "\n" . print_r($this->attributes(), true);
     }
 
     public function _getFields()
