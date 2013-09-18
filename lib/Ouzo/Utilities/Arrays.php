@@ -83,9 +83,20 @@ class Arrays
         return isset($array[$key]) ? $array[$key] : $default;
     }
 
-    public static function filterByKeys(array $map, $allowed)
+    public static function filterByAllowedKeys(array $map, $allowed)
     {
-        return array_intersect_key($map, array_flip($allowed));
+        if (is_array($allowed)) {
+            $allowedKeys = $allowed;
+        } else {
+            $allowedKeys = array_filter(array_keys($map), $allowed);
+        }
+        return array_intersect_key($map, array_flip($allowedKeys));
+    }
+
+    public static function filterByKeys(array $map, $predicate)
+    {
+        $allowedKeys = array_filter(array_keys($map), $predicate);
+        return self::filterByAllowedKeys($map, $allowedKeys);
     }
 
     public static function groupBy(array $elements, $keyFunction, $orderField = null)
@@ -112,7 +123,7 @@ class Arrays
     public static function mapKeys(array $elements, $function)
     {
         $newArray = array();
-        foreach($elements as $oldKey => $value) {
+        foreach ($elements as $oldKey => $value) {
             $newKey = Functions::call($function, $oldKey);
             $newArray[$newKey] = $value;
         }
