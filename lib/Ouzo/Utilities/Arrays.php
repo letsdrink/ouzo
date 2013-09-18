@@ -108,4 +108,24 @@ class Arrays
         });
         return $elements;
     }
+
+    public static function mapKeys(array $elements, $function)
+    {
+        $newArray = array();
+        foreach($elements as $oldKey => $value) {
+            $newKey = Functions::call($function, $oldKey);
+            $newArray[$newKey] = $value;
+        }
+        return $newArray;
+    }
+
+    public static function map($array, $function)
+    {
+        return array_map($function, $array);
+    }
+
+    public static function filter($array, $function)
+    {
+        return array_filter($array, $function);
+    }
 }

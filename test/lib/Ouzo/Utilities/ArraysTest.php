@@ -28,6 +28,64 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldMapKeys()
+    {
+        //given
+        $array = array(
+            'k1' => 'v1',
+            'k2' => 'v2',
+            'k3' => 'v3',
+        );
+        //when
+        $arrayWithNewKeys = Arrays::mapKeys($array, function($key) {
+            return 'new_' . $key;
+        });
+
+        //then
+        $this->assertEquals(array(
+            'new_k1' => 'v1',
+            'new_k2' => 'v2',
+            'new_k3' => 'v3',
+        ), $arrayWithNewKeys);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMapValues()
+    {
+        //given
+        $array = array('k1', 'k2', 'k3');
+
+        //when
+        $result = Arrays::map($array, function($value) {
+            return 'new_' . $value;
+        });
+
+        //then
+        $this->assertEquals(array('new_k1','new_k2','new_k3'), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFilterValues()
+    {
+        //given
+        $array = array(1, 2, 3, 4);
+
+        //when
+        $result = Arrays::filter($array, function($value) {
+            return $value > 2;
+        });
+
+        //then
+        $this->assertEquals(array(2 => 3, 3 => 4), $result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldUseIdentityAsDefaultValueFunctionInToMap()
     {
         //given
