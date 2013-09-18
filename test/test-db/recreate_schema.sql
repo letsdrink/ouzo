@@ -10,7 +10,6 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
   id_product  SERIAL PRIMARY KEY,
-
   id_category INTEGER REFERENCES categories,
   name        TEXT,
   description TEXT

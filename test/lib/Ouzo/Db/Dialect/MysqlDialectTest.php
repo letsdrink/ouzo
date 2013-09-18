@@ -1,17 +1,19 @@
 <?php
-
-use Ouzo\Db\PostgresDialect;
+use Ouzo\Db\Dialect\MysqlDialect;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 
-class PostgresDialectTest extends PHPUnit_Framework_TestCase
+class MysqlDialectTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var MysqlDialect
+     */
+    private $_dialect;
 
-    private $dialect;
-
-    protected  function setUp()
+    protected function setUp()
     {
-        $this->dialect = new PostgresDialect();
+        parent::setUp();
+        $this->_dialect = new MysqlDialect();
     }
 
     /**
@@ -24,7 +26,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->table = 'products';
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main', $sql);
@@ -41,10 +43,10 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->table = 'products';
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('DELETE FROM products AS main', $sql);
+        $this->assertEquals('DELETE FROM products', $sql);
     }
 
     /**
@@ -58,7 +60,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->table = 'products';
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT count(*) FROM products AS main', $sql);
@@ -75,7 +77,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->selectColumns = array('id', 'name');
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT id, name FROM products AS main', $sql);
@@ -92,7 +94,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->order = 'id asc';
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main ORDER BY id asc', $sql);
@@ -109,7 +111,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->order = array('id asc', 'name desc');
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main ORDER BY id asc, name desc', $sql);
@@ -126,7 +128,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->limit = 10;
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main LIMIT ?', $sql);
@@ -143,7 +145,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->offset = 10;
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main OFFSET ?', $sql);
@@ -160,7 +162,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->where('name = ?');
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ?', $sql);
@@ -177,28 +179,10 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->where(array('name' => 'bob', 'id' => '1'));
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ?', $sql);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldWrapConditionsWithOrInParenthesis()
-    {
-        // given
-        $query = new Query();
-        $query->table = 'products';
-        $query->where(array('name' => 'bob', 'id' => '1'));
-        $query->where('a = 1 or b = 2');
-
-        // when
-        $sql = $this->dialect->buildQuery($query);
-
-        // then
-        $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ? AND (a = 1 or b = 2)', $sql);
     }
 
     /**
@@ -212,7 +196,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->where(array('name' => array('james', 'bob')));
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main WHERE name IN (?, ?)', $sql);
@@ -231,7 +215,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->idName = 'id_category';
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main LEFT JOIN categories AS joined ON joined.id_category = main.id_category', $sql);
@@ -249,7 +233,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->where('id = ?', 1);
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ?', $sql);
@@ -267,7 +251,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query->where('id = ?', 1);
 
         // when
-        $sql = $this->dialect->buildQuery($query);
+        $sql = $this->_dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main WHERE id = ?', $sql);

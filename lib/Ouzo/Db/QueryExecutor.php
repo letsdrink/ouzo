@@ -2,6 +2,7 @@
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
+use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\DbException;
 use Ouzo\Logger\Logger;
@@ -25,7 +26,8 @@ class QueryExecutor
         $this->_db = $db;
         $this->_query = $query;
 
-        $this->_adapter = new PostgresDialect();
+        $dialect = Config::getValue('sql_dialect');
+        $this->_adapter = new $dialect();
     }
 
     public static function prepare($db, $query)
@@ -92,7 +94,12 @@ class QueryExecutor
     {
         $this->_preparedQuery = $this->_db->_dbHandle->prepare($this->_sql);
         foreach ($this->_boundValues as $key => $valueBind) {
-            $this->_preparedQuery->bindValue($key + 1, $valueBind);
+            if (is_int($valueBind)) {
+                $type = PDO::PARAM_INT;
+            } else {
+                $type = PDO::PARAM_STR;
+            }
+            $this->_preparedQuery->bindValue($key + 1, $valueBind, $type);
         }
     }
 

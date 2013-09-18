@@ -24,7 +24,7 @@ class PostgresDialect
 
         $where = $this->_buildWhereQuery($query->whereClauses);
         if ($where) {
-            $sql .= ' WHERE ' . $where;
+            $sql .= ' WHERE ' . (stripos($where, 'OR') ? '(' . $where . ')' : $where);
         }
 
         if ($query->order) {
@@ -60,8 +60,7 @@ class PostgresDialect
 
     function _buildWhereQueryPart($whereClause)
     {
-        $wherePart = is_array($whereClause->where) ? implode(' AND ', $this->_buildWhereKeys($whereClause->where)) : $whereClause->where;
-        return stripos($wherePart, 'OR') ? '(' . $wherePart . ')' : $wherePart;
+        return is_array($whereClause->where) ? implode(' AND ', $this->_buildWhereKeys($whereClause->where)) : $whereClause->where;
     }
 
     private function _buildWhereKeys($params)
