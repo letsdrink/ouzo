@@ -156,7 +156,7 @@ class FrontController
     private function _logRequest()
     {
         self::$userId = isset($_SESSION['id_user_ses']) ? $_SESSION['id_user_ses'] : null;
-        Logger::getLogger(__CLASS__)->info('[Request:/' . $this->_uri->getRawController() . '/' . $this->_uriAction . ']', array_merge($_POST, $_GET, $this->_uri->getParams()));
+        Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', array($this->_uri->getRawController(), $this->_uriAction));
     }
 
     private function _isRedirect()

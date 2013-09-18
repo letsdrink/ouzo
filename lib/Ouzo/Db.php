@@ -108,7 +108,7 @@ class Db
 
             $obj->_bindQueryParams($params);
 
-            Logger::getLogger(__CLASS__)->info($query, $params);
+            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($query, Objects::toString($params)));
 
             if (!$obj->query->execute()) {
                 throw new DbException('Exception: query: ' . $query . ' with params: (' . implode(', ', $params) . ') failed: ' . $obj->lastErrorMessage());
