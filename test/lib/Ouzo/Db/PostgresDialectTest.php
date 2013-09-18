@@ -186,6 +186,24 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldWrapConditionsWithOrInParenthesis()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->where(array('name' => 'bob', 'id' => '1'));
+        $query->where('a = 1 or b = 2');
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ? AND (a = 1 or b = 2)', $sql);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnSelectWithWhereIn()
     {
         // given
