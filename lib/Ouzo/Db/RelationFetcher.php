@@ -2,7 +2,6 @@
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
-use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
@@ -22,7 +21,8 @@ class RelationFetcher
         $this->_foreignKey = $foreignKey;
         $this->_relation = $relation;
 
-        $this->_relationObject = Model::newInstance('\Model\\' . $this->_relation);
+        $relationClassName = '\Model\\' . $this->_relation;
+        $this->_relationObject = $relationClassName::newInstance();
         $relationPrimaryKey = $this->_relationObject->getIdName();
         $this->_referencedColumn = $referencedColumn ? $referencedColumn : $relationPrimaryKey;
         $this->_allowMissing = $allowMissing;

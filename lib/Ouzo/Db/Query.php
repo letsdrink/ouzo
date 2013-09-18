@@ -1,10 +1,13 @@
 <?php
 namespace Ouzo\Db;
 
+use PDO;
+
 class Query
 {
     public $table;
     public $selectColumns;
+    public $selectType = PDO::FETCH_ASSOC;
     public $joinTable;
     public $joinKey;
     public $idName;

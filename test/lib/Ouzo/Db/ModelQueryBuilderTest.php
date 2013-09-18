@@ -7,6 +7,7 @@ use Model\Product;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Stats;
 use Ouzo\Tests\DbTransactionalTestCase;
+use Ouzo\Utilities\Objects;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
 {
@@ -166,6 +167,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertCount(1, $products);
         $this->assertEquals($product->getId(), $products[0]->getId());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStoreJoinedModelInAttribute()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        Product::create(array('name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()));
+
+        //when
+        $products = Product::join('Category', 'id_category', 'id_category', 'category')->fetchAll();
+
+        //echo Objects::toString(Stats::queries());
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertEquals($category, $products[0]->category);
     }
 
     /**

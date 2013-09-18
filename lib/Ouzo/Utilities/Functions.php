@@ -80,6 +80,20 @@ class Functions
         };
     }
 
+    public static function removePrefix($prefix)
+    {
+        return function ($string) use($prefix) {
+            return Strings::removePrefix($string, $prefix);
+        };
+    }
+
+    public static function startsWith($prefix)
+    {
+        return function ($string) use($prefix) {
+            return Strings::startsWith($string, $prefix);
+        };
+    }
+
     public static function formatDateTime($format = Date::DEFAULT_TIME_FORMAT)
     {
         return function ($date) use($format) {

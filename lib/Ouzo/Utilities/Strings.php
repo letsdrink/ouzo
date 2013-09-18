@@ -27,7 +27,7 @@ class Strings
 
     public static function removePrefix($string, $prefix)
     {
-        if (substr($string, 0, strlen($prefix)) == $prefix) {
+        if (self::startsWith($string, $prefix)) {
             $string = substr($string, strlen($prefix));
         }
         return $string;
@@ -38,5 +38,10 @@ class Strings
         return array_reduce($prefixes, function ($string, $prefix) {
             return Strings::removePrefix($string, $prefix);
         }, $string);
+    }
+
+    public static function startsWith($string, $prefix)
+    {
+        return substr($string, 0, strlen($prefix)) == $prefix;
     }
 }

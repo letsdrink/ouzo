@@ -89,7 +89,7 @@ class Model extends Validatable
     {
         $objects = array();
         foreach ($results as $row) {
-            $objects[] = static::newInstanceOfCalledClass($row);
+            $objects[] = static::newInstance($row);
         }
         return $objects;
     }
@@ -172,7 +172,7 @@ class Model extends Validatable
 
     public static function getFields()
     {
-        $model = static::newInstanceOfCalledClass();
+        $model = static::newInstance();
         return $model->_getFields();
     }
 
@@ -183,7 +183,7 @@ class Model extends Validatable
 
     public static function getFieldsWithoutPrimaryKey()
     {
-        $model = static::newInstanceOfCalledClass();
+        $model = static::newInstance();
         return $model->_getFieldsWithoutPrimaryKey();
     }
 
@@ -200,17 +200,9 @@ class Model extends Validatable
     /**
      * @return static
      */
-    private static function newInstanceOfCalledClass($attributes = array())
+    public static function newInstance($attributes = array())
     {
         $className = get_called_class();
-        return self::newInstance($className, $attributes);
-    }
-
-    /**
-     * @return static
-     */
-    public static function newInstance($className, $attributes = array())
-    {
         return new $className($attributes);
     }
 
@@ -227,17 +219,17 @@ class Model extends Validatable
      */
     static public function select($columns)
     {
-        $modelQueryBuilder = new ModelQueryBuilder(static::newInstanceOfCalledClass());
+        $modelQueryBuilder = new ModelQueryBuilder(static::newInstance());
         return $modelQueryBuilder->select($columns);
     }
 
     /**
      * @return ModelQueryBuilder
      */
-    static public function join($class, $joinKey, $originalKey = null)
+    static public function join($class, $joinKey, $originalKey = null, $destinationField = null)
     {
-        $modelQueryBuilder = new ModelQueryBuilder(static::newInstanceOfCalledClass());
-        return $modelQueryBuilder->join($class, $joinKey, $originalKey);
+        $modelQueryBuilder = new ModelQueryBuilder(static::newInstance());
+        return $modelQueryBuilder->join($class, $joinKey, $originalKey, $destinationField);
     }
 
     /**
@@ -245,14 +237,14 @@ class Model extends Validatable
      */
     static public function where($params = '', $values = null)
     {
-        $obj = static::newInstanceOfCalledClass();
+        $obj = static::newInstance();
         $modelQueryBuilder = new ModelQueryBuilder($obj, $obj->_db);
         return $modelQueryBuilder->where($params, $values);
     }
 
     static public function count($where = null, $bindValues = null)
     {
-        return static::newInstanceOfCalledClass()->where($where, $bindValues)->count();
+        return static::newInstance()->where($where, $bindValues)->count();
     }
 
     /**
@@ -260,7 +252,7 @@ class Model extends Validatable
      */
     static public function find($where, $whereValues, $orderBy = array(), $limit = 0, $offset = 0)
     {
-        return static::newInstanceOfCalledClass()->where($where, $whereValues)->order($orderBy)->limit($limit)->offset($offset)->fetchAll();
+        return static::newInstance()->where($where, $whereValues)->order($orderBy)->limit($limit)->offset($offset)->fetchAll();
     }
 
     /**
@@ -268,7 +260,7 @@ class Model extends Validatable
      */
     static public function findById($value)
     {
-        return static::newInstanceOfCalledClass()->_findById($value);
+        return static::newInstance()->_findById($value);
     }
 
     /**
@@ -276,7 +268,7 @@ class Model extends Validatable
      */
     static public function create($attributes)
     {
-        $instance = static::newInstanceOfCalledClass($attributes);
+        $instance = static::newInstance($attributes);
         if (!$instance->isValid()) {
             throw new Exception("Validation has failed for object: " . $instance->inspect() . "\nErrors: " . Objects::toString($instance->getErrors()));
         }
@@ -291,7 +283,7 @@ class Model extends Validatable
      */
     static public function createWithoutValidation($attributes)
     {
-        $instance = static::newInstanceOfCalledClass($attributes);
+        $instance = static::newInstance($attributes);
         $instance->insert();
         return $instance;
     }

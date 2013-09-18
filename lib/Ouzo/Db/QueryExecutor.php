@@ -113,9 +113,7 @@ class QueryExecutor
 
     private function _buildQuery()
     {
-        if (!empty($this->_query->selectColumns)) {
-            $this->_fetchStyle = PDO::FETCH_NUM;
-        }
+        $this->_fetchStyle = $this->_query->selectType;
         $this->_addBindValues();
         $this->_sql = $this->_adapter->buildQuery($this->_query);
     }

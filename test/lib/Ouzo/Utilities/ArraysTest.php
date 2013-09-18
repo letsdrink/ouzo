@@ -161,16 +161,33 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldFilterByKeys()
+    public function shouldFilterByAllowedKeys()
     {
         //given
         $array = array('a' => 1, 'b' => 2, 'c' => 3);
 
         //when
-        $filtered = Arrays::filterByKeys($array, array('a', 'b'));
+        $filtered = Arrays::filterByAllowedKeys($array, array('a', 'b'));
 
         //then
         $this->assertEquals(array('a' => 1, 'b' => 2), $filtered);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFilterByKeys()
+    {
+        //given
+        $array = array('a1' => 1, 'a2' => 2, 'c' => 3);
+
+        //when
+        $filtered = Arrays::filterByKeys($array, function($elem){
+            return $elem[0] == 'a';
+        });
+
+        //then
+        $this->assertEquals(array('a1' => 1, 'a2' => 2), $filtered);
     }
 
     /**
