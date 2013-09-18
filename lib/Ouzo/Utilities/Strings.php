@@ -32,4 +32,11 @@ class Strings
         }
         return $string;
     }
+
+    public static function removePrefixes($string, array $prefixArray)
+    {
+        return array_map(function ($prefix) use ($string) {
+            return self::removePrefix($string, $prefix);
+        }, $prefixArray);
+    }
 }
