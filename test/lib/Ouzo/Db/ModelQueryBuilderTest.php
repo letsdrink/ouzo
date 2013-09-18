@@ -181,11 +181,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //when
         $products = Product::join('Category', 'id_category', 'id_category', 'category')->fetchAll();
 
-        //echo Objects::toString(Stats::queries());
-
         //then
         $this->assertCount(1, $products);
         $this->assertEquals($category, $products[0]->category);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotStoreJoinedModelInAttributeIfNotFound()
+    {
+        //given
+        Product::create(array('name' => 'sony', 'description' => 'desc'));
+
+        //when
+        $products = Product::join('Category', 'id_category', 'id_category', 'category')->fetchAll();
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertNull($products[0]->category);
     }
 
     /**

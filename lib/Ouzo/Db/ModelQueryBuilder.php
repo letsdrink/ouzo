@@ -114,9 +114,10 @@ class ModelQueryBuilder
             if ($this->_joinDestinationField) {
                 $joinedTableName = $this->_joinModel->getTableName();
                 $joinedAttributes = ColumnAliasHandler::extractAttributesForPrefix($row, "{$joinedTableName}_");
-
-                $destinationField = $this->_joinDestinationField;
-                $model->$destinationField = $this->_joinModel->newInstance($joinedAttributes);
+                if ($joinedAttributes[$this->_joinModel->getIdName()]) {
+                    $destinationField = $this->_joinDestinationField;
+                    $model->$destinationField = $this->_joinModel->newInstance($joinedAttributes);
+                }
             }
         }
         return $this->_transform($models);
