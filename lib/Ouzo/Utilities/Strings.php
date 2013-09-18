@@ -36,7 +36,7 @@ class Strings
     public static function removePrefixes($string, array $prefixes)
     {
         return array_reduce($prefixes, function ($string, $prefix) {
-            return self::removePrefix($string, $prefix);
+            return Strings::removePrefix($string, $prefix);
         }, $string);
     }
 }
