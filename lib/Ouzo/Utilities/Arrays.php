@@ -108,4 +108,9 @@ class Arrays
         });
         return $elements;
     }
+
+    public static function toArray($elements)
+    {
+        return $elements ? is_array($elements) ? $elements : array($elements) : array();
+    }
 }
