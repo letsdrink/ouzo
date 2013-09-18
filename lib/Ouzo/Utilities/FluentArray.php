@@ -33,6 +33,12 @@ class FluentArray
         return $this;
     }
 
+    public function filterByKeys($function)
+    {
+        $this->_array = Arrays::filterByKeys($this->_array, $function);
+        return $this;
+    }
+
     public function unique()
     {
         $this->_array = array_unique($this->_array);

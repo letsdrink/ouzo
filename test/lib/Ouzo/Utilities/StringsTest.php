@@ -63,4 +63,34 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('Rest', $withoutPrefix);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTrueIfStringStartsWithPrefix()
+    {
+        //given
+        $string = 'prefixRest';
+
+        //when
+        $result = Strings::startsWith($string, 'prefix');
+
+        //then
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFalseIfStringDoesNotStartsWithPrefix()
+    {
+        //given
+        $string = 'prefixRest';
+
+        //when
+        $result = Strings::startsWith($string, 'invalid');
+
+        //then
+        $this->assertFalse($result);
+    }
 }

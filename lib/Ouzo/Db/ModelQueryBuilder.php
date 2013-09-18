@@ -4,22 +4,31 @@ namespace Ouzo\Db;
 use Ouzo\Db;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Strings;
+use PDO;
 
 class ModelQueryBuilder
 {
     private $_db;
     private $_model;
+    private $_joinModel;
+    private $_joinDestinationField;
     private $_transformers;
     private $_query;
+    private $_selectModel = true;
 
-    public function __construct($model, $db = null)
+    public function __construct(Model $model, $db = null)
     {
         $this->_db = $db ? $db : Db::getInstance();
         $this->_model = $model;
         $this->_transformers = array();
 
         $this->_query = new Query();
-        $this->_query->table = $model->getTableName();
+        $tableName = $model->getTableName();
+        $this->_query->table = $tableName;
+
+        $this->_query->selectColumns = ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $model->_getFields(), "main");
     }
 
     /**
@@ -72,7 +81,7 @@ class ModelQueryBuilder
         if (!$result) {
             return null;
         }
-        return $this->_query->selectColumns ? $result : Arrays::firstOrNull($this->_transform($this->_model->convert(array($result))));
+        return !$this->_selectModel ? $result : Arrays::firstOrNull($this->_processResults(array($result)));
     }
 
     /**
@@ -81,7 +90,7 @@ class ModelQueryBuilder
     public function fetchAll()
     {
         $result = QueryExecutor::prepare($this->_db, $this->_query)->fetchAll();
-        return $this->_query->selectColumns ? $result : $this->_transform($this->_model->convert($result));
+        return !$this->_selectModel ? $result : $this->_processResults($result);
     }
 
     private function _transform($results)
@@ -90,6 +99,27 @@ class ModelQueryBuilder
             $transformer->transform($results);
         }
         return $results;
+    }
+
+    private function _processResults($results)
+    {
+        $tableName = $this->_model->getTableName();
+
+        $models = array();
+        foreach ($results as $row) {
+            $mainAttributes = ColumnAliasHandler::extractAttributesForPrefix($row, "{$tableName}_");
+            $model = $this->_model->newInstance($mainAttributes);
+            $models[] = $model;
+
+            if ($this->_joinDestinationField) {
+                $joinedTableName = $this->_joinModel->getTableName();
+                $joinedAttributes = ColumnAliasHandler::extractAttributesForPrefix($row, "{$joinedTableName}_");
+
+                $destinationField = $this->_joinDestinationField;
+                $model->$destinationField = $this->_joinModel->newInstance($joinedAttributes);
+            }
+        }
+        return $this->_transform($models);
     }
 
     public function deleteAll()
@@ -108,12 +138,17 @@ class ModelQueryBuilder
     /**
      * @return ModelQueryBuilder
      */
-    public function join($joinModel, $joinKey, $originalKey = null)
+    public function join($joinModel, $joinKey, $originalKey = null, $destinationField = null)
     {
-        $model = Model::newInstance('\Model\\' . $joinModel);
-        $this->_query->joinTable = $model->getTableName();
+        $relationClassName = '\Model\\' . $joinModel;
+        $this->_joinDestinationField = $destinationField;
+        $this->_joinModel = $relationClassName::newInstance();
+        $this->_query->joinTable = $this->_joinModel->getTableName();
         $this->_query->joinKey = $joinKey;
         $this->_query->idName = $originalKey ? $originalKey : $this->_model->getIdName();
+
+        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$this->_query->joinTable}_", $this->_joinModel->_getFields(), "joined");
+
         return $this;
     }
 
@@ -131,7 +166,9 @@ class ModelQueryBuilder
      */
     public function select($columns)
     {
+        $this->_selectModel = false;
         $this->_query->selectColumns = is_array($columns) ? $columns : array($columns);
+        $this->_query->selectType = PDO::FETCH_NUM;
         return $this;
     }
 
