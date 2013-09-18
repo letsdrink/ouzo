@@ -13,44 +13,14 @@ class SampleConfig
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldReturnSingleton()
-    {
-        //when
-        $config = Config::load();
-
-        //then
-        $this->assertInstanceOf('\Ouzo\Config', $config);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldGetAllConfig()
-    {
-        //given
-        $config = Config::load();
-
-        //when
-        $all = $config->getAllConfig();
-
-        //then
-        $this->assertArrayHasKey('db', $all);
-        $this->assertArrayHasKey('global', $all);
-    }
 
     /**
      * @test
      */
     public function shouldReturnEmptyArrayForMissingSections()
     {
-        //given
-        $config = Config::load();
-
         //when
-        $section = $config->getConfig('missing');
+        $section = Config::getValue('missing');
 
         //then
         $this->assertEquals(array(), $section);
@@ -62,13 +32,43 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     public function shouldReadSampleConfig()
     {
         //given
-        $config = Config::registerConfig(new SampleConfig);
+        Config::registerConfig(new SampleConfig);
 
         //when
-        $value = $config->getConfig('default');
+        $value = Config::getValue('default');
 
         //then
         $this->assertEquals('SampleAuth', $value['auth']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnConfigValue()
+    {
+        //given
+        Config::registerConfig(new SampleConfig);
+
+        //when
+        $value = Config::getValue('default');
+
+        //then
+        $this->assertEquals('SampleAuth', $value['auth']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNestedConfigValue()
+    {
+        //given
+        Config::registerConfig(new SampleConfig);
+
+        //when
+        $value = Config::getValue('default', 'auth');
+
+        //then
+        $this->assertEquals('SampleAuth', $value);
     }
 
     /**
@@ -79,10 +79,10 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         //given
         $this->_createSampleConfigFile();
         include_once '/tmp/SampleConfigFile.php';
-        $config = Config::registerConfig(new SampleConfigFile);
+        Config::registerConfig(new SampleConfigFile);
 
         //when
-        $value = $config->getConfig('default');
+        $value = Config::getValue('default');
         $this->_deleteSampleConfigFile();
 
         //then
@@ -98,11 +98,11 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->_createSampleConfigFile();
         include_once '/tmp/SampleConfigFile.php';
         Config::registerConfig(new SampleConfigFile);
-        $config = Config::registerConfig(new SampleConfig);
+        Config::registerConfig(new SampleConfig);
 
 
         //when
-        $value = $config->getConfig('default');
+        $value = Config::getValue('default');
         $this->_deleteSampleConfigFile();
 
         //then

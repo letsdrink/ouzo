@@ -50,17 +50,26 @@ class Config
         return self::$_configInstance;
     }
 
-    public function getConfig($section)
+    /**
+     * Sample usage:
+     *  getValue('system_name') - will return $config['system_name']
+     *  getValue('db', 'host') - will return $config['db']['host']
+     *
+     * If value does not exist it will return empty array.
+     *
+     * @return mixed
+     */
+    public static function getValue()
     {
-        return Arrays::getValue($this->_config, $section, array());
+        $configValue = self::load()->_config;
+        $args = func_get_args();
+        foreach ($args as $arg) {
+            $configValue = Arrays::getValue($configValue, $arg, array());
+        }
+        return $configValue;
     }
 
-    public function getAllConfig()
-    {
-        return $this->_config;
-    }
-
-    static public function load()
+    private static function load()
     {
         if (!self::isLoaded()) {
             self::$_configInstance = new self();

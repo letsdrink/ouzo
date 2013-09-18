@@ -13,7 +13,7 @@ class Session
     static public function startSession()
     {
         if (!empty($_SERVER["REQUEST_URI"])) {
-            $config = Config::load()->getConfig('global');
+            $config = Config::getValue('global');
             $path = "/tmp" . str_replace('panel2.0', '', $config['prefix_system']) . "thulium_sess";
 
             if (!is_dir($path)) {

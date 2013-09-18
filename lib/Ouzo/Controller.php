@@ -50,7 +50,7 @@ class Controller
 
     public static function getPrefixToOldPanel()
     {
-        $config = Config::load()->getConfig('global');
+        $config = Config::getValue('global');
         return str_replace('panel2.0', '', $config['prefix_system']);
     }
 

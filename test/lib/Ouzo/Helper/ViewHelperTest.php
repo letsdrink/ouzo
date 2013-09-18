@@ -64,7 +64,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     public function shouldReturnHtmlToCssFile()
     {
         //given
-        $defaults = Config::load()->getConfig('global');
+        $defaults = Config::getValue('global');
 
         //when
         $expected = '<link rel="stylesheet" href="' . $defaults['prefix_system'] . '/public/css/style.css?' . $defaults['suffix_cache'] . '" type="text/css" />' . PHP_EOL;
@@ -80,7 +80,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     public function shouldReturnHtmlToJsFile()
     {
         //given
-        $defaults = Config::load()->getConfig('global');
+        $defaults = Config::getValue('global');
 
         //when
         $expected = '<script type="text/javascript" src="' . $defaults['prefix_system'] . '/public/js/test.js?' . $defaults['suffix_cache'] . '"></script>' . PHP_EOL;
@@ -96,7 +96,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     public function shouldAddCacheSuffix()
     {
         //given
-        $defaults = Config::load()->getConfig('global');
+        $defaults = Config::getValue('global');
 
         //when
         $expected = '<script type="text/javascript" src="' . $defaults['prefix_system'] . '/public/js/test.js?' . $defaults['suffix_cache'] . '"></script>' . PHP_EOL;

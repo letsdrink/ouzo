@@ -28,7 +28,7 @@ class Db
     public function __construct($loadDefault = true)
     {
         if ($loadDefault) {
-            $configDb = Config::load()->getConfig('db');
+            $configDb = Config::getValue('db');
             if (!empty($configDb))
                 $this->connectDb($configDb);
         }

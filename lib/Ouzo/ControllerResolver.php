@@ -5,7 +5,7 @@ class ControllerResolver
 {
     function __construct($controllerPath = "\\Controller\\")
     {
-        $globalConfig = Config::load()->getConfig('global');
+        $globalConfig = Config::getValue('global');
         $this->_defaultAction = $globalConfig['action'];
         $this->controllerPath = $controllerPath;
         $this->_uri = new Uri();

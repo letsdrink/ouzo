@@ -18,7 +18,7 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
         //given
         $controllerResolver = new ControllerResolver('\\Ouzo\\');
 
-        $config = Config::load()->getConfig('global');
+        $config = Config::getValue('global');
         $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/simple_test/action1";
 
         //when
@@ -36,7 +36,7 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
         //given
         $controllerResolver = new ControllerResolver('\\Ouzo\\');
 
-        $config = Config::load()->getConfig('global');
+        $config = Config::getValue('global');
         $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/simple_test";
 
         //when

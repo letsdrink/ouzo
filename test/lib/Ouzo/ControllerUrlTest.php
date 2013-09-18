@@ -10,7 +10,7 @@ class ControllerUrlTest extends PHPUnit_Framework_TestCase
     public function shouldCreateCorrectUrl()
     {
         //given
-        $defaults = Config::load()->getConfig('global');
+        $defaults = Config::getValue('global');
 
         //when
         $url = ControllerUrl::createUrl(array('controller' => 'users', 'action' => 'add'));
@@ -25,7 +25,7 @@ class ControllerUrlTest extends PHPUnit_Framework_TestCase
     public function shouldCreateCorrectUrlFromString()
     {
         //given
-        $defaults = Config::load()->getConfig('global');
+        $defaults = Config::getValue('global');
 
         //when
         $url = ControllerUrl::createUrl(array('string' => '/users/add'));
@@ -40,7 +40,7 @@ class ControllerUrlTest extends PHPUnit_Framework_TestCase
     public function shouldCreateCorrectUrlWithExtraParams()
     {
         //given
-        $defaults = Config::load()->getConfig('global');
+        $defaults = Config::getValue('global');
 
         //when
         $url = ControllerUrl::createUrl(array(

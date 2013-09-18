@@ -7,7 +7,7 @@ class ControllerUrl
 {
     public static function createUrl(array $params)
     {
-        $defaults = Config::load()->getConfig('global');
+        $defaults = Config::getValue('global');
         if (!empty($params['controller']) && !empty($params['action'])) {
             $returnUrl = $defaults['prefix_system'];
             $returnUrl .= '/' . $params['controller'];

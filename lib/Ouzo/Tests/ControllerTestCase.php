@@ -13,7 +13,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function __construct()
     {
-        $config = Config::load()->getConfig('global');
+        $config = Config::getValue('global');
         $this->_prefixSystem = $config['prefix_system'];
 
         $this->_redirectHandler = new MockRedirectHandler();
