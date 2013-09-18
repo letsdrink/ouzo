@@ -69,4 +69,9 @@ class SyslogLogger implements LoggerInterface
     {
         return Config::getValue('debug');
     }
+
+    function setName($name)
+    {
+        $this->_name = $name;
+    }
 }
