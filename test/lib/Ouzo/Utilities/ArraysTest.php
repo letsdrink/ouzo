@@ -247,4 +247,45 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals(array($product3, $product1, $product2), $sorted);
     }
+
+    /**
+     * @test
+     */
+    public function toArrayShouldReturnSameArrayForArray()
+    {
+        // given
+        $array = array(1, 2, 3);
+
+        // when
+        $result = Arrays::toArray($array);
+
+        // then
+        $this->assertEquals($array, $result);
+
+    }
+
+    /**
+     * @test
+     */
+    public function toArrayShouldReturnArrayForNonArray()
+    {
+        // when
+        $result = Arrays::toArray('test');
+
+        // then
+        $this->assertEquals(array('test'), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toArrayShouldReturnEmptyArrayForNull()
+    {
+        // when
+        $result = Arrays::toArray(null);
+
+        // then
+        $this->assertEquals(array(), $result);
+    }
+
 }

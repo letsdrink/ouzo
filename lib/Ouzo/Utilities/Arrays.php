@@ -128,4 +128,9 @@ class Arrays
     {
         return array_filter($array, $function);
     }
+
+    public static function toArray($elements)
+    {
+        return $elements ? is_array($elements) ? $elements : array($elements) : array();
+    }
 }
