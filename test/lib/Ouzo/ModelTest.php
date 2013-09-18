@@ -187,9 +187,7 @@ class ModelTest extends DbTransactionalTestCase
         try {
             Product::findById($invalidId);
             $this->fail();
-        }
-
-        // then
+        } // then
         catch (DbException $e) {
         }
     }
@@ -318,5 +316,20 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertStringStartsWith('Model\Product', $string);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotIncludeBlankPrimaryKeyInFields()
+    {
+        //given
+        $model = new Model(array('table' => 't_example', 'fields' => array('field1')));
+
+        //when
+        $fields = $model->_getFields();
+
+        //then
+        $this->assertEquals(array('field1'), $fields);
     }
 }
