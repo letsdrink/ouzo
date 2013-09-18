@@ -33,10 +33,10 @@ class Strings
         return $string;
     }
 
-    public static function removePrefixes($string, array $prefixArray)
+    public static function removePrefixes($string, array $prefixes)
     {
-        return array_map(function ($prefix) use ($string) {
+        return array_reduce($prefixes, function ($string, $prefix) {
             return self::removePrefix($string, $prefix);
-        }, $prefixArray);
+        }, $string);
     }
 }

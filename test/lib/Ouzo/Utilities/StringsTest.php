@@ -48,4 +48,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('Rest', $withoutPrefix);
     }
+
+    /**
+     * @test
+     */
+    public function shouldRemovePrefixes()
+    {
+        //given
+        $string = 'prefixRest';
+
+        //when
+        $withoutPrefix = Strings::removePrefixes($string, array('pre', 'fix'));
+
+        //then
+        $this->assertEquals('Rest', $withoutPrefix);
+    }
 }
