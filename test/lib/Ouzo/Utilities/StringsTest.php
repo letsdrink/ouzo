@@ -33,4 +33,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('lannisters_always_pay_their_debts', $underscored);
     }
+
+    /**
+     * @test
+     */
+    public function shouldRemovePrefix()
+    {
+        //given
+        $string = 'prefixRest';
+
+        //when
+        $withoutPrefix = Strings::removePrefix($string, 'prefix');
+
+        //then
+        $this->assertEquals('Rest', $withoutPrefix);
+    }
 }

@@ -24,4 +24,12 @@ class Strings
         $replacement = array('a', 'z', 's', 'z', 'e', 'c', 'n', 'o', 'l', 'A', 'Z', 'S', 'Z', 'E', 'C', 'N', 'O', 'L');
         return str_replace($polishChars, $replacement, $string);
     }
+
+    public static function removePrefix($string, $prefix)
+    {
+        if (substr($string, 0, strlen($prefix)) == $prefix) {
+            $string = substr($string, strlen($prefix));
+        }
+        return $string;
+    }
 }
