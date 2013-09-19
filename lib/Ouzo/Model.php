@@ -100,8 +100,11 @@ class Model extends Validatable
     {
         $primaryKey = $this->_primaryKeyName;
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
-        $this->$primaryKey = $this->_db->insert($this->_tableName, $attributes, $this->_sequenceName);
-        return $this->$primaryKey;
+        $value = $this->_db->insert($this->_tableName, $attributes, $this->_sequenceName);
+        if ($primaryKey) {
+            $this->$primaryKey = $value;
+        }
+        return $value;
     }
 
     public function update()
@@ -191,6 +194,9 @@ class Model extends Validatable
 
     public function __get($name)
     {
+        if (empty($name)) {
+            throw new Exception('Illegal attribute: field name for Model cannot be empty');
+        }
         return isset($this->_attributes[$name]) ? $this->_attributes[$name] : null;
     }
 
