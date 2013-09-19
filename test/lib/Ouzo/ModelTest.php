@@ -14,7 +14,6 @@ class ModelTest extends DbTransactionalTestCase
      */
     public function shouldThrowExceptionWhenTableEmptyInPrepareParameters()
     {
-        //when
         new Model(array('table' => ''));
     }
 
@@ -24,7 +23,6 @@ class ModelTest extends DbTransactionalTestCase
      */
     public function shouldThrowExceptionWhenFieldsEmptInPrepareParameters()
     {
-        //when
         new Model(array('table' => 't_example', 'fields' => ''));
     }
 
@@ -115,7 +113,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldUpdateAttributesToNull()
     {
         //given
-        $product = Product::create(array('name' => 'Sport', 'description' => 'dsc'));
+        $product = Product::create(array('name' => 'Sport', 'price' => '123'));
         $product->assignAttributes(array('description' => null));
 
         // when
@@ -123,7 +121,7 @@ class ModelTest extends DbTransactionalTestCase
 
         // then
         $actual = Product::findById($product->getId());
-        $this->assertNull($actual->description);
+        $this->assertNull($actual->price);
     }
 
     /**
@@ -331,5 +329,51 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals(array('field1'), $fields);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnValueByMagicGetter()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport'));
+
+        //when
+        $name = $product->name;
+
+        //then
+        $this->assertEquals('Sport', $name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInvokeGetterWhenFieldNotFound()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport'));
+
+        //when
+        $description = $product->description;
+
+        //then
+        $this->assertEquals($product->getDescription(), $description);
+    }
+
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullWhenNoGetterMethod()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport'));
+
+        //when
+        $value = $product->missing_field;
+
+        //then
+        $this->assertNull($value);
     }
 }

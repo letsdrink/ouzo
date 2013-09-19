@@ -25,4 +25,8 @@ class Product extends Model
             $this->_errorFields[] = 'name';
         }
     }
+
+    public function getDescription() {
+        return 'This is product,';
+    }
 }

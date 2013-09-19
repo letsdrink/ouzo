@@ -191,7 +191,14 @@ class Model extends Validatable
 
     public function __get($name)
     {
-        return isset($this->_attributes[$name]) ? $this->_attributes[$name] : null;
+        if (isset($this->_attributes[$name])) {
+            return $this->_attributes[$name];
+        }
+        $methodName = 'get' . ucfirst($name);
+        if (method_exists($this, $methodName)) {
+            return $this->$methodName();
+        }
+        return null;
     }
 
     public function __set($name, $value)
