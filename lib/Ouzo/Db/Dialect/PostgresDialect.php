@@ -5,7 +5,7 @@ use Ouzo\Db\QueryType;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Joiner;
 
-class PostgresDialect extends Dialect
+class PostgresDialect implements Dialect
 {
     private $_query;
 
@@ -13,7 +13,7 @@ class PostgresDialect extends Dialect
     {
         $this->_query = $query;
 
-        $sql = $this->_buildQueryPrefix($query->type);
+        $sql = DialectUtil::buildQueryPrefix($query->type);
         $sql .= $this->select();
         $sql .= $this->from();
         $sql .= $this->join();
@@ -28,7 +28,7 @@ class PostgresDialect extends Dialect
     public function select()
     {
         if ($this->_query->type == QueryType::$SELECT) {
-            $sql = ' ' . (empty($this->_query->selectColumns) ? 'main.*' : Joiner::on(', ')->map($this->_addAliases())->join($this->_query->selectColumns));
+            $sql = ' ' . (empty($this->_query->selectColumns) ? 'main.*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
         } else if ($this->_query->type == QueryType::$COUNT) {
             $sql = ' count(*)';
         } else {
@@ -52,7 +52,7 @@ class PostgresDialect extends Dialect
 
     public function where()
     {
-        $where = $this->_buildWhereQuery($this->_query->whereClauses);
+        $where = DialectUtil::buildWhereQuery($this->_query->whereClauses);
         if ($where) {
             return ' WHERE ' . $where;
         }
