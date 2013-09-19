@@ -1,4 +1,5 @@
 <?php
+
 use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
 
@@ -230,6 +231,11 @@ class Form
     {
         return '</form>';
     }
+
+    public function getObject()
+    {
+        return $this->_object;
+    }
 }
 
 class AutoLabelForm
@@ -299,6 +305,11 @@ class AutoLabelForm
         if (in_array($id, $errorFields)) {
             $options['error'] = true;
         }
+    }
+
+    public function getObject()
+    {
+        return $this->_object;
     }
 }
 
