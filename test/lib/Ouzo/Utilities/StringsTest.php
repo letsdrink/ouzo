@@ -97,13 +97,43 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReturnFalseIfStringDoesNotStartsWithPrefix()
+    public function shouldReturnFalseIfStringDoesNotStartWithPrefix()
     {
         //given
         $string = 'prefixRest';
 
         //when
         $result = Strings::startsWith($string, 'invalid');
+
+        //then
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTrueIfStringEndsWithPrefix()
+    {
+        //given
+        $string = 'StringSuffix';
+
+        //when
+        $result = Strings::endsWith($string, 'Suffix');
+
+        //then
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFalseIfStringDoesNotEndWithPrefix()
+    {
+        //given
+        $string = 'String';
+
+        //when
+        $result = Strings::endsWith($string, 'Suffix');
 
         //then
         $this->assertFalse($result);

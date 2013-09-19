@@ -42,7 +42,7 @@ class RelationFetcher
 
         foreach ($results as $result) {
             $destinationField = $this->_destinationField;
-            $foreignKey = Objects::getFieldRecursively($result, $foreignKeyName);
+            $foreignKey = Objects::getValueRecursively($result, $foreignKeyName);
             if ($foreignKey) {
                 $result->$destinationField = $this->_findRelationObject($result, $relationObjectsById, $foreignKey);
             }

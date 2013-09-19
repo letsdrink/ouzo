@@ -191,14 +191,7 @@ class Model extends Validatable
 
     public function __get($name)
     {
-        if (isset($this->_attributes[$name])) {
-            return $this->_attributes[$name];
-        }
-        $methodName = 'get' . ucfirst($name);
-        if (method_exists($this, $methodName)) {
-            return $this->$methodName();
-        }
-        return null;
+        return isset($this->_attributes[$name]) ? $this->_attributes[$name] : null;
     }
 
     public function __set($name, $value)
@@ -315,7 +308,7 @@ class Model extends Validatable
 
     public function get($names, $default = null)
     {
-        return Objects::getFieldRecursively($this, $names, $default);
+        return Objects::getValueRecursively($this, $names, $default);
     }
 
 }

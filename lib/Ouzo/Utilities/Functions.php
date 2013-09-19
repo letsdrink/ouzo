@@ -20,7 +20,7 @@ class Functions
     public static function extractFieldRecursively($names)
     {
         return function ($object) use ($names) {
-            return Objects::getFieldRecursively($object, $names);
+            return Objects::getValueRecursively($object, $names);
         };
     }
 

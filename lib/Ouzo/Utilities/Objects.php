@@ -53,21 +53,48 @@ class Objects
         return $var ? 'true' : 'false';
     }
 
-    public static function getFieldRecursively($object, $names, $default = null)
+    public static function getValueRecursively($object, $names, $default = null)
     {
-        $model = $object instanceOf Model;
         $fields = explode('->', $names);
         foreach ($fields as $field) {
-            if (self::_fieldNotExistOrNull($model, $object, $field)) {
+            $object = self::getValueOrCallMethod($object, $field, null);
+            if ($object === null) {
                 return $default;
             }
-            $object = $object->$field;
         }
         return $object;
+    }
+
+    public static function getValueOrCallMethod($object, $field, $default)
+    {
+        $value = self::getValue($object, $field, null);
+        if ($value !== null) {
+            return $value;
+        }
+        return self::callMethod($object, $field, $default);
+    }
+
+    public static function getValue($object, $field, $default)
+    {
+        $model = $object instanceOf Model;
+        if (!self::_fieldNotExistOrNull($model, $object, $field)) {
+            return $object->$field;
+        }
+        return $default;
     }
 
     private static function _fieldNotExistOrNull($model, $object, $field)
     {
         return ($model && !$object->$field) || (!$model && !property_exists($object, $field));
+    }
+
+    public static function callMethod($object, $methodName, $default)
+    {
+        $name = rtrim($methodName, '()');
+        if (Strings::endsWith($methodName, '()') && method_exists($object, $name)) {
+            $result = $object->$name();
+            return $result === null ? $default : $result;
+        }
+        return $default;
     }
 }

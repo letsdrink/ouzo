@@ -15,7 +15,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $object->field1->field2 = 'value';
 
         //when
-        $result = Objects::getFieldRecursively($object, 'field1->field2');
+        $result = Objects::getValueRecursively($object, 'field1->field2');
 
         //then
         $this->assertEquals('value', $result);
@@ -30,7 +30,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $object = new stdClass();
 
         //when
-        $result = Objects::getFieldRecursively($object, 'field1->field2', 'default');
+        $result = Objects::getValueRecursively($object, 'field1->field2', 'default');
 
         //then
         $this->assertEquals('default', $result);
@@ -45,10 +45,26 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $object = new stdClass();
 
         //when
-        $result = Objects::getFieldRecursively($object, 'field1->field2');
+        $result = Objects::getValueRecursively($object, 'field1->field2');
 
         //then
         $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function getFieldRecursivelyShouldReturnNonNestedValue()
+    {
+        //given
+        $object = new stdClass();
+        $object->field1 = 'value';
+
+        //when
+        $result = Objects::getValueRecursively($object, 'field1');
+
+        //then
+        $this->assertEquals('value', $result);
     }
 
     /**

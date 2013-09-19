@@ -283,6 +283,20 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('default', $value);
     }
 
+    /**
+     * @test
+     */
+    public function getShouldInvokeMethod()
+    {
+        //given
+        $product = new Product(array());
+
+        //when
+        $description = $product->get('getDescription()');
+
+        //then
+        $this->assertEquals($product->getDescription(), $description);
+    }
 
     /**
      * @test
@@ -349,23 +363,7 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldInvokeGetterWhenFieldNotFound()
-    {
-        //given
-        $product = Product::create(array('name' => 'Sport'));
-
-        //when
-        $description = $product->description;
-
-        //then
-        $this->assertEquals($product->getDescription(), $description);
-    }
-
-
-    /**
-     * @test
-     */
-    public function shouldReturnNullWhenNoGetterMethod()
+    public function shouldReturnNullWhenFieldWasNotFound()
     {
         //given
         $product = Product::create(array('name' => 'Sport'));

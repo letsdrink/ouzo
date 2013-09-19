@@ -42,6 +42,11 @@ class Strings
 
     public static function startsWith($string, $prefix)
     {
-        return substr($string, 0, strlen($prefix)) == $prefix;
+        return strpos($string, $prefix) === 0;
+    }
+
+    public static function endsWith($string, $suffix)
+    {
+        return substr($string, -strlen($suffix)) === $suffix;
     }
 }
