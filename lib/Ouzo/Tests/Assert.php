@@ -73,6 +73,17 @@ class Assert
         return $this;
     }
 
+    public function hasSize($expectedSize)
+    {
+        $this->isArray();
+
+        $actualSize = sizeof($this->_actual);
+        if ($actualSize != $expectedSize) {
+            $this->fail("Expected size $expectedSize, but is $actualSize", $expectedSize);
+        }
+        return $this;
+    }
+
     private function fail($description, $expected = null)
     {
         throw new PHPUnit_Framework_ExpectationFailedException(

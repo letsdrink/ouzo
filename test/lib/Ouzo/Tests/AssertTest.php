@@ -36,6 +36,26 @@ class AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function hasSizeShouldAssertThatArrayHasSpecifiedSize()
+    {
+        Assert::thatArray(array())->hasSize(0);
+        Assert::thatArray(array('1'))->hasSize(1);
+        Assert::thatArray(array('1', '2'))->hasSize(2);
+    }
+
+    /**
+     * @test
+     */
+    public function hasSizeShouldThrowException()
+    {
+        $this->_assertNotHasSize(array(), 1);
+        $this->_assertNotHasSize(array('1'), 2);
+        $this->_assertNotHasSize(array('1', '2'), 0);
+    }
+
+    /**
+     * @test
+     */
     public function isEmptyShouldAssertThatArrayHasNoElements()
     {
         Assert::thatArray(array())->isEmpty();
@@ -150,5 +170,10 @@ class AssertTest extends PHPUnit_Framework_TestCase
     private function _assertNotIsNotEmpty()
     {
         call_user_func_array(array($this, '_assertNot'), array_merge(array('isNotEmpty'), func_get_args()));
+    }
+
+    private function _assertNotHasSize()
+    {
+        call_user_func_array(array($this, '_assertNot'), array_merge(array('hasSize'), func_get_args()));
     }
 }
