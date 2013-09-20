@@ -11,13 +11,13 @@ class Assert
     private $_actual;
     private $_actualString;
 
-    private function __construct($actual)
+    private function __construct(array $actual)
     {
         $this->_actual = $actual;
         $this->_actualString = Objects::toString($actual);
     }
 
-    public static function that($actual)
+    public static function thatArray(array $actual)
     {
         return new Assert($actual);
     }
@@ -27,10 +27,11 @@ class Assert
         $this->isArray();
 
         $elements = func_get_args();
-        foreach ($elements as $element) {
-            if (!in_array($element, $this->_actual)) {
-                $this->fail("Cannot find $element in {$this->_actualString}", $element);
-            }
+        $nonExistingElements = $this->_findNonExistingElements($elements);
+
+        if (!empty($nonExistingElements)) {
+            $nonExistingString = Objects::toString($nonExistingElements);
+            $this->fail("Cannot find expected {$nonExistingString} in actual {$this->_actualString}", $nonExistingElements);
         }
         return $this;
     }
@@ -40,18 +41,14 @@ class Assert
         $this->isArray();
 
         $elements = func_get_args();
+        $found = sizeof($elements) - sizeof($this->_findNonExistingElements($elements));
+
         $elementsString = Objects::toString($elements);
-        $found = 0;
-        foreach ($elements as $element) {
-            if (in_array($element, $this->_actual)) {
-                $found++;
-            }
-        }
         if (sizeof($elements) > sizeof($this->_actual) || sizeof($this->_actual) > $found) {
-            $this->fail("Not all of $elementsString were found in {$this->_actualString}", $elements);
+            $this->fail("Not all of expected $elementsString were found in actual {$this->_actualString}", $elements);
         }
         if (sizeof($elements) < sizeof($this->_actual) || sizeof($this->_actual) < $found) {
-            $this->fail("There more in $elementsString than in {$this->_actualString}", $elements);
+            $this->fail("There are more in expected $elementsString than in actual {$this->_actualString}", $elements);
         }
         return $this;
     }
@@ -61,7 +58,6 @@ class Assert
         $this->isArray();
 
         $elements = func_get_args();
-        $elementsString = Objects::toString($elements);
         $found = 0;
         $min = min(sizeof($this->_actual), sizeof($elements));
         for ($i = 0; $i < $min; $i++) {
@@ -69,8 +65,10 @@ class Assert
                 $found++;
             }
         }
+
         if (sizeof($elements) != $found || sizeof($this->_actual) != $found) {
-            $this->fail("Elements from $elementsString were not found in {$this->_actualString} or have different order", $elements);
+            $elementsString = Objects::toString($elements);
+            $this->fail("Elements from expected $elementsString were not found in actual {$this->_actualString} or have different order", $elements);
         }
         return $this;
     }
@@ -119,5 +117,16 @@ class Assert
             $this->fail("Object is empty");
         }
         return $this;
+    }
+
+    private function _findNonExistingElements($elements)
+    {
+        $nonExistingElements = array();
+        foreach ($elements as $element) {
+            if (!in_array($element, $this->_actual)) {
+                $nonExistingElements[] = $element;
+            }
+        }
+        return $nonExistingElements;
     }
 }

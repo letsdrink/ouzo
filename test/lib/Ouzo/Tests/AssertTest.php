@@ -1,30 +1,24 @@
 <?php
 namespace Ouzo\Tests;
 
+use Ouzo\Utilities\Objects;
 use PHPUnit_Framework_ExpectationFailedException;
 use PHPUnit_Framework_TestCase;
 
-class AssertTest extends PHPUnit_Framework_TestCase {
-
-    private function _assertNotContains() {
-        $args = func_get_args();
-        $array = array_shift($args);
-
-        $object = CatchException::when(Assert::that($array));
-        call_user_func_array(array($object, 'contains'), $args);
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-    }
+class AssertTest extends PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
      */
     public function containsShouldAssertThatArrayContainsElement()
     {
-        Assert::that(array('1'))->contains('1');
-        Assert::that(array('1', '2'))->contains('1');
-        Assert::that(array('1', '2', '3'))->contains('1');
-        Assert::that(array('1', '2', '3'))->contains('1', '2');
-        Assert::that(array('1', '2', '3'))->contains('1', '2', '3');
+        Assert::thatArray(array('1'))->contains('1');
+        Assert::thatArray(array('1', '2'))->contains('1');
+        Assert::thatArray(array('1', '2', '3'))->contains('1');
+        Assert::thatArray(array('1', '2', '3'))->contains('1', '2');
+        Assert::thatArray(array('1', '2', '3'))->contains('1', '2', '3');
+        Assert::thatArray(array('1', '2', '3'))->contains('3', '2', '1');
     }
 
     /**
@@ -44,7 +38,7 @@ class AssertTest extends PHPUnit_Framework_TestCase {
      */
     public function isEmptyShouldAssertThatArrayHasNoElements()
     {
-        Assert::that(array())->isEmpty();
+        Assert::thatArray(array())->isEmpty();
     }
 
     /**
@@ -52,11 +46,8 @@ class AssertTest extends PHPUnit_Framework_TestCase {
      */
     public function isEmptyShouldThrowException()
     {
-        CatchException::when(Assert::that(array('1')))->isEmpty();
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('1', '2')))->isEmpty();
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        $this->_assertNotIsEmpty(array('1'));
+        $this->_assertNotIsEmpty(array('1', '2'));
     }
 
     /**
@@ -64,8 +55,8 @@ class AssertTest extends PHPUnit_Framework_TestCase {
      */
     public function isNotEmptyShouldAssertThatArrayHasElements()
     {
-        Assert::that(array('1'))->isNotEmpty();
-        Assert::that(array('1', '2'))->isNotEmpty();
+        Assert::thatArray(array('1'))->isNotEmpty();
+        Assert::thatArray(array('1', '2'))->isNotEmpty();
     }
 
     /**
@@ -73,8 +64,7 @@ class AssertTest extends PHPUnit_Framework_TestCase {
      */
     public function isNotEmptyShouldThrowException()
     {
-        CatchException::when(Assert::that(array()))->isNotEmpty();
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        $this->_assertNotIsNotEmpty(array());
     }
 
     /**
@@ -82,9 +72,9 @@ class AssertTest extends PHPUnit_Framework_TestCase {
      */
     public function containsOnlyShouldAssertThatArrayContainsElement()
     {
-        Assert::that(array('1'))->containsOnly('1');
-        Assert::that(array('1', '2', '3'))->containsOnly('1', '2', '3');
-        Assert::that(array('1', '2', '3'))->containsOnly('3', '1', '2');
+        Assert::thatArray(array('1'))->containsOnly('1');
+        Assert::thatArray(array('1', '2', '3'))->containsOnly('1', '2', '3');
+        Assert::thatArray(array('1', '2', '3'))->containsOnly('3', '1', '2');
     }
 
     /**
@@ -92,29 +82,14 @@ class AssertTest extends PHPUnit_Framework_TestCase {
      */
     public function containsOnlyShouldThrowException()
     {
-        CatchException::when(Assert::that(array(null)))->contains('1');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('string')))->containsOnly('1');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('1', '2')))->containsOnly('3');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('1', '2')))->containsOnly('1', '3');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('1', '2')))->containsOnly('1', '2', '3');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('1', '2')))->containsOnly('1');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('1', '2', '3')))->containsOnly('1');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('1', '2', '3')))->containsOnly('1', '2');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        $this->_assertNotContainsOnly(array(null), '1');
+        $this->_assertNotContainsOnly(array('string'), '1');
+        $this->_assertNotContainsOnly(array(array('1', '2')), '3');
+        $this->_assertNotContainsOnly(array(array('1', '2')), '1', '3');
+        $this->_assertNotContainsOnly(array(array('1', '2')), '1', '2', '3');
+        $this->_assertNotContainsOnly(array(array('1', '2')), '1');
+        $this->_assertNotContainsOnly(array(array('1', '2', '3')), '1');
+        $this->_assertNotContainsOnly(array(array('1', '2', '3')), '1', '2');
     }
 
     /**
@@ -122,8 +97,8 @@ class AssertTest extends PHPUnit_Framework_TestCase {
      */
     public function containsExactlyShouldAssertThatArrayContainsElementInGivenOrder()
     {
-        Assert::that(array('1'))->containsExactly('1');
-        Assert::that(array('1', '2', '3'))->containsExactly('1', '2', '3');
+        Assert::thatArray(array('1'))->containsExactly('1');
+        Assert::thatArray(array('1', '2', '3'))->containsExactly('1', '2', '3');
     }
 
     /**
@@ -131,31 +106,49 @@ class AssertTest extends PHPUnit_Framework_TestCase {
      */
     public function containsExactlyShouldThrowException()
     {
-        CatchException::when(Assert::that(array(null)))->containsExactly('1');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        $this->_assertNotContainsExactly(array(null), '1');
+        $this->_assertNotContainsExactly(array('string'), '1');
+        $this->_assertNotContainsExactly(array(array('1', '2')), '3');
+        $this->_assertNotContainsExactly(array(array('1', '2')), '1', '3');
+        $this->_assertNotContainsExactly(array(array('1', '2')), '1', '2', '3');
+        $this->_assertNotContainsExactly(array(array('1', '2')), '1');
+        $this->_assertNotContainsExactly(array(array('1', '2', '3')), '1');
+        $this->_assertNotContainsExactly(array(array('1', '2', '3')), '1', '2');
+        $this->_assertNotContainsExactly(array(array('1', '2', '3')), '3', '1', '2');
+    }
 
-        CatchException::when(Assert::that(array('string')))->containsExactly('1');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    private function _assertNot()
+    {
+        $args = func_get_args();
+        $method = array_shift($args);
+        $array = array_shift($args);
 
-        CatchException::when(Assert::that(array('1', '2')))->containsExactly('3');
+        call_user_func_array(array(CatchException::when(Assert::thatArray($array)), $method), $args);
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
 
-        CatchException::when(Assert::that(array('1', '2')))->containsExactly('1', '3');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    private function _assertNotContains()
+    {
+        call_user_func_array(array($this, '_assertNot'), array_merge(array('contains'), func_get_args()));
+    }
 
-        CatchException::when(Assert::that(array('1', '2')))->containsExactly('1', '2', '3');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    private function _assertNotContainsOnly()
+    {
+        call_user_func_array(array($this, '_assertNot'), array_merge(array('containsOnly'), func_get_args()));
+    }
 
-        CatchException::when(Assert::that(array('1', '2')))->containsExactly('1');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    private function _assertNotContainsExactly()
+    {
+        call_user_func_array(array($this, '_assertNot'), array_merge(array('containsExactly'), func_get_args()));
+    }
 
-        CatchException::when(Assert::that(array('1', '2', '3')))->containsExactly('1');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    private function _assertNotIsEmpty()
+    {
+        call_user_func_array(array($this, '_assertNot'), array_merge(array('isEmpty'), func_get_args()));
+    }
 
-        CatchException::when(Assert::that(array('1', '2', '3')))->containsExactly('1', '2');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
-
-        CatchException::when(Assert::that(array('1', '2', '3')))->containsExactly('3', '1', '2');
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    private function _assertNotIsNotEmpty()
+    {
+        call_user_func_array(array($this, '_assertNot'), array_merge(array('isNotEmpty'), func_get_args()));
     }
 }
