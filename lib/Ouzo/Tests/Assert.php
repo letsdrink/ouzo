@@ -15,15 +15,6 @@ namespace Ouzo\Tests;
 class Assert
 {
 
-    private $_actual;
-    private $_actualString;
-
-    private function __construct(array $actual)
-    {
-        $this->_actual = $actual;
-        $this->_actualString = Objects::toString($actual);
-    }
-
     public static function thatArray(array $actual)
     {
         return ArrayAssert::that($actual);
