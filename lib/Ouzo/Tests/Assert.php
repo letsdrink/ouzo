@@ -35,7 +35,7 @@ class Assert
 
     public function contains()
     {
-        $this->isArray();
+        $this->isNotNull();
 
         $elements = func_get_args();
         $nonExistingElements = $this->_findNonExistingElements($elements);
@@ -49,7 +49,7 @@ class Assert
 
     public function containsOnly()
     {
-        $this->isArray();
+        $this->isNotNull();
 
         $elements = func_get_args();
         $found = sizeof($elements) - sizeof($this->_findNonExistingElements($elements));
@@ -66,7 +66,7 @@ class Assert
 
     public function containsExactly()
     {
-        $this->isArray();
+        $this->isNotNull();
 
         $elements = func_get_args();
         $found = 0;
@@ -86,7 +86,7 @@ class Assert
 
     public function hasSize($expectedSize)
     {
-        $this->isArray();
+        $this->isNotNull();
 
         $actualSize = sizeof($this->_actual);
         if ($actualSize != $expectedSize) {
@@ -103,7 +103,7 @@ class Assert
         );
     }
 
-    public function notNull()
+    public function isNotNull()
     {
         if ($this->_actual === null) {
             $this->fail("Object is null");
@@ -111,19 +111,9 @@ class Assert
         return $this;
     }
 
-    public function isArray()
-    {
-        $this->notNull();
-
-        if (!is_array($this->_actual)) {
-            $this->fail("Object is not an array");
-        }
-        return $this;
-    }
-
     public function isEmpty()
     {
-        $this->isArray();
+        $this->isNotNull();
 
         if (!empty($this->_actual)) {
             $this->fail("Object should be empty, but is: {$this->_actualString}");
@@ -133,7 +123,7 @@ class Assert
 
     public function isNotEmpty()
     {
-        $this->isArray();
+        $this->isNotNull();
 
         if (empty($this->_actual)) {
             $this->fail("Object is empty");
