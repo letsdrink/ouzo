@@ -73,4 +73,13 @@ class Validatable
             $this->_errors[] = $errorMessage;
         }
     }
+
+    public function validateStringMaxLength($fields, $fieldName, $length, $errorMessage)
+    {
+        foreach($fields as $field){
+            if ((strlen($field->$fieldName)-1) > $length) {
+                $this->_errors[] = $errorMessage;
+            }
+        }
+    }
 }
