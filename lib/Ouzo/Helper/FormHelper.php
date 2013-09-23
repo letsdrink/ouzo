@@ -201,14 +201,14 @@ class Form
         $this->_object = $object;
     }
 
-    public function textField($label, $id)
+    public function textField($label, $id, array $options = array())
     {
-        return textField($label, $id, $this->_object->$id);
+        return textField($label, $id, $this->_object->$id, $options);
     }
 
-    public function textArea($label, $id, array $size)
+    public function textArea($label, $id, array $size, array $options = array())
     {
-        return textArea($label, $id, $this->_object->$id, $size);
+        return textArea($label, $id, $this->_object->$id, $size, $options);
     }
 
     public function selectField($label, $id, array $options, $defaultOption = null)
