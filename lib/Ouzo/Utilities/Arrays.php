@@ -147,6 +147,6 @@ class Arrays
 
     public static function randElement($elements)
     {
-        return $elements[array_rand($elements)];
+        return $elements ? $elements[array_rand($elements)] : null;
     }
 }

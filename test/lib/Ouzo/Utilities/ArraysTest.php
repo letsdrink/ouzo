@@ -319,4 +319,19 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertContains($result, $array);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullIfNotFindRandomElement ()
+    {
+        //given
+        $array = array();
+
+        //when
+        $result = Arrays::randElement($array);
+
+        //then
+        $this->assertNull($result);
+    }
 }
