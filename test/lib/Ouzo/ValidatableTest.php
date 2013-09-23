@@ -156,14 +156,10 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     public function shouldValidStringMaxLength()
     {
         //given
-        $fields = array(
-            (object)array('id' => 1, 'name' => 'string suits'),
-            (object)array('id' => 2, 'name' => 'string suits number 2')
-        );
         $validatable = new Validatable();
 
         //when
-        $validatable->validateStringMaxLength($fields, 'name', 30, 'Too long string');
+        $validatable->validateStringMaxLength('string suits', 30, 'Too long string');
 
         //then
         $errors = $validatable->getErrors();
@@ -176,18 +172,13 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     public function shouldNotBeValidStringMaxLength()
     {
         //given
-        $fields = array(
-            (object)array('id' => 1, 'name' => 'string is too long'),
-            (object)array('id' => 2, 'name' => 'string is too long number 2')
-        );
         $validatable = new Validatable();
 
         //when
-        $validatable->validateStringMaxLength($fields, 'name', 3, 'Too long string');
+        $validatable->validateStringMaxLength('string is too long', 3, 'Too long string');
 
         //then
         $errors = $validatable->getErrors();
-        $this->assertCount(2, $errors);
         $this->assertEquals('Too long string', $errors[0]);
     }
 }
