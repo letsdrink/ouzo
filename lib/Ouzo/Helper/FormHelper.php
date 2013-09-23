@@ -121,12 +121,35 @@ function textArea($label, $id, $value, array $size, array $options = array())
         $inputStyle .= 'border: 2px solid #ff0000;';
     }
 
+    $labelTag = labelTag($id, $label);
+    $texAreaTag = textAreaTag($value, array(
+        'name' => $name,
+        'id' => $id,
+        'rows' => $rows,
+        'cols' => $cols,
+        'style' => $inputStyle
+    ));
     return <<<HTML
         <div class="field">
-            <label for="$id">$label</label>
-            <textarea name="$name" id="$id" rows="$rows" cols="$cols" style="$inputStyle">$value</textarea>
+            $labelTag
+            $texAreaTag
         </div>
 HTML;
+}
+
+function labelTag($id, $name)
+{
+    return '<label for="' . $id . '">' . $name . '</label>';
+}
+
+function textAreaTag($value, array $attributes = array())
+{
+    $attr = '';
+    foreach ($attributes as $opt_key => $opt_value) {
+        $attr .= $opt_key . '="' . $opt_value . '" ';
+    }
+    $attr = trim($attr);
+    return '<textarea ' . $attr . '>' . $value . '</textarea>';
 }
 
 function selectListHtml($label, $id, $name, array $items, array $selected, array $attr)

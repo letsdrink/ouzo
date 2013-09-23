@@ -149,4 +149,22 @@ HTML;
         $this->assertNotContains('readonly', $result);
     }
 
+    /**
+     * @test
+     */
+    public function shouldGenerateTextArea()
+    {
+        //given
+        //when
+        $result = textArea('Label', 'label', 'value', array('cols' => 12, 'rows' => 11));
+
+        //then
+        $expected = <<<HTML
+        <div class="field">
+            <label for="label">Label</label>
+            <textarea name="label" id="label" rows="11" cols="12" style="">value</textarea>
+        </div>
+HTML;
+        $this->assertEquals($expected, $result);
+    }
 }
