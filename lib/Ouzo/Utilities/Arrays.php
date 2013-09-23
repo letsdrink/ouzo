@@ -144,4 +144,9 @@ class Arrays
     {
         return $elements ? is_array($elements) ? $elements : array($elements) : array();
     }
+
+    public static function randElement($elements)
+    {
+        return $elements[array_rand($elements)];
+    }
 }
