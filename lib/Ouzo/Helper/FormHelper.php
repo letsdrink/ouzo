@@ -301,10 +301,10 @@ class Form
         return hiddenTag($value ? $value : $this->_object->$field, $attributes);
     }
 
-    public function start($url, $method = 'post', $id = null)
+    public function start($url, $method = 'post', $attributes = array())
     {
-        $id = ($id) ? "id=\"$id\"" : "";
-        return '<form ' . $id . ' class="form" action="' . $url . '" method="' . $method . '">';
+        $attr = _prepareAttributes($attributes);
+        return '<form ' . $attr . ' action="' . $url . '" method="' . $method . '">';
     }
 
     public function end()
