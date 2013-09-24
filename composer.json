@@ -13,8 +13,7 @@
     "autoload": {
         "psr-0": {
             "Ouzo": "lib/"
-        },
-        "classmap": ["test/locales/"]
+        }
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.19"
