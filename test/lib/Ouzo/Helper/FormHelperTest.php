@@ -265,14 +265,17 @@ HTML;
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-
-        //when
         $form = formFor($product, '', array('auto_labels' => false));
 
+        //when
+        $textField1 = $form->textField('name');
+        $textField2 = $form->textField('name', array('id' => 'id_new'));
+        $textField3 = $form->textField('name', array('style' => 'color: red;'));
+
         //then
-        $this->assertEquals('<input type="text" value="name" id="product_name" name="product[name]"/>', $form->textField('name'));
-        $this->assertContains('id="id_new"', $form->textField('name', array('id' => 'id_new')));
-        $this->assertContains('style="color: red;"', $form->textField('name', array('style' => 'color: red;')));
+        $this->assertEquals('<input type="text" value="name" id="product_name" name="product[name]"/>', $textField1);
+        $this->assertContains('id="id_new"', $textField2);
+        $this->assertContains('style="color: red;"', $textField3);
     }
 
     /**
@@ -282,14 +285,17 @@ HTML;
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-
-        //when
         $form = formFor($product, '', array('auto_labels' => false));
 
+        //when
+        $textArea1 = $form->textArea('name');
+        $textField2 = $form->textField('name', array('id' => 'id_new'));
+        $textField3 = $form->textField('name', array('rows' => 12, 'cols' => 10, 'style' => 'color: red;'));
+
         //then
-        $this->assertEquals('<textarea id="product_name" name="product[name]">name</textarea>', $form->textArea('name'));
-        $this->assertContains('id="id_new"', $form->textField('name', array('id' => 'id_new')));
-        $this->assertContains('rows="12" cols="10" style="color: red;"', $form->textField('name', array('rows' => 12, 'cols' => 10, 'style' => 'color: red;')));
+        $this->assertEquals('<textarea id="product_name" name="product[name]">name</textarea>', $textArea1);
+        $this->assertContains('id="id_new"', $textField2);
+        $this->assertContains('rows="12" cols="10" style="color: red;"', $textField3);
     }
 
     /**
@@ -300,16 +306,18 @@ HTML;
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
         $categories = array(1 => 'Cat1', 2 => 'Cat2');
+        $form = formFor($product, '', array('auto_labels' => false));
 
         //when
-        $form = formFor($product, '', array('auto_labels' => false));
+        $selectField1 = $form->selectField('id_category', $categories);
+        $selectField2 = $form->selectField('name', $categories, array('id' => 'id_new'));
 
         //then
         $this->assertEquals(
             '<select id="product_id_category" name="product[id_category]"><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>',
-            $form->selectField('id_category', $categories)
+            $selectField1
         );
-        $this->assertContains('id="id_new"', $form->textField('name', array('id' => 'id_new')));
+        $this->assertContains('id="id_new"', $selectField2);
     }
 
     /**
@@ -319,13 +327,15 @@ HTML;
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-
-        //when
         $form = formFor($product, '', array('auto_labels' => false));
 
+        //when
+        $result1 = $form->hiddenField('name');
+        $result2 = $form->hiddenField('name', 'new_name');
+
         //then
-        $this->assertEquals('<input type="hidden" value="name" id="product_name" name="product[name]"/>', $form->hiddenField('name'));
-        $this->assertEquals('<input type="hidden" value="new_name" id="product_name" name="product[name]"/>', $form->hiddenField('name', 'new_name'));
+        $this->assertEquals('<input type="hidden" value="name" id="product_name" name="product[name]"/>', $result1);
+        $this->assertEquals('<input type="hidden" value="new_name" id="product_name" name="product[name]"/>', $result2);
     }
 
     /**
@@ -335,13 +345,15 @@ HTML;
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-
-        //when
         $form = formFor($product, '', array('auto_labels' => false));
 
+        //when
+        $result1 = $form->label('name');
+        $result2 = $form->label('description');
+
         //then
-        $this->assertEquals('<label for="product_name">product.name</label>', $form->label('name'));
-        $this->assertEquals('<label for="product_description">Product description</label>', $form->label('description'));
+        $this->assertEquals('<label for="product_name">product.name</label>', $result1);
+        $this->assertEquals('<label for="product_description">Product description</label>', $result2);
     }
 
     /**
@@ -353,9 +365,9 @@ HTML;
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
 
         //when
-        $form = formFor($product, '', array('auto_labels' => false));
+        $result = formFor($product, '', array('auto_labels' => false))->passwordField('name');
 
         //then
-        $this->assertEquals('<input type="password" value="name" id="product_name" name="product[name]"/>', $form->passwordField('name'));
+        $this->assertEquals('<input type="password" value="name" id="product_name" name="product[name]"/>', $result);
     }
 }
