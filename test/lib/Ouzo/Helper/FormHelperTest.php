@@ -185,4 +185,20 @@ HTML;
 HTML;
         $this->assertEquals($expectedHtml, $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateHiddenField()
+    {
+        //when
+        $result = hiddenField(array('name' => "Name", 'value' => 'val', 'id' => 'name'));
+
+        //then
+        $expected = <<<HTML
+        <input type="hidden" value="val" id="name" name="Name"/>
+HTML;
+        $this->assertEquals($expected, $result);
+
+    }
 }

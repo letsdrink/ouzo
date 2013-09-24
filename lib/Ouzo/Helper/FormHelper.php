@@ -49,8 +49,9 @@ function hiddenField($params)
     $value = escapeText($params['value']);
     $id = isset($params['id']) ? $params['id'] : $params['name'];
 
+    $hidden = hiddenTag($value, array('id' => $id, 'name' => $name));
     return <<<HTML
-        <input type="hidden" name="$name" value="$value" id="$id" />
+        $hidden
 HTML;
 }
 
@@ -205,6 +206,12 @@ function labelTag($id, $name, array $attributes = array())
     $attr = _prepareAttributes($attributes);
     $attr = $attr ? ' ' . $attr : '';
     return '<label for="' . $id . '"' . $attr . '>' . $name . '</label>';
+}
+
+function hiddenTag($value, array $attributes = array())
+{
+    $attr = _prepareAttributes($attributes);
+    return '<input type="hidden" value="' . $value . '" ' . $attr . '/>';
 }
 
 function textFieldTag($value, array $attributes = array())
