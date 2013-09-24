@@ -343,4 +343,19 @@ HTML;
         $this->assertEquals('<label for="product_name">product.name</label>', $form->label('name'));
         $this->assertEquals('<label for="product_description">Product description</label>', $form->label('description'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldCreatePasswordFieldInFormModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+
+        //when
+        $form = formFor($product, '', array('auto_labels' => false));
+
+        //then
+        $this->assertEquals('<input type="password" value="name" id="product_name" name="product[name]"/>', $form->passwordField('name'));
+    }
 }

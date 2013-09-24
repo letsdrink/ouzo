@@ -232,6 +232,12 @@ function optionTag($value, $name, $current)
     return '<option value="' . $value . '" ' . $selected . '>' . $name . '</option>';
 }
 
+function passwordFieldTag($value, array $attributes = array())
+{
+    $attr = _prepareAttributes($attributes);
+    return '<input type="password" value="' . $value . '" ' . $attr . '/>';
+}
+
 function _prepareAttributes(array $attributes = array())
 {
     $attr = '';
@@ -309,6 +315,13 @@ class Form
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = array_merge($attributes, $options);
         return hiddenTag($value ? $value : $this->_object->$field, $attributes);
+    }
+
+    public function passwordField($field, array $options = array())
+    {
+        $attributes = $this->_generatePredefinedAttributes($field);
+        $attributes = array_merge($attributes, $options);
+        return passwordFieldTag($this->_object->$field, $attributes);
     }
 
     public function start($url, $method = 'post', $attributes = array())
