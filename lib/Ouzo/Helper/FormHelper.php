@@ -273,6 +273,16 @@ class Form
         return $attributes;
     }
 
+    private function _translate($field)
+    {
+        return t($this->_objectName() . '.' . $field);
+    }
+
+    public function label($field, array $options = array())
+    {
+        return labelTag($this->_generateId($field), $this->_translate($field), $options);
+    }
+
     public function textField($field, array $options = array())
     {
         $attributes = $this->_generatePredefinedAttributes($field);

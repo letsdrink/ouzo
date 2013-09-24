@@ -325,4 +325,20 @@ HTML;
         $this->assertEquals('<input type="hidden" value="name" id="product_name" name="product[name]"/>', $form->hiddenField('name'));
         $this->assertEquals('<input type="hidden" value="new_name" id="product_name" name="product[name]"/>', $form->hiddenField('name', 'new_name'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldCreateLabelInFormForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+
+        //when
+        $form = formFor($product, '', array('auto_labels' => false));
+
+        //then
+        $this->assertEquals('<label for="product_name">product.name</label>', $form->label('name'));
+        $this->assertEquals('<label for="product_description">Product description</label>', $form->label('description'));
+    }
 }
