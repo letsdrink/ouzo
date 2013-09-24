@@ -37,7 +37,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
             'k3' => 'v3',
         );
         //when
-        $arrayWithNewKeys = Arrays::mapKeys($array, function($key) {
+        $arrayWithNewKeys = Arrays::mapKeys($array, function ($key) {
             return 'new_' . $key;
         });
 
@@ -58,12 +58,12 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $array = array('k1', 'k2', 'k3');
 
         //when
-        $result = Arrays::map($array, function($value) {
+        $result = Arrays::map($array, function ($value) {
             return 'new_' . $value;
         });
 
         //then
-        $this->assertEquals(array('new_k1','new_k2','new_k3'), $result);
+        $this->assertEquals(array('new_k1', 'new_k2', 'new_k3'), $result);
     }
 
     /**
@@ -75,7 +75,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $array = array(1, 2, 3, 4);
 
         //when
-        $result = Arrays::filter($array, function($value) {
+        $result = Arrays::filter($array, function ($value) {
             return $value > 2;
         });
 
@@ -182,7 +182,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $array = array('a1' => 1, 'a2' => 2, 'c' => 3);
 
         //when
-        $filtered = Arrays::filterByKeys($array, function($elem){
+        $filtered = Arrays::filterByKeys($array, function ($elem) {
             return $elem[0] == 'a';
         });
 
@@ -305,4 +305,33 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $result);
     }
 
+    /**
+     * @test
+     */
+    public function shouldGetRandomElement()
+    {
+        //given
+        $array = array(1, 3, 6, 9);
+
+        //when
+        $result = Arrays::randElement($array);
+
+        //then
+        $this->assertContains($result, $array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullIfNotFindRandomElement ()
+    {
+        //given
+        $array = array();
+
+        //when
+        $result = Arrays::randElement($array);
+
+        //then
+        $this->assertNull($result);
+    }
 }
