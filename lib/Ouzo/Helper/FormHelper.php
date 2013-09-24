@@ -141,26 +141,16 @@ HTML;
 function selectListHtml($label, $id, $name, array $items, array $selected, array $attr)
 {
     $label = escapeNewLine($label);
-    $labelHtml = $label ? '<label for="' . $id . '">' . $label . '</label>' : '';
-    $optionsHtml = '';
+    $labelHtml = $label ? labelTag($id, $label) : '';
 
-    foreach ($items as $optionKey => $optionValue) {
-        $optionValue = escapeText($optionValue);
-        $selectedAttr = Arrays::findKeyByValue($selected, $optionKey) !== FALSE ? ' selected' : '';
-        $optionsHtml .= "<option value=\"$optionKey\"$selectedAttr>$optionValue</option>\n";
-    }
-
-    $attrHtml = '';
-    foreach ($attr as $attrName => $attrValue) {
-        $attrHtml .= " $attrName=\"$attrValue\"";
-    }
+    $attributes = array('id' => $id, 'name' => $name);
+    $attributes = array_merge($attributes, $attr);
+    $select = selectTag($items, $selected, $attributes);
 
     return <<<HTML
         <div class="field">
             $labelHtml
-            <select id="$id" name="$name"$attrHtml>
-                $optionsHtml
-            </select>
+            $select
         </div>
 HTML;
 }
@@ -224,6 +214,22 @@ function textAreaTag($value, array $attributes = array())
 {
     $attr = _prepareAttributes($attributes);
     return '<textarea ' . $attr . '>' . $value . '</textarea>';
+}
+
+function selectTag(array $items = array(), $value, array $attributes = array())
+{
+    $attr = _prepareAttributes($attributes);
+    $optionsString = '';
+    foreach ($items as $optionValue => $optionName) {
+        $optionsString .= optionTag($optionValue, $optionName, $value);
+    }
+    return '<select ' . $attr . '>' . $optionsString . '</select>';
+}
+
+function optionTag($value, $name, $current)
+{
+    $selected = Arrays::findKeyByValue($current, $value) !== false ? 'selected' : '';
+    return '<option value="' . $value . '" ' . $selected . '>' . $name . '</option>';
 }
 
 function _prepareAttributes(array $attributes = array())

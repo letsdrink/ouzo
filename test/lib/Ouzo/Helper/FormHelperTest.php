@@ -30,8 +30,8 @@ class FormHelperTest extends PHPUnit_Framework_TestCase
         $result = selectField('Gender', 'gender', '', array('male', 'female'));
 
         // then
-        $this->assertContains('<option value="0">male</option>', $result);
-        $this->assertContains('<option value="1">female</option>', $result);
+        $this->assertContains('<option value="0" >male</option>', $result);
+        $this->assertContains('<option value="1" >female</option>', $result);
     }
 
     /**
@@ -199,6 +199,58 @@ HTML;
         <input type="hidden" value="val" id="name" name="Name"/>
 HTML;
         $this->assertEquals($expected, $result);
+    }
 
+    /**
+     * @test
+     */
+    public function shouldGenerateSelectField()
+    {
+        //when
+        $result = selectField('Label', 'lab', 2, array(1 => 'Opt1', 2 => 'Opt1'));
+
+        //then
+        $expected = <<<HTML
+        <div class="field">
+            <label for="lab">Label</label>
+            <select id="lab" name="lab" size="1"><option value="1" >Opt1</option><option value="2" selected>Opt1</option></select>
+        </div>
+HTML;
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateSelectTag()
+    {
+        //given
+        $items = array(1 => 'Opt1', 2 => 'Opt1');
+        $attributes = array('id' => "lab", 'name' => "lab", 'size' => "1");
+
+        //when
+        $result = selectTag($items, array(2), $attributes);
+
+        //then
+        $expected = '<select id="lab" name="lab" size="1"><option value="1" >Opt1</option><option value="2" selected>Opt1</option></select>';
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateMultiselectField()
+    {
+        //when
+        $result = multiselectField('Label', 'lab', array(1, 2), array(1 => 'Opt1', 2 => 'Opt2', 3 => 'Opt3'), array('size' => 2, 'class' => 'className'));
+
+        //then
+        $expected = <<<HTML
+        <div class="field">
+            <label for="lab">Label</label>
+            <select id="lab" name="lab[]" multiple="multiple" size="2" class="className"><option value="1" selected>Opt1</option><option value="2" selected>Opt2</option><option value="3" >Opt3</option></select>
+        </div>
+HTML;
+        $this->assertEquals($expected, $result);
     }
 }
