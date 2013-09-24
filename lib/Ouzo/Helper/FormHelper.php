@@ -265,7 +265,7 @@ class Form
         return $this->_objectName() . '[' . $name . ']';
     }
 
-    public function _generatePredefinedAttributes($field)
+    private function _generatePredefinedAttributes($field)
     {
         $id = $this->_generateId($field);
         $name = $this->_generateName($field);
@@ -287,9 +287,11 @@ class Form
         return textAreaTag($this->_object->$field, $attributes);
     }
 
-    public function selectField($label, $id, array $options, $defaultOption = null)
+    public function selectField($field, array $items, $options = array())
     {
-        return selectField($label, $id, $this->_object->$id, $options, $defaultOption);
+        $attributes = $this->_generatePredefinedAttributes($field);
+        $attributes = array_merge($attributes, $options);
+        return selectTag($items, array($this->_object->$field), $attributes);
     }
 
     public function hiddenField($id, $value = null)

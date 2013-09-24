@@ -289,4 +289,24 @@ HTML;
         $this->assertContains('id="id_new"', $form->textField('name', array('id' => 'id_new')));
         $this->assertContains('rows="12" cols="10" style="color: red;"', $form->textField('name', array('rows' => 12, 'cols' => 10, 'style' => 'color: red;')));
     }
+
+    /**
+     * @test
+     */
+    public function shouldCreateSelectFieldInFormForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $categories = array(1 => 'Cat1', 2 => 'Cat2');
+
+        //when
+        $form = formFor($product, '', array('auto_labels' => false));
+
+        //then
+        $this->assertEquals(
+            '<select id="product_id_category" name="product[id_category]"><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>',
+            $form->selectField('id_category', $categories)
+        );
+        $this->assertContains('id="id_new"', $form->textField('name', array('id' => 'id_new')));
+    }
 }
