@@ -352,8 +352,13 @@ class AutoLabelForm
 
     public function dateField($id, array $options = array())
     {
+        try {
+            $dateValue = formatDate($this->_object->$id);
+        } catch (Exception $e) {
+            $dateValue = $this->_object->$id;
+        }
         $this->_updateOptionsIfError($id, $options);
-        return textField($this->translate($id), $this->getName($id), formatDate($this->_object->$id), $options);
+        return textField($this->translate($id), $this->getName($id), $dateValue, $options);
     }
 
     public function textArea($id, array $size, array $options = array())
