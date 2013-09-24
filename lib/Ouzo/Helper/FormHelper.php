@@ -79,23 +79,23 @@ function textField($label, $name, $value, $options = array())
         $divClass .= ' field-with-error';
     }
 
-    $labelStyle = '';
+    $labelStyle = array();
     if (isset($options['label_width']) && $options['label_width'] > 0) {
-        $labelStyle = ' style="margin-left: ' . $options['label_margin'] . 'px; width: ' . $options['label_width'] . 'px;"';
+        $labelStyle = array('style' => 'margin-left: ' . $options['label_margin'] . 'px; width: ' . $options['label_width'] . 'px;');
     }
 
-    $labelHtml = (strlen($label) > 0 && !$options['hide_label']) ? "<label for=\"$id\"$labelStyle>$label</label>" : '';
+    $labelHtml = (strlen($label) > 0 && !$options['hide_label']) ? labelTag($id, $label, $labelStyle) : '';
 
-    $attributes = '';
-    foreach ($options as $opt_key => $opt_value) {
-        if (!array_key_exists($opt_key, $predefined))
-            $attributes .= $opt_key . '="' . $opt_value . '" ';
-    }
+    $attributes = array_diff_key($options, $predefined);
+
+    $attr = array('id' => $id, 'name' => $name, 'style' => $inputStyle);
+    $attr = array_merge($attr, $attributes);
+    $input = textFieldTag($value, $attr);
 
     return <<<HTML
         <div class="$divClass">
             $labelHtml
-            <input type="text" id="$id" name="$name" value="$value" style="$inputStyle" $attributes/>
+            $input
         </div>
 HTML;
 }
@@ -135,21 +135,6 @@ function textArea($label, $id, $value, array $size, array $options = array())
             $texAreaTag
         </div>
 HTML;
-}
-
-function labelTag($id, $name)
-{
-    return '<label for="' . $id . '">' . $name . '</label>';
-}
-
-function textAreaTag($value, array $attributes = array())
-{
-    $attr = '';
-    foreach ($attributes as $opt_key => $opt_value) {
-        $attr .= $opt_key . '="' . $opt_value . '" ';
-    }
-    $attr = trim($attr);
-    return '<textarea ' . $attr . '>' . $value . '</textarea>';
 }
 
 function selectListHtml($label, $id, $name, array $items, array $selected, array $attr)
@@ -213,6 +198,34 @@ function translatableOptions($prefix, $options)
         $result[$optionKey] = t($prefix . $optionKey);
     }
     return $result;
+}
+
+function labelTag($id, $name, array $attributes = array())
+{
+    $attr = _prepareAttributes($attributes);
+    $attr = $attr ? ' ' . $attr : '';
+    return '<label for="' . $id . '"' . $attr . '>' . $name . '</label>';
+}
+
+function textFieldTag($value, array $attributes = array())
+{
+    $attr = _prepareAttributes($attributes);
+    return '<input type="text" value="' . $value . '" ' . $attr . '/>';
+}
+
+function textAreaTag($value, array $attributes = array())
+{
+    $attr = _prepareAttributes($attributes);
+    return '<textarea ' . $attr . '>' . $value . '</textarea>';
+}
+
+function _prepareAttributes(array $attributes = array())
+{
+    $attr = '';
+    foreach ($attributes as $opt_key => $opt_value) {
+        $attr .= $opt_key . '="' . $opt_value . '" ';
+    }
+    return trim($attr);
 }
 
 class Form

@@ -46,7 +46,7 @@ class FormHelperTest extends PHPUnit_Framework_TestCase
         $expectedHtml = <<<HTML
         <div class=" field">
             <label for="gender">Gender</label>
-            <input type="text" id="gender" name="gender" value="val" style="" />
+            <input type="text" value="val" id="gender" name="gender" style=""/>
         </div>
 HTML;
         $this->assertEquals($expectedHtml, $result);
@@ -61,7 +61,7 @@ HTML;
         $result = textField('Gender', 'gender[]', '');
 
         // then
-        $this->assertContains('<input type="text" id="gender_"', $result);
+        $this->assertContains('<input type="text" value="" id="gender_"', $result);
     }
 
     /**
@@ -73,7 +73,7 @@ HTML;
         $result = textField('Gender', 'gender[]', '', array('id' => 'xyz'));
 
         // then
-        $this->assertContains('<input type="text" id="xyz"', $result);
+        $this->assertContains('<input type="text" value="" id="xyz"', $result);
     }
 
     /**
@@ -110,7 +110,7 @@ HTML;
         $result = textField('Gender', 'gender', 'val', array('custom_attribute' => 'custom_value'));
 
         //then
-        $this->assertContains('<input type="text" id="gender" name="gender" value="val" style="" custom_attribute="custom_value" ', $result);
+        $this->assertContains('<input type="text" value="val" id="gender" name="gender" style="" custom_attribute="custom_value"', $result);
     }
 
     /**
@@ -122,7 +122,7 @@ HTML;
         $result = textField('Gender', 'gender', 'val', array('readonly' => true));
 
         //then
-        $this->assertContains('<input type="text" id="gender" name="gender" value="val" style="" readonly="1" ', $result);
+        $this->assertContains('<input type="text" value="val" id="gender" name="gender" style="" readonly="1"', $result);
     }
 
     /**
@@ -166,5 +166,23 @@ HTML;
         </div>
 HTML;
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateLabelWithAttributes()
+    {
+        //when
+        $result = textField('Gender', 'gender', 'val', array('label_width' => 10));
+
+        //then
+        $expectedHtml = <<<HTML
+        <div class=" field">
+            <label for="gender" style="margin-left: px; width: 10px;">Gender</label>
+            <input type="text" value="val" id="gender" name="gender" style=""/>
+        </div>
+HTML;
+        $this->assertEquals($expectedHtml, $result);
     }
 }
