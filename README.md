@@ -6,3 +6,5 @@ We believe in **clean code** and **simplicity**. We value **unit testing** and *
 Here comes Ouzo - PHP framework, which makes writing web applications FUN again.
 
 Ouzo is an MVC framework with built-in ORM. PHP 5.3 or later is required.
+
+[![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
