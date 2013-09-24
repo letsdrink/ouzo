@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Utilities\Objects;
+use ReflectionClass;
 
 class Model extends Validatable
 {
@@ -168,6 +169,12 @@ class Model extends Validatable
     public function inspect()
     {
         return get_called_class() . "\n" . print_r($this->attributes(), true);
+    }
+
+    public function getModelName()
+    {
+        $function = new ReflectionClass($this);
+        return $function->getShortName();
     }
 
     public function _getFields()

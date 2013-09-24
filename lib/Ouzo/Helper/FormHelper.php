@@ -250,14 +250,41 @@ class Form
         $this->_object = $object;
     }
 
-    public function textField($label, $id, array $options = array())
+    private function _objectName()
     {
-        return textField($label, $id, $this->_object->$id, $options);
+        return strtolower($this->_object->getModelName());
     }
 
-    public function textArea($label, $id, array $size, array $options = array())
+    private function _generateId($name)
     {
-        return textArea($label, $id, $this->_object->$id, $size, $options);
+        return $this->_objectName() . '_' . $name;
+    }
+
+    private function _generateName($name)
+    {
+        return $this->_objectName() . '[' . $name . ']';
+    }
+
+    public function _generatePredefinedAttributes($field)
+    {
+        $id = $this->_generateId($field);
+        $name = $this->_generateName($field);
+        $attributes = array('id' => $id, 'name' => $name);
+        return $attributes;
+    }
+
+    public function textField($field, array $options = array())
+    {
+        $attributes = $this->_generatePredefinedAttributes($field);
+        $attributes = array_merge($attributes, $options);
+        return textFieldTag($this->_object->$field, $attributes);
+    }
+
+    public function textArea($field, array $options = array())
+    {
+        $attributes = $this->_generatePredefinedAttributes($field);
+        $attributes = array_merge($attributes, $options);
+        return textAreaTag($this->_object->$field, $attributes);
     }
 
     public function selectField($label, $id, array $options, $defaultOption = null)

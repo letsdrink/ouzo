@@ -1,11 +1,13 @@
 <?php
-
+use Model\Product;
+use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
 
-class FormHelperTest extends PHPUnit_Framework_TestCase
+class FormHelperTest extends DbTransactionalTestCase
 {
     function setUp()
     {
+        parent::setUp();
         new View('test');
     }
 
@@ -252,5 +254,39 @@ HTML;
         </div>
 HTML;
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateTextFieldInFormForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+
+        //when
+        $form = formFor($product, '', array('auto_labels' => false));
+
+        //then
+        $this->assertEquals('<input type="text" value="name" id="product_name" name="product[name]"/>', $form->textField('name'));
+        $this->assertContains('id="id_new"', $form->textField('name', array('id' => 'id_new')));
+        $this->assertContains('style="color: red;"', $form->textField('name', array('style' => 'color: red;')));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateTextAreaInFormForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+
+        //when
+        $form = formFor($product, '', array('auto_labels' => false));
+
+        //then
+        $this->assertEquals('<textarea id="product_name" name="product[name]">name</textarea>', $form->textArea('name'));
+        $this->assertContains('id="id_new"', $form->textField('name', array('id' => 'id_new')));
+        $this->assertContains('rows="12" cols="10" style="color: red;"', $form->textField('name', array('rows' => 12, 'cols' => 10, 'style' => 'color: red;')));
     }
 }

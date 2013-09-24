@@ -374,4 +374,19 @@ class ModelTest extends DbTransactionalTestCase
         //then
         $this->assertNull($value);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGetModelName()
+    {
+        //given
+        $product = new Product();
+
+        //when
+        $modelName = $product->getModelName();
+
+        //then
+        $this->assertEquals('Product', $modelName);
+    }
 }
