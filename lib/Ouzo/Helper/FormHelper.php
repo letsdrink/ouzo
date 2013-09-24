@@ -294,9 +294,11 @@ class Form
         return selectTag($items, array($this->_object->$field), $attributes);
     }
 
-    public function hiddenField($id, $value = null)
+    public function hiddenField($field, $value = null, $options = array())
     {
-        return hiddenField(array('name' => $id, 'value' => $value ? $value : $this->_object->$id, 'id' => $id));
+        $attributes = $this->_generatePredefinedAttributes($field);
+        $attributes = array_merge($attributes, $options);
+        return hiddenTag($value ? $value : $this->_object->$field, $attributes);
     }
 
     public function start($url, $method = 'post', $id = null)

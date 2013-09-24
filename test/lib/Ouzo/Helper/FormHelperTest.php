@@ -309,4 +309,20 @@ HTML;
         );
         $this->assertContains('id="id_new"', $form->textField('name', array('id' => 'id_new')));
     }
+
+    /**
+     * @test
+     */
+    public function shouldCreateHiddenFieldInFormForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+
+        //when
+        $form = formFor($product, '', array('auto_labels' => false));
+
+        //then
+        $this->assertEquals('<input type="hidden" value="name" id="product_name" name="product[name]"/>', $form->hiddenField('name'));
+        $this->assertEquals('<input type="hidden" value="new_name" id="product_name" name="product[name]"/>', $form->hiddenField('name', 'new_name'));
+    }
 }
