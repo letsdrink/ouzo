@@ -108,4 +108,36 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEmpty($controllerRoutes);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCantDefineMultipleRules()
+    {
+        //given
+        Route::get('/user/save', 'User#save');
+        Route::get('/user/save', 'User#save');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertCount(1, $routes);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCanDefineMultipleRulesWhenOtherTypes()
+    {
+        //given
+        Route::get('/user/save', 'User#save');
+        Route::post('/user/save', 'User#save');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertCount(2, $routes);
+    }
 }

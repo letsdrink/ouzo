@@ -28,7 +28,17 @@ class Route
 
     private static function _addRoute($method, $uri, $action)
     {
+        if (self::_existRouteRule($method, $uri)) {
+            return;
+        }
         self::$routes[] = new RouteRule($method, $uri, $action);
+    }
+
+    private static function _existRouteRule($method, $uri)
+    {
+        return Arrays::any(self::getRoutes(), function (RouteRule $routeRule) use ($method, $uri) {
+            return $routeRule->getMethod() == $method && $routeRule->getUri() == $uri;
+        });
     }
 
     /**
