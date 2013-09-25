@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Tests;
 
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
 use PHPUnit_Framework_ComparisonFailure;
 use PHPUnit_Framework_ExpectationFailedException;
@@ -117,6 +119,12 @@ class ArrayAssert
         if (empty($this->_actual)) {
             $this->fail("Object is empty");
         }
+        return $this;
+    }
+
+    public function onProperty($property)
+    {
+        $this->_actual = Arrays::map($this->_actual, Functions::extractField($property));
         return $this;
     }
 

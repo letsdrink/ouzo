@@ -83,13 +83,8 @@ class Arrays
         return isset($array[$key]) ? $array[$key] : $default;
     }
 
-    public static function filterByAllowedKeys(array $map, $allowed)
+    public static function filterByAllowedKeys(array $map, $allowedKeys)
     {
-        if (is_array($allowed)) {
-            $allowedKeys = $allowed;
-        } else {
-            $allowedKeys = array_filter(array_keys($map), $allowed);
-        }
         return array_intersect_key($map, array_flip($allowedKeys));
     }
 
