@@ -3,6 +3,7 @@ language: php
 php:
     - 5.3
     - 5.4
+    - 5.5
 
 before_script:
     - composer install
@@ -10,3 +11,6 @@ before_script:
     - psql -v ON_ERROR_STOP=1 -e -U postgres -f test/test-db/recreate_schema.sql ouzo_test
     
 script: phpunit --configuration phpunit.xml test
+
+after_script:
+  - php vendor/bin/coveralls -v
