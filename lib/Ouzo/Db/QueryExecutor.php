@@ -81,7 +81,7 @@ class QueryExecutor
         return Stats::trace($this->_sql, $this->_boundValues, function () use ($obj, $function) {
             $obj->_prepareAndBind();
 
-            Logger::getLogger(__CLASS__)->info($obj->getSql(), $obj->getBoundValues());
+            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($obj->getSql(), Objects::toString($obj->getBoundValues())));
 
             if (!$obj->_preparedQuery->execute()) {
                 throw new DbException('Exception: query: ' . $obj->getSql() . ' with params: (' . implode(', ', $obj->getBoundValues()) . ') failed: ' . $obj->lastErrorMessage());
