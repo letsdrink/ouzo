@@ -21,7 +21,7 @@ class Router
     {
         $routeRule = $this->_findRouteRule();
         if (!$routeRule) {
-            throw new RouterException('No route rule find');
+            throw new RouterException('No route rule found.');
         }
         return $routeRule;
     }

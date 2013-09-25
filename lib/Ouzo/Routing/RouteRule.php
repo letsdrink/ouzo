@@ -42,7 +42,18 @@ class RouteRule
     public function isMatching($uri)
     {
         if (Uri::getRequestType() == $this->_method) {
-            return $this->getUri() == $uri;
+            return $this->_checkIsMatching($uri);
+        }
+        return false;
+    }
+
+    private function _checkIsMatching($uri)
+    {
+        if ($this->getUri() == $uri) {
+            return true;
+        } else if (preg_match('#:\w*#', $this->getUri())) {
+            $replacedUri = preg_replace('#:\w*#', '\w*', $this->getUri());
+            return preg_match('#^' . $replacedUri . '$#', $uri);
         }
         return false;
     }
