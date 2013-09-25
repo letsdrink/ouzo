@@ -57,4 +57,9 @@ class Session
         unset($_SESSION[$this->_sessionNamespace]);
         return $this;
     }
+
+    public function all()
+    {
+        return $_SESSION[$this->_sessionNamespace];
+    }
 }
