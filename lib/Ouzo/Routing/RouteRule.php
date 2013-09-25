@@ -41,10 +41,15 @@ class RouteRule
 
     public function isMatching($uri)
     {
-        if (Uri::getRequestType() == $this->_method) {
+        if ($this->_isEqualOrAnyMethod()) {
             return $this->_checkIsMatching($uri);
         }
         return false;
+    }
+
+    private function _isEqualOrAnyMethod()
+    {
+        return is_array($this->_method) ? in_array(Uri::getRequestType(), $this->_method) : Uri::getRequestType() == $this->_method;
     }
 
     private function _checkIsMatching($uri)

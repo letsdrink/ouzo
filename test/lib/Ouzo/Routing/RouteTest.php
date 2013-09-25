@@ -11,7 +11,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     {
         //given
         Route::get('/user/index', 'User#index');
-        Route::get('/user/show/id/{id}', 'User#show');
+        Route::get('/user/show/id/:id', 'User#show');
 
         //when
         $return = Route::getRoutes();
@@ -35,5 +35,39 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/user/index', $return->getUri());
         $this->assertEquals('User', $return->getController());
         $this->assertEquals('index', $return->getAction());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddPostRoute()
+    {
+        //given
+        Route::$routes = array();
+        Route::post('/user/save', 'User#save');
+        Route::post('/user/update/id/:id', 'User#update');
+
+        //when
+        $return = Route::getRoutes();
+
+        //then
+        $this->assertCount(2, $return);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddAnyRoute()
+    {
+        //given
+        Route::$routes = array();
+        Route::any('/user/save', 'User#save');
+        Route::any('/user/update/id/:id', 'User#update');
+
+        //when
+        $return = Route::getRoutes();
+
+        //then
+        $this->assertCount(2, $return);
     }
 }

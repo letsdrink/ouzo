@@ -5,6 +5,12 @@ use Ouzo\Tests\CatchException;
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+        Route::$routes = array();
+    }
+
     /**
      * @test
      */
@@ -108,6 +114,76 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('GET', $rule->getMethod());
         $this->assertEquals('User', $rule->getController());
         $this->assertNull($rule->getAction());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRoutePost()
+    {
+        //given
+        Route::post('/user/save', 'User#save');
+        $router = $this->_createRouter('POST', '/user/save');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('/user/save', $rule->getUri());
+        $this->assertEquals('POST', $rule->getMethod());
+        $this->assertEquals('User', $rule->getController());
+        $this->assertEquals('save', $rule->getAction());
+    }
+
+    /**
+     * @test
+     * @dataProvider requestMethod
+     */
+    public function shouldFindRouteAny($method)
+    {
+        //given
+        Route::any('/user/save', 'User#save');
+        $router = $this->_createRouter($method, '/user/save');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('/user/save', $rule->getUri());
+        $this->assertContains($method, $rule->getMethod());
+        $this->assertEquals('User', $rule->getController());
+        $this->assertEquals('save', $rule->getAction());
+    }
+
+    /**
+     * @test
+     * @dataProvider requestMethod
+     */
+    public function shouldFindRouteAnyForController($method)
+    {
+        //given
+        Route::any('/user', 'User');
+        $router = $this->_createRouter($method, '/user/save');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('/user', $rule->getUri());
+        $this->assertContains($method, $rule->getMethod());
+        $this->assertEquals('User', $rule->getController());
+        $this->assertNull($rule->getAction());
+    }
+
+    public function requestMethod()
+    {
+        return array(
+            array('GET'),
+            array('POST'),
+            array('PUT'),
+            array('PATCH'),
+            array('DELETE')
+        );
     }
 
     private function _createRouter($method, $uri)

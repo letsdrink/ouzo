@@ -13,6 +13,17 @@ class Route
         self::_addRoute('GET', $uri, $action);
     }
 
+    public static function post($uri, $action)
+    {
+        self::_addRoute('POST', $uri, $action);
+    }
+
+    public static function any($uri, $action)
+    {
+        $methods = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE');
+        self::_addRoute($methods, $uri, $action);
+    }
+
     private static function _addRoute($method, $uri, $action)
     {
         self::$routes[] = new RouteRule($method, $uri, $action);

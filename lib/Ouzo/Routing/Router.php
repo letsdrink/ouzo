@@ -30,7 +30,7 @@ class Router
     {
         $routeRules = Route::getRoutes();
         $uri = $this->_uri;
-        $filtered = Arrays::filter($routeRules, function(RouteRule $routeRule) use ($uri){
+        $filtered = Arrays::filter($routeRules, function (RouteRule $routeRule) use ($uri) {
             return $routeRule->isMatching($uri);
         });
         return $filtered ? Arrays::first($filtered) : null;
