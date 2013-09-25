@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Routing;
 
+use Ouzo\Utilities\Arrays;
+
 class Route
 {
     /**
@@ -26,7 +28,17 @@ class Route
 
     private static function _addRoute($method, $uri, $action)
     {
+        if (self::_existRouteRule($method, $uri)) {
+            return;
+        }
         self::$routes[] = new RouteRule($method, $uri, $action);
+    }
+
+    private static function _existRouteRule($method, $uri)
+    {
+        return Arrays::any(self::getRoutes(), function (RouteRule $routeRule) use ($method, $uri) {
+            return $routeRule->getMethod() == $method && $routeRule->getUri() == $uri;
+        });
     }
 
     /**
@@ -35,5 +47,12 @@ class Route
     public static function getRoutes()
     {
         return self::$routes;
+    }
+
+    public static function getRoutesForController($controller)
+    {
+        return Arrays::filter(self::getRoutes(), function (RouteRule $route) use ($controller) {
+            return strtolower($route->getController()) == strtolower($controller);
+        });
     }
 }
