@@ -91,6 +91,25 @@ class RouterTest extends PHPUnit_Framework_TestCase
         CatchException::assertThat()->isInstanceOf('Ouzo\Routing\RouterException');
     }
 
+    /**
+     * @test
+     */
+    public function shouldFindRouteOnlyForController()
+    {
+        //given
+        Route::get('/user', 'User');
+        $router = $this->_createRouter('GET', '/user/show/id/12/surname/smith');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('/user', $rule->getUri());
+        $this->assertEquals('GET', $rule->getMethod());
+        $this->assertEquals('User', $rule->getController());
+        $this->assertNull($rule->getAction());
+    }
+
     private function _createRouter($method, $uri)
     {
         $_SERVER['REQUEST_METHOD'] = $method;

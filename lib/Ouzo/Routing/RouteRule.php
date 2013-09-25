@@ -54,6 +54,8 @@ class RouteRule
         } else if (preg_match('#:\w*#', $this->getUri())) {
             $replacedUri = preg_replace('#:\w*#', '\w*', $this->getUri());
             return preg_match('#^' . $replacedUri . '$#', $uri);
+        } else if (!$this->getAction()) {
+            return preg_match('#' . $this->getUri() . '#', $uri);
         }
         return false;
     }
