@@ -144,6 +144,40 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnTrueIfAllElementSatisfyPredicate()
+    {
+        //given
+        $array = array(1, 2);
+
+        //when
+        $all = Arrays::all($array, function ($element) {
+            return $element < 3;
+        });
+
+        //then
+        $this->assertTrue($all);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFalseIfNotAllElementSatisfyPredicate()
+    {
+        //given
+        $array = array(1, 2, 3);
+
+        //when
+        $all = Arrays::all($array, function ($element) {
+            return $element < 3;
+        });
+
+        //then
+        $this->assertFalse($all);
+    }
+
+    /**
+     * @test
+     */
     public function shouldCheckIsAnyIsBool()
     {
         //given

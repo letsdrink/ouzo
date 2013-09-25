@@ -4,6 +4,7 @@ namespace Ouzo\Tests;
 use Ouzo\Utilities\Objects;
 use PHPUnit_Framework_ExpectationFailedException;
 use PHPUnit_Framework_TestCase;
+use stdClass;
 
 class AssertTest extends PHPUnit_Framework_TestCase
 {
@@ -19,6 +20,30 @@ class AssertTest extends PHPUnit_Framework_TestCase
         Assert::thatArray(array('1', '2', '3'))->contains('1', '2');
         Assert::thatArray(array('1', '2', '3'))->contains('1', '2', '3');
         Assert::thatArray(array('1', '2', '3'))->contains('3', '2', '1');
+    }
+
+    /**
+     * @test
+     */
+    public function containsShouldAssertThatArrayContainsElementWithProperty()
+    {
+        $object = new stdClass();
+        $object->prop = 1;
+
+        Assert::thatArray(array($object))->onProperty('prop')->contains(1);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotContainElementOpProperty()
+    {
+        $object = new stdClass();
+        $object->prop = 2;
+
+        CatchException::when(Assert::thatArray(array($object))->onProperty('prop'))->contains(1);
+
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
