@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Routing;
 
+use Ouzo\Utilities\Arrays;
+
 class Route
 {
     /**
@@ -35,5 +37,12 @@ class Route
     public static function getRoutes()
     {
         return self::$routes;
+    }
+
+    public static function getRoutesForController($controller)
+    {
+        return Arrays::filter(self::getRoutes(), function (RouteRule $route) use ($controller) {
+            return strtolower($route->getController()) == strtolower($controller);
+        });
     }
 }

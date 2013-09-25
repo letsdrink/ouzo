@@ -4,6 +4,12 @@ use Ouzo\Utilities\Arrays;
 
 class RouteTest extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+        Route::$routes = array();
+    }
+
     /**
      * @test
      */
@@ -43,7 +49,6 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function shouldAddPostRoute()
     {
         //given
-        Route::$routes = array();
         Route::post('/user/save', 'User#save');
         Route::post('/user/update/id/:id', 'User#update');
 
@@ -60,7 +65,6 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function shouldAddAnyRoute()
     {
         //given
-        Route::$routes = array();
         Route::any('/user/save', 'User#save');
         Route::any('/user/update/id/:id', 'User#update');
 
@@ -69,5 +73,39 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertCount(2, $return);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSearchRouteForController()
+    {
+        //given
+        Route::any('/user/save', 'User#save');
+        Route::any('/user/update/id/:id', 'User#update');
+        Route::any('/photo', 'Photo');
+
+        //when
+        $controllerRoutes = Route::getRoutesForController('user');
+
+        //then
+        $this->assertCount(2, $controllerRoutes);
+        $this->assertCount(3, Route::getRoutes());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnEmptyArrayIfNotFoundRoutesForController()
+    {
+        //given
+        Route::any('/user/save', 'User#save');
+        Route::any('/user/update/id/:id', 'User#update');
+
+        //when
+        $controllerRoutes = Route::getRoutesForController('photo');
+
+        //then
+        $this->assertEmpty($controllerRoutes);
     }
 }
