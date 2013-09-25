@@ -36,7 +36,7 @@ class Bootstrap
 
     private function _includeRoutes()
     {
-        $routesFilename = ROOT_PATH . 'application/routes.php';
+        $routesFilename = ROOT_PATH . 'config/routes.php';
         if (file_exists($routesFilename)) {
             include_once $routesFilename;
         }
