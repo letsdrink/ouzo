@@ -1,5 +1,6 @@
 <?php
 
+use Ouzo\Tests\Assert;
 use Ouzo\Validatable;
 
 class ValidatableChild extends Validatable
@@ -180,5 +181,55 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
         //then
         $errors = $validatable->getErrors();
         $this->assertEquals('Too long string', $errors[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddErrorIfValueIsNotTrue()
+    {
+        //given
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateTrue(false, 'error');
+
+        //then
+        Assert::thatArray($validatable->getErrors())->containsOnly('error');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddErrorIfValueIsBlank()
+    {
+        //given
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateNotBlank('', 'blank');
+
+        //then
+        Assert::thatArray($validatable->getErrors())->containsOnly('blank');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldValidateAssociatedCollection()
+    {
+        // given
+        $validatable = new Validatable();
+        $others = array(
+            new ValidatableChild(array('error1'), array('errorField1')),
+            new ValidatableChild(array('error2'), array('errorField2'))
+        );
+
+        // when
+        $validatable->validateAssociatedCollection($others);
+
+        // then
+        Assert::thatArray($validatable->getErrors())->containsOnly('error1', 'error2');
+        Assert::thatArray($validatable->getErrorFields())->containsOnly('errorField1', 'errorField2');
     }
 }
