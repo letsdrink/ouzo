@@ -1,7 +1,9 @@
 <?php
 namespace Ouzo\Routing;
 
+use InvalidArgumentException;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 class Route
 {
@@ -29,7 +31,7 @@ class Route
     private static function _addRoute($method, $uri, $action)
     {
         if (self::_existRouteRule($method, $uri)) {
-            return;
+            throw new InvalidArgumentException('Route roule for method ' . $method . ' and URI "' . $uri . '" already exists');
         }
         self::$routes[] = new RouteRule($method, $uri, $action);
     }
@@ -52,7 +54,7 @@ class Route
     public static function getRoutesForController($controller)
     {
         return Arrays::filter(self::getRoutes(), function (RouteRule $route) use ($controller) {
-            return strtolower($route->getController()) == strtolower($controller);
+            return Strings::equalsIgnoreCase($route->getController(), $controller);
         });
     }
 }

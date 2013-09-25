@@ -138,4 +138,21 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertFalse($result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckEqualityIgnoringCase() {
+        $this->assertTrue(Strings::equalsIgnoreCase('', ''));
+        $this->assertTrue(Strings::equalsIgnoreCase('ABC123', 'ABC123'));
+        $this->assertTrue(Strings::equalsIgnoreCase('ABC123', 'abc123'));
+        $this->assertFalse(Strings::equalsIgnoreCase('ABC123', 'abc123a'));
+        $this->assertFalse(Strings::equalsIgnoreCase('ABC123', 'abc1234'));
+        $this->assertFalse(Strings::equalsIgnoreCase('', 'abc123'));
+        $this->assertFalse(Strings::equalsIgnoreCase('ABC123', ''));
+        $this->assertTrue(Strings::equalsIgnoreCase(null, ''));
+        $this->assertTrue(Strings::equalsIgnoreCase('', null));
+        $this->assertTrue(Strings::equalsIgnoreCase(null, null));
+        $this->assertFalse(Strings::equalsIgnoreCase('null', null));
+    }
 }

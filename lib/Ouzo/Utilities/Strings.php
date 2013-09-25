@@ -18,13 +18,6 @@ class Strings
         return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string));
     }
 
-    public static function changePolishChars($string)
-    {
-        $polishChars = array('ą', 'ż', 'ś', 'ź', 'ę', 'ć', 'ń', 'ó', 'ł', 'Ą', 'Ż', 'Ś', 'Ź', 'Ę', 'Ć', 'Ń', 'Ó', 'Ł');
-        $replacement = array('a', 'z', 's', 'z', 'e', 'c', 'n', 'o', 'l', 'A', 'Z', 'S', 'Z', 'E', 'C', 'N', 'O', 'L');
-        return str_replace($polishChars, $replacement, $string);
-    }
-
     public static function removePrefix($string, $prefix)
     {
         if (self::startsWith($string, $prefix)) {
@@ -48,5 +41,10 @@ class Strings
     public static function endsWith($string, $suffix)
     {
         return substr($string, -strlen($suffix)) === $suffix;
+    }
+
+    public static function equalsIgnoreCase($string1, $string2)
+    {
+        return strtolower($string1) == strtolower($string2);
     }
 }

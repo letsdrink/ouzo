@@ -39,10 +39,10 @@ class RouteRule
         return Arrays::getValue($elements, 1);
     }
 
-    public function isMatching($uri)
+    public function matches($uri)
     {
         if ($this->_isEqualOrAnyMethod()) {
-            return $this->_checkIsMatching($uri);
+            return $this->_matches($uri);
         }
         return false;
     }
@@ -52,14 +52,16 @@ class RouteRule
         return is_array($this->_method) ? in_array(Uri::getRequestType(), $this->_method) : Uri::getRequestType() == $this->_method;
     }
 
-    private function _checkIsMatching($uri)
+    private function _matches($uri)
     {
         if ($this->getUri() == $uri) {
             return true;
-        } else if (preg_match('#:\w*#', $this->getUri())) {
+        }
+        if (preg_match('#:\w*#', $this->getUri())) {
             $replacedUri = preg_replace('#:\w*#', '\w*', $this->getUri());
             return preg_match('#^' . $replacedUri . '$#', $uri);
-        } else if (!$this->getAction()) {
+        }
+        if (!$this->getAction()) {
             return preg_match('#' . $this->getUri() . '#', $uri);
         }
         return false;

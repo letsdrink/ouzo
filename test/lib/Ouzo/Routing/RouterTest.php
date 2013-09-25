@@ -1,4 +1,5 @@
 <?php
+
 use Ouzo\Routing\Route;
 use Ouzo\Routing\Router;
 use Ouzo\Tests\CatchException;
@@ -137,7 +138,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider requestMethod
+     * @dataProvider requestMethods
      */
     public function shouldFindRouteAny($method)
     {
@@ -157,7 +158,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @dataProvider requestMethod
+     * @dataProvider requestMethods
      */
     public function shouldFindRouteAnyForController($method)
     {
@@ -175,7 +176,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertNull($rule->getAction());
     }
 
-    public function requestMethod()
+    public function requestMethods()
     {
         return array(
             array('GET'),
