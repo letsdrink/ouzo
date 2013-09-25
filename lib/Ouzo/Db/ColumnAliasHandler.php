@@ -22,20 +22,6 @@ class ColumnAliasHandler
         )->toArray();
     }
 
-    public static function removeAliasesFromResults($results, $prefix)
-    {
-        return Arrays::map($results, function ($result) use ($prefix) {
-            return self::removeAliasesFromResult($result, $prefix);
-        });
-    }
-
-    public static function removeAliasesFromResult($result, $prefix)
-    {
-        return FluentArray::from($result)
-            ->mapKeys(Functions::removePrefix($prefix))
-            ->toArray();
-    }
-
     public static function extractAttributesForPrefix($result, $prefix)
     {
         return FluentArray::from($result)
