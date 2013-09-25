@@ -108,4 +108,19 @@ class SessionTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($all)->hasSize(2)->containsOnly('value1', 'value2');
     }
+
+    /**
+     * @test
+     */
+    public function shouldGetEmptyArrayIfNotFoundNamespace()
+    {
+        //given
+        $session = new Session('example');
+
+        //when
+        $all = $session->all();
+
+        //then
+        Assert::thatArray($all)->isEmpty();
+    }
 }
