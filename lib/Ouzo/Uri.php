@@ -90,4 +90,9 @@ class Uri
     {
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
+
+    public static function getRequestType()
+    {
+        return $_SERVER['REQUEST_METHOD'];
+    }
 }
