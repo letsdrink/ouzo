@@ -38,17 +38,17 @@ class Route
             self::_createRouteUri($action, '/new'),
             self::_createRouteAction($action, 'new')
         );
-        self::_addRoute('POST',
-            self::_createRouteUri($action),
-            self::_createRouteAction($action, 'create')
+        self::_addRoute('GET',
+            self::_createRouteUri($action, '/:id/edit'),
+            self::_createRouteAction($action, 'edit')
         );
         self::_addRoute('GET',
             self::_createRouteUri($action, '/:id'),
             self::_createRouteAction($action, 'show')
         );
-        self::_addRoute('GET',
-            self::_createRouteUri($action, '/:id/edit'),
-            self::_createRouteAction($action, 'edit')
+        self::_addRoute('POST',
+            self::_createRouteUri($action),
+            self::_createRouteAction($action, 'create')
         );
         self::_addRoute('PUT',
             self::_createRouteUri($action, '/:id'),
