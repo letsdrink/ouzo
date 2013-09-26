@@ -3,16 +3,17 @@ namespace Ouzo;
 
 use Exception;
 use Ouzo\Logger\Logger;
+use Ouzo\Routing\Router;
 
 class FrontController
 {
     public static $requestId;
     public static $userId;
 
-    private $_uri;
-    private $_uriAction;
     private $_defaults;
+    private $_currentAction;
     private $_currentController;
+    private $_currentControllerObject;
 
     public $redirectHandler;
     public $sessionInitializer;
@@ -23,7 +24,6 @@ class FrontController
     {
         self::$requestId = uniqid();
 
-        $this->_uri = new Uri();
         $this->_defaults = Config::getValue('global');
 
         $this->redirectHandler = new RedirectHandler();
@@ -35,12 +35,18 @@ class FrontController
 
     public function init()
     {
-        $this->_uriAction = $this->_uri->getAction();
+        $uri = new Uri();
 
-        if ($this->_isNoController()) {
+        $router = new Router($uri->getPathWithoutPrefix());
+        $routeRule = $router->findRoute();
+
+        $this->_currentController = $routeRule->getController();
+        $this->_currentAction = $routeRule->isRequireAction() ? $routeRule->getAction() : $uri->getAction();
+
+        if (!$routeRule->getController()) {
             $this->_redirectToDefault();
         } else {
-            $this->_currentController = $this->controllerResolver->getCurrentController();
+            $this->_currentControllerObject = $this->controllerResolver->getController($this->_currentController, $this->_currentAction);
 
             $this->sessionInitializer->startSession();
 
@@ -58,14 +64,9 @@ class FrontController
         }
     }
 
-    public function getCurrentController()
+    public function getCurrentControllerObject()
     {
-        return $this->_currentController;
-    }
-
-    private function _isNoController()
-    {
-        return !$this->_uri->getRawController();
+        return $this->_currentControllerObject;
     }
 
     private function _redirectToDefault()
@@ -82,15 +83,15 @@ class FrontController
 
     private function _invokeInit()
     {
-        if (method_exists($this->_currentController, 'init')) {
-            $this->_currentController->init();
+        if (method_exists($this->_currentControllerObject, 'init')) {
+            $this->_currentControllerObject->init();
         }
     }
 
     private function _invokeBeforeMethods()
     {
-        foreach ($this->_currentController->before as $method) {
-            if (!$this->_currentController->$method()) {
+        foreach ($this->_currentControllerObject->before as $method) {
+            if (!$this->_currentControllerObject->$method()) {
                 return false;
             }
 
@@ -103,24 +104,24 @@ class FrontController
 
     private function _invokeAfterMethods()
     {
-        foreach ($this->_currentController->after as $method) {
-            $this->_currentController->$method();
+        foreach ($this->_currentControllerObject->after as $method) {
+            $this->_currentControllerObject->$method();
         }
     }
 
     private function _invokeAction()
     {
-        $currentAction = $this->_currentController->currentAction;
-        if (method_exists($this->_currentController, $currentAction)) {
-            $this->_currentController->$currentAction();
+        $currentAction = $this->_currentControllerObject->currentAction;
+        if (method_exists($this->_currentControllerObject, $currentAction)) {
+            $this->_currentControllerObject->$currentAction();
         } else {
-            throw new FrontControllerException('No action [' . $currentAction . '] defined in controller [' . get_class($this->_currentController) . '].');
+            throw new FrontControllerException('No action [' . $currentAction . '] defined in controller [' . get_class($this->_currentControllerObject) . '].');
         }
     }
 
     private function _doActionOnResponse()
     {
-        $controller = $this->_currentController;
+        $controller = $this->_currentControllerObject;
         switch ($controller->getStatusResponse()) {
             case 'show':
                 $controller->display();
@@ -156,12 +157,12 @@ class FrontController
     private function _logRequest()
     {
         self::$userId = isset($_SESSION['id_user_ses']) ? $_SESSION['id_user_ses'] : null;
-        Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', array($this->_uri->getRawController(), $this->_uriAction));
+        Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', array($this->_currentController, $this->_currentAction));
     }
 
     private function _isRedirect()
     {
-        return in_array($this->_currentController->getStatusResponse(), array('redirect', 'redirectOld'));
+        return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
     }
 }
 

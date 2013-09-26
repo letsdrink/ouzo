@@ -2,6 +2,7 @@
 namespace Ouzo\Tests;
 
 use Ouzo\Config;
+use Ouzo\FrontController;
 
 class ControllerTestCase extends DbTransactionalTestCase
 {
@@ -20,7 +21,7 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_sessionInitializer = new MockSessionInitializer();
         $this->_downloadHandler = new MockDownloadHandler();
 
-        $this->_frontController = new \Ouzo\FrontController();
+        $this->_frontController = new FrontController();
         $this->_frontController->redirectHandler = $this->_redirectHandler;
         $this->_frontController->sessionInitializer = $this->_sessionInitializer;
         $this->_frontController->downloadHandler = $this->_downloadHandler;
@@ -30,6 +31,7 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function get($url)
     {
         $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
 
         $this->_initFrontController();
@@ -77,17 +79,17 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRenders($string)
     {
-        $statusResponse = $this->_frontController->getCurrentController()->getStatusResponse();
-        $location = $this->_frontController->getCurrentController()->getRedirectLocation();
+        $statusResponse = $this->_frontController->getCurrentControllerObject()->getStatusResponse();
+        $location = $this->_frontController->getCurrentControllerObject()->getRedirectLocation();
         if ($statusResponse != 'show') {
             $this->fail("Expected render $string but was $statusResponse $location");
         }
-        $this->assertEquals($string, $this->_frontController->getCurrentController()->view->getViewName());
+        $this->assertEquals($string, $this->_frontController->getCurrentControllerObject()->view->getViewName());
     }
 
     public function assertAssignsModel($variable, $modelObject)
     {
-        $modelVariable = $this->_frontController->getCurrentController()->view->$variable;
+        $modelVariable = $this->_frontController->getCurrentControllerObject()->view->$variable;
         $this->assertNotNull($modelVariable);
         $this->assertEquals($modelObject->attributes(), $modelVariable->attributes());
     }
@@ -99,13 +101,13 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertAssignsValue($variable, $value)
     {
-        $this->assertNotNull($this->_frontController->getCurrentController()->view->$variable);
-        $this->assertEquals($value, $this->_frontController->getCurrentController()->view->$variable);
+        $this->assertNotNull($this->_frontController->getCurrentControllerObject()->view->$variable);
+        $this->assertEquals($value, $this->_frontController->getCurrentControllerObject()->view->$variable);
     }
 
     public function assertRendersContent($content)
     {
-        $this->assertEquals($content, $this->_frontController->getCurrentController()->layout->layoutContent());
+        $this->assertEquals($content, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
     }
 
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
@@ -116,7 +118,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function getAssigned($name)
     {
-        return $this->_frontController->getCurrentController()->view->$name;
+        return $this->_frontController->getCurrentControllerObject()->view->$name;
     }
 
     public function assertAttributesEquals($expected, $actual)
@@ -126,6 +128,6 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function getRenderedJsonAsArray()
     {
-        return json_decode($this->_frontController->getCurrentController()->layout->layoutContent(), true);
+        return json_decode($this->_frontController->getCurrentControllerObject()->layout->layoutContent(), true);
     }
 }

@@ -81,6 +81,10 @@ class RouteRule
 
     private function _matches($uri)
     {
+        preg_match('#/.+?/(.+?)(/|$)#', $uri, $matches);
+        if ($this->isInExceptActions(Arrays::getValue($matches, 1, ''))) {
+            return false;
+        }
         if ($this->getUri() == $uri) {
             return true;
         }

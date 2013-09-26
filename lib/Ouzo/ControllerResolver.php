@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Strings;
+
 class ControllerResolver
 {
     function __construct($controllerPath = "\\Controller\\")
@@ -11,19 +13,14 @@ class ControllerResolver
         $this->_uri = new Uri();
     }
 
-    public function getCurrentController()
+    public function  getController($controller, $action)
     {
-        $controllerName = $this->_uri->getController();
+        $controllerName = Strings::underscoreToCamelCase($controller);
         $controller = $this->controllerPath . $controllerName . "Controller";
 
         $this->_validateControllerExists($controller);
 
-        return new $controller($this->_getCurrentAction());
-    }
-
-    private function _getCurrentAction()
-    {
-        return $this->_uri->getAction() ? : $this->_defaultAction;
+        return new $controller($action);
     }
 
     private function _validateControllerExists($controller)

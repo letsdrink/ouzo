@@ -172,6 +172,42 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('users', $rule->getController());
     }
 
+    /**
+     * @test
+     */
+    public function shouldNotFindRouteWhenExceptAction()
+    {
+        //given
+        Route::allowAll('/users', 'users', array('add'));
+        $router = $this->_createRouter('GET', '/users/add');
+
+        //when
+        CatchException::when($router)->findRoute();
+
+        //then
+        CatchException::assertThat();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteWhenDeclaredAnIsInExcept()
+    {
+        //given
+        Route::get('/users/add', 'users#add');
+        Route::allowAll('/users', 'users', array('add'));
+        $router = $this->_createRouter('GET', '/users/add');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertNotEmpty($rule);
+        $this->assertEquals('GET', $rule->getMethod());
+        $this->assertEquals('add', $rule->getAction());
+        $this->assertEquals('users', $rule->getController());
+    }
+
     public function requestMethods()
     {
         return array(

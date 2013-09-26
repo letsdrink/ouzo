@@ -1,5 +1,6 @@
 <?php
 use Ouzo\Controller;
+use Ouzo\Routing\Route;
 use Ouzo\Tests\ControllerTestCase;
 
 class SampleControllerException extends Exception
@@ -31,7 +32,7 @@ class SampleController extends Controller
 
 class MockControllerResolver
 {
-    public function getCurrentController()
+    public function getController()
     {
         return new SampleController();
     }
@@ -44,6 +45,7 @@ class BeforeFilterTest extends ControllerTestCase
         parent::setUp();
         $this->_frontController->controllerResolver = new MockControllerResolver();
         $this->_frontController->redirectHandler = $this->getMock('\Ouzo\RedirectHandler', array('redirect'));
+        Route::$routes = array();
     }
 
     /**
@@ -51,6 +53,9 @@ class BeforeFilterTest extends ControllerTestCase
      */
     public function shouldNotInvokeActionWhenBeforeFilterReturnFalse()
     {
+        //given
+        Route::any('/sample/action', 'sample#action');
+
         //when
         try {
             $this->get('/sample/action');

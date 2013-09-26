@@ -50,6 +50,17 @@ class Uri
         return $paramsArray;
     }
 
+    public function getPath()
+    {
+        return $this->_pathProvider->getPath();
+    }
+
+    public function getPathWithoutPrefix()
+    {
+        $defaults = Config::getValue('global');
+        return Strings::removePrefix($this->getPath(), $defaults['prefix_system']);
+    }
+
     public function getParam($param)
     {
         $params = $this->getParams();
