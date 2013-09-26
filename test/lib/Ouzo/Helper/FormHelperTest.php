@@ -1,4 +1,5 @@
 <?php
+
 use Model\Product;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
@@ -48,7 +49,7 @@ class FormHelperTest extends DbTransactionalTestCase
 
         // then
         $expectedHtml = <<<HTML
-        <div class=" field">
+        <div class="field">
             <label for="gender">Gender</label>
             <input type="text" value="val" id="gender" name="gender" style=""/>
         </div>
@@ -182,9 +183,27 @@ HTML;
 
         //then
         $expectedHtml = <<<HTML
-        <div class=" field">
+        <div class="field">
             <label for="gender" style="margin-left: px; width: 10px;">Gender</label>
             <input type="text" value="val" id="gender" name="gender" style=""/>
+        </div>
+HTML;
+        $this->assertEquals($expectedHtml, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateCheckbox()
+    {
+        //when
+        $result = checkboxField('Gender', 'gender', 'val', true);
+
+        //then
+        $expectedHtml = <<<HTML
+        <div class="field">
+            <label for="gender">Gender</label>
+            <input type="checkbox" value="val" id="gender" name="gender" checked/>
         </div>
 HTML;
         $this->assertEquals($expectedHtml, $result);

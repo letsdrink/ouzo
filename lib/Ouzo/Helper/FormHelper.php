@@ -75,10 +75,10 @@ function textField($label, $name, $value, $options = array())
 
     $divClass = Arrays::getValue($options, 'class', '');
     $divClass .= $options['new_row'] ? ' field' : ' field-next';
-
     if ($options['error']) {
         $divClass .= ' field-with-error';
     }
+    $divClass = trim($divClass);
 
     $labelStyle = array();
     if (isset($options['label_width']) && $options['label_width'] > 0) {
@@ -95,6 +95,26 @@ function textField($label, $name, $value, $options = array())
 
     return <<<HTML
         <div class="$divClass">
+            $labelHtml
+            $input
+        </div>
+HTML;
+}
+
+function checkboxField($label, $name, $value, $checked, $options = array())
+{
+    $label = escapeNewLine($label);
+    $value = escapeText($value);
+
+    $id = Arrays::getValue($options, 'id', cleanHtmlId($name));
+
+    $labelHtml = labelTag($id, $label);
+
+    $attr = array('id' => $id, 'name' => $name);
+    $input = checkboxTag($value, $checked, $attr);
+
+    return <<<HTML
+        <div class="field">
             $labelHtml
             $input
         </div>
@@ -169,7 +189,6 @@ function selectField($label, $id, $value, array $options, $defaultOption = null,
     return selectListHtml($label, $id, $name, $options, array($value), array('size' => $size));
 }
 
-
 function multiselectField($label, $name, array $selected, array $options, $config = array())
 {
     $id = Arrays::getValue($config, 'id', cleanHtmlId($name));
@@ -214,6 +233,12 @@ function textAreaTag($value, array $attributes = array())
 {
     $attr = _prepareAttributes($attributes);
     return '<textarea ' . $attr . '>' . $value . '</textarea>';
+}
+
+function checkboxTag($value, $checked, array $attributes = array())
+{
+    $attr = _prepareAttributes($attributes);
+    return '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
 }
 
 function selectTag(array $items = array(), $value, array $attributes = array())
