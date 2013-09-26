@@ -220,4 +220,22 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('users', $routes[0]->getController());
         $this->assertNull($routes[0]->getAction());
     }
+
+    /**
+     * @test
+     */
+    public function shouldNotValidateExistingRoutes()
+    {
+        //given
+        Route::$validate = false;
+        Route::get('/users/index', 'users#index');
+        Route::get('/users/index', 'users#index');
+        Route::$validate = true;
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        Assert::thatArray($routes)->hasSize(2);
+    }
 }

@@ -12,6 +12,7 @@ class Route
      */
     public static $routes = array();
     public static $methods = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE');
+    public static $validate = true;
 
 
     public static function get($uri, $action)
@@ -82,7 +83,7 @@ class Route
 
     private static function _addRoute($method, $uri, $action, $requireAction = true, $except = array())
     {
-        if (self::_existRouteRule($method, $uri)) {
+        if (self::$validate && self::_existRouteRule($method, $uri)) {
             $methods = is_array($method) ? implode(', ', $method) : $method;
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }

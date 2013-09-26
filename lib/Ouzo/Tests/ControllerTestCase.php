@@ -59,6 +59,7 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function post($url, $data)
     {
         $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = $data;
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
 
