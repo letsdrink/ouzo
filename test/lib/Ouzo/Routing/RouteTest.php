@@ -1,6 +1,7 @@
 <?php
 
 use Ouzo\Routing\Route;
+use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
 
 class RouteTest extends PHPUnit_Framework_TestCase
@@ -146,5 +147,20 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertCount(2, $routes);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateRouteForResource()
+    {
+        //given
+        Route::resource('users');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        Assert::thatArray($routes)->hasSize(8);
     }
 }

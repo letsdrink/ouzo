@@ -75,7 +75,7 @@ class Arrays
 
     public static function firstOrNull($object)
     {
-        return empty($object) ? null : $object[0];
+        return empty($object) ? null : self::first($object);
     }
 
     public static function getValue($array, $key, $default = null)

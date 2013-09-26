@@ -176,6 +176,24 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertNull($rule->getAction());
     }
 
+    /**
+     * @test
+     * @dataProvider requestRestMethods
+     */
+    public function shouldFindRouteResource($method, $uri)
+    {
+        //given
+        Route::resource('albums');
+        $router = $this->_createRouter($method, $uri);
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals($method, $rule->getMethod());
+        $this->assertEquals('albums', $rule->getController());
+    }
+
     public function requestMethods()
     {
         return array(
@@ -184,6 +202,20 @@ class RouterTest extends PHPUnit_Framework_TestCase
             array('PUT'),
             array('PATCH'),
             array('DELETE')
+        );
+    }
+
+    public function requestRestMethods()
+    {
+        return array(
+            array('GET', '/albums'),
+            array('GET', '/albums/new'),
+            array('POST', '/albums'),
+            array('GET', '/albums/12'),
+            array('GET', '/albums/12/edit'),
+            array('PUT', '/albums/12'),
+            array('PATCH', '/albums/12'),
+            array('DELETE', '/albums/12')
         );
     }
 
