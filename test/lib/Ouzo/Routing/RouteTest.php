@@ -2,6 +2,7 @@
 
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
+use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
 
 class RouteTest extends PHPUnit_Framework_TestCase
@@ -86,7 +87,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //given
         Route::any('/user/save', 'User#save');
         Route::any('/user/update/id/:id', 'User#update');
-        Route::any('/photo', 'Photo');
+        Route::any('/photo/index', 'Photo#index');
 
         //when
         $controllerRoutes = Route::getRoutesForController('user');
@@ -162,5 +163,44 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
         //then
         Assert::thatArray($routes)->hasSize(8);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfNoActionInGetMethod()
+    {
+        //when
+        try {
+            Route::get('/user/save', 'User');
+            $this->fail();
+        } catch (InvalidArgumentException $exception) {
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfNoActionInPostMethod()
+    {
+        //when
+        try {
+            Route::post('/user/save', 'User');
+            $this->fail();
+        } catch (InvalidArgumentException $exception) {
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfNoActionInAnyMethod()
+    {
+        //when
+        try {
+            Route::any('/user/save', 'User');
+            $this->fail();
+        } catch (InvalidArgumentException $exception) {
+        }
     }
 }

@@ -47,6 +47,14 @@ class RouteRule
         return false;
     }
 
+    public function hasRequiredAction()
+    {
+        if ((in_array($this->_method, array('GET', 'POST')) || is_array($this->_method)) && !$this->getAction()) {
+            return false;
+        }
+        return true;
+    }
+
     private function _isEqualOrAnyMethod()
     {
         return is_array($this->_method) ? in_array(Uri::getRequestType(), $this->_method) : Uri::getRequestType() == $this->_method;

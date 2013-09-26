@@ -101,25 +101,6 @@ class RouterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldFindRouteOnlyForController()
-    {
-        //given
-        Route::get('/user', 'User');
-        $router = $this->_createRouter('GET', '/user/show/id/12/surname/smith');
-
-        //when
-        $rule = $router->findRoute();
-
-        //then
-        $this->assertEquals('/user', $rule->getUri());
-        $this->assertEquals('GET', $rule->getMethod());
-        $this->assertEquals('User', $rule->getController());
-        $this->assertNull($rule->getAction());
-    }
-
-    /**
-     * @test
-     */
     public function shouldFindRoutePost()
     {
         //given
@@ -154,26 +135,6 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertContains($method, $rule->getMethod());
         $this->assertEquals('User', $rule->getController());
         $this->assertEquals('save', $rule->getAction());
-    }
-
-    /**
-     * @test
-     * @dataProvider requestMethods
-     */
-    public function shouldFindRouteAnyForController($method)
-    {
-        //given
-        Route::any('/user', 'User');
-        $router = $this->_createRouter($method, '/user/save');
-
-        //when
-        $rule = $router->findRoute();
-
-        //then
-        $this->assertEquals('/user', $rule->getUri());
-        $this->assertContains($method, $rule->getMethod());
-        $this->assertEquals('User', $rule->getController());
-        $this->assertNull($rule->getAction());
     }
 
     /**
