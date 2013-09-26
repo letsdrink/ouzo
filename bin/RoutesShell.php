@@ -68,12 +68,12 @@ class RoutesShell extends Shell
 
     private function _printExceptsIfExists(RouteRule $rule)
     {
-        $excepts = $rule->getExcepts();
-        if ($excepts) {
+        $except = $rule->getExcept();
+        if ($except) {
             $obj = $this;
-            $text = sprintf("\t\t%13s", 'excepts:');
+            $text = sprintf("\t\t%13s", 'except:');
             $obj->out($text);
-            Arrays::map($excepts, function ($except) use ($obj) {
+            Arrays::map($except, function ($except) use ($obj) {
                 $text = sprintf("\t\t\t%-10s", $except);
                 $obj->out($text);
                 return $except;

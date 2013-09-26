@@ -5,3 +5,4 @@ Route::get('/agents/index', 'agents#index');
 Route::post('/agents/index', 'agents#index');
 Route::allowAll('/photos', 'photos');
 Route::any('/agents/index', 'agents#index');
+Route::resource('phones');
