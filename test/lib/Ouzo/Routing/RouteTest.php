@@ -203,4 +203,21 @@ class RouteTest extends PHPUnit_Framework_TestCase
         } catch (InvalidArgumentException $exception) {
         }
     }
+
+    /**
+     * @test
+     */
+    public function shouldRouteForAllowingAllActionsInController()
+    {
+        //given
+        Route::allowAll('/users', 'users');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertCount(1, $routes);
+        $this->assertEquals('users', $routes[0]->getController());
+        $this->assertNull($routes[0]->getAction());
+    }
 }

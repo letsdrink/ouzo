@@ -9,6 +9,7 @@ class RouteRule
     private $_method;
     private $_uri;
     private $_action;
+    private $_requireAction;
 
     public function __construct($method, $uri, $action)
     {
@@ -47,12 +48,18 @@ class RouteRule
         return false;
     }
 
-    public function hasRequiredAction()
+    public function hasRequiredAction($requireAction)
     {
-        if ((in_array($this->_method, array('GET', 'POST')) || is_array($this->_method)) && !$this->getAction()) {
-            return false;
+        $this->_requireAction = $requireAction;
+        if ($requireAction) {
+            return (in_array($this->_method, array('GET', 'POST')) || is_array($this->_method)) && !$this->getAction();
         }
-        return true;
+        return $requireAction;
+    }
+
+    public function isRequireAction()
+    {
+        return $this->_requireAction;
     }
 
     private function _isEqualOrAnyMethod()

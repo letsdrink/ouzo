@@ -155,6 +155,23 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('albums', $rule->getController());
     }
 
+    /**
+     * @test
+     */
+    public function shouldFindRouteForAllInController()
+    {
+        //given
+        Route::allowAll('/users', 'users');
+        $router = $this->_createRouter('GET', '/users/select_for_user');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertFalse($rule->isRequireAction());
+        $this->assertEquals('users', $rule->getController());
+    }
+
     public function requestMethods()
     {
         return array(
