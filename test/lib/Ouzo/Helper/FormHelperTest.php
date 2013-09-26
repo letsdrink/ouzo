@@ -197,12 +197,12 @@ HTML;
     public function shouldGenerateCheckbox()
     {
         //when
-        $result = checkboxField('Gender', 'gender', 'val', true);
+        $result = checkboxField('Gender', 'gender', 'val', true, array('label_width' => 10));
 
         //then
         $expectedHtml = <<<HTML
         <div class="field">
-            <label for="gender">Gender</label>
+            <label for="gender" style="margin-left: px; width: 10px;">Gender</label>
             <input type="checkbox" value="val" id="gender" name="gender" checked/>
         </div>
 HTML;

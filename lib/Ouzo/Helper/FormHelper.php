@@ -108,7 +108,12 @@ function checkboxField($label, $name, $value, $checked, $options = array())
 
     $id = Arrays::getValue($options, 'id', cleanHtmlId($name));
 
-    $labelHtml = labelTag($id, $label);
+    $labelStyle = array();
+    if (isset($options['label_width']) && $options['label_width'] > 0) {
+        $margin = Arrays::getValue($options, 'label_margin');
+        $labelStyle = array('style' => 'margin-left: ' . $margin . 'px; width: ' . $options['label_width'] . 'px;');
+    }
+    $labelHtml = labelTag($id, $label, $labelStyle);
 
     $attr = array('id' => $id, 'name' => $name);
     $input = checkboxTag($value, $checked, $attr);
