@@ -21,6 +21,5 @@
     },
     "archive": {
         "exclude": ["/test", "/build", "/config", "/vendor", "/*.xml", "/*.sh", "/bootstrap_test.php"]
-    },
-    "bin": ["bin/RoutesShell.php"]
+    }
 }
