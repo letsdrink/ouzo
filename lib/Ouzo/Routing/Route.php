@@ -65,9 +65,9 @@ class Route
         );
     }
 
-    public static function allowAll($uri, $controller)
+    public static function allowAll($uri, $controller, $except = array())
     {
-        self::_addRoute(self::$methods, $uri, $controller, false);
+        self::_addRoute(self::$methods, $uri, $controller, false, $except);
     }
 
     private static function _createRouteUri($action, $suffix = '')
@@ -80,14 +80,14 @@ class Route
         return $controller . '#' . $action;
     }
 
-    private static function _addRoute($method, $uri, $action, $requireAction = true)
+    private static function _addRoute($method, $uri, $action, $requireAction = true, $except = array())
     {
         if (self::_existRouteRule($method, $uri)) {
             $methods = is_array($method) ? implode(', ', $method) : $method;
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
 
-        $routeRule = new RouteRule($method, $uri, $action, $requireAction);
+        $routeRule = new RouteRule($method, $uri, $action, $requireAction, $except);
         if ($routeRule->hasRequiredAction()) {
             throw new InvalidArgumentException('Route rule ' . $uri . ' required action');
         }

@@ -3,6 +3,7 @@ use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Shell;
 use Ouzo\Shell\InputArgument;
+use Ouzo\Utilities\Arrays;
 
 class RoutesShell extends Shell
 {
@@ -48,6 +49,9 @@ class RoutesShell extends Shell
 
             $text = sprintf("\t%-10s %-40s %s", $showMethod, $uri, $controllerAction);
             $this->out($text);
+
+            $this->_printExceptsIfExists($rule);
+
             $prevMethod = $method;
         }
     }
@@ -60,5 +64,20 @@ class RoutesShell extends Shell
             $method = is_array($rule->getMethod()) ? 'ANY' : $rule->getMethod();
         }
         return $method;
+    }
+
+    private function _printExceptsIfExists(RouteRule $rule)
+    {
+        $excepts = $rule->getExcepts();
+        if ($excepts) {
+            $obj = $this;
+            $text = sprintf("\t\t%13s", 'excepts:');
+            $obj->out($text);
+            Arrays::map($excepts, function ($except) use ($obj) {
+                $text = sprintf("\t\t\t%-10s", $except);
+                $obj->out($text);
+                return $except;
+            });
+        }
     }
 }

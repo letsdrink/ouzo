@@ -10,13 +10,15 @@ class RouteRule
     private $_uri;
     private $_action;
     private $_requireAction;
+    private $_excepts;
 
-    public function __construct($method, $uri, $action, $requireAction)
+    public function __construct($method, $uri, $action, $requireAction, $excepts = array())
     {
         $this->_method = $method;
         $this->_uri = $uri;
         $this->_action = $action;
         $this->_requireAction = $requireAction;
+        $this->_excepts = $excepts;
     }
 
     public function getMethod()
@@ -60,6 +62,16 @@ class RouteRule
     public function isRequireAction()
     {
         return $this->_requireAction;
+    }
+
+    public function getExcepts()
+    {
+        return $this->_excepts;
+    }
+
+    public function isInExceptActions($action)
+    {
+        return in_array($action, $this->_excepts);
     }
 
     private function _isEqualOrAnyMethod()

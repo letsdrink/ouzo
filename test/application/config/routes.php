@@ -1,7 +1,7 @@
 <?php
 use Ouzo\Routing\Route;
-Route::any('/', 'Index#index');
-Route::allowAll('/users', 'users');
-Route::get('/users/add', 'users#add');
-Route::post('/users/save', 'users#save');
-Route::resource('users');
+Route::allowAll('/users', 'users', array('new', 'select_outbound_for_user'));
+Route::get('/agents/index', 'agents#index');
+Route::post('/agents/index', 'agents#index');
+Route::allowAll('/photos', 'photos');
+Route::any('/agents/index', 'agents#index');
