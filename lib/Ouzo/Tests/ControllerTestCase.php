@@ -77,8 +77,11 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRenders($string)
     {
+        $statusResponse = $this->_frontController->getCurrentController()->getStatusResponse();
+        if ($statusResponse != 'show') {
+            $this->fail("Expected render but was $statusResponse");
+        }
         $this->assertEquals($string, $this->_frontController->getCurrentController()->view->getViewName());
-        $this->assertEquals('show', $this->_frontController->getCurrentController()->getStatusResponse());
     }
 
     public function assertAssignsModel($variable, $modelObject)
