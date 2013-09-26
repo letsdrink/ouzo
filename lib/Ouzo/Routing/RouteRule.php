@@ -9,7 +9,7 @@ class RouteRule
     private $_method;
     private $_uri;
     private $_action;
-    private $_requireAction;
+    private $_actionRequired;
     private $_except;
 
     public function __construct($method, $uri, $action, $requireAction, $except = array())
@@ -17,7 +17,7 @@ class RouteRule
         $this->_method = $method;
         $this->_uri = $uri;
         $this->_action = $action;
-        $this->_requireAction = $requireAction;
+        $this->_actionRequired = $requireAction;
         $this->_except = $except;
     }
 
@@ -53,15 +53,15 @@ class RouteRule
 
     public function hasRequiredAction()
     {
-        if ($this->_requireAction) {
+        if ($this->_actionRequired) {
             return (in_array($this->_method, array('GET', 'POST')) || is_array($this->_method)) && !$this->getAction();
         }
-        return $this->_requireAction;
+        return $this->_actionRequired;
     }
 
-    public function isRequireAction()
+    public function isActionRequired()
     {
-        return $this->_requireAction;
+        return $this->_actionRequired;
     }
 
     public function getExcept()

@@ -1,5 +1,7 @@
 <?php
+
 use Ouzo\Routing\Route;
+
 Route::allowAll('/users', 'users', array('new', 'select_outbound_for_user'));
 Route::get('/agents/index', 'agents#index');
 Route::post('/agents/index', 'agents#index');

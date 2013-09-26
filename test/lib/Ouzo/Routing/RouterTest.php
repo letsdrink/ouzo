@@ -168,7 +168,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $rule = $router->findRoute();
 
         //then
-        $this->assertFalse($rule->isRequireAction());
+        $this->assertFalse($rule->isActionRequired());
         $this->assertEquals('users', $rule->getController());
     }
 

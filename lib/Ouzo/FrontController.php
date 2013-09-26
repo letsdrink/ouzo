@@ -41,7 +41,7 @@ class FrontController
         $routeRule = $router->findRoute();
 
         $this->_currentController = $routeRule->getController();
-        $this->_currentAction = $routeRule->isRequireAction() ? $routeRule->getAction() : $uri->getAction();
+        $this->_currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
         if (!$routeRule->getController()) {
             $this->_redirectToDefault();

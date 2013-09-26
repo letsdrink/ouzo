@@ -58,7 +58,7 @@ class RoutesShell extends Shell
 
     private function _getRuleMethod(RouteRule $rule)
     {
-        if (!$rule->isRequireAction()) {
+        if (!$rule->isActionRequired()) {
             $method = 'ALL';
         } else {
             $method = is_array($rule->getMethod()) ? 'ANY' : $rule->getMethod();
