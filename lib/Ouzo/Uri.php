@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Uri\PathProvider;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
 class Uri
@@ -9,7 +11,7 @@ class Uri
 
     public function __construct($pathProvider = null)
     {
-        $this->_pathProvider = $pathProvider == null ? new \Ouzo\Uri\PathProvider() : $pathProvider;
+        $this->_pathProvider = $pathProvider == null ? new PathProvider() : $pathProvider;
     }
 
     public function getParams()
@@ -51,28 +53,27 @@ class Uri
     public function getParam($param)
     {
         $params = $this->getParams();
-        return isset($params[$param]) ? $params[$param] : null;
+        return Arrays::getValue($params, $param);
     }
 
     public function getRawController()
     {
         $path = $this->_pathProvider->getPath();
         $pathElements = $this->_parsePath($path);
-        return (isset($pathElements[0]) ? $pathElements[0] : null);
+        return Arrays::firstOrNull($pathElements);
     }
 
     public function getController()
     {
         $rawController = $this->getRawController();
-        return isset($rawController) ? Strings::underscoreToCamelCase($rawController) : null;
+        return $rawController ? Strings::underscoreToCamelCase($rawController) : null;
     }
 
     public function getAction()
     {
         $path = $this->_pathProvider->getPath();
         $pathElements = $this->_parsePath($path);
-
-        return isset($pathElements[1]) ? $pathElements[1] : null;
+        return Arrays::getValue($pathElements, 1);
     }
 
     private function _parsePath($path = null, $limit = null)
