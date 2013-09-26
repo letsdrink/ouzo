@@ -83,11 +83,12 @@ class Route
     private static function _addRoute($method, $uri, $action, $requireAction = true)
     {
         if (self::_existRouteRule($method, $uri)) {
-            throw new InvalidArgumentException('Route rule for method ' . $method . ' and URI "' . $uri . '" already exists');
+            $methods = is_array($method) ? implode(', ', $method) : $method;
+            throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
 
-        $routeRule = new RouteRule($method, $uri, $action);
-        if ($routeRule->hasRequiredAction($requireAction)) {
+        $routeRule = new RouteRule($method, $uri, $action, $requireAction);
+        if ($routeRule->hasRequiredAction()) {
             throw new InvalidArgumentException('Route rule ' . $uri . ' required action');
         }
         self::$routes[] = $routeRule;

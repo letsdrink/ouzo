@@ -1,5 +1,6 @@
 <?php
 use Ouzo\Routing\Route;
+use Ouzo\Routing\RouteRule;
 use Ouzo\Shell;
 use Ouzo\Shell\InputArgument;
 
@@ -33,21 +34,31 @@ class RoutesShell extends Shell
     private function _renderRoutes($routes = array())
     {
         $prevMethod = '';
-        foreach ($routes as $route) {
-            $method = is_array($route->getMethod()) ? 'ANY' : $route->getMethod();
+        foreach ($routes as $rule) {
+            $method = $this->_getRuleMethod($rule);
             if ($prevMethod != $method) {
                 $showMethod = $method;
             } else {
                 $showMethod = '';
             }
 
-            $uri = $route->getUri();
-            $action = $route->getAction() ? '#' . $route->getAction() : $route->getAction();
-            $controllerAction = $route->getController() . $action;
+            $uri = $rule->getUri();
+            $action = $rule->getAction() ? '#' . $rule->getAction() : $rule->getAction();
+            $controllerAction = $rule->getController() . $action;
 
             $text = sprintf("\t%-10s %-40s %s", $showMethod, $uri, $controllerAction);
             $this->out($text);
             $prevMethod = $method;
         }
+    }
+
+    private function _getRuleMethod(RouteRule $rule)
+    {
+        if (!$rule->isRequireAction()) {
+            $method = 'ALL';
+        } else {
+            $method = is_array($rule->getMethod()) ? 'ANY' : $rule->getMethod();
+        }
+        return $method;
     }
 }
