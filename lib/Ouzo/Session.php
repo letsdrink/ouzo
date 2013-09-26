@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Arrays;
+
 class Session
 {
     private $_sessionNamespace;
@@ -56,5 +58,10 @@ class Session
     {
         unset($_SESSION[$this->_sessionNamespace]);
         return $this;
+    }
+
+    public function all()
+    {
+        return Arrays::getValue($_SESSION, $this->_sessionNamespace, array());
     }
 }

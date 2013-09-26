@@ -28,7 +28,17 @@ class Bootstrap
             ->setIncludePath('locales/')
             ->register();
 
+        $this->_includeRoutes();
+
         $controller = new FrontController();
         $controller->init();
+    }
+
+    private function _includeRoutes()
+    {
+        $routesFilename = ROOT_PATH . 'config/routes.php';
+        if (file_exists($routesFilename)) {
+            include_once $routesFilename;
+        }
     }
 }

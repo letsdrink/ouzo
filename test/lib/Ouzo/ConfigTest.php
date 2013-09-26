@@ -1,4 +1,5 @@
 <?php
+
 use Ouzo\Config;
 
 class SampleConfig
@@ -130,5 +131,37 @@ TEMPLATE;
     private function _deleteSampleConfigFile()
     {
         unlink('/tmp/SampleConfigFile.php');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldOverrideProperty()
+    {
+        // given
+        Config::overrideProperty('key', 'value');
+
+        // when
+        $value = Config::getValue('key');
+
+        // then
+        $this->assertEquals('value', $value);
+        Config::clearProperty('key'); // cleanup
+    }
+
+    /**
+     * @test
+     */
+    public function shouldClearProperty()
+    {
+        // given
+        Config::overrideProperty('key', 'value');
+        Config::clearProperty('key');
+
+        // when
+        $value = Config::getValue('key');
+
+        // then
+        $this->assertEmpty($value);
     }
 }

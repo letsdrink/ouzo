@@ -96,4 +96,25 @@ class Config
         return self::$_configInstance;
     }
 
+    public static function overrideProperty($keys, $value)
+    {
+        self::load()->_overrideProperty($keys, $value);
+    }
+
+    private function _overrideProperty($keys, $value)
+    {
+        if (!is_array($keys)) {
+            $keys = array($keys);
+        }
+        $config = & $this->_config;
+        foreach ($keys as $key) {
+            $config = & $config[$key];
+        }
+        $config = $value;
+    }
+
+    public static function clearProperty()
+    {
+        self::overrideProperty(func_get_args(), null);
+    }
 }
