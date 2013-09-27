@@ -144,4 +144,12 @@ class Arrays
     {
         return $elements ? $elements[array_rand($elements)] : null;
     }
+
+    public static function combine($keys, $values)
+    {
+        if (!empty($keys) && !empty($values)) {
+            return array_combine($keys, $values);
+        }
+        return array();
+    }
 }

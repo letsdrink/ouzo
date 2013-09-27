@@ -116,7 +116,7 @@ class RouteRule
 
         $filterValues = array_intersect_key($requestUri, $filterParameters);
 
-        $this->_parameters = array_combine($filterParameters, $filterValues);
+        $this->_parameters = Arrays::combine($filterParameters, $filterValues);
     }
 
     public function getParameters()
