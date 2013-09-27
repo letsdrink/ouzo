@@ -5,7 +5,7 @@ use Ouzo\Model;
 
 class Product extends Model
 {
-    private $_fields = array('description', 'name', 'id_category');
+    private $_fields = array('description', 'name', 'id_category', 'sale');
 
     public function __construct($attributes = array())
     {

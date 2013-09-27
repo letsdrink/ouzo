@@ -12,7 +12,8 @@ CREATE TABLE products (
   id_product  INTEGER AUTO_INCREMENT PRIMARY KEY,
   id_category INTEGER REFERENCES categories (id_category),
   name        TEXT,
-  description TEXT
+  description TEXT,
+  sale        BOOLEAN
 );
 
 CREATE TABLE orders (
