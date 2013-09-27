@@ -15,15 +15,13 @@ class Session
     static public function startSession()
     {
         if (!empty($_SERVER["REQUEST_URI"])) {
-            $config = Config::getValue('global');
-            $path = "/tmp" . str_replace('panel2.0', '', $config['prefix_system']) . "thulium_sess";
-
-            if (!is_dir($path)) {
-                mkdir($path, 0700, true);
+            $path = Config::getValue('session', 'path');
+            if ($path) {
+                if (!is_dir($path)) {
+                    mkdir($path, 0700, true);
+                }
+                session_save_path($path);
             }
-
-            session_save_path($path);
-
             if (session_id() == '') {
                 session_start();
             }
