@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use Ouzo\Routing\RouteRule;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
 class Controller
@@ -44,8 +45,9 @@ class Controller
     {
         $this->_statusResponse = 'redirectOld';
         $this->_redirectLocation = self::getPrefixToOldPanel() . $url;
-        if (!empty($params))
+        if (!empty($params)) {
             $this->_redirectLocation .= '?' . http_build_query($params);
+        }
     }
 
     public static function getPrefixToOldPanel()
@@ -100,7 +102,7 @@ class Controller
     public function notice($messages)
     {
         if (!empty($messages)) {
-            $_SESSION['messages'] = is_array($messages) ? $messages : array($messages);
+            $_SESSION['messages'] = Arrays::toArray($messages);
         }
     }
 
