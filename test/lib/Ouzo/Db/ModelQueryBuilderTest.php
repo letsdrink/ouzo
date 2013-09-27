@@ -6,6 +6,7 @@ use Model\OrderProduct;
 use Model\Product;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Stats;
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Objects;
 
@@ -461,8 +462,39 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->fetchAll();
 
         //then
-        $this->assertCount(1, $products);
-        $this->assertEquals($product, $products[0]);
+        Assert::thatArray($products)->containsOnly($product);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleBooleanTrueInWhere()
+    {
+        //given
+        $product = Product::create(array('name' => 'a', 'sale' => true));
+        Product::create(array('name' => 'b', 'sale' => false));
+
+        //when
+        $products = Product::where(array('sale' => true))->fetchAll();
+
+        //then
+        Assert::thatArray($products)->containsOnly($product);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleBooleanFalseInWhere()
+    {
+        //given
+        Product::create(array('name' => 'a', 'sale' => true));
+        $product = Product::create(array('name' => 'b', 'sale' => false));
+
+        //when
+        $products = Product::where(array('sale' => false))->fetchAll();
+
+        //then
+        Assert::thatArray($products)->containsOnly($product);
     }
 
     /**
@@ -480,8 +512,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->fetchAll();
 
         //then
-        $this->assertCount(1, $products);
-        $this->assertEquals($product, $products[0]);
+        Assert::thatArray($products)->containsOnly($product);
     }
 
     /**
@@ -499,8 +530,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->fetchAll();
 
         //then
-        $this->assertCount(1, $products);
-        $this->assertEquals($product, $products[0]);
+        Assert::thatArray($products)->containsOnly($product);
     }
 
     /**
@@ -518,8 +548,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->fetchAll();
 
         //then
-        $this->assertCount(1, $products);
-        $this->assertEquals($product, $products[0]);
+        Assert::thatArray($products)->containsOnly($product);
     }
 
     /**

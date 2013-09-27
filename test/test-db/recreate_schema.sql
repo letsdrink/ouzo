@@ -12,7 +12,8 @@ CREATE TABLE products (
   id_product  SERIAL PRIMARY KEY,
   id_category INTEGER REFERENCES categories,
   name        TEXT,
-  description TEXT
+  description TEXT,
+  sale        BOOLEAN
 );
 
 CREATE TABLE orders (
