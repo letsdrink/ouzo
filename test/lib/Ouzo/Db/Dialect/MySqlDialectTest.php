@@ -1,19 +1,19 @@
 <?php
-use Ouzo\Db\Dialect\MysqlDialect;
+use Ouzo\Db\Dialect\MySqlDialect;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 
-class MysqlDialectTest extends PHPUnit_Framework_TestCase
+class MySqlDialectTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var MysqlDialect
+     * @var MySqlDialect
      */
     private $_dialect;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->_dialect = new MysqlDialect();
+        $this->_dialect = new MySqlDialect();
     }
 
     /**

@@ -5,7 +5,7 @@ use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Utilities\FluentArray;
 
-class MysqlDialect extends Dialect
+class MySqlDialect extends Dialect
 {
     public function buildQuery(Query $query)
     {
