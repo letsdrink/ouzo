@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Strings;
 
 class ControllerResolver
@@ -12,14 +13,15 @@ class ControllerResolver
         $this->controllerPath = $controllerPath;
     }
 
-    public function  getController($controller, $action)
+    public function getController(RouteRule $routeRule, $action)
     {
+        $controller = $routeRule->getController();
         $controllerName = Strings::underscoreToCamelCase($controller);
         $controller = $this->controllerPath . $controllerName . "Controller";
 
         $this->_validateControllerExists($controller);
 
-        return new $controller($action);
+        return new $controller($action, $routeRule);
     }
 
     private function _validateControllerExists($controller)

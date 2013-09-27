@@ -251,14 +251,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         //given
         Route::resource('users');
-        $router = $this->_createRouter('GET', '/users/new');
+        $router = $this->_createRouter('GET', '/users/fresh');
 
         //when
         $rule = $router->findRoute();
 
         //then
         $this->assertEquals('users', $rule->getController());
-        $this->assertEquals('new', $rule->getAction());
+        $this->assertEquals('fresh', $rule->getAction());
         $this->assertEmpty($rule->getParameters());
     }
 

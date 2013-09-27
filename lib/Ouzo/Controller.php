@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Strings;
 
 class Controller
@@ -18,7 +19,7 @@ class Controller
     private $_redirectLocation = '';
     private $_fileData = array();
 
-    public function __construct($currentAction)
+    public function __construct($currentAction, RouteRule $routeRule = null)
     {
         $uri = new Uri();
         $this->uri = $uri;
@@ -29,7 +30,8 @@ class Controller
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
-        $this->params = array_merge($_POST, $_GET, $this->uri->getParams());
+        $parameters = $routeRule ? $routeRule->getParameters() : array();
+        $this->params = array_merge($_POST, $_GET, $parameters);
     }
 
     public function redirect($url, $messages = array())

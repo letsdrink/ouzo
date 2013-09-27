@@ -37,8 +37,8 @@ class Route
             self::_createRouteAction($action, 'index')
         );
         self::_addRoute('GET',
-            self::_createRouteUri($action, '/new'),
-            self::_createRouteAction($action, 'new')
+            self::_createRouteUri($action, '/fresh'),
+            self::_createRouteAction($action, 'fresh')
         );
         self::_addRoute('GET',
             self::_createRouteUri($action, '/:id/edit'),

@@ -66,6 +66,30 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_initFrontController();
     }
 
+    public function put($url)
+    {
+        $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_METHOD'] = 'PUT';
+        $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
+        $this->_initFrontController();
+    }
+
+    public function patch($url)
+    {
+        $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_METHOD'] = 'PATCH';
+        $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
+        $this->_initFrontController();
+    }
+
+    public function delete($url)
+    {
+        $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_METHOD'] = 'DELETE';
+        $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
+        $this->_initFrontController();
+    }
+
     public function assertRedirectsTo($string)
     {
         $this->assertEquals($string, $this->_removePrefix($this->_redirectHandler->getLocation()));
@@ -109,6 +133,11 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function assertRendersContent($content)
     {
         $this->assertEquals($content, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
+    }
+
+    public function assertRendersNotEqualContent($content)
+    {
+        $this->assertNotEquals($content, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
     }
 
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
