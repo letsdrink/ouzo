@@ -43,25 +43,20 @@ class Controller
         $this->_statusResponse = 'redirect';
     }
 
-    public function redirectOld($url, $params = Array())
-    {
-        $this->_statusResponse = 'redirectOld';
-        $this->_redirectLocation = self::getPrefixToOldPanel() . $url;
-        if (!empty($params)) {
-            $this->_redirectLocation .= '?' . http_build_query($params);
-        }
-    }
-
-    public static function getPrefixToOldPanel()
-    {
-        $config = Config::getValue('global');
-        return str_replace('panel2.0', '', $config['prefix_system']);
-    }
-
     public function downloadFile($label, $mime, $path, $type = 'file')
     {
         $this->_fileData = array('label' => $label, 'mime' => $mime, 'path' => $path);
         $this->_statusResponse = $type;
+    }
+
+    public function setRedirectLocation($redirectLocation)
+    {
+        $this->_redirectLocation = $redirectLocation;
+    }
+
+    public function setStatusResponse($statusResponse)
+    {
+        $this->_statusResponse = $statusResponse;
     }
 
     public function getStatusResponse()
