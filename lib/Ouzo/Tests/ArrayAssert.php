@@ -138,4 +138,14 @@ class ArrayAssert
         }
         return $nonExistingElements;
     }
+
+    public function containsKeyAndValue($elements)
+    {
+        $contains = array_intersect_assoc($elements, $this->_actual);
+        if (count($elements) != count($contains)) {
+            $elementsString = Objects::toString($elements);
+            $this->fail("Cannot find key value pairs {$elementsString} in actual {$this->_actualString} n");
+        }
+        return $this;
+    }
 }

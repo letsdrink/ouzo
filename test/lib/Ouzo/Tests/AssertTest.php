@@ -2,7 +2,6 @@
 namespace Ouzo\Tests;
 
 use Ouzo\Utilities\Objects;
-use PHPUnit_Framework_ExpectationFailedException;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
@@ -162,6 +161,29 @@ class AssertTest extends PHPUnit_Framework_TestCase
         $this->_assertNotContainsExactly(array(array('1', '2', '3')), '3', '1', '2');
     }
 
+    /**
+     * @test
+     */
+    public function containsKeyAndValueShouldAssertThatArrayContainsKeyValues()
+    {
+        $array = array('id' => 123, 'name' => 'john', 'surname' => 'smith');
+        Assert::thatArray($array)->containsKeyAndValue(array('id' => 123, 'name' => 'john'));
+    }
+
+    /**
+     * @test
+     */
+    public function containsKeyAndValueShouldThrowException()
+    {
+        $array = array('id' => 123, 'name' => 'john', 'surname' => 'smith');
+        $this->_assertNotContainsKeyAndValue($array,
+            array('id' => 12)
+        );
+        $this->_assertNotContainsKeyAndValue($array,
+            array('id' => 123, 'name' => 'john', 'surname' => 'smith', 'new_key' => 'new_value')
+        );
+    }
+
     private function _assertNot()
     {
         $args = func_get_args();
@@ -200,5 +222,10 @@ class AssertTest extends PHPUnit_Framework_TestCase
     private function _assertNotHasSize()
     {
         call_user_func_array(array($this, '_assertNot'), array_merge(array('hasSize'), func_get_args()));
+    }
+
+    private function _assertNotContainsKeyAndValue()
+    {
+        call_user_func_array(array($this, '_assertNot'), array_merge(array('containsKeyAndValue'), func_get_args()));
     }
 }
