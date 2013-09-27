@@ -20,8 +20,9 @@ class Controller
 
     public function __construct(RouteRule $routeRule)
     {
+        $uri = new Uri();
         $this->currentController = $routeRule->getController();
-        $this->currentAction = $routeRule->getAction();
+        $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
         $viewName = ucfirst($this->currentController) . DIRECTORY_SEPARATOR . $this->currentAction;
 

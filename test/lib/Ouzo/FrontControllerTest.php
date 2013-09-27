@@ -99,7 +99,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldNotDisplayOutput()
     {
         //given
-        Route::get('/sample/action', 'sample#action');
+        Route::allowAll('/sample', 'sample');
 
         //when
         $this->get('/sample/action');
