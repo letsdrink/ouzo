@@ -27,7 +27,7 @@ class Controller
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
-        $viewName = ucfirst($this->currentController) . DIRECTORY_SEPARATOR . $this->currentAction;
+        $viewName = Strings::underscoreToCamelCase($this->currentController) . DIRECTORY_SEPARATOR . $this->currentAction;
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
