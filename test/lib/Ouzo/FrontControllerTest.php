@@ -110,4 +110,19 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
     }
+
+    /**
+     * @test
+     */
+    public function shouldRouteWithQueryString()
+    {
+        //given
+        Route::get('/sample/save', 'sample#save');
+
+        //when
+        $this->get('/sample/save?hash=1235');
+
+        //then
+        $this->assertRendersContent('save');
+    }
 }

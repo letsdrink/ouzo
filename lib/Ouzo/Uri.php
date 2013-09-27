@@ -52,7 +52,7 @@ class Uri
 
     public function getPath()
     {
-        return $this->_pathProvider->getPath();
+        return parse_url($this->_pathProvider->getPath(), PHP_URL_PATH);
     }
 
     public function getPathWithoutPrefix()
