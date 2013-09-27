@@ -18,9 +18,11 @@ class Controller
     private $_statusResponse = 'show';
     private $_redirectLocation = '';
     private $_fileData = array();
+    private $_routeRule = null;
 
     public function __construct(RouteRule $routeRule)
     {
+        $this->_routeRule = $routeRule;
         $uri = new Uri();
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
@@ -29,8 +31,7 @@ class Controller
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
-        $parameters = $routeRule ? $routeRule->getParameters() : array();
-        $this->params = array_merge($_POST, $_GET, $parameters);
+        $this->params = array_merge($_POST, $_GET, $routeRule->getParameters());
     }
 
     public function redirect($url, $messages = array())
@@ -116,5 +117,10 @@ class Controller
     public function isAjax()
     {
         return Uri::isAjax();
+    }
+
+    public function getRouteRule()
+    {
+        return $this->_routeRule;
     }
 }
