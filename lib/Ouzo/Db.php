@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use InvalidArgumentException;
+use Ouzo\Db\ParameterType;
 use Ouzo\Logger\Logger;
 use PDO;
 use PDOStatement;
@@ -70,7 +71,7 @@ class Db
         }
 
         $columns = array_keys($data);
-        $values = $this->_prepareValues(array_values($data));
+        $values = array_values($data);
 
         $joinedColumns = implode(', ', $columns);
         $joinedValues = implode(', ', array_fill(0, count($values), '?'));
@@ -121,7 +122,7 @@ class Db
     {
         if (is_array($params)) {
             foreach ($params as $key => $value) {
-                $this->query->bindValue(($key + 1), $value);
+                $this->query->bindValue(($key + 1), $value, ParameterType::getType($value));
             }
         } elseif (is_string($params)) {
             $this->query->bindValue(1, $params);
