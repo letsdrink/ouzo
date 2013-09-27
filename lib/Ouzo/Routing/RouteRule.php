@@ -3,6 +3,7 @@ namespace Ouzo\Routing;
 
 use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
 
 class RouteRule
 {
@@ -11,6 +12,7 @@ class RouteRule
     private $_action;
     private $_actionRequired;
     private $_except;
+    private $_parameters = array();
 
     public function __construct($method, $uri, $action, $requireAction, $except = array())
     {
@@ -96,5 +98,29 @@ class RouteRule
             return preg_match('#' . $this->getUri() . '#', $uri);
         }
         return false;
+    }
+
+    public function setParameters($uri)
+    {
+        $ruleUri = explode('/', $this->getUri());
+        $requestUri = explode('/', $uri);
+
+        $filterParameters = FluentArray::from($ruleUri)
+            ->filter(function ($parameter) {
+                return preg_match('#:\w+#', $parameter);
+            })
+            ->map(function ($parameter) {
+                return str_replace(':', '', $parameter);
+            })
+            ->toArray();
+
+        $filterValues = array_intersect_key($requestUri, $filterParameters);
+
+        $this->_parameters = array_combine($filterParameters, $filterValues);
+    }
+
+    public function getParameters()
+    {
+        return $this->_parameters;
     }
 }

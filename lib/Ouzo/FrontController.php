@@ -37,7 +37,7 @@ class FrontController
     {
         $uri = new Uri();
 
-        $router = new Router($uri->getPathWithoutPrefix());
+        $router = new Router($uri);
         $routeRule = $router->findRoute();
 
         $this->_currentController = $routeRule->getController();

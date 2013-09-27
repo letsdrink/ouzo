@@ -2,7 +2,9 @@
 
 use Ouzo\Routing\Route;
 use Ouzo\Routing\Router;
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use Ouzo\Uri;
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {
@@ -208,6 +210,22 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('users', $rule->getController());
     }
 
+    /**
+     * @test
+     */
+    public function shouldFindRouteAndGetParamsFromPath()
+    {
+        //given
+        Route::get('/users/show/id/:id/call_id/:call_id', 'users#show');
+        $router = $this->_createRouter('GET', '/users/show/id/1/call_id/2');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        Assert::thatArray($rule->getParameters())->hasSize(2)->containsKeyAndValue(array('id' => 1, 'call_id' => 2));
+    }
+
     public function requestMethods()
     {
         return array(
@@ -236,6 +254,12 @@ class RouterTest extends PHPUnit_Framework_TestCase
     private function _createRouter($method, $uri)
     {
         $_SERVER['REQUEST_METHOD'] = $method;
-        return new Router($uri);
+
+        $pathMock = $this->getMock('\Ouzo\Uri\PathProvider', array('getPath'));
+        $pathMock->expects($this->any())
+            ->method('getPath')
+            ->will($this->returnValue($uri));
+
+        return new Router(new Uri($pathMock));
     }
 }

@@ -10,7 +10,6 @@ class ControllerResolver
         $globalConfig = Config::getValue('global');
         $this->_defaultAction = $globalConfig['action'];
         $this->controllerPath = $controllerPath;
-        $this->_uri = new Uri();
     }
 
     public function  getController($controller, $action)
