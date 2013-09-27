@@ -15,34 +15,32 @@ class Session
     static public function startSession()
     {
         if (!empty($_SERVER["REQUEST_URI"])) {
-            $path = Config::getValue('session', 'path');
-            if ($path) {
-                if (!is_dir($path)) {
-                    mkdir($path, 0700, true);
-                }
-                session_save_path($path);
-            }
+            self::_setSavePath();
             if (session_id() == '') {
                 session_start();
             }
         }
     }
 
+    private static function _setSavePath()
+    {
+        $path = Config::getValue('session', 'path');
+        if ($path) {
+            if (!is_dir($path)) {
+                mkdir($path, 0700, true);
+            }
+            session_save_path($path);
+        }
+    }
+
     public function get($key)
     {
-        $sessionValue = null;
-
-        if (isset($_SESSION[$this->_sessionNamespace][$key])) {
-            $sessionValue = $_SESSION[$this->_sessionNamespace][$key];
-        }
-
-        return (!empty($sessionValue) ? $sessionValue : null);
+        return Arrays::getValue($this->all(), $key);
     }
 
     public function set($key, $value)
     {
         $_SESSION[$this->_sessionNamespace][$key] = $value;
-
         return $this;
     }
 
