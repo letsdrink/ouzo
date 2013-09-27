@@ -31,7 +31,8 @@ class Controller
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
-        $this->params = array_merge($_POST, $_GET, $routeRule->getParameters());
+        $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();;
+        $this->params = array_merge($_POST, $_GET, $parameters);
     }
 
     public function redirect($url, $messages = array())
