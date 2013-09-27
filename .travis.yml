@@ -11,8 +11,8 @@ env:
 
 before_script:
     - composer install
-    - psql -c 'create database ouzo_test' -U postgres
-    - psql -v ON_ERROR_STOP=1 -e -U postgres -f test/test-db/recreate_schema.sql ouzo_test
+    - psql -c 'create database ouzo_test' -U postgres && psql -v ON_ERROR_STOP=1 -e -U postgres -f test/test-db/recreate_schema.sql ouzo_test
+    - mysql -u root -e 'create database ouzo_test' && cat test/test-db/recreate_schema_mysql.sql | mysql -u root ouzo_test
     
 script: phpunit --configuration phpunit.xml test
 
