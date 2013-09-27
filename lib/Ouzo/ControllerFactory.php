@@ -4,7 +4,7 @@ namespace Ouzo;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Strings;
 
-class ControllerResolver
+class ControllerFactory
 {
     function __construct($controllerPath = "\\Controller\\")
     {
@@ -13,7 +13,7 @@ class ControllerResolver
         $this->controllerPath = $controllerPath;
     }
 
-    public function getController(RouteRule $routeRule)
+    public function createController(RouteRule $routeRule)
     {
         $controller = $routeRule->getController();
         $controllerName = Strings::underscoreToCamelCase($controller);

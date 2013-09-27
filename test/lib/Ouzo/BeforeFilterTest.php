@@ -31,9 +31,9 @@ class SampleController extends Controller
     }
 }
 
-class MockControllerResolver
+class MockControllerFactory
 {
-    public function getController()
+    public function createController()
     {
         $routeRule = Arrays::first(Route::getRoutes());
         return new SampleController($routeRule);
@@ -45,7 +45,7 @@ class BeforeFilterTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->_frontController->controllerResolver = new MockControllerResolver();
+        $this->_frontController->controllerFactory = new MockControllerFactory();
         $this->_frontController->redirectHandler = $this->getMock('\Ouzo\RedirectHandler', array('redirect'));
         Route::$routes = array();
     }

@@ -88,7 +88,7 @@ class FrontControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->_frontController->controllerResolver = new ControllerResolver('\\Ouzo\\');
+        $this->_frontController->controllerFactory = new ControllerFactory('\\Ouzo\\');
         $this->_frontController->redirectHandler = $this->getMock('\Ouzo\RedirectHandler', array('redirect'));
         Route::$routes = array();
     }

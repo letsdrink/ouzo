@@ -29,14 +29,13 @@ class FrontController
         $this->redirectHandler = new RedirectHandler();
         $this->sessionInitializer = new SessionInitializer();
         $this->downloadHandler = new DownloadHandler();
-        $this->controllerResolver = new ControllerResolver();
+        $this->controllerFactory = new ControllerFactory();
         $this->outputDisplayer = new OutputDisplayer();
     }
 
     public function init()
     {
         $uri = new Uri();
-
         $router = new Router($uri);
         $routeRule = $router->findRoute();
 
@@ -46,7 +45,7 @@ class FrontController
         if (!$routeRule->getController()) {
             $this->_redirectToDefault();
         } else {
-            $this->_currentControllerObject = $this->controllerResolver->getController($routeRule);
+            $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
 
             $this->sessionInitializer->startSession();
 
