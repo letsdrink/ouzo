@@ -389,4 +389,49 @@ HTML;
         //then
         $this->assertEquals('<input type="password" value="name" id="product_name" name="product[name]"/>', $result);
     }
+
+    /**
+     * @test
+     * @dataProvider requestUnsupportedMethods
+     */
+    public function shouldCreateWorkAroundForUnsupportedMethods($method)
+    {
+        //when
+        $form = formTag('/users/add', $method);
+
+        //then
+        $this->assertContains('method="POST"', $form);
+        $this->assertContains('value="' . $method . '" name="_method"', $form);
+    }
+
+    /**
+     * @test
+     * @dataProvider requestSupportedMethods
+     */
+    public function shouldNoCreateWorkAroundWhenSupportedMethods($method)
+    {
+        //when
+        $form = formTag('/users/add', $method);
+
+        //then
+        $this->assertContains('method="' . $method . '"', $form);
+        $this->assertNotContains('value="' . $method . '" name="_method"', $form);
+    }
+
+    public function requestUnsupportedMethods()
+    {
+        return array(
+            array('PUT'),
+            array('PATCH'),
+            array('DELETE')
+        );
+    }
+
+    public function requestSupportedMethods()
+    {
+        return array(
+            array('POST'),
+            array('GET')
+        );
+    }
 }

@@ -268,6 +268,30 @@ function passwordFieldTag($value, array $attributes = array())
     return '<input type="password" value="' . $value . '" ' . $attr . '/>';
 }
 
+function formTag($url, $method = 'POST', $attributes = array())
+{
+    $method = strtoupper($method);
+    $workAroundTag = _methodWorkAroundTag($method);
+    $method = _isUnsupportedMethod($method) ? 'POST' : $method;
+    $attr = _prepareAttributes($attributes);
+    $form = '<form ' . $attr . ' action="' . $url . '" method="' . $method . '">';
+    $form .= $workAroundTag;
+    return $form;
+}
+
+function _methodWorkAroundTag($method)
+{
+    if (_isUnsupportedMethod($method)) {
+        return hiddenTag($method, array('name' => '_method'));
+    }
+    return '';
+}
+
+function _isUnsupportedMethod($method)
+{
+    return in_array($method, array('PUT', 'PATCH', 'DELETE'));
+}
+
 function _prepareAttributes(array $attributes = array())
 {
     $attr = '';
@@ -356,8 +380,7 @@ class Form
 
     public function start($url, $method = 'post', $attributes = array())
     {
-        $attr = _prepareAttributes($attributes);
-        return '<form ' . $attr . ' action="' . $url . '" method="' . $method . '">';
+        return formTag($url, $method, $attributes);
     }
 
     public function end()
@@ -423,8 +446,11 @@ class AutoLabelForm
 
     public function start($url, $method = 'post', $id = null)
     {
-        $id = $id ? "id=\"$id\"" : "";
-        return '<form ' . $id . ' class="form" action="' . $url . '" method="' . $method . '">';
+        $attr = array('class' => 'form');
+        if ($id) {
+            $attr['id'] = $id;
+        }
+        return formTag($url, $method, $attr);
     }
 
     public function end()
