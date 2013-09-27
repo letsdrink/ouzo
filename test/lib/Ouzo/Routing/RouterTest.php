@@ -226,6 +226,150 @@ class RouterTest extends PHPUnit_Framework_TestCase
         Assert::thatArray($rule->getParameters())->hasSize(2)->containsKeyAndValue(array('id' => 1, 'call_id' => 2));
     }
 
+    /**
+     * @test
+     */
+    public function shouldFindRouteRestIndex()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('GET', '/users');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('index', $rule->getAction());
+        $this->assertEmpty($rule->getParameters());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRestNew()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('GET', '/users/new');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('new', $rule->getAction());
+        $this->assertEmpty($rule->getParameters());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRestCreate()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('POST', '/users');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('create', $rule->getAction());
+        $this->assertEmpty($rule->getParameters());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRestShow()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('GET', '/users/12');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('show', $rule->getAction());
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRestEdit()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('GET', '/users/12/edit');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('edit', $rule->getAction());
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRestUpdatePut()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('PUT', '/users/12');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('update', $rule->getAction());
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRestUpdatePatch()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('PATCH', '/users/12');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('update', $rule->getAction());
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRestDestroy()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('DELETE', '/users/12');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('destroy', $rule->getAction());
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+    }
+
     public function requestMethods()
     {
         return array(

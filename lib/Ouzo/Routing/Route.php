@@ -62,7 +62,7 @@ class Route
         );
         self::_addRoute('DELETE',
             self::_createRouteUri($action, '/:id'),
-            self::_createRouteAction($action, 'delete')
+            self::_createRouteAction($action, 'destroy')
         );
     }
 
