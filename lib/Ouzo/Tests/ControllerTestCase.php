@@ -69,7 +69,8 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function put($url)
     {
         $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
-        $_SERVER['REQUEST_METHOD'] = 'PUT';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['_method'] = 'PUT';
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
         $this->_initFrontController();
     }
@@ -77,7 +78,8 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function patch($url)
     {
         $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
-        $_SERVER['REQUEST_METHOD'] = 'PATCH';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['_method'] = 'PATCH';
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
         $this->_initFrontController();
     }
@@ -85,7 +87,8 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function delete($url)
     {
         $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
-        $_SERVER['REQUEST_METHOD'] = 'DELETE';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['_method'] = 'DELETE';
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
         $this->_initFrontController();
     }

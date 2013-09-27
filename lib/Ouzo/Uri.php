@@ -105,6 +105,7 @@ class Uri
 
     public static function getRequestType()
     {
-        return $_SERVER['REQUEST_METHOD'];
+        $unsupported = Arrays::getValue($_POST, '_method');
+        return $unsupported ? : $_SERVER['REQUEST_METHOD'];
     }
 }
