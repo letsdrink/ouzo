@@ -94,7 +94,7 @@ class QueryExecutor
     {
         $this->_preparedQuery = $this->_db->_dbHandle->prepare($this->_sql);
         foreach ($this->_boundValues as $key => $valueBind) {
-            $type = $this->_getParamType($valueBind);
+            $type = ParameterType::getType($valueBind);
             $this->_preparedQuery->bindValue($key + 1, $valueBind, $type);
         }
     }
@@ -155,16 +155,5 @@ class QueryExecutor
         if (!$whereClause->isEmpty()) {
             $this->_addBindValue($whereClause->values);
         }
-    }
-
-    private function _getParamType($param)
-    {
-        if (is_int($param)) {
-            return PDO::PARAM_INT;
-        }
-        if (is_bool($param)) {
-            return PDO::PARAM_BOOL;
-        }
-        return PDO::PARAM_STR;
     }
 }
