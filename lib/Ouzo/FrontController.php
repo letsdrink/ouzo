@@ -46,7 +46,7 @@ class FrontController
         if (!$routeRule->getController()) {
             $this->_redirectToDefault();
         } else {
-            $this->_currentControllerObject = $this->controllerResolver->getController($routeRule, $this->_currentAction);
+            $this->_currentControllerObject = $this->controllerResolver->getController($routeRule);
 
             $this->sessionInitializer->startSession();
 

@@ -2,6 +2,7 @@
 use Ouzo\Controller;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\ControllerTestCase;
+use Ouzo\Utilities\Arrays;
 
 class SampleControllerException extends Exception
 {
@@ -9,9 +10,9 @@ class SampleControllerException extends Exception
 
 class SampleController extends Controller
 {
-    function __construct()
+    function __construct($routeRule)
     {
-        parent::__construct('action');
+        parent::__construct($routeRule);
     }
 
     public function init()
@@ -34,7 +35,8 @@ class MockControllerResolver
 {
     public function getController()
     {
-        return new SampleController();
+        $routeRule = Arrays::first(Route::getRoutes());
+        return new SampleController($routeRule);
     }
 }
 

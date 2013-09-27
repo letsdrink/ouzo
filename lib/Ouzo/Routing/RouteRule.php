@@ -36,7 +36,7 @@ class RouteRule
     public function getController()
     {
         $elements = explode('#', $this->_action);
-        return $elements[0];
+        return Arrays::first($elements);
     }
 
     public function getAction()

@@ -12,21 +12,18 @@ class Controller
     public $after = array();
     public $currentController = '';
     public $currentAction = '';
-    public $uri;
     public $params;
 
     private $_statusResponse = 'show';
     private $_redirectLocation = '';
     private $_fileData = array();
 
-    public function __construct($currentAction, RouteRule $routeRule = null)
+    public function __construct(RouteRule $routeRule)
     {
-        $uri = new Uri();
-        $this->uri = $uri;
-        $this->currentController = $uri->getController();
-        $this->currentAction = $currentAction;
+        $this->currentController = $routeRule->getController();
+        $this->currentAction = $routeRule->getAction();
 
-        $viewName = ucfirst($uri->getController()) . DIRECTORY_SEPARATOR . $this->currentAction;
+        $viewName = ucfirst($this->currentController) . DIRECTORY_SEPARATOR . $this->currentAction;
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
@@ -115,6 +112,6 @@ class Controller
 
     public function isAjax()
     {
-        return $this->uri->isAjax();
+        return Uri::isAjax();
     }
 }

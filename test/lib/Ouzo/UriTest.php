@@ -150,7 +150,7 @@ class UriTest extends PHPUnit_Framework_TestCase
         $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 
         //when
-        $isAjax = $this->_uri->isAjax();
+        $isAjax = Uri::isAjax();
 
         //then
         $this->assertTrue($isAjax);

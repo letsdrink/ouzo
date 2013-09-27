@@ -13,7 +13,7 @@ class ControllerResolver
         $this->controllerPath = $controllerPath;
     }
 
-    public function getController(RouteRule $routeRule, $action)
+    public function getController(RouteRule $routeRule)
     {
         $controller = $routeRule->getController();
         $controllerName = Strings::underscoreToCamelCase($controller);
@@ -21,7 +21,7 @@ class ControllerResolver
 
         $this->_validateControllerExists($controller);
 
-        return new $controller($action, $routeRule);
+        return new $controller($routeRule);
     }
 
     private function _validateControllerExists($controller)
