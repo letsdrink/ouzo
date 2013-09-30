@@ -14,6 +14,12 @@ function escapeNewLine($text)
     return nl2br($text);
 }
 
+function linkTo($name, $href, $attributes = array())
+{
+    $attr = _prepareAttributes($attributes);
+    return '<a href="' . escapeNewLine($href) . '" ' . $attr . '>' . escapeNewLine($name) . '</a>';
+}
+
 function linkButton($params)
 {
     $defaultParams = array('class' => 'buttonLong');

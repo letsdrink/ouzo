@@ -1,5 +1,4 @@
 <?php
-
 use Model\Product;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
@@ -433,5 +432,46 @@ HTML;
             array('POST'),
             array('GET')
         );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateLinkTo()
+    {
+        //when
+        $linkTo = linkTo('About', '/albums/about');
+
+        //then
+        $this->assertEquals('<a href="/albums/about" >About</a>', $linkTo);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateLinkToWithAttributes()
+    {
+        //given
+        $attributes = array('class' => 'link', 'id' => 'about');
+
+        //when
+        $linkTo = linkTo('About', '/albums/about', $attributes);
+
+        //then
+        $this->assertEquals('<a href="/albums/about" class="link" id="about">About</a>', $linkTo);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldEscapeInLinkTo()
+    {
+        //given
+
+        //when
+        $linkTo = linkTo('<script>alert(\'hello\')</script>About', '/albums/about');
+
+        //then
+        $this->assertEquals('<a href="/albums/about" >&lt;script&gt;alert(\'hello\')&lt;/script&gt;About</a>', $linkTo);
     }
 }
