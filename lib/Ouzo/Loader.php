@@ -6,9 +6,7 @@ use Ouzo\Utilities\Strings;
 class Loader
 {
     private $_includePath = array();
-
     private $_classPath = array();
-
     private $_loadPath;
 
     function __construct($loadPath = ROOT_PATH)

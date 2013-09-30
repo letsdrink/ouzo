@@ -5,6 +5,24 @@ use InvalidArgumentException;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
+/**
+ * Route define URL's mapping to controller and actions.
+ *
+ * Sample usage:
+ * <code>
+ *  Route::get('/agents/index', 'agents#index'); will match: GET /agents/index
+ *  Route::post('/agents/save', 'agents#save'); will match: POST /agents/save
+ *  Route::resource('agents'); will mapping RESTs methods (index, fresh, edit, show, create, update, destroy)
+ *  Route::ant('/agents/show_numbers', 'agents#show_numbers'); will match: POST or GET /agents/show_numbers
+ *  Route::allowAll('/agents', 'agents); will mapping any methods to all actions in controller
+ * </code>
+ *
+ * To show all routes or routes per controller:
+ * <code>
+ *  Route::getRoutes();
+ *  Route::getRoutesForController('agents');
+ * </code>
+ */
 class Route
 {
     /**

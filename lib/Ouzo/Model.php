@@ -323,5 +323,4 @@ class Model extends Validatable
     {
         return Objects::getValueRecursively($this, $names, $default);
     }
-
 }

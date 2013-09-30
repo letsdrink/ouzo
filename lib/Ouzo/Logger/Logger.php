@@ -45,4 +45,3 @@ class Logger
         return new $logger['class']($name);
     }
 }
-

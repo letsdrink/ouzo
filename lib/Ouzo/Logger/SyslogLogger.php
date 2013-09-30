@@ -6,7 +6,6 @@ use Ouzo\FrontController;
 
 class SyslogLogger implements LoggerInterface
 {
-
     private $_name;
     private $_logger;
 
