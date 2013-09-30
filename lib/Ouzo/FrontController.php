@@ -76,10 +76,6 @@ class FrontController
 
     private function _redirect($url)
     {
-        $defaults = Config::getValue('global');
-        $prefixSystem = $defaults['prefix_system'];
-        $url = Strings::removePrefix($url, $prefixSystem);
-        $url = $prefixSystem . $url;
         $this->redirectHandler->redirect($url);
     }
 

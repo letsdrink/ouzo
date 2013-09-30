@@ -12,11 +12,7 @@ class ViewPathResolver
 
     private static function getViewPostfix()
     {
-        $contentType = Arrays::first(explode(';', Arrays::getValue($_SERVER, "CONTENT_TYPE")));
-        if ($contentType == 'text/xml') {
-            return '.xml.phtml';
-        } else {
-            return '.phtml';
-        }
+        $contentType = Arrays::first(explode(';', Arrays::getValue($_SERVER, 'CONTENT_TYPE')));
+        return $contentType == 'text/xml' ? '.xml.phtml' : '.phtml';
     }
 }

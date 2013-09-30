@@ -21,7 +21,7 @@ class Bootstrap
         set_error_handler('\Ouzo\Error::errorHandler');
         register_shutdown_function('\Ouzo\Error::shutdownHandler');
 
-        $loader = new \Ouzo\Loader();
+        $loader = new Loader();
         $loader
             ->setIncludePath('application/')
             ->setIncludePath('vendor/letsdrink/ouzo/lib/')

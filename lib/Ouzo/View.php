@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Objects;
+
 class View
 {
     private $_viewName = '';
@@ -9,10 +11,11 @@ class View
 
     public function __construct($viewName, array $attributes = array())
     {
-        if (empty($viewName))
+        if (empty($viewName)) {
             throw new ViewException('Type view name');
-        else
-            $this->_viewName = $viewName;
+        }
+
+        $this->_viewName = $viewName;
 
         foreach ($attributes as $name => $value) {
             $this->$name = $value;
@@ -76,7 +79,7 @@ class View
 
     public function getRenderedView()
     {
-        return (!empty($this->_renderedView) ? $this->_renderedView : null);
+        return !empty($this->_renderedView) ? $this->_renderedView : null;
     }
 
     public function getViewName()

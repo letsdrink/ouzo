@@ -76,7 +76,7 @@ class Validatable
 
     public function validateStringMaxLength($field, $length, $errorMessage)
     {
-        if ((strlen($field)-1) > $length) {
+        if ((strlen($field) - 1) > $length) {
             $this->_errors[] = $errorMessage;
         }
     }

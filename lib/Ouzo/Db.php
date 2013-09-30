@@ -45,21 +45,15 @@ class Db
 
     public function connectDb($params = array())
     {
-        $dns = $params['driver'] . ':host=' . $params['host'] . ';port=' . $params['port'] . ';dbname=' . $params['dbname'] . ';user=' . $params['user'] . ';password=' . $params['pass'];
-
-        $this->_dbHandle = new PDO($dns, $params['user'], $params['pass']);
-
+        $dsn = $params['driver'] . ':host=' . $params['host'] . ';port=' . $params['port'] . ';dbname=' . $params['dbname'] . ';user=' . $params['user'] . ';password=' . $params['pass'];
+        $this->_dbHandle = new PDO($dsn, $params['user'], $params['pass']);
         return $this;
     }
 
     static public function callFunction($functionName, $parameters)
     {
         $db = self::getInstance();
-        if (is_array($parameters)) {
-            $bindParams = $parameters;
-        } else {
-            $bindParams = array($parameters);
-        }
+        $bindParams = Arrays::toArray($parameters);
         $paramsQueryString = implode(',', array_pad(array(), sizeof($bindParams), '?'));
         return Arrays::first($db->query("SELECT $functionName($paramsQueryString)", $parameters)->fetch());
     }
@@ -92,7 +86,7 @@ class Db
             $query .= 'WHERE ' . implode(' = ? AND ', array_keys($where)) . ' = ?';
         }
 
-        $values = $this->_prepareValues(array_values($data));
+        $values = array_values($data);
 
         if (!empty($where)) {
             $values = array_merge($values, array_values($where));
@@ -112,7 +106,7 @@ class Db
             Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($query, Objects::toString($params)));
 
             if (!$obj->query->execute()) {
-                throw new DbException('Exception: query: ' . $query . ' with params: (' . implode(', ', $params) . ') failed: ' . $obj->lastErrorMessage());
+                throw new DbException('Exception: query: ' . $query . ' with params: (' . Objects::toString($params) . ') failed: ' . $obj->lastErrorMessage());
             }
             return $obj;
         });
@@ -120,12 +114,9 @@ class Db
 
     public function _bindQueryParams($params)
     {
-        if (is_array($params)) {
-            foreach ($params as $key => $value) {
-                $this->query->bindValue(($key + 1), $value, ParameterType::getType($value));
-            }
-        } elseif (is_string($params)) {
-            $this->query->bindValue(1, $params);
+        $params = Arrays::toArray($params);
+        foreach ($params as $key => $value) {
+            $this->query->bindValue($key + 1, $value, ParameterType::getType($value));
         }
     }
 
@@ -142,7 +133,6 @@ class Db
     public function setFetchMode($mode)
     {
         $this->_fetchMode = $mode;
-
         return $this;
     }
 
@@ -179,16 +169,6 @@ class Db
     {
         $errorInfo = $this->_dbHandle->errorInfo();
         return $errorInfo[2];
-    }
-
-    private function _prepareValues($values)
-    {
-        foreach ($values as &$value) {
-            if (is_bool($value)) {
-                $value = Objects::booleanToString($value);
-            }
-        }
-        return $values;
     }
 
 }
