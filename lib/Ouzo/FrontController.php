@@ -4,6 +4,7 @@ namespace Ouzo;
 use Exception;
 use Ouzo\Logger\Logger;
 use Ouzo\Routing\Router;
+use Ouzo\Utilities\Strings;
 
 class FrontController
 {
@@ -75,8 +76,10 @@ class FrontController
 
     private function _redirect($url)
     {
-        $prefixSystem = Config::getValue('global');
-        $url = $prefixSystem['prefix_system'] . $url;
+        $defaults = Config::getValue('global');
+        $prefixSystem = $defaults['prefix_system'];
+        $url = Strings::removePrefix($url, $prefixSystem);
+        $url = $prefixSystem . $url;
         $this->redirectHandler->redirect($url);
     }
 

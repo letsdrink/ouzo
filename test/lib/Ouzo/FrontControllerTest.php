@@ -19,6 +19,11 @@ class SampleController extends Controller
         echo "OUTPUT";
     }
 
+    public function redirect_to()
+    {
+        $this->redirect('/panel/panel2.0/sample/add');
+    }
+
     public function index()
     {
         $this->layout->renderAjax('index');
@@ -89,7 +94,6 @@ class FrontControllerTest extends ControllerTestCase
     {
         parent::setUp();
         $this->_frontController->controllerFactory = new ControllerFactory('\\Ouzo\\');
-        $this->_frontController->redirectHandler = $this->getMock('\Ouzo\RedirectHandler', array('redirect'));
         Route::$routes = array();
     }
 
@@ -410,5 +414,20 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
         $this->assertRendersNotEqualContent('destroy=12');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveDuplicatedPrefixFromUrlWhenExists()
+    {
+        //given
+        Route::post('/sample/redirect_to', 'sample#redirect_to');
+
+        //when
+        $this->post('/sample/redirect_to', array());
+
+        //then
+        $this->assertRedirectsTo('/sample/add');
     }
 }
