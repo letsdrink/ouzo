@@ -3,6 +3,7 @@ namespace Ouzo\Tests;
 
 use Ouzo\Config;
 use Ouzo\FrontController;
+use Ouzo\Utilities\Strings;
 
 class ControllerTestCase extends DbTransactionalTestCase
 {
@@ -95,14 +96,12 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRedirectsTo($string)
     {
-        $this->assertEquals($string, $this->_removePrefix($this->_redirectHandler->getLocation()));
+        $this->assertEquals($this->_removePrefix($string), $this->_removePrefix($this->_redirectHandler->getLocation()));
     }
 
     private function _removePrefix($string)
     {
-        $this->assertStringStartsWith($this->_prefixSystem, $string);
-
-        return substr($string, strlen($this->_prefixSystem));
+        return Strings::removePrefix($string, $this->_prefixSystem);
     }
 
     public function assertRenders($string)
