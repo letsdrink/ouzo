@@ -76,6 +76,7 @@ class FrontController
 
     private function _redirect($url)
     {
+        $url = $this->_addPrefixIfNeeded($url);
         $this->redirectHandler->redirect($url);
     }
 
@@ -161,6 +162,13 @@ class FrontController
     private function _isRedirect()
     {
         return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
+    }
+
+    private function _addPrefixIfNeeded($url)
+    {
+        $prefix = Config::getValue('global', 'prefix_system');
+        $url = Strings::removePrefix($url, $prefix);
+        return $prefix . $url;
     }
 }
 
