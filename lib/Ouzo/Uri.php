@@ -89,23 +89,21 @@ class Uri
 
     private function _parsePath($path = null, $limit = null)
     {
-        $parsedPath = null;
-        $prefixSystem = Config::getValue('global');
         if ($path != null) {
-            $pathWithoutPrefix = urldecode(str_replace($prefixSystem['prefix_system'], '', $path));
-            $parsedPath = preg_split('#/|\?#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);
+            $prefix = Config::getValue('global', 'prefix_system');
+            $pathWithoutPrefix = urldecode(str_replace($prefix, '', $path));
+            return preg_split('#/|\?#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);
         }
-        return $parsedPath;
+        return null;
     }
 
     public static function isAjax()
     {
-        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }
 
     public static function getRequestType()
     {
-        $unsupported = Arrays::getValue($_POST, '_method');
-        return $unsupported ? : $_SERVER['REQUEST_METHOD'];
+        return Arrays::getValue($_POST, '_method', $_SERVER['REQUEST_METHOD']);
     }
 }
