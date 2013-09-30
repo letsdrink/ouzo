@@ -23,23 +23,22 @@ class Router
      */
     public function findRoute()
     {
-        $routeRule = $this->_findRouteRule();
-        if (!$routeRule) {
-            throw new RouterException('No route rule found.');
+        $path = $this->_uri->getPathWithoutPrefix();
+        $rule = $this->_findRouteRule($path);
+        if (!$rule) {
+            throw new RouterException('No route rule found for HTTP method [' . Uri::getRequestType() . '] and URI [' . $path . ']');
         }
-        $routeRule->setParameters($this->_uri->getPathWithoutPrefix());
-        return $routeRule;
+        $rule->setParameters($path);
+        return $rule;
     }
 
     /**
      * @return RouteRule
      */
-    private function _findRouteRule()
+    private function _findRouteRule($path)
     {
-        $routeRules = Route::getRoutes();
-        $uri = $this->_uri;
-        $filtered = Arrays::filter($routeRules, function (RouteRule $routeRule) use ($uri) {
-            return $routeRule->matches($uri->getPathWithoutPrefix());
+        $filtered = Arrays::filter(Route::getRoutes(), function (RouteRule $rule) use ($path) {
+            return $rule->matches($path);
         });
         return Arrays::firstOrNull($filtered);
     }
