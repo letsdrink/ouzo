@@ -142,7 +142,8 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldCheckEqualityIgnoringCase() {
+    public function shouldCheckEqualityIgnoringCase()
+    {
         $this->assertTrue(Strings::equalsIgnoreCase('', ''));
         $this->assertTrue(Strings::equalsIgnoreCase('ABC123', 'ABC123'));
         $this->assertTrue(Strings::equalsIgnoreCase('ABC123', 'abc123'));
@@ -154,5 +155,20 @@ class StringsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Strings::equalsIgnoreCase('', null));
         $this->assertTrue(Strings::equalsIgnoreCase(null, null));
         $this->assertFalse(Strings::equalsIgnoreCase('null', null));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveString()
+    {
+        //given
+        $string = 'winter is coming???!!!';
+
+        //when
+        $result = Strings::removeString($string, '???');
+
+        //then
+        $this->assertEquals('winter is coming!!!', $result);
     }
 }

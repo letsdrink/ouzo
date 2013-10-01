@@ -105,4 +105,19 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveStringFromHtmlFileTag()
+    {
+        //given
+        $remove = '/panel2.0';
+
+        //when
+        $actual = addFile(array('type' => 'script', 'params' => array('url' => '/public/js/test.js')), $remove);
+
+        //then
+        $this->assertEquals('<script type="text/javascript" src="/panel/public/js/test.js?1234"></script>' . PHP_EOL, $actual);
+    }
 }

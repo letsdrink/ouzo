@@ -3,6 +3,7 @@ use Ouzo\Config;
 use Ouzo\ControllerUrl;
 use Ouzo\I18n;
 use Ouzo\Utilities\Date;
+use Ouzo\Utilities\Strings;
 
 function url(array $params)
 {
@@ -26,24 +27,28 @@ function renderPartial($name, array $values = array())
     return $view->render();
 }
 
-function addFile(array $fileInfo = array(), $panel2_0 = true)
+function addFile(array $fileInfo = array(), $stringToRemove = '')
 {
     if (!empty($fileInfo)) {
-        $defaults = Config::getValue('global');
+        $prefixSystem = Config::getValue('global', 'prefix_system');
+        $suffixCache = Config::getValue('global', 'suffix_cache');
+        $suffixCache = !empty($suffixCache) ? '?' . $suffixCache : '';
 
-        if (!$panel2_0) {
-            $defaults['prefix_system'] = str_replace('/panel2.0', '', $defaults['prefix_system']);
-        }
+        $url = $prefixSystem . $fileInfo['params']['url'] . $suffixCache;
+        $url = Strings::removeString($url, $stringToRemove);
 
-        $suffixCache = !empty($defaults['suffix_cache']) ? '?' . $defaults['suffix_cache'] : '';
-        $url = $defaults['prefix_system'] . $fileInfo['params']['url'] . $suffixCache;
+        return _getHtmlFileTag($fileInfo['type'], $url);
+    }
+    return null;
+}
 
-        switch ($fileInfo['type']) {
-            case 'link':
-                return '<link rel="stylesheet" href="' . $url . '" type="text/css" />' . PHP_EOL;
-            case 'script':
-                return '<script type="text/javascript" src="' . $url . '"></script>' . PHP_EOL;
-        }
+function _getHtmlFileTag($type, $url)
+{
+    switch ($type) {
+        case 'link':
+            return '<link rel="stylesheet" href="' . $url . '" type="text/css" />' . PHP_EOL;
+        case 'script':
+            return '<script type="text/javascript" src="' . $url . '"></script>' . PHP_EOL;
     }
     return null;
 }

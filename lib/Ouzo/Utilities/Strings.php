@@ -47,4 +47,12 @@ class Strings
     {
         return strtolower($string1) == strtolower($string2);
     }
+
+    public static function removeString($string, $remove)
+    {
+        if ($remove) {
+            return str_replace($remove, '', $string);
+        }
+        return $string;
+    }
 }
