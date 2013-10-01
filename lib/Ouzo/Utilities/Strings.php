@@ -50,6 +50,6 @@ class Strings
 
     public static function remove($string, $stringToRemove)
     {
-        return $stringToRemove ? str_replace($stringToRemove, '', $string) : $string;
+        return $string && $stringToRemove ? str_replace($stringToRemove, '', $string) : $string;
     }
 }
