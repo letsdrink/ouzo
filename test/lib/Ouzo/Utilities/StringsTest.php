@@ -208,13 +208,13 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldRemoveString()
+    public function shouldRemovePartOfString()
     {
         //given
         $string = 'winter is coming???!!!';
 
         //when
-        $result = Strings::removeString($string, '???');
+        $result = Strings::remove($string, '???');
 
         //then
         $this->assertEquals('winter is coming!!!', $result);

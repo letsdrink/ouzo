@@ -82,21 +82,21 @@ class Functions
 
     public static function removePrefix($prefix)
     {
-        return function ($string) use($prefix) {
+        return function ($string) use ($prefix) {
             return Strings::removePrefix($string, $prefix);
         };
     }
 
     public static function startsWith($prefix)
     {
-        return function ($string) use($prefix) {
+        return function ($string) use ($prefix) {
             return Strings::startsWith($string, $prefix);
         };
     }
 
     public static function formatDateTime($format = Date::DEFAULT_TIME_FORMAT)
     {
-        return function ($date) use($format) {
+        return function ($date) use ($format) {
             return Date::formatDateTime($date, $format);
         };
     }
@@ -109,10 +109,10 @@ class Functions
     /**
      * Returns the composition of two functions.
      * composition is defined as the function h such that h(a) == A(B(a)) for each a.
-    */
+     */
     public static function compose($functionA, $functionB)
     {
-        return function ($input) use($functionA, $functionB) {
+        return function ($input) use ($functionA, $functionB) {
             return Functions::call($functionA, Functions::call($functionB, $input));
         };
     }

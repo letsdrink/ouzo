@@ -35,7 +35,7 @@ function addFile(array $fileInfo = array(), $stringToRemove = '')
         $suffixCache = !empty($suffixCache) ? '?' . $suffixCache : '';
 
         $url = $prefixSystem . $fileInfo['params']['url'] . $suffixCache;
-        $url = Strings::removeString($url, $stringToRemove);
+        $url = Strings::remove($url, $stringToRemove);
 
         return _getHtmlFileTag($fileInfo['type'], $url);
     }

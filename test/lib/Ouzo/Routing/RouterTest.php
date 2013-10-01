@@ -180,7 +180,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function shouldNotFindRouteWhenExceptAction()
     {
         //given
-        Route::allowAll('/users', 'users', array('add'));
+        Route::allowAll('/users', 'users', array('except' => array('add')));
         $router = $this->_createRouter('GET', '/users/add');
 
         //when
@@ -197,7 +197,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         //given
         Route::get('/users/add', 'users#add');
-        Route::allowAll('/users', 'users', array('add'));
+        Route::allowAll('/users', 'users', array('except' => array('add')));
         $router = $this->_createRouter('GET', '/users/add');
 
         //when
