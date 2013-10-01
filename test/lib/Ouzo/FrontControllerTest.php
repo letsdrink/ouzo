@@ -150,7 +150,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldExceptActionInAllAllow()
     {
         //given
-        Route::allowAll('/sample', 'sample', array('except'));
+        Route::allowAll('/sample', 'sample', array('except' => array('except')));
 
         //when
         try {
