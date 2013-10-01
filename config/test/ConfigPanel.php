@@ -19,7 +19,7 @@ $config['db']['dbname'] = 'ouzo_test';
 
 $config['global']['controller'] = 'index';
 $config['global']['action'] = 'index';
-$config['global']['prefix_system'] = '/panel/panel2.0';
+$config['global']['prefix_system'] = '';
 $config['global']['suffix_cache'] = '1234';
 $config['default']['auth'] = 'Database';
 $config['debug'] = true;

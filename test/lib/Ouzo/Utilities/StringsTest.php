@@ -97,6 +97,30 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function startsWithShouldReturnFalseForEmptyString()
+    {
+        //when
+        $result = Strings::startsWith(null, 'prefix');
+
+        //then
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function startsWithShouldReturnFalseForEmptyPrefix()
+    {
+        //when
+        $result = Strings::startsWith('string', null);
+
+        //then
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnFalseIfStringDoesNotStartWithPrefix()
     {
         //given
@@ -142,7 +166,32 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldCheckEqualityIgnoringCase() {
+    public function endsWithShouldReturnFalseForEmptyString()
+    {
+        //when
+        $result = Strings::endsWith(null, 'prefix');
+
+        //then
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function endsWithShouldReturnFalseForEmptyPrefix()
+    {
+        //when
+        $result = Strings::endsWith('string', null);
+
+        //then
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckEqualityIgnoringCase()
+    {
         $this->assertTrue(Strings::equalsIgnoreCase('', ''));
         $this->assertTrue(Strings::equalsIgnoreCase('ABC123', 'ABC123'));
         $this->assertTrue(Strings::equalsIgnoreCase('ABC123', 'abc123'));

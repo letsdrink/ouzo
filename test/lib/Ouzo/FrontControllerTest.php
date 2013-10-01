@@ -21,7 +21,7 @@ class SampleController extends Controller
 
     public function redirect_to()
     {
-        $this->redirect('/panel/panel2.0/sample/add');
+        $this->redirect('/sample/add');
     }
 
     public function index()

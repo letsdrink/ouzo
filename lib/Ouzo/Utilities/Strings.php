@@ -35,12 +35,12 @@ class Strings
 
     public static function startsWith($string, $prefix)
     {
-        return strpos($string, $prefix) === 0;
+        return $string && $prefix && strpos($string, $prefix) === 0;
     }
 
     public static function endsWith($string, $suffix)
     {
-        return substr($string, -strlen($suffix)) === $suffix;
+        return $string && $suffix && substr($string, -strlen($suffix)) === $suffix;
     }
 
     public static function equalsIgnoreCase($string1, $string2)
