@@ -12,8 +12,6 @@ class Category extends Model
     public function __construct($attributes = array())
     {
         parent::__construct(array(
-            'table' => 'categories',
-            'sequence' => 'categories_id_category_seq',
             'primaryKey' => 'id_category',
             'attributes' => $attributes,
             'fields' => $this->_fields));

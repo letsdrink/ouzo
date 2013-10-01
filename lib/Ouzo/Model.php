@@ -5,7 +5,10 @@ use Exception;
 use InvalidArgumentException;
 use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Inflector;
 use Ouzo\Utilities\Objects;
+use Ouzo\Utilities\Strings;
 use ReflectionClass;
 
 class Model extends Validatable
@@ -17,13 +20,26 @@ class Model extends Validatable
     private $_primaryKeyName;
     private $_fields;
 
+    /**
+     * Creates a new model object.
+     * Accepted parameters:
+     * <code>
+        'table' - defaults to pluralized class name. E.g. customer_orders for CustomerOrder
+        'primaryKey' - defaults to 'id'
+        'sequence' - defaults to 'table_primaryKey_seq'
+        'fields' - mapped column names
+        'attributes' -  array of column => value
+     * </code>
+     */
+
     public function __construct(array $params)
     {
         $this->_prepareParameters($params);
 
-        $tableName = $params['table'];
-        $sequenceName = $params['sequence'];
-        $primaryKeyName = $params['primaryKey'];
+        $tableName = Arrays::getValue($params, 'table') ? : Strings::tableize($this->getModelName());
+        $primaryKeyName = Arrays::getValue($params, 'primaryKey', 'id');
+        $sequenceName = Arrays::getValue($params, 'sequence', "{$tableName}_{$primaryKeyName}_seq");
+
         $attributes = $params['attributes'];
         $fields = $params['fields'];
 
@@ -66,15 +82,6 @@ class Model extends Validatable
 
     private function _prepareParameters(array &$params)
     {
-        if (empty($params['table'])) {
-            throw new InvalidArgumentException("Table name is required");
-        }
-        if (empty($params['sequence'])) {
-            $params['sequence'] = '';
-        }
-        if (empty($params['primaryKey'])) {
-            $params['primaryKey'] = '';
-        }
         if (empty($params['attributes'])) {
             $params['attributes'] = array();
         }
@@ -152,6 +159,11 @@ class Model extends Validatable
     public function getIdName()
     {
         return $this->_primaryKeyName;
+    }
+
+    public function getSequenceName()
+    {
+        return $this->_sequenceName;
     }
 
     private function _findById($value)

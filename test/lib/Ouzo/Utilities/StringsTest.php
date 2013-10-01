@@ -219,4 +219,49 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('winter is coming!!!', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldTableizeSimpleClassName()
+    {
+        //given
+        $class = "Dragon";
+
+        //when
+        $table = Strings::tableize($class);
+
+        //then
+        $this->assertEquals("dragons", $table);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTableizeMultipartClassName()
+    {
+        //given
+        $class = "BigFoot";
+
+        //when
+        $table = Strings::tableize($class);
+
+        //then
+        $this->assertEquals("big_feet", $table);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTableizeEmptyString()
+    {
+        //given
+        $class = "";
+
+        //when
+        $table = Strings::tableize($class);
+
+        //then
+        $this->assertEquals("", $table);
+    }
 }

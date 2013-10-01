@@ -55,4 +55,20 @@ class Strings
         }
         return $string;
     }
+
+    /**
+     * Converts a word into the format for an Ouzo table name. Converts 'ModelName' to 'model_names'.
+     *
+     * @param string $class The class names to tableize.
+     *
+     * @return string The tableized word.
+     */
+    public static function tableize($class)
+    {
+        $underscored = Strings::camelCaseToUnderscore($class);
+        $parts = explode('_', $underscored);
+        $suffix = Inflector::pluralize(array_pop($parts));
+        $parts[] = $suffix;
+        return implode('_', $parts);
+    }
 }

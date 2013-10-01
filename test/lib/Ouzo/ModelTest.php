@@ -29,18 +29,6 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldSetEmptyWhenPrimaryKeyEmpty()
-    {
-        //when
-        $model = new Model(array('table' => 't_example', 'fields' => array('field1')));
-
-        //then
-        $this->assertSame('', $model->getIdName());
-    }
-
-    /**
-     * @test
-     */
     public function shouldPersistModel()
     {
         //given
@@ -336,7 +324,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldNotIncludeBlankPrimaryKeyInFields()
     {
         //given
-        $model = new Model(array('table' => 't_example', 'fields' => array('field1')));
+        $model = new Model(array('table' => 't_example', 'primaryKey' => '', 'fields' => array('field1')));
 
         //when
         $fields = $model->_getFields();
