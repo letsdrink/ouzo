@@ -21,7 +21,7 @@ class Strings
     public static function removePrefix($string, $prefix)
     {
         if (self::startsWith($string, $prefix)) {
-            $string = substr($string, strlen($prefix));
+            return substr($string, strlen($prefix));
         }
         return $string;
     }
@@ -48,11 +48,8 @@ class Strings
         return strtolower($string1) == strtolower($string2);
     }
 
-    public static function removeString($string, $remove)
+    public static function remove($string, $stringToRemove)
     {
-        if ($remove) {
-            return str_replace($remove, '', $string);
-        }
-        return $string;
+        return $stringToRemove ? str_replace($stringToRemove, '', $string) : $string;
     }
 }
