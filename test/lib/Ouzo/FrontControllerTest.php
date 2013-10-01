@@ -4,6 +4,7 @@ namespace Ouzo;
 use Exception;
 use Ouzo\Config;
 use Ouzo\Controller;
+use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
@@ -429,5 +430,36 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
         $this->assertRedirectsTo('/sample/add');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRouteToRoot()
+    {
+        //given
+        Route::get('/', 'sample#index');
+
+        //when
+        $this->get('/');
+
+        //then
+        $this->assertRendersContent('index');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetCurrentRequestContextController()
+    {
+        //given
+        Route::resource('restful');
+        $this->get('/restful');
+
+        //when
+        $currentController = RequestContext::getCurrentController();
+
+        //then
+        $this->assertEquals('restful', $currentController);
     }
 }

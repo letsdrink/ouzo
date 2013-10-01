@@ -3,6 +3,7 @@ namespace Ouzo;
 
 use Exception;
 use Ouzo\Logger\Logger;
+use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Router;
 use Ouzo\Utilities\Strings;
 
@@ -42,6 +43,8 @@ class FrontController
 
         $this->_currentController = $routeRule->getController();
         $this->_currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
+
+        RequestContext::setCurrentController($this->_currentController);
 
         $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
 
