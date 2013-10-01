@@ -8,8 +8,6 @@ class ControllerFactory
 {
     function __construct($controllerPath = "\\Controller\\")
     {
-        $globalConfig = Config::getValue('global');
-        $this->_defaultAction = $globalConfig['action'];
         $this->controllerPath = $controllerPath;
     }
 

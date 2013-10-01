@@ -43,35 +43,26 @@ class FrontController
         $this->_currentController = $routeRule->getController();
         $this->_currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
-        if (!$routeRule->getController()) {
-            $this->_redirectToDefault();
-        } else {
-            $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
+        $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
 
-            $this->sessionInitializer->startSession();
+        $this->sessionInitializer->startSession();
 
-            $this->_logRequest();
+        $this->_logRequest();
 
-            $this->_startOutputBuffer();
+        $this->_startOutputBuffer();
 
-            $this->_invokeInit();
-            if ($this->_invokeBeforeMethods()) {
-                $this->_invokeAction();
-                $this->_invokeAfterMethods();
-            }
-
-            $this->_doActionOnResponse();
+        $this->_invokeInit();
+        if ($this->_invokeBeforeMethods()) {
+            $this->_invokeAction();
+            $this->_invokeAfterMethods();
         }
+
+        $this->_doActionOnResponse();
     }
 
     public function getCurrentControllerObject()
     {
         return $this->_currentControllerObject;
-    }
-
-    private function _redirectToDefault()
-    {
-        $this->_redirect('/' . $this->_defaults['controller'] . '/' . $this->_defaults['action']);
     }
 
     private function _redirect($url)
