@@ -204,4 +204,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Strings::equalsIgnoreCase(null, null));
         $this->assertFalse(Strings::equalsIgnoreCase('null', null));
     }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveString()
+    {
+        //given
+        $string = 'winter is coming???!!!';
+
+        //when
+        $result = Strings::removeString($string, '???');
+
+        //then
+        $this->assertEquals('winter is coming!!!', $result);
+    }
 }
