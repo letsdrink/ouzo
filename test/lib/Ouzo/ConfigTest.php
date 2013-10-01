@@ -139,7 +139,7 @@ TEMPLATE;
     public function shouldOverrideProperty()
     {
         // given
-        Config::overrideProperty('key', 'value');
+        Config::overrideProperty('key')->with('value');
 
         // when
         $value = Config::getValue('key');
@@ -152,16 +152,32 @@ TEMPLATE;
     /**
      * @test
      */
+    public function shouldOverrideMultidimensionalProperty()
+    {
+        // given
+        Config::overrideProperty('key1', 'key2')->with('value');
+
+        // when
+        $value = Config::getValue('key1', 'key2');
+
+        // then
+        $this->assertEquals('value', $value);
+        Config::clearProperty('key1', 'key2'); // cleanup
+    }
+
+    /**
+     * @test
+     */
     public function shouldClearProperty()
     {
         // given
-        Config::overrideProperty('key', 'value');
-        Config::clearProperty('key');
+        Config::overrideProperty('key_to_clear')->with('value');
 
         // when
-        $value = Config::getValue('key');
+        Config::clearProperty('key_to_clear');
 
         // then
+        $value = Config::getValue('key_to_clear');
         $this->assertEmpty($value);
     }
 }
