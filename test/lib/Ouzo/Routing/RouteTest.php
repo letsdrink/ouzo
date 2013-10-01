@@ -1,6 +1,7 @@
 <?php
 
 use Ouzo\Routing\Route;
+use Ouzo\Routing\RouteRule;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
@@ -238,4 +239,82 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($routes)->hasSize(2);
     }
+
+    /**
+     * @test
+     */
+    public function shouldSetCorrectRuleNameToGetMethod()
+    {
+        //given
+        Route::get('/users/index', 'users#index');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('index_users_path', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetCorrectRuleNameToPostMethod()
+    {
+        //given
+        Route::post('/users/save', 'users#save');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('save_users_path', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetCorrectRuleNameToAnyMethod()
+    {
+        //given
+        Route::any('/users/add', 'users#add');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('add_users_path', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetCorrectRuleNameToAllowAllMethod()
+    {
+        //given
+        Route::allowAll('/users', 'users');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEmpty($routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetCorrectRuleNameToResourceMethod()
+    {
+        //given
+        Route::resource('users');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        Assert::thatArray($routes)
+            ->onMethod('getName')
+            ->containsOnly('index_users_path', 'fresh_users_path', 'edit_users_path', 'show_users_path', 'create_users_path', 'update_users_path', 'update_users_path', 'destroy_users_path');
+    }
 }
+

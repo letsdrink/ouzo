@@ -128,6 +128,14 @@ class ArrayAssert
         return $this;
     }
 
+    public function onMethod($method)
+    {
+        $this->_actual = Arrays::map($this->_actual, function ($element) use ($method) {
+            return $element->$method();
+        });
+        return $this;
+    }
+
     private function _findNonExistingElements($elements)
     {
         $nonExistingElements = array();

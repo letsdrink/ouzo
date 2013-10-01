@@ -11,16 +11,16 @@ class RouteRule
     private $_uri;
     private $_action;
     private $_actionRequired;
-    private $_except;
+    private $_options;
     private $_parameters = array();
 
-    public function __construct($method, $uri, $action, $requireAction, $except = array())
+    public function __construct($method, $uri, $action, $requireAction, $options = array())
     {
         $this->_method = $method;
         $this->_uri = $uri;
         $this->_action = $action;
         $this->_actionRequired = $requireAction;
-        $this->_except = $except;
+        $this->_options = $options;
     }
 
     public function getMethod()
@@ -68,12 +68,12 @@ class RouteRule
 
     public function getExcept()
     {
-        return $this->_except;
+        return Arrays::getValue($this->_options, 'except', array());
     }
 
     public function isInExceptActions($action)
     {
-        return in_array($action, $this->_except);
+        return in_array($action, $this->getExcept());
     }
 
     private function _isEqualOrAnyMethod()
@@ -122,5 +122,18 @@ class RouteRule
     public function getParameters()
     {
         return $this->_parameters;
+    }
+
+    public function getName()
+    {
+        return Arrays::getValue($this->_options, 'as', $this->_prepareRuleName());
+    }
+
+    private function _prepareRuleName()
+    {
+        if (!$this->_actionRequired) {
+            return '';
+        }
+        return $this->getAction() . '_' . $this->getController() . '_' . 'path';
     }
 }
