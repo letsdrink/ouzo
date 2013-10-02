@@ -12,7 +12,7 @@ class UriHelperGenerator
      * RouteRule[]
      */
     private $_routes;
-    private $_generatedFunctions = '';
+    private $_generatedFunctions = "<?php\n";
 
     /**
      * @return UriHelperGenerator
@@ -69,5 +69,10 @@ FUNCTION;
     public function getGeneratedFunctions()
     {
         return trim($this->_generatedFunctions);
+    }
+
+    public function saveToFile($file)
+    {
+        return file_put_contents($file, $this->_generatedFunctions);
     }
 }

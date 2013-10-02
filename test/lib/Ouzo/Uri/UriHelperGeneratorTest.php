@@ -25,6 +25,7 @@ class UriHelperGeneratorTest extends PHPUnit_Framework_TestCase
 
         //then
         $expected = <<<FUNCT
+<?php
 function showItemUsersPath()
 {
     return url(array('string' => '/users/show_item'));
@@ -46,6 +47,7 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
+<?php
 function saveUsersPath()
 {
     return url(array('string' => '/users/save'));
@@ -67,6 +69,7 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
+<?php
 function getDuplicatedUsersPath()
 {
     return url(array('string' => '/users/get_duplicated'));
@@ -88,6 +91,7 @@ FUNCT;
 
         //then
         $expected = <<<'FUNCT'
+<?php
 function showUsersPath($id, $call_id)
 {
     return url(array('string' => '/users/show/id/$id/call_id/$call_id'));
@@ -109,6 +113,7 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
+<?php
 function userItemPath()
 {
     return url(array('string' => '/users/show_item'));
@@ -130,6 +135,7 @@ FUNCT;
 
         //then
         $expected = <<<'FUNCT'
+<?php
 function usersPath()
 {
     return url(array('string' => '/users'));

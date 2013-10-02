@@ -5,6 +5,7 @@ use Ouzo\Shell;
 use Ouzo\Shell\InputArgument;
 use Ouzo\Uri\UriHelperGenerator;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Path;
 
 class RoutesShell extends Shell
 {
@@ -17,7 +18,9 @@ class RoutesShell extends Shell
     public function main()
     {
         if ($this->getArgument('generate')) {
-            echo UriHelperGenerator::generate()->getGeneratedFunctions();
+            $path = Path::join(ROOT_PATH, 'application', 'helper', 'GeneratedUriHelper.php');
+            UriHelperGenerator::generate()->saveToFile($path);
+            $this->out('File with uri helpers is generated in ' . $path);
         } else {
             if ($this->getArgument('controller')) {
                 $this->controller();
