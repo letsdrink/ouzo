@@ -4,6 +4,7 @@ namespace Ouzo\Routing;
 use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Inflector;
 use Ouzo\Utilities\Strings;
 
 class RouteRule
@@ -14,14 +15,16 @@ class RouteRule
     private $_actionRequired;
     private $_options;
     private $_parameters = array();
+    private $_isResource;
 
-    public function __construct($method, $uri, $action, $requireAction, $options = array())
+    public function __construct($method, $uri, $action, $requireAction, $options = array(), $isResource = false)
     {
         $this->_method = $method;
         $this->_uri = $uri;
         $this->_action = $action;
         $this->_actionRequired = $requireAction;
         $this->_options = $options;
+        $this->_isResource = $isResource;
     }
 
     public function getMethod()
@@ -134,6 +137,32 @@ class RouteRule
     }
 
     private function _prepareRuleName()
+    {
+        return $this->_isResource ? $this->_getNameToRest() : $this->_getNameToNonRest();
+    }
+
+    private function _getNameToRest()
+    {
+        return $this->_prepareResourceActionName() . $this->_prepareResourceControllerName();
+    }
+
+    private function _prepareResourceActionName()
+    {
+        if (in_array($this->getAction(), array('fresh', 'edit'))) {
+            return $this->getAction() . '_';
+        }
+        return '';
+    }
+
+    private function _prepareResourceControllerName()
+    {
+        if (in_array($this->getAction(), array('index', 'create'))) {
+            return $this->getController();
+        }
+        return Inflector::singularize($this->getController());
+    }
+
+    private function _getNameToNonRest()
     {
         return $this->getAction() . '_' . $this->getController();
     }

@@ -130,42 +130,22 @@ FUNCT;
 
         //then
         $expected = <<<'FUNCT'
-function indexUsersPath()
+function usersPath()
 {
     return url(array('string' => '/users'));
 }
 
-function freshUsersPath()
+function freshUserPath()
 {
     return url(array('string' => '/users/fresh'));
 }
 
-function editUsersPath($id)
+function editUserPath($id)
 {
     return url(array('string' => '/users/$id/edit'));
 }
 
-function showUsersPath($id)
-{
-    return url(array('string' => '/users/$id'));
-}
-
-function createUsersPath()
-{
-    return url(array('string' => '/users'));
-}
-
-function updateUsersPath($id)
-{
-    return url(array('string' => '/users/$id'));
-}
-
-function updateUsersPath($id)
-{
-    return url(array('string' => '/users/$id'));
-}
-
-function destroyUsersPath($id)
+function userPath($id)
 {
     return url(array('string' => '/users/$id'));
 }

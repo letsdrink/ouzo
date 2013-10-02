@@ -52,35 +52,43 @@ class Route
     {
         self::_addRoute('GET',
             self::_createRouteUri($controller),
-            self::_createRouteAction($controller, 'index')
+            self::_createRouteAction($controller, 'index'),
+            true, array(), true
         );
         self::_addRoute('GET',
             self::_createRouteUri($controller, '/fresh'),
-            self::_createRouteAction($controller, 'fresh')
+            self::_createRouteAction($controller, 'fresh'),
+            true, array(), true
         );
         self::_addRoute('GET',
             self::_createRouteUri($controller, '/:id/edit'),
-            self::_createRouteAction($controller, 'edit')
+            self::_createRouteAction($controller, 'edit'),
+            true, array(), true
         );
         self::_addRoute('GET',
             self::_createRouteUri($controller, '/:id'),
-            self::_createRouteAction($controller, 'show')
+            self::_createRouteAction($controller, 'show'),
+            true, array(), true
         );
         self::_addRoute('POST',
             self::_createRouteUri($controller),
-            self::_createRouteAction($controller, 'create')
+            self::_createRouteAction($controller, 'create'),
+            true, array(), true
         );
         self::_addRoute('PUT',
             self::_createRouteUri($controller, '/:id'),
-            self::_createRouteAction($controller, 'update')
+            self::_createRouteAction($controller, 'update'),
+            true, array(), true
         );
         self::_addRoute('PATCH',
             self::_createRouteUri($controller, '/:id'),
-            self::_createRouteAction($controller, 'update')
+            self::_createRouteAction($controller, 'update'),
+            true, array(), true
         );
         self::_addRoute('DELETE',
             self::_createRouteUri($controller, '/:id'),
-            self::_createRouteAction($controller, 'destroy')
+            self::_createRouteAction($controller, 'destroy'),
+            true, array(), true
         );
     }
 
@@ -99,14 +107,14 @@ class Route
         return $controller . '#' . $action;
     }
 
-    private static function _addRoute($method, $uri, $action, $requireAction = true, $options = array())
+    private static function _addRoute($method, $uri, $action, $requireAction = true, $options = array(), $isResource = false)
     {
         if (self::$validate && self::_existRouteRule($method, $uri)) {
             $methods = is_array($method) ? implode(', ', $method) : $method;
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
 
-        $routeRule = new RouteRule($method, $uri, $action, $requireAction, $options);
+        $routeRule = new RouteRule($method, $uri, $action, $requireAction, $options, $isResource);
         if ($routeRule->hasRequiredAction()) {
             throw new InvalidArgumentException('Route rule ' . $uri . ' required action');
         }

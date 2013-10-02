@@ -371,6 +371,6 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($routes)
             ->onMethod('getName')
-            ->containsOnly('indexUsersPath', 'freshUsersPath', 'editUsersPath', 'showUsersPath', 'createUsersPath', 'updateUsersPath', 'updateUsersPath', 'destroyUsersPath');
+            ->contains('usersPath', 'freshUserPath', 'editUserPath', 'userPath');
     }
 }

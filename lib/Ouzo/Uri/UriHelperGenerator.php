@@ -30,8 +30,12 @@ class UriHelperGenerator
 
     private function _generateFunctions()
     {
+        $namesAlreadyGenerated = array();
         foreach ($this->_routes as $route) {
-            $this->_generatedFunctions .= $this->_createFunction($route);
+            if (!in_array($route->getName(), $namesAlreadyGenerated)) {
+                $this->_generatedFunctions .= $this->_createFunction($route);
+            }
+            $namesAlreadyGenerated[] = $route->getName();
         }
     }
 
