@@ -2,6 +2,7 @@
 namespace Ouzo\Uri;
 
 use Ouzo\Routing\Route;
+use Ouzo\Utilities\Path;
 use PHPUnit_Framework_TestCase;
 
 class UriHelperGeneratorTest extends PHPUnit_Framework_TestCase
@@ -157,5 +158,25 @@ function userPath($id)
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSaveGeneratedUriHelperInFile()
+    {
+        //given
+        Route::resource('users');
+        $fileName = uniqid() . '_GeneratedUriHelper.php';
+        $path = Path::joinWithTemp($fileName);
+        $generator = UriHelperGenerator::generate();
+
+        //when
+        $generator->saveToFile($path);
+
+        //then
+        $this->assertTrue(file_exists($path));
+        $this->assertEquals($generator->getGeneratedFunctions(), file_get_contents($path));
+        unlink($path);
     }
 }

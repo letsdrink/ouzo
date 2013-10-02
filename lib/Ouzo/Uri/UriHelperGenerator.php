@@ -73,6 +73,6 @@ FUNCTION;
 
     public function saveToFile($file)
     {
-        return file_put_contents($file, $this->_generatedFunctions);
+        return file_put_contents($file, $this->getGeneratedFunctions());
     }
 }
