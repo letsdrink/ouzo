@@ -1,5 +1,4 @@
 <?php
-
 use Model\Product;
 use Ouzo\Db\Stats;
 use Ouzo\DbException;

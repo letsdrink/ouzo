@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Utilities\Strings;
 
 class StringsTest extends PHPUnit_Framework_TestCase

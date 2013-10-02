@@ -1,7 +1,5 @@
 <?php
-
 namespace Ouzo\Utilities;
-
 
 class InflectorTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +14,8 @@ class InflectorTest extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function dataSampleWords() {
+    public function dataSampleWords()
+    {
         Inflector::reset();
         // in the format array('singular', 'plural')
         return array(
@@ -71,7 +70,8 @@ class InflectorTest extends \PHPUnit_Framework_TestCase
      * @dataProvider dataSampleWords
      * @return void
      */
-    public function testInflectingSingulars($singular, $plural) {
+    public function testInflectingSingulars($singular, $plural)
+    {
         $this->assertEquals($singular, Inflector::singularize($plural), "'$plural' should be singularized to '$singular'");
     }
 
@@ -81,7 +81,8 @@ class InflectorTest extends \PHPUnit_Framework_TestCase
      * @dataProvider dataSampleWords
      * @return void
      */
-    public function testInflectingPlurals($singular, $plural) {
+    public function testInflectingPlurals($singular, $plural)
+    {
         $this->assertEquals($plural, Inflector::pluralize($singular), "'$singular' should be pluralized to '$plural'");
     }
 
@@ -90,7 +91,8 @@ class InflectorTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testCustomPluralRule() {
+    public function testCustomPluralRule()
+    {
         Inflector::reset();
         Inflector::rules('plural', array('/^(custom)$/i' => '\1izables'));
         $this->assertEquals(Inflector::pluralize('custom'), 'customizables');
@@ -115,7 +117,8 @@ class InflectorTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testCustomSingularRule() {
+    public function testCustomSingularRule()
+    {
         Inflector::reset();
         Inflector::rules('singular', array('/(eple)r$/i' => '\1', '/(jente)r$/i' => '\1'));
 
@@ -139,7 +142,8 @@ class InflectorTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testRulesClearsCaches() {
+    public function testRulesClearsCaches()
+    {
         Inflector::reset();
         $this->assertEquals(Inflector::singularize('Bananas'), 'Banana');
         $this->assertEquals(Inflector::pluralize('Banana'), 'Bananas');
@@ -162,7 +166,8 @@ class InflectorTest extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testCustomRuleWithReset() {
+    public function testCustomRuleWithReset()
+    {
         Inflector::reset();
         $uninflected = array('atlas', 'lapis', 'onibus', 'pires', 'virus', '.*x');
         $pluralIrregular = array('as' => 'ases');
@@ -185,6 +190,4 @@ class InflectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Inflector::singularize('Alcoois'), 'Alcool');
         $this->assertEquals(Inflector::singularize('Atlas'), 'Atlas');
     }
-
 }
-

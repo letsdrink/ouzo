@@ -1,5 +1,4 @@
 <?php
-
 namespace Model;
 
 use Ouzo\Db;

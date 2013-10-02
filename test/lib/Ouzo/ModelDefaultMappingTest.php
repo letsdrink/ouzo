@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo;
 
 use Ouzo\Tests\DbTransactionalTestCase;
@@ -11,7 +10,6 @@ class TestModel extends Model
         parent::__construct($params);
     }
 }
-
 
 class ModelDefaultMappingTest extends DbTransactionalTestCase
 {
@@ -97,5 +95,4 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
         $this->assertEquals('', $testModel->getIdName());
         $this->assertEquals('', $testModel->getSequenceName());
     }
-
 }
