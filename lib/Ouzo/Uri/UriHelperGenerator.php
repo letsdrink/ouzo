@@ -51,7 +51,7 @@ class UriHelperGenerator
         $function = <<<FUNCTION
 function $name($parametersString)
 {
-    return url(array('string' => '$uriWithVariables'));
+    return url(array('string' => "$uriWithVariables"));
 }\n\n
 FUNCTION;
         return $name ? $function : '';

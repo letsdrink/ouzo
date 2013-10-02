@@ -28,7 +28,7 @@ class UriHelperGeneratorTest extends PHPUnit_Framework_TestCase
 <?php
 function showItemUsersPath()
 {
-    return url(array('string' => '/users/show_item'));
+    return url(array('string' => "/users/show_item"));
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -50,7 +50,7 @@ FUNCT;
 <?php
 function saveUsersPath()
 {
-    return url(array('string' => '/users/save'));
+    return url(array('string' => "/users/save"));
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -72,7 +72,7 @@ FUNCT;
 <?php
 function getDuplicatedUsersPath()
 {
-    return url(array('string' => '/users/get_duplicated'));
+    return url(array('string' => "/users/get_duplicated"));
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -94,7 +94,7 @@ FUNCT;
 <?php
 function showUsersPath($id, $call_id)
 {
-    return url(array('string' => '/users/show/id/$id/call_id/$call_id'));
+    return url(array('string' => "/users/show/id/$id/call_id/$call_id"));
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -116,7 +116,7 @@ FUNCT;
 <?php
 function userItemPath()
 {
-    return url(array('string' => '/users/show_item'));
+    return url(array('string' => "/users/show_item"));
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -138,22 +138,22 @@ FUNCT;
 <?php
 function usersPath()
 {
-    return url(array('string' => '/users'));
+    return url(array('string' => "/users"));
 }
 
 function freshUserPath()
 {
-    return url(array('string' => '/users/fresh'));
+    return url(array('string' => "/users/fresh"));
 }
 
 function editUserPath($id)
 {
-    return url(array('string' => '/users/$id/edit'));
+    return url(array('string' => "/users/$id/edit"));
 }
 
 function userPath($id)
 {
-    return url(array('string' => '/users/$id'));
+    return url(array('string' => "/users/$id"));
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
