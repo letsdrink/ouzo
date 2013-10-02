@@ -1,14 +1,11 @@
 <?php
-
 use Ouzo\Routing\Route;
-use Ouzo\Routing\RouteRule;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
 
 class RouteTest extends PHPUnit_Framework_TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();

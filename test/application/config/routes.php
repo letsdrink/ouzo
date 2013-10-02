@@ -9,3 +9,4 @@ Route::allowAll('/photos', 'photos');
 Route::any('/agents/index', 'agents#index');
 Route::resource('phones');
 Route::get('/agents', 'agents#index', array('as' => 'my_name'));
+Route::get('/agents/show/id/:id/call_id/:call_id', 'agents#show');

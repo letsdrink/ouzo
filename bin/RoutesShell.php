@@ -3,6 +3,7 @@ use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Shell;
 use Ouzo\Shell\InputArgument;
+use Ouzo\Uri\UriHelperGenerator;
 use Ouzo\Utilities\Arrays;
 
 class RoutesShell extends Shell
@@ -10,14 +11,19 @@ class RoutesShell extends Shell
     public function configure()
     {
         $this->addArgument('controller', 'c', InputArgument::VALUE_OPTIONAL);
+        $this->addArgument('generate', 'g', InputArgument::VALUE_NONE);
     }
 
     public function main()
     {
-        if ($this->getArgument('controller')) {
-            $this->controller();
+        if ($this->getArgument('generate')) {
+            echo UriHelperGenerator::generate()->getGeneratedFunctions();
         } else {
-            $this->all();
+            if ($this->getArgument('controller')) {
+                $this->controller();
+            } else {
+                $this->all();
+            }
         }
     }
 
