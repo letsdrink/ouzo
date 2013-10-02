@@ -4,6 +4,7 @@ namespace Ouzo\Routing;
 use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Strings;
 
 class RouteRule
 {
@@ -126,14 +127,12 @@ class RouteRule
 
     public function getName()
     {
-        return Arrays::getValue($this->_options, 'as', $this->_prepareRuleName());
+        $name = Arrays::getValue($this->_options, 'as', $this->_prepareRuleName());
+        return $this->_actionRequired ? Strings::appendSuffix($name, '_path') : '';
     }
 
     private function _prepareRuleName()
     {
-        if (!$this->_actionRequired) {
-            return '';
-        }
-        return $this->getAction() . '_' . $this->getController() . '_' . 'path';
+        return $this->getAction() . '_' . $this->getController();
     }
 }

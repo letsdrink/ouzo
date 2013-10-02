@@ -243,7 +243,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToGetMethod()
+    public function shouldSetRuleNameToGetMethod()
     {
         //given
         Route::get('/users/index', 'users#index');
@@ -258,7 +258,22 @@ class RouteTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToPostMethod()
+    public function shouldSetCustomRuleNameToGetMethod()
+    {
+        //given
+        Route::get('/users/index', 'users#index', array('as' => 'all_users'));
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('all_users_path', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetRuleNameToPostMethod()
     {
         //given
         Route::post('/users/save', 'users#save');
@@ -273,7 +288,22 @@ class RouteTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToAnyMethod()
+    public function shouldSetCustomRuleNameToPostMethod()
+    {
+        //given
+        Route::post('/users/save', 'users#save', array('as' => 'add_user'));
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('add_user_path', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetRuleNameToAnyMethod()
     {
         //given
         Route::any('/users/add', 'users#add');
@@ -288,7 +318,22 @@ class RouteTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToAllowAllMethod()
+    public function shouldSetCustomRuleNameToAnyMethod()
+    {
+        //given
+        Route::any('/users/add', 'users#add', array('as' => 'create_user'));
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('create_user_path', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotSetRuleNameToAllowAllMethod()
     {
         //given
         Route::allowAll('/users', 'users');
@@ -303,7 +348,22 @@ class RouteTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToResourceMethod()
+    public function shouldNotSetCustomRuleNameToAllowAllMethod()
+    {
+        //given
+        Route::allowAll('/users', 'users', array('as' => 'custom'));
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEmpty($routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetRulesNameToResourceMethod()
     {
         //given
         Route::resource('users');
@@ -317,4 +377,3 @@ class RouteTest extends PHPUnit_Framework_TestCase
             ->containsOnly('index_users_path', 'fresh_users_path', 'edit_users_path', 'show_users_path', 'create_users_path', 'update_users_path', 'update_users_path', 'destroy_users_path');
     }
 }
-

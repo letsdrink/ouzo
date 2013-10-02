@@ -263,4 +263,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals("", $table);
     }
+
+    /**
+     * @test
+     */
+    public function shouldAppendSuffix()
+    {
+        //given
+        $string = 'Daenerys';
+
+        //when
+        $stringWithSuffix = Strings::appendSuffix($string, ' Targaryen');
+
+        //then
+        $this->assertEquals('Daenerys Targaryen', $stringWithSuffix);
+    }
 }

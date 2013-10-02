@@ -33,19 +33,19 @@ class Route
     public static $validate = true;
 
 
-    public static function get($uri, $action)
+    public static function get($uri, $action, array $options = array())
     {
-        self::_addRoute('GET', $uri, $action);
+        self::_addRoute('GET', $uri, $action, true, $options);
     }
 
-    public static function post($uri, $action)
+    public static function post($uri, $action, array $options = array())
     {
-        self::_addRoute('POST', $uri, $action);
+        self::_addRoute('POST', $uri, $action, true, $options);
     }
 
-    public static function any($uri, $action)
+    public static function any($uri, $action, array $options = array())
     {
-        self::_addRoute(self::$methods, $uri, $action);
+        self::_addRoute(self::$methods, $uri, $action, true, $options);
     }
 
     public static function resource($controller)
