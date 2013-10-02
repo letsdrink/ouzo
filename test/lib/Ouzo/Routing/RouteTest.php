@@ -373,4 +373,21 @@ class RouteTest extends PHPUnit_Framework_TestCase
             ->onMethod('getName')
             ->contains('usersPath', 'freshUserPath', 'editUserPath', 'userPath');
     }
+
+    /**
+     * @test
+     */
+    public function shouldSetRuleNameForMultipartControllerNames()
+    {
+        //given
+        Route::resource('big_feet');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        Assert::thatArray($routes)
+            ->onMethod('getName')
+            ->contains('bigFeetPath', 'freshBigFootPath', 'editBigFootPath', 'bigFootPath');
+    }
 }

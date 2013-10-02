@@ -156,10 +156,14 @@ class RouteRule
 
     private function _prepareResourceControllerName()
     {
+        $parts = explode('_', $this->getController());
         if (in_array($this->getAction(), array('index', 'create'))) {
-            return $this->getController();
+            $suffix = array_pop($parts);
+        } else {
+            $suffix = Inflector::singularize(array_pop($parts));
         }
-        return Inflector::singularize($this->getController());
+        $parts[] = $suffix;
+        return implode('_', $parts);
     }
 
     private function _getNameToNonRest()
