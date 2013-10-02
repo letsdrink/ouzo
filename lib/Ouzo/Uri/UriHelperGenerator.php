@@ -37,7 +37,7 @@ class UriHelperGenerator
 
     private function _createFunction(RouteRule $routeRule)
     {
-        $name = lcfirst(Strings::underscoreToCamelCase($routeRule->getName()));
+        $name = $routeRule->getName();
         $uri = $routeRule->getUri();
         $parameters = $this->_prepareParameters($uri);
 

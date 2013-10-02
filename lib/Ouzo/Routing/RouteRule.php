@@ -128,7 +128,9 @@ class RouteRule
     public function getName()
     {
         $name = Arrays::getValue($this->_options, 'as', $this->_prepareRuleName());
-        return $this->_actionRequired ? Strings::appendSuffix($name, '_path') : '';
+        $nameWithPath = Strings::appendSuffix($name, '_path');
+        $name = lcfirst(Strings::underscoreToCamelCase($nameWithPath));
+        return $this->_actionRequired ? $name : '';
     }
 
     private function _prepareRuleName()

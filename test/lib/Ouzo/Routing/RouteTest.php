@@ -249,7 +249,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('index_users_path', $routes[0]->getName());
+        $this->assertEquals('indexUsersPath', $routes[0]->getName());
     }
 
     /**
@@ -264,7 +264,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('all_users_path', $routes[0]->getName());
+        $this->assertEquals('allUsersPath', $routes[0]->getName());
     }
 
     /**
@@ -279,7 +279,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('save_users_path', $routes[0]->getName());
+        $this->assertEquals('saveUsersPath', $routes[0]->getName());
     }
 
     /**
@@ -294,7 +294,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('add_user_path', $routes[0]->getName());
+        $this->assertEquals('addUserPath', $routes[0]->getName());
     }
 
     /**
@@ -309,7 +309,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('add_users_path', $routes[0]->getName());
+        $this->assertEquals('addUsersPath', $routes[0]->getName());
     }
 
     /**
@@ -324,7 +324,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('create_user_path', $routes[0]->getName());
+        $this->assertEquals('createUserPath', $routes[0]->getName());
     }
 
     /**
@@ -371,6 +371,6 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($routes)
             ->onMethod('getName')
-            ->containsOnly('index_users_path', 'fresh_users_path', 'edit_users_path', 'show_users_path', 'create_users_path', 'update_users_path', 'update_users_path', 'destroy_users_path');
+            ->containsOnly('indexUsersPath', 'freshUsersPath', 'editUsersPath', 'showUsersPath', 'createUsersPath', 'updateUsersPath', 'updateUsersPath', 'destroyUsersPath');
     }
 }
