@@ -67,11 +67,11 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_initFrontController();
     }
 
-    public function put($url)
+    public function put($url, $data)
     {
         $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['_method'] = 'PUT';
+        $_POST = array_merge($data, array('_method' => 'PUT'));
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
         $this->_initFrontController();
     }
