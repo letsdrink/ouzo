@@ -193,6 +193,7 @@ ul, ol, dl {
 ul li {
     list-style: inside;
     padding-left: 20px;
+    margin-bottom: 10px;
 }
 
 ol li {
@@ -354,6 +355,14 @@ Full-Width Styles
 
 #footer_wrap {
     background: #212121;
+}
+
+li span {
+    font-weight: bold;
+}
+
+div.list-item-desc {
+    margin-left: 20px;
 }
 
 /*******************************************************************************

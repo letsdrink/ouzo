@@ -38,43 +38,62 @@
         <h3>Features:</h3>
         <ul>
             <li>
-                <h4>Build-in orm</h4>
+                <span>Build-in orm</span>
 
-                <p>No more awkward sql. Get everything you need with a simple and elegant query builder: </p>
-                <code>User::where(['login' => 'john'])->fetch();</code>
+                <div class="list-item-desc">
+                    <p>No more awkward sql. Get everything you need with a simple and elegant query builder: </p>
+                    <code>User::where(['login' => 'john'])->fetch();</code>
+                </div>
             </li>
             <li>
-                <h4>RESTful Routing</h4>
-                <code>Route::resource('users');</code>
+                <span>RESTful Routing</span>
 
-                <p>This simple code will map all REST actions for your resource.</p>
-            </li>
-            <li>
-                <h4>Database schema management</h4>
+                <div class="list-item-desc">
+                    <p><code>Route::resource('users');</code></p>
 
-                <p>Ouzo uses <a href="https://github.com/ruckus/ruckusing-migrations">ruckusing-migrations</a> for
-                    schema management.</p>
+                    <p>This simple code will map all REST actions for your resource.</p>
+                </div>
             </li>
             <li>
-                <h4>Testing framework</h4>
+                <span>Database schema management</span>
 
-                <p>Controllers, Models tests</p>
-            </li>
-            <li>
-                <h4>Utility classes</h4>
+                <div class="list-item-desc">
+                    <p>
+                        Ouzo uses <a href="https://github.com/ruckus/ruckusing-migrations">ruckusing-migrations</a> for
+                        schema management.
+                    </p>
+                </div>
 
-                <p>Ouzo comes with plenty of utility classes that will help you deal with strings, arrays and more.</p>
             </li>
             <li>
-                <h4>Translations</h4>
-            </li>
-            <li>
-                <h4>Database agnostic</h4>
+                <span>Testing framework</span>
 
-                <p>Supports postgres, mysql, mariadb. You can easily write an Adapter for a db you need.</p>
+                <div class="list-item-desc">
+                    <p>Controllers, Models tests</p>
+                </div>
+
             </li>
             <li>
-                <h4>Waterproof</h4>
+                <span>Utility classes</span>
+
+                <div class="list-item-desc">
+                    <p>
+                        Ouzo comes with plenty of utility classes that will help you deal with strings, arrays and more.
+                    </p>
+                </div>
+            </li>
+            <li>
+                <span>Translations</span>
+            </li>
+            <li>
+                <span>Database agnostic</span>
+
+                <div class="list-item-desc">
+                    <p>Supports postgres, mysql, mariadb. You can easily write an Adapter for a db you need.</p>
+                </div>
+            </li>
+            <li>
+                <span>Waterproof</span>
 
                 <p>This is the only waterproof framework on the market. Let's see a quick comparison:</p>
                 <table>
