@@ -55,7 +55,7 @@ body {
     box-sizing: border-box;
     color: #373737;
     background: #212121;
-    font-size: 16px;
+    font-size: 13px;
     font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -64,24 +64,24 @@ body {
 h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
     font-weight: 700;
-    color: #222222;
+    color: #384f60;
     font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
     letter-spacing: -1px;
 }
 
 h1 {
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 700;
 }
 
 h2 {
     padding-bottom: 10px;
-    font-size: 32px;
+    font-size: 28px;
     background: url('../images/bg_hr.png') repeat-x bottom;
 }
 
 h3 {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 h4 {
@@ -148,7 +148,6 @@ img {
 }
 
 pre, code {
-    width: 100%;
     color: #222;
     background-color: #fff;
 
@@ -162,7 +161,6 @@ pre, code {
 }
 
 pre {
-    width: 100%;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     overflow: auto;
@@ -231,7 +229,7 @@ table {
 th {
     font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     padding: 10px;
-    background: #373737;
+    background: #384f60;
     color: #fff;
 }
 
@@ -255,7 +253,7 @@ Full-Width Styles
 
 .inner {
     position: relative;
-    max-width: 640px;
+    max-width: 800px;
     padding: 20px 10px;
     margin: 0 auto;
 }
@@ -354,16 +352,14 @@ Full-Width Styles
 }
 
 #footer_wrap {
-    background: #212121;
+    background: #384f60;
 }
 
-li span {
-    font-weight: bold;
+#footer_wrap a {
+    color: #4DB2FF;
 }
 
-div.list-item-desc {
-    margin-left: 20px;
-}
+
 
 /*******************************************************************************
 Small Device Styles
@@ -417,4 +413,30 @@ Small Device Styles
         font-size: 11px;
     }
 
+}
+
+.feature-row {
+    margin-top: 20px;
+    overflow: hidden;
+
+}
+.feature {
+    width: 385px;
+    float: left;
+    margin-bottom: 10px;
+}
+
+.feature:first-child {
+    margin-right: 30px;
+}
+
+.feature span {
+    font-weight: bold;
+    font-size: 14px;
+    color: #384f60;
+}
+
+.feature table {
+    font-size: 10px;
+    text-align: center;
 }
