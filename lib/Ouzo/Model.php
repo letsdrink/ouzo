@@ -4,7 +4,10 @@ namespace Ouzo;
 use Exception;
 use InvalidArgumentException;
 use Ouzo\Db;
+use Ouzo\Db\BelongsToRelation;
+use Ouzo\Db\HasOneRelation;
 use Ouzo\Db\ModelQueryBuilder;
+use Ouzo\Db\Relation;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Inflector;
 use Ouzo\Utilities\Objects;
@@ -19,6 +22,7 @@ class Model extends Validatable
     private $_sequenceName;
     private $_primaryKeyName;
     private $_fields;
+    private $_relations;
 
     /**
      * Creates a new model object.
@@ -27,6 +31,10 @@ class Model extends Validatable
         'table' - defaults to pluralized class name. E.g. customer_orders for CustomerOrder
         'primaryKey' - defaults to 'id'
         'sequence' - defaults to 'table_primaryKey_seq'
+
+        'hasOne' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+        'belongsTo' => array('name' => array('class' => 'Class'))
+
         'fields' - mapped column names
         'attributes' -  array of column => value
      * </code>
@@ -43,6 +51,8 @@ class Model extends Validatable
         $attributes = $params['attributes'];
         $fields = $params['fields'];
 
+        $params = $this->initializeRelations($params, $primaryKeyName);
+
         if (isset($attributes[$primaryKeyName]) && !$attributes[$primaryKeyName]) unset($attributes[$primaryKeyName]);
 
         $this->_tableName = $tableName;
@@ -54,6 +64,23 @@ class Model extends Validatable
             $this->_fields[] = $primaryKeyName;
         }
         $this->_attributes = $this->filterAttributes($attributes);
+    }
+
+    private function initializeRelations(array $params, $primaryKeyName)
+    {
+        $this->_relations = array();
+        if (isset($params['hasOne'])) {
+            foreach ($params['hasOne'] as $relation => $relationParams) {
+                $this->_relations[$relation] = new HasOneRelation($relation, $relationParams);
+            }
+        }
+        if (isset($params['belongsTo'])) {
+            foreach ($params['belongsTo'] as $relation => $relationParams) {
+                $this->_relations[$relation] = new BelongsToRelation($relation, $relationParams, $primaryKeyName);
+            }
+            return $params;
+        }
+        return $params;
     }
 
     public function assignAttributes($attributes)
@@ -335,4 +362,13 @@ class Model extends Validatable
     {
         return Objects::getValueRecursively($this, $names, $default);
     }
+
+    /**
+     * @return Relation
+     */
+    public function getRelation($name)
+    {
+        return $this->_relations[$name];
+    }
+
 }

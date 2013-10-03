@@ -251,7 +251,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'htc', 'id_category' => $category->getId()));
 
         //when
-        $products = Product::where()->with('Category', 'id_category', 'category')->fetchAll();
+        $products = Product::where()->with('category')->fetchAll();
 
         //then
         $this->assertEquals($category, $products[0]->category);
@@ -261,13 +261,29 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldFetchWithRelationWhenTwoObjectHasNoForeignKeyValue()
+    public function shouldFetchBelongsToRelation()
+    {
+        //given
+        $product = Product::create(array('name' => 'sony'));
+        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $products = Product::where()->with('orderProduct')->fetchAll();
+
+        //then
+        $this->assertEquals($orderProduct, $products[0]->orderProduct);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchWithRelationWhenObjectHasNoForeignKeyValue()
     {
         //given
         Product::create(array('name' => 'sony'));
 
         //when
-        $products = Product::where()->with('Category', 'id_category', 'category')->fetchAll();
+        $products = Product::where()->with('category')->fetchAll();
 
         //then
         $this->assertEquals(null, $products[0]->category);
@@ -287,12 +303,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //when
         $orderProducts = OrderProduct::where()
-            ->with('Product', 'id_product', 'product')
-            ->with('Category', 'product->id_category', 'category')
+            ->with('product->category')
             ->fetchAll();
 
         //then
-        $this->assertEquals($category, $orderProducts[0]->category);
+        $this->assertEquals($product->getId(), $orderProducts[0]->product->getId());
+        $this->assertEquals($category, $orderProducts[0]->product->category);
     }
 
     /**
@@ -305,7 +321,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'a', 'description' => 'phones'));
 
         //when
-        $products = Product::where()->with('Category', 'description', 'category', 'name')->fetchAll();
+        $products = Product::where()->oldWith('Category', 'description', 'category', 'name')->fetchAll();
 
         //then
         $this->assertEquals($category, $products[0]->category);
@@ -322,7 +338,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //when
         try {
-            Product::where()->with('Category', 'description', 'category', 'name')->fetchAll();
+            Product::where()->oldWith('Category', 'description', 'category', 'name')->fetchAll();
             $this->fail();
         } //then
         catch (InvalidArgumentException $e) {
@@ -339,7 +355,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'a', 'description' => 'desc'));
 
         //when
-        $products = Product::where()->with('Category', 'description', 'category', 'name', true)->fetchAll();
+        $products = Product::where()->oldWith('Category', 'description', 'category', 'name', true)->fetchAll();
 
         //then
         $this->assertNull($products[0]->category);

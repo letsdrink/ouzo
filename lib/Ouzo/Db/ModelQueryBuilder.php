@@ -156,9 +156,33 @@ class ModelQueryBuilder
     /**
      * @return ModelQueryBuilder
      */
-    public function with($relation, $foreignKey, $destinationField, $referencedColumn = null, $allowMissing = false)
+    public function oldWith($relation, $foreignKey, $destinationField, $referencedColumn = null, $allowMissing = false)
     {
         $this->_transformers[] = new RelationFetcher($relation, $foreignKey, $destinationField, $referencedColumn, $allowMissing);
+        return $this;
+    }
+
+    /**
+     * @return ModelQueryBuilder
+     */
+    public function with($relationName)
+    {
+        $field = '';
+        $model = $this->_model;
+
+        $relationNames = explode('->', $relationName);
+        foreach($relationNames as $relationName) {
+            $relation = $model->getRelation($relationName);
+            $relationFetcher = new RelationFetcher($relation->getClass(), $relation->getForeignKey(), $relation->getName(), $relation->getReferencedColumn(), $relation->getAllowInvalidReferences());
+            $fieldTransformer = new FieldTransformer($field, $relationFetcher);
+
+            $this->_transformers[] = $fieldTransformer;
+
+            $modelClass = '\Model\\' . $relation->getClass();
+            $model = $modelClass::newInstance();
+            $field .= $relation->getName();
+        }
+
         return $this;
     }
 

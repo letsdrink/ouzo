@@ -14,6 +14,8 @@ class Product extends Model
             'sequence' => 'products_id_product_seq',
             'primaryKey' => 'id_product',
             'attributes' => $attributes,
+            'hasOne' => array('category' => array('class' => 'Category', 'foreignKey' => 'id_category')),
+            'belongsTo' => array('orderProduct' => array('class' => 'OrderProduct')),
             'fields' => $this->_fields));
     }
 

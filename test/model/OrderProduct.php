@@ -15,6 +15,7 @@ class OrderProduct extends Model
             'sequence' => 'order_products_id_order_products_seq',
             'primaryKey' => 'id_order_products',
             'attributes' => $attributes,
+            'hasOne' => array('product' => array('class' => 'Product', 'foreignKey' => 'id_product')),
             'fields' => $this->_fields));
     }
 
