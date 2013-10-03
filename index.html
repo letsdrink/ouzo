@@ -34,22 +34,89 @@
         <h3>
 <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to Ouzo.</h3>
 
-<p>Test</p>
+<p>Start using it right now!</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<pre><code>$ composer.phar create-project letsdrink/ouzo-app:dev-master myproject</code></pre>
 
-<h3>
+          <p>Check out the <a href="https://github.com/letsdrink/ouzo/wiki/Tutorial">Tutorial</a> to learn more.</p>
+
+
+          <h3>Features:</h3>
+
+
+          <ul>
+              <li>
+                  <h4>Build-in orm</h4>
+                  <p>No more awkward sql. Get everything you need with a simple and elegant query builder: </p>
+                  <code>User::where(['login' => 'john'])->fetch();</code>
+              </li>
+              <li>
+                  <h4>RESTful Routing</h4>
+                  <code>Route::resource('users');</code>
+                  <p>This simple code will map all REST actions for your resource.</p>
+              </li>
+              <li>
+                  <h4>Database schema management</h4>
+                  <p>Ouzo uses <a href="https://github.com/ruckus/ruckusing-migrations">ruckusing-migrations</a> for schema management.</p>
+
+
+              </li>
+              <li>
+                  <h4>Testing framework</h4>
+                  <p>Controllers, Models tests</p>
+              </li>
+              <li>
+                  <h4>Utility classes</h4>
+                  <p>Ouzo comes with plenty of utility classes that will help you deal with strings, arrays and more.</p>
+              </li>
+              <li>
+                  <h4>Translations</h4>
+              </li>
+              <li>
+                  <h4>Database agnostic</h4>
+                  <p>Supports postgres, mysql, mariadb. You can easily write an Adapter for a db you need.</p>
+              </li>
+              <li>
+                  <h4>Waterproof</h4>
+                  <p>This is the only waterproof framework on the market. Let's see a quick comparison:</p>
+                  <table>
+                      <thead></thead>
+                      <tbody>
+                      <tr>
+                          <td></td>
+                          <td>Zend</td>
+                          <td>Symphony</td>
+                          <td>Ralavel</td>
+                          <td>Ouzo</td>
+                      </tr>
+                      <tr>
+                          <td>Waterproof</td>
+                          <td style="color: red;">No</td>
+                          <td style="color: red;">No</td>
+                          <td style="color: red;">No</td>
+                          <td style="color: green;">Yes</td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </li>
+          </ul>
+
+
+
+          <h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Ouzo is developed by  <a href="http://callcenter.pl/">Thulium</a></p>
+
+
 
 <h3>
 <a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+    <p>Having trouble with Ouzo? Check out the <a href="https://github.com/letsdrink/ouzo/wiki/Tutorial">documentation</a>
+
+        or create an <a href="https://github.com/letsdrink/ouzo/issues/new">issue</a> and we’ll sort it out.
+    </p>
       </section>
     </div>
 
@@ -61,7 +128,7 @@ $ git checkout gh-pages
       </footer>
     </div>
 
-    
+
 
   </body>
 </html>
