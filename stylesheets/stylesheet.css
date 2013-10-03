@@ -141,10 +141,10 @@ strong {
 
 img {
     position: relative;
-    margin: 0 auto;
     max-width: 739px;
     padding: 5px;
-    margin: 10px 0 10px 0;
+    margin-bottom: -40px;
+    margin-left: -50px;
 }
 
 pre, code {
@@ -267,7 +267,7 @@ Full-Width Styles
     z-index: 10;
     padding: 10px 50px 10px 10px;
     color: #fff;
-    background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+    background: url('../images/blacktocat.png') #384f60 no-repeat 95% 50%;
     font-weight: 700;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
     border-bottom-left-radius: 2px;
@@ -292,7 +292,7 @@ Full-Width Styles
     color: #fff;
     font-size: 42px;
     font-weight: 700;
-    text-shadow: #111 0px 0px 10px;
+    text-shadow: #111 0px 0px 7px;
 }
 
 #project_tagline {
