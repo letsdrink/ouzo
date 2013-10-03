@@ -52,7 +52,7 @@ class Relation
     protected function validateNotEmpty(array $params, $parameter)
     {
         if (empty($params[$parameter])) {
-            throw new InvalidArgumentException($parameter . "is required");
+            throw new InvalidArgumentException($parameter . " is required");
         }
     }
 

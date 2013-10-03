@@ -19,7 +19,7 @@ class Product extends Model
                 'categoryWithNameByDescription' => array('class' => 'Category', 'foreignKey' => 'description', 'referencedColumn' => 'name'),
                 'categoryWithNameByDescriptionAllowInvalid' => array('class' => 'Category', 'foreignKey' => 'description', 'referencedColumn' => 'name', 'allowInvalidReferences' => true)
             ),
-            'belongsTo' => array('orderProduct' => array('class' => 'OrderProduct')),
+            'belongsTo' => array('orderProduct' => array('class' => 'OrderProduct', 'foreignKey' => 'id_product')),
             'fields' => $this->_fields));
     }
 
