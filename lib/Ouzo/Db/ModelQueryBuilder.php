@@ -166,7 +166,7 @@ class ModelQueryBuilder
         $relationNames = explode('->', $relationName);
         foreach($relationNames as $relationName) {
             $relation = $model->getRelation($relationName);
-            $relationFetcher = new RelationFetcher($relation->getClass(), $relation->getForeignKey(), $relation->getName(), $relation->getReferencedColumn(), $relation->getAllowInvalidReferences());
+            $relationFetcher = new RelationFetcher($relation);
             $fieldTransformer = new FieldTransformer($field, $relationFetcher);
 
             $this->_transformers[] = $fieldTransformer;

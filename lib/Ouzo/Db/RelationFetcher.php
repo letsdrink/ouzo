@@ -10,29 +10,16 @@ use Ouzo\Utilities\Objects;
 class RelationFetcher
 {
     private $_relation;
-    private $_foreignKey;
-    private $_destinationField;
-    private $_referencedColumn;
-    private $_allowMissing;
 
-    function __construct($relation, $foreignKey, $destinationField, $referencedColumn, $allowMissing)
+    function __construct(Relation $relation)
     {
-        $this->_destinationField = $destinationField;
-        $this->_foreignKey = $foreignKey;
         $this->_relation = $relation;
-
-        $relationClassName = '\Model\\' . $this->_relation;
-        $this->_relationObject = $relationClassName::newInstance();
-        $this->_referencedColumn = $referencedColumn;
-        $this->_allowMissing = $allowMissing;
     }
 
     public function transform(&$results)
     {
-        $foreignKeyName = $this->_foreignKey;
-
         $foreignKeys = FluentArray::from($results)
-            ->map(Functions::extractFieldRecursively($foreignKeyName))
+            ->map(Functions::extractFieldRecursively($this->_relation->getForeignKey()))
             ->filter(Functions::notEmpty())
             ->unique()
             ->toArray();
@@ -40,8 +27,8 @@ class RelationFetcher
         $relationObjectsById = $this->_loadRelationObjectsIndexedById($foreignKeys);
 
         foreach ($results as $result) {
-            $destinationField = $this->_destinationField;
-            $foreignKey = Objects::getValueRecursively($result, $foreignKeyName);
+            $destinationField = $this->_relation->getName();
+            $foreignKey = Objects::getValueRecursively($result, $this->_relation->getForeignKey());
             if ($foreignKey) {
                 $result->$destinationField = $this->_findRelationObject($result, $relationObjectsById, $foreignKey);
             }
@@ -50,18 +37,18 @@ class RelationFetcher
 
     private function _loadRelationObjectsIndexedById($foreignKeys)
     {
-        $relationObject = $this->_relationObject;
-        $relationObjects = $relationObject::where(array($this->_referencedColumn => $foreignKeys))->fetchAll();
-        return Arrays::toMap($relationObjects, Functions::extractField($this->_referencedColumn));
+        $relationObject = $this->_relation->getRelationModelObject();
+        $relationObjects = $relationObject::where(array($this->_relation->getReferencedColumn() => $foreignKeys))->fetchAll();
+        return Arrays::toMap($relationObjects, Functions::extractField($this->_relation->getReferencedColumn()));
     }
 
     private function _findRelationObject($result, $relationObjectsById, $foreignKey)
     {
         if (!isset($relationObjectsById[$foreignKey])) {
-            if ($this->_allowMissing) {
+            if ($this->_relation->getAllowInvalidReferences()) {
                 return null;
             }
-            throw new InvalidArgumentException("Cannot find {$this->_relation} with {$this->_referencedColumn} = $foreignKey for {$result->inspect()}");
+            throw new InvalidArgumentException("Cannot find {$this->_relation->getClass()} with {$this->_relation->getReferencedColumn()} = $foreignKey for {$result->inspect()}");
         }
         return $relationObjectsById[$foreignKey];
     }
