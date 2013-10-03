@@ -376,4 +376,20 @@ class ModelTest extends DbTransactionalTestCase
         //then
         $this->assertEquals('Product', $modelName);
     }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfNoRelation()
+    {
+        $model = new Model(array('fields' => array('field1')));
+
+        //when
+        try {
+            $model->getRelation('invalid');
+            $this->fail();
+        } //then
+        catch (InvalidArgumentException $e) {
+        }
+    }
 }

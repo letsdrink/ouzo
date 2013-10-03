@@ -4,8 +4,6 @@ namespace Ouzo;
 use Exception;
 use InvalidArgumentException;
 use Ouzo\Db;
-use Ouzo\Db\BelongsToRelation;
-use Ouzo\Db\HasOneRelation;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
 use Ouzo\Utilities\Arrays;
@@ -51,7 +49,7 @@ class Model extends Validatable
         $attributes = $params['attributes'];
         $fields = $params['fields'];
 
-        $params = $this->initializeRelations($params, $primaryKeyName);
+        $this->_relations = new Relations(__CLASS__, $params, $primaryKeyName);
 
         if (isset($attributes[$primaryKeyName]) && !$attributes[$primaryKeyName]) unset($attributes[$primaryKeyName]);
 
@@ -64,23 +62,6 @@ class Model extends Validatable
             $this->_fields[] = $primaryKeyName;
         }
         $this->_attributes = $this->filterAttributes($attributes);
-    }
-
-    private function initializeRelations(array $params, $primaryKeyName)
-    {
-        $this->_relations = array();
-        if (isset($params['hasOne'])) {
-            foreach ($params['hasOne'] as $relation => $relationParams) {
-                $this->_relations[$relation] = new HasOneRelation($relation, $relationParams);
-            }
-        }
-        if (isset($params['belongsTo'])) {
-            foreach ($params['belongsTo'] as $relation => $relationParams) {
-                $this->_relations[$relation] = new BelongsToRelation($relation, $relationParams, $primaryKeyName);
-            }
-            return $params;
-        }
-        return $params;
     }
 
     public function assignAttributes($attributes)
@@ -368,7 +349,7 @@ class Model extends Validatable
      */
     public function getRelation($name)
     {
-        return $this->_relations[$name];
+        return $this->_relations->getRelation($name);
     }
 
 }
