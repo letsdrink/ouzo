@@ -321,10 +321,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'a', 'description' => 'phones'));
 
         //when
-        $products = Product::where()->oldWith('Category', 'description', 'category', 'name')->fetchAll();
+        $products = Product::where()->with('categoryWithNameByDescription')->fetchAll();
 
         //then
-        $this->assertEquals($category, $products[0]->category);
+        $this->assertEquals($category, $products[0]->categoryWithNameByDescription);
     }
 
     /**
@@ -338,7 +338,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //when
         try {
-            Product::where()->oldWith('Category', 'description', 'category', 'name')->fetchAll();
+            Product::where()->with('categoryWithNameByDescription')->fetchAll();
             $this->fail();
         } //then
         catch (InvalidArgumentException $e) {
@@ -348,17 +348,17 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldNotThrowExceptionIfNoRelationWithForeignKeyAndAllowMissingIsTrue()
+    public function shouldNotThrowExceptionIfNoRelationWithForeignKeyAndAllowInvalidIsTrue()
     {
         //given
         Category::create(array('name' => 'phones'));
         Product::create(array('name' => 'a', 'description' => 'desc'));
 
         //when
-        $products = Product::where()->oldWith('Category', 'description', 'category', 'name', true)->fetchAll();
+        $products = Product::where()->with('categoryWithNameByDescriptionAllowInvalid')->fetchAll();
 
         //then
-        $this->assertNull($products[0]->category);
+        $this->assertNull($products[0]->categoryWithNameByDescriptionAllowInvalid);
     }
 
     /**

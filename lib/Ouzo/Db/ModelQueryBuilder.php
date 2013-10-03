@@ -156,15 +156,6 @@ class ModelQueryBuilder
     /**
      * @return ModelQueryBuilder
      */
-    public function oldWith($relation, $foreignKey, $destinationField, $referencedColumn = null, $allowMissing = false)
-    {
-        $this->_transformers[] = new RelationFetcher($relation, $foreignKey, $destinationField, $referencedColumn, $allowMissing);
-        return $this;
-    }
-
-    /**
-     * @return ModelQueryBuilder
-     */
     public function with($relationName)
     {
         $field = '';

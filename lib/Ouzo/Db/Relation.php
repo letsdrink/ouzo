@@ -20,6 +20,8 @@ class Relation
         $this->validateNotEmpty($params, 'class');
         $this->class = $params['class'];
         $this->allowInvalidReferences = Arrays::getValue($params, 'allowInvalidReferences', false);
+        $this->referencedColumn = Arrays::getValue($params, 'referencedColumn');
+        $this->foreignKey = Arrays::getValue($params, 'foreignKey');
     }
 
     public function getClass()
