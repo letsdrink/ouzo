@@ -55,4 +55,10 @@ class Relation
             throw new InvalidArgumentException($parameter . "is required");
         }
     }
+
+    public function getRelationModelObject()
+    {
+        $modelClass = '\Model\\' . $this->class;
+        return $this->relationModelObject = $modelClass::newInstance();
+    }
 }

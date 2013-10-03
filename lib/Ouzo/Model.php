@@ -280,10 +280,10 @@ class Model extends Validatable
     /**
      * @return ModelQueryBuilder
      */
-    static public function join($class, $joinKey, $originalKey = null, $destinationField = null)
+    static public function join($relation)
     {
         $modelQueryBuilder = new ModelQueryBuilder(static::newInstance());
-        return $modelQueryBuilder->join($class, $joinKey, $originalKey, $destinationField);
+        return $modelQueryBuilder->join($relation);
     }
 
     /**

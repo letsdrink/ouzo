@@ -139,14 +139,16 @@ class ModelQueryBuilder
     /**
      * @return ModelQueryBuilder
      */
-    public function join($joinModel, $joinKey, $originalKey = null, $destinationField = null)
+    public function join($relationName)
     {
-        $relationClassName = '\Model\\' . $joinModel;
-        $this->_joinDestinationField = $destinationField;
+        $relation = $this->_model->getRelation($relationName);
+
+        $relationClassName = '\Model\\' . $relation->getClass();
+        $this->_joinDestinationField = $relation->getName();
         $this->_joinModel = $relationClassName::newInstance();
         $this->_query->joinTable = $this->_joinModel->getTableName();
-        $this->_query->joinKey = $joinKey;
-        $this->_query->idName = $originalKey ? $originalKey : $this->_model->getIdName();
+        $this->_query->joinKey = $relation->getForeignKey();
+        $this->_query->idName = $relation->getReferencedColumn();
 
         $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$this->_query->joinTable}_", $this->_joinModel->_getFields(), "joined");
 

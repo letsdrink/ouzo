@@ -163,7 +163,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
 
         //when
-        $products = Product::join('OrderProduct', 'id_product')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->fetchAll();
+        $products = Product::join('orderProduct')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->fetchAll();
 
         //then
         $this->assertCount(1, $products);
@@ -180,11 +180,27 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()));
 
         //when
-        $products = Product::join('Category', 'id_category', 'id_category', 'category')->fetchAll();
+        $products = Product::join('category')->fetchAll();
 
         //then
         $this->assertCount(1, $products);
         $this->assertEquals($category, $products[0]->category);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldJoinBelongsToRelation()
+    {
+        //given
+        $product = Product::create(array('name' => 'sony'));
+        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $fetched = Product::join('orderProduct')->fetch();
+
+        //then
+        $this->assertEquals($orderProduct, $fetched->orderProduct);
     }
 
     /**
@@ -196,7 +212,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'sony', 'description' => 'desc'));
 
         //when
-        $products = Product::join('Category', 'id_category', 'id_category', 'category')->fetchAll();
+        $products = Product::join('category')->fetchAll();
 
         //then
         $this->assertCount(1, $products);
@@ -234,7 +250,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
 
         //when
-        $products = Product::join('OrderProduct', 'id_product')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->count();
+        $products = Product::join('orderProduct')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->count();
 
         //then
         $this->assertEquals(1, $products);

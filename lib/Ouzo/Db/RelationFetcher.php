@@ -23,8 +23,7 @@ class RelationFetcher
 
         $relationClassName = '\Model\\' . $this->_relation;
         $this->_relationObject = $relationClassName::newInstance();
-        $relationPrimaryKey = $this->_relationObject->getIdName();
-        $this->_referencedColumn = $referencedColumn ? $referencedColumn : $relationPrimaryKey;
+        $this->_referencedColumn = $referencedColumn;
         $this->_allowMissing = $allowMissing;
     }
 
