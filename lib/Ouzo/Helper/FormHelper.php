@@ -285,6 +285,11 @@ function formTag($url, $method = 'POST', $attributes = array())
     return $form;
 }
 
+function endTag()
+{
+    return '</form>';
+}
+
 function _methodWorkAroundTag($method)
 {
     if (_isUnsupportedMethod($method)) {
@@ -391,7 +396,7 @@ class Form
 
     public function end()
     {
-        return '</form>';
+        return endTag();
     }
 
     public function getObject()
