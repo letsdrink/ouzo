@@ -309,6 +309,44 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldFetchHasManyRelation()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $product2 = Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+
+        //when
+        $category = Category::where(array('name' => 'phones'))
+            ->with('products')->fetch();
+
+        //then
+        Assert::thatArray($category->products)->containsOnly($product1, $product2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfMultipleValuesForHasOne()
+    {
+        //given
+        $product = Product::create(array('name' => 'phones'));
+
+        OrderProduct::create(array('id_product' => $product->getId()));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        try {
+            Product::where()->with('orderProduct')->fetchAll();
+            $this->fail();
+        } //then
+        catch (Exception $e) {
+        }
+    }
+
+    /**
+     * @test
+     */
     public function shouldFetchWithRelationWhenObjectHasNoForeignKeyValue()
     {
         //given

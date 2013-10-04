@@ -3,6 +3,7 @@
 namespace Ouzo\Db;
 
 
+use Exception;
 use InvalidArgumentException;
 use Ouzo\Utilities\Arrays;
 
@@ -13,15 +14,19 @@ class Relation
     protected $foreignKey;
     protected $referencedColumn;
     protected $allowInvalidReferences;
+    protected $collection;
 
     function __construct($name, array $params)
     {
-        $this->name = $name;
+        $this->validateNotEmpty($params, 'foreignKey');
         $this->validateNotEmpty($params, 'class');
+
+        $this->name = $name;
         $this->class = $params['class'];
         $this->allowInvalidReferences = Arrays::getValue($params, 'allowInvalidReferences', false);
         $this->referencedColumn = Arrays::getValue($params, 'referencedColumn');
         $this->foreignKey = Arrays::getValue($params, 'foreignKey');
+        $this->collection = Arrays::getValue($params, 'collection');
     }
 
     public function getClass()
@@ -60,5 +65,21 @@ class Relation
     {
         $modelClass = '\Model\\' . $this->class;
         return $this->relationModelObject = $modelClass::newInstance();
+    }
+
+    public function isCollection()
+    {
+        return $this->collection;
+    }
+
+    public function extractValue($values)
+    {
+        if (!$this->collection) {
+            if (count($values) > 1) {
+                throw new Exception("Expected one result for {$this->name}");
+            }
+            return Arrays::firstOrNull($values);
+        }
+        return $values;
     }
 }

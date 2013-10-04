@@ -9,8 +9,8 @@ class BelongsToRelation extends Relation
     function __construct($name, array $params, $primaryKey)
     {
         parent::__construct($name, $params);
-        $this->validateNotEmpty($params, 'foreignKey');
-        $this->foreignKey = Arrays::getValue($params, 'foreignKey');
+
         $this->referencedColumn = Arrays::getValue($params, 'referencedColumn', $this->getRelationModelObject()->getIdName());
+        $this->collection = false;
     }
 }
