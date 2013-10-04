@@ -11,6 +11,6 @@ class BelongsToRelation extends Relation
         parent::__construct($name, $params);
         $this->validateNotEmpty($params, 'foreignKey');
         $this->foreignKey = Arrays::getValue($params, 'foreignKey');
-        $this->referencedColumn = Arrays::getValue($params, 'referencedColumn', $primaryKey);
+        $this->referencedColumn = Arrays::getValue($params, 'referencedColumn', $this->getRelationModelObject()->getIdName());
     }
 }

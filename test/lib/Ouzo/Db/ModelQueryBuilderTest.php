@@ -190,7 +190,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldJoinBelongsToRelation()
+    public function shouldJoinHasOneRelation()
     {
         //given
         $product = Product::create(array('name' => 'sony'));
@@ -277,17 +277,33 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldFetchBelongsToRelation()
+    public function shouldFetchHasOneRelation()
     {
         //given
         $product = Product::create(array('name' => 'sony'));
-        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+        $orderProduct= OrderProduct::create(array('id_product' => $product->getId()));
 
         //when
-        $products = Product::where()->with('orderProduct')->fetchAll();
+        $fetched = Product::where()->with('orderProduct')->fetchAll();
 
         //then
-        $this->assertEquals($orderProduct, $products[0]->orderProduct);
+        $this->assertEquals($orderProduct, $fetched[0]->orderProduct);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchBelongsToRelation()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+
+        //when
+        $products = Product::where()->with('category')->fetchAll();
+
+        //then
+        $this->assertEquals($category, $products[0]->category);
     }
 
     /**

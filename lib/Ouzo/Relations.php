@@ -18,7 +18,7 @@ class Relations
         $this->_relations = array();
         if (isset($params['hasOne'])) {
             foreach ($params['hasOne'] as $relation => $relationParams) {
-                $this->addRelation(new HasOneRelation($relation, $relationParams));
+                $this->addRelation(new HasOneRelation($relation, $relationParams, $primaryKeyName));
             }
         }
         if (isset($params['belongsTo'])) {

@@ -49,7 +49,7 @@ class Model extends Validatable
         $attributes = $params['attributes'];
         $fields = $params['fields'];
 
-        $this->_relations = new Relations(__CLASS__, $params, $primaryKeyName);
+        $this->_relations = new Relations(get_called_class(), $params, $primaryKeyName);
 
         if (isset($attributes[$primaryKeyName]) && !$attributes[$primaryKeyName]) unset($attributes[$primaryKeyName]);
 
