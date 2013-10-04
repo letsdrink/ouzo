@@ -278,4 +278,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('Daenerys Targaryen', $stringWithSuffix);
     }
+
+    /**
+     * @test
+     */
+    public function shouldEscapeNewLines()
+    {
+        //given
+        $string = "My name is <strong>Reek</strong> \nit rhymes with leek";
+
+        //when
+        $escaped = Strings::escapeNewLines($string);
+
+        //then
+        $this->assertEquals("My name is &lt;strong&gt;Reek&lt;/strong&gt; <br />\nit rhymes with leek", $escaped);
+    }
 }

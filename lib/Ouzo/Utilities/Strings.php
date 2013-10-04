@@ -73,4 +73,10 @@ class Strings
         $parts[] = $suffix;
         return implode('_', $parts);
     }
+
+    public static function escapeNewLines($string)
+    {
+        $string = htmlspecialchars($string);
+        return nl2br($string);
+    }
 }

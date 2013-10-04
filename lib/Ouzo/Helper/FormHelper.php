@@ -2,6 +2,7 @@
 
 use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 function escapeText($text)
 {
@@ -10,8 +11,7 @@ function escapeText($text)
 
 function escapeNewLine($text)
 {
-    $text = htmlspecialchars($text);
-    return nl2br($text);
+    return Strings::escapeNewLines($text);
 }
 
 function linkTo($name, $href, $attributes = array())
