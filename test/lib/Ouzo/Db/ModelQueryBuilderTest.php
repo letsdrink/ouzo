@@ -347,15 +347,19 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldThrowExceptionOnCollectionJoin()
+    public function shouldNotFetchJoinOnHasMany()
     {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+
         //when
-        try {
-            Category::join('products')->fetchAll();
-            $this->fail();
-        } //then
-        catch (InvalidArgumentException $e) {
-        }
+        $joined = Category::join('products')->where('id_product = ?', $product1->getId())->fetch();
+
+        //then
+        $this->assertEquals($category, $joined);
+        $this->assertNull($joined->products);
     }
 
     /**

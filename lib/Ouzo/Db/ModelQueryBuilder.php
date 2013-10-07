@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo\Db;
 
-use InvalidArgumentException;
 use Ouzo\Db;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
@@ -144,11 +143,7 @@ class ModelQueryBuilder
     {
         $relation = $this->_model->getRelation($relationName);
 
-        if ($relation->isCollection()) {
-            throw new InvalidArgumentException("Joins on collections (HasMany relationship) are not supported");
-        }
-
-        $this->_joinDestinationField = $relation->getName();
+        $this->_joinDestinationField = $relation->isCollection()? null : $relation->getName();
         $this->_joinModel = $relation->getRelationModelObject();
         $this->_query->joinTable = $this->_joinModel->getTableName();
         $this->_query->joinKey = $relation->getForeignKey();
