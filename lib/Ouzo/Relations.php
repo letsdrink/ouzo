@@ -4,6 +4,7 @@ namespace Ouzo;
 
 use InvalidArgumentException;
 use Ouzo\Db\BelongsToRelation;
+use Ouzo\Db\HasManyRelation;
 use Ouzo\Db\HasOneRelation;
 use Ouzo\Db\Relation;
 
@@ -18,12 +19,17 @@ class Relations
         $this->_relations = array();
         if (isset($params['hasOne'])) {
             foreach ($params['hasOne'] as $relation => $relationParams) {
-                $this->addRelation(new HasOneRelation($relation, $relationParams));
+                $this->addRelation(new HasOneRelation($relation, $relationParams, $primaryKeyName));
             }
         }
         if (isset($params['belongsTo'])) {
             foreach ($params['belongsTo'] as $relation => $relationParams) {
                 $this->addRelation(new BelongsToRelation($relation, $relationParams, $primaryKeyName));
+            }
+        }
+        if (isset($params['hasMany'])) {
+            foreach ($params['hasMany'] as $relation => $relationParams) {
+                $this->addRelation(new HasManyRelation($relation, $relationParams, $primaryKeyName));
             }
         }
     }

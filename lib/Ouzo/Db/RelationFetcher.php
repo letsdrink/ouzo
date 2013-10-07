@@ -2,6 +2,7 @@
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
+use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
@@ -28,9 +29,11 @@ class RelationFetcher
 
         foreach ($results as $result) {
             $destinationField = $this->_relation->getName();
-            $foreignKey = Objects::getValueRecursively($result, $this->_relation->getForeignKey());
-            if ($foreignKey) {
-                $result->$destinationField = $this->_findRelationObject($result, $relationObjectsById, $foreignKey);
+            $foreignKeyValue = Objects::getValueRecursively($result, $this->_relation->getForeignKey());
+            if ($foreignKeyValue) {
+                $values = $this->_findRelationObject($result, $relationObjectsById, $foreignKeyValue);
+
+                $result->$destinationField = $this->_relation->extractValue($values);
             }
         }
     }
@@ -39,16 +42,16 @@ class RelationFetcher
     {
         $relationObject = $this->_relation->getRelationModelObject();
         $relationObjects = $relationObject::where(array($this->_relation->getReferencedColumn() => $foreignKeys))->fetchAll();
-        return Arrays::toMap($relationObjects, Functions::extractField($this->_relation->getReferencedColumn()));
+        return Arrays::groupBy($relationObjects, Functions::extractField($this->_relation->getReferencedColumn()));
     }
 
-    private function _findRelationObject($result, $relationObjectsById, $foreignKey)
+    private function _findRelationObject(Model $result, $relationObjectsById, $foreignKey)
     {
         if (!isset($relationObjectsById[$foreignKey])) {
             if ($this->_relation->getAllowInvalidReferences()) {
-                return null;
+                return array();
             }
-            throw new InvalidArgumentException("Cannot find {$this->_relation->getClass()} with {$this->_relation->getReferencedColumn()} = $foreignKey for {$result->inspect()}");
+            throw new InvalidArgumentException("Cannot find {$this->_relation->getClass()} with {$this->_relation->getReferencedColumn()} = $foreignKey for {$result->getModelName()} with id = {$result->getId()}");
         }
         return $relationObjectsById[$foreignKey];
     }

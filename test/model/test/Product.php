@@ -14,12 +14,12 @@ class Product extends Model
             'sequence' => 'products_id_product_seq',
             'primaryKey' => 'id_product',
             'attributes' => $attributes,
-            'hasOne' => array(
-                'category' => array('class' => 'Category', 'foreignKey' => 'id_category'),
-                'categoryWithNameByDescription' => array('class' => 'Category', 'foreignKey' => 'description', 'referencedColumn' => 'name'),
-                'categoryWithNameByDescriptionAllowInvalid' => array('class' => 'Category', 'foreignKey' => 'description', 'referencedColumn' => 'name', 'allowInvalidReferences' => true)
+            'belongsTo' => array(
+                'category' => array('class' => 'Test\Category', 'foreignKey' => 'id_category'),
+                'categoryWithNameByDescription' => array('class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name'),
+                'categoryWithNameByDescriptionAllowInvalid' => array('class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name', 'allowInvalidReferences' => true)
             ),
-            'belongsTo' => array('orderProduct' => array('class' => 'OrderProduct', 'foreignKey' => 'id_product')),
+            'hasOne' => array('orderProduct' => array('class' => 'Test\OrderProduct', 'foreignKey' => 'id_product')),
             'fields' => $this->_fields));
     }
 

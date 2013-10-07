@@ -4,6 +4,7 @@ namespace Ouzo\Db;
 
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
 class FieldTransformer
@@ -20,7 +21,10 @@ class FieldTransformer
     public function transform(&$results)
     {
         if ($this->field) {
-            $fields = Arrays::map($results, Functions::extractFieldRecursively($this->field));
+            $fields = FluentArray::from($results)
+                ->map(Functions::extractFieldRecursively($this->field))
+                ->filter(Functions::notEmpty())
+                ->toArray();
             $this->transformer->transform($fields);
         } else {
             $this->transformer->transform($results);

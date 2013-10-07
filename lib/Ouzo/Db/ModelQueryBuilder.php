@@ -141,11 +141,14 @@ class ModelQueryBuilder
      */
     public function join($relationName)
     {
-        $relation = $this->_model->getRelation($relationName);
+        if ($relationName instanceof Relation) {
+            $relation = $relationName;
+        } else {
+            $relation = $this->_model->getRelation($relationName);
+        }
 
-        $relationClassName = '\Model\\' . $relation->getClass();
-        $this->_joinDestinationField = $relation->getName();
-        $this->_joinModel = $relationClassName::newInstance();
+        $this->_joinDestinationField = $relation->isCollection()? null : $relation->getName();
+        $this->_joinModel = $relation->getRelationModelObject();
         $this->_query->joinTable = $this->_joinModel->getTableName();
         $this->_query->joinKey = $relation->getForeignKey();
         $this->_query->idName = $relation->getReferencedColumn();
@@ -171,9 +174,8 @@ class ModelQueryBuilder
 
             $this->_transformers[] = $fieldTransformer;
 
-            $modelClass = '\Model\\' . $relation->getClass();
-            $model = $modelClass::newInstance();
-            $field .= $relation->getName();
+            $model = $relation->getRelationModelObject();
+            $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
         }
 
         return $this;

@@ -4,6 +4,8 @@ namespace Ouzo\Db;
 
 
 use InvalidArgumentException;
+use Ouzo\DbException;
+use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 
 class Relation
@@ -13,15 +15,25 @@ class Relation
     protected $foreignKey;
     protected $referencedColumn;
     protected $allowInvalidReferences;
+    protected $collection;
 
-    function __construct($name, array $params)
+    protected function __construct($name, array $params)
     {
-        $this->name = $name;
+        $this->validateNotEmpty($params, 'foreignKey');
         $this->validateNotEmpty($params, 'class');
+
+        $this->name = $name;
         $this->class = $params['class'];
         $this->allowInvalidReferences = Arrays::getValue($params, 'allowInvalidReferences', false);
         $this->referencedColumn = Arrays::getValue($params, 'referencedColumn');
         $this->foreignKey = Arrays::getValue($params, 'foreignKey');
+        $this->collection = Arrays::getValue($params, 'collection');
+    }
+
+    public static function inline($params)
+    {
+        $destinationField = Arrays::getValue($params, 'destinationField');
+        return new Relation($destinationField, $params);
     }
 
     public function getClass()
@@ -56,9 +68,28 @@ class Relation
         }
     }
 
+    /**
+     * @return Model
+     */
     public function getRelationModelObject()
     {
         $modelClass = '\Model\\' . $this->class;
-        return $this->relationModelObject = $modelClass::newInstance();
+        return $this->relationModelObject = $modelClass::metaInstance();
+    }
+
+    public function isCollection()
+    {
+        return $this->collection;
+    }
+
+    public function extractValue($values)
+    {
+        if (!$this->collection) {
+            if (count($values) > 1) {
+                throw new DbException("Expected one result for {$this->name}");
+            }
+            return Arrays::firstOrNull($values);
+        }
+        return $values;
     }
 }

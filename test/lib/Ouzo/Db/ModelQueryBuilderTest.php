@@ -4,7 +4,9 @@ use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
 use Ouzo\Db\ModelQueryBuilder;
+use Ouzo\Db\Relation;
 use Ouzo\Db\Stats;
+use Ouzo\DbException;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Objects;
@@ -189,7 +191,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldJoinBelongsToRelation()
+    public function shouldJoinHasOneRelation()
     {
         //given
         $product = Product::create(array('name' => 'sony'));
@@ -197,6 +199,27 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //when
         $fetched = Product::join('orderProduct')->fetch();
+
+        //then
+        $this->assertEquals($orderProduct, $fetched->orderProduct);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldJoinInlineRelation()
+    {
+        //given
+        $product = Product::create(array('name' => 'sony'));
+        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $fetched = Product::join(Relation::inline(array(
+            'destinationField' => 'orderProduct',
+            'class' => 'Test\OrderProduct',
+            'foreignKey' => 'id_product',
+            'referencedColumn' => 'id_product'
+        )))->fetch();
 
         //then
         $this->assertEquals($orderProduct, $fetched->orderProduct);
@@ -276,17 +299,89 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldFetchBelongsToRelation()
+    public function shouldFetchHasOneRelation()
     {
         //given
         $product = Product::create(array('name' => 'sony'));
-        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+        $orderProduct= OrderProduct::create(array('id_product' => $product->getId()));
 
         //when
-        $products = Product::where()->with('orderProduct')->fetchAll();
+        $fetched = Product::where()->with('orderProduct')->fetchAll();
 
         //then
-        $this->assertEquals($orderProduct, $products[0]->orderProduct);
+        $this->assertEquals($orderProduct, $fetched[0]->orderProduct);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchBelongsToRelation()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+
+        //when
+        $products = Product::where()->with('category')->fetchAll();
+
+        //then
+        $this->assertEquals($category, $products[0]->category);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchHasManyRelation()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $product2 = Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+
+        //when
+        $category = Category::where(array('name' => 'phones'))
+            ->with('products')->fetch();
+
+        //then
+        Assert::thatArray($category->products)->containsOnly($product1, $product2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfMultipleValuesForHasOne()
+    {
+        //given
+        $product = Product::create(array('name' => 'phones'));
+
+        OrderProduct::create(array('id_product' => $product->getId()));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        try {
+            Product::where()->with('orderProduct')->fetchAll();
+            $this->fail();
+        } //then
+        catch (DbException $e) {
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotFetchJoinOnHasMany()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+
+        //when
+        $joined = Category::join('products')->where('id_product = ?', $product1->getId())->fetch();
+
+        //then
+        $this->assertEquals($category, $joined);
+        $this->assertNull($joined->products);
     }
 
     /**
@@ -310,11 +405,30 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchRelationThroughOtherRelation()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
+        $cars = Category::create(array('name' => 'phones'));
+        $vans = Category::create(array('name' => 'phones', 'id_parent' => $cars->getId()));
 
-        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $product = Product::create(array('name' => 'Reno', 'id_category' => $vans->getId()));
         OrderProduct::create(array('id_product' => $product->getId()));
         OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $orderProducts = OrderProduct::where()
+            ->with('product->category->parent')
+            ->fetchAll();
+
+        //then
+        $this->assertEquals($product->getId(), $orderProducts[0]->product->getId());
+        $this->assertEquals($cars, $orderProducts[0]->product->category->parent);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchRelationThroughNullRelation()
+    {
+        $order = Order::create(array('name' => 'name'));
+        OrderProduct::create(array('id_order' => $order->getId()));
 
         //when
         $orderProducts = OrderProduct::where()
@@ -322,8 +436,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->fetchAll();
 
         //then
-        $this->assertEquals($product->getId(), $orderProducts[0]->product->getId());
-        $this->assertEquals($category, $orderProducts[0]->product->category);
+        $this->assertNull($orderProducts[0]->product);
     }
 
     /**
