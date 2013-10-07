@@ -17,7 +17,7 @@ class Relation
     protected $allowInvalidReferences;
     protected $collection;
 
-    function __construct($name, array $params)
+    protected function __construct($name, array $params)
     {
         $this->validateNotEmpty($params, 'foreignKey');
         $this->validateNotEmpty($params, 'class');
@@ -28,6 +28,12 @@ class Relation
         $this->referencedColumn = Arrays::getValue($params, 'referencedColumn');
         $this->foreignKey = Arrays::getValue($params, 'foreignKey');
         $this->collection = Arrays::getValue($params, 'collection');
+    }
+
+    public static function inline($params)
+    {
+        $destinationField = Arrays::getValue($params, 'destinationField');
+        return new Relation($destinationField, $params);
     }
 
     public function getClass()
