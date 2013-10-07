@@ -1,6 +1,5 @@
 <?php
-
-namespace Model;
+namespace Model\Test;
 
 use Ouzo\Model;
 
@@ -15,7 +14,7 @@ class OrderProduct extends Model
             'sequence' => 'order_products_id_order_products_seq',
             'primaryKey' => 'id_order_products',
             'attributes' => $attributes,
-            'belongsTo' => array('product' => array('class' => 'Product', 'foreignKey' => 'id_product')),
+            'belongsTo' => array('product' => array('class' => 'Test\Product', 'foreignKey' => 'id_product')),
             'fields' => $this->_fields));
     }
 

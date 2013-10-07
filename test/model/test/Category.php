@@ -1,5 +1,5 @@
 <?php
-namespace Model;
+namespace Model\Test;
 
 use Ouzo\Db;
 use Ouzo\Model;
@@ -12,7 +12,7 @@ class Category extends Model
     {
         parent::__construct(array(
             'primaryKey' => 'id_category',
-            'hasMany' => array('products' => array('class' => 'Product', 'foreignKey' => 'id_category')),
+            'hasMany' => array('products' => array('class' => 'Test\Product', 'foreignKey' => 'id_category')),
             'attributes' => $attributes,
             'fields' => $this->_fields));
     }
