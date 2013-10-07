@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
+use Ouzo\Db\RelationFetcher;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Inflector;
 use Ouzo\Utilities\Objects;
@@ -222,12 +223,27 @@ class Model extends Validatable
         if (empty($name)) {
             throw new Exception('Illegal attribute: field name for Model cannot be empty');
         }
-        return isset($this->_attributes[$name]) ? $this->_attributes[$name] : null;
+        if (isset($this->_attributes[$name])) {
+            return $this->_attributes[$name];
+        }
+        if ($this->_relations->hasRelation($name)) {
+            $this->_fetchRelation($name);
+            return Arrays::getValue($this->_attributes, $name);
+        }
+        return null;
     }
 
     public function __set($name, $value)
     {
         $this->_attributes[$name] = $value;
+    }
+
+    private function _fetchRelation($name)
+    {
+        $relation = $this->getRelation($name);
+        $relationFetcher = new RelationFetcher($relation);
+        $results = array($this);
+        $relationFetcher->transform($results);
     }
 
     /**

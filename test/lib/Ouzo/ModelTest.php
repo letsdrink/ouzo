@@ -1,8 +1,11 @@
 <?php
+use Model\Test\Category;
+use Model\Test\OrderProduct;
 use Model\Test\Product;
 use Ouzo\Db\Stats;
 use Ouzo\DbException;
 use Ouzo\Model;
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class ModelTest extends DbTransactionalTestCase
@@ -392,4 +395,54 @@ class ModelTest extends DbTransactionalTestCase
         catch (InvalidArgumentException $e) {
         }
     }
+
+    /**
+     * @test
+     */
+    public function shouldLazyFetchHasManyRelation()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $product2 = Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+
+        //when
+        $products = $category->products;
+
+        //then
+        Assert::thatArray($products)->containsOnly($product1, $product2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLazyFetchHasOneRelation()
+    {
+        //given
+        $product = Product::create(array('name' => 'sony'));
+        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $fetched = $product->orderProduct;
+
+        //then
+        $this->assertEquals($orderProduct, $fetched);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLazyFetchBelongsToRelation()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+
+        //when
+        $fetched = $product->category;
+
+        //then
+        $this->assertEquals($category, $fetched);
+    }
+
 }

@@ -9,6 +9,7 @@ use Ouzo\Db\Stats;
 use Ouzo\DbException;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
@@ -369,7 +370,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldNotFetchJoinOnHasMany()
+    public function shouldNotFetchJoinedRelationOnHasMany()
     {
         //given
         $category = Category::create(array('name' => 'phones'));
@@ -381,7 +382,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals($category, $joined);
-        $this->assertNull($joined->products);
+        $this->assertNull(Arrays::getValue($joined->attributes(), 'products'));
     }
 
     /**

@@ -30,6 +30,11 @@ class Relations
         return $this->_relations[$name];
     }
 
+    public function hasRelation($name)
+    {
+        return isset($this->_relations[$name]);
+    }
+
     private function _addRelation($relation)
     {
         $name = $relation->getName();
