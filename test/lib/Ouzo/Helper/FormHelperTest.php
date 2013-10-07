@@ -1,5 +1,5 @@
 <?php
-use Model\Product;
+use Model\Test\Product;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
 
