@@ -10,14 +10,14 @@ use Ouzo\Utilities\Arrays;
 
 class Relation
 {
-    protected $name;
-    protected $class;
-    protected $foreignKey;
-    protected $referencedColumn;
-    protected $allowInvalidReferences;
-    protected $collection;
+    private $name;
+    private $class;
+    private $foreignKey;
+    private $referencedColumn;
+    private $allowInvalidReferences;
+    private $collection;
 
-    protected function __construct($name, array $params)
+    private function __construct($name, array $params, $collection)
     {
         $this->validateNotEmpty($params, 'foreignKey');
         $this->validateNotEmpty($params, 'class');
@@ -27,13 +27,34 @@ class Relation
         $this->allowInvalidReferences = Arrays::getValue($params, 'allowInvalidReferences', false);
         $this->referencedColumn = Arrays::getValue($params, 'referencedColumn');
         $this->foreignKey = Arrays::getValue($params, 'foreignKey');
-        $this->collection = Arrays::getValue($params, 'collection');
+        $this->collection = Arrays::getValue($params, 'collection', $collection);
+    }
+
+    public static function hasMany($name, $params, $primaryKey)
+    {
+        $relation = new Relation($name, $params, true);
+        $relation->referencedColumn = Arrays::getValue($params, 'referencedColumn', $primaryKey);
+        return $relation;
+    }
+
+    public static function hasOne($name, $params, $primaryKey)
+    {
+        $relation = new Relation($name, $params, false);
+        $relation->referencedColumn = Arrays::getValue($params, 'referencedColumn', $primaryKey);
+        return $relation;
+    }
+
+    public static function belongsTo($name, $params)
+    {
+        $relation = new Relation($name, $params, false);
+        $relation->referencedColumn = Arrays::getValue($params, 'referencedColumn') ? : $relation->getRelationModelObject()->getIdName();
+        return $relation;
     }
 
     public static function inline($params)
     {
         $destinationField = Arrays::getValue($params, 'destinationField');
-        return new Relation($destinationField, $params);
+        return new Relation($destinationField, $params, null);
     }
 
     public function getClass()
