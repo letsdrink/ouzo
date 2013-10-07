@@ -143,9 +143,8 @@ class ModelQueryBuilder
     {
         $relation = $this->_model->getRelation($relationName);
 
-        $relationClassName = '\Model\\' . $relation->getClass();
         $this->_joinDestinationField = $relation->getName();
-        $this->_joinModel = $relationClassName::newInstance();
+        $this->_joinModel = $relation->getRelationModelObject();
         $this->_query->joinTable = $this->_joinModel->getTableName();
         $this->_query->joinKey = $relation->getForeignKey();
         $this->_query->idName = $relation->getReferencedColumn();
@@ -171,8 +170,7 @@ class ModelQueryBuilder
 
             $this->_transformers[] = $fieldTransformer;
 
-            $modelClass = '\Model\\' . $relation->getClass();
-            $model = $modelClass::newInstance();
+            $model = $relation->getRelationModelObject();
             $field .= $relation->getName();
         }
 

@@ -5,6 +5,7 @@ namespace Ouzo\Db;
 
 use Exception;
 use InvalidArgumentException;
+use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 
 class Relation
@@ -61,6 +62,9 @@ class Relation
         }
     }
 
+    /**
+     * @return Model
+     */
     public function getRelationModelObject()
     {
         $modelClass = '\Model\\' . $this->class;
