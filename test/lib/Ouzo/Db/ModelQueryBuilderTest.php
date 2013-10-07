@@ -4,6 +4,7 @@ use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
 use Ouzo\Db\ModelQueryBuilder;
+use Ouzo\Db\Relation;
 use Ouzo\Db\Stats;
 use Ouzo\DbException;
 use Ouzo\Tests\Assert;
@@ -206,6 +207,27 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldJoinInlineRelation()
+    {
+        //given
+        $product = Product::create(array('name' => 'sony'));
+        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $fetched = Product::join(Relation::inline(array(
+            'destinationField' => 'orderProduct',
+            'class' => 'Test\OrderProduct',
+            'foreignKey' => 'id_product',
+            'referencedColumn' => 'id_product'
+        )))->fetch();
+
+        //then
+        $this->assertEquals($orderProduct, $fetched->orderProduct);
+    }
+
+    /**
+     * @test
+     */
     public function shouldNotStoreJoinedModelInAttributeIfNotFound()
     {
         //given
@@ -397,6 +419,23 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertEquals($product->getId(), $orderProducts[0]->product->getId());
         $this->assertEquals($category, $orderProducts[0]->product->category);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchRelationThroughNullRelation()
+    {
+        $order = Order::create(array('name' => 'name'));
+        OrderProduct::create(array('id_order' => $order->getId()));
+
+        //when
+        $orderProducts = OrderProduct::where()
+            ->with('product->category')
+            ->fetchAll();
+
+        //then
+        $this->assertNull($orderProducts[0]->product);
     }
 
     /**

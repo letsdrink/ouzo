@@ -141,7 +141,11 @@ class ModelQueryBuilder
      */
     public function join($relationName)
     {
-        $relation = $this->_model->getRelation($relationName);
+        if ($relationName instanceof Relation) {
+            $relation = $relationName;
+        } else {
+            $relation = $this->_model->getRelation($relationName);
+        }
 
         $this->_joinDestinationField = $relation->isCollection()? null : $relation->getName();
         $this->_joinModel = $relation->getRelationModelObject();
