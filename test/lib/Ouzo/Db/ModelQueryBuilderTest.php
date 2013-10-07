@@ -1,9 +1,8 @@
 <?php
-
-use Model\Category;
-use Model\Order;
-use Model\OrderProduct;
-use Model\Product;
+use Model\Test\Category;
+use Model\Test\Order;
+use Model\Test\OrderProduct;
+use Model\Test\Product;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Stats;
 use Ouzo\Tests\Assert;
@@ -163,7 +162,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
 
         //when
-        $products = Product::join('OrderProduct', 'id_product')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->fetchAll();
+        $products = Product::join('Test\OrderProduct', 'id_product')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->fetchAll();
 
         //then
         $this->assertCount(1, $products);
@@ -180,7 +179,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()));
 
         //when
-        $products = Product::join('Category', 'id_category', 'id_category', 'category')->fetchAll();
+        $products = Product::join('Test\Category', 'id_category', 'id_category', 'category')->fetchAll();
 
         //then
         $this->assertCount(1, $products);
@@ -196,7 +195,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'sony', 'description' => 'desc'));
 
         //when
-        $products = Product::join('Category', 'id_category', 'id_category', 'category')->fetchAll();
+        $products = Product::join('Test\Category', 'id_category', 'id_category', 'category')->fetchAll();
 
         //then
         $this->assertCount(1, $products);
@@ -234,7 +233,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
 
         //when
-        $products = Product::join('OrderProduct', 'id_product')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->count();
+        $products = Product::join('Test\OrderProduct', 'id_product')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->count();
 
         //then
         $this->assertEquals(1, $products);
@@ -251,7 +250,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'htc', 'id_category' => $category->getId()));
 
         //when
-        $products = Product::where()->with('Category', 'id_category', 'category')->fetchAll();
+        $products = Product::where()->with('Test\Category', 'id_category', 'category')->fetchAll();
 
         //then
         $this->assertEquals($category, $products[0]->category);
@@ -267,7 +266,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'sony'));
 
         //when
-        $products = Product::where()->with('Category', 'id_category', 'category')->fetchAll();
+        $products = Product::where()->with('Test\Category', 'id_category', 'category')->fetchAll();
 
         //then
         $this->assertEquals(null, $products[0]->category);
@@ -287,8 +286,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //when
         $orderProducts = OrderProduct::where()
-            ->with('Product', 'id_product', 'product')
-            ->with('Category', 'product->id_category', 'category')
+            ->with('Test\Product', 'id_product', 'product')
+            ->with('Test\Category', 'product->id_category', 'category')
             ->fetchAll();
 
         //then
@@ -305,7 +304,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'a', 'description' => 'phones'));
 
         //when
-        $products = Product::where()->with('Category', 'description', 'category', 'name')->fetchAll();
+        $products = Product::where()->with('Test\Category', 'description', 'category', 'name')->fetchAll();
 
         //then
         $this->assertEquals($category, $products[0]->category);
@@ -322,7 +321,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //when
         try {
-            Product::where()->with('Category', 'description', 'category', 'name')->fetchAll();
+            Product::where()->with('Test\Category', 'description', 'category', 'name')->fetchAll();
             $this->fail();
         } //then
         catch (InvalidArgumentException $e) {
@@ -339,7 +338,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'a', 'description' => 'desc'));
 
         //when
-        $products = Product::where()->with('Category', 'description', 'category', 'name', true)->fetchAll();
+        $products = Product::where()->with('Test\Category', 'description', 'category', 'name', true)->fetchAll();
 
         //then
         $this->assertNull($products[0]->category);
@@ -585,5 +584,4 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertEquals($product, $query->fetch());
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Model;
+namespace Model\Test;
 
 use Ouzo\Model;
 
@@ -20,13 +20,14 @@ class Product extends Model
     public function validate()
     {
         parent::validate();
-        if (!$this->name ) {
+        if (!$this->name) {
             $this->_errors[] = 'Empty name';
             $this->_errorFields[] = 'name';
         }
     }
 
-    public function getDescription() {
+    public function getDescription()
+    {
         return 'This is product,';
     }
 }
