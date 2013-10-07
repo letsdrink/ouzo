@@ -3,8 +3,8 @@
 namespace Ouzo\Db;
 
 
-use Exception;
 use InvalidArgumentException;
+use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 
@@ -80,7 +80,7 @@ class Relation
     {
         if (!$this->collection) {
             if (count($values) > 1) {
-                throw new Exception("Expected one result for {$this->name}");
+                throw new DbException("Expected one result for {$this->name}");
             }
             return Arrays::firstOrNull($values);
         }

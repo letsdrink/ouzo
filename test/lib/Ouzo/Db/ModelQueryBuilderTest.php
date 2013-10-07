@@ -6,6 +6,7 @@ use Model\OrderProduct;
 use Model\Product;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Stats;
+use Ouzo\DbException;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Objects;
@@ -340,7 +341,21 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             Product::where()->with('orderProduct')->fetchAll();
             $this->fail();
         } //then
-        catch (Exception $e) {
+        catch (DbException $e) {
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionOnCollectionJoin()
+    {
+        //when
+        try {
+            Category::join('products')->fetchAll();
+            $this->fail();
+        } //then
+        catch (InvalidArgumentException $e) {
         }
     }
 
