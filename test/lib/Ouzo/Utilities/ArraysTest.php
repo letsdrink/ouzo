@@ -1,6 +1,5 @@
 <?php
-
-use Model\Product;
+use Model\Test\Product;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
 

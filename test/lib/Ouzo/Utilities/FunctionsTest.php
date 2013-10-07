@@ -1,9 +1,7 @@
 <?php
-
 namespace Ouzo\Utilities;
 
-
-use Model\Product;
+use Model\Test\Product;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,5 +1,5 @@
 <?php
-use Model\Product;
+use Model\Test\Product;
 use Ouzo\Db\Stats;
 use Ouzo\DbException;
 use Ouzo\Model;
@@ -314,7 +314,7 @@ class ModelTest extends DbTransactionalTestCase
         $string = $product->inspect();
 
         //then
-        $this->assertStringStartsWith('Model\Product', $string);
+        $this->assertStringStartsWith('Model\Test\Product', $string);
     }
 
     /**

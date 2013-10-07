@@ -1,9 +1,8 @@
 <?php
-
-use Model\Category;
-use Model\Order;
-use Model\OrderProduct;
-use Model\Product;
+use Model\Test\Category;
+use Model\Test\Order;
+use Model\Test\OrderProduct;
+use Model\Test\Product;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Stats;
 use Ouzo\Tests\Assert;

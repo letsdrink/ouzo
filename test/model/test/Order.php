@@ -1,23 +1,19 @@
 <?php
-namespace Model;
+namespace Model\Test;
 
-use Ouzo\Db;
 use Ouzo\Model;
 
-class Category extends Model
+class Order extends Model
 {
     private $_fields = array('name');
 
     public function __construct($attributes = array())
     {
         parent::__construct(array(
-            'primaryKey' => 'id_category',
+            'table' => 'orders',
+            'sequence' => 'orders_id_order_seq',
+            'primaryKey' => 'id_order',
             'attributes' => $attributes,
             'fields' => $this->_fields));
-    }
-
-    public function getName($name)
-    {
-        return Db::callFunction('get_name', array($name));
     }
 }

@@ -5,9 +5,23 @@ use Ouzo\Utilities\Objects;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
+class Photo
+{
+    private $_photoName;
+
+    function __construct($photoName)
+    {
+        $this->_photoName = $photoName;
+    }
+
+    public function getPhotoName()
+    {
+        return $this->_photoName;
+    }
+}
+
 class AssertTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -182,6 +196,30 @@ class AssertTest extends PHPUnit_Framework_TestCase
         $this->_assertNotContainsKeyAndValue($array,
             array('id' => 123, 'name' => 'john', 'surname' => 'smith', 'new_key' => 'new_value')
         );
+    }
+
+    /**
+     * @test
+     */
+    public function containsShouldAssertThatArrayUsingOnMethod()
+    {
+        $photos[] = new Photo('photo1');
+        $photos[] = new Photo('photo2');
+
+        Assert::thatArray($photos)->onMethod('getPhotoName')->containsOnly('photo1', 'photo2');
+    }
+
+    /**
+     * @test
+     */
+    public function containsShouldNotAssertThatArrayUsingOnMethod()
+    {
+        $photos[] = new Photo('photo1');
+        $photos[] = new Photo('photo2');
+
+        CatchException::when(Assert::thatArray($photos)->onMethod('getPhotoName'))->contains('photo3');
+
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     private function _assertNot()

@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Routing\Route;
 use Ouzo\Routing\Router;
 use Ouzo\Tests\Assert;

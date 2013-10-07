@@ -53,6 +53,11 @@ class Strings
         return $string && $stringToRemove ? str_replace($stringToRemove, '', $string) : $string;
     }
 
+    public static function appendSuffix($string, $suffix = '')
+    {
+        return $string ? $string . $suffix : $string;
+    }
+
     /**
      * Converts a word into the format for an Ouzo table name. Converts 'ModelName' to 'model_names'.
      *
@@ -67,5 +72,11 @@ class Strings
         $suffix = Inflector::pluralize(array_pop($parts));
         $parts[] = $suffix;
         return implode('_', $parts);
+    }
+
+    public static function escapeNewLines($string)
+    {
+        $string = htmlspecialchars($string);
+        return nl2br($string);
     }
 }

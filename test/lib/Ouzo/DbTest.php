@@ -1,5 +1,5 @@
 <?php
-use Model\Category;
+use Model\Test\Category;
 use Ouzo\Db;
 use Ouzo\Tests\DbTransactionalTestCase;
 

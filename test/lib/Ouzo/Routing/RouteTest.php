@@ -1,14 +1,11 @@
 <?php
-
 use Ouzo\Routing\Route;
-use Ouzo\Routing\RouteRule;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
 
 class RouteTest extends PHPUnit_Framework_TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -243,7 +240,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToGetMethod()
+    public function shouldSetRuleNameToGetMethod()
     {
         //given
         Route::get('/users/index', 'users#index');
@@ -252,13 +249,28 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('index_users_path', $routes[0]->getName());
+        $this->assertEquals('indexUsersPath', $routes[0]->getName());
     }
 
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToPostMethod()
+    public function shouldSetCustomRuleNameToGetMethod()
+    {
+        //given
+        Route::get('/users/index', 'users#index', array('as' => 'all_users'));
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('allUsersPath', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetRuleNameToPostMethod()
     {
         //given
         Route::post('/users/save', 'users#save');
@@ -267,13 +279,28 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('save_users_path', $routes[0]->getName());
+        $this->assertEquals('saveUsersPath', $routes[0]->getName());
     }
 
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToAnyMethod()
+    public function shouldSetCustomRuleNameToPostMethod()
+    {
+        //given
+        Route::post('/users/save', 'users#save', array('as' => 'add_user'));
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('addUserPath', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetRuleNameToAnyMethod()
     {
         //given
         Route::any('/users/add', 'users#add');
@@ -282,13 +309,28 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('add_users_path', $routes[0]->getName());
+        $this->assertEquals('addUsersPath', $routes[0]->getName());
     }
 
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToAllowAllMethod()
+    public function shouldSetCustomRuleNameToAnyMethod()
+    {
+        //given
+        Route::any('/users/add', 'users#add', array('as' => 'create_user'));
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('createUserPath', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotSetRuleNameToAllowAllMethod()
     {
         //given
         Route::allowAll('/users', 'users');
@@ -303,7 +345,22 @@ class RouteTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetCorrectRuleNameToResourceMethod()
+    public function shouldNotSetCustomRuleNameToAllowAllMethod()
+    {
+        //given
+        Route::allowAll('/users', 'users', array('as' => 'custom'));
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEmpty($routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetRulesNameToResourceMethod()
     {
         //given
         Route::resource('users');
@@ -314,7 +371,23 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($routes)
             ->onMethod('getName')
-            ->containsOnly('index_users_path', 'fresh_users_path', 'edit_users_path', 'show_users_path', 'create_users_path', 'update_users_path', 'update_users_path', 'destroy_users_path');
+            ->contains('usersPath', 'freshUserPath', 'editUserPath', 'userPath');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetRuleNameForMultipartControllerNames()
+    {
+        //given
+        Route::resource('big_feet');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        Assert::thatArray($routes)
+            ->onMethod('getName')
+            ->contains('bigFeetPath', 'freshBigFootPath', 'editBigFootPath', 'bigFootPath');
     }
 }
-

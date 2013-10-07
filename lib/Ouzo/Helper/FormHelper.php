@@ -2,6 +2,7 @@
 
 use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 function escapeText($text)
 {
@@ -10,8 +11,7 @@ function escapeText($text)
 
 function escapeNewLine($text)
 {
-    $text = htmlspecialchars($text);
-    return nl2br($text);
+    return Strings::escapeNewLines($text);
 }
 
 function linkTo($name, $href, $attributes = array())
@@ -285,6 +285,11 @@ function formTag($url, $method = 'POST', $attributes = array())
     return $form;
 }
 
+function endTag()
+{
+    return '</form>';
+}
+
 function _methodWorkAroundTag($method)
 {
     if (_isUnsupportedMethod($method)) {
@@ -391,7 +396,7 @@ class Form
 
     public function end()
     {
-        return '</form>';
+        return endTag();
     }
 
     public function getObject()

@@ -3,11 +3,8 @@
 namespace Ouzo\Utilities;
 
 /**
- * The methods in these classes are from several different sources collected
- * across several different php projects and several different authors. The
- * original author names and emails are not known.
- *
- * Pluralize & Singularize implementation are borrowed from CakePHP with some modifications.
+ * Original Inflector class was taken from Doctrine Inflector and modified later.
+ * From Doctrine comments: Pluralize & Singularize implementation are borrowed from CakePHP with some modifications.
  */
 class Inflector
 {
