@@ -416,15 +416,15 @@ class AutoLabelForm
         $this->_objectName = $objectName;
     }
 
-    private function translate($id)
+    private function translate($id, array $options = array())
     {
-        return t($this->_objectName . '.' . $id);
+        return t(Arrays::getValue($options, 'translation') ? : ($this->_objectName . '.' . $id));
     }
 
     public function textField($id, array $options = array())
     {
         $this->_updateOptionsIfError($id, $options);
-        return textField($this->translate($id), $this->getName($id), $this->_object->$id, $options);
+        return textField($this->translate($id, $options), $this->getName($id), $this->_object->$id, $options);
     }
 
     public function dateField($id, array $options = array())

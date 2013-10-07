@@ -9,6 +9,9 @@ class I18n
 
     public static function t($key, $params = array())
     {
+        if (!$key) {
+            return '';
+        }
         if (!self::$_translator) {
             $_labels = Pl::getLabels();
             self::$_translator = new Translator($_labels);
