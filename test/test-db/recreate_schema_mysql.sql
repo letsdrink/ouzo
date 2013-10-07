@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS categories CASCADE;
 
 CREATE TABLE categories (
   id_category INTEGER AUTO_INCREMENT PRIMARY KEY,
+  id_parent INTEGER REFERENCES categories (id_category),
   name        TEXT
 );
 

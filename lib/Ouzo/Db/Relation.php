@@ -74,7 +74,7 @@ class Relation
     public function getRelationModelObject()
     {
         $modelClass = '\Model\\' . $this->class;
-        return $this->relationModelObject = $modelClass::newInstance();
+        return $this->relationModelObject = $modelClass::metaInstance();
     }
 
     public function isCollection()

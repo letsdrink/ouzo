@@ -10,7 +10,7 @@ class BelongsToRelation extends Relation
     {
         parent::__construct($name, $params);
 
-        $this->referencedColumn = Arrays::getValue($params, 'referencedColumn', $this->getRelationModelObject()->getIdName());
+        $this->referencedColumn = isset($params['referencedColumn'])? $params['referencedColumn'] : $this->getRelationModelObject()->getIdName();
         $this->collection = false;
     }
 }

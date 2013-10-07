@@ -175,7 +175,7 @@ class ModelQueryBuilder
             $this->_transformers[] = $fieldTransformer;
 
             $model = $relation->getRelationModelObject();
-            $field .= $relation->getName();
+            $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
         }
 
         return $this;

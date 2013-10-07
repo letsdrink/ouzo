@@ -204,8 +204,7 @@ class Model extends Validatable
 
     public static function getFields()
     {
-        $model = static::newInstance();
-        return $model->_getFields();
+        return static::metaInstance()->_getFields();
     }
 
     private function _getFieldsWithoutPrimaryKey()
@@ -215,8 +214,7 @@ class Model extends Validatable
 
     public static function getFieldsWithoutPrimaryKey()
     {
-        $model = static::newInstance();
-        return $model->_getFieldsWithoutPrimaryKey();
+        return static::metaInstance()->_getFieldsWithoutPrimaryKey();
     }
 
     public function __get($name)
@@ -235,10 +233,18 @@ class Model extends Validatable
     /**
      * @return static
      */
-    public static function newInstance($attributes = array())
+    public static function newInstance(array $attributes)
     {
         $className = get_called_class();
         return new $className($attributes);
+    }
+
+    /**
+     * @return static
+     */
+    public static function metaInstance()
+    {
+        return MetaModelCache::getMetaInstance(get_called_class());
     }
 
     /**
@@ -254,7 +260,7 @@ class Model extends Validatable
      */
     static public function select($columns)
     {
-        $modelQueryBuilder = new ModelQueryBuilder(static::newInstance());
+        $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
         return $modelQueryBuilder->select($columns);
     }
 
@@ -263,7 +269,7 @@ class Model extends Validatable
      */
     static public function join($relation)
     {
-        $modelQueryBuilder = new ModelQueryBuilder(static::newInstance());
+        $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
         return $modelQueryBuilder->join($relation);
     }
 
@@ -272,14 +278,14 @@ class Model extends Validatable
      */
     static public function where($params = '', $values = null)
     {
-        $obj = static::newInstance();
+        $obj = static::metaInstance();
         $modelQueryBuilder = new ModelQueryBuilder($obj, $obj->_db);
         return $modelQueryBuilder->where($params, $values);
     }
 
     static public function count($where = null, $bindValues = null)
     {
-        return static::newInstance()->where($where, $bindValues)->count();
+        return static::metaInstance()->where($where, $bindValues)->count();
     }
 
     /**
@@ -287,7 +293,7 @@ class Model extends Validatable
      */
     static public function find($where, $whereValues, $orderBy = array(), $limit = 0, $offset = 0)
     {
-        return static::newInstance()->where($where, $whereValues)->order($orderBy)->limit($limit)->offset($offset)->fetchAll();
+        return static::metaInstance()->where($where, $whereValues)->order($orderBy)->limit($limit)->offset($offset)->fetchAll();
     }
 
     /**
@@ -295,7 +301,7 @@ class Model extends Validatable
      */
     static public function findById($value)
     {
-        return static::newInstance()->_findById($value);
+        return static::metaInstance()->_findById($value);
     }
 
     /**

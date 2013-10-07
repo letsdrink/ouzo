@@ -2,6 +2,7 @@
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
+use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
@@ -44,13 +45,13 @@ class RelationFetcher
         return Arrays::groupBy($relationObjects, Functions::extractField($this->_relation->getReferencedColumn()));
     }
 
-    private function _findRelationObject($result, $relationObjectsById, $foreignKey)
+    private function _findRelationObject(Model $result, $relationObjectsById, $foreignKey)
     {
         if (!isset($relationObjectsById[$foreignKey])) {
             if ($this->_relation->getAllowInvalidReferences()) {
                 return array();
             }
-            throw new InvalidArgumentException("Cannot find {$this->_relation->getClass()} with {$this->_relation->getReferencedColumn()} = $foreignKey for {$result->inspect()}");
+            throw new InvalidArgumentException("Cannot find {$this->_relation->getClass()} with {$this->_relation->getReferencedColumn()} = $foreignKey for {$result->getModelName()} with id = {$result->getId()}");
         }
         return $relationObjectsById[$foreignKey];
     }
