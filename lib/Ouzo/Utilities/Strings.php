@@ -3,9 +3,9 @@ namespace Ouzo\Utilities;
 
 class Strings
 {
-    public static function underscoreToCamelCase($str)
+    public static function underscoreToCamelCase($string)
     {
-        $words = explode('_', strtolower($str));
+        $words = explode('_', strtolower($string));
         $return = '';
         foreach ($words as $word) {
             $return .= ucfirst(trim($word));
