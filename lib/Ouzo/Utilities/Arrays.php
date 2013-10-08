@@ -24,21 +24,21 @@ class Arrays
         return empty($keys) ? array() : array_combine($keys, $values);
     }
 
-    static function flatten(array $array)
+    static function flatten(array $elements)
     {
         $return = array();
-        array_walk_recursive($array, function ($a) use (&$return) {
+        array_walk_recursive($elements, function ($a) use (&$return) {
             $return[] = $a;
         });
         return $return;
     }
 
-    static public function findKeyByValue($array, $value)
+    static public function findKeyByValue(array $elements, $value)
     {
         if ($value === 0) {
             $value = '0';
         }
-        foreach ($array as $key => $item) {
+        foreach ($elements as $key => $item) {
             if ($item == $value) {
                 return $key;
             }
@@ -46,7 +46,7 @@ class Arrays
         return FALSE;
     }
 
-    public static function any($elements, $predicate)
+    public static function any(array $elements, $predicate)
     {
         foreach ($elements as $element) {
             if (Functions::call($predicate, $element)) {
@@ -56,7 +56,7 @@ class Arrays
         return false;
     }
 
-    public static function first($elements)
+    public static function first(array $elements)
     {
         if (empty($elements)) {
             throw new \InvalidArgumentException('empty array');
@@ -65,7 +65,7 @@ class Arrays
         return $elements[$keys[0]];
     }
 
-    public static function last($elements)
+    public static function last(array $elements)
     {
         if (empty($elements)) {
             throw new \InvalidArgumentException('empty array');
@@ -73,25 +73,25 @@ class Arrays
         return end($elements);
     }
 
-    public static function firstOrNull($object)
+    public static function firstOrNull(array $elements)
     {
-        return empty($object) ? null : self::first($object);
+        return empty($elements) ? null : self::first($elements);
     }
 
-    public static function getValue($array, $key, $default = null)
+    public static function getValue(array $elements, $key, $default = null)
     {
-        return isset($array[$key]) ? $array[$key] : $default;
+        return isset($elements[$key]) ? $elements[$key] : $default;
     }
 
-    public static function filterByAllowedKeys(array $map, $allowedKeys)
+    public static function filterByAllowedKeys(array $elements, $allowedKeys)
     {
-        return array_intersect_key($map, array_flip($allowedKeys));
+        return array_intersect_key($elements, array_flip($allowedKeys));
     }
 
-    public static function filterByKeys(array $map, $predicate)
+    public static function filterByKeys(array $elements, $predicate)
     {
-        $allowedKeys = array_filter(array_keys($map), $predicate);
-        return self::filterByAllowedKeys($map, $allowedKeys);
+        $allowedKeys = array_filter(array_keys($elements), $predicate);
+        return self::filterByAllowedKeys($elements, $allowedKeys);
     }
 
     public static function groupBy(array $elements, $keyFunction, $orderField = null)
@@ -125,19 +125,19 @@ class Arrays
         return $newArray;
     }
 
-    public static function map($array, $function)
+    public static function map(array $elements, $function)
     {
-        return array_map($function, $array);
+        return array_map($function, $elements);
     }
 
-    public static function filter($array, $function)
+    public static function filter(array $elements, $function)
     {
-        return array_filter($array, $function);
+        return array_filter($elements, $function);
     }
 
-    public static function toArray($elements)
+    public static function toArray($element)
     {
-        return $elements ? is_array($elements) ? $elements : array($elements) : array();
+        return $element ? is_array($element) ? $element : array($element) : array();
     }
 
     public static function randElement($elements)
@@ -145,7 +145,7 @@ class Arrays
         return $elements ? $elements[array_rand($elements)] : null;
     }
 
-    public static function combine($keys, $values)
+    public static function combine(array $keys, array $values)
     {
         if (!empty($keys) && !empty($values)) {
             return array_combine($keys, $values);

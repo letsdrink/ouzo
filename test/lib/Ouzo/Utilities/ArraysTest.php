@@ -1,5 +1,6 @@
 <?php
 use Model\Test\Product;
+use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
 
@@ -138,6 +139,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //when
         Arrays::first($array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullIfNotFoundFirstElement()
+    {
+        //given
+        $array = array();
+
+        //when
+        $return = Arrays::firstOrNull($array);
+
+        //then
+        $this->assertNull($return);
     }
 
     /**
@@ -356,7 +372,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReturnNullIfNotFindRandomElement ()
+    public function shouldReturnNullIfNotFindRandomElement()
     {
         //given
         $array = array();
@@ -366,5 +382,76 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetValueFromArray()
+    {
+        //given
+        $array = array('id' => 1, 'name' => 'john');
+
+        //when
+        $value = Arrays::getValue($array, 'name');
+
+        //then
+        $this->assertEquals('john', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDefaultValueIfNotGetValueFromArray()
+    {
+        //given
+        $array = array('id' => 1, 'name' => 'john');
+
+        //when
+        $value = Arrays::getValue($array, 'surname', '--not found--');
+
+        //then
+        $this->assertEquals('--not found--', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnCombinedArray()
+    {
+        //given
+        $keys = array('id', 'name', 'surname');
+        $values = array(1, 'john', 'smith');
+
+        //when
+        $combined = Arrays::combine($keys, $values);
+
+        //then
+        Assert::thatArray($combined)->hasSize(3)->containsKeyAndValue(array('id' => 1, 'name' => 'john', 'surname' => 'smith'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFlattenAnArray()
+    {
+        //given
+        $array = array(
+            'names' => array(
+                'john',
+                'peter',
+                'bill'
+            ),
+            'products' => array(
+                'cheese',
+                array('milk', 'brie')
+            )
+        );
+
+        //when
+        $flatten = Arrays::flatten($array);
+
+        //then
+        Assert::thatArray($flatten)->hasSize(6)->containsExactly('john', 'peter', 'bill', 'cheese', 'milk', 'brie');
     }
 }
