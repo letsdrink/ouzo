@@ -152,4 +152,9 @@ class Arrays
         }
         return array();
     }
+
+    public static function keyExists(array $elements, $key)
+    {
+        return array_key_exists($key, $elements);
+    }
 }

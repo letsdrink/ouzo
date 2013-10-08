@@ -454,4 +454,19 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($flatten)->hasSize(6)->containsExactly('john', 'peter', 'bill', 'cheese', 'milk', 'brie');
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsKeyExists()
+    {
+        //given
+        $array = array('id' => 1, 'name' => 'john');
+
+        //when
+        $return = Arrays::keyExists($array, 'name');
+
+        //then
+        $this->assertTrue($return);
+    }
 }
