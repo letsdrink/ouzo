@@ -11,8 +11,12 @@ class Strings
      * $string = 'lannisters_always_pay_their_debts';
      * $camelcase = Strings::underscoreToCamelCase($string);
      * </code>
+     * Result:
+     * <code>
+     * LannistersAlwaysPayTheirDebts
+     * </code>
      *
-     * @param $string
+     * @param string $string
      * @return string
      */
     public static function underscoreToCamelCase($string)
@@ -33,8 +37,12 @@ class Strings
      * $string = 'LannistersAlwaysPayTheirDebts';
      * $underscored = Strings::camelCaseToUnderscore($string);
      * </code>
+     * Result:
+     * <code>
+     * lannisters_always_pay_their_debts
+     * </code>
      *
-     * @param $string
+     * @param string $string
      * @return string
      */
     public static function camelCaseToUnderscore($string)
@@ -50,9 +58,13 @@ class Strings
      * $string = 'prefixRest';
      * $withoutPrefix = Strings::removePrefix($string, 'prefix');
      * </code>
+     * Result:
+     * <code>
+     * Rest
+     * </code>
      *
-     * @param $string
-     * @param $prefix
+     * @param string $string
+     * @param string $prefix
      * @return string
      */
     public static function removePrefix($string, $prefix)
@@ -71,8 +83,12 @@ class Strings
      * $string = 'prefixRest';
      * $withoutPrefix = Strings::removePrefixes($string, array('pre', 'fix'));
      * </code>
+     * Result:
+     * <code>
+     * Rest
+     * </code>
      *
-     * @param $string
+     * @param string $string
      * @param array $prefixes
      * @return mixed
      */
@@ -91,9 +107,13 @@ class Strings
      * $string = 'prefixRest';
      * $result = Strings::startsWith($string, 'prefix');
      * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
      *
-     * @param $string
-     * @param $prefix
+     * @param string $string
+     * @param string $prefix
      * @return bool
      */
     public static function startsWith($string, $prefix)
@@ -109,9 +129,13 @@ class Strings
      * $string = 'StringSuffix';
      * $result = Strings::endsWith($string, 'Suffix');
      * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
      *
-     * @param $string
-     * @param $suffix
+     * @param string $string
+     * @param string $suffix
      * @return bool
      */
     public static function endsWith($string, $suffix)
@@ -126,9 +150,13 @@ class Strings
      * <code>
      * $equal = Strings::equalsIgnoreCase('ABC123', 'abc123');
      * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
      *
-     * @param $string1
-     * @param $string2
+     * @param string $string1
+     * @param string $string2
      * @return bool
      */
     public static function equalsIgnoreCase($string1, $string2)
@@ -144,9 +172,13 @@ class Strings
      * $string = 'winter is coming???!!!';
      * $result = Strings::remove($string, '???');
      * </code>
+     * Result:
+     * <code>
+     * winter is coming!!!
+     * </code>
      *
-     * @param $string
-     * @param $stringToRemove
+     * @param string $string
+     * @param string $stringToRemove
      * @return mixed
      */
     public static function remove($string, $stringToRemove)
@@ -162,8 +194,12 @@ class Strings
      * $string = 'Daenerys';
      * $stringWithSuffix = Strings::appendSuffix($string, ' Targaryen');
      * </code>
+     * Result:
+     * <code>
+     * Daenerys Targaryen
+     * </code>
      *
-     * @param $string
+     * @param string $string
      * @param string $suffix
      * @return string
      */
@@ -178,11 +214,15 @@ class Strings
      * Example:
      * <code>
      * $class = "BigFoot";
-     * $table = Strings::tableize($class); //BigFeet
+     * $table = Strings::tableize($class);
+     * </code>
+     * Result:
+     * <code>
+     * BigFeet
      * </code>
      *
-     * @param string $class The class names to tableize.
-     * @return string The tableized word.
+     * @param string $class
+     * @return string
      */
     public static function tableize($class)
     {
@@ -201,8 +241,12 @@ class Strings
      * $string = "My name is <strong>Reek</strong> \nit rhymes with leek";
      * $escaped = Strings::escapeNewLines($string);
      * </code>
+     * Result:
+     * <code>
+     * My name is &lt;strong&gt;Reek&lt;/strong&gt; <br />it rhymes with leek
+     * </code>
      *
-     * @param $string
+     * @param string $string
      * @return string
      */
     public static function escapeNewLines($string)
