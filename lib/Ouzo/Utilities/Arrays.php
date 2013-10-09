@@ -19,9 +19,13 @@ class Arrays
      *      return $element < 3;
      * });
      * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
      *
      * @param array $elements
-     * @param $predicate
+     * @param callable $predicate
      * @return bool
      */
     public static function all(array $elements, $predicate)
@@ -46,10 +50,18 @@ class Arrays
      *      return $elem + 1;
      * });
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [10] => 2
+     *      [20] => 3
+     * )
+     * </code>
      *
      * @param array $elements
-     * @param $keyFunction
-     * @param null $valueFunction
+     * @param callable $keyFunction
+     * @param callable|null $valueFunction
      * @return array
      */
     public static function toMap(array $elements, $keyFunction, $valueFunction = null)
@@ -81,6 +93,18 @@ class Arrays
      * );
      * $flatten = Arrays::flatten($array);
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] => john
+     *      [1] => peter
+     *      [2] => bill
+     *      [3] => cheese
+     *      [4] => milk
+     *      [5] => brie
+     * )
+     * </code>
      *
      * @param array $elements
      * @return array
@@ -107,9 +131,13 @@ class Arrays
      * );
      * $key = Arrays::findKeyByValue($array, 0);
      * </code>
+     * Result:
+     * <code>
+     * k3
+     * </code>
      *
      * @param array $elements
-     * @param $value
+     * @param string $value
      * @return bool|int|string
      */
     static public function findKeyByValue(array $elements, $value)
@@ -135,9 +163,13 @@ class Arrays
      *      return is_bool($element);
      * });
      * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
      *
      * @param array $elements
-     * @param $predicate
+     * @param callable $predicate
      * @return bool
      */
     public static function any(array $elements, $predicate)
@@ -158,6 +190,8 @@ class Arrays
      * $array = array('one', 'two' 'three');
      * $first = Arrays::first($array);
      * </code>
+     * Result:
+     * <code>one</code>
      *
      * @param array $elements
      * @return mixed
@@ -180,6 +214,8 @@ class Arrays
      * $array = array('a', 'b', 'c');
      * $last = Arrays::last($array);
      * </code>
+     * Result:
+     * <code>c</code>
      *
      * @param array $elements
      * @return mixed
@@ -201,6 +237,8 @@ class Arrays
      * $array = array();
      * $return = Arrays::firstOrNull($array);
      * </code>
+     * Result:
+     * <code>null</code>
      *
      * @param array $elements
      * @return mixed|null
@@ -218,17 +256,21 @@ class Arrays
      * $array = array('id' => 1, 'name' => 'john');
      * $value = Arrays::getValue($array, 'name');
      * </code>
+     * Result:
+     * <code>john</code>
      *
      * Example:
      * <code>
      * $array = array('id' => 1, 'name' => 'john');
      * $value = Arrays::getValue($array, 'surname', '--not found--');
      * </code>
+     * Result:
+     * <code>--not found--</code>
      *
      * @param array $elements
-     * @param $key
-     * @param null $default
-     * @return null
+     * @param string|int $key
+     * @param mixed|null $default
+     * @return mixed|null
      */
     public static function getValue(array $elements, $key, $default = null)
     {
@@ -243,12 +285,20 @@ class Arrays
      * $array = array('a' => 1, 'b' => 2, 'c' => 3);
      * $filtered = Arrays::filterByAllowedKeys($array, array('a', 'b'));
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [a] => 1
+     *      [b] => 2
+     * )
+     * </code>
      *
      * @param array $elements
-     * @param $allowedKeys
+     * @param array $allowedKeys
      * @return array
      */
-    public static function filterByAllowedKeys(array $elements, $allowedKeys)
+    public static function filterByAllowedKeys(array $elements, array $allowedKeys)
     {
         return array_intersect_key($elements, array_flip($allowedKeys));
     }
@@ -263,9 +313,17 @@ class Arrays
      *      return $elem[0] == 'a';
      * });
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [a1] => 1
+     *      [b2] => 2
+     * )
+     * </code>
      *
      * @param array $elements
-     * @param $predicate
+     * @param callable $predicate
      * @return array
      */
     public static function filterByKeys(array $elements, $predicate)
@@ -294,10 +352,37 @@ class Arrays
      * $array = array($obj1, $obj2, $obj3);
      * $grouped = Arrays::groupBy($array, Functions::extractField('name'));
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [a] => Array
+     *      (
+     *          [0] => stdClass Object
+     *          (
+     *              [name] => a
+     *              [description] => 1
+     *          )
+     *      )
+     *      [b] => Array
+     *      (
+     *          [0] => stdClass Object
+     *          (
+     *              [name] => b
+     *              [description] => 2
+     *          )
+     *          [1] => stdClass Object
+     *          (
+     *              [name] => b
+     *              [description] => 3
+     *          )
+     *      )
+     * )
+     * </code>
      *
      * @param array $elements
-     * @param $keyFunction
-     * @param null $orderField
+     * @param callable $keyFunction
+     * @param string|null $orderField
      * @return array
      */
     public static function groupBy(array $elements, $keyFunction, $orderField = null)
@@ -333,9 +418,30 @@ class Arrays
      * $array = array($obj1, $obj2, $obj3);
      * $sorted = Arrays::orderBy($array, 'name');
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] => stdClass Object
+     *      (
+     *          [name] => a
+     *          [description] => 1
+     *      )
+     *      [1] => stdClass Object
+     *      (
+     *          [name] => b
+     *          [description] => 3
+     *      )
+     *      [2] => stdClass Object
+     *      (
+     *          [name] => c
+     *          [description] => 2
+     *      )
+     * )
+     * </code>
      *
      * @param array $elements
-     * @param $orderField
+     * @param string $orderField
      * @return array
      */
     public static function orderBy(array $elements, $orderField)
@@ -361,9 +467,18 @@ class Arrays
      *      return 'new_' . $key;
      * });
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [new_k1] => v1
+     *      [new_k2] => v2
+     *      [new_k3] => v3
+     * )
+     * </code>
      *
      * @param array $elements
-     * @param $function
+     * @param callable $function
      * @return array
      */
     public static function mapKeys(array $elements, $function)
@@ -387,9 +502,18 @@ class Arrays
      *      return 'new_' . $value;
      * });
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] => new_k1
+     *      [1] => new_k2
+     *      [2] => new_k3
+     * )
+     * </code>
      *
      * @param array $elements
-     * @param $function
+     * @param callable $function
      * @return array
      */
     public static function map(array $elements, $function)
@@ -407,9 +531,17 @@ class Arrays
      *      return $value > 2;
      * });
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [2] => 3
+     *      [3] => 4
+     * )
+     * </code>
      *
      * @param array $elements
-     * @param $function
+     * @param callable $function
      * @return array
      */
     public static function filter(array $elements, $function)
@@ -424,8 +556,15 @@ class Arrays
      * <code>
      * $result = Arrays::toArray('test');
      * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] => test
+     * )
+     * </code>
      *
-     * @param $element
+     * @param mixed $element
      * @return array
      */
     public static function toArray($element)
@@ -441,8 +580,9 @@ class Arrays
      * $array = array('john', 'city', 'small');
      * $rand = Arrays::randElement($array);
      * </code>
+     * Result: <i>rand element from array</i>
      *
-     * @param $elements
+     * @param array $elements
      * @return null
      */
     public static function randElement($elements)
@@ -458,6 +598,15 @@ class Arrays
      * $keys = array('id', 'name', 'surname');
      * $values = array(1, 'john', 'smith');
      * $combined = Arrays::combine($keys, $values);
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [id] => 1
+     *      [name] => john
+     *      [surname] => smith
+     * )
      * </code>
      *
      * @param array $keys
@@ -480,9 +629,11 @@ class Arrays
      * $array = array('id' => 1, 'name' => 'john');
      * $return = Arrays::keyExists($array, 'name');
      * </code>
+     * Result:
+     * <code>true</code>
      *
      * @param array $elements
-     * @param $key
+     * @param string|int $key
      * @return bool
      */
     public static function keyExists(array $elements, $key)

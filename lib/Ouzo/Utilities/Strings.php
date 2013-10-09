@@ -1,6 +1,10 @@
 <?php
 namespace Ouzo\Utilities;
 
+/**
+ * Class Strings
+ * @package Ouzo\Utilities
+ */
 class Strings
 {
     /**
