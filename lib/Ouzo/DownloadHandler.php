@@ -14,7 +14,7 @@ class DownloadHandler
     {
         $location = $fileData['path'];
         $filename = $fileData['label'];
-        $mimeType = 'application/octet-stream';
+        $mimeType = isset($fileData['mime']) ? $fileData['mime'] : 'application/octet-stream';
 
         if (!file_exists($location)) {
             header("HTTP/1.1 404 Not Found");
