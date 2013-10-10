@@ -58,11 +58,11 @@ class RelationFactory
         self::validateNotEmpty($params, 'class');
         self::validateNotEmpty($params, 'localKey');
         self::validateNotEmpty($params, 'foreignKey');
-        self::validateNotEmpty($params, 'destinationField');
 
         $collection = Arrays::getValue($params, 'collection', false);
+        $destinationField = Arrays::getValue($params, 'destinationField');
 
-        return self::newRelation($params['destinationField'], $params['localKey'], $params['foreignKey'], $collection, $params);
+        return self::newRelation($destinationField, $params['localKey'], $params['foreignKey'], $collection, $params);
     }
 
     private static function validateParams(array $params)
