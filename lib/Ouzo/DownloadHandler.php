@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Arrays;
+
 class DownloadHandler
 {
     public function downloadFile(array $fileData)
@@ -14,7 +16,7 @@ class DownloadHandler
     {
         $location = $fileData['path'];
         $filename = $fileData['label'];
-        $mimeType = 'application/octet-stream';
+        $mimeType = Arrays::getValue($fileData, 'mime', 'application/octet-stream');
 
         if (!file_exists($location)) {
             header("HTTP/1.1 404 Not Found");
