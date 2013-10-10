@@ -10,9 +10,6 @@ class Product extends Model
     public function __construct($attributes = array())
     {
         parent::__construct(array(
-            'table' => 'products',
-            'sequence' => 'products_id_product_seq',
-            'primaryKey' => 'id_product',
             'attributes' => $attributes,
             'belongsTo' => array(
                 'category' => array('class' => 'Test\Category', 'foreignKey' => 'id_category'),

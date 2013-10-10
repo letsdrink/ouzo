@@ -189,7 +189,7 @@ class ModelTest extends DbTransactionalTestCase
         $product = Product::create(array('name' => 'name'));
 
         //then
-        $this->assertTrue(is_numeric($product->id_product));
+        $this->assertTrue(is_numeric($product->id));
     }
 
     /**

@@ -151,7 +151,7 @@ class ModelQueryBuilder
         $this->_joinModel = $relation->getRelationModelObject();
         $this->_query->joinTable = $this->_joinModel->getTableName();
         $this->_query->joinKey = $relation->getForeignKey();
-        $this->_query->idName = $relation->getReferencedColumn();
+        $this->_query->idName = $relation->getLocalKey();
 
         $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$this->_query->joinTable}_", $this->_joinModel->_getFields(), "joined");
 

@@ -4,13 +4,13 @@ DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 
 CREATE TABLE categories (
-  id_category SERIAL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   id_parent INTEGER REFERENCES categories,
   name        TEXT
 );
 
 CREATE TABLE products (
-  id_product  SERIAL PRIMARY KEY,
+  id  SERIAL PRIMARY KEY,
   id_category INTEGER REFERENCES categories,
   name        TEXT,
   description TEXT,

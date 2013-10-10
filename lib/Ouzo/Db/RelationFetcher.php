@@ -20,7 +20,7 @@ class RelationFetcher
     public function transform(&$results)
     {
         $foreignKeys = FluentArray::from($results)
-            ->map(Functions::extractFieldRecursively($this->_relation->getForeignKey()))
+            ->map(Functions::extractFieldRecursively($this->_relation->getLocalKey()))
             ->filter(Functions::notEmpty())
             ->unique()
             ->toArray();
@@ -29,7 +29,7 @@ class RelationFetcher
 
         foreach ($results as $result) {
             $destinationField = $this->_relation->getName();
-            $foreignKeyValue = Objects::getValueRecursively($result, $this->_relation->getForeignKey());
+            $foreignKeyValue = Objects::getValueRecursively($result, $this->_relation->getLocalKey());
             if ($foreignKeyValue) {
                 $values = $this->_findRelationObject($result, $relationObjectsById, $foreignKeyValue);
 
@@ -41,8 +41,8 @@ class RelationFetcher
     private function _loadRelationObjectsIndexedById($foreignKeys)
     {
         $relationObject = $this->_relation->getRelationModelObject();
-        $relationObjects = $relationObject::where(array($this->_relation->getReferencedColumn() => $foreignKeys))->fetchAll();
-        return Arrays::groupBy($relationObjects, Functions::extractField($this->_relation->getReferencedColumn()));
+        $relationObjects = $relationObject::where(array($this->_relation->getForeignKey() => $foreignKeys))->fetchAll();
+        return Arrays::groupBy($relationObjects, Functions::extractField($this->_relation->getForeignKey()));
     }
 
     private function _findRelationObject(Model $result, $relationObjectsById, $foreignKey)
@@ -51,7 +51,7 @@ class RelationFetcher
             if ($this->_relation->getAllowInvalidReferences()) {
                 return array();
             }
-            throw new InvalidArgumentException("Cannot find {$this->_relation->getClass()} with {$this->_relation->getReferencedColumn()} = $foreignKey for {$result->getModelName()} with id = {$result->getId()}");
+            throw new InvalidArgumentException("Cannot find {$this->_relation->getClass()} with {$this->_relation->getForeignKey()} = $foreignKey for {$result->getModelName()} with id = {$result->getId()}");
         }
         return $relationObjectsById[$foreignKey];
     }

@@ -3,8 +3,8 @@
 namespace Ouzo\Db;
 
 
-use InvalidArgumentException;
 use Ouzo\DbException;
+use Ouzo\MetaModelCache;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 
@@ -12,49 +12,24 @@ class Relation
 {
     private $name;
     private $class;
+    private $localKey;
     private $foreignKey;
-    private $referencedColumn;
     private $allowInvalidReferences;
     private $collection;
 
-    private function __construct($name, array $params, $collection)
+    function __construct($name, $class, $localKey, $foreignKey, $collection, $allowInvalidReferences)
     {
-        $this->validateNotEmpty($params, 'foreignKey');
-        $this->validateNotEmpty($params, 'class');
-
         $this->name = $name;
-        $this->class = $params['class'];
-        $this->allowInvalidReferences = Arrays::getValue($params, 'allowInvalidReferences', false);
-        $this->referencedColumn = Arrays::getValue($params, 'referencedColumn');
-        $this->foreignKey = Arrays::getValue($params, 'foreignKey');
-        $this->collection = Arrays::getValue($params, 'collection', $collection);
-    }
-
-    public static function hasMany($name, $params, $primaryKey)
-    {
-        $relation = new Relation($name, $params, true);
-        $relation->referencedColumn = Arrays::getValue($params, 'referencedColumn', $primaryKey);
-        return $relation;
-    }
-
-    public static function hasOne($name, $params, $primaryKey)
-    {
-        $relation = new Relation($name, $params, false);
-        $relation->referencedColumn = Arrays::getValue($params, 'referencedColumn', $primaryKey);
-        return $relation;
-    }
-
-    public static function belongsTo($name, $params)
-    {
-        $relation = new Relation($name, $params, false);
-        $relation->referencedColumn = Arrays::getValue($params, 'referencedColumn') ? : $relation->getRelationModelObject()->getIdName();
-        return $relation;
+        $this->class = $class;
+        $this->localKey = $localKey;
+        $this->foreignKey = $foreignKey;
+        $this->collection = $collection;
+        $this->allowInvalidReferences = $allowInvalidReferences;
     }
 
     public static function inline($params)
     {
-        $destinationField = Arrays::getValue($params, 'destinationField');
-        return new Relation($destinationField, $params, null);
+        return RelationFactory::inline($params);
     }
 
     public function getClass()
@@ -62,14 +37,14 @@ class Relation
         return $this->class;
     }
 
-    public function getForeignKey()
+    public function getLocalKey()
     {
-        return $this->foreignKey;
+        return $this->localKey;
     }
 
-    function getReferencedColumn()
+    function getForeignKey()
     {
-        return $this->referencedColumn;
+        return $this->foreignKey;
     }
 
     function getAllowInvalidReferences()
@@ -82,20 +57,12 @@ class Relation
         return $this->name;
     }
 
-    protected function validateNotEmpty(array $params, $parameter)
-    {
-        if (empty($params[$parameter])) {
-            throw new InvalidArgumentException($parameter . " is required");
-        }
-    }
-
     /**
      * @return Model
      */
     public function getRelationModelObject()
     {
-        $modelClass = '\Model\\' . $this->class;
-        return $this->relationModelObject = $modelClass::metaInstance();
+        return MetaModelCache::getMetaInstance('\Model\\' . $this->class);
     }
 
     public function isCollection()

@@ -4,6 +4,7 @@ namespace Ouzo;
 
 use InvalidArgumentException;
 use Ouzo\Db\Relation;
+use Ouzo\Db\RelationFactory;
 
 class Relations
 {

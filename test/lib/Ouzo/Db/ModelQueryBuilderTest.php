@@ -219,7 +219,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             'destinationField' => 'orderProduct',
             'class' => 'Test\OrderProduct',
             'foreignKey' => 'id_product',
-            'referencedColumn' => 'id_product'
+            'localKey' => 'id'
         )))->fetch();
 
         //then
@@ -378,7 +378,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
 
         //when
-        $joined = Category::join('products')->where('id_product = ?', $product1->getId())->fetch();
+        $joined = Category::join('products')->where('joined.id = ?', $product1->getId())->fetch();
 
         //then
         $this->assertEquals($category, $joined);

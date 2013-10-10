@@ -11,7 +11,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function shouldExtractId()
     {
         //given
-        $product = new Product(array('id_product' => 1));
+        $product = new Product(array('id' => 1));
 
         //when
         $id = Functions::call(Functions::extractId(), $product);

@@ -32,6 +32,7 @@ class Model extends Validatable
         'sequence' - defaults to 'table_primaryKey_seq'
 
         'hasOne' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+        'hasMany' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
         'belongsTo' => array('name' => array('class' => 'Class'))
 
         'fields' - mapped column names

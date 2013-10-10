@@ -4,13 +4,13 @@ DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 
 CREATE TABLE categories (
-  id_category INTEGER AUTO_INCREMENT PRIMARY KEY,
+  id INTEGER AUTO_INCREMENT PRIMARY KEY,
   id_parent INTEGER REFERENCES categories (id_category),
   name        TEXT
 );
 
 CREATE TABLE products (
-  id_product  INTEGER AUTO_INCREMENT PRIMARY KEY,
+  id  INTEGER AUTO_INCREMENT PRIMARY KEY,
   id_category INTEGER REFERENCES categories (id_category),
   name        TEXT,
   description TEXT,
@@ -23,7 +23,7 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_products (
-  id_order_products INTEGER AUTO_INCREMENT PRIMARY KEY,
+  id INTEGER AUTO_INCREMENT PRIMARY KEY,
   id_order          INTEGER REFERENCES orders (id_order),
   id_product        INTEGER REFERENCES products (id_product)
 );
