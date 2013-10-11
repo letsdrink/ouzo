@@ -23,7 +23,7 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_products (
-  id INTEGER AUTO_INCREMENT PRIMARY KEY,
+  id_order_products INTEGER AUTO_INCREMENT PRIMARY KEY,
   id_order          INTEGER REFERENCES orders (id_order),
   id_product        INTEGER REFERENCES products (id_product)
 );
