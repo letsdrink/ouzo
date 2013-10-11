@@ -10,7 +10,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
      */
     private $dialect;
 
-    protected  function setUp()
+    protected function setUp()
     {
         $this->dialect = new PostgresDialect();
     }
@@ -90,13 +90,13 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->order = 'id asc';
+        $query->order = 'id ASC';
 
         // when
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main ORDER BY id asc', $sql);
+        $this->assertEquals('SELECT main.* FROM products AS main ORDER BY id ASC', $sql);
     }
 
     /**
@@ -107,13 +107,13 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->order = array('id asc', 'name desc');
+        $query->order = array('id ASC', 'name DESC');
 
         // when
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main ORDER BY id asc, name desc', $sql);
+        $this->assertEquals('SELECT main.* FROM products AS main ORDER BY id ASC, name DESC', $sql);
     }
 
     /**
@@ -193,13 +193,13 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query = new Query();
         $query->table = 'products';
         $query->where(array('name' => 'bob', 'id' => '1'));
-        $query->where('a = 1 or b = 2');
+        $query->where('a = 1 OR b = 2');
 
         // when
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ? AND (a = 1 or b = 2)', $sql);
+        $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ? AND (a = 1 OR b = 2)', $sql);
     }
 
     /**
@@ -227,9 +227,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->joinKey = 'id_category';
-        $query->joinTable = 'categories';
-        $query->idName = 'id_category';
+        $query->join('categories', 'id_category', 'id_category');
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -272,5 +270,26 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals('SELECT main.* FROM products AS main WHERE id = ?', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectWithMultipleJoins()
+    {
+        //given
+        $query = new Query();
+        $query->table = 'products';
+        $query
+            ->join('categories', 'id_category', 'id_category')
+            ->join('orders', 'id', 'id_product')
+            ->where('id = ?', 1);
+
+        //when
+        $sql = $this->dialect->buildQuery($query);
+
+        //then
+        $expected = 'SELECT main.* FROM products AS main LEFT JOIN categories AS joined ON joined.id_category = main.id_category LEFT JOIN orders AS joined ON joined.id = main.id_product WHERE id = ?';
+        $this->assertEquals($expected, $sql);
     }
 }

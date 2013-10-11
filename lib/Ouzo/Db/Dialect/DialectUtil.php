@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo\Db\Dialect;
 
+use Ouzo\Db\JoinClause;
 use Ouzo\Db\QueryType;
 use Ouzo\Db\WhereClause;
 use Ouzo\Utilities\FluentArray;
@@ -50,5 +51,18 @@ class DialectUtil
             return $key . ' IN (' . $in . ')';
         }
         return $key . ' = ?';
+    }
+
+    public static function buildJoinQuery($joinClauses)
+    {
+        $elements = FluentArray::from($joinClauses)
+            ->map('\Ouzo\Db\Dialect\DialectUtil::buildJoinQueryPart')
+            ->toArray();
+        return implode(" ", $elements);
+    }
+
+    public static function buildJoinQueryPart(JoinClause $joinClause)
+    {
+        return 'LEFT JOIN ' . $joinClause->joinTable . ' AS joined ON joined.' . $joinClause->joinColumn . ' = main.' . $joinClause->joinedColumn;
     }
 }

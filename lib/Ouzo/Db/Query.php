@@ -8,13 +8,11 @@ class Query
     public $table;
     public $selectColumns;
     public $selectType = PDO::FETCH_ASSOC;
-    public $joinTable;
-    public $joinKey;
-    public $idName;
     public $order;
     public $limit;
     public $offset;
     public $whereClauses = array();
+    public $joinClauses = array();
     public $type;
 
     function __construct($type = null)
@@ -71,9 +69,7 @@ class Query
 
     function join($joinTable, $joinKey, $idName)
     {
-        $this->joinTable = $joinTable;
-        $this->joinKey = $joinKey;
-        $this->idName = $idName;
+        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName);
         return $this;
     }
 }

@@ -210,9 +210,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->joinKey = 'id_category';
-        $query->joinTable = 'categories';
-        $query->idName = 'id_category';
+        $query->join('categories', 'id_category', 'id_category');
 
         // when
         $sql = $this->_dialect->buildQuery($query);

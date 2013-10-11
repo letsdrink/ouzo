@@ -147,13 +147,15 @@ class ModelQueryBuilder
             $relation = $this->_model->getRelation($relationName);
         }
 
-        $this->_joinDestinationField = $relation->isCollection()? null : $relation->getName();
+        $this->_joinDestinationField = $relation->isCollection() ? null : $relation->getName();
         $this->_joinModel = $relation->getRelationModelObject();
-        $this->_query->joinTable = $this->_joinModel->getTableName();
-        $this->_query->joinKey = $relation->getForeignKey();
-        $this->_query->idName = $relation->getLocalKey();
 
-        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$this->_query->joinTable}_", $this->_joinModel->_getFields(), "joined");
+        $joinTable = $this->_joinModel->getTableName();
+        $joinKey = $relation->getForeignKey();
+        $idName = $relation->getLocalKey();
+        $this->_query->join($joinTable, $joinKey, $idName);
+
+        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$joinTable}_", $this->_joinModel->_getFields(), "joined");
 
         return $this;
     }
@@ -167,7 +169,7 @@ class ModelQueryBuilder
         $model = $this->_model;
 
         $relationNames = explode('->', $relationName);
-        foreach($relationNames as $relationName) {
+        foreach ($relationNames as $relationName) {
             $relation = $model->getRelation($relationName);
             $relationFetcher = new RelationFetcher($relation);
             $fieldTransformer = new FieldTransformer($field, $relationFetcher);

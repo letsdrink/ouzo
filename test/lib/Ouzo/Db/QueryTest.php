@@ -2,6 +2,7 @@
 
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
+use Ouzo\Utilities\Arrays;
 
 class QueryTest extends PHPUnit_Framework_TestCase {
 
@@ -66,9 +67,11 @@ class QueryTest extends PHPUnit_Framework_TestCase {
         $query = Query::select()->join('table', 'id', 'other_id');
 
         // then
-        $this->assertEquals('id', $query->joinKey);
-        $this->assertEquals('table', $query->joinTable);
-        $this->assertEquals('other_id', $query->idName);
+        $this->assertCount(1, $query->joinClauses);
+        $join = Arrays::first($query->joinClauses);
+        $this->assertEquals('id', $join->joinColumn);
+        $this->assertEquals('table', $join->joinTable);
+        $this->assertEquals('other_id', $join->joinedColumn);
     }
 
     /**

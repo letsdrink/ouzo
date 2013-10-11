@@ -1,11 +1,15 @@
 <?php
 namespace Ouzo\Db\Dialect;
 
+use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Utilities\Joiner;
 
 class Dialect
 {
+    /**
+     * @var Query
+     */
     protected $_query;
 
     public function select()
@@ -22,8 +26,9 @@ class Dialect
 
     public function join()
     {
-        if (!empty($this->_query->joinTable)) {
-            return ' LEFT JOIN ' . $this->_query->joinTable . ' AS joined ON joined.' . $this->_query->joinKey . ' = main.' . $this->_query->idName;
+        $join = DialectUtil::buildJoinQuery($this->_query->joinClauses);
+        if ($join) {
+            return ' ' . $join;
         }
         return '';
     }
