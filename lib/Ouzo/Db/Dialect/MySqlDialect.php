@@ -30,7 +30,7 @@ class MySqlDialect extends Dialect
 
     private function _buildFromForDelete($type, $table)
     {
-        $alias = DialectUtil::buildFromWithAlias($this->_query->aliasTable);
+        $alias = $this->_query->table;
         return ' FROM ' . $table . ($type == QueryType::$DELETE ? '' : ' AS ' . $alias);
     }
 }

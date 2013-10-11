@@ -70,7 +70,7 @@ class Query
 
     function join($joinTable, $joinKey, $idName)
     {
-        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable);
+        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->table);
         return $this;
     }
 }

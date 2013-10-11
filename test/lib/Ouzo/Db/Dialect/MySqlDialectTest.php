@@ -29,7 +29,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products', $sql);
     }
 
     /**
@@ -63,7 +63,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT count(*) FROM products AS main', $sql);
+        $this->assertEquals('SELECT count(*) FROM products AS products', $sql);
     }
 
     /**
@@ -80,7 +80,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT id, name FROM products AS main', $sql);
+        $this->assertEquals('SELECT id, name FROM products AS products', $sql);
     }
 
     /**
@@ -97,7 +97,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main ORDER BY id asc', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products ORDER BY id asc', $sql);
     }
 
     /**
@@ -114,7 +114,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main ORDER BY id asc, name desc', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products ORDER BY id asc, name desc', $sql);
     }
 
     /**
@@ -131,7 +131,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main LIMIT ?', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products LIMIT ?', $sql);
     }
 
     /**
@@ -148,7 +148,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main OFFSET ?', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products OFFSET ?', $sql);
     }
 
     /**
@@ -165,7 +165,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ?', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products WHERE name = ?', $sql);
     }
 
     /**
@@ -182,7 +182,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ?', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products WHERE name = ? AND id = ?', $sql);
     }
 
     /**
@@ -199,7 +199,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main WHERE name IN (?, ?)', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products WHERE name IN (?, ?)', $sql);
     }
 
     /**
@@ -216,7 +216,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main LEFT JOIN categories AS joined ON joined.id_category = main.id_category', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products LEFT JOIN categories AS categories ON categories.id_category = products.id_category', $sql);
     }
 
     /**
@@ -234,7 +234,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main WHERE name = ? AND id = ?', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products WHERE name = ? AND id = ?', $sql);
     }
 
     /**
@@ -252,6 +252,27 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->_dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT main.* FROM products AS main WHERE id = ?', $sql);
+        $this->assertEquals('SELECT products.* FROM products AS products WHERE id = ?', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectWithMultipleJoins()
+    {
+        //given
+        $query = new Query();
+        $query->table = 'products';
+        $query
+            ->join('categories', 'id_category', 'id_category', 'category')
+            ->join('orders', 'id', 'id_product', 'orders')
+            ->where('id = ?', 1);
+
+        //when
+        $sql = $this->_dialect->buildQuery($query);
+
+        //then
+        $expected = 'SELECT products.* FROM products AS products LEFT JOIN categories AS categories ON categories.id_category = products.id_category LEFT JOIN orders AS orders ON orders.id = products.id_product WHERE id = ?';
+        $this->assertEquals($expected, $sql);
     }
 }

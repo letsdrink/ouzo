@@ -15,7 +15,8 @@ class Dialect
     public function select()
     {
         if ($this->_query->type == QueryType::$SELECT) {
-            $sql = ' ' . (empty($this->_query->selectColumns) ? 'main.*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
+            $alias = $this->_query->table;
+            $sql = ' ' . (empty($this->_query->selectColumns) ? $alias . '.*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
         } else if ($this->_query->type == QueryType::$COUNT) {
             $sql = ' count(*)';
         } else {

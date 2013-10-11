@@ -378,7 +378,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
 
         //when
-        $joined = Category::join('products')->where('joined.id = ?', $product1->getId())->fetch();
+        $joined = Category::join('products')->where('products.id = ?', $product1->getId())->fetch();
 
         //then
         $this->assertEquals($category, $joined);

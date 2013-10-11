@@ -1,5 +1,6 @@
 <?php
 use Model\Test\Category;
+use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
 use Ouzo\Db\Stats;
@@ -7,6 +8,7 @@ use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
+use Ouzo\Utilities\Arrays;
 
 class ModelTest extends DbTransactionalTestCase
 {
@@ -445,4 +447,33 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals($category, $fetched);
     }
 
+    /**
+     * @test
+     */
+    public function shouldJoinMultipleModels()
+    {
+        //given
+        $category1 = Category::create(array('name' => 'phones'));
+        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category1->getId()));
+        $order1 = Order::create(array('name' => 'order#1'));
+        OrderProduct::create(array('id_order' => $order1->getId(), 'id_product' => $product1->getId()));
+
+        $category2 = Category::create(array('name' => 'phones'));
+        $product2 = Product::create(array('name' => 'sony', 'id_category' => $category2->getId()));
+        $order2 = Order::create(array('name' => 'order#2'));
+        OrderProduct::create(array('id_order' => $order2->getId(), 'id_product' => $product2->getId()));
+
+        //when
+        $orderProducts = OrderProduct::join('product')
+            ->join('order')
+            ->where(array('products.id' => $product1->getId()))
+            ->fetchAll();
+
+        //then
+        $this->assertCount(1, $orderProducts);
+        $find = Arrays::first($orderProducts);
+        $this->assertEquals('order#1', $find->order->name);
+        $this->assertEquals('sony', $find->product->name);
+        $this->assertEquals('phones', $find->product->category->name);
+    }
 }

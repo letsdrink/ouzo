@@ -64,7 +64,7 @@ class QueryTest extends PHPUnit_Framework_TestCase {
     public function shouldCreateSelectQueryWithJoin()
     {
         // when
-        $query = Query::select()->join('table', 'id', 'other_id');
+        $query = Query::select()->join('table', 'id', 'other_id', 'tab');
 
         // then
         $this->assertCount(1, $query->joinClauses);

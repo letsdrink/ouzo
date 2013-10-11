@@ -25,12 +25,10 @@ class ModelQueryBuilder
         $this->_transformers = array();
 
         $tableName = $model->getTableName();
-        $aliasTable = Strings::camelCaseToUnderscore($model->getModelName());
         $this->_query = new Query();
-        $this->_query->aliasTable = $aliasTable;
         $this->_query->table = $tableName;
 
-        $this->_query->selectColumns = ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $model->_getFields(), $aliasTable);
+        $this->_query->selectColumns = ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $model->_getFields(), $tableName);
     }
 
     /**
@@ -157,7 +155,7 @@ class ModelQueryBuilder
         $idName = $relation->getLocalKey();
         $this->_query->join($joinTable, $joinKey, $idName);
 
-        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$joinTable}_", $this->_joinModel->_getFields(), "joined");
+        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$joinTable}_", $this->_joinModel->_getFields(), $joinTable);
 
         return $this;
     }
