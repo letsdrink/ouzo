@@ -6,6 +6,7 @@ use PDO;
 class Query
 {
     public $table;
+    public $aliasTable;
     public $selectColumns;
     public $selectType = PDO::FETCH_ASSOC;
     public $order;
@@ -69,7 +70,7 @@ class Query
 
     function join($joinTable, $joinKey, $idName)
     {
-        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName);
+        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable);
         return $this;
     }
 }

@@ -23,6 +23,7 @@ class PostgresDialect extends Dialect
 
     public function from()
     {
-        return ' FROM ' . $this->_query->table . ' AS main';
+        $alias = DialectUtil::buildFromWithAlias($this->_query->aliasTable);
+        return ' FROM ' . $this->_query->table . ' AS ' . $alias;
     }
 }

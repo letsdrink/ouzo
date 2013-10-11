@@ -24,11 +24,13 @@ class ModelQueryBuilder
         $this->_model = $model;
         $this->_transformers = array();
 
-        $this->_query = new Query();
         $tableName = $model->getTableName();
+        $aliasTable = Strings::camelCaseToUnderscore($model->getModelName());
+        $this->_query = new Query();
+        $this->_query->aliasTable = $aliasTable;
         $this->_query->table = $tableName;
 
-        $this->_query->selectColumns = ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $model->_getFields(), "main");
+        $this->_query->selectColumns = ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $model->_getFields(), $aliasTable);
     }
 
     /**
