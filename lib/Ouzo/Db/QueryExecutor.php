@@ -78,13 +78,14 @@ class QueryExecutor
     private function _fetch($function)
     {
         $obj = $this;
-        return Stats::trace($this->_sql, $this->_boundValues, function () use ($obj, $function) {
+        $humanizedSql = QueryHumanizer::humanize($this->_sql);
+        return Stats::trace($humanizedSql, $this->_boundValues, function () use ($obj, $humanizedSql, $function) {
             $obj->_prepareAndBind();
 
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($obj->getSql(), Objects::toString($obj->getBoundValues())));
+            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
 
             if (!$obj->_preparedQuery->execute()) {
-                throw new DbException('Exception: query: ' . $obj->getSql() . ' with params: (' . implode(', ', $obj->getBoundValues()) . ') failed: ' . $obj->lastErrorMessage());
+                throw new DbException('Exception: query: ' . $humanizedSql . ' with params: (' . implode(', ', $obj->getBoundValues()) . ') failed: ' . $obj->lastErrorMessage());
             }
             return $obj->_preparedQuery->$function($obj->_fetchStyle);
         });
