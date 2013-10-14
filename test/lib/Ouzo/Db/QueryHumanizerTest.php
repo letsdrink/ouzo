@@ -20,4 +20,18 @@ class QueryHumanizerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("SELECT t_customers.*, t_customer_phones.* FROM t_customers AS t_customers LEFT JOIN t_customer_phones AS t_customer_phones ON t_customer_phones.id_customer = t_customers.id_customer WHERE hidden = false AND (t_customer_phones.primary_flag is true or t_customer_phones.id_customer_phone is null) ORDER BY surname ASC LIMIT ?", $humanized);
     }
 
+    /**
+     * @test
+     */
+    public function shouldHumanizeSqlQueryForOneTable()
+    {
+        //given
+        $sql = "SELECT t_customers.name AS t_customers_name, t_customers.surname AS t_customers_surname, t_customers.identifier AS t_customers_identifier FROM t_customers AS t_customers WHERE hidden = false ORDER BY surname ASC LIMIT ?";
+
+        //when
+        $humanized = QueryHumanizer::humanize($sql);
+
+        //then
+        $this->assertEquals("SELECT t_customers.* FROM t_customers AS t_customers WHERE hidden = false ORDER BY surname ASC LIMIT ?", $humanized);
+    }
 }
