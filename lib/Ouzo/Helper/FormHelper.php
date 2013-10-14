@@ -249,7 +249,8 @@ function textAreaTag($value, array $attributes = array())
 function checkboxTag($value, $checked, array $attributes = array())
 {
     $attr = _prepareAttributes($attributes);
-    return '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
+    $workaround = '<input name="' . $attributes['name'] . '" type="hidden" value="0" />';
+    return $workaround . '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
 }
 
 function selectTag(array $items = array(), $value, array $attributes = array())
