@@ -396,7 +396,7 @@ class Form
         $attributes = array_merge($attributes, $options);
         $value = $this->_object->$field;
         $checked = !empty($value);
-        return checkboxTag($value, $checked, $attributes);
+        return checkboxTag('1', $checked, $attributes);
     }
 
     public function start($url, $method = 'post', $attributes = array())

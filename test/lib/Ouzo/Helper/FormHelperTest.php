@@ -401,7 +401,7 @@ HTML;
         $result = formFor($product, '', array('auto_labels' => false))->checkboxField('id_category');
 
         //then
-        $this->assertEquals('<input name="product[id_category]" type="hidden" value="0" /><input type="checkbox" value="0" id="product_id_category" name="product[id_category]" />', $result);
+        $this->assertEquals('<input name="product[id_category]" type="hidden" value="0" /><input type="checkbox" value="1" id="product_id_category" name="product[id_category]" />', $result);
     }
 
     /**
