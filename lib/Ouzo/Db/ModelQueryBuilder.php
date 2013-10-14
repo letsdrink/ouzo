@@ -112,27 +112,28 @@ class ModelQueryBuilder
 
     private function _processResults($results)
     {
-        $tableName = $this->_model->getTableName();
-
         $models = array();
         foreach ($results as $row) {
-            $mainAttributes = ColumnAliasHandler::extractAttributesForPrefix($row, "{$tableName}_");
-            $model = $this->_model->newInstance($mainAttributes);
+            $model = $this->extractModelFromResult($this->_model, $row);
             $models[] = $model;
 
             foreach ($this->_joinedRelations as $joinedRelation) {
                 $joinDestinationField = $joinedRelation->getName();
                 if ($joinDestinationField && !$joinedRelation->isCollection()) {
-                    $joinedModel = $joinedRelation->getRelationModelObject();
-                    $joinedTableName = $joinedModel->getTableName();
-                    $joinedAttributes = ColumnAliasHandler::extractAttributesForPrefix($row, "{$joinedTableName}_");
-                    if ($joinedAttributes[$joinedModel->getIdName()]) {
-                        Objects::setValueRecursively($model, $joinDestinationField, $joinedModel->newInstance($joinedAttributes));
-                    }
+                    $joinedModel = $this->extractModelFromResult($joinedRelation->getRelationModelObject(), $row);
+                    Objects::setValueRecursively($model, $joinDestinationField, $joinedModel);
                 }
             }
         }
         return $this->_transform($models);
+    }
+
+    private function extractModelFromResult(Model $metaInstance, array $result) {
+        $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$metaInstance->getTableName()}_");
+        if ($attributes[$metaInstance->getIdName()]) {
+            return $metaInstance->newInstance($attributes);
+        }
+        return null;
     }
 
     public function deleteAll()
@@ -176,22 +177,24 @@ class ModelQueryBuilder
         $model = $this->_model;
         foreach ($relations as $relation) {
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
-
             $relation = $relation->withName($field);
-
-            $joinedModel = $relation->getRelationModelObject();
-            $joinTable = $joinedModel->getTableName();
-            $joinKey = $relation->getForeignKey();
-            $idName = $relation->getLocalKey();
-
-            $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $model->getTableName()));
-            $this->selectModelColumns($joinedModel);
-            $this->_joinedRelations[] = $relation;
-
+            $this->addJoin($model, $relation);
             $model = $relation->getRelationModelObject();
         }
 
         return $this;
+    }
+
+    private function addJoin(Model $model, Relation $relation)
+    {
+        $joinedModel = $relation->getRelationModelObject();
+        $joinTable = $joinedModel->getTableName();
+        $joinKey = $relation->getForeignKey();
+        $idName = $relation->getLocalKey();
+
+        $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $model->getTableName()));
+        $this->selectModelColumns($joinedModel);
+        $this->_joinedRelations[] = $relation;
     }
 
     /**
