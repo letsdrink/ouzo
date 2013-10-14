@@ -53,9 +53,19 @@ class Objects
         return $var ? 'true' : 'false';
     }
 
-    public static function getValueRecursively($object, $names, $default = null)
+    public static function setValueRecursively($object, $names, $value)
     {
         $fields = explode('->', $names);
+        $destinationField = array_pop($fields);
+        $destinationObject = self::getValueRecursively($object, implode('->', $fields));
+        if ($destinationObject !== null) {
+            $destinationObject->$destinationField = $value;
+        }
+    }
+
+    public static function getValueRecursively($object, $names, $default = null)
+    {
+        $fields = array_filter(explode('->', $names));
         foreach ($fields as $field) {
             $object = self::getValueOrCallMethod($object, $field, null);
             if ($object === null) {
@@ -97,4 +107,5 @@ class Objects
         }
         return $default;
     }
+
 }

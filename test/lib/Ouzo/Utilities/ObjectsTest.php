@@ -70,6 +70,67 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnObjectIfEmptyField()
+    {
+        //given
+        $object = new stdClass();
+
+        //when
+        $result = Objects::getValueRecursively($object, '');
+
+        //then
+        $this->assertEquals($object, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetValueRecursivelyForNonNestedField()
+    {
+        //given
+        $object = new stdClass();
+
+        //when
+        Objects::setValueRecursively($object, 'field1', 'value');
+
+        //then
+        $this->assertEquals('value', $object->field1);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetValueRecursivelyForNestedField()
+    {
+        //given
+        $object = new stdClass();
+        $object->field1 = new stdClass();
+
+        //when
+        Objects::setValueRecursively($object, 'field1->field2', 'value');
+
+        //then
+        $this->assertEquals('value', $object->field1->field2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetValueRecursivelyForNonExistentNestedField()
+    {
+        //given
+        $object = new stdClass();
+
+        //when
+        Objects::setValueRecursively($object, 'field1->field2', 'value');
+
+        //then
+        $this->assertFalse(isset($object->field1));
+    }
+
+    /**
+     * @test
+     */
     public function shouldStringifyBool()
     {
         //given
