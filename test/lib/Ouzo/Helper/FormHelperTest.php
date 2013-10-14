@@ -391,6 +391,36 @@ HTML;
 
     /**
      * @test
+     */
+    public function shouldCreateUncheckedCheckboxFieldInFormModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+
+        //when
+        $result = formFor($product, '', array('auto_labels' => false))->checkboxField('id_category');
+
+        //then
+        $this->assertEquals('<input type="checkbox" value="0" id="product_id_category" name="product[id_category]" />', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateCheckedCheckboxFieldInFormModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+
+        //when
+        $result = formFor($product, '', array('auto_labels' => false))->checkboxField('id_category');
+
+        //then
+        $this->assertEquals('<input type="checkbox" value="1" id="product_id_category" name="product[id_category]" checked/>', $result);
+    }
+
+    /**
+     * @test
      * @dataProvider requestUnsupportedMethods
      */
     public function shouldCreateWorkAroundForUnsupportedMethods($method)

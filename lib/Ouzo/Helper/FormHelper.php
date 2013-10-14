@@ -389,6 +389,15 @@ class Form
         return passwordFieldTag($this->_object->$field, $attributes);
     }
 
+    public function checkboxField($field, array $options = array())
+    {
+        $attributes = $this->_generatePredefinedAttributes($field);
+        $attributes = array_merge($attributes, $options);
+        $value = $this->_object->$field;
+        $checked = !empty($value);
+        return checkboxTag($value, $checked, $attributes);
+    }
+
     public function start($url, $method = 'post', $attributes = array())
     {
         return formTag($url, $method, $attributes);
