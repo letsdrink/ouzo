@@ -73,4 +73,10 @@ class Query
         $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->table);
         return $this;
     }
+
+    function addJoin(JoinClause $join)
+    {
+        $this->joinClauses[] = $join;
+        return $this;
+    }
 }

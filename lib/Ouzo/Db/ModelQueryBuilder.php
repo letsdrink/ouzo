@@ -5,6 +5,7 @@ use Ouzo\Db;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
 use PDO;
 
@@ -120,7 +121,7 @@ class ModelQueryBuilder
                     $joinedTableName = $joinedModel->getTableName();
                     $joinedAttributes = ColumnAliasHandler::extractAttributesForPrefix($row, "{$joinedTableName}_");
                     if ($joinedAttributes[$joinedModel->getIdName()]) {
-                        $model->$joinDestinationField = $joinedModel->newInstance($joinedAttributes);
+                        Objects::setValueRecursively($model, $joinDestinationField, $joinedModel->newInstance($joinedAttributes));
                     }
                 }
             }
@@ -146,21 +147,39 @@ class ModelQueryBuilder
      */
     public function join($relationName)
     {
+        $relations = array();
         if ($relationName instanceof Relation) {
-            $relation = $relationName;
+            $relations[] = $relationName;
         } else {
-            $relation = $this->_model->getRelation($relationName);
+            $relationNames = explode('->', $relationName);
+            $model = $this->_model;
+            foreach ($relationNames as $name) {
+                $relation = $model->getRelation($name);
+                $relations[] = $relation;
+                $model = $relation->getRelationModelObject();
+            }
         }
 
-        $this->_joinedRelations[] = $relation;
+        $field = '';
+        $model = $this->_model;
+        foreach ($relations as $relation) {
+            $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
 
-        $joinedModel = $relation->getRelationModelObject();
-        $joinTable = $joinedModel->getTableName();
-        $joinKey = $relation->getForeignKey();
-        $idName = $relation->getLocalKey();
-        $this->_query->join($joinTable, $joinKey, $idName);
+            $relation = $relation->withName($field);
 
-        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$joinTable}_", $joinedModel->_getFields(), $joinTable);
+            $this->_joinedRelations[] = $relation;
+
+            $joinedModel = $relation->getRelationModelObject();
+            $joinTable = $joinedModel->getTableName();
+            $joinKey = $relation->getForeignKey();
+            $idName = $relation->getLocalKey();
+
+            $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $model->getTableName()));
+
+            $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$joinTable}_", $joinedModel->_getFields(), $joinTable);
+
+            $model = $relation->getRelationModelObject();
+        }
 
         return $this;
     }

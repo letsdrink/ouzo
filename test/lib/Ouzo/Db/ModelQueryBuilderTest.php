@@ -7,6 +7,7 @@ use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
 use Ouzo\Db\Stats;
 use Ouzo\DbException;
+use Ouzo\Model;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
@@ -175,7 +176,31 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldStoreJoinedModelInAttribute()
+    public function shouldJoinThroughOtherRelation()
+    {
+        //given
+        $cars = Category::create(array('name' => 'phones'));
+        $product = Product::create(array('name' => 'Reno', 'id_category' => $cars->getId()));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $orderProducts = OrderProduct::join('product->category')
+            ->fetchAll();
+
+        //then
+        $fetchedProduct = self::getNoLazy($orderProducts[0], 'product');
+        $this->assertEquals($product->getId(), $fetchedProduct->getId());
+        $this->assertEquals($cars, self::getNoLazy($fetchedProduct, 'category'));
+    }
+
+    static function getNoLazy(Model $model, $attribute) {
+        return Arrays::getValue($model->attributes(), $attribute);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStoreJoinedModelsInAttributeForMultipleJoins()
     {
         //given
         $category = Category::create(array('name' => 'phones'));
@@ -187,14 +212,14 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //then
         $this->assertCount(1, $products);
-        $this->assertEquals($category, $products[0]->category);
-        $this->assertEquals($orderProduct, $products[0]->orderProduct);
+        $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
+        $this->assertEquals($orderProduct, self::getNoLazy($products[0], 'orderProduct'));
     }
 
     /**
      * @test
      */
-    public function shouldStoreJoinedModelsInAttributeForMultipleJoins()
+    public function shouldStoreJoinedModelInAttribute()
     {
         //given
         $category = Category::create(array('name' => 'phones'));
@@ -205,7 +230,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //then
         $this->assertCount(1, $products);
-        $this->assertEquals($category, $products[0]->category);
+        $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
     }
 
     /**
@@ -242,7 +267,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         )))->fetch();
 
         //then
-        $this->assertEquals($orderProduct, $fetched->orderProduct);
+        $this->assertEquals($orderProduct, self::getNoLazy($fetched, 'orderProduct'));
     }
 
     /**

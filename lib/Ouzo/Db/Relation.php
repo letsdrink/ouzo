@@ -80,4 +80,9 @@ class Relation
         }
         return $values;
     }
+
+    public function withName($name)
+    {
+        return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection, $this->allowInvalidReferences);
+    }
 }
