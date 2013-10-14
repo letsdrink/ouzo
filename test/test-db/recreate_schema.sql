@@ -23,7 +23,6 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_products (
-  id_order_products SERIAL PRIMARY KEY,
   id_order          INTEGER REFERENCES orders,
   id_product        INTEGER REFERENCES products
 );

@@ -11,8 +11,8 @@ class OrderProduct extends Model
     {
         parent::__construct(array(
             'table' => 'order_products',
-            'sequence' => 'order_products_id_order_products_seq',
-            'primaryKey' => 'id_order_products',
+            'sequence' => '',
+            'primaryKey' => '',
             'attributes' => $attributes,
             'belongsTo' => array(
                 'product' => array('class' => 'Test\Product', 'foreignKey' => 'id_product'),

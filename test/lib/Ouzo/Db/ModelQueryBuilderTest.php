@@ -166,7 +166,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
 
         //when
-        $products = Product::join('orderProduct')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->fetchAll();
+        $products = Product::join('orderProduct')->where('id_order IS NOT NULL')->fetchAll();
 
         //then
         $this->assertCount(1, $products);
@@ -317,7 +317,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
 
         //when
-        $products = Product::join('orderProduct')->where('id_order_products IS NOT NULL AND id_order_products <> ?', 0)->count();
+        $products = Product::join('orderProduct')->where('id_order IS NOT NULL')->count();
 
         //then
         $this->assertEquals(1, $products);

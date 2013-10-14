@@ -23,9 +23,8 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_products (
-  id_order_products INTEGER AUTO_INCREMENT PRIMARY KEY,
   id_order          INTEGER REFERENCES orders (id_order),
-  id_product        INTEGER REFERENCES products (id_product)
+  id_product        INTEGER REFERENCES products (id)
 );
 
 DROP FUNCTION IF EXISTS get_name;

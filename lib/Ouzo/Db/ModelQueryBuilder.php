@@ -5,6 +5,7 @@ use Ouzo\Db;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
 use PDO;
@@ -27,9 +28,8 @@ class ModelQueryBuilder
         $this->_model = $model;
         $this->_transformers = array();
 
-        $tableName = $model->getTableName();
         $this->_query = new Query();
-        $this->_query->table = $tableName;
+        $this->_query->table = $model->getTableName();
         $this->_query->selectColumns = array();
         $this->selectModelColumns($model);
     }
@@ -130,7 +130,7 @@ class ModelQueryBuilder
 
     private function extractModelFromResult(Model $metaInstance, array $result) {
         $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$metaInstance->getTableName()}_");
-        if ($attributes[$metaInstance->getIdName()]) {
+        if (Arrays::any($attributes, Functions::notEmpty())) {
             return $metaInstance->newInstance($attributes);
         }
         return null;
