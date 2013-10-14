@@ -30,8 +30,14 @@ class ModelQueryBuilder
         $tableName = $model->getTableName();
         $this->_query = new Query();
         $this->_query->table = $tableName;
+        $this->_query->selectColumns = array();
+        $this->selectModelColumns($model);
+    }
 
-        $this->_query->selectColumns = ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $model->_getFields(), $tableName);
+    private function selectModelColumns(Model $metaInstance)
+    {
+        $tableName = $metaInstance->getTableName();
+        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $metaInstance->_getFields(), $tableName);
     }
 
     /**
@@ -142,10 +148,7 @@ class ModelQueryBuilder
         }, $objects);
     }
 
-    /**
-     * @return ModelQueryBuilder
-     */
-    public function join($relationName)
+    private function extractRelations($relationName)
     {
         $relations = array();
         if ($relationName instanceof Relation) {
@@ -159,6 +162,15 @@ class ModelQueryBuilder
                 $model = $relation->getRelationModelObject();
             }
         }
+        return $relations;
+    }
+
+    /**
+     * @return ModelQueryBuilder
+     */
+    public function join($relationName)
+    {
+        $relations = $this->extractRelations($relationName);
 
         $field = '';
         $model = $this->_model;
@@ -176,7 +188,7 @@ class ModelQueryBuilder
 
             $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $model->getTableName()));
 
-            $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$joinTable}_", $joinedModel->_getFields(), $joinTable);
+            $this->selectModelColumns($joinedModel);
 
             $model = $relation->getRelationModelObject();
         }
@@ -189,21 +201,17 @@ class ModelQueryBuilder
      */
     public function with($relationName)
     {
+        $relations = $this->extractRelations($relationName);
         $field = '';
-        $model = $this->_model;
 
-        $relationNames = explode('->', $relationName);
-        foreach ($relationNames as $relationName) {
-            $relation = $model->getRelation($relationName);
+        foreach ($relations as $relation) {
             $relationFetcher = new RelationFetcher($relation);
             $fieldTransformer = new FieldTransformer($field, $relationFetcher);
 
             $this->_transformers[] = $fieldTransformer;
 
-            $model = $relation->getRelationModelObject();
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
         }
-
         return $this;
     }
 
