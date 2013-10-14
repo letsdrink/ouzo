@@ -12,8 +12,10 @@ class ModelQueryBuilder
 {
     private $_db;
     private $_model;
-    private $_joinModel;
-    private $_joinDestinationField;
+    /**
+     * @var Relation[]
+     */
+    private $_joinedRelations = array();
     private $_transformers;
     private $_query;
     private $_selectModel = true;
@@ -111,12 +113,15 @@ class ModelQueryBuilder
             $model = $this->_model->newInstance($mainAttributes);
             $models[] = $model;
 
-            if ($this->_joinDestinationField) {
-                $joinedTableName = $this->_joinModel->getTableName();
-                $joinedAttributes = ColumnAliasHandler::extractAttributesForPrefix($row, "{$joinedTableName}_");
-                if ($joinedAttributes[$this->_joinModel->getIdName()]) {
-                    $destinationField = $this->_joinDestinationField;
-                    $model->$destinationField = $this->_joinModel->newInstance($joinedAttributes);
+            foreach ($this->_joinedRelations as $joinedRelation) {
+                $joinDestinationField = $joinedRelation->getName();
+                if ($joinDestinationField && !$joinedRelation->isCollection()) {
+                    $joinedModel = $joinedRelation->getRelationModelObject();
+                    $joinedTableName = $joinedModel->getTableName();
+                    $joinedAttributes = ColumnAliasHandler::extractAttributesForPrefix($row, "{$joinedTableName}_");
+                    if ($joinedAttributes[$joinedModel->getIdName()]) {
+                        $model->$joinDestinationField = $joinedModel->newInstance($joinedAttributes);
+                    }
                 }
             }
         }
@@ -147,15 +152,15 @@ class ModelQueryBuilder
             $relation = $this->_model->getRelation($relationName);
         }
 
-        $this->_joinDestinationField = $relation->isCollection() ? null : $relation->getName();
-        $this->_joinModel = $relation->getRelationModelObject();
+        $this->_joinedRelations[] = $relation;
 
-        $joinTable = $this->_joinModel->getTableName();
+        $joinedModel = $relation->getRelationModelObject();
+        $joinTable = $joinedModel->getTableName();
         $joinKey = $relation->getForeignKey();
         $idName = $relation->getLocalKey();
         $this->_query->join($joinTable, $joinKey, $idName);
 
-        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$joinTable}_", $this->_joinModel->_getFields(), $joinTable);
+        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$joinTable}_", $joinedModel->_getFields(), $joinTable);
 
         return $this;
     }

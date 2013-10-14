@@ -179,6 +179,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     {
         //given
         $category = Category::create(array('name' => 'phones'));
+        $product = Product::create(array('name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()));
+        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $products = Product::join('category')->join('orderProduct')->fetchAll();
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertEquals($category, $products[0]->category);
+        $this->assertEquals($orderProduct, $products[0]->orderProduct);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStoreJoinedModelsInAttributeForMultipleJoins()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
         Product::create(array('name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()));
 
         //when
@@ -381,8 +400,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $joined = Category::join('products')->where('products.id = ?', $product1->getId())->fetch();
 
         //then
-        $this->assertEquals($category, $joined);
         $this->assertNull(Arrays::getValue($joined->attributes(), 'products'));
+        $this->assertEquals($category, $joined);
     }
 
     /**
