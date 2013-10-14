@@ -28,7 +28,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products', $sql);
+        $this->assertEquals('SELECT * FROM products', $sql);
     }
 
     /**
@@ -45,7 +45,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('DELETE FROM products AS products', $sql);
+        $this->assertEquals('DELETE FROM products', $sql);
     }
 
     /**
@@ -62,7 +62,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT count(*) FROM products AS products', $sql);
+        $this->assertEquals('SELECT count(*) FROM products', $sql);
     }
 
     /**
@@ -79,7 +79,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT id, name FROM products AS products', $sql);
+        $this->assertEquals('SELECT id, name FROM products', $sql);
     }
 
     /**
@@ -96,7 +96,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products ORDER BY id ASC', $sql);
+        $this->assertEquals('SELECT * FROM products ORDER BY id ASC', $sql);
     }
 
     /**
@@ -113,7 +113,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products ORDER BY id ASC, name DESC', $sql);
+        $this->assertEquals('SELECT * FROM products ORDER BY id ASC, name DESC', $sql);
     }
 
     /**
@@ -130,7 +130,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products LIMIT ?', $sql);
+        $this->assertEquals('SELECT * FROM products LIMIT ?', $sql);
     }
 
     /**
@@ -147,7 +147,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products OFFSET ?', $sql);
+        $this->assertEquals('SELECT * FROM products OFFSET ?', $sql);
     }
 
     /**
@@ -164,7 +164,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products WHERE name = ?', $sql);
+        $this->assertEquals('SELECT * FROM products WHERE name = ?', $sql);
     }
 
     /**
@@ -181,7 +181,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products WHERE name = ? AND id = ?', $sql);
+        $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ?', $sql);
     }
 
     /**
@@ -199,7 +199,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products WHERE name = ? AND id = ? AND (a = 1 OR b = 2)', $sql);
+        $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ? AND (a = 1 OR b = 2)', $sql);
     }
 
     /**
@@ -216,7 +216,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products WHERE name IN (?, ?)', $sql);
+        $this->assertEquals('SELECT * FROM products WHERE name IN (?, ?)', $sql);
     }
 
     /**
@@ -233,7 +233,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products LEFT JOIN categories AS categories ON categories.id_category = products.id_category', $sql);
+        $this->assertEquals('SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category', $sql);
     }
 
     /**
@@ -251,7 +251,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products WHERE name = ? AND id = ?', $sql);
+        $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ?', $sql);
     }
 
     /**
@@ -269,7 +269,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT products.* FROM products AS products WHERE id = ?', $sql);
+        $this->assertEquals('SELECT * FROM products WHERE id = ?', $sql);
     }
 
     /**
@@ -289,7 +289,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         //then
-        $expected = 'SELECT products.* FROM products AS products LEFT JOIN categories AS categories ON categories.id_category = products.id_category LEFT JOIN orders AS orders ON orders.id = products.id_product WHERE id = ?';
+        $expected = 'SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category LEFT JOIN orders ON orders.id = products.id_product WHERE id = ?';
         $this->assertEquals($expected, $sql);
     }
 }

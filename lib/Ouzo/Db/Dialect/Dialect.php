@@ -15,8 +15,7 @@ class Dialect
     public function select()
     {
         if ($this->_query->type == QueryType::$SELECT) {
-            $alias = $this->_query->table;
-            $sql = ' ' . (empty($this->_query->selectColumns) ? $alias . '.*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
+            $sql = ' ' . (empty($this->_query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
         } else if ($this->_query->type == QueryType::$COUNT) {
             $sql = ' count(*)';
         } else {
@@ -65,5 +64,26 @@ class Dialect
             return ' OFFSET ?';
         }
         return '';
+    }
+
+    public function from()
+    {
+        return ' FROM ' . $this->_query->table;
+    }
+
+    public function buildQuery(Query $query)
+    {
+        $this->_query = $query;
+
+        $sql = DialectUtil::buildQueryPrefix($query->type);
+        $sql .= $this->select();
+        $sql .= $this->from();
+        $sql .= $this->join();
+        $sql .= $this->where();
+        $sql .= $this->order();
+        $sql .= $this->limit();
+        $sql .= $this->offset();
+
+        return rtrim($sql);
     }
 }

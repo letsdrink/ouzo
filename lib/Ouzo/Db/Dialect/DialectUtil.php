@@ -63,6 +63,6 @@ class DialectUtil
 
     public static function buildJoinQueryPart(JoinClause $joinClause)
     {
-        return 'LEFT JOIN ' . $joinClause->joinTable . ' AS ' . $joinClause->joinTable . ' ON ' . $joinClause->getJoinColumnWithTable() . ' = ' . $joinClause->getJoinedColumnWithTable();
+        return 'LEFT JOIN ' . $joinClause->joinTable . ' ON ' . $joinClause->getJoinColumnWithTable() . ' = ' . $joinClause->getJoinedColumnWithTable();
     }
 }
