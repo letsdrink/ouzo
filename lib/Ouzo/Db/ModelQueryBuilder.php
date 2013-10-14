@@ -148,13 +148,13 @@ class ModelQueryBuilder
         }, $objects);
     }
 
-    private function extractRelations($relationName)
+    private function extractRelations($relationSelector)
     {
         $relations = array();
-        if ($relationName instanceof Relation) {
-            $relations[] = $relationName;
+        if ($relationSelector instanceof Relation) {
+            $relations[] = $relationSelector;
         } else {
-            $relationNames = explode('->', $relationName);
+            $relationNames = explode('->', $relationSelector);
             $model = $this->_model;
             foreach ($relationNames as $name) {
                 $relation = $model->getRelation($name);
@@ -179,16 +179,14 @@ class ModelQueryBuilder
 
             $relation = $relation->withName($field);
 
-            $this->_joinedRelations[] = $relation;
-
             $joinedModel = $relation->getRelationModelObject();
             $joinTable = $joinedModel->getTableName();
             $joinKey = $relation->getForeignKey();
             $idName = $relation->getLocalKey();
 
             $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $model->getTableName()));
-
             $this->selectModelColumns($joinedModel);
+            $this->_joinedRelations[] = $relation;
 
             $model = $relation->getRelationModelObject();
         }
