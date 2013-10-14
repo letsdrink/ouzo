@@ -18,13 +18,11 @@ class JoinClause
 
     public function getJoinedColumnWithTable()
     {
-        $table = $this->_joinedColumnTable ? : 'main';
-        return $table . '.' . $this->joinedColumn;
+        return $this->_joinedColumnTable . '.' . $this->joinedColumn;
     }
 
     public function getJoinColumnWithTable()
     {
-        $table = $this->joinTable ? : 'joined';
-        return $table . '.' . $this->joinColumn;
+        return $this->joinTable . '.' . $this->joinColumn;
     }
 }
