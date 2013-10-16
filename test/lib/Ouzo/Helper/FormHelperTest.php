@@ -202,7 +202,7 @@ HTML;
         $expectedHtml = <<<HTML
         <div class="field">
             <label for="gender" style="margin-left: px; width: 10px;">Gender</label>
-            <input type="checkbox" value="val" id="gender" name="gender" checked/>
+            <input name="gender" type="hidden" value="0" /><input type="checkbox" value="val" id="gender" name="gender" checked/>
         </div>
 HTML;
         $this->assertEquals($expectedHtml, $result);
@@ -387,6 +387,36 @@ HTML;
 
         //then
         $this->assertEquals('<input type="password" value="name" id="product_name" name="product[name]"/>', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateUncheckedCheckboxFieldInFormModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+
+        //when
+        $result = formFor($product, '', array('auto_labels' => false))->checkboxField('id_category');
+
+        //then
+        $this->assertEquals('<input name="product[id_category]" type="hidden" value="0" /><input type="checkbox" value="1" id="product_id_category" name="product[id_category]" />', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateCheckedCheckboxFieldInFormModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+
+        //when
+        $result = formFor($product, '', array('auto_labels' => false))->checkboxField('id_category');
+
+        //then
+        $this->assertEquals('<input name="product[id_category]" type="hidden" value="0" /><input type="checkbox" value="1" id="product_id_category" name="product[id_category]" checked/>', $result);
     }
 
     /**

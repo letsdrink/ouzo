@@ -249,7 +249,8 @@ function textAreaTag($value, array $attributes = array())
 function checkboxTag($value, $checked, array $attributes = array())
 {
     $attr = _prepareAttributes($attributes);
-    return '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
+    $workaround = '<input name="' . $attributes['name'] . '" type="hidden" value="0" />';
+    return $workaround . '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
 }
 
 function selectTag(array $items = array(), $value, array $attributes = array())
@@ -387,6 +388,15 @@ class Form
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = array_merge($attributes, $options);
         return passwordFieldTag($this->_object->$field, $attributes);
+    }
+
+    public function checkboxField($field, array $options = array())
+    {
+        $attributes = $this->_generatePredefinedAttributes($field);
+        $attributes = array_merge($attributes, $options);
+        $value = $this->_object->$field;
+        $checked = !empty($value);
+        return checkboxTag('1', $checked, $attributes);
     }
 
     public function start($url, $method = 'post', $attributes = array())

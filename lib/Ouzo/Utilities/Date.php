@@ -39,4 +39,14 @@ class Date
         $dateTime = new DateTime($dateAsString);
         return $dateTime->modify($interval)->format($format);
     }
+
+    public static function beginningOfDay($date)
+    {
+        return self::formatDate($date) . ' 00:00:00';
+    }
+
+    public static function endOfDay($date)
+    {
+        return self::formatDate($date) . ' 23:59:59.9999';
+    }
 }
