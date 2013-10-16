@@ -111,4 +111,64 @@ class DateTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals($expectedDate, $date);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGetBeginningOfDayForDate()
+    {
+        //given
+        $date = '2013-09-09';
+
+        //when
+        $begin = Date::beginningOfDay($date);
+
+        //then
+        $this->assertEquals('2013-09-09 00:00:00', $begin);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetBeginningOfDayForDateWithTime()
+    {
+        //given
+        $date = '2013-09-09 13:03:43';
+
+        //when
+        $begin = Date::beginningOfDay($date);
+
+        //then
+        $this->assertEquals('2013-09-09 00:00:00', $begin);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetEndOfDayForDate()
+    {
+        //given
+        $date = '2013-09-09';
+
+        //when
+        $begin = Date::endOfDay($date);
+
+        //then
+        $this->assertEquals('2013-09-09 23:59:59.9999', $begin);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetEndOfDayForDateWithTime()
+    {
+        //given
+        $date = '2013-09-09 13:03:43';
+
+        //when
+        $begin = Date::endOfDay($date);
+
+        //then
+        $this->assertEquals('2013-09-09 23:59:59.9999', $begin);
+    }
 }
