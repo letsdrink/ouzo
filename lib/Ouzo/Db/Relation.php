@@ -14,17 +14,15 @@ class Relation
     private $class;
     private $localKey;
     private $foreignKey;
-    private $allowInvalidReferences;
     private $collection;
 
-    function __construct($name, $class, $localKey, $foreignKey, $collection, $allowInvalidReferences)
+    function __construct($name, $class, $localKey, $foreignKey, $collection)
     {
         $this->name = $name;
         $this->class = $class;
         $this->localKey = $localKey;
         $this->foreignKey = $foreignKey;
         $this->collection = $collection;
-        $this->allowInvalidReferences = $allowInvalidReferences;
     }
 
     public static function inline($params)
@@ -45,11 +43,6 @@ class Relation
     function getForeignKey()
     {
         return $this->foreignKey;
-    }
-
-    function getAllowInvalidReferences()
-    {
-        return $this->allowInvalidReferences;
     }
 
     public function getName()
@@ -83,6 +76,6 @@ class Relation
 
     public function withName($name)
     {
-        return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection, $this->allowInvalidReferences);
+        return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection);
     }
 }

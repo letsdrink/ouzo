@@ -1,8 +1,6 @@
 <?php
 namespace Ouzo\Db;
 
-use InvalidArgumentException;
-use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
@@ -19,40 +17,34 @@ class RelationFetcher
 
     public function transform(&$results)
     {
-        $foreignKeys = FluentArray::from($results)
+        $localKeys = FluentArray::from($results)
             ->map(Functions::extractFieldRecursively($this->_relation->getLocalKey()))
             ->filter(Functions::notEmpty())
             ->unique()
             ->toArray();
 
-        $relationObjectsById = $this->_loadRelationObjectsIndexedById($foreignKeys);
+        $relationObjectsById = $this->_loadRelationObjectsIndexedById($localKeys);
 
         foreach ($results as $result) {
             $destinationField = $this->_relation->getName();
-            $foreignKeyValue = Objects::getValueRecursively($result, $this->_relation->getLocalKey());
-            if ($foreignKeyValue) {
-                $values = $this->_findRelationObject($result, $relationObjectsById, $foreignKeyValue);
+            $localKeyValue = Objects::getValueRecursively($result, $this->_relation->getLocalKey());
+            if ($localKeyValue) {
+                $values = $this->_findRelationObject($relationObjectsById, $localKeyValue);
 
                 $result->$destinationField = $this->_relation->extractValue($values);
             }
         }
     }
 
-    private function _loadRelationObjectsIndexedById($foreignKeys)
+    private function _loadRelationObjectsIndexedById($localKeys)
     {
         $relationObject = $this->_relation->getRelationModelObject();
-        $relationObjects = $relationObject::where(array($this->_relation->getForeignKey() => $foreignKeys))->fetchAll();
+        $relationObjects = $relationObject::where(array($this->_relation->getForeignKey() => $localKeys))->fetchAll();
         return Arrays::groupBy($relationObjects, Functions::extractField($this->_relation->getForeignKey()));
     }
 
-    private function _findRelationObject(Model $result, $relationObjectsById, $foreignKey)
+    private function _findRelationObject($relationObjectsById, $localKey)
     {
-        if (!isset($relationObjectsById[$foreignKey])) {
-            if ($this->_relation->getAllowInvalidReferences()) {
-                return array();
-            }
-            throw new InvalidArgumentException("Cannot find {$this->_relation->getClass()} with {$this->_relation->getForeignKey()} = $foreignKey for {$result->getModelName()} with id = {$result->getId()}");
-        }
-        return $relationObjectsById[$foreignKey];
+        return Arrays::getValue($relationObjectsById, $localKey, array());
     }
 }

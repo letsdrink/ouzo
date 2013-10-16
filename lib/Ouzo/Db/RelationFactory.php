@@ -81,7 +81,6 @@ class RelationFactory
     private static function newRelation($name, $localKey, $foreignKey, $collection, $params)
     {
         $class = $params['class'];
-        $allowInvalidReferences = Arrays::getValue($params, 'allowInvalidReferences', false);
-        return new Relation($name, $class, $localKey, $foreignKey, $collection, $allowInvalidReferences);
+        return new Relation($name, $class, $localKey, $foreignKey, $collection);
     }
 }

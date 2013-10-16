@@ -503,35 +503,17 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldThrowExceptionIfNoRelationWithForeignKey()
+    public function shouldNotThrowExceptionIfNoRelationWithForeignKey()
     {
         //given
         Category::create(array('name' => 'phones'));
         Product::create(array('name' => 'a', 'description' => 'desc'));
 
         //when
-        try {
-            Product::where()->with('categoryWithNameByDescription')->fetchAll();
-            $this->fail();
-        } //then
-        catch (InvalidArgumentException $e) {
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotThrowExceptionIfNoRelationWithForeignKeyAndAllowInvalidIsTrue()
-    {
-        //given
-        Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'a', 'description' => 'desc'));
-
-        //when
-        $products = Product::where()->with('categoryWithNameByDescriptionAllowInvalid')->fetchAll();
+        $products = Product::where()->with('categoryWithNameByDescription')->fetchAll();
 
         //then
-        $this->assertNull($products[0]->categoryWithNameByDescriptionAllowInvalid);
+        $this->assertNull($products[0]->categoryWithNameByDescription);
     }
 
     /**

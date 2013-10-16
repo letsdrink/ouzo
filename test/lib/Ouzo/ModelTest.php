@@ -418,6 +418,21 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldLazyFetchHasManyRelationWithoutChildren()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+
+        //when
+        $products = $category->products;
+
+        //then
+        Assert::thatArray($products)->isEmpty();
+    }
+
+    /**
+     * @test
+     */
     public function shouldLazyFetchHasOneRelation()
     {
         //given

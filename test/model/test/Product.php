@@ -13,8 +13,7 @@ class Product extends Model
             'attributes' => $attributes,
             'belongsTo' => array(
                 'category' => array('class' => 'Test\Category', 'foreignKey' => 'id_category'),
-                'categoryWithNameByDescription' => array('class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name'),
-                'categoryWithNameByDescriptionAllowInvalid' => array('class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name', 'allowInvalidReferences' => true)
+                'categoryWithNameByDescription' => array('class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name')
             ),
             'hasOne' => array('orderProduct' => array('class' => 'Test\OrderProduct', 'foreignKey' => 'id_product')),
             'fields' => $this->_fields));
