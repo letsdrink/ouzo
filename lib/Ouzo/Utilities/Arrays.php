@@ -333,7 +333,7 @@ class Arrays
     }
 
     /**
-     * Group elements in array using function to grouping elements. If set $orderField grouped elements will be also sorted.
+     * Group elements in array by result of the given function. If $orderField is set grouped elements will be also sorted.
      *
      * Example:
      * <code>

@@ -293,4 +293,22 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals("My name is &lt;strong&gt;Reek&lt;/strong&gt; <br />\nit rhymes with leek", $escaped);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTrueForObjectWithTheSameStringRepresentation()
+    {
+        $this->assertTrue(Strings::equal('123', 123));
+        $this->assertTrue(Strings::equal(123, '123'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFalseForObjectWithDifferentStringRepresentation()
+    {
+        $this->assertFalse(Strings::equal('0123', 123));
+        $this->assertFalse(Strings::equal(123, '0123'));
+    }
 }
