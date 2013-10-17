@@ -46,6 +46,7 @@ class Db
     public function connectDb($params = array())
     {
         $dsn = $params['driver'] . ':host=' . $params['host'] . ';port=' . $params['port'] . ';dbname=' . $params['dbname'] . ';user=' . $params['user'] . ';password=' . $params['pass'];
+        $dsn .= Arrays::getValue($params, 'charset') ? ';charset=' . Arrays::getValue($params, 'charset') : '';
         $this->_dbHandle = new PDO($dsn, $params['user'], $params['pass']);
         return $this;
     }
