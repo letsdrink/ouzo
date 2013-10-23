@@ -9,7 +9,6 @@ use PHPUnit_Framework_ExpectationFailedException;
 
 class ArrayAssert
 {
-
     private $_actual;
     private $_actualString;
 

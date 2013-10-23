@@ -15,7 +15,6 @@ namespace Ouzo\Tests;
  */
 class Assert
 {
-
     public static function thatArray(array $actual)
     {
         return ArrayAssert::that($actual);

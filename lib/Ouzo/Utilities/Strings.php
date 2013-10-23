@@ -258,4 +258,9 @@ class Strings
         $string = htmlspecialchars($string);
         return nl2br($string);
     }
+
+    public static function equal($object1, $object2)
+    {
+        return (string) $object1 === (string) $object2;
+    }
 }
