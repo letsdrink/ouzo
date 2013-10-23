@@ -106,4 +106,11 @@ class Uri
     {
         return Arrays::getValue($_POST, '_method', $_SERVER['REQUEST_METHOD']);
     }
+
+    public static function getRequestParameters()
+    {
+        $parameters = null;
+        parse_str(file_get_contents("php://input"), $parameters);
+        return Arrays::toArray($parameters);
+    }
 }
