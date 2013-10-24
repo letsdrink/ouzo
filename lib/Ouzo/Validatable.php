@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Strings;
+
 class Validatable
 {
     protected $_errors = array();
@@ -48,7 +50,7 @@ class Validatable
 
     public function validateNotBlank($value, $errorMessage, $errorField = null)
     {
-        if (!$value) {
+        if (Strings::isBlank($value)) {
             $this->_errors[] = $errorMessage;
             $this->_errorFields[] = $errorField;
         }
