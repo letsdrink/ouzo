@@ -45,6 +45,15 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function shouldThrowExceptionForEmptyString()
+    {
+        url("");
+    }
+
+    /**
+     * @test
      */
     public function shouldReturnNullForNullDateInFormat()
     {

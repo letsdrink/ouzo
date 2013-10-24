@@ -5,7 +5,26 @@ use InvalidArgumentException;
 
 class ControllerUrl
 {
-    public static function createUrl(array $params)
+    public static function createUrl($params)
+    {
+        if (is_string($params)) {
+            return self::_createUrlFromString($params);
+        } else if (is_array($params)) {
+            return self::_createUrlFromArray($params);
+        }
+        throw new InvalidArgumentException('Illegal arguments');
+    }
+
+    private static function _createUrlFromString($params)
+    {
+        if (empty($params)) {
+            throw new InvalidArgumentException("String argument can't be empty");
+        }
+        $defaults = Config::getValue('global');
+        return $defaults['prefix_system'] . $params;
+    }
+
+    private static function _createUrlFromArray($params)
     {
         $defaults = Config::getValue('global');
         if (!empty($params['controller']) && !empty($params['action'])) {
@@ -18,7 +37,6 @@ class ControllerUrl
             }
             return $returnUrl;
         }
-
         if (!empty($params['string'])) {
             return $defaults['prefix_system'] . $params['string'];
         }

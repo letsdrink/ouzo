@@ -4,7 +4,6 @@ namespace Ouzo\Uri;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Strings;
 
 class UriHelperGenerator
 {
@@ -51,7 +50,7 @@ class UriHelperGenerator
         $function = <<<FUNCTION
 function $name($parametersString)
 {
-    return url(array('string' => "$uriWithVariables"));
+    return url("$uriWithVariables");
 }\n\n
 FUNCTION;
         return $name ? $function : '';
