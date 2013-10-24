@@ -216,6 +216,21 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldNotTreatZeroAsBlank()
+    {
+        //given
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateNotBlank('0', 'blank');
+
+        //then
+        Assert::thatArray($validatable->getErrors())->isEmpty();
+    }
+
+    /**
+     * @test
+     */
     public function shouldValidateAssociatedCollection()
     {
         // given

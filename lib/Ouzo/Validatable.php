@@ -46,38 +46,43 @@ class Validatable
         }
     }
 
-    public function validateNotBlank($value, $errorMessage)
+    public function validateNotBlank($value, $errorMessage, $errorField = null)
     {
         if (!$value) {
             $this->_errors[] = $errorMessage;
+            $this->_errorFields[] = $errorField;
         }
     }
 
-    public function validateTrue($value, $errorMessage)
+    public function validateTrue($value, $errorMessage, $errorField = null)
     {
         if (!$value) {
             $this->_errors[] = $errorMessage;
+            $this->_errorFields[] = $errorField;
         }
     }
 
-    public function validateUnique(array $values, $errorMessage)
+    public function validateUnique(array $values, $errorMessage, $errorField = null)
     {
         if (count($values) != count(array_unique($values))) {
             $this->_errors[] = $errorMessage;
+            $this->_errorFields[] = $errorField;
         }
     }
 
-    public function validateDateTime($value, $errorMessage)
+    public function validateDateTime($value, $errorMessage, $errorField = null)
     {
         if (!strtotime($value)) {
             $this->_errors[] = $errorMessage;
+            $this->_errorFields[] = $errorField;
         }
     }
 
-    public function validateStringMaxLength($field, $length, $errorMessage)
+    public function validateStringMaxLength($value, $maxLength, $errorMessage, $errorField = null)
     {
-        if ((strlen($field) - 1) > $length) {
+        if ((strlen($value) - 1) > $maxLength) {
             $this->_errors[] = $errorMessage;
+            $this->_errorFields[] = $errorField;
         }
     }
 }
