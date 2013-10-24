@@ -24,7 +24,7 @@ class Bootstrap
         $loader = new Loader();
         $loader
             ->setIncludePath('application/')
-            ->setIncludePath('vendor/letsdrink/ouzo/lib/')
+            ->setIncludePath('vendor/letsdrink/ouzo/src/')
             ->setIncludePath('locales/')
             ->register();
 
