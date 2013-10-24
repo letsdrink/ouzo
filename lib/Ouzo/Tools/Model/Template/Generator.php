@@ -6,6 +6,7 @@ namespace Ouzo\Tools\Model\Template;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
+use Ouzo\Utilities\Arrays;
 
 class Generator
 {
@@ -49,15 +50,21 @@ class Generator
         return new $generatorDialect($this->_tableName);
     }
 
-    public function classTemplate()
+    public function getTemplateClassName()
     {
-        $columns = $this->_adapter->columns();
-        $sequence = $this->_adapter->sequence();
-        $primaryKey = $this->_adapter->primaryKey();
-
+        return '';
     }
 
-
+    public function classTemplate()
+    {
+        $classStub = new ClassStub();
+        $classStub->addPlaceholderReplacement('sequence', $this->_adapter->sequence())
+            ->addPlaceholderReplacement('primary', $this->_adapter->primaryKey())
+            ->addPlaceholderReplacement('table', $this->_adapter->tableName())
+            ->addPlaceholderReplacement('class', $this->getTemplateClassName());
+        Arrays::map($this->_adapter->columns(), array($classStub, 'addColumn'));
+        return $classStub->contents();
+    }
 
 }
 

@@ -11,7 +11,7 @@ class ClassStub
 {
     private $_stubFile;
     private $_stubContent;
-    private $_fields = array();
+    private $_attributes = array();
     private $_placeholderWithReplacements = array();
 
     const FIELDS_COUNT_IN_LINE = 7;
@@ -22,9 +22,9 @@ class ClassStub
         $this->_stubContent = file_get_contents(Path::join(__DIR__, 'stubs', $stubFile));
     }
 
-    public function addFiled($name, $type)
+    public function addColumn(DatabaseColumn $databaseColumn)
     {
-        $this->_fields[$name] = $type;
+        $this->_attributes[$databaseColumn->name] = $databaseColumn->type;
         return $this;
     }
 
@@ -42,30 +42,35 @@ class ClassStub
         return $this;
     }
 
-    private function _getPropertiesAsString()
+    public function getPropertiesAsString()
     {
         $propertiesString = '';
-        foreach ($this->_fields as $name => $type) {
+        foreach ($this->_attributes as $name => $type) {
             $propertiesString .= " * @property $type $name\n";
         }
         return $propertiesString;
     }
 
-    private function _getFieldsAsString()
+    public function getFieldsAsString()
     {
-        $fields = array_keys($this->_fields);
-        $escapedFields = Arrays::map($fields, function ($field) {
-            return "'$field'";
+        $fields = array_keys($this->_attributes);
+        $index = 0;
+        $escapedFields = Arrays::map($fields, function ($field) use (&$index) {
+            $field = "'$field'";
+            if (($index > 0) && ($index % self::FIELDS_COUNT_IN_LINE) == 0) {
+                $field = "\n\t\t\t$field";
+            }
+            $index++;
+            return $field;
         });
-        $escapedFields = $this->_fieldsInNewLines($escapedFields);
         return implode(', ', $escapedFields);
     }
 
     private function _getPlaceholderReplacements()
     {
         $this
-            ->addPlaceholderReplacement('properties', $this->_getPropertiesAsString())
-            ->addPlaceholderReplacement('fields', $this->_getFieldsAsString());
+            ->addPlaceholderReplacement('properties', $this->getPropertiesAsString())
+            ->addPlaceholderReplacement('fields', $this->getFieldsAsString());
         return $this->_placeholderWithReplacements;
     }
 
@@ -75,13 +80,4 @@ class ClassStub
         return $this->_stubContent;
     }
 
-    private function _fieldsInNewLines($escapedFields)
-    {
-        for ($index = 1; $index < sizeof($escapedFields); $index += self::FIELDS_COUNT_IN_LINE) {
-            if (array_key_exists($index, $escapedFields)) {
-                $escapedFields[$index] = "\n\t\t\t" . $escapedFields[$index];
-            }
-        }
-        return $escapedFields;
-    }
 }

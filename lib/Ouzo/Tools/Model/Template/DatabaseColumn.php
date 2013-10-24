@@ -10,7 +10,7 @@ class DatabaseColumn {
     public $type;
     public $default;
 
-    function __construct($name, $type, $default)
+    function __construct($name, $type, $default = '')
     {
         $this->name = $name;
         $this->type = $type;

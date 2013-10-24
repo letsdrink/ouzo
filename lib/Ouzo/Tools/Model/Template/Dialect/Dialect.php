@@ -14,21 +14,26 @@ class Dialect
 
     public function primaryKey()
     {
+        return '';
     }
 
     public function sequence()
     {
+        return '';
     }
 
-    public function _tableName()
+    public function tableName()
     {
+        return '';
     }
 
     public function columns()
     {
+        return array();
     }
 
     public function columnType($columnName)
     {
+        return $columnName;
     }
 }

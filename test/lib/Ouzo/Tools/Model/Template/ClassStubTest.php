@@ -5,8 +5,10 @@ namespace Ouzo\Tools;
 
 
 use Ouzo\Tools\Model\Template\ClassStub;
+use Ouzo\Tools\Model\Template\DatabaseColumn;
 
-class ClassStubTest extends \PHPUnit_Framework_TestCase {
+class ClassStubTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
@@ -15,7 +17,7 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase {
     {
         //given
         $classStub = new ClassStub();
-        
+
         //when
         $classStub->replacePlaceholders(array('class' => 'TestClassName', 'fields' => 'fieldA, fieldB'));
 
@@ -33,7 +35,7 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase {
         $classStub = new ClassStub();
 
         //when
-        $classStub->addFiled('test_field', 'string');
+        $classStub->addColumn('test_field', 'string');
 
         //then
         $this->assertContains('test_field', $classStub->contents());
@@ -70,19 +72,19 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase {
 
         //when
         $classStub
-        ->addFiled('field1', 'string')
-        ->addFiled('field2', 'string')
-        ->addFiled('field3', 'string')
-        ->addFiled('field4', 'string')
-        ->addFiled('field5', 'string')
-        ->addFiled('field6', 'string')
-        ->addFiled('field7', 'string')
-        ->addFiled('field8', 'string')
-        ->addFiled('field9', 'string');
+            ->addColumn(new DatabaseColumn('field1', 'string'))
+            ->addColumn(new DatabaseColumn('field2', 'string'))
+            ->addColumn(new DatabaseColumn('field3', 'string'))
+            ->addColumn(new DatabaseColumn('field4', 'string'))
+            ->addColumn(new DatabaseColumn('field5', 'string'))
+            ->addColumn(new DatabaseColumn('field6', 'string'))
+            ->addColumn(new DatabaseColumn('field7', 'string'))
+            ->addColumn(new DatabaseColumn('field8', 'string'))
+            ->addColumn(new DatabaseColumn('field9', 'string'));
 
 
         //then
-        $this->assertContains('sssssaweqwes', $classStub->contents());
+        $this->assertContains("'field7', \n", $classStub->getFieldsAsString());
     }
 }
  
