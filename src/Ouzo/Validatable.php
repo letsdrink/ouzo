@@ -39,7 +39,7 @@ class Validatable
     }
 
     /**
-     * @param Validatable[]
+     * @param Validatable []
      */
     public function validateAssociatedCollection($validatables)
     {

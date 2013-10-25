@@ -3,8 +3,8 @@ namespace Ouzo\Db;
 
 use PDO;
 
-class ParameterType {
-
+class ParameterType
+{
     public static function getType($param)
     {
         if (is_int($param)) {
@@ -15,5 +15,4 @@ class ParameterType {
         }
         return PDO::PARAM_STR;
     }
-
 }

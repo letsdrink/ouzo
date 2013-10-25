@@ -1,8 +1,8 @@
 <?php
 namespace Ouzo\Tests;
 
-use PHPUnit_Framework_TestCase;
 use Ouzo\Db;
+use PHPUnit_Framework_TestCase;
 
 class DbTransactionalTestCase extends PHPUnit_Framework_TestCase
 {

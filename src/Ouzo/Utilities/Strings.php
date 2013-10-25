@@ -277,7 +277,7 @@ class Strings
      */
     public static function equal($object1, $object2)
     {
-        return (string) $object1 === (string) $object2;
+        return (string)$object1 === (string)$object2;
     }
 
     /**

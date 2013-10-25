@@ -1,6 +1,4 @@
 <?php
-
-use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
