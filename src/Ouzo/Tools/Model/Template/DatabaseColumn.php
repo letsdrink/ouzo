@@ -4,7 +4,8 @@
 namespace Ouzo\Tools\Model\Template;
 
 
-class DatabaseColumn {
+class DatabaseColumn
+{
 
     public $name;
     public $type;
