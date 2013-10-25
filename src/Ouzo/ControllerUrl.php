@@ -2,6 +2,8 @@
 namespace Ouzo;
 
 use InvalidArgumentException;
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Joiner;
 
 class ControllerUrl
 {
@@ -27,28 +29,30 @@ class ControllerUrl
     private static function _createUrlFromArray($params)
     {
         $defaults = Config::getValue('global');
-        if (!empty($params['controller']) && !empty($params['action'])) {
-            $returnUrl = $defaults['prefix_system'];
-            $returnUrl .= '/' . $params['controller'];
-            $returnUrl .= '/' . $params['action'];
+        $prefixSystem = $defaults['prefix_system'];
 
-            if (!empty($params['extraParams'])) {
-                $returnUrl .= self::_mergeParams($params['extraParams']);
+        $controller = Arrays::getValue($params, 'controller');
+        $action = Arrays::getValue($params, 'action');
+        $extraParams = Arrays::getValue($params, 'extraParams');
+        if ($controller && $action) {
+            $returnUrl = Joiner::on('/')->join(array($prefixSystem, $controller, $action));
+            if ($extraParams) {
+                $returnUrl .= self::_mergeParams($extraParams);
             }
             return $returnUrl;
         }
-        if (!empty($params['string'])) {
-            return $defaults['prefix_system'] . $params['string'];
+
+        $string = Arrays::getValue($params, 'string');
+        if ($string) {
+            return $prefixSystem . $string;
         }
         throw new InvalidArgumentException('Illegal arguments');
     }
 
     private static function _mergeParams(array $params)
     {
-        $merged = '';
-        foreach ($params as $param => $value) {
-            $merged .= '/' . $param . '/' . $value;
-        }
-        return $merged;
+        return '/' . Joiner::on('/')->map(function ($key, $value) {
+            return $key . '/' . $value;
+        })->join($params);
     }
 }

@@ -1,12 +1,8 @@
 <?php
-
-
 use Ouzo\Utilities\Joiner;
 
 class JoinerTest extends PHPUnit_Framework_TestCase
 {
-
-
     public function arrayJoinedWithSeparator()
     {
         return array(
