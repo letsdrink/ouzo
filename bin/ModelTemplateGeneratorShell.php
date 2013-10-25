@@ -1,7 +1,5 @@
 <?php
 
-namespace ModelGenerator;
-
 use Ouzo\Shell;
 use Ouzo\Shell\InputArgument;
 use Ouzo\Tools\Model\Template\Generator;

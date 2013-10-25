@@ -1,11 +1,7 @@
 <?php
 
 
-namespace Ouzo\Tools;
-
-
-use Ouzo\Tools\Model\Template\ClassStub;
-use Ouzo\Tools\Model\Template\DatabaseColumn;
+namespace Ouzo\Tools\Model\Template;
 
 class ClassStubTest extends \PHPUnit_Framework_TestCase
 {

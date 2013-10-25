@@ -4,8 +4,7 @@ namespace Ouzo\Tools\Model\Template\Dialect;
 
 class Dialect
 {
-
-    public $_tableName;
+    private $_tableName;
 
     function __construct($tableName)
     {
@@ -24,7 +23,7 @@ class Dialect
 
     public function tableName()
     {
-        return '';
+        return $this->_tableName;
     }
 
     public function columns()

@@ -1,21 +1,10 @@
 <?php
 
 
-namespace Ouzo\Tools;
-
+namespace Ouzo\Tools\Model\Template;
 
 use Ouzo\Config;
-use Ouzo\Tools\Model\Template\Dialect\PostgresDialect;
-use Ouzo\Tools\Model\Template\Generator;
-
-class PostgresDialectConfig
-{
-    public function getConfig()
-    {
-        $config['sql_dialect'] = "\\Ouzo\\Db\\Dialect\\PostgresDialect";
-        return $config;
-    }
-}
+use Ouzo\Tests\Assert;
 
 class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,17 +12,19 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReturnObjectFroConfiguredDialect()
+    public function shouldReturnObjectForConfiguredDialect()
     {
         //given
-        Config::registerConfig(new PostgresDialectConfig());
         $generator = new Generator('products');
 
         //when
         $templateDialect = $generator->dialectAdapter();
 
         //then
-        $this->assertTrue($templateDialect instanceof PostgresDialect);
+        $configuredDialectClassPath = Config::getValue('sql_dialect');
+        $dialectReflectionClass = new \ReflectionClass($templateDialect);
+        $generatorDialectClassName = $dialectReflectionClass->getShortName();
+        $this->assertStringEndsWith($generatorDialectClassName, $configuredDialectClassPath);
     }
 
     /**
@@ -64,6 +55,23 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('OrderProduct', $modelName);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTableInformation()
+    {
+        //given
+        $generator = new Generator('products');
+
+        //when
+        $dialectAdapter = $generator->dialectAdapter();
+
+        //then
+        $this->assertEquals('id', $dialectAdapter->primaryKey());
+        Assert::thatArray($dialectAdapter->columns())->onProperty('name')->containsOnly('id', 'id_category', 'name', 'description', 'sale');
+        Assert::thatArray($dialectAdapter->columns())->onProperty('type')->contains('string', 'string', 'int', 'int');
     }
 }
  
