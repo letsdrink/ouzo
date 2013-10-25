@@ -31,9 +31,4 @@ class Dialect
     {
         return array();
     }
-
-    public function columnType($columnName)
-    {
-        return $columnName;
-    }
 }
