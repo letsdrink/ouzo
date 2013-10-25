@@ -7,6 +7,7 @@ use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Inflector;
 
 class Generator
 {
@@ -14,11 +15,13 @@ class Generator
     private $_tableName;
     private $_className;
     private $_adapter;
+    private $_tablePrefix;
 
-    function __construct($tableName, $className = null)
+    function __construct($tableName, $className = null, $tablePrefix = 't')
     {
         $this->_tableName = $tableName;
         $this->_className = $className;
+        $this->_tablePrefix = $tablePrefix;
         $this->_adapter = $this->dialectAdapter();
     }
 
@@ -50,9 +53,21 @@ class Generator
         return new $generatorDialect($this->_tableName);
     }
 
+    private function _removeTablePrefix($tableNameParts)
+    {
+        if (Arrays::first($tableNameParts) == $this->_tablePrefix) {
+            array_shift($tableNameParts);
+        }
+        return $tableNameParts;
+    }
+
     public function getTemplateClassName()
     {
-        return '';
+        $parts = explode('_', $this->_tableName);
+        $parts = $this->_removeTablePrefix($parts);
+        $parts[] = Inflector::singularize(array_pop($parts));
+        $parts = Arrays::map($parts, 'ucfirst');
+        return implode('', $parts);
     }
 
     public function classTemplate()
@@ -64,6 +79,13 @@ class Generator
             ->addPlaceholderReplacement('class', $this->getTemplateClassName());
         Arrays::map($this->_adapter->columns(), array($classStub, 'addColumn'));
         return $classStub->contents();
+    }
+
+    public function saveToFile($fileName)
+    {
+        if (is_file($fileName))
+            throw new GeneratorException("File already exists '$fileName'.");
+        file_put_contents($fileName, $this->classTemplate());
     }
 
 }

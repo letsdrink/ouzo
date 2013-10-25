@@ -35,7 +35,7 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase
         $classStub = new ClassStub();
 
         //when
-        $classStub->addColumn('test_field', 'string');
+        $classStub->addColumn(new DatabaseColumn('test_field', 'string'));
 
         //then
         $this->assertContains('test_field', $classStub->contents());

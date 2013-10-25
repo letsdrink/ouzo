@@ -36,5 +36,34 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($templateDialect instanceof PostgresDialect);
     }
 
+    /**
+     * @test
+     */
+    public function shouldRemoveTablePrefixFromClass()
+    {
+        //given
+        $generator = new Generator('t_my_table');
+
+        //when
+        $modelName = $generator->getTemplateClassName();
+
+        //then
+        $this->assertEquals('MyTable', $modelName);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSingularizeTableName()
+    {
+        //given
+        $generator = new Generator('order_products');
+
+        //when
+        $modelName = $generator->getTemplateClassName();
+
+        //then
+        $this->assertEquals('OrderProduct', $modelName);
+    }
 }
  
