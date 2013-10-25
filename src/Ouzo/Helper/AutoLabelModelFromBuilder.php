@@ -66,7 +66,7 @@ class AutoLabelModelFromBuilder
 
     public function end()
     {
-        return '</form>';
+        return endTag();
     }
 
     private function getName($id)
