@@ -70,7 +70,7 @@ class Generator
         return implode('', $parts);
     }
 
-    public function classTemplate()
+    public function templateContents()
     {
         $classStub = new ClassStub();
         $classStub->addPlaceholderReplacement('sequence', $this->_adapter->sequence())
@@ -85,7 +85,7 @@ class Generator
     {
         if (is_file($fileName))
             throw new GeneratorException("File already exists '$fileName'.");
-        file_put_contents($fileName, $this->classTemplate());
+        file_put_contents($fileName, $this->templateContents());
     }
 
 }

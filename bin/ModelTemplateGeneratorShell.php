@@ -1,8 +1,11 @@
 <?php
 
 namespace ModelGenerator;
+
 use Ouzo\Shell;
 use Ouzo\Shell\InputArgument;
+use Ouzo\Tools\Model\Template\Generator;
+use Ouzo\Tools\Model\Template\GeneratorException;
 
 
 class ModelTemplateGeneratorShell extends Shell
@@ -17,6 +20,8 @@ class ModelTemplateGeneratorShell extends Shell
     public function main()
     {
         $this->out('Model generator');
+        $this->out('');
+        $this->out('Generate model class template for specified table.');
         $this->out('');
         $this->out('parameters: -t=table_name [-c=ClassName] [-f=/path/to/file.php]');
         $this->out('');
@@ -37,10 +42,11 @@ class ModelTemplateGeneratorShell extends Shell
         if (empty($tableName))
             $this->fail("Specify table name e.g. -t=t_user");
         try {
-            $modelGenerator = new ModelGenerator($tableName, $className);
-            $this->out($modelGenerator->getClassContents());
-            $modelGenerator->flushToFile($fileName);
-        } catch (ModelGeneratorException $e) {
+            $modelGenerator = new Generator($tableName, $className);
+            $this->out($modelGenerator->getTemplateClassName());
+            if ($fileName)
+                $modelGenerator->saveToFile($fileName);
+        } catch (GeneratorException $e) {
             $this->fail($e->getMessage());
         }
     }
