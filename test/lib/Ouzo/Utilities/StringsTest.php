@@ -311,4 +311,32 @@ class StringsTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Strings::equal('0123', 123));
         $this->assertFalse(Strings::equal(123, '0123'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFalseForNotBlankString()
+    {
+        $this->assertFalse(Strings::isBlank('0'));
+        $this->assertFalse(Strings::isBlank('a '));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTrueForBlankString()
+    {
+        $this->assertTrue(Strings::isBlank(''));
+        $this->assertTrue(Strings::isBlank(' '));
+        $this->assertTrue(Strings::isBlank("\t\n\r"));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTestIfStringIsNotBlank()
+    {
+        $this->assertTrue(Strings::isNotBlank('a '));
+        $this->assertFalse(Strings::isNotBlank("\t\n\r"));
+    }
 }

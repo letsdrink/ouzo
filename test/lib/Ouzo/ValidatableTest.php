@@ -192,10 +192,11 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
         $validatable = new Validatable();
 
         //when
-        $validatable->validateTrue(false, 'error');
+        $validatable->validateTrue(false, 'error', 'field');
 
         //then
         Assert::thatArray($validatable->getErrors())->containsOnly('error');
+        Assert::thatArray($validatable->getErrorFields())->containsOnly('field');
     }
 
     /**
@@ -207,10 +208,27 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
         $validatable = new Validatable();
 
         //when
-        $validatable->validateNotBlank('', 'blank');
+        $validatable->validateNotBlank('', 'blank', 'field');
 
         //then
         Assert::thatArray($validatable->getErrors())->containsOnly('blank');
+        Assert::thatArray($validatable->getErrorFields())->containsOnly('field');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotTreatZeroAsBlank()
+    {
+        //given
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateNotBlank('0', 'blank');
+
+        //then
+        Assert::thatArray($validatable->getErrors())->isEmpty();
+        Assert::thatArray($validatable->getErrorFields())->isEmpty();
     }
 
     /**

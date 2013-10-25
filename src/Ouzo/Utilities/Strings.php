@@ -259,8 +259,64 @@ class Strings
         return nl2br($string);
     }
 
+    /**
+     * Method checks if string representations of two objects are equal
+     *
+     * Example:
+     * <code>
+     * $result = Strings::equal('0123', 123);
+     * </code>
+     * Result:
+     * <code>
+     * false
+     * </code>
+     *
+     * @param mixed $object1
+     * @param mixed $object2
+     * @return bool
+     */
     public static function equal($object1, $object2)
     {
         return (string) $object1 === (string) $object2;
+    }
+
+    /**
+     * Method checks if string is blank
+     *
+     * Example:
+     * <code>
+     * $result = Strings::isBlank('0');
+     * </code>
+     * Result:
+     * <code>
+     * false
+     * </code>
+     *
+     * @param string $string
+     * @return bool
+     */
+    public static function isBlank($string)
+    {
+        return mb_strlen(trim($string)) == 0;
+    }
+
+    /**
+     * Method checks if string is not blank
+     *
+     * Example:
+     * <code>
+     * $result = Strings::isNotBlank('0');
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     *
+     * @param string $string
+     * @return bool
+     */
+    public static function isNotBlank($string)
+    {
+        return !Strings::isBlank($string);
     }
 }

@@ -41,7 +41,7 @@
   <apply executable="php" failonerror="true">
    <arg value="-l" />
 
-   <fileset dir="${basedir}/lib/Ouzo">
+   <fileset dir="${basedir}/src/Ouzo">
     <include name="**/*.php" />
     <exclude name="**/vendor/**" />
     <modified />
@@ -61,7 +61,7 @@
    <arg value="vendor" />
    <arg value="--log-csv" />
    <arg value="${basedir}/build/logs/phploc.csv" />
-   <arg path="${basedir}/lib/Ouzo" />
+   <arg path="${basedir}/src/Ouzo" />
   </exec>
  </target>
 
@@ -71,14 +71,14 @@
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
    <arg value="--ignore=${basedir}/vendor" />
-   <arg path="${basedir}/lib/Ouzo" />
+   <arg path="${basedir}/src/Ouzo" />
   </exec>
  </target>
 
  <target name="phpmd"
          description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
   <exec executable="phpmd">
-   <arg path="${basedir}/lib/Ouzo" />
+   <arg path="${basedir}/src/Ouzo" />
    <arg value="text" />
    <arg value="${basedir}/build/phpmd.xml" />
    <arg value="--exclude" />
@@ -88,7 +88,7 @@
 
  <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
   <exec executable="phpmd">
-   <arg path="${basedir}/lib/Ouzo" />
+   <arg path="${basedir}/src/Ouzo" />
    <arg value="xml" />
    <arg value="${basedir}/build/phpmd.xml" />
    <arg value="--reportfile" />
@@ -104,7 +104,7 @@
    <arg value="--standard=${basedir}/build/phpcs.xml" />
    <arg value="--extensions=php" />
    <arg value="--ignore=${basedir}/vendor" />
-   <arg path="${basedir}/lib/Ouzo" />
+   <arg path="${basedir}/src/Ouzo" />
   </exec>
  </target>
 
@@ -115,7 +115,7 @@
    <arg value="--extensions=php" />
    <arg value="--ignore=${basedir}/vendor" />
    <arg value="--standard=${basedir}/build/phpcs.xml" />
-   <arg path="${basedir}/lib/Ouzo" />
+   <arg path="${basedir}/src/Ouzo" />
   </exec>
  </target>
 
@@ -125,7 +125,7 @@
    <arg value="vendor" />
    <arg value="--log-pmd" />
    <arg value="${basedir}/build/logs/pmd-cpd.xml" />
-   <arg path="${basedir}/lib/Ouzo" />
+   <arg path="${basedir}/src/Ouzo" />
   </exec>
  </target>
 
@@ -144,7 +144,7 @@
    <arg value="--log" />
    <arg path="${basedir}/build/logs" />
    <arg value="--source" />
-   <arg path="${basedir}/lib/Ouzo" />
+   <arg path="${basedir}/src/Ouzo" />
    <arg value="--output" />
    <arg path="${basedir}/build/code-browser" />
   </exec>

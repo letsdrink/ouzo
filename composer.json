@@ -12,7 +12,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "Ouzo": "lib/"
+            "Ouzo": "src/"
         }
     },
     "require-dev": {

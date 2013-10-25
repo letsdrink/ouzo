@@ -4,10 +4,8 @@ namespace Ouzo\Db;
 use Ouzo\Db;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
-use Ouzo\Utilities\Strings;
 use PDO;
 
 class ModelQueryBuilder

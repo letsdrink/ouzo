@@ -5,7 +5,7 @@ use Ouzo\I18n;
 use Ouzo\Utilities\Date;
 use Ouzo\Utilities\Strings;
 
-function url(array $params)
+function url($params)
 {
     return ControllerUrl::createUrl($params);
 }

@@ -1,7 +1,7 @@
 <?php
 use Ouzo\Config;
 
-require_once ROOT_PATH . 'lib/Ouzo/Helper/ViewHelper.php';
+require_once ROOT_PATH . 'src/Ouzo/Helper/ViewHelper.php';
 
 class ViewHelperTest extends PHPUnit_Framework_TestCase
 {
@@ -41,6 +41,15 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     public function shouldThrowExceptionForEmptyParams()
     {
         url(array());
+    }
+
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function shouldThrowExceptionForEmptyString()
+    {
+        url("");
     }
 
     /**

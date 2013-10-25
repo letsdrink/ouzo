@@ -1,9 +1,6 @@
 <?php
-
 namespace Ouzo\Db;
 
-
-use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
