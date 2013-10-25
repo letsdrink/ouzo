@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Utilities;
 
 /**
@@ -198,8 +197,8 @@ class Inflector
      * ));
      * }}}
      *
-     * @param string  $type  The type of inflection, either 'plural' or 'singular'
-     * @param array   $rules An array of rules to be added.
+     * @param string $type The type of inflection, either 'plural' or 'singular'
+     * @param array $rules An array of rules to be added.
      * @param boolean $reset If true, will unset default inflections for all
      *                       new rules that are being defined in $rules.
      *

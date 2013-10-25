@@ -3,12 +3,11 @@ namespace Ouzo;
 
 use Exception;
 use InvalidArgumentException;
-use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
+use Ouzo\Db;
 use Ouzo\Db\RelationFetcher;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Inflector;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
 use ReflectionClass;
@@ -27,16 +26,16 @@ class Model extends Validatable
      * Creates a new model object.
      * Accepted parameters:
      * <code>
-        'table' - defaults to pluralized class name. E.g. customer_orders for CustomerOrder
-        'primaryKey' - defaults to 'id'
-        'sequence' - defaults to 'table_primaryKey_seq'
-
-        'hasOne' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
-        'hasMany' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
-        'belongsTo' => array('name' => array('class' => 'Class'))
-
-        'fields' - mapped column names
-        'attributes' -  array of column => value
+     * 'table' - defaults to pluralized class name. E.g. customer_orders for CustomerOrder
+     * 'primaryKey' - defaults to 'id'
+     * 'sequence' - defaults to 'table_primaryKey_seq'
+     *
+     * 'hasOne' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+     * 'hasMany' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+     * 'belongsTo' => array('name' => array('class' => 'Class'))
+     *
+     * 'fields' - mapped column names
+     * 'attributes' -  array of column => value
      * </code>
      */
 
@@ -374,5 +373,4 @@ class Model extends Validatable
     {
         return $this->_relations->getRelation($name);
     }
-
 }

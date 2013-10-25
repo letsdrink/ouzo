@@ -1,7 +1,5 @@
 <?php
-
 namespace Ouzo\Db;
-
 
 use InvalidArgumentException;
 use Ouzo\MetaModelCache;

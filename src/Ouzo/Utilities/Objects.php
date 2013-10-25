@@ -107,5 +107,4 @@ class Objects
         }
         return $default;
     }
-
 }

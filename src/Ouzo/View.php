@@ -1,8 +1,6 @@
 <?php
 namespace Ouzo;
 
-use Ouzo\Utilities\Objects;
-
 class View
 {
     private $_viewName = '';

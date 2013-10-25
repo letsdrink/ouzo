@@ -3,12 +3,12 @@ namespace Ouzo;
 
 use InvalidArgumentException;
 use Ouzo\Db\ParameterType;
-use Ouzo\Logger\Logger;
-use PDO;
-use PDOStatement;
 use Ouzo\Db\Stats;
+use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
+use PDO;
+use PDOStatement;
 
 class Db
 {
@@ -171,5 +171,4 @@ class Db
         $errorInfo = $this->_dbHandle->errorInfo();
         return $errorInfo[2];
     }
-
 }

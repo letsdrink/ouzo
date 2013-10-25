@@ -1,7 +1,5 @@
 <?php
-
 namespace Ouzo\Db;
-
 
 class SelectColumnCallback
 {
@@ -14,7 +12,7 @@ class SelectColumnCallback
             $first = !$this->prev_table;
             $this->prev_table = $table;
             $result = "$table.*";
-            return $first? $result : ", $result";
+            return $first ? $result : ", $result";
         }
         return "";
     }

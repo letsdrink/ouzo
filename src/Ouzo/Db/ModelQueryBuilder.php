@@ -126,7 +126,8 @@ class ModelQueryBuilder
         return $this->_transform($models);
     }
 
-    private function extractModelFromResult(Model $metaInstance, array $result) {
+    private function extractModelFromResult(Model $metaInstance, array $result)
+    {
         $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$metaInstance->getTableName()}_");
         if (Arrays::any($attributes, Functions::notEmpty())) {
             return $metaInstance->newInstance($attributes);

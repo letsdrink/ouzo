@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo;
 
 class MetaModelCache
@@ -8,7 +7,7 @@ class MetaModelCache
 
     /**
      * @return Model
-    */
+     */
     public static function getMetaInstance($modelClass)
     {
         if (!isset(self::$_modelMetaInstances[$modelClass])) {
