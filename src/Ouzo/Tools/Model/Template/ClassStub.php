@@ -57,7 +57,7 @@ class ClassStub
         $index = 0;
         $escapedFields = Arrays::map($fields, function ($field) use (&$index) {
             $field = "'$field'";
-            if (($index > 0) && ($index % self::FIELDS_COUNT_IN_LINE) == 0) {
+            if (($index > 0) && ($index % ClassStub::FIELDS_COUNT_IN_LINE) == 0) {
                 $field = "\n\t\t\t$field";
             }
             $index++;
