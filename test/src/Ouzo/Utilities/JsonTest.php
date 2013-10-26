@@ -1,4 +1,5 @@
 <?php
+use Ouzo\Tests\ArrayAssert;
 use Ouzo\Utilities\Json;
 
 class JsonTest extends PHPUnit_Framework_TestCase
@@ -49,5 +50,20 @@ class JsonTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertTrue($isJson);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDecodeJsonAsArray()
+    {
+        //given
+        $json = '{"name":"john","id":123,"ip":"127.0.0.1"}';
+
+        //when
+        $decoded = Json::decode($json, true);
+
+        //then
+        ArrayAssert::that($decoded)->hasSize(3)->contains('john', '123', '127.0.0.1');
     }
 }

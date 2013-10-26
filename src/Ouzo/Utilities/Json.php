@@ -3,9 +3,9 @@ namespace Ouzo\Utilities;
 
 class Json
 {
-    public static function decode($string)
+    public static function decode($string, $asArray = false)
     {
-        return json_decode($string);
+        return json_decode($string, $asArray);
     }
 
     public static function lastError()
