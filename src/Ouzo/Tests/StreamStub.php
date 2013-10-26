@@ -54,5 +54,12 @@ class StreamStub
     public static function unregister()
     {
         stream_wrapper_unregister(self::$streamName);
+        self::_reset();
+    }
+
+    private static function _reset()
+    {
+        static::$body = '';
+        static::$position = 0;
     }
 }
