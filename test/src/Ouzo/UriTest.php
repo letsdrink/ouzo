@@ -223,6 +223,23 @@ class UriTest extends PHPUnit_Framework_TestCase
         StreamStub::unregister();
     }
 
+    /**
+     * @test
+     */
+    public function shouldCorrectParseJsonInStream()
+    {
+        //given
+        StreamStub::register('json');
+        StreamStub::$body = '{"name":"jonh","id":123,"ip":"127.0.0.1"}';
+
+        //when
+        $parameters = Uri::getRequestParameters('json://input');
+
+        //then
+        ArrayAssert::that($parameters)->hasSize(3);
+        StreamStub::unregister();
+    }
+
     private function _path($path)
     {
         $this->_pathProviderMock->expects($this->any())
