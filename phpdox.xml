@@ -1,5 +1,5 @@
 <phpdox xmlns="http://phpdox.de/config">
- <project name="Ouzo" source="lib/" workdir="build/phpdox">
+ <project name="Ouzo" source="src/" workdir="build/phpdox">
   <collector publiconly="false">
    <include mask="*.php" />
   </collector>
