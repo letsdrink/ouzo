@@ -9,6 +9,15 @@ use Ouzo\Tests\Assert;
 class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
 
+    public function setUp() {
+        $driver = Config::getValue('db', 'driver');
+        if ($driver == 'sqlite') {
+            $this->markTestSkipped('This test is not for SQLite database.');
+        }
+
+        parent::setUp();
+    }
+
     /**
      * @test
      */

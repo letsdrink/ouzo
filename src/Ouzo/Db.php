@@ -30,8 +30,9 @@ class Db
     {
         if ($loadDefault) {
             $configDb = Config::getValue('db');
-            if (!empty($configDb))
+            if (!empty($configDb)) {
                 $this->connectDb($configDb);
+            }
         }
     }
 
@@ -45,9 +46,8 @@ class Db
 
     public function connectDb($params = array())
     {
-        $dsn = $params['driver'] . ':host=' . $params['host'] . ';port=' . $params['port'] . ';dbname=' . $params['dbname'] . ';user=' . $params['user'] . ';password=' . $params['pass'];
-        $dsn .= Arrays::getValue($params, 'charset') ? ';charset=' . Arrays::getValue($params, 'charset') : '';
-        $this->_dbHandle = new PDO($dsn, $params['user'], $params['pass']);
+        $dsn = $this->_buildDsn($params);
+        $this->_dbHandle = new PDO($dsn);
         return $this;
     }
 
@@ -170,5 +170,15 @@ class Db
     {
         $errorInfo = $this->_dbHandle->errorInfo();
         return $errorInfo[2];
+    }
+
+    private function _buildDsn($params)
+    {
+        $dsn = Arrays::getValue($params, 'dsn');
+        if (!$dsn) {
+            $dsn = $params['driver'] . ':host=' . $params['host'] . ';port=' . $params['port'] . ';dbname=' . $params['dbname'] . ';user=' . $params['user'] . ';password=' . $params['pass'];
+            $dsn .= Arrays::getValue($params, 'charset') ? ';charset=' . Arrays::getValue($params, 'charset') : '';
+        }
+        return $dsn;
     }
 }
