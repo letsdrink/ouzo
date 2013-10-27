@@ -46,8 +46,13 @@ class Db
 
     public function connectDb($params = array())
     {
-        $dsn = $this->_buildDsn($params);
-        $this->_dbHandle = new PDO($dsn);
+        $dsn = Arrays::getValue($params, 'dsn');
+        if ($dsn) {
+            $this->_dbHandle = new PDO($dsn);
+        } else {
+            $dsn = $this->_buildDsn($params);
+            $this->_dbHandle = new PDO($dsn, $params['user'], $params['pass']);
+        }
         return $this;
     }
 
@@ -174,11 +179,7 @@ class Db
 
     private function _buildDsn($params)
     {
-        $dsn = Arrays::getValue($params, 'dsn');
-        if (!$dsn) {
-            $dsn = $params['driver'] . ':host=' . $params['host'] . ';port=' . $params['port'] . ';dbname=' . $params['dbname'] . ';user=' . $params['user'] . ';password=' . $params['pass'];
-            $dsn .= Arrays::getValue($params, 'charset') ? ';charset=' . Arrays::getValue($params, 'charset') : '';
-        }
-        return $dsn;
+        $dsn = $params['driver'] . ':host=' . $params['host'] . ';port=' . $params['port'] . ';dbname=' . $params['dbname'] . ';user=' . $params['user'] . ';password=' . $params['pass'];
+        return $dsn . (Arrays::getValue($params, 'charset') ? ';charset=' . Arrays::getValue($params, 'charset') : '');
     }
 }
