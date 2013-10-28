@@ -7,6 +7,10 @@ if ($db == 'mysql') {
     $config['db']['driver'] = 'mysql';
     $config['db']['host'] = '127.0.0.1';
     $config['db']['port'] = '3306';
+} else if ($db == 'sqlite') {
+    $config['sql_dialect'] = '\\Ouzo\\Db\\Dialect\\Sqlite3Dialect';
+    $config['db']['driver'] = 'sqlite';
+    $config['db']['dsn'] = 'sqlite:ouzo_test';
 } else {
     $config['sql_dialect'] = '\\Ouzo\\Db\\Dialect\\PostgresDialect';
     $config['db']['user'] = 'postgres';

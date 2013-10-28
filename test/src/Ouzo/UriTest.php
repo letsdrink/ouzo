@@ -1,5 +1,7 @@
 <?php
 use Ouzo\Config;
+use Ouzo\Tests\ArrayAssert;
+use Ouzo\Tests\StreamStub;
 use Ouzo\Uri;
 
 class UriTest extends PHPUnit_Framework_TestCase
@@ -202,6 +204,40 @@ class UriTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals($paramsExpected, $params);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCorrectParseStream()
+    {
+        //given
+        StreamStub::register('uri');
+        StreamStub::$body = 'album%5Bdigital_photos%5D=false&name=john&phones%5B%5D=123&phones%5B%5D=456&phones%5B%5D=789&colors%5Bfloor%5D=red&colors%5Bdoors%5D=blue';
+
+        //when
+        $parameters = Uri::getRequestParameters('uri://input');
+
+        //then
+        ArrayAssert::that($parameters)->hasSize(4);
+        StreamStub::unregister();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCorrectParseJsonInStream()
+    {
+        //given
+        StreamStub::register('json');
+        StreamStub::$body = '{"name":"jonh","id":123,"ip":"127.0.0.1"}';
+
+        //when
+        $parameters = Uri::getRequestParameters('json://input');
+
+        //then
+        ArrayAssert::that($parameters)->hasSize(3);
+        StreamStub::unregister();
     }
 
     private function _path($path)

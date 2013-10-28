@@ -3,6 +3,7 @@ namespace Ouzo;
 
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Json;
 use Ouzo\Utilities\Strings;
 
 class Uri
@@ -107,10 +108,18 @@ class Uri
         return Arrays::getValue($_POST, '_method', $_SERVER['REQUEST_METHOD']);
     }
 
-    public static function getRequestParameters()
+    public static function getRequestParameters($stream = 'php://input')
     {
-        $parameters = null;
-        parse_str(file_get_contents("php://input"), $parameters);
+        $parameters = self::_parseRequest(stream_get_contents(fopen($stream, 'r')));
         return Arrays::toArray($parameters);
+    }
+
+    private static function _parseRequest($content)
+    {
+        if (Json::isJson($content)) {
+            return Json::decode($content, true);
+        }
+        parse_str($content, $parameters);
+        return $parameters;
     }
 }

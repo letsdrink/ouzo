@@ -84,7 +84,7 @@ class QueryExecutor
 
             Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
 
-            if (!$obj->_preparedQuery->execute()) {
+            if (!$obj->_preparedQuery || !$obj->_preparedQuery->execute()) {
                 throw new DbException('Exception: query: ' . $humanizedSql . ' with params: (' . implode(', ', $obj->getBoundValues()) . ') failed: ' . $obj->lastErrorMessage());
             }
             return $obj->_preparedQuery->$function($obj->_fetchStyle);
