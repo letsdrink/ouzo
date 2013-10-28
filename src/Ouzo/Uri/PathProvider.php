@@ -1,10 +1,12 @@
 <?php
 namespace Ouzo\Uri;
 
+use Ouzo\Utilities\Arrays;
+
 class PathProvider
 {
     public function getPath()
     {
-        return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+        return Arrays::getValue($_SERVER, 'REQUEST_URI', '/');
     }
 }
