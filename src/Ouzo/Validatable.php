@@ -87,4 +87,12 @@ class Validatable
             $this->_errorFields[] = $errorField;
         }
     }
+
+    public function validateNotEmpty($value, $errorMessage, $errorField = null)
+    {
+        if (empty($value)) {
+            $this->_errors[] = $errorMessage;
+            $this->_errorFields[] = $errorField;
+        }
+    }
 }

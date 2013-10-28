@@ -250,4 +250,36 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
         Assert::thatArray($validatable->getErrors())->containsOnly('error1', 'error2');
         Assert::thatArray($validatable->getErrorFields())->containsOnly('errorField1', 'errorField2');
     }
+
+    /**
+     * @test
+     */
+    public function shouldValidateIsEmptyObject()
+    {
+        //given
+        $object = '';
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateNotEmpty($object, 'error1');
+
+        //then
+        Assert::thatArray($validatable->getErrors())->containsOnly('error1');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotValidateWhenPassObject()
+    {
+        //given
+        $object = new stdClass();
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateNotEmpty($object, 'error1');
+
+        //then
+        $this->assertEmpty($validatable->getErrors());
+    }
 }
