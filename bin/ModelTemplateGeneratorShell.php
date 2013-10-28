@@ -18,11 +18,13 @@ class ModelTemplateGeneratorShell extends Shell
     public function main()
     {
         $this->out('Model generator');
-        $this->out('');
-        $this->out('Generate model class template for specified table.');
-        $this->out('');
-        $this->out('parameters: -t=table_name [-c=ClassName] [-f=/path/to/file.php]');
-        $this->out('');
+        if (!$this->getArgument('t')) {
+            $this->out('');
+            $this->out('Generate model class template for specified table.');
+            $this->out('');
+            $this->out('parameters: -t=table_name [-c=ClassName] [-f=/path/to/file.php]');
+            $this->out('');
+        }
         $this->_generateModel();
     }
 
@@ -41,9 +43,15 @@ class ModelTemplateGeneratorShell extends Shell
             $this->fail("Specify table name e.g. -t=t_user");
         try {
             $modelGenerator = new Generator($tableName, $className);
-            $this->out($modelGenerator->getTemplateClassName());
-            if ($fileName)
+            $this->out('---------------------------------');
+            $this->out('Class name: ' . $modelGenerator->getTemplateClassName());
+            $this->out('---------------------------------');
+            $this->out($modelGenerator->templateContents());
+            $this->out('---------------------------------');
+            if ($fileName){
+                $this->out("Saving class to file: '$fileName'");
                 $modelGenerator->saveToFile($fileName);
+            }
         } catch (GeneratorException $e) {
             $this->fail($e->getMessage());
         }
