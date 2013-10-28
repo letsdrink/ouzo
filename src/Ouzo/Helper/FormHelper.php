@@ -313,7 +313,12 @@ function _prepareAttributes(array $attributes = array())
     return trim($attr);
 }
 
-function formFor($object, $objectName = null, array $options = array('auto_labels' => true))
+function formFor($model)
 {
-    return $options['auto_labels'] ? new AutoLabelModelFromBuilder($object, $objectName) : new ModelFormBuilder($object);
+    return new ModelFormBuilder($model);
+}
+
+function formForAutoLabel($model, $objectName = null)
+{
+    return new AutoLabelModelFromBuilder($model, $objectName);
 }
