@@ -108,9 +108,7 @@ class Config
 
     private function _overrideProperty($keys, $value)
     {
-        if (!is_array($keys)) {
-            $keys = array($keys);
-        }
+        $keys = Arrays::toArray($keys);
         $config = & $this->_config;
         foreach ($keys as $key) {
             $config = & $config[$key];
