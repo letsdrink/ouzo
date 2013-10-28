@@ -50,46 +50,14 @@ class Route
 
     public static function resource($controller)
     {
-        self::_addRoute('GET',
-            self::_createRouteUri($controller),
-            self::_createRouteAction($controller, 'index'),
-            true, array(), true
-        );
-        self::_addRoute('GET',
-            self::_createRouteUri($controller, '/fresh'),
-            self::_createRouteAction($controller, 'fresh'),
-            true, array(), true
-        );
-        self::_addRoute('GET',
-            self::_createRouteUri($controller, '/:id/edit'),
-            self::_createRouteAction($controller, 'edit'),
-            true, array(), true
-        );
-        self::_addRoute('GET',
-            self::_createRouteUri($controller, '/:id'),
-            self::_createRouteAction($controller, 'show'),
-            true, array(), true
-        );
-        self::_addRoute('POST',
-            self::_createRouteUri($controller),
-            self::_createRouteAction($controller, 'create'),
-            true, array(), true
-        );
-        self::_addRoute('PUT',
-            self::_createRouteUri($controller, '/:id'),
-            self::_createRouteAction($controller, 'update'),
-            true, array(), true
-        );
-        self::_addRoute('PATCH',
-            self::_createRouteUri($controller, '/:id'),
-            self::_createRouteAction($controller, 'update'),
-            true, array(), true
-        );
-        self::_addRoute('DELETE',
-            self::_createRouteUri($controller, '/:id'),
-            self::_createRouteAction($controller, 'destroy'),
-            true, array(), true
-        );
+        self::_addResourceRoute($controller, 'GET', '', 'index');
+        self::_addResourceRoute($controller, 'GET', '/fresh', 'fresh');
+        self::_addResourceRoute($controller, 'GET', '/:id/edit', 'edit');
+        self::_addResourceRoute($controller, 'GET', '/:id', 'show');
+        self::_addResourceRoute($controller, 'POST', '', 'create');
+        self::_addResourceRoute($controller, 'PUT', '/:id', 'update');
+        self::_addResourceRoute($controller, 'PATCH', '/:id', 'update');
+        self::_addResourceRoute($controller, 'DELETE', '/:id', 'destroy');
     }
 
     public static function allowAll($uri, $controller, $options = array())
@@ -141,5 +109,14 @@ class Route
         return Arrays::filter(self::getRoutes(), function (RouteRule $route) use ($controller) {
             return Strings::equalsIgnoreCase($route->getController(), $controller);
         });
+    }
+
+    private static function _addResourceRoute($controller, $method, $uriSuffix, $action)
+    {
+        self::_addRoute($method,
+            self::_createRouteUri($controller, $uriSuffix),
+            self::_createRouteAction($controller, $action),
+            true, array(), true
+        );
     }
 }
