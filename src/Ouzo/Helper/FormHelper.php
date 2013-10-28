@@ -1,5 +1,4 @@
 <?php
-use Ouzo\Helper\AutoLabelModelFromBuilder;
 use Ouzo\Helper\ModelFormBuilder;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
@@ -318,7 +317,7 @@ function formFor($model)
     return new ModelFormBuilder($model);
 }
 
-function formForAutoLabel($model, $objectName = null)
+function formForCustomBuilder($formBuilder)
 {
-    return new AutoLabelModelFromBuilder($model, $objectName);
+    return $formBuilder;
 }
