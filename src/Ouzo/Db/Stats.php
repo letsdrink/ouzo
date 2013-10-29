@@ -2,6 +2,8 @@
 namespace Ouzo\Db;
 
 use Ouzo\Config;
+use Ouzo\Uri;
+use Ouzo\Utilities\Arrays;
 
 class Stats
 {
@@ -33,7 +35,8 @@ class Stats
             $result = $function();
             $time = number_format(microtime(true) - $startTime, 4, '.', '');
 
-            $_SESSION['stats_queries'][] = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+            $uri = new Uri();
+            $_SESSION['stats_queries'][$uri->getPathWithoutPrefix()][] = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
 
             return $result;
         }
@@ -43,6 +46,7 @@ class Stats
     public static function getTotalTime()
     {
         return array_reduce(self::queries(), function ($sum, $value) {
+            $value = Arrays::flatten($value);
             return $sum + $value['time'];
         });
     }
