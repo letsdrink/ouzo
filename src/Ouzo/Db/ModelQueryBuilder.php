@@ -13,14 +13,14 @@ class ModelQueryBuilder
     private $_db;
     private $_model;
     /**
-     * @var Relation[]
+     * @var ModelJoin[]
      */
-    private $_joinedRelations = array();
+    private $_joinedModels = array();
     private $_transformers;
     private $_query;
     private $_selectModel = true;
 
-    public function __construct(Model $model, $db = null)
+    public function __construct(Model $model, $db = null, $alias = null)
     {
         $this->_db = $db ? $db : Db::getInstance();
         $this->_model = $model;
@@ -28,14 +28,19 @@ class ModelQueryBuilder
 
         $this->_query = new Query();
         $this->_query->table = $model->getTableName();
+        $this->_query->aliasTable = $alias;
         $this->_query->selectColumns = array();
-        $this->selectModelColumns($model);
+        $this->selectModelColumns($model, $this->getModelAliasOrTable());
     }
 
-    private function selectModelColumns(Model $metaInstance)
+    private function getModelAliasOrTable()
     {
-        $tableName = $metaInstance->getTableName();
-        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $metaInstance->_getFields(), $tableName);
+        return $this->_query->aliasTable ?: $this->_model->getTableName();
+    }
+
+    private function selectModelColumns(Model $metaInstance, $alias)
+    {
+        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$alias}_", $metaInstance->_getFields(), $alias);
     }
 
     /**
@@ -112,23 +117,23 @@ class ModelQueryBuilder
     {
         $models = array();
         foreach ($results as $row) {
-            $model = $this->extractModelFromResult($this->_model, $row);
+            $model = $this->extractModelFromResult($this->_model, $this->getModelAliasOrTable(), $row);
             $models[] = $model;
 
-            foreach ($this->_joinedRelations as $joinedRelation) {
-                $joinDestinationField = $joinedRelation->getName();
-                if ($joinDestinationField && !$joinedRelation->isCollection()) {
-                    $joinedModel = $this->extractModelFromResult($joinedRelation->getRelationModelObject(), $row);
-                    Objects::setValueRecursively($model, $joinDestinationField, $joinedModel);
+            foreach ($this->_joinedModels as $joinedModel) {
+                if ($joinedModel->storeField()) {
+                    $instance = $this->extractModelFromResult($joinedModel->getModelObject(), $joinedModel->alias(), $row);
+                    Objects::setValueRecursively($model, $joinedModel->destinationField(), $instance);
                 }
             }
         }
         return $this->_transform($models);
     }
 
-    private function extractModelFromResult(Model $metaInstance, array $result)
+
+    private function extractModelFromResult(Model $metaInstance, $alias, array $result)
     {
-        $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$metaInstance->getTableName()}_");
+        $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$alias}_");
         if (Arrays::any($attributes, Functions::notEmpty())) {
             return $metaInstance->newInstance($attributes);
         }
@@ -148,52 +153,39 @@ class ModelQueryBuilder
         }, $objects);
     }
 
-    private function extractRelations($relationSelector)
-    {
-        $relations = array();
-        if ($relationSelector instanceof Relation) {
-            $relations[] = $relationSelector;
-        } else {
-            $relationNames = explode('->', $relationSelector);
-            $model = $this->_model;
-            foreach ($relationNames as $name) {
-                $relation = $model->getRelation($name);
-                $relations[] = $relation;
-                $model = $relation->getRelationModelObject();
-            }
-        }
-        return $relations;
-    }
-
     /**
      * @return ModelQueryBuilder
      */
-    public function join($relationName)
+    public function join($relationName, $aliases = null)
     {
-        $relations = $this->extractRelations($relationName);
+        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationName);
+        $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
 
         $field = '';
-        $model = $this->_model;
-        foreach ($relations as $relation) {
+        $table = $this->getModelAliasOrTable();
+        foreach ($relationWithAliases as $relationWithAlias) {
+            $relation = $relationWithAlias->relation;
+            $alias = $relationWithAlias->alias;
+
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
             $relation = $relation->withName($field);
-            $this->addJoin($model, $relation);
-            $model = $relation->getRelationModelObject();
+            $this->addJoin($table, $relation, $alias);
+            $table = $alias?: $relation->getRelationModelObject()->getTableName();
         }
 
         return $this;
     }
 
-    private function addJoin(Model $model, Relation $relation)
+    private function addJoin($table, Relation $relation, $alias)
     {
         $joinedModel = $relation->getRelationModelObject();
         $joinTable = $joinedModel->getTableName();
         $joinKey = $relation->getForeignKey();
         $idName = $relation->getLocalKey();
 
-        $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $model->getTableName()));
-        $this->selectModelColumns($joinedModel);
-        $this->_joinedRelations[] = $relation;
+        $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $table, $alias));
+        $this->selectModelColumns($joinedModel, $alias? :$joinTable);
+        $this->_joinedModels[] = new ModelJoin($relation, $alias);
     }
 
     /**
@@ -201,7 +193,7 @@ class ModelQueryBuilder
      */
     public function with($relationName)
     {
-        $relations = $this->extractRelations($relationName);
+        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationName);
         $field = '';
 
         foreach ($relations as $relation) {

@@ -193,7 +193,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($cars, self::getNoLazy($fetchedProduct, 'category'));
     }
 
-    static function getNoLazy(Model $model, $attribute) {
+    static function getNoLazy(Model $model, $attribute)
+    {
         return Arrays::getValue($model->attributes(), $attribute);
     }
 
@@ -348,7 +349,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     {
         //given
         $product = Product::create(array('name' => 'sony'));
-        $orderProduct= OrderProduct::create(array('id_product' => $product->getId()));
+        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
 
         //when
         $fetched = Product::where()->with('orderProduct')->fetchAll();
@@ -757,4 +758,56 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $query->fetch());
     }
 
+    /**
+     * @test
+     */
+    public function shouldAliasTables()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        Product::create(array('name' => 'a', 'id_category' => $category->getId()));
+
+        //when
+        $product = Product::alias('p')
+            ->join('category', 'c')
+            ->where("p.name = 'a' and c.name = 'phones'")
+            ->fetch();
+
+        //then
+        $this->assertNotNull($product);
+        $this->assertEquals($category, self::getNoLazy($product, 'category'));
+        Assert::thatArray($product->attributes())->containsKeyAndValue(array(
+            'name' => 'a',
+            'id_category' => $category->getId()
+        ));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAliasTablesInNestedJoin()
+    {
+        //given
+        $cars = Category::create(array('name' => 'cars'));
+        $product = Product::create(array('name' => 'Reno', 'id_category' => $cars->getId()));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        //SELECT op.*, p.*, c.* FROM order_products AS op
+        //LEFT JOIN products AS p ON p.id = op.id_product LEFT JOIN
+        //categories AS c ON c.id = op.id_category WHERE (op.id_order = ? AND p.name = ? AND c.name = ?)
+
+        //when
+        $orderProduct = OrderProduct::alias('op')
+            ->join('product->category', array('p', 'c'))
+            ->where('op.id_order is null')
+            ->where(array(
+                'p.name' => 'Reno',
+                'c.name' => 'cars'))
+            ->fetch();
+
+        //then
+        $fetchedProduct = self::getNoLazy($orderProduct, 'product');
+        $this->assertEquals($product->getId(), $fetchedProduct->getId());
+        $this->assertEquals($cars, self::getNoLazy($fetchedProduct, 'category'));
+    }
 }

@@ -283,10 +283,10 @@ class Model extends Validatable
     /**
      * @return ModelQueryBuilder
      */
-    static public function join($relation)
+    static public function join($relation, $alias = null)
     {
         $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
-        return $modelQueryBuilder->join($relation);
+        return $modelQueryBuilder->join($relation, $alias);
     }
 
     /**
@@ -302,6 +302,12 @@ class Model extends Validatable
     static public function count($where = null, $bindValues = null)
     {
         return static::metaInstance()->where($where, $bindValues)->count();
+    }
+
+    public static function alias($alias)
+    {
+        $obj = static::metaInstance();
+        return  new ModelQueryBuilder($obj, $obj->_db, $alias);
     }
 
     /**
