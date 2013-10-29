@@ -1,7 +1,6 @@
 <?php
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
-use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
 
 class RouteTest extends PHPUnit_Framework_TestCase

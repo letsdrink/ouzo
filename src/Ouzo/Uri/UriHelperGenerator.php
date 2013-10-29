@@ -47,13 +47,29 @@ class UriHelperGenerator
         $uriWithVariables = str_replace(':', '$', $uri);
         $parametersString = implode(', ', $parameters);
 
+        $ifStatement = $this->_createIf($parameters);
+
         $function = <<<FUNCTION
 function $name($parametersString)
 {
-    return url("$uriWithVariables");
+    {$ifStatement}return url("$uriWithVariables");
 }\n\n
 FUNCTION;
         return $name ? $function : '';
+    }
+
+    private function _createIf($parameters)
+    {
+        if ($parameters) {
+            $condition = '!' . implode(' && !', $parameters);
+            $if = <<<IF
+if ($condition) {
+        throw new \InvalidArgumentException();
+    }\n\t
+IF;
+            return $if;
+        }
+        return '';
     }
 
     private function _prepareParameters($uri)
