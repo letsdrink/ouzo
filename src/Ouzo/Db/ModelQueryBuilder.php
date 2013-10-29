@@ -140,11 +140,19 @@ class ModelQueryBuilder
         return null;
     }
 
+    /**
+     * Issues "delete from ... where ..." sql command.
+     * Note that overridden Model::delete is not called.
+     *
+     */
     public function deleteAll()
     {
         return QueryExecutor::prepare($this->_db, $this->_query)->delete();
     }
 
+    /**
+     * Calls Model::delete method for each matching object
+     */
     public function deleteEach()
     {
         $objects = $this->fetchAll();
@@ -154,39 +162,35 @@ class ModelQueryBuilder
     }
 
     /**
+     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
      * @return ModelQueryBuilder
      */
-    public function join($relationName, $aliases = null)
+    public function join($relationSelector, $aliases = null)
     {
-        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationName);
+        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
         $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
-
-        $field = '';
-        $table = $this->getModelAliasOrTable();
-        foreach ($relationWithAliases as $relationWithAlias) {
-            $relation = $relationWithAlias->relation;
-            $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
-            $modelJoin = new ModelJoin($field, $relation, $relationWithAlias->alias);
-            $this->addJoin($table, $modelJoin);
-            $table = $modelJoin->alias();
+        $modelJoins = ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases);
+        foreach ($modelJoins as $modelJoin) {
+            $this->addJoin($modelJoin);
         }
-
         return $this;
     }
 
-    private function addJoin($table, ModelJoin $modelJoin)
+    private function addJoin(ModelJoin $modelJoin)
     {
-        $this->_query->addJoin($modelJoin->asJoinClause($table));
+        $this->_query->addJoin($modelJoin->asJoinClause());
         $this->_joinedModels[] = $modelJoin;
         $this->selectModelColumns($modelJoin->getModelObject(), $modelJoin->alias());
     }
 
     /**
+     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @return ModelQueryBuilder
      */
-    public function with($relationName)
+    public function with($relationSelector)
     {
-        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationName);
+        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
         $field = '';
 
         foreach ($relations as $relation) {
@@ -206,7 +210,7 @@ class ModelQueryBuilder
     public function select($columns)
     {
         $this->_selectModel = false;
-        $this->_query->selectColumns = is_array($columns) ? $columns : array($columns);
+        $this->_query->selectColumns = Arrays::toArray($columns);
         $this->_query->selectType = PDO::FETCH_NUM;
         return $this;
     }

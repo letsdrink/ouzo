@@ -33,10 +33,25 @@ class ModelQueryBuilderHelper
         }
 
         $relationWithAliases = array();
-        foreach($relations as $index => $relation) {
+        foreach ($relations as $index => $relation) {
             $alias = Arrays::getValue($aliases, $index, Arrays::getValue($aliases, $relation->getName()));
             $relationWithAliases[] = new RelationWithAlias($relation, $alias);
         }
         return $relationWithAliases;
+    }
+
+    public static function createModelJoins($fromTable, $relationWithAliases)
+    {
+        $result = array();
+        $field = '';
+        $table = $fromTable;
+        foreach ($relationWithAliases as $relationWithAlias) {
+            $relation = $relationWithAlias->relation;
+            $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
+            $modelJoin = new ModelJoin($field, $table, $relation, $relationWithAlias->alias);
+            $table = $modelJoin->alias();
+            $result[] = $modelJoin;
+        }
+        return $result;
     }
 } 
