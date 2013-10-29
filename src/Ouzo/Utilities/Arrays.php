@@ -112,8 +112,12 @@ class Arrays
     static function flatten(array $elements)
     {
         $return = array();
-        array_walk_recursive($elements, function ($a) use (&$return) {
-            $return[] = $a;
+        array_walk_recursive($elements, function ($item, $key) use (&$return) {
+            if (is_string($key)) {
+                $return[$key] = $item;
+            } else {
+                $return[] = $item;
+            }
         });
         return $return;
     }

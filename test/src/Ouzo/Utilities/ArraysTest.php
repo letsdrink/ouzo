@@ -458,6 +458,27 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldFlattenAnArrayWhenStringIsAKey()
+    {
+        //given
+        $array = array(
+            'names' => array(
+                'first' => 'john',
+                'second' => 'peter',
+                'third' => 'bill'
+            )
+        );
+
+        //when
+        $flatten = Arrays::flatten($array);
+
+        //then
+        Assert::thatArray($flatten)->hasSize(3)->containsKeyAndValue(array('first' => 'john', 'second' => 'peter', 'third' => 'bill'));
+    }
+
+    /**
+     * @test
+     */
     public function shouldCheckIsKeyExists()
     {
         //given
