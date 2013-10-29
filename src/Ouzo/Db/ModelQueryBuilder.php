@@ -165,27 +165,20 @@ class ModelQueryBuilder
         $table = $this->getModelAliasOrTable();
         foreach ($relationWithAliases as $relationWithAlias) {
             $relation = $relationWithAlias->relation;
-            $alias = $relationWithAlias->alias;
-
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
-            $relation = $relation->withName($field);
-            $this->addJoin($table, $relation, $alias);
-            $table = $alias?: $relation->getRelationModelObject()->getTableName();
+            $modelJoin = new ModelJoin($field, $relation, $relationWithAlias->alias);
+            $this->addJoin($table, $modelJoin);
+            $table = $modelJoin->alias();
         }
 
         return $this;
     }
 
-    private function addJoin($table, Relation $relation, $alias)
+    private function addJoin($table, ModelJoin $modelJoin)
     {
-        $joinedModel = $relation->getRelationModelObject();
-        $joinTable = $joinedModel->getTableName();
-        $joinKey = $relation->getForeignKey();
-        $idName = $relation->getLocalKey();
-
-        $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $table, $alias));
-        $this->selectModelColumns($joinedModel, $alias? :$joinTable);
-        $this->_joinedModels[] = new ModelJoin($relation, $alias);
+        $this->_query->addJoin($modelJoin->asJoinClause($table));
+        $this->_joinedModels[] = $modelJoin;
+        $this->selectModelColumns($modelJoin->getModelObject(), $modelJoin->alias());
     }
 
     /**

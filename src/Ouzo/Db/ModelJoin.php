@@ -6,11 +6,13 @@ class ModelJoin
 {
     private $relation;
     private $alias;
+    private $destinationField;
 
-    function __construct($relation, $alias)
+    function __construct($destinationField, $relation, $alias)
     {
         $this->relation = $relation;
         $this->alias = $alias;
+        $this->destinationField = $destinationField;
     }
 
     function storeField()
@@ -20,7 +22,7 @@ class ModelJoin
 
     function destinationField()
     {
-        return $this->relation->getName();
+        return $this->destinationField;
     }
 
     public function alias()
@@ -33,4 +35,12 @@ class ModelJoin
         return $this->relation->getRelationModelObject();
     }
 
+    public function asJoinClause($fromTable)
+    {
+        $joinedModel = $this->relation->getRelationModelObject();
+        $joinTable = $joinedModel->getTableName();
+        $joinKey = $this->relation->getForeignKey();
+        $idName = $this->relation->getLocalKey();
+        return new JoinClause($joinTable, $joinKey, $idName, $fromTable, $this->alias);
+    }
 }
