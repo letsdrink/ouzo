@@ -53,7 +53,14 @@ class Uri
 
     public function getPath()
     {
-        return parse_url($this->_pathProvider->getPath(), PHP_URL_PATH);
+        $parseUrl = parse_url($this->_pathProvider->getPath(), PHP_URL_PATH) ? : '/';
+        $parseUrl = $this->_removeDuplicatedSlashes($parseUrl);
+        return $parseUrl;
+    }
+
+    private function _removeDuplicatedSlashes($parseUrl)
+    {
+        return preg_replace('#/{2,}#', '/', $parseUrl);
     }
 
     public function getPathWithoutPrefix()

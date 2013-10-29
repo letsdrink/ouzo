@@ -91,11 +91,14 @@ FUNCT;
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<'FUNCT'
+        $expected = <<<FUNCT
 <?php
-function showUsersPath($id, $call_id)
+function showUsersPath(\$id, \$call_id)
 {
-    return url("/users/show/id/$id/call_id/$call_id");
+    if (!\$id && !\$call_id) {
+        throw new \InvalidArgumentException();
+    }
+\treturn url("/users/show/id/\$id/call_id/\$call_id");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -135,7 +138,7 @@ FUNCT;
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<'FUNCT'
+        $expected = <<<FUNCT
 <?php
 function usersPath()
 {
@@ -147,14 +150,20 @@ function freshUserPath()
     return url("/users/fresh");
 }
 
-function editUserPath($id)
+function editUserPath(\$id)
 {
-    return url("/users/$id/edit");
+    if (!\$id) {
+        throw new \InvalidArgumentException();
+    }
+\treturn url("/users/\$id/edit");
 }
 
-function userPath($id)
+function userPath(\$id)
 {
-    return url("/users/$id");
+    if (!\$id) {
+        throw new \InvalidArgumentException();
+    }
+\treturn url("/users/\$id");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);

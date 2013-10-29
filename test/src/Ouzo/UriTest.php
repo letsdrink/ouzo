@@ -240,6 +240,31 @@ class UriTest extends PHPUnit_Framework_TestCase
         StreamStub::unregister();
     }
 
+    /**
+     * @test
+     * @dataProvider malformedSlashes
+     */
+    public function shouldReplaceTwoBackSlashes($broken, $good)
+    {
+        //given
+        $this->_path(Config::getPrefixSystem() . $broken);
+
+        //when
+        $path = $this->_uri->getPathWithoutPrefix();
+
+        //then
+        $this->assertEquals($good, $path);
+    }
+
+    public function malformedSlashes()
+    {
+        return array(
+            array('/users//index', '/users/index'),
+            array('///', '/'),
+            array('/actions//', '/actions/')
+        );
+    }
+
     private function _path($path)
     {
         $this->_pathProviderMock->expects($this->any())
