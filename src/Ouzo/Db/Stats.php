@@ -2,6 +2,7 @@
 namespace Ouzo\Db;
 
 use Ouzo\Config;
+use Ouzo\FrontController;
 use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
 
@@ -36,7 +37,8 @@ class Stats
             $time = number_format(microtime(true) - $startTime, 4, '.', '');
 
             $uri = new Uri();
-            $_SESSION['stats_queries'][$uri->getPathWithoutPrefix()][] = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+            $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
+            $_SESSION['stats_queries'][$requestDetails][] = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
 
             return $result;
         }

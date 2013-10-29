@@ -1,6 +1,7 @@
 <?php
 use Ouzo\Db\Stats;
 use Ouzo\Tests\ArrayAssert;
+use Ouzo\Utilities\Arrays;
 
 class StatsTest extends PHPUnit_Framework_TestCase
 {
@@ -25,10 +26,10 @@ class StatsTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("result", $result);
         $this->assertEquals(1, Stats::getNumberOfQueries());
 
-        $queries = Stats::queries();
-        $this->assertEquals(Stats::getTotalTime(), $queries['/'][0]['time']);
-        $this->assertEquals('SELECT * FROM table WHERE id = ?', $queries['/'][0]['query']);
-        $this->assertEquals('10', $queries['/'][0]['params']);
+        $queries = Arrays::first(Stats::queries());
+        $this->assertEquals(Stats::getTotalTime(), $queries[0]['time']);
+        $this->assertEquals('SELECT * FROM table WHERE id = ?', $queries[0]['query']);
+        $this->assertEquals('10', $queries[0]['params']);
     }
 
     /**
