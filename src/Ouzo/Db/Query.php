@@ -68,9 +68,9 @@ class Query
         return $this;
     }
 
-    function join($joinTable, $joinKey, $idName)
+    function join($joinTable, $joinKey, $idName, $alias = null)
     {
-        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->table);
+        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable?: $this->table, $alias);
         return $this;
     }
 

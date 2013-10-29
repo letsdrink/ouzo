@@ -76,4 +76,10 @@ class Relation
     {
         return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection);
     }
+
+    function __toString()
+    {
+        return "Relation {$this->name} {$this->class} {$this->localKey} {$this->foreignKey}";
+    }
+
 }
