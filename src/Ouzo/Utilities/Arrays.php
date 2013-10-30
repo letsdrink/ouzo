@@ -89,9 +89,9 @@ class Arrays
      *      'products' => array(
      *          'cheese',
      *          array(
- *                  'natural' => 'milk',
+     *              'natural' => 'milk',
      *              'brie'
- *              )
+     *          )
      *      )
      * );
      * $flatten = Arrays::flatten($array);
