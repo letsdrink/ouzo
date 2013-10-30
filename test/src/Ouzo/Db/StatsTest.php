@@ -63,7 +63,6 @@ class StatsTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(2, Stats::getRequestNumberOfQueries('/request1#'));
-        $this->assertEquals(0.1602, Stats::getRequestTotalTime('/request1#'));
     }
 
     private function _createTraceRequest($request)
