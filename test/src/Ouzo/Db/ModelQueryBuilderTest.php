@@ -810,4 +810,27 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product->getId(), $fetchedProduct->getId());
         $this->assertEquals($cars, self::getNoLazy($fetchedProduct, 'category'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldDoSelfJoinWithConditions()
+    {
+        //given
+        $vehicles = Category::create(array('name' => 'vehicles'));
+        $sportCars = Category::create(array('name' => 'sport cars', 'id_parent' => $vehicles->id));
+        $bmw = Category::create(array('name' => 'bmw', 'id_parent' => $sportCars->id));
+
+        //when
+        $category = Category::alias('c')
+            ->join('parent->parent', array('p1', 'p2'))
+            ->where(array('c.name' => 'bmw', 'p1.name' => 'sport cars', 'p2.name' => 'vehicles'))
+            ->fetch();
+
+        //then
+        $this->assertEquals($bmw->id, $category->id);
+        $parent = self::getNoLazy($category, 'parent');
+        $this->assertEquals($sportCars->id, $parent->id);
+        $this->assertEquals($vehicles, self::getNoLazy($parent, 'parent'));
+     }
 }
