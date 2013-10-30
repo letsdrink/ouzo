@@ -88,7 +88,10 @@ class Arrays
      *      ),
      *      'products' => array(
      *          'cheese',
-     *          array('milk', 'brie')
+     *          array(
+ *                  'natural' => 'milk',
+     *              'brie'
+ *              )
      *      )
      * );
      * $flatten = Arrays::flatten($array);
@@ -109,15 +112,11 @@ class Arrays
      * @param array $elements
      * @return array
      */
-    static function flatten(array $elements)
+    static function flatten(array $array)
     {
         $return = array();
-        array_walk_recursive($elements, function ($item, $key) use (&$return) {
-            if (is_string($key)) {
-                $return[$key] = $item;
-            } else {
-                $return[] = $item;
-            }
+        array_walk_recursive($array, function ($a) use (&$return) {
+            $return[] = $a;
         });
         return $return;
     }
