@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Db;
 
 use Model\Test\OrderProduct;
@@ -97,4 +96,3 @@ class ModelQueryBuilderHelperTest extends \PHPUnit_Framework_TestCase
             new RelationWithAlias($relation2, 'r2'));
     }
 }
- 

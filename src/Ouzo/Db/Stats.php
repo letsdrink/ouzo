@@ -14,6 +14,12 @@ class Stats
         return $_SESSION['stats_queries'];
     }
 
+    public static function queriesForRequest($request)
+    {
+        self::initializeIfUnset();
+        return Arrays::getValue($_SESSION['stats_queries'], $request, array());
+    }
+
     public static function reset()
     {
         self::initializeIfUnset();
@@ -53,9 +59,21 @@ class Stats
         });
     }
 
-    public static function getNumberOfQueries()
+    public static function getRequestTotalTime($request)
+    {
+        return array_reduce(self::queriesForRequest($request), function ($sum, $value) {
+            return $sum + $value['time'];
+        });
+    }
+
+    public static function getNumberOfRequests()
     {
         return sizeof(self::queries());
+    }
+
+    public static function getRequestNumberOfQueries($request)
+    {
+        return sizeof(self::queriesForRequest($request));
     }
 
     static function getBacktraceString()

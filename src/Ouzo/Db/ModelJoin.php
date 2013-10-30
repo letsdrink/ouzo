@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Db;
 
 class ModelJoin
