@@ -9,9 +9,15 @@ CREATE TABLE categories (
   name        TEXT
 );
 
+CREATE TABLE manufacturers (
+  id SERIAL PRIMARY KEY,
+  name     TEXT
+);
+
 CREATE TABLE products (
   id  SERIAL PRIMARY KEY,
   id_category INTEGER REFERENCES categories,
+  id_manufacturer INTEGER REFERENCES manufacturers,
   name        TEXT,
   description TEXT,
   sale        BOOLEAN
