@@ -444,7 +444,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
             ),
             'products' => array(
                 'cheese',
-                array('milk', 'brie')
+                'test' => array(
+                    'natural' => 'milk',
+                    'brie'
+                )
             )
         );
 
@@ -453,27 +456,6 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         Assert::thatArray($flatten)->hasSize(6)->containsExactly('john', 'peter', 'bill', 'cheese', 'milk', 'brie');
-    }
-
-    /**
-     * @test
-     */
-    public function shouldFlattenAnArrayWhenStringIsAKey()
-    {
-        //given
-        $array = array(
-            'names' => array(
-                'first' => 'john',
-                'second' => 'peter',
-                'third' => 'bill'
-            )
-        );
-
-        //when
-        $flatten = Arrays::flatten($array);
-
-        //then
-        Assert::thatArray($flatten)->hasSize(3)->containsKeyAndValue(array('first' => 'john', 'second' => 'peter', 'third' => 'bill'));
     }
 
     /**

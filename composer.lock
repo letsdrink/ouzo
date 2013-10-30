@@ -14,12 +14,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "525576eb863b9e2ff6af98d959cdf390f2571ddc"
+                "reference": "57e96c16fecc32f07736dc9645fdfe1b0160a07c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/525576eb863b9e2ff6af98d959cdf390f2571ddc",
-                "reference": "525576eb863b9e2ff6af98d959cdf390f2571ddc",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/57e96c16fecc32f07736dc9645fdfe1b0160a07c",
+                "reference": "57e96c16fecc32f07736dc9645fdfe1b0160a07c",
                 "shasum": ""
             },
             "require": {
@@ -98,7 +98,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2013-10-24 00:04:09"
+            "time": "2013-10-30 02:57:15"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -639,12 +639,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "662a2922e0bcb3669e66ab36c20ce508c68b1d46"
+                "reference": "eca72b22138f66f4244a3eddc18c7261cfcd130c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/662a2922e0bcb3669e66ab36c20ce508c68b1d46",
-                "reference": "662a2922e0bcb3669e66ab36c20ce508c68b1d46",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/eca72b22138f66f4244a3eddc18c7261cfcd130c",
+                "reference": "eca72b22138f66f4244a3eddc18c7261cfcd130c",
                 "shasum": ""
             },
             "require": {
@@ -683,7 +683,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2013-10-23 08:18:42"
+            "time": "2013-10-30 08:33:58"
         },
         {
             "name": "symfony/event-dispatcher",
