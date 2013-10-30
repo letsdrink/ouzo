@@ -643,4 +643,16 @@ class Arrays
     {
         return array_key_exists($key, $elements);
     }
+
+    /**
+     * Method to reduce an array elements to a string value.
+     *
+     * @param array $elements
+     * @param callable $function
+     * @return mixed
+     */
+    public static function reduce(array $elements, $function)
+    {
+        return array_reduce($elements, $function);
+    }
 }
