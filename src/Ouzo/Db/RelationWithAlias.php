@@ -1,9 +1,9 @@
 <?php
-
 namespace Ouzo\Db;
 
-class RelationWithAlias {
-    public  $relation;
+class RelationWithAlias
+{
+    public $relation;
     public $alias;
 
     function __construct($relation, $alias)
