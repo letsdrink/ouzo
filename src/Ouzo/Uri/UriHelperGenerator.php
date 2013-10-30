@@ -61,15 +61,27 @@ FUNCTION;
     private function _createIf($parameters)
     {
         if ($parameters) {
-            $condition = '!' . implode(' && !', $parameters);
+            $condition = $this->_createIfCondition($parameters);
             $if = <<<IF
 if ($condition) {
-        throw new \InvalidArgumentException();
+        throw new \InvalidArgumentException("Missing parameters");
     }\n\t
 IF;
             return $if;
         }
         return '';
+    }
+
+    private function _createIfCondition($parameters)
+    {
+        return Arrays::reduce($parameters, function ($result, $element) {
+            if ($result == null) {
+                $result .= '!isset(' . $element . ') && ';
+            } else {
+                $result .= ' && !isset(' . $element . ')';
+            }
+            return rtrim($result, '&& ');
+        });
     }
 
     private function _prepareParameters($uri)

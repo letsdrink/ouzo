@@ -95,8 +95,8 @@ FUNCT;
 <?php
 function showUsersPath(\$id, \$call_id)
 {
-    if (!\$id && !\$call_id) {
-        throw new \InvalidArgumentException();
+    if (!isset(\$id) && !isset(\$call_id)) {
+        throw new \InvalidArgumentException("Missing parameters");
     }
 \treturn url("/users/show/id/\$id/call_id/\$call_id");
 }
@@ -152,16 +152,16 @@ function freshUserPath()
 
 function editUserPath(\$id)
 {
-    if (!\$id) {
-        throw new \InvalidArgumentException();
+    if (!isset(\$id)) {
+        throw new \InvalidArgumentException("Missing parameters");
     }
 \treturn url("/users/\$id/edit");
 }
 
 function userPath(\$id)
 {
-    if (!\$id) {
-        throw new \InvalidArgumentException();
+    if (!isset(\$id)) {
+        throw new \InvalidArgumentException("Missing parameters");
     }
 \treturn url("/users/\$id");
 }
