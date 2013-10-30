@@ -444,8 +444,8 @@ class ArraysTest extends PHPUnit_Framework_TestCase
             ),
             'products' => array(
                 'cheese',
-                'test'=>array(
-                    'natural'=>'milk',
+                'test' => array(
+                    'natural' => 'milk',
                     'brie'
                 )
             )
