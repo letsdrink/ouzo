@@ -44,4 +44,20 @@ class ModelJoin
         $idName = $this->relation->getLocalKey();
         return new JoinClause($joinTable, $joinKey, $idName, $this->fromTable, $this->alias);
     }
+
+    public function equals(ModelJoin $other)
+    {
+        return
+            $this->relation === $other->relation &&
+            $this->alias === $other->alias &&
+            $this->destinationField === $other->destinationField &&
+            $this->fromTable === $other->fromTable;
+    }
+
+    public static function equalsPredicate($other)
+    {
+        return function ($modelJoin) use($other) {
+            return $modelJoin->equals($other);
+        };
+    }
 }

@@ -80,7 +80,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('id', $dialectAdapter->primaryKey());
-        Assert::thatArray($dialectAdapter->columns())->onProperty('name')->containsOnly('id', 'id_category', 'name', 'description', 'sale');
+        Assert::thatArray($dialectAdapter->columns())->onProperty('name')->containsOnly('id', 'id_category', 'name', 'description', 'sale', 'id_manufacturer');
         Assert::thatArray($dialectAdapter->columns())->onProperty('type')->contains('string', 'string', 'int', 'int');
     }
 

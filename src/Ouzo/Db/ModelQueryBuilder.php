@@ -179,9 +179,16 @@ class ModelQueryBuilder
 
     private function addJoin(ModelJoin $modelJoin)
     {
-        $this->_query->addJoin($modelJoin->asJoinClause());
-        $this->_joinedModels[] = $modelJoin;
-        $this->selectModelColumns($modelJoin->getModelObject(), $modelJoin->alias());
+        if (!$this->isAlreadyJoined($modelJoin)) {
+            $this->_query->addJoin($modelJoin->asJoinClause());
+            $this->_joinedModels[] = $modelJoin;
+            $this->selectModelColumns($modelJoin->getModelObject(), $modelJoin->alias());
+        }
+    }
+
+    private function isAlreadyJoined(ModelJoin $modelJoin)
+    {
+        return Arrays::any($this->_joinedModels, ModelJoin::equalsPredicate($modelJoin));
     }
 
     /**

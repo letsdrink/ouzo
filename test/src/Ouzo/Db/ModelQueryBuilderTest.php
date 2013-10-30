@@ -1,5 +1,6 @@
 <?php
 use Model\Test\Category;
+use Model\Test\Manufacturer;
 use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
@@ -11,7 +12,6 @@ use Ouzo\Model;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Objects;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
 {
@@ -829,4 +829,29 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($sportCars->id, $parent->id);
         $this->assertEquals($vehicles, self::getNoLazy($parent, 'parent'));
      }
+
+    /**
+     * @test
+     */
+    public function shouldOptimizeDuplicatedJoins()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $manufacturer = Manufacturer::create(array('name' => 'sony'));
+        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        Stats::reset();
+
+        //when
+        $orderProduct = OrderProduct::join('product->category')
+            ->join('product->manufacturer')
+            ->fetch();
+
+        //then
+        $this->assertEquals($product->id, $orderProduct->product->id);
+        $this->assertEquals($category, $orderProduct->product->category);
+        $this->assertEquals($manufacturer, $orderProduct->product->manufacturer);
+        Assert::thatArray(Stats::queries())->hasSize(1);
+    }
 }
