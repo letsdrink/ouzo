@@ -76,6 +76,16 @@ class Stats
         return sizeof(self::queries());
     }
 
+    public static function getNumberOfQueries()
+    {
+        $sum = 0;
+        $queries = self::queries();
+        array_walk($queries, function ($data, $request) use (&$sum) {
+            $sum += Stats::getRequestNumberOfQueries($request);
+        });
+        return $sum;
+    }
+
     public static function getRequestNumberOfQueries($request)
     {
         return sizeof(self::queriesForRequest($request));

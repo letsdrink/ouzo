@@ -209,10 +209,22 @@ class ModelQueryBuilder
         $field = '';
 
         foreach ($relations as $relation) {
-            $this->_relationsToFetch[] = new RelationToFetch($field, $relation);
+            $this->_addRelationToFetch(new RelationToFetch($field, $relation));
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
         }
         return $this;
+    }
+
+    private function _addRelationToFetch($relationToFetch)
+    {
+        if (!$this->isAlreadyAddedToFetch($relationToFetch)) {
+            $this->_relationsToFetch[] = $relationToFetch;
+        }
+    }
+
+    private function isAlreadyAddedToFetch(RelationToFetch $relationToFetch)
+    {
+        return Arrays::any($this->_relationsToFetch, RelationToFetch::equalsPredicate($relationToFetch));
     }
 
     /**

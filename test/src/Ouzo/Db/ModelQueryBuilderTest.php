@@ -852,6 +852,32 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product->id, $orderProduct->product->id);
         $this->assertEquals($category, $orderProduct->product->category);
         $this->assertEquals($manufacturer, $orderProduct->product->manufacturer);
-        Assert::thatArray(Stats::queries())->hasSize(1);
+        $this->assertEquals(1, Stats::getNumberOfQueries());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldOptimizeDuplicatedRelationFetches()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $manufacturer = Manufacturer::create(array('name' => 'sony'));
+        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        Stats::reset();
+
+        //when
+        $orderProduct = OrderProduct::where()
+            ->with('product->category')
+            ->with('product->manufacturer')
+            ->fetch();
+
+        //then
+        $this->assertEquals($product->id, $orderProduct->product->id);
+        $this->assertEquals($category, $orderProduct->product->category);
+        $this->assertEquals($manufacturer, $orderProduct->product->manufacturer);
+        $this->assertEquals(4, Stats::getNumberOfQueries());
     }
 }
