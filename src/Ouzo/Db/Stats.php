@@ -51,12 +51,17 @@ class Stats
         return $function();
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
     public static function getTotalTime()
     {
-        return array_reduce(self::queries(), function ($sum, $value) {
-            $value = Arrays::flatten($value);
-            return $sum + $value['time'];
+        $sum = 0;
+        $queries = self::queries();
+        array_walk($queries, function ($data, $request) use (&$sum) {
+            $sum += Stats::getRequestTotalTime($request);
         });
+        return $sum;
     }
 
     public static function getRequestTotalTime($request)
