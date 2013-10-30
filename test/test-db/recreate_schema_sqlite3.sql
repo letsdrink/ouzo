@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS order_products;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS manufacturers CASCADE;
 
 CREATE TABLE categories (
   id INTEGER PRIMARY KEY,
