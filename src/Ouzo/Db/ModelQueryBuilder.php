@@ -121,21 +121,25 @@ class ModelQueryBuilder
     {
         $models = array();
         foreach ($results as $row) {
-            $model = $this->extractModelFromResult($this->_model, $this->getModelAliasOrTable(), $row);
-            $models[] = $model;
-
-            foreach ($this->_joinedModels as $joinedModel) {
-                if ($joinedModel->storeField()) {
-                    $instance = $this->extractModelFromResult($joinedModel->getModelObject(), $joinedModel->alias(), $row);
-                    Objects::setValueRecursively($model, $joinedModel->destinationField(), $instance);
-                }
-            }
+            $models[] = $this->convertRowToModel($row);
         }
         return $this->_fetchRelations($models);
     }
 
+    private function convertRowToModel($row)
+    {
+        $model = $this->_extractModelFromResult($this->_model, $this->getModelAliasOrTable(), $row);
 
-    private function extractModelFromResult(Model $metaInstance, $alias, array $result)
+        foreach ($this->_joinedModels as $joinedModel) {
+            if ($joinedModel->storeField()) {
+                $instance = $this->_extractModelFromResult($joinedModel->getModelObject(), $joinedModel->alias(), $row);
+                Objects::setValueRecursively($model, $joinedModel->destinationField(), $instance);
+            }
+        }
+        return $model;
+    }
+
+    private function _extractModelFromResult(Model $metaInstance, $alias, array $result)
     {
         $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$alias}_");
         if (Arrays::any($attributes, Functions::notEmpty())) {

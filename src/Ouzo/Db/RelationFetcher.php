@@ -18,7 +18,7 @@ class RelationFetcher
     public function transform(&$results)
     {
         $localKeys = FluentArray::from($results)
-            ->map(Functions::extractFieldRecursively($this->_relation->getLocalKey()))
+            ->map(Functions::extractField($this->_relation->getLocalKey()))
             ->filter(Functions::notEmpty())
             ->unique()
             ->toArray();
@@ -27,10 +27,9 @@ class RelationFetcher
 
         foreach ($results as $result) {
             $destinationField = $this->_relation->getName();
-            $localKeyValue = Objects::getValueRecursively($result, $this->_relation->getLocalKey());
+            $localKeyValue = Objects::getValue($result, $this->_relation->getLocalKey(), null);
             if ($localKeyValue) {
                 $values = $this->_findRelationObject($relationObjectsById, $localKeyValue);
-
                 $result->$destinationField = $this->_relation->extractValue($values);
             }
         }
