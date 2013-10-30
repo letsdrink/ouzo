@@ -792,10 +792,6 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $product = Product::create(array('name' => 'Reno', 'id_category' => $cars->getId()));
         OrderProduct::create(array('id_product' => $product->getId()));
 
-        //SELECT op.*, p.*, c.* FROM order_products AS op
-        //LEFT JOIN products AS p ON p.id = op.id_product LEFT JOIN
-        //categories AS c ON c.id = op.id_category WHERE (op.id_order = ? AND p.name = ? AND c.name = ?)
-
         //when
         $orderProduct = OrderProduct::alias('op')
             ->join('product->category', array('p', 'c'))
