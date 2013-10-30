@@ -338,8 +338,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $products = Product::where()->with('category')->fetchAll();
 
         //then
-        $this->assertEquals($category, $products[0]->category);
-        $this->assertEquals($category, $products[1]->category);
+        $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
+        $this->assertEquals($category, self::getNoLazy($products[1], 'category'));
     }
 
     /**
@@ -355,7 +355,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $fetched = Product::where()->with('orderProduct')->fetchAll();
 
         //then
-        $this->assertEquals($orderProduct, $fetched[0]->orderProduct);
+        $this->assertEquals($orderProduct, self::getNoLazy($fetched[0], 'orderProduct'));
     }
 
     /**
@@ -371,7 +371,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $products = Product::where()->with('category')->fetchAll();
 
         //then
-        $this->assertEquals($category, $products[0]->category);
+        $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
     }
 
     /**
@@ -389,7 +389,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->with('products')->fetch();
 
         //then
-        Assert::thatArray($category->products)->containsOnly($product1, $product2);
+        Assert::thatArray(self::getNoLazy($category, 'products'))->containsOnly($product1, $product2);
     }
 
     /**

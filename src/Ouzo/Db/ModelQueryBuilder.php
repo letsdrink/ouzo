@@ -16,7 +16,10 @@ class ModelQueryBuilder
      * @var ModelJoin[]
      */
     private $_joinedModels = array();
-    private $_transformers;
+    /**
+     * @var RelationToFetch[]
+     */
+    private $_relationsToFetch = array();
     private $_query;
     private $_selectModel = true;
 
@@ -24,7 +27,6 @@ class ModelQueryBuilder
     {
         $this->_db = $db ? $db : Db::getInstance();
         $this->_model = $model;
-        $this->_transformers = array();
 
         $this->_query = new Query();
         $this->_query->table = $model->getTableName();
@@ -105,10 +107,12 @@ class ModelQueryBuilder
         return !$this->_selectModel ? $result : $this->_processResults($result);
     }
 
-    private function _transform($results)
+    private function _fetchRelations($results)
     {
-        foreach ($this->_transformers as $transformer) {
-            $transformer->transform($results);
+        foreach ($this->_relationsToFetch as $relationToFetch) {
+            $relationFetcher = new RelationFetcher($relationToFetch->relation);
+            $fieldTransformer = new FieldTransformer($relationToFetch->field, $relationFetcher);
+            $fieldTransformer->transform($results);
         }
         return $results;
     }
@@ -127,7 +131,7 @@ class ModelQueryBuilder
                 }
             }
         }
-        return $this->_transform($models);
+        return $this->_fetchRelations($models);
     }
 
 
@@ -201,11 +205,7 @@ class ModelQueryBuilder
         $field = '';
 
         foreach ($relations as $relation) {
-            $relationFetcher = new RelationFetcher($relation);
-            $fieldTransformer = new FieldTransformer($field, $relationFetcher);
-
-            $this->_transformers[] = $fieldTransformer;
-
+            $this->_relationsToFetch[] = new RelationToFetch($field, $relation);
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
         }
         return $this;
