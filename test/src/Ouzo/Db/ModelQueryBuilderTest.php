@@ -828,7 +828,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $parent = self::getNoLazy($category, 'parent');
         $this->assertEquals($sportCars->id, $parent->id);
         $this->assertEquals($vehicles, self::getNoLazy($parent, 'parent'));
-     }
+    }
 
     /**
      * @test
@@ -879,5 +879,39 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, $orderProduct->product->category);
         $this->assertEquals($manufacturer, $orderProduct->product->manufacturer);
         $this->assertEquals(4, Stats::getNumberOfQueries());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchEmptyRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
+    {
+        //given
+        Product::create(array('name' => 'sony'));
+
+        //when
+        $product = Product::where(array('name' => 'sony'))
+            ->with('category')
+            ->fetch();
+
+        //then
+        Assert::thatArray($product->attributes())->containsKeyAndValue(array('category' => null));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetEmptyRelationInJoinSoThatLazyLoadingDoesNotTryToLoadItAgain()
+    {
+        //given
+        Product::create(array('name' => 'sony'));
+
+        //when
+        $product = Product::where(array('products.name' => 'sony'))
+            ->join('category')
+            ->fetch();
+
+        //then
+        Assert::thatArray($product->attributes())->containsKeyAndValue(array('category' => null));
     }
 }

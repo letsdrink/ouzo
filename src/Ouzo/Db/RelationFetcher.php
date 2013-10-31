@@ -28,10 +28,8 @@ class RelationFetcher
         foreach ($results as $result) {
             $destinationField = $this->_relation->getName();
             $localKeyValue = Objects::getValue($result, $this->_relation->getLocalKey(), null);
-            if ($localKeyValue) {
-                $values = $this->_findRelationObject($relationObjectsById, $localKeyValue);
-                $result->$destinationField = $this->_relation->extractValue($values);
-            }
+            $values = $this->_findRelationObject($relationObjectsById, $localKeyValue);
+            $result->$destinationField = $this->_relation->extractValue($values);
         }
     }
 
