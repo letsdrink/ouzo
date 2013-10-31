@@ -26,9 +26,9 @@ class RelationFetcher
         $relationObjectsById = $this->_loadRelationObjectsIndexedById($localKeys);
 
         foreach ($results as $result) {
-            $destinationField = $this->_relation->getName();
-            $localKeyValue = Objects::getValue($result, $this->_relation->getLocalKey(), null);
+            $localKeyValue = Objects::getValue($result, $this->_relation->getLocalKey());
             $values = $this->_findRelationObject($relationObjectsById, $localKeyValue);
+            $destinationField = $this->_relation->getName();
             $result->$destinationField = $this->_relation->extractValue($values);
         }
     }
