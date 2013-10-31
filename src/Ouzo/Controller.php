@@ -120,4 +120,13 @@ class Controller
     {
         return $this->_routeRule;
     }
+
+    function __call($name, $args)
+    {
+        throw new NoControllerActionException('No action [' . $name . '] defined in controller [' . get_called_class() . '].');
+    }
+}
+
+class NoControllerActionException extends \Exception
+{
 }

@@ -2,6 +2,7 @@
 use Ouzo\Controller;
 use Ouzo\ControllerFactory;
 use Ouzo\Routing\Route;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 
 class SimpleTestController extends Controller
@@ -47,5 +48,20 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertDownloadFile('file.txt');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfMethodDoesNotExist()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        CatchException::when($this)->get('/simple_test/invalid');
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\Ouzo\NoControllerActionException');
     }
 }

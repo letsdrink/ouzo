@@ -43,6 +43,6 @@ class ControllerFactoryTest extends \PHPUnit_Framework_TestCase
         CatchException::when($factory)->createController($routeRule);
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\FrontControllerException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\ControllerNotFoundException');
     }
 }
