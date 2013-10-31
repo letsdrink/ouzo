@@ -539,6 +539,26 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldReturnSpecifiedColumnAsArrayByName()
+    {
+        //given
+        Product::create(array('name' => 'a', 'description' => 'bob'));
+        Product::create(array('name' => 'b', 'description' => 'john'));
+        Product::create(array('name' => 'c', 'description' => 'bob'));
+
+        //when
+        $result = Product::select(array('name'), PDO::FETCH_BOTH)->where(array('description' => 'bob'))->fetchAll();
+
+        //then
+        var_dump($result);
+        $this->assertCount(2, $result);
+        $this->assertEquals('a', $result[0]['name']);
+        $this->assertEquals('c', $result[1]['name']);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnSpecifiedColumnsAsArrayOfArrays()
     {
         //given

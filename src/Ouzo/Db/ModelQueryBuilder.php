@@ -230,11 +230,11 @@ class ModelQueryBuilder
     /**
      * @return ModelQueryBuilder
      */
-    public function select($columns)
+    public function select($columns, $type = PDO::FETCH_NUM)
     {
         $this->_selectModel = false;
         $this->_query->selectColumns = Arrays::toArray($columns);
-        $this->_query->selectType = PDO::FETCH_NUM;
+        $this->_query->selectType = $type;
         return $this;
     }
 

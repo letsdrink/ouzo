@@ -10,6 +10,7 @@ use Ouzo\Db\RelationFetcher;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
+use PDO;
 use ReflectionClass;
 
 class Model extends Validatable
@@ -274,10 +275,10 @@ class Model extends Validatable
     /**
      * @return ModelQueryBuilder
      */
-    static public function select($columns)
+    static public function select($columns, $type = PDO::FETCH_NUM)
     {
         $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
-        return $modelQueryBuilder->select($columns);
+        return $modelQueryBuilder->select($columns, $type);
     }
 
     /**
