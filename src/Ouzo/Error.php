@@ -8,7 +8,11 @@ class Error
 {
     static public function exceptionHandler(\Exception $exception)
     {
-        self::_handleError($exception->getMessage(), $exception->getTraceAsString());
+        if ($exception instanceof \Ouzo\Routing\RouterException) {
+            self::_renderNotFoundError($exception->getMessage(), $exception->getTraceAsString());
+        } else {
+            self::_handleError($exception->getMessage(), $exception->getTraceAsString());
+        }
     }
 
     static public function errorHandler($errno, $errstr, $errfile, $errline)
@@ -27,14 +31,24 @@ class Error
 
     private static function _handleError($errorMessage, $errorTrace)
     {
+        self::_renderError($errorMessage, $errorTrace, "HTTP/1.1 500 Internal Server Error", 'exception');
+    }
+
+    private static function _renderNotFoundError($errorMessage, $errorTrace)
+    {
+        self::_renderError($errorMessage, $errorTrace, "HTTP/1.0 404 Not Found", '404');
+    }
+
+    private static function _renderError($errorMessage, $errorTrace, $header, $viewName)
+    {
         try {
             Logger::getLogger(__CLASS__)->error($errorMessage);
             Logger::getLogger(__CLASS__)->error(Objects::toString($errorTrace));
             /** @noinspection PhpIncludeInspection */
             self::_clearOutputBuffers();
-            header("HTTP/1.1 500 Internal Server Error");
+            header($header);
 
-            require_once(ViewPathResolver::resolveViewPath('exception'));
+            require_once(ViewPathResolver::resolveViewPath($viewName));
         } catch (\Exception $e) {
             echo "Framework critical error. Exception thrown in exception handler.<br>\n";
             echo "<hr>\n";
