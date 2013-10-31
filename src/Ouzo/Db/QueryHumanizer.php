@@ -8,6 +8,12 @@ class SelectColumnCallback
     function __invoke($matches)
     {
         $table = $matches[1];
+        $column = $matches[2];
+        $alias = $matches[3];
+        if ($alias != "{$table}_$column") {
+            return $matches[0];
+        }
+
         if ($table != $this->prev_table) {
             $first = !$this->prev_table;
             $this->prev_table = $table;
@@ -22,6 +28,6 @@ class QueryHumanizer
 {
     public static function humanize($sql)
     {
-        return preg_replace_callback('/(\w+)\.\w+ AS \w+(, )?/', new SelectColumnCallback(), $sql);
+        return preg_replace_callback('/(\w+)\.(\w+) AS (\w+)(, )?/', new SelectColumnCallback(), $sql);
     }
 }
