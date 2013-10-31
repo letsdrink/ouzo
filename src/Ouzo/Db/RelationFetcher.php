@@ -17,8 +17,9 @@ class RelationFetcher
 
     public function transform(&$results)
     {
+        $localKeyName = $this->_relation->getLocalKey();
         $localKeys = FluentArray::from($results)
-            ->map(Functions::extractField($this->_relation->getLocalKey()))
+            ->map(Functions::extractField($localKeyName))
             ->filter(Functions::notEmpty())
             ->unique()
             ->toArray();
@@ -26,8 +27,7 @@ class RelationFetcher
         $relationObjectsById = $this->_loadRelationObjectsIndexedById($localKeys);
 
         foreach ($results as $result) {
-            $localKeyValue = Objects::getValue($result, $this->_relation->getLocalKey());
-            $values = $this->_findRelationObject($relationObjectsById, $localKeyValue);
+            $values = $this->_findRelationObject($relationObjectsById, $result->$localKeyName);
             $destinationField = $this->_relation->getName();
             $result->$destinationField = $this->_relation->extractValue($values);
         }
