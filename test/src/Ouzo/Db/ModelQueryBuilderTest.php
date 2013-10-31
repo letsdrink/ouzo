@@ -884,18 +884,38 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldFetchEmptyRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
+    public function shouldFetchEmptyHasManyRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
     {
         //given
-        Product::create(array('name' => 'sony'));
+        Category::create(array('name' => 'sony'));
 
         //when
-        $product = Product::where(array('name' => 'sony'))
-            ->with('category')
+        $category = Category::where(array('name' => 'sony'))
+            ->with('products')
             ->fetch();
 
         //then
-        Assert::thatArray($product->attributes())->containsKeyAndValue(array('category' => null));
+        $this->assertEquals(array(), self::getNoLazy($category, 'products'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchEmptyHasOneRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
+    {
+        //given
+        Product::create(array('name' => 'sony'));
+        $product = Product::where(array('products.name' => 'sony'))
+            ->with('orderProduct')
+            ->fetch();
+        Stats::reset();
+
+        //when
+        $orderProduct = $product->orderProduct;
+
+        //then
+        $this->assertNull($orderProduct);
+        $this->assertEquals(0, Stats::getNumberOfQueries());
     }
 
     /**

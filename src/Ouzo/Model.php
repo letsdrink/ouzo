@@ -223,12 +223,12 @@ class Model extends Validatable
         if (empty($name)) {
             throw new Exception('Illegal attribute: field name for Model cannot be empty');
         }
-        if (isset($this->_attributes[$name])) {
+        if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         }
         if ($this->_relations->hasRelation($name)) {
             $this->_fetchRelation($name);
-            return Arrays::getValue($this->_attributes, $name);
+            return $this->_attributes[$name];
         }
         return null;
     }
