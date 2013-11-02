@@ -3,7 +3,6 @@ namespace Ouzo;
 
 use Exception;
 use Ouzo\Utilities\Path;
-use Pl;
 
 class I18n
 {
@@ -21,6 +20,11 @@ class I18n
         return self::$_translator->translate($key, $params);
     }
 
+    public static function reset()
+    {
+        self::$_translator = null;
+    }
+
     private static function _loadLabels()
     {
         $language = Config::getValue('language') ? : I18n::DEFAULT_LANGUAGE;
@@ -34,7 +38,6 @@ class I18n
     private static function _getTranslator()
     {
         $_labels = self::_loadLabels();
-        $translator = new Translator($_labels);
-        return $translator;
+        return new Translator($_labels);
     }
 }

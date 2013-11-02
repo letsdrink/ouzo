@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Tests\CatchException;
+
 class I18nTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -11,6 +13,7 @@ class I18nTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
 
         Config::clearProperty('language');
+        I18n::reset();
     }
 
     /**
@@ -26,6 +29,22 @@ class I18nTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('Product description', $translation);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionForNonExistingLanguage()
+    {
+        //given
+        Config::overrideProperty('language')->with('xx');
+        $i18n = new I18n();
+
+        //when
+        CatchException::when($i18n)->t('product.description');
+
+        //then
+        CatchException::assertThat()->isInstanceOf('Exception');
     }
 
 
