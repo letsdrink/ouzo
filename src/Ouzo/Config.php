@@ -2,11 +2,12 @@
 namespace Ouzo;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Path;
 
 class Config
 {
     private $_config = array();
-    static private $_configInstance;
+    private static $_configInstance;
     private static $_customConfigs = array();
 
     private function __construct()
@@ -28,12 +29,12 @@ class Config
 
     private function _getConfigEnv()
     {
-        $configEnv = array();
-        $configPath = ROOT_PATH . 'config/' . getenv('environment') . '/ConfigPanel.php';
+        $configPath = Path::join(ROOT_PATH, 'config', getenv('environment'), 'ConfigPanel.php');
         if (file_exists($configPath)) {
-            $configEnv = include($configPath);
+            /** @noinspection PhpIncludeInspection */
+            return require($configPath);
         }
-        return $configEnv;
+        return array();
     }
 
     private function _getConfigCustom()
