@@ -11,7 +11,8 @@ class ControllerUrl
     {
         if (is_string($params)) {
             return self::_createUrlFromString($params);
-        } else if (is_array($params)) {
+        }
+        if (is_array($params)) {
             return self::_createUrlFromArray($params);
         }
         throw new InvalidArgumentException('Illegal arguments');
@@ -22,14 +23,12 @@ class ControllerUrl
         if (empty($params)) {
             throw new InvalidArgumentException("String argument can't be empty");
         }
-        $defaults = Config::getValue('global');
-        return $defaults['prefix_system'] . $params;
+        return Config::getValue('global', 'prefix_system') . $params;
     }
 
     private static function _createUrlFromArray($params)
     {
-        $defaults = Config::getValue('global');
-        $prefixSystem = $defaults['prefix_system'];
+        $prefixSystem = Config::getValue('global', 'prefix_system');
 
         $controller = Arrays::getValue($params, 'controller');
         $action = Arrays::getValue($params, 'action');
