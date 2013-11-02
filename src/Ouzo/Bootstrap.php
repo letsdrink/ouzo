@@ -1,6 +1,9 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Files;
+use Ouzo\Utilities\Path;
+
 class Bootstrap
 {
     public function __construct()
@@ -36,9 +39,7 @@ class Bootstrap
 
     private function _includeRoutes()
     {
-        $routesFilename = ROOT_PATH . 'config/routes.php';
-        if (file_exists($routesFilename)) {
-            include_once $routesFilename;
-        }
+        $routesPath = Path::join(ROOT_PATH, 'config', 'routes.php');
+        Files::loadIfExists($routesPath);
     }
 }

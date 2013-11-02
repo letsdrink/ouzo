@@ -10,7 +10,7 @@ class Files
     public static function loadIfExists($path, $loadOnce = true)
     {
         if (file_exists($path)) {
-            self::_requireWithoutInspection($path, $loadOnce);
+            self::_require($path, $loadOnce);
             return true;
         }
         return false;
@@ -23,7 +23,7 @@ class Files
         }
     }
 
-    private static function _requireWithoutInspection($path, $loadOnce)
+    private static function _require($path, $loadOnce)
     {
         if ($loadOnce) {
             /** @noinspection PhpIncludeInspection */
