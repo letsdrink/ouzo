@@ -32,7 +32,8 @@ class I18n
         if (!file_exists($path)) {
             throw new Exception('Cannot find declared language file: ' . $language);
         }
-        return require $path;
+        /** @noinspection PhpIncludeInspection */
+        return require($path);
     }
 
     private static function _getTranslator()
