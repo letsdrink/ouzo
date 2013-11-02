@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS order_products CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS manufacturers CASCADE;
 
 CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
@@ -9,9 +10,15 @@ CREATE TABLE categories (
   name        TEXT
 );
 
+CREATE TABLE manufacturers (
+  id SERIAL PRIMARY KEY,
+  name     TEXT
+);
+
 CREATE TABLE products (
   id  SERIAL PRIMARY KEY,
   id_category INTEGER REFERENCES categories,
+  id_manufacturer INTEGER REFERENCES manufacturers,
   name        TEXT,
   description TEXT,
   sale        BOOLEAN

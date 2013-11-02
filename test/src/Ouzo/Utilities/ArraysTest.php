@@ -444,7 +444,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
             ),
             'products' => array(
                 'cheese',
-                array('milk', 'brie')
+                'test' => array(
+                    'natural' => 'milk',
+                    'brie'
+                )
             )
         );
 
@@ -468,5 +471,27 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertTrue($return);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReduceAnArray()
+    {
+        //given
+        $array = array('$id', '$name', '$phone');
+
+        //when
+        $reduced = Arrays::reduce($array, function ($result, $element) {
+            if ($result == null) {
+                $result .= 'isset(' . $element . ') && ';
+            } else {
+                $result .= ' && isset(' . $element . ')';
+            }
+            return rtrim($result, '&& ');
+        });
+
+        //then
+        $this->assertEquals('isset($id) && isset($name) && isset($phone)', $reduced);
     }
 }

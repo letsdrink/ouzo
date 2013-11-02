@@ -227,13 +227,31 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->join('categories', 'id_category', 'id_category', 'category');
+        $query->join('categories', 'id_category', 'id_category');
 
         // when
         $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddAliases()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->aliasTable = 'p';
+        $query->join('categories', 'id_category', 'id_category', 'c');
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT * FROM products AS p LEFT JOIN categories AS c ON c.id_category = p.id_category', $sql);
     }
 
     /**
@@ -281,8 +299,8 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query = new Query();
         $query->table = 'products';
         $query
-            ->join('categories', 'id_category', 'id_category', 'category')
-            ->join('orders', 'id', 'id_product', 'orders')
+            ->join('categories', 'id_category', 'id_category')
+            ->join('orders', 'id', 'id_product')
             ->where('id = ?', 1);
 
         //when

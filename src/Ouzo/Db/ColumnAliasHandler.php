@@ -6,14 +6,14 @@ use Ouzo\Utilities\Functions;
 
 class ColumnAliasHandler
 {
-    public static function createSelectColumnsWithAliases($prefix, $columns, $table)
+    public static function createSelectColumnsWithAliases($prefix, $columns, $alias)
     {
         return FluentArray::from($columns)->toMap(
             function ($field) use ($prefix) {
                 return "{$prefix}{$field}";
             },
-            function ($field) use ($table) {
-                return "$table.$field";
+            function ($field) use ($alias) {
+                return "$alias.$field";
             }
         )->toArray();
     }

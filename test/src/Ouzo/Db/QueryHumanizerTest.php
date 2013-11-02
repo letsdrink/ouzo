@@ -34,4 +34,20 @@ class QueryHumanizerTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals("SELECT t_customers.* FROM t_customers AS t_customers WHERE hidden = false ORDER BY surname ASC LIMIT ?", $humanized);
     }
+
+    /**
+     * @test
+     */
+    public function shouldNotHumanizeAllAliases()
+    {
+        //given
+        $sql = "SELECT acl.id_group_acl AS id_menu, ts.id_submenu, acl.group_acl AS menu_name, ts.nazwa AS submenu_name, link, new_link, id, acl.group_acl AS acl_group_acl, acl.id_group_acl AS acl_id_group_acl FROM t_submenu AS ts LEFT JOIN t_acl_group AS acl ON acl.id_group_acl = ts.id_menu ORDER BY acl.kolejnosc, ts.kolejnosc, ts.nazwa";
+
+        //when
+        $humanized = QueryHumanizer::humanize($sql);
+
+        //then
+        $this->assertEquals("SELECT acl.id_group_acl AS id_menu, ts.id_submenu, acl.group_acl AS menu_name, ts.nazwa AS submenu_name, link, new_link, id, acl.* FROM t_submenu AS ts LEFT JOIN t_acl_group AS acl ON acl.id_group_acl = ts.id_menu ORDER BY acl.kolejnosc, ts.kolejnosc, ts.nazwa",
+            $humanized);
+    }
 }

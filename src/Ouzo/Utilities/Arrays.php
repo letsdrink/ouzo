@@ -88,7 +88,10 @@ class Arrays
      *      ),
      *      'products' => array(
      *          'cheese',
-     *          array('milk', 'brie')
+     *          array(
+     *              'natural' => 'milk',
+     *              'brie'
+     *          )
      *      )
      * );
      * $flatten = Arrays::flatten($array);
@@ -109,10 +112,10 @@ class Arrays
      * @param array $elements
      * @return array
      */
-    static function flatten(array $elements)
+    static function flatten(array $array)
     {
         $return = array();
-        array_walk_recursive($elements, function ($a) use (&$return) {
+        array_walk_recursive($array, function ($a) use (&$return) {
             $return[] = $a;
         });
         return $return;
@@ -639,5 +642,17 @@ class Arrays
     public static function keyExists(array $elements, $key)
     {
         return array_key_exists($key, $elements);
+    }
+
+    /**
+     * Method to reduce an array elements to a string value.
+     *
+     * @param array $elements
+     * @param callable $function
+     * @return mixed
+     */
+    public static function reduce(array $elements, $function)
+    {
+        return array_reduce($elements, $function);
     }
 }

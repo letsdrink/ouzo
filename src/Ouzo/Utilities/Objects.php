@@ -84,7 +84,7 @@ class Objects
         return self::callMethod($object, $field, $default);
     }
 
-    public static function getValue($object, $field, $default)
+    public static function getValue($object, $field, $default = null)
     {
         $model = $object instanceOf Model;
         if (!self::_fieldNotExistOrNull($model, $object, $field)) {

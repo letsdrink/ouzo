@@ -1,17 +1,16 @@
 <?php
-
-
 namespace Ouzo\Tools\Model\Template;
 
+use Exception;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Inflector;
+use ReflectionClass;
 
 class Generator
 {
-
     private $_tableName;
     private $_className;
     private $_adapter;
@@ -27,13 +26,13 @@ class Generator
 
     private function _thisNamespace()
     {
-        $thisReflection = new \ReflectionClass($this);
+        $thisReflection = new ReflectionClass($this);
         return $thisReflection->getNamespaceName();
     }
 
     private function _objectShortClassName($object)
     {
-        $objectReflection = new \ReflectionClass($object);
+        $objectReflection = new ReflectionClass($object);
         return $objectReflection->getShortName();
     }
 
@@ -83,13 +82,13 @@ class Generator
 
     public function saveToFile($fileName)
     {
-        if (is_file($fileName))
+        if (is_file($fileName)) {
             throw new GeneratorException("File already exists '$fileName'.");
+        }
         file_put_contents($fileName, $this->templateContents());
     }
-
 }
 
-class GeneratorException extends \Exception
+class GeneratorException extends Exception
 {
 }

@@ -25,7 +25,10 @@ class ControllerFactory
     private function _validateControllerExists($controller)
     {
         if (!class_exists($controller)) {
-            throw new FrontControllerException('Controller does not exist: ' . $controller);
+            throw new ControllerNotFoundException('Controller does not exist: ' . $controller);
         }
     }
+}
+class ControllerNotFoundException extends \Exception
+{
 }

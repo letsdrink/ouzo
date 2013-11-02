@@ -13,29 +13,36 @@ class ModelQueryBuilder
     private $_db;
     private $_model;
     /**
-     * @var Relation[]
+     * @var ModelJoin[]
      */
-    private $_joinedRelations = array();
-    private $_transformers;
+    private $_joinedModels = array();
+    /**
+     * @var RelationToFetch[]
+     */
+    private $_relationsToFetch = array();
     private $_query;
     private $_selectModel = true;
 
-    public function __construct(Model $model, $db = null)
+    public function __construct(Model $model, $db = null, $alias = null)
     {
         $this->_db = $db ? $db : Db::getInstance();
         $this->_model = $model;
-        $this->_transformers = array();
 
         $this->_query = new Query();
         $this->_query->table = $model->getTableName();
+        $this->_query->aliasTable = $alias;
         $this->_query->selectColumns = array();
-        $this->selectModelColumns($model);
+        $this->selectModelColumns($model, $this->getModelAliasOrTable());
     }
 
-    private function selectModelColumns(Model $metaInstance)
+    private function getModelAliasOrTable()
     {
-        $tableName = $metaInstance->getTableName();
-        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$tableName}_", $metaInstance->_getFields(), $tableName);
+        return $this->_query->aliasTable ?: $this->_model->getTableName();
+    }
+
+    private function selectModelColumns(Model $metaInstance, $alias)
+    {
+        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$alias}_", $metaInstance->_getFields(), $alias);
     }
 
     /**
@@ -100,10 +107,12 @@ class ModelQueryBuilder
         return !$this->_selectModel ? $result : $this->_processResults($result);
     }
 
-    private function _transform($results)
+    private function _fetchRelations($results)
     {
-        foreach ($this->_transformers as $transformer) {
-            $transformer->transform($results);
+        foreach ($this->_relationsToFetch as $relationToFetch) {
+            $relationFetcher = new RelationFetcher($relationToFetch->relation);
+            $fieldTransformer = new FieldTransformer($relationToFetch->field, $relationFetcher);
+            $fieldTransformer->transform($results);
         }
         return $results;
     }
@@ -112,34 +121,46 @@ class ModelQueryBuilder
     {
         $models = array();
         foreach ($results as $row) {
-            $model = $this->extractModelFromResult($this->_model, $row);
-            $models[] = $model;
-
-            foreach ($this->_joinedRelations as $joinedRelation) {
-                $joinDestinationField = $joinedRelation->getName();
-                if ($joinDestinationField && !$joinedRelation->isCollection()) {
-                    $joinedModel = $this->extractModelFromResult($joinedRelation->getRelationModelObject(), $row);
-                    Objects::setValueRecursively($model, $joinDestinationField, $joinedModel);
-                }
-            }
+            $models[] = $this->convertRowToModel($row);
         }
-        return $this->_transform($models);
+        return $this->_fetchRelations($models);
     }
 
-    private function extractModelFromResult(Model $metaInstance, array $result)
+    private function convertRowToModel($row)
     {
-        $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$metaInstance->getTableName()}_");
+        $model = $this->_extractModelFromResult($this->_model, $this->getModelAliasOrTable(), $row);
+
+        foreach ($this->_joinedModels as $joinedModel) {
+            if ($joinedModel->storeField()) {
+                $instance = $this->_extractModelFromResult($joinedModel->getModelObject(), $joinedModel->alias(), $row);
+                Objects::setValueRecursively($model, $joinedModel->destinationField(), $instance);
+            }
+        }
+        return $model;
+    }
+
+    private function _extractModelFromResult(Model $metaInstance, $alias, array $result)
+    {
+        $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$alias}_");
         if (Arrays::any($attributes, Functions::notEmpty())) {
             return $metaInstance->newInstance($attributes);
         }
         return null;
     }
 
+    /**
+     * Issues "delete from ... where ..." sql command.
+     * Note that overridden Model::delete is not called.
+     *
+     */
     public function deleteAll()
     {
         return QueryExecutor::prepare($this->_db, $this->_query)->delete();
     }
 
+    /**
+     * Calls Model::delete method for each matching object
+     */
     public function deleteEach()
     {
         $objects = $this->fetchAll();
@@ -148,81 +169,72 @@ class ModelQueryBuilder
         }, $objects);
     }
 
-    private function extractRelations($relationSelector)
-    {
-        $relations = array();
-        if ($relationSelector instanceof Relation) {
-            $relations[] = $relationSelector;
-        } else {
-            $relationNames = explode('->', $relationSelector);
-            $model = $this->_model;
-            foreach ($relationNames as $name) {
-                $relation = $model->getRelation($name);
-                $relations[] = $relation;
-                $model = $relation->getRelationModelObject();
-            }
-        }
-        return $relations;
-    }
-
     /**
+     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
      * @return ModelQueryBuilder
      */
-    public function join($relationName)
+    public function join($relationSelector, $aliases = null)
     {
-        $relations = $this->extractRelations($relationName);
-
-        $field = '';
-        $model = $this->_model;
-        foreach ($relations as $relation) {
-            $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
-            $relation = $relation->withName($field);
-            $this->addJoin($model, $relation);
-            $model = $relation->getRelationModelObject();
+        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
+        $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
+        $modelJoins = ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases);
+        foreach ($modelJoins as $modelJoin) {
+            $this->addJoin($modelJoin);
         }
-
         return $this;
     }
 
-    private function addJoin(Model $model, Relation $relation)
+    private function addJoin(ModelJoin $modelJoin)
     {
-        $joinedModel = $relation->getRelationModelObject();
-        $joinTable = $joinedModel->getTableName();
-        $joinKey = $relation->getForeignKey();
-        $idName = $relation->getLocalKey();
+        if (!$this->isAlreadyJoined($modelJoin)) {
+            $this->_query->addJoin($modelJoin->asJoinClause());
+            $this->_joinedModels[] = $modelJoin;
+            $this->selectModelColumns($modelJoin->getModelObject(), $modelJoin->alias());
+        }
+    }
 
-        $this->_query->addJoin(new JoinClause($joinTable, $joinKey, $idName, $model->getTableName()));
-        $this->selectModelColumns($joinedModel);
-        $this->_joinedRelations[] = $relation;
+    private function isAlreadyJoined(ModelJoin $modelJoin)
+    {
+        return Arrays::any($this->_joinedModels, ModelJoin::equalsPredicate($modelJoin));
     }
 
     /**
+     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @return ModelQueryBuilder
      */
-    public function with($relationName)
+    public function with($relationSelector)
     {
-        $relations = $this->extractRelations($relationName);
+        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
         $field = '';
 
         foreach ($relations as $relation) {
-            $relationFetcher = new RelationFetcher($relation);
-            $fieldTransformer = new FieldTransformer($field, $relationFetcher);
-
-            $this->_transformers[] = $fieldTransformer;
-
+            $this->_addRelationToFetch(new RelationToFetch($field, $relation));
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
         }
         return $this;
     }
 
+    private function _addRelationToFetch($relationToFetch)
+    {
+        if (!$this->isAlreadyAddedToFetch($relationToFetch)) {
+            $this->_relationsToFetch[] = $relationToFetch;
+        }
+    }
+
+    private function isAlreadyAddedToFetch(RelationToFetch $relationToFetch)
+    {
+        return Arrays::any($this->_relationsToFetch, RelationToFetch::equalsPredicate($relationToFetch));
+    }
+
     /**
      * @return ModelQueryBuilder
      */
-    public function select($columns)
+    public function select($columns, $type = PDO::FETCH_NUM)
     {
         $this->_selectModel = false;
-        $this->_query->selectColumns = is_array($columns) ? $columns : array($columns);
-        $this->_query->selectType = PDO::FETCH_NUM;
+        $this->_query->selectColumns = Arrays::toArray($columns);
+        $this->_query->selectType = $type;
         return $this;
     }
 

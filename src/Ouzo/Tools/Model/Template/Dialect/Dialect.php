@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tools\Model\Template\Dialect;
 
 class Dialect

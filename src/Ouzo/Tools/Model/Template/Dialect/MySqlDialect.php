@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Ouzo\Tools\Model\Template\Dialect;
-
 
 use Ouzo\Db;
 use Ouzo\Tools\Model\Template\DatabaseColumn;
@@ -10,24 +7,15 @@ use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
-
-    private $_tableName;
-
-    function __construct($tableName)
-    {
-        $this->_tableName = $tableName;
-    }
-
     public function primaryKey()
     {
-        return $this->_getPrimaryKey($this->_tableName);
+        return $this->_getPrimaryKey($this->tableName());
     }
 
     public function columns()
     {
-        return array_values($this->_getTableColumns($this->_tableName));
+        return array_values($this->_getTableColumns($this->tableName()));
     }
-
 
     private function _getPrimaryKey($tableName)
     {

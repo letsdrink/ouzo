@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo;
 
-use Exception;
 use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Router;
@@ -105,11 +104,7 @@ class FrontController
     private function _invokeAction()
     {
         $currentAction = $this->_currentControllerObject->currentAction;
-        if (method_exists($this->_currentControllerObject, $currentAction)) {
-            $this->_currentControllerObject->$currentAction();
-        } else {
-            throw new FrontControllerException('No action [' . $currentAction . '] defined in controller [' . get_class($this->_currentControllerObject) . '].');
-        }
+        $this->_currentControllerObject->$currentAction();
     }
 
     private function _doActionOnResponse()
@@ -164,8 +159,4 @@ class FrontController
         $url = Strings::removePrefix($url, $prefix);
         return $prefix . $url;
     }
-}
-
-class FrontControllerException extends \Exception
-{
 }

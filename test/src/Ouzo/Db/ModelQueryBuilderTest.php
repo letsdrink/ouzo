@@ -1,5 +1,6 @@
 <?php
 use Model\Test\Category;
+use Model\Test\Manufacturer;
 use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
@@ -11,7 +12,6 @@ use Ouzo\Model;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Objects;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
 {
@@ -193,7 +193,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($cars, self::getNoLazy($fetchedProduct, 'category'));
     }
 
-    static function getNoLazy(Model $model, $attribute) {
+    static function getNoLazy(Model $model, $attribute)
+    {
         return Arrays::getValue($model->attributes(), $attribute);
     }
 
@@ -337,8 +338,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $products = Product::where()->with('category')->fetchAll();
 
         //then
-        $this->assertEquals($category, $products[0]->category);
-        $this->assertEquals($category, $products[1]->category);
+        $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
+        $this->assertEquals($category, self::getNoLazy($products[1], 'category'));
     }
 
     /**
@@ -348,13 +349,13 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     {
         //given
         $product = Product::create(array('name' => 'sony'));
-        $orderProduct= OrderProduct::create(array('id_product' => $product->getId()));
+        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
 
         //when
         $fetched = Product::where()->with('orderProduct')->fetchAll();
 
         //then
-        $this->assertEquals($orderProduct, $fetched[0]->orderProduct);
+        $this->assertEquals($orderProduct, self::getNoLazy($fetched[0], 'orderProduct'));
     }
 
     /**
@@ -370,7 +371,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $products = Product::where()->with('category')->fetchAll();
 
         //then
-        $this->assertEquals($category, $products[0]->category);
+        $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
     }
 
     /**
@@ -388,7 +389,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->with('products')->fetch();
 
         //then
-        Assert::thatArray($category->products)->containsOnly($product1, $product2);
+        Assert::thatArray(self::getNoLazy($category, 'products'))->containsOnly($product1, $product2);
     }
 
     /**
@@ -533,6 +534,26 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(2, $result);
         $this->assertEquals('a', $result[0][0]);
         $this->assertEquals('c', $result[1][0]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSpecifiedColumnAsArrayByName()
+    {
+        //given
+        Product::create(array('name' => 'a', 'description' => 'bob'));
+        Product::create(array('name' => 'b', 'description' => 'john'));
+        Product::create(array('name' => 'c', 'description' => 'bob'));
+
+        //when
+        $result = Product::select(array('name'), PDO::FETCH_BOTH)->where(array('description' => 'bob'))->fetchAll();
+
+        //then
+        var_dump($result);
+        $this->assertCount(2, $result);
+        $this->assertEquals('a', $result[0]['name']);
+        $this->assertEquals('c', $result[1]['name']);
     }
 
     /**
@@ -757,4 +778,180 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $query->fetch());
     }
 
+    /**
+     * @test
+     */
+    public function shouldAliasTables()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        Product::create(array('name' => 'a', 'id_category' => $category->getId()));
+
+        //when
+        $product = Product::alias('p')
+            ->join('category', 'c')
+            ->where("p.name = 'a' and c.name = 'phones'")
+            ->fetch();
+
+        //then
+        $this->assertNotNull($product);
+        $this->assertEquals($category, self::getNoLazy($product, 'category'));
+        Assert::thatArray($product->attributes())->containsKeyAndValue(array(
+            'name' => 'a',
+            'id_category' => $category->getId()
+        ));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAliasTablesInNestedJoin()
+    {
+        //given
+        $cars = Category::create(array('name' => 'cars'));
+        $product = Product::create(array('name' => 'Reno', 'id_category' => $cars->getId()));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $orderProduct = OrderProduct::alias('op')
+            ->join('product->category', array('p', 'c'))
+            ->where('op.id_order is null')
+            ->where(array(
+                'p.name' => 'Reno',
+                'c.name' => 'cars'))
+            ->fetch();
+
+        //then
+        $fetchedProduct = self::getNoLazy($orderProduct, 'product');
+        $this->assertEquals($product->getId(), $fetchedProduct->getId());
+        $this->assertEquals($cars, self::getNoLazy($fetchedProduct, 'category'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoSelfJoinWithConditions()
+    {
+        //given
+        $vehicles = Category::create(array('name' => 'vehicles'));
+        $sportCars = Category::create(array('name' => 'sport cars', 'id_parent' => $vehicles->id));
+        $bmw = Category::create(array('name' => 'bmw', 'id_parent' => $sportCars->id));
+
+        //when
+        $category = Category::alias('c')
+            ->join('parent->parent', array('p1', 'p2'))
+            ->where(array('c.name' => 'bmw', 'p1.name' => 'sport cars', 'p2.name' => 'vehicles'))
+            ->fetch();
+
+        //then
+        $this->assertEquals($bmw->id, $category->id);
+        $parent = self::getNoLazy($category, 'parent');
+        $this->assertEquals($sportCars->id, $parent->id);
+        $this->assertEquals($vehicles, self::getNoLazy($parent, 'parent'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldOptimizeDuplicatedJoins()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $manufacturer = Manufacturer::create(array('name' => 'sony'));
+        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        Stats::reset();
+
+        //when
+        $orderProduct = OrderProduct::join('product->category')
+            ->join('product->manufacturer')
+            ->fetch();
+
+        //then
+        $this->assertEquals($product->id, $orderProduct->product->id);
+        $this->assertEquals($category, $orderProduct->product->category);
+        $this->assertEquals($manufacturer, $orderProduct->product->manufacturer);
+        $this->assertEquals(1, Stats::getNumberOfQueries());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldOptimizeDuplicatedRelationFetches()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $manufacturer = Manufacturer::create(array('name' => 'sony'));
+        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        Stats::reset();
+
+        //when
+        $orderProduct = OrderProduct::where()
+            ->with('product->category')
+            ->with('product->manufacturer')
+            ->fetch();
+
+        //then
+        $this->assertEquals($product->id, $orderProduct->product->id);
+        $this->assertEquals($category, $orderProduct->product->category);
+        $this->assertEquals($manufacturer, $orderProduct->product->manufacturer);
+        $this->assertEquals(4, Stats::getNumberOfQueries());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchEmptyHasManyRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
+    {
+        //given
+        Category::create(array('name' => 'sony'));
+
+        //when
+        $category = Category::where(array('name' => 'sony'))
+            ->with('products')
+            ->fetch();
+
+        //then
+        $this->assertEquals(array(), self::getNoLazy($category, 'products'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchEmptyHasOneRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
+    {
+        //given
+        Product::create(array('name' => 'sony'));
+        $product = Product::where(array('products.name' => 'sony'))
+            ->with('orderProduct')
+            ->fetch();
+        Stats::reset();
+
+        //when
+        $orderProduct = $product->orderProduct;
+
+        //then
+        $this->assertNull($orderProduct);
+        $this->assertEquals(0, Stats::getNumberOfQueries());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetEmptyRelationInJoinSoThatLazyLoadingDoesNotTryToLoadItAgain()
+    {
+        //given
+        Product::create(array('name' => 'sony'));
+
+        //when
+        $product = Product::where(array('products.name' => 'sony'))
+            ->join('category')
+            ->fetch();
+
+        //then
+        Assert::thatArray($product->attributes())->containsKeyAndValue(array('category' => null));
+    }
 }

@@ -37,7 +37,7 @@ class FormHelperTest extends DbTransactionalTestCase
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-        $form = formFor($product, '', array('auto_labels' => false));
+        $form = formFor($product);
 
         //when
         $textField1 = $form->textField('name');
@@ -57,7 +57,7 @@ class FormHelperTest extends DbTransactionalTestCase
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-        $form = formFor($product, '', array('auto_labels' => false));
+        $form = formFor($product);
 
         //when
         $textArea1 = $form->textArea('name');
@@ -78,7 +78,7 @@ class FormHelperTest extends DbTransactionalTestCase
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
         $categories = array(1 => 'Cat1', 2 => 'Cat2');
-        $form = formFor($product, '', array('auto_labels' => false));
+        $form = formFor($product);
 
         //when
         $selectField1 = $form->selectField('id_category', $categories);
@@ -99,7 +99,7 @@ class FormHelperTest extends DbTransactionalTestCase
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-        $form = formFor($product, '', array('auto_labels' => false));
+        $form = formFor($product);
 
         //when
         $result1 = $form->hiddenField('name');
@@ -117,7 +117,7 @@ class FormHelperTest extends DbTransactionalTestCase
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-        $form = formFor($product, '', array('auto_labels' => false));
+        $form = formFor($product);
 
         //when
         $result1 = $form->label('name');
@@ -137,7 +137,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
 
         //when
-        $result = formFor($product, '', array('auto_labels' => false))->passwordField('name');
+        $result = formFor($product)->passwordField('name');
 
         //then
         $this->assertEquals('<input type="password" value="name" id="product_name" name="product[name]"/>', $result);
@@ -152,7 +152,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
 
         //when
-        $result = formFor($product, '', array('auto_labels' => false))->checkboxField('id_category');
+        $result = formFor($product)->checkboxField('id_category');
 
         //then
         $this->assertEquals('<input name="product[id_category]" type="hidden" value="0" /><input type="checkbox" value="1" id="product_id_category" name="product[id_category]" />', $result);
@@ -167,7 +167,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
 
         //when
-        $result = formFor($product, '', array('auto_labels' => false))->checkboxField('id_category');
+        $result = formFor($product)->checkboxField('id_category');
 
         //then
         $this->assertEquals('<input name="product[id_category]" type="hidden" value="0" /><input type="checkbox" value="1" id="product_id_category" name="product[id_category]" checked/>', $result);
@@ -199,6 +199,54 @@ class FormHelperTest extends DbTransactionalTestCase
         //then
         $this->assertContains('method="' . $method . '"', $form);
         $this->assertNotContains('value="' . $method . '" name="_method"', $form);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateFormStartTagInFormForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+        $form = formFor($product);
+
+        //when
+        $startTag = $form->start('/sample/url', 'GET', array('class' => 'form-horizontal'));
+
+        //then
+        $this->assertEquals('<form class="form-horizontal" action="/sample/url" method="GET">', $startTag);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateFormEndTagInFormForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+        $form = formFor($product);
+
+        //when
+        $endTag = $form->end();
+
+        //then
+        $this->assertEquals('</form>', $endTag);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnCorrectModelObjectDelegatedAtFormBuilder()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+        $form = formFor($product);
+
+        //when
+        $model = $form->getObject();
+
+        //then
+        $this->assertInstanceOf('\Model\Test\Product', $model);
     }
 
     public function requestUnsupportedMethods()

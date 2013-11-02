@@ -1,9 +1,8 @@
 <?php
-
 namespace Ouzo;
 
-
 use Ouzo\Routing\RouteRule;
+use Ouzo\Tests\CatchException;
 
 class SimpleTestController extends Controller
 {
@@ -29,5 +28,21 @@ class ControllerFactoryTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('action1', $currentController->currentAction);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionWhenControllerNotFound()
+    {
+        //given
+        $routeRule = new RouteRule('GET', '/simple_test/action', 'not_exists#action', false);
+        $factory = new ControllerFactory('\\Ouzo\\');
+
+        //when
+        CatchException::when($factory)->createController($routeRule);
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\Ouzo\ControllerNotFoundException');
     }
 }

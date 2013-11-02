@@ -1,15 +1,27 @@
 <?php
-
-use Ouzo\Config;
 use Ouzo\Controller;
+use Ouzo\ControllerFactory;
+use Ouzo\Routing\Route;
+use Ouzo\Tests\CatchException;
+use Ouzo\Tests\ControllerTestCase;
 
 class SimpleTestController extends Controller
 {
+    public function download()
+    {
+        $this->downloadFile('file.txt', 'text/plain', '/tmp/file.txt');
+    }
 }
 
-
-class ControllerTest extends PHPUnit_Framework_TestCase
+class ControllerTest extends ControllerTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->_frontController->controllerFactory = new ControllerFactory('\\');
+        Route::$routes = array();
+    }
+
     /**
      * @test
      */
@@ -22,4 +34,34 @@ class ControllerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('simple_test', $tab);
     }
 
+    /**
+     * @test
+     * @covers \Ouzo\DownloadHandler
+     */
+    public function shouldDownloadFile()
+    {
+        //given
+        Route::get('/simple_test/download', 'simple_test#download');
+
+        //when
+        $this->get('/simple_test/download');
+
+        //then
+        $this->assertDownloadFile('file.txt');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfMethodDoesNotExist()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        CatchException::when($this)->get('/simple_test/invalid');
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\Ouzo\NoControllerActionException');
+    }
 }

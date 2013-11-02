@@ -67,7 +67,8 @@ class Dialect
 
     public function from()
     {
-        return ' FROM ' . $this->_query->table;
+        $alias = $this->_query->aliasTable ? ' AS ' . $this->_query->aliasTable : '';
+        return ' FROM ' . $this->_query->table . $alias;
     }
 
     public function buildQuery(Query $query)

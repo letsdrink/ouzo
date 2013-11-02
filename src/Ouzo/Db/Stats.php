@@ -2,6 +2,9 @@
 namespace Ouzo\Db;
 
 use Ouzo\Config;
+use Ouzo\FrontController;
+use Ouzo\Uri;
+use Ouzo\Utilities\Arrays;
 
 class Stats
 {
@@ -9,6 +12,12 @@ class Stats
     {
         self::initializeIfUnset();
         return $_SESSION['stats_queries'];
+    }
+
+    public static function queriesForRequest($request)
+    {
+        self::initializeIfUnset();
+        return Arrays::getValue($_SESSION['stats_queries'], $request, array());
     }
 
     public static function reset()
@@ -33,23 +42,53 @@ class Stats
             $result = $function();
             $time = number_format(microtime(true) - $startTime, 4, '.', '');
 
-            $_SESSION['stats_queries'][] = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+            $uri = new Uri();
+            $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
+            $_SESSION['stats_queries'][$requestDetails][] = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
 
             return $result;
         }
         return $function();
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
     public static function getTotalTime()
     {
-        return array_reduce(self::queries(), function ($sum, $value) {
+        $sum = 0;
+        $queries = self::queries();
+        array_walk($queries, function ($data, $request) use (&$sum) {
+            $sum += Stats::getRequestTotalTime($request);
+        });
+        return $sum;
+    }
+
+    public static function getRequestTotalTime($request)
+    {
+        return array_reduce(self::queriesForRequest($request), function ($sum, $value) {
             return $sum + $value['time'];
         });
     }
 
-    public static function getNumberOfQueries()
+    public static function getNumberOfRequests()
     {
         return sizeof(self::queries());
+    }
+
+    public static function getNumberOfQueries()
+    {
+        $sum = 0;
+        $queries = self::queries();
+        array_walk($queries, function ($data, $request) use (&$sum) {
+            $sum += Stats::getRequestNumberOfQueries($request);
+        });
+        return $sum;
+    }
+
+    public static function getRequestNumberOfQueries($request)
+    {
+        return sizeof(self::queriesForRequest($request));
     }
 
     static function getBacktraceString()

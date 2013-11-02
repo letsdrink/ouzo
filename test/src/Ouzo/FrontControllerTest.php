@@ -2,8 +2,6 @@
 namespace Ouzo;
 
 use Exception;
-use Ouzo\Config;
-use Ouzo\Controller;
 use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;

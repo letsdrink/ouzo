@@ -264,8 +264,8 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $query = new Query();
         $query->table = 'products';
         $query
-            ->join('categories', 'id_category', 'id_category', 'category')
-            ->join('orders', 'id', 'id_product', 'orders')
+            ->join('categories', 'id_category', 'id_category')
+            ->join('orders', 'id', 'id_product')
             ->where('id = ?', 1);
 
         //when
@@ -273,6 +273,27 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
 
         //then
         $expected = 'SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category LEFT JOIN orders ON orders.id = products.id_product WHERE id = ?';
+        $this->assertEquals($expected, $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectWithMultipleJoinsWithAliases()
+    {
+        //given
+        $query = new Query();
+        $query->table = 'products';
+        $query
+            ->join('categories', 'id_category', 'id_category', 'c')
+            ->join('orders', 'id', 'id_product', 'o')
+            ->where('id = ?', 1);
+
+        //when
+        $sql = $this->_dialect->buildQuery($query);
+
+        //then
+        $expected = 'SELECT * FROM products LEFT JOIN categories AS c ON c.id_category = products.id_category LEFT JOIN orders AS o ON o.id = products.id_product WHERE id = ?';
         $this->assertEquals($expected, $sql);
     }
 }

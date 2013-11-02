@@ -10,6 +10,7 @@ use Ouzo\Db\RelationFetcher;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
+use PDO;
 use ReflectionClass;
 
 class Model extends Validatable
@@ -219,12 +220,12 @@ class Model extends Validatable
         if (empty($name)) {
             throw new Exception('Illegal attribute: field name for Model cannot be empty');
         }
-        if (isset($this->_attributes[$name])) {
+        if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         }
         if ($this->_relations->hasRelation($name)) {
             $this->_fetchRelation($name);
-            return Arrays::getValue($this->_attributes, $name);
+            return $this->_attributes[$name];
         }
         return null;
     }
@@ -270,19 +271,19 @@ class Model extends Validatable
     /**
      * @return ModelQueryBuilder
      */
-    static public function select($columns)
+    static public function select($columns, $type = PDO::FETCH_NUM)
     {
         $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
-        return $modelQueryBuilder->select($columns);
+        return $modelQueryBuilder->select($columns, $type);
     }
 
     /**
      * @return ModelQueryBuilder
      */
-    static public function join($relation)
+    static public function join($relation, $alias = null)
     {
         $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
-        return $modelQueryBuilder->join($relation);
+        return $modelQueryBuilder->join($relation, $alias);
     }
 
     /**
@@ -298,6 +299,12 @@ class Model extends Validatable
     static public function count($where = null, $bindValues = null)
     {
         return static::metaInstance()->where($where, $bindValues)->count();
+    }
+
+    public static function alias($alias)
+    {
+        $obj = static::metaInstance();
+        return  new ModelQueryBuilder($obj, $obj->_db, $alias);
     }
 
     /**
