@@ -2,6 +2,6 @@
 
 return array(
     'product' => array(
-        'description' => 'English product description'
+        'description' => 'Product description'
     )
 );

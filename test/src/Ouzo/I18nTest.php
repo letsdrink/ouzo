@@ -9,10 +9,16 @@ class I18nTest extends \PHPUnit_Framework_TestCase
     /**
      * @tearDown
      */
+    protected function setUp()
+    {
+        I18n::reset();
+    }
+
+    /**
+     * @tearDown
+     */
     protected function tearDown()
     {
-        parent::tearDown();
-
         Config::clearProperty('language');
         I18n::reset();
     }
@@ -41,7 +47,7 @@ class I18nTest extends \PHPUnit_Framework_TestCase
         $translation = I18n::t('product.description');
 
         //then
-        $this->assertEquals('English product description', $translation);
+        $this->assertEquals('Product description', $translation);
     }
 
     /**
