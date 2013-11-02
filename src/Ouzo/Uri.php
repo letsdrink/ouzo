@@ -54,8 +54,7 @@ class Uri
     public function getPath()
     {
         $parseUrl = parse_url($this->_pathProvider->getPath(), PHP_URL_PATH) ? : '/';
-        $parseUrl = $this->_removeDuplicatedSlashes($parseUrl);
-        return $parseUrl;
+        return $this->_removeDuplicatedSlashes($parseUrl);
     }
 
     private function _removeDuplicatedSlashes($parseUrl)
@@ -65,8 +64,8 @@ class Uri
 
     public function getPathWithoutPrefix()
     {
-        $defaults = Config::getValue('global');
-        return Strings::removePrefix($this->getPath(), $defaults['prefix_system']);
+        $prefix = Config::getValue('global', 'prefix_system');
+        return Strings::removePrefix($this->getPath(), $prefix);
     }
 
     public function getParam($param)
