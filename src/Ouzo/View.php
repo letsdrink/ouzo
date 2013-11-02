@@ -66,14 +66,16 @@ class View
 
     private function _loadHelpers()
     {
-        $viewHelperPath = Path::join(ROOT_PATH, 'src', 'Ouzo', 'Helper', 'ViewHelper.php');
+        $viewHelperPath = Path::join('Helper', 'ViewHelper.php');
         $appHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'ApplicationHelper.php');
+        $formHelperPath = Path::join('Helper', 'FormHelper.php');
         $urlHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'UrlHelper.php');
-        $formHelperPath = Path::join(ROOT_PATH, 'src', 'Ouzo', 'Helper', 'FormHelper.php');
 
-        Files::load($viewHelperPath);
+        /** @noinspection PhpIncludeInspection */
+        require_once($viewHelperPath);
         Files::loadIfExists($appHelperPath);
-        Files::load($formHelperPath);
+        /** @noinspection PhpIncludeInspection */
+        require_once($formHelperPath);
         Files::loadIfExists($urlHelperPath);
     }
 }
