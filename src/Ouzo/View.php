@@ -49,7 +49,7 @@ class View
         Files::loadIfExists($helperPath);
 
         $viewPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.phtml');
-        $viewLoaded = Files::loadIfExists($viewPath, false);
+        $viewLoaded = $this->_requireOnceIfExists($viewPath);
         if (!$viewLoaded) {
             throw new ViewException('No view found [' . $this->_viewName . ']');
         }
@@ -71,12 +71,25 @@ class View
         $formHelperPath = Path::join('Helper', 'FormHelper.php');
         $urlHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'UrlHelper.php');
 
-        /** @noinspection PhpIncludeInspection */
-        require_once($viewHelperPath);
+        $this->requireOnce($viewHelperPath);
         Files::loadIfExists($appHelperPath);
-        /** @noinspection PhpIncludeInspection */
-        require_once($formHelperPath);
+        $this->requireOnce($formHelperPath);
         Files::loadIfExists($urlHelperPath);
+    }
+
+    private function _requireOnceIfExists($path)
+    {
+        if (file_exists($path)) {
+            $this->requireOnce($path);
+            return true;
+        }
+        return false;
+    }
+
+    private function requireOnce($path)
+    {
+        /** @noinspection PhpIncludeInspection */
+        require_once($path);
     }
 }
 

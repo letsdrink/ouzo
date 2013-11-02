@@ -31,7 +31,8 @@ class Layout
     {
         if ($this->_layout) {
             $layoutPath = Path::join(ROOT_PATH, 'application', 'layout', $this->_layout . '.phtml');
-            Files::load($layoutPath);
+            /** @noinspection PhpIncludeInspection */
+            require_once($layoutPath);
         }
     }
 
