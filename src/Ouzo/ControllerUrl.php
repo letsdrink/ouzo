@@ -34,11 +34,11 @@ class ControllerUrl
         $action = Arrays::getValue($params, 'action');
         $extraParams = Arrays::getValue($params, 'extraParams');
         if ($controller && $action) {
-            $returnUrl = Joiner::on('/')->join(array($prefixSystem, $controller, $action));
+            $url = Joiner::on('/')->join(array($prefixSystem, $controller, $action));
             if ($extraParams) {
-                $returnUrl .= self::_mergeParams($extraParams);
+                $url .= self::_mergeParams($extraParams);
             }
-            return $returnUrl;
+            return $url;
         }
 
         $string = Arrays::getValue($params, 'string');
