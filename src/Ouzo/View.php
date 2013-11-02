@@ -71,22 +71,22 @@ class View
         $formHelperPath = Path::join('Helper', 'FormHelper.php');
         $urlHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'UrlHelper.php');
 
-        $this->requireOnce($viewHelperPath);
+        $this->_requireOnce($viewHelperPath);
         Files::loadIfExists($appHelperPath);
-        $this->requireOnce($formHelperPath);
+        $this->_requireOnce($formHelperPath);
         Files::loadIfExists($urlHelperPath);
     }
 
     private function _requireOnceIfExists($path)
     {
         if (file_exists($path)) {
-            $this->requireOnce($path);
+            $this->_requireOnce($path);
             return true;
         }
         return false;
     }
 
-    private function requireOnce($path)
+    private function _requireOnce($path)
     {
         /** @noinspection PhpIncludeInspection */
         require_once($path);
