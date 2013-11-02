@@ -3,7 +3,7 @@ use Model\Test\Product;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
 
-include_once ROOT_PATH . '/test/locales/Pl.php';
+include_once ROOT_PATH . '/test/locales/pl.php';
 
 class FormHelperTest extends DbTransactionalTestCase
 {
