@@ -2,12 +2,13 @@
 namespace Ouzo;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Path;
 
 class ViewPathResolver
 {
     public static function resolveViewPath($name)
     {
-        return ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $name . self::getViewPostfix();
+        return Path::join(ROOT_PATH, 'application', 'view', $name . self::getViewPostfix());
     }
 
     private static function getViewPostfix()
