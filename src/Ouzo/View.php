@@ -13,24 +13,15 @@ class View
     public function __construct($viewName, array $attributes = array())
     {
         if (empty($viewName)) {
-            throw new ViewException('Type view name');
+            throw new ViewException('View name is empty');
         }
-
         $this->_viewName = $viewName;
 
         foreach ($attributes as $name => $value) {
             $this->$name = $value;
         }
 
-        $viewHelperPath = Path::join(ROOT_PATH, 'src', 'Ouzo', 'Helper', 'ViewHelper.php');
-        $appHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'ApplicationHelper.php');
-        $urlHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'UrlHelper.php');
-        $formHelperPath = Path::join(ROOT_PATH, 'src', 'Ouzo', 'Helper', 'FormHelper.php');
-
-        Files::load($viewHelperPath);
-        Files::loadIfExists($appHelperPath);
-        Files::load($formHelperPath);
-        Files::loadIfExists($urlHelperPath);
+        $this->_loadHelpers();
     }
 
     public function render($viewName = '')
@@ -38,24 +29,8 @@ class View
         if (!empty($viewName)) {
             $this->_viewName = $viewName;
         }
-
-        ob_start();
-
-        $helperPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.helper.php');
-        $viewPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.phtml');
-
-        Files::loadIfExists($helperPath);
-        $viewLoaded = Files::loadIfExists($viewPath, false);
-        if (!$viewLoaded) {
-            throw new ViewException('No view found [' . $this->_viewName . ']');
-        }
-
-        $view = ob_get_contents();
-        ob_end_clean();
-
-        $this->_renderedView = $view;
-
-        return $view;
+        $this->_renderedView = $this->_renderUsingOutputBuffering();
+        return $this->_renderedView;
     }
 
     public function getRenderedView()
@@ -66,6 +41,40 @@ class View
     public function getViewName()
     {
         return $this->_viewName;
+    }
+
+    private function _loadHelperAndView()
+    {
+        $helperPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.helper.php');
+        Files::loadIfExists($helperPath);
+
+        $viewPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.phtml');
+        $viewLoaded = Files::loadIfExists($viewPath, false);
+        if (!$viewLoaded) {
+            throw new ViewException('No view found [' . $this->_viewName . ']');
+        }
+    }
+
+    private function _renderUsingOutputBuffering()
+    {
+        ob_start();
+        $this->_loadHelperAndView();
+        $view = ob_get_contents();
+        ob_end_clean();
+        return $view;
+    }
+
+    private function _loadHelpers()
+    {
+        $viewHelperPath = Path::join(ROOT_PATH, 'src', 'Ouzo', 'Helper', 'ViewHelper.php');
+        $appHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'ApplicationHelper.php');
+        $urlHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'UrlHelper.php');
+        $formHelperPath = Path::join(ROOT_PATH, 'src', 'Ouzo', 'Helper', 'FormHelper.php');
+
+        Files::load($viewHelperPath);
+        Files::loadIfExists($appHelperPath);
+        Files::load($formHelperPath);
+        Files::loadIfExists($urlHelperPath);
     }
 }
 
