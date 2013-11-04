@@ -62,7 +62,7 @@ class Config
      */
     public static function getValue()
     {
-        $configValue = self::load()->_config;
+        $configValue = self::getInstance()->_config;
         $args = func_get_args();
         foreach ($args as $arg) {
             $configValue = Arrays::getValue($configValue, $arg);
@@ -73,7 +73,7 @@ class Config
         return $configValue;
     }
 
-    private static function load()
+    private static function getInstance()
     {
         if (!self::isLoaded()) {
             self::$_configInstance = new self();
@@ -83,7 +83,12 @@ class Config
 
     public static function getPrefixSystem()
     {
-        return self::load()->_config['global']['prefix_system'];
+        return self::getInstance()->_config['global']['prefix_system'];
+    }
+
+    public static function all()
+    {
+        return self::getInstance()->_config;
     }
 
     /**
@@ -93,7 +98,7 @@ class Config
     {
         self::$_customConfigs[] = $customConfig;
         if (!self::isLoaded()) {
-            self::load();
+            self::getInstance();
         } else {
             self::$_configInstance->_reload();
         }
@@ -107,7 +112,7 @@ class Config
 
     public static function overridePropertyArray($keys, $value)
     {
-        self::load()->_overrideProperty($keys, $value);
+        self::getInstance()->_overrideProperty($keys, $value);
     }
 
     private function _overrideProperty($keys, $value)

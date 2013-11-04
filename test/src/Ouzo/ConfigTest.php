@@ -180,4 +180,21 @@ TEMPLATE;
         $value = Config::getValue('key_to_clear');
         $this->assertEmpty($value);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAllConfigValues()
+    {
+        // given
+        Config::overrideProperty('key')->with('value');
+
+        //when
+        $values = Config::all();
+
+        //then
+        $this->assertEquals('value', $values['key']);
+        Config::clearProperty('key'); // cleanup
+    }
+
 }
