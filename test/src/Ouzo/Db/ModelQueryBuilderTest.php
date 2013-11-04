@@ -33,6 +33,21 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldFetchResultWhenNoParameters()
+    {
+        //given
+        $product = Product::create(array('name' => 'tech'));
+
+        //when
+        $loadedProduct = Product::where('name is not null')->fetch();
+
+        //then
+        $this->assertEquals($product, $loadedProduct);
+    }
+
+    /**
+     * @test
+     */
     public function shouldAcceptArrayOfColumnValuePairsInWhere()
     {
         //given

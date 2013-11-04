@@ -289,7 +289,7 @@ class Model extends Validatable
     /**
      * @return ModelQueryBuilder
      */
-    static public function where($params = '', $values = null)
+    static public function where($params = '', $values = array())
     {
         $obj = static::metaInstance();
         $modelQueryBuilder = new ModelQueryBuilder($obj, $obj->_db);
