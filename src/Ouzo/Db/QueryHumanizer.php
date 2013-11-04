@@ -10,7 +10,7 @@ class SelectColumnCallback
         $table = $matches[1];
         $column = $matches[2];
         $alias = $matches[3];
-        if ($alias != "{$table}_$column") {
+        if ($alias != "_{$table}_$column") {
             return $matches[0];
         }
 
@@ -28,6 +28,6 @@ class QueryHumanizer
 {
     public static function humanize($sql)
     {
-        return preg_replace_callback('/(\w+)\.(\w+) AS (\w+)(, )?/', new SelectColumnCallback(), $sql);
+        return preg_replace_callback('/(\w+)\.(\w+) AS (_\w+)(, )?/', new SelectColumnCallback(), $sql);
     }
 }
