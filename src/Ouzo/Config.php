@@ -66,6 +66,9 @@ class Config
         $args = func_get_args();
         foreach ($args as $arg) {
             $configValue = Arrays::getValue($configValue, $arg, array());
+            if (!$configValue) {
+                return null;
+            }
         }
         return $configValue;
     }
