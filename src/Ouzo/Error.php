@@ -51,7 +51,8 @@ class Error
             self::_clearOutputBuffers();
             header($header);
 
-            Files::load(ViewPathResolver::resolveViewPath($viewName));
+            /** @noinspection PhpIncludeInspection */
+            require(ViewPathResolver::resolveViewPath($viewName));
         } catch (Exception $e) {
             echo "Framework critical error. Exception thrown in exception handler.<br>\n";
             echo "<hr>\n";
