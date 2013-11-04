@@ -27,7 +27,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
     public function shouldDetectJsonError()
     {
         //given
-        $json = "{'Organization': 'PHP Documentation Team'}";
+        $json = "{'Organization':error 'PHP Documentation Team'}";
         Json::decode($json);
 
         //when
