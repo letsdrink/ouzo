@@ -1,6 +1,9 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Files;
+use Ouzo\Utilities\Path;
+
 class View
 {
     private $_viewName = '';
@@ -10,19 +13,15 @@ class View
     public function __construct($viewName, array $attributes = array())
     {
         if (empty($viewName)) {
-            throw new ViewException('Type view name');
+            throw new ViewException('View name is empty');
         }
-
         $this->_viewName = $viewName;
 
         foreach ($attributes as $name => $value) {
             $this->$name = $value;
         }
 
-        require_once('Helper' . DIRECTORY_SEPARATOR . 'ViewHelper.php');
-        $this->_tryLoad(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'ApplicationHelper.php');
-        require_once('Helper' . DIRECTORY_SEPARATOR . 'FormHelper.php');
-        $this->_tryLoad(ROOT_PATH . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'helper' . DIRECTORY_SEPARATOR . 'UrlHelper.php');
+        $this->_loadHelpers();
     }
 
     public function render($viewName = '')
@@ -30,49 +29,8 @@ class View
         if (!empty($viewName)) {
             $this->_viewName = $viewName;
         }
-
-        ob_start();
-        $this->_loadFirstExisting(array($this->_helperCustomPath(), $this->_helperApplicationPath()), true);
-
-        $viewLoaded = $this->_loadFirstExisting(array($this->_viewCustomPath(), $this->_viewApplicationPath()));
-        if (!$viewLoaded) {
-            throw new ViewException('No view found [' . $this->_viewName . ']');
-        }
-
-        $view = ob_get_contents();
-        ob_end_clean();
-
-        $this->_renderedView = $view;
-
-        return $view;
-    }
-
-    private function _loadFirstExisting(array $files, $loadOnce = false)
-    {
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                $this->requireWithoutInspection($file, $loadOnce);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private function _tryLoad($file)
-    {
-        if (file_exists($file)) {
-            $this->requireWithoutInspection($file, true);
-        }
-    }
-
-    private function requireWithoutInspection($name, $loadOnce)
-    {
-        if ($loadOnce) {
-            require_once($name);
-        } else {
-            /** @noinspection PhpIncludeInspection */
-            require($name);
-        }
+        $this->_renderedView = $this->_renderUsingOutputBuffering();
+        return $this->_renderedView;
     }
 
     public function getRenderedView()
@@ -85,24 +43,59 @@ class View
         return $this->_viewName;
     }
 
-    private function _viewApplicationPath()
+    private function _loadHelperAndView()
     {
-        return ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $this->_viewName . '.phtml';
+        $helperPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.helper.php');
+        Files::loadIfExists($helperPath);
+
+        $viewPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.phtml');
+        $viewLoaded = $this->_requireIfExists($viewPath);
+        if (!$viewLoaded) {
+            throw new ViewException('No view found [' . $this->_viewName . ']');
+        }
     }
 
-    private function _viewCustomPath()
+    private function _renderUsingOutputBuffering()
     {
-        return ROOT_PATH . 'custom' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $this->_viewName . '.phtml';
+        ob_start();
+        $this->_loadHelperAndView();
+        $view = ob_get_contents();
+        ob_end_clean();
+        return $view;
     }
 
-    private function _helperApplicationPath()
+    private function _loadHelpers()
     {
-        return ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $this->_viewName . '.helper.php';
+        $viewHelperPath = Path::join('Helper', 'ViewHelper.php');
+        $appHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'ApplicationHelper.php');
+        $formHelperPath = Path::join('Helper', 'FormHelper.php');
+        $urlHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'UrlHelper.php');
+
+        $this->_requireOnce($viewHelperPath);
+        Files::loadIfExists($appHelperPath);
+        $this->_requireOnce($formHelperPath);
+        Files::loadIfExists($urlHelperPath);
     }
 
-    private function _helperCustomPath()
+    private function _requireIfExists($path)
     {
-        return ROOT_PATH . 'custom' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $this->_viewName . '.helper.php';
+        if (file_exists($path)) {
+            $this->_require($path);
+            return true;
+        }
+        return false;
+    }
+
+    private function _requireOnce($path)
+    {
+        /** @noinspection PhpIncludeInspection */
+        require_once($path);
+    }
+
+    private function _require($path)
+    {
+        /** @noinspection PhpIncludeInspection */
+        require($path);
     }
 }
 

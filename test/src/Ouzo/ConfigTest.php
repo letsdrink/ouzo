@@ -18,13 +18,13 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReturnEmptyArrayForMissingSections()
+    public function shouldReturnNullForMissingSections()
     {
         //when
         $section = Config::getValue('missing');
 
         //then
-        $this->assertEquals(array(), $section);
+        $this->assertNull($section);
     }
 
     /**

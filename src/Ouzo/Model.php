@@ -133,11 +133,7 @@ class Model extends Validatable
 
     public function insertOrUpdate()
     {
-        if ($this->isNew()) {
-            $this->insert();
-        } else {
-            $this->update();
-        }
+        $this->isNew() ? $this->insert() : $this->update();
     }
 
     public function isNew()
@@ -363,6 +359,7 @@ class Model extends Validatable
 
     public function nullifyIfEmpty(&$attributes, $field)
     {
+
         if (isset($attributes[$field]) && !$attributes[$field]) {
             $attributes[$field] = null;
         }

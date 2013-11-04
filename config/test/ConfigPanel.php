@@ -25,5 +25,6 @@ $config['global']['prefix_system'] = '';
 $config['global']['suffix_cache'] = '1234';
 $config['default']['auth'] = 'Database';
 $config['debug'] = true;
+$config['language'] = 'en';
 
 return $config;

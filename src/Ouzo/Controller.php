@@ -3,6 +3,7 @@ namespace Ouzo;
 
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Path;
 use Ouzo\Utilities\Strings;
 
 class Controller
@@ -27,7 +28,7 @@ class Controller
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
-        $viewName = Strings::underscoreToCamelCase($this->currentController) . DIRECTORY_SEPARATOR . $this->currentAction;
+        $viewName = Path::join(Strings::underscoreToCamelCase($this->currentController), $this->currentAction) ?: '/';
 
         $this->view = new View($viewName);
         $this->layout = new Layout();

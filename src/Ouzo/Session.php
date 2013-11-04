@@ -14,7 +14,7 @@ class Session
 
     static public function startSession()
     {
-        if (!empty($_SERVER["REQUEST_URI"])) {
+        if (!empty($_SERVER['REQUEST_URI'])) {
             self::_setSavePath();
             if (session_id() == '') {
                 session_start();

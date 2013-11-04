@@ -86,7 +86,6 @@ class FrontController
             if (!$this->_currentControllerObject->$method()) {
                 return false;
             }
-
             if ($this->_isRedirect()) {
                 return false;
             }

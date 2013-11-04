@@ -41,12 +41,7 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldHandleNestedKeys()
     {
         //given
-        $labels = array('prefix1' =>
-        array('prefix2' =>
-        array('key' => 'translation')
-        )
-        );
-
+        $labels = array('prefix1' => array('prefix2' => array('key' => 'translation')));
         $translator = new Translator($labels);
 
         //when
@@ -62,10 +57,7 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldReturnKeyIfTranslationNotFound()
     {
         //given
-        $labels = array('prefix1' =>
-        array('key' => 'translation')
-        );
-
+        $labels = array('prefix1' => array('key' => 'translation'));
         $translator = new Translator($labels);
 
         //when

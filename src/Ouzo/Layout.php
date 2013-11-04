@@ -1,36 +1,37 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Files;
+use Ouzo\Utilities\Path;
+
 class Layout
 {
-    private $_renderContent = null;
-    private $_layout = null;
+    private $_renderContent;
+    private $_layout;
 
     public function setLayout($layout)
     {
         $this->_layout = $layout;
-
         return $this;
     }
 
     public function unsetLayout()
     {
         $this->_layout = null;
-
         return $this;
     }
 
     public function setRenderContent($renderContent)
     {
         $this->_renderContent = $renderContent;
-
         return $this;
     }
 
     public function renderLayout()
     {
         if ($this->_layout) {
-            $layoutPath = ROOT_PATH . DIRECTORY_SEPARATOR . 'application/layout/' . $this->_layout . '.phtml';
+            $layoutPath = Path::join(ROOT_PATH, 'application', 'layout', $this->_layout . '.phtml');
+            /** @noinspection PhpIncludeInspection */
             require_once($layoutPath);
         }
     }
@@ -45,7 +46,6 @@ class Layout
         if ($content) {
             $this->setRenderContent($content);
         }
-
         $this->setLayout('ajax_layout');
     }
 }

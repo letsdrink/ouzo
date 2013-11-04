@@ -1,14 +1,17 @@
 <?php
 namespace Ouzo;
 
+use Exception;
 use Ouzo\Logger\Logger;
+use Ouzo\Routing\RouterException;
+use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Objects;
 
 class Error
 {
-    static public function exceptionHandler(\Exception $exception)
+    static public function exceptionHandler(Exception $exception)
     {
-        if ($exception instanceof \Ouzo\Routing\RouterException) {
+        if ($exception instanceof RouterException) {
             self::_renderNotFoundError($exception->getMessage(), $exception->getTraceAsString());
         } else {
             self::_handleError($exception->getMessage(), $exception->getTraceAsString());
@@ -48,8 +51,9 @@ class Error
             self::_clearOutputBuffers();
             header($header);
 
-            require_once(ViewPathResolver::resolveViewPath($viewName));
-        } catch (\Exception $e) {
+            /** @noinspection PhpIncludeInspection */
+            require(ViewPathResolver::resolveViewPath($viewName));
+        } catch (Exception $e) {
             echo "Framework critical error. Exception thrown in exception handler.<br>\n";
             echo "<hr>\n";
             echo "Message: " . $e->getMessage() . "<br>\n";

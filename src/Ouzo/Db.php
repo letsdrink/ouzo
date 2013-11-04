@@ -183,9 +183,8 @@ class Db
         $dsn = Arrays::getValue($params, 'dsn');
         if ($dsn) {
             return new PDO($dsn);
-        } else {
-            $dsn = $this->_buildDsn($params);
-            return new PDO($dsn, $params['user'], $params['pass']);
         }
+        $dsn = $this->_buildDsn($params);
+        return new PDO($dsn, $params['user'], $params['pass']);
     }
 }

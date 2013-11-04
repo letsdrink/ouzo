@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Strings;
 
 class Loader
@@ -50,9 +51,8 @@ class Loader
         }
 
         foreach ($this->_includePath as $key) {
-            if (file_exists($this->_loadPath . $key . $filePath)) {
-                /** @noinspection PhpIncludeInspection */
-                require_once($this->_loadPath . $key . $filePath);
+            $path = $this->_loadPath . $key . $filePath;
+            if (Files::loadIfExists($path)) {
                 return true;
             }
         }
