@@ -65,7 +65,7 @@ class Config
         $configValue = self::load()->_config;
         $args = func_get_args();
         foreach ($args as $arg) {
-            $configValue = Arrays::getValue($configValue, $arg, array());
+            $configValue = Arrays::getValue($configValue, $arg);
             if (!$configValue) {
                 return null;
             }
