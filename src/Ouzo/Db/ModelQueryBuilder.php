@@ -42,7 +42,13 @@ class ModelQueryBuilder
 
     private function selectModelColumns(Model $metaInstance, $alias)
     {
-        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases("{$alias}_", $metaInstance->_getFields(), $alias);
+        $prefix = $this->aliasPrefixForSelect($alias);
+        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases($prefix, $metaInstance->_getFields(), $alias);
+    }
+
+    private function aliasPrefixForSelect($alias)
+    {
+        return "_{$alias}_";
     }
 
     /**
@@ -141,7 +147,7 @@ class ModelQueryBuilder
 
     private function _extractModelFromResult(Model $metaInstance, $alias, array $result)
     {
-        $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, "{$alias}_");
+        $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, $this->aliasPrefixForSelect($alias));
         if (Arrays::any($attributes, Functions::notEmpty())) {
             return $metaInstance->newInstance($attributes);
         }
@@ -247,4 +253,5 @@ class ModelQueryBuilder
     {
         return clone $this;
     }
+
 }

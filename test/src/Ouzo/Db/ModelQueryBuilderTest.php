@@ -550,7 +550,6 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $result = Product::select(array('name'), PDO::FETCH_BOTH)->where(array('description' => 'bob'))->fetchAll();
 
         //then
-        var_dump($result);
         $this->assertCount(2, $result);
         $this->assertEquals('a', $result[0]['name']);
         $this->assertEquals('c', $result[1]['name']);
