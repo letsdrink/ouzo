@@ -1,4 +1,5 @@
 <?php
+
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Shell;
@@ -69,11 +70,9 @@ class RoutesShell extends Shell
     private function _getRuleMethod(RouteRule $rule)
     {
         if (!$rule->isActionRequired()) {
-            $method = 'ALL';
-        } else {
-            $method = is_array($rule->getMethod()) ? 'ANY' : $rule->getMethod();
+            return 'ALL';
         }
-        return $method;
+        return is_array($rule->getMethod()) ? 'ANY' : $rule->getMethod();
     }
 
     private function _printExceptIfExists(RouteRule $rule)
