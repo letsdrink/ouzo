@@ -256,6 +256,21 @@ class UriTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($good, $path);
     }
 
+    /**
+     * @test
+     */
+    public function shouldReturnEmptyArrayWhenParsePathIsNull()
+    {
+        //given
+        $this->_path(null);
+
+        //when
+        $path = $this->_uri->getAction();
+
+        //then
+        $this->assertNull($path);
+    }
+
     public function malformedSlashes()
     {
         return array(
