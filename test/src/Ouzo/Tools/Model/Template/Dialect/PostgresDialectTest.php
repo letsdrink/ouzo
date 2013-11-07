@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Ouzo\Tools\Model\Template;
-
 
 use Ouzo\Tools\Model\Template\Dialect\PostgresDialect;
 
@@ -26,4 +23,3 @@ class PostgresDialectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test_id_seq', $sequence);
     }
 }
- 

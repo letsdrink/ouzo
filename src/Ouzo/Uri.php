@@ -101,7 +101,7 @@ class Uri
             $pathWithoutPrefix = urldecode(str_replace($prefix, '', $path));
             return preg_split('#/|\?#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);
         }
-        return null;
+        return array();
     }
 
     public static function isAjax()

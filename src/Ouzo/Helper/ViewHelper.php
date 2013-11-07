@@ -3,6 +3,7 @@ use Ouzo\Config;
 use Ouzo\ControllerUrl;
 use Ouzo\I18n;
 use Ouzo\Utilities\Date;
+use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
 
 function url($params)
@@ -98,5 +99,5 @@ function t($textKey)
 
 function toString($object)
 {
-    return \Ouzo\Utilities\Objects::toString($object);
+    return Objects::toString($object);
 }

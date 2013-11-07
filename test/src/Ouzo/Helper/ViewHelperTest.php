@@ -129,4 +129,96 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('<script type="text/javascript" src="/public/test.js?1234"></script>' . PHP_EOL, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function shouldFormatDate()
+    {
+        //given
+        $date = '2001-10-10 12:00:43';
+
+        //when
+        $formatted = formatDate($date);
+
+        //then
+        $this->assertEquals('2001-10-10', $formatted);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFormatDateTime()
+    {
+        //given
+        $date = '2001-10-10 12:00:43';
+
+        //when
+        $formatted = formatDateTime($date);
+
+        //then
+        $this->assertEquals('2001-10-10 12:00', $formatted);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFormatDateTimeWithSeconds()
+    {
+        //given
+        $date = '2001-10-10 12:00:43.107145';
+
+        //when
+        $formatted = formatDateTimeWithSeconds($date);
+
+        //then
+        $this->assertEquals('2001-10-10 12:00:43', $formatted);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTranslate()
+    {
+        //given
+        $key = 'product.description';
+
+        //when
+        $translated = t($key);
+
+        //then
+        $this->assertEquals('Product description', $translated);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldToStringObject()
+    {
+        //given
+        $obj = new stdClass();
+        $obj->name = 'John';
+        $obj->id = 1;
+
+        //when
+        $toString = toString($obj);
+
+        //then
+        $this->assertEquals('{<name> => "John", <id> => 1}', $toString);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInflectWord()
+    {
+        //given
+        $count = 1;
+
+        //when
+        $inflected = pluralise($count, array('plural' => 'clients', 'singular' => 'client'));
+
+        //then
+        $this->assertEquals('client', $inflected);
+    }
 }
