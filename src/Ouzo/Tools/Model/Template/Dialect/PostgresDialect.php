@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Ouzo\Tools\Model\Template\Dialect;
-
 
 use Ouzo\Db;
 use Ouzo\Tools\Model\Template\DatabaseColumn;
@@ -29,8 +26,9 @@ class PostgresDialect extends Dialect
     public function getSequenceName($tableColumns, $primaryKey)
     {
         $primaryColumnInfo = Arrays::getValue($tableColumns, $primaryKey);
-        if (!$primaryColumnInfo || empty($primaryColumnInfo->default))
+        if (!$primaryColumnInfo || empty($primaryColumnInfo->default)) {
             return '';
+        }
         preg_match("/nextval\('(?<sequence>.*)'.*\)/", strtolower($primaryColumnInfo->default), $matches);
         return Arrays::getValue($matches, 'sequence');
     }
@@ -47,10 +45,11 @@ class PostgresDialect extends Dialect
             pg_attribute.attnum = ANY(pg_index.indkey)
             AND indisprimary;
         ")->fetch();
-        if ($primaryKey)
+        if ($primaryKey) {
             return Arrays::getValue($primaryKey, 'attname');
-        else
+        } else {
             return '';
+        }
     }
 
     private function _getTableColumns($tableName)

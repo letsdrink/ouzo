@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Ouzo\Tools\Model\Template;
-
 
 use Ouzo\Tools\Model\Template\Dialect\PostgresDialect;
 
@@ -25,5 +22,19 @@ class PostgresDialectTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('test_id_seq', $sequence);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnEmptyStringWhenNotFoundPK()
+    {
+        //given
+        $dialect = new PostgresDialect('order_products');
+
+        //when
+        $pk = $dialect->primaryKey();
+
+        //then
+        $this->assertEmpty($pk);
+    }
 }
- 
