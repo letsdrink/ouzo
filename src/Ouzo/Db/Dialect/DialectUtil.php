@@ -64,6 +64,6 @@ class DialectUtil
     public static function buildJoinQueryPart(JoinClause $joinClause)
     {
         $alias = $joinClause->alias ? " AS {$joinClause->alias}" : "";
-        return 'LEFT JOIN ' . $joinClause->joinTable . $alias . ' ON ' . $joinClause->getJoinColumnWithTable() . ' = ' . $joinClause->getJoinedColumnWithTable();
+        return $joinClause->type . ' JOIN ' . $joinClause->joinTable . $alias . ' ON ' . $joinClause->getJoinColumnWithTable() . ' = ' . $joinClause->getJoinedColumnWithTable();
     }
 }

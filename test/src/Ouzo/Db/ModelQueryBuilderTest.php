@@ -305,6 +305,24 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldInnerJoinWithOtherTable()
+    {
+        //given
+        $category = Category::create(array('name' => 'other'));
+        Product::create(array('name' => 'other', 'id_category' => $category->id));
+        Product::create(array('name' => 'other'));
+
+        //when
+        $products = Product::innerJoin('category')->fetchAll();
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
+    }
+
+    /**
+     * @test
+     */
     public function shouldCountRecords()
     {
         //given

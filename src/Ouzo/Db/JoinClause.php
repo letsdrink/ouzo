@@ -8,14 +8,16 @@ class JoinClause
     public $joinColumn;
     public $joinedColumn;
     private $_joinedColumnTable;
+    public $type;
 
-    function __construct($joinTable, $joinColumn, $joinedColumn, $joinedColumnTable, $alias = null)
+    function __construct($joinTable, $joinColumn, $joinedColumn, $joinedColumnTable, $alias = null, $type = 'LEFT')
     {
         $this->joinTable = $joinTable;
         $this->joinColumn = $joinColumn;
         $this->joinedColumn = $joinedColumn;
         $this->_joinedColumnTable = $joinedColumnTable;
         $this->alias = $alias;
+        $this->type = $type;
     }
 
     public function getJoinedColumnWithTable()

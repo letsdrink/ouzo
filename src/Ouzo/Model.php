@@ -289,6 +289,15 @@ class Model extends Validatable
     /**
      * @return ModelQueryBuilder
      */
+    static public function innerJoin($relation, $alias = null)
+    {
+        $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
+        return $modelQueryBuilder->innerJoin($relation, $alias);
+    }
+
+    /**
+     * @return ModelQueryBuilder
+     */
     static public function where($params = '', $values = array())
     {
         $obj = static::metaInstance();

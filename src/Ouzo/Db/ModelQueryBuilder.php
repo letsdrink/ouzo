@@ -178,17 +178,28 @@ class ModelQueryBuilder
     /**
      * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param $type - join type, defaults to LEFT
      * @return ModelQueryBuilder
      */
-    public function join($relationSelector, $aliases = null)
+    public function join($relationSelector, $aliases = null, $type = 'LEFT')
     {
         $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
         $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
-        $modelJoins = ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases);
+        $modelJoins = ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases, $type);
         foreach ($modelJoins as $modelJoin) {
             $this->addJoin($modelJoin);
         }
         return $this;
+    }
+
+    /**
+     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @return ModelQueryBuilder
+     */
+    public function innerJoin($relationSelector, $aliases = null)
+    {
+        return $this->join($relationSelector, $aliases, 'INNER');
     }
 
     private function addJoin(ModelJoin $modelJoin)
