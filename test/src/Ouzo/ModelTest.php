@@ -491,4 +491,19 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('sony', $find->product->name);
         $this->assertEquals('phones', $find->product->category->name);
     }
+
+    /**
+     * @test
+     */
+    public function shouldFindByNativeSql()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+
+        //when
+        $found = Category::findBySql("select * from categories");
+
+        //then
+        Assert::thatArray($found)->containsOnly($category);
+    }
 }

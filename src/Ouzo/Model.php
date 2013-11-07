@@ -105,15 +105,6 @@ class Model extends Validatable
         return $this->_tableName;
     }
 
-    public function convert($results)
-    {
-        $objects = array();
-        foreach ($results as $row) {
-            $objects[] = static::newInstance($row);
-        }
-        return $objects;
-    }
-
     public function insert()
     {
         $primaryKey = $this->_primaryKeyName;
@@ -325,6 +316,21 @@ class Model extends Validatable
     static public function find($where, $whereValues, $orderBy = array(), $limit = 0, $offset = 0)
     {
         return static::metaInstance()->where($where, $whereValues)->order($orderBy)->limit($limit)->offset($offset)->fetchAll();
+    }
+
+    /** Executes a native sql and returns an array of model objects created by passing every result row to the model constructor.
+     * @param $nativeSql - database specific sql
+     * @param array $params - bind parameters
+     * @return Model[]
+     */
+    static public function findBySql($nativeSql, $params = array())
+    {
+        $meta = static::metaInstance();
+        $results = $meta->_db->query($nativeSql, $params)->fetchAll();
+
+        return Arrays::map($results, function($row) use($meta) {
+            return $meta->newInstance($row);
+        });
     }
 
     /**
