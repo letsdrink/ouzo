@@ -221,4 +221,28 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('client', $inflected);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullWhenFileInfoIsEmpty()
+    {
+        //when
+        $file = addFile();
+
+        //then
+        $this->assertNull($file);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullWhenTypeIsNullInHtmlFileTag()
+    {
+        //when
+        $file = _getHtmlFileTag(null, null);
+
+        //then
+        $this->assertNull($file);
+    }
 }
