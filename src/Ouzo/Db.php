@@ -50,7 +50,7 @@ class Db
         return $this;
     }
 
-    static public function callFunction($functionName, $parameters)
+    public static function callFunction($functionName, $parameters)
     {
         $db = self::getInstance();
         $bindParams = Arrays::toArray($parameters);
