@@ -265,7 +265,7 @@ class Model extends Validatable
      */
     static public function all()
     {
-        return static::where()->fetchAll();
+        return static::queryBuilder()->fetchAll();
     }
 
     /**
@@ -273,8 +273,7 @@ class Model extends Validatable
      */
     static public function select($columns, $type = PDO::FETCH_NUM)
     {
-        $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
-        return $modelQueryBuilder->select($columns, $type);
+        return static::queryBuilder()->select($columns, $type);
     }
 
     /**
@@ -282,8 +281,7 @@ class Model extends Validatable
      */
     static public function join($relation, $alias = null)
     {
-        $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
-        return $modelQueryBuilder->join($relation, $alias);
+        return static::queryBuilder()->join($relation, $alias);
     }
 
     /**
@@ -291,8 +289,7 @@ class Model extends Validatable
      */
     static public function innerJoin($relation, $alias = null)
     {
-        $modelQueryBuilder = new ModelQueryBuilder(static::metaInstance());
-        return $modelQueryBuilder->innerJoin($relation, $alias);
+        return static::queryBuilder()->innerJoin($relation, $alias);
     }
 
     /**
@@ -300,9 +297,16 @@ class Model extends Validatable
      */
     static public function where($params = '', $values = array())
     {
+        return static::queryBuilder()->where($params, $values);
+    }
+
+    /**
+     * @return ModelQueryBuilder
+     */
+    static public function queryBuilder($alias = null)
+    {
         $obj = static::metaInstance();
-        $modelQueryBuilder = new ModelQueryBuilder($obj, $obj->_db);
-        return $modelQueryBuilder->where($params, $values);
+        return new ModelQueryBuilder($obj, $obj->_db, $alias);
     }
 
     static public function count($where = null, $bindValues = null)
@@ -312,8 +316,7 @@ class Model extends Validatable
 
     public static function alias($alias)
     {
-        $obj = static::metaInstance();
-        return  new ModelQueryBuilder($obj, $obj->_db, $alias);
+        return static::queryBuilder($alias);
     }
 
     /**
