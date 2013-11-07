@@ -986,4 +986,20 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         Assert::thatArray($product->attributes())->containsKeyAndValue(array('category' => null));
     }
+
+    /**
+     * @test
+     */
+    public function shouldUpdateModel()
+    {
+        //given
+        $product = Product::create(array('name' => 'bob'));
+
+        //when
+        $affectedRows = Product::where(array('name' => 'bob'))->update(array('name' => 'eric'));
+
+        //then
+        $this->assertEquals('eric', $product->reload()->name);
+        $this->assertEquals(1, $affectedRows);
+    }
 }

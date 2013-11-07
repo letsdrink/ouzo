@@ -176,6 +176,14 @@ class ModelQueryBuilder
     }
 
     /**
+     * Runs an update query against a set of models
+     */
+    public function update(array $attributes)
+    {
+        return QueryExecutor::prepare($this->_db, $this->_query)->update($attributes);
+    }
+
+    /**
      * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @param null $aliases - alias of the first joined table or array of aliases for nested joins
      * @param $type - join type, defaults to LEFT

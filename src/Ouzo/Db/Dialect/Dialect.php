@@ -23,6 +23,15 @@ class Dialect
         return '';
     }
 
+    public function update()
+    {
+        if ($this->_query->type == QueryType::$UPDATE) {
+            $attributes = DialectUtil::buildAttributesPartForUpdate($this->_query->updateAttributes);
+            return " {$this->_query->table} set $attributes";
+        }
+        return '';
+    }
+
     public function join()
     {
         $join = DialectUtil::buildJoinQuery($this->_query->joinClauses);
@@ -74,16 +83,20 @@ class Dialect
     public function buildQuery(Query $query)
     {
         $this->_query = $query;
-
         $sql = DialectUtil::buildQueryPrefix($query->type);
-        $sql .= $this->select();
-        $sql .= $this->from();
-        $sql .= $this->join();
-        $sql .= $this->where();
-        $sql .= $this->order();
-        $sql .= $this->limit();
-        $sql .= $this->offset();
 
+        if ($query->type == QueryType::$UPDATE) {
+            $sql .= $this->update();
+            $sql .= $this->where();
+        } else {
+            $sql .= $this->select();
+            $sql .= $this->from();
+            $sql .= $this->join();
+            $sql .= $this->where();
+            $sql .= $this->order();
+            $sql .= $this->limit();
+            $sql .= $this->offset();
+        }
         return rtrim($sql);
     }
 }

@@ -310,4 +310,23 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $expected = 'SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category LEFT JOIN orders ON orders.id = products.id_product WHERE id = ?';
         $this->assertEquals($expected, $sql);
     }
+
+    /**
+     * @test
+     */
+    public function shouldBuildUpdateQuery()
+    {
+        //given
+        $query = new Query();
+        $query->table = 'products';
+        $query->type = QueryType::$UPDATE;
+        $query->updateAttributes = array('col1' => 'val1', 'col2' => 'val2');
+        $query->where(array('col1' => 'prev1', 'col2' => 'prev2'));
+
+        //when
+        $sql = $this->dialect->buildQuery($query);
+
+        //then
+        $this->assertEquals("UPDATE products set col1 = ?, col2 = ? WHERE col1 = ? AND col2 = ?", $sql);
+    }
 }

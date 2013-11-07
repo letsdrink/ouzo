@@ -12,6 +12,7 @@ class Query
     public $order;
     public $limit;
     public $offset;
+    public $updateAttributes = array();
     public $whereClauses = array();
     public $joinClauses = array();
     public $type;
