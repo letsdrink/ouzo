@@ -35,6 +35,39 @@ class RouterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldNotMatchOnlyPrefixForGet()
+    {
+        //given
+        Route::get('/user/:id', 'User#show');
+        Route::get('/user/:id/posts', 'User#posts');
+        $router = $this->_createRouter('GET', '/user/1/posts');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('posts', $rule->getAction());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotMatchControllerPrefixForAllowAll()
+    {
+        //given
+        Route::allowAll('/user', 'User');
+        $router = $this->_createRouter('GET', '/userInvalid/index');
+
+        //when
+        CatchException::when($router)->findRoute();
+
+        //then
+        CatchException::assertThat()->isInstanceOf('Ouzo\Routing\RouterException');
+    }
+
+    /**
+     * @test
+     */
     public function shouldNotFindRouteIfRequestMethodIsInvalid()
     {
         //given

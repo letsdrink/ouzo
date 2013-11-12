@@ -6,7 +6,7 @@ use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
 /**
- * Route define URLs mapping to controller and actions.
+ * Routes define URLs mapping to controllers and actions.
  *
  * Sample usage:
  * <code>

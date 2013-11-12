@@ -99,7 +99,7 @@ class RouteRule
             return preg_match('#^' . $replacedUri . '$#', $uri);
         }
         if (!$this->getAction()) {
-            return preg_match('#' . $this->getUri() . '#', $uri);
+            return preg_match('#' . $this->getUri() . '/#', $uri);
         }
         return false;
     }
