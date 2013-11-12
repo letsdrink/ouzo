@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Exception;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Strings;
 
@@ -29,6 +30,7 @@ class ControllerFactory
         }
     }
 }
-class ControllerNotFoundException extends \Exception
+
+class ControllerNotFoundException extends Exception
 {
 }

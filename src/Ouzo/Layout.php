@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo;
 
-use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
 class Layout

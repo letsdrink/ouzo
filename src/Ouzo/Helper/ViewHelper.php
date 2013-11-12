@@ -5,6 +5,7 @@ use Ouzo\I18n;
 use Ouzo\Utilities\Date;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
+use Ouzo\View;
 
 function url($params)
 {
@@ -14,7 +15,7 @@ function url($params)
 function renderWidget($widgetName)
 {
     $className = ucfirst($widgetName);
-    $viewWidget = new \Ouzo\View($className . '/' . $widgetName);
+    $viewWidget = new View($className . '/' . $widgetName);
 
     $classLoad = '\Widget\\' . $className;
     $widget = new $classLoad($viewWidget);
@@ -24,7 +25,7 @@ function renderWidget($widgetName)
 
 function renderPartial($name, array $values = array())
 {
-    $view = new \Ouzo\View($name, $values);
+    $view = new View($name, $values);
     return $view->render();
 }
 
@@ -57,7 +58,7 @@ function _getHtmlFileTag($type, $url)
 function showErrors($errors)
 {
     if ($errors) {
-        $errorView = new \Ouzo\View('error_alert');
+        $errorView = new View('error_alert');
         $errorView->errors = $errors;
         return $errorView->render();
     }
@@ -66,7 +67,7 @@ function showErrors($errors)
 function showNotices()
 {
     if (isset($_SESSION['messages'])) {
-        $noticeView = new \Ouzo\View('notice_alert');
+        $noticeView = new View('notice_alert');
         $noticeView->notices = $_SESSION['messages'];
         return $noticeView->render();
     }

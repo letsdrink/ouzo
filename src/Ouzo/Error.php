@@ -4,12 +4,11 @@ namespace Ouzo;
 use Exception;
 use Ouzo\Logger\Logger;
 use Ouzo\Routing\RouterException;
-use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Objects;
 
 class Error
 {
-    static public function exceptionHandler(Exception $exception)
+    public static function exceptionHandler(Exception $exception)
     {
         if ($exception instanceof RouterException) {
             self::_renderNotFoundError($exception->getMessage(), $exception->getTraceAsString());
@@ -18,7 +17,7 @@ class Error
         }
     }
 
-    static public function errorHandler($errno, $errstr, $errfile, $errline)
+    public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
         self::_handleError("$errstr ERRNO($errno)", "$errfile:$errline");
     }
