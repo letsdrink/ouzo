@@ -11,6 +11,11 @@ class SimpleTestController extends Controller
     {
         $this->downloadFile('file.txt', 'text/plain', '/tmp/file.txt');
     }
+
+    public function params()
+    {
+        $this->view->params = $this->params;
+    }
 }
 
 class ControllerTest extends ControllerTestCase
@@ -63,5 +68,35 @@ class ControllerTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\NoControllerActionException');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldParseQueryString()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        $this->get('/simple_test/params?p1=v1&p2=v2');
+
+        //then
+        $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2'), $this->getAssigned('params'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldParseQueryStringIfParamHasNoValue()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        $this->get('/simple_test/params?p1');
+
+        //then
+        $this->assertEquals(array('p1' => null), $this->getAssigned('params'));
     }
 }

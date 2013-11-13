@@ -3,6 +3,7 @@ namespace Ouzo\Tests;
 
 use Ouzo\Config;
 use Ouzo\FrontController;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
 class ControllerTestCase extends DbTransactionalTestCase
@@ -46,8 +47,7 @@ class ControllerTestCase extends DbTransactionalTestCase
         $result = array();
         foreach ($args as $arg) {
             $argKeyValue = explode('=', $arg);
-            if (sizeof($argKeyValue) == 2)
-                $result[$argKeyValue[0]] = urldecode($argKeyValue[1]);
+            $result[$argKeyValue[0]] = urldecode(Arrays::getValue($argKeyValue, 1));
         }
         return $result;
     }
