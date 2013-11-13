@@ -99,4 +99,19 @@ class ControllerTest extends ControllerTestCase
         //then
         $this->assertEquals(array('p1' => null), $this->getAssigned('params'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldSetEmptyParamsIfNoParameters()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        $this->get('/simple_test/params');
+
+        //then
+        $this->assertEmpty($this->getAssigned('params'));
+    }
 }
