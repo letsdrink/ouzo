@@ -28,7 +28,7 @@ class HttpAuthBasicHandler
     private function _checkCredentials($login)
     {
         $data = $this->_httpDigestParse($_SERVER['PHP_AUTH_DIGEST']);
-        if (!$data || $data['username'] == $login) {
+        if (!$data || $data['username'] != $login) {
             die('Wrong Credentials!');
         }
     }
