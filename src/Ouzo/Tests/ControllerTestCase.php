@@ -48,8 +48,12 @@ class ControllerTestCase extends DbTransactionalTestCase
         $args = explode('&', $urlQuery);
         return FluentArray::from($args)
             ->filter(Functions::notEmpty())
-            ->map(function ($arg) { return explode('=', $arg); })
-            ->toMap(function ($keyValue) { return $keyValue[0]; }, function ($keyValue) {
+            ->map(function ($arg) {
+                return explode('=', $arg);
+            })
+            ->toMap(function ($keyValue) {
+                return $keyValue[0];
+            }, function ($keyValue) {
                 return urldecode(Arrays::getValue($keyValue, 1));
             })->toArray();
     }
@@ -147,6 +151,11 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function assertRenderedContentContains($string)
     {
         $this->assertContains($string, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
+    }
+
+    public function assertRenderedContentNotContains($string)
+    {
+        $this->assertNotContains($string, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
     }
 
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
