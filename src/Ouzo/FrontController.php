@@ -20,6 +20,7 @@ class FrontController
     public $sessionInitializer;
     public $downloadHandler;
     public $outputDisplayer;
+    public $httpAuthBasicHandler;
 
     public function __construct()
     {
@@ -32,6 +33,7 @@ class FrontController
         $this->downloadHandler = new DownloadHandler();
         $this->controllerFactory = new ControllerFactory();
         $this->outputDisplayer = new OutputDisplayer();
+        $this->httpAuthBasicHandler = new HttpAuthBasicHandler();
     }
 
     public function init()
@@ -125,6 +127,12 @@ class FrontController
                 break;
             case 'stream':
                 $this->downloadHandler->streamMediaFile($controller->getFileData());
+                break;
+            case 'httpAuthBasic':
+                $credentials = $controller->getAuthCredentials();
+                $this->httpAuthBasicHandler->authenticate($credentials['login'], $credentials['password']);
+                $controller->display();
+                $this->_showOutputBuffer();
                 break;
         }
     }
