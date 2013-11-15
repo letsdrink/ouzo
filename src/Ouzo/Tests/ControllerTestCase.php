@@ -3,6 +3,9 @@ namespace Ouzo\Tests;
 
 use Ouzo\Config;
 use Ouzo\FrontController;
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Strings;
 
 class ControllerTestCase extends DbTransactionalTestCase
@@ -43,13 +46,12 @@ class ControllerTestCase extends DbTransactionalTestCase
         $urlComponents = parse_url($url);
         $urlQuery = isset($urlComponents['query']) ? $urlComponents['query'] : '';
         $args = explode('&', $urlQuery);
-        $result = array();
-        foreach ($args as $arg) {
-            $argKeyValue = explode('=', $arg);
-            if (sizeof($argKeyValue) == 2)
-                $result[$argKeyValue[0]] = urldecode($argKeyValue[1]);
-        }
-        return $result;
+        return FluentArray::from($args)
+            ->filter(Functions::notEmpty())
+            ->map(function ($arg) { return explode('=', $arg); })
+            ->toMap(function ($keyValue) { return $keyValue[0]; }, function ($keyValue) {
+                return urldecode(Arrays::getValue($keyValue, 1));
+            })->toArray();
     }
 
     private function _initFrontController()

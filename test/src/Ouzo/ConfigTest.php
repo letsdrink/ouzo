@@ -1,6 +1,6 @@
 <?php
-
 use Ouzo\Config;
+use Ouzo\Tests\Assert;
 
 class SampleConfig
 {
@@ -14,6 +14,20 @@ class SampleConfig
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        $_SESSION['config']['debug'] = false;
+        $_SESSION['config']['language'] = 'pl';
+        $_SESSION['config']['custom'] = 'value';
+        $_SESSION['config']['global']['prefix_system'] = '/sample';
+    }
+
+    public static function tearDownAfterClass()
+    {
+        Config::overrideProperty('debug')->with(true);
+        Config::overrideProperty('language')->with('en');
+        Config::overridePropertyArray(array('global', 'prefix_system'), '');
+    }
 
     /**
      * @test
@@ -197,4 +211,16 @@ TEMPLATE;
         Config::clearProperty('key'); // cleanup
     }
 
+    /**
+     * @test
+     */
+    public function shouldOverrideConfigPropertyBySession()
+    {
+        //when
+        $values = Config::all();
+
+        //then
+        Assert::thatArray($values)->containsKeyAndValue(array('debug' => false, 'language' => 'pl', 'custom' => 'value'));
+        Assert::thatArray($values['global'])->contains('/sample');
+    }
 }
