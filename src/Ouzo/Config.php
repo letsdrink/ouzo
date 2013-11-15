@@ -24,7 +24,8 @@ class Config
     {
         $configEnv = $this->_getConfigEnv();
         $configCustom = $this->_getConfigCustom();
-        return array_replace_recursive($configEnv, $configCustom);
+        $configSession = $this->_getConfigSession();
+        return array_replace_recursive($configEnv, $configCustom, $configSession);
     }
 
     private function _getConfigEnv()
@@ -44,6 +45,12 @@ class Config
             $customConfigs = array_replace_recursive($customConfigs, $config->getConfig());
         }
         return $customConfigs;
+    }
+
+    private function _getConfigSession()
+    {
+        $session = isset($_SESSION) ? $_SESSION : array();
+        return Arrays::getValue($session, 'config', array());
     }
 
     public static function isLoaded()
@@ -133,7 +140,6 @@ class Config
 
 class ConfigOverrideProperty
 {
-
     private $keys;
 
     function __construct($keys)
