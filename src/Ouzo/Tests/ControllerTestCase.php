@@ -142,6 +142,11 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->assertNotEquals($content, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
     }
 
+    public function assertRenderedContentContains($string)
+    {
+        $this->assertContains($string, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
+    }
+
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
     {
         $json = $this->getRenderedJsonAsArray();
