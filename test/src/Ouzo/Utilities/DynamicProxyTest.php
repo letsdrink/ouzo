@@ -2,7 +2,6 @@
 
 namespace Ouzo\Utilities;
 
-
 class ProxiedClass
 {
     function fun1($a, $b)
@@ -10,7 +9,7 @@ class ProxiedClass
         return "result of fun1" . $a . $b;
     }
 
-    function fun2()
+    function fun2($p = 1)
     {
     }
 }
@@ -89,6 +88,21 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals($testMethodHandler, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldWorkWithDefaultParameters()
+    {
+        $testMethodHandler = new TestMethodHandler();
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
+
+        //when
+        $proxy->fun2();
+
+        //then
+        $this->assertEquals(array(array('fun2', array())), $testMethodHandler->calls);
     }
 }
  

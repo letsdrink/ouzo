@@ -38,7 +38,11 @@ class DynamicProxy
     private static function getParameterDeclaration(ReflectionFunctionAbstract $method)
     {
         return Joiner::on(', ')->join(Arrays::map($method->getParameters(), function(ReflectionParameter $param) {
-            return '$' . $param->name;
+            $result = '$' . $param->name;
+            if ($param->isDefaultValueAvailable()) {
+                $result .= " = " . $param->getDefaultValue();
+            }
+            return $result;
         }));
     }
 
