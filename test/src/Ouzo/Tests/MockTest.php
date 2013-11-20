@@ -4,6 +4,17 @@ namespace Ouzo\Tests;
 
 use PHPUnit_Framework_ExpectationFailedException;
 
+class MockTestClass
+{
+    function method()
+    {
+    }
+
+    function method2()
+    {
+    }
+}
+
 class MockTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -12,7 +23,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldMockMethod()
     {
         //given
-        $mock = Mock::mock();
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
         Mock::when($mock)->method()->thenReturn('result');
 
         //when
@@ -28,7 +39,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldVerifyMethodCall()
     {
         //given
-        $mock = Mock::mock();
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
 
         //when
         $mock->method("arg");
@@ -43,7 +54,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldFailIfMethodWasNotCalled()
     {
         //given
-        $mock = Mock::mock();
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
 
         //when
         CatchException::when(Mock::verify($mock))->method();
@@ -58,7 +69,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldShowActualInteractions()
     {
         //given
-        $mock = Mock::mock();
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
         $mock->method(1);
         $mock->method2(1);
 
