@@ -8,7 +8,7 @@ use ReflectionParameter;
 
 class DynamicProxy
 {
-    public static function create($className, $methodHandler)
+    public static function newInstance($className, $methodHandler)
     {
         $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid();
         eval(self::getProxyClassDefinition($name, $className));

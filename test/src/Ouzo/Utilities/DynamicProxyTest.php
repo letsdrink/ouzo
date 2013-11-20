@@ -36,7 +36,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $testMethodHandler = new TestMethodHandler();
-        $proxy = DynamicProxy::create('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
 
         //when
         $proxy->fun1(1, 2);
@@ -52,7 +52,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $testMethodHandler = new TestMethodHandler();
-        $proxy = DynamicProxy::create('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
 
         //when
         $result = $proxy->fun1(1, 2);
@@ -67,7 +67,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
     public function shouldBeInstanceOfGivenType()
     {
         //given
-        $proxy = DynamicProxy::create('Ouzo\Utilities\ProxiedClass', null);
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ProxiedClass', null);
 
         //when
         $result = $proxy instanceof ProxiedClass;
@@ -82,7 +82,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
     public function shouldExtractMethodHandler()
     {
         $testMethodHandler = new TestMethodHandler();
-        $proxy = DynamicProxy::create('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
 
         //when
         $result = DynamicProxy::extractMethodHandler($proxy);
