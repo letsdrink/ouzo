@@ -13,9 +13,9 @@ class StatementExecutor
 {
 
     private $_preparedQuery;
-    private $_boundValues;
     private $_sql;
     private $_dbHandle;
+    public $_boundValues;
 
     private function __construct($dbHandle, $sql, $boundValues)
     {
