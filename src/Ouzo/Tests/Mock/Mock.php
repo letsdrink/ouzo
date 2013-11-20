@@ -2,11 +2,7 @@
 
 namespace Ouzo\Tests\Mock;
 
-use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\DynamicProxy;
-use Ouzo\Utilities\Joiner;
-use PHPUnit_Framework_ComparisonFailure;
-use PHPUnit_Framework_ExpectationFailedException;
 
 class SimpleMock
 {
@@ -20,7 +16,7 @@ class SimpleMock
 
         foreach ($this->_stubbed_calls as $stubbed_call) {
             if ($stubbed_call->methodCall == $methodCall) {
-                return $stubbed_call->result;
+                return $stubbed_call->evaluate();
             }
         }
         return null;
