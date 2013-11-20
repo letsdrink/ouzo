@@ -24,6 +24,16 @@ class StatementExecutor
         $this->_sql = $sql;
     }
 
+    public function getBoundValues()
+    {
+        return $this->_boundValues;
+    }
+
+    public function getPreparedQuery()
+    {
+        return $this->_preparedQuery;
+    }
+
     private function _execute($afterCallback)
     {
         $obj = $this;
@@ -31,23 +41,23 @@ class StatementExecutor
         return Stats::trace($humanizedSql, $this->_boundValues, function () use ($obj, $humanizedSql, $afterCallback) {
             $obj->_prepareAndBind();
 
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->_boundValues)));
+            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
 
-            $querySql = $humanizedSql . ' with params: (' . implode(', ', $obj->_boundValues) . ')';
+            $querySql = $humanizedSql . ' with params: (' . implode(', ', $obj->getBoundValues()) . ')';
 
-            if (!$obj->_preparedQuery) {
+            if (!$obj->getPreparedQuery()) {
                 throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastDbErrorMessage());
             }
 
-            if (!$obj->_preparedQuery->execute()) {
+            if (!$obj->getPreparedQuery()->execute()) {
                 $dialect = Config::getValue('sql_dialect');
                 $adapter = new $dialect();
-                $errorInfo = $this->_preparedQuery->errorInfo();
+                $errorInfo = $this->getPreparedQuery()->errorInfo();
                 $exceptionClassName = $adapter->getExceptionForError($errorInfo);
                 throw new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
                     $querySql,
-                    $this->_errorMessageFromErrorInfo($errorInfo),
-                    $this->_errorCodesFromErrorInfo($errorInfo)
+                    $this->errorMessageFromErrorInfo($errorInfo),
+                    $this->errorCodesFromErrorInfo($errorInfo)
                 ));
             }
             return call_user_func($afterCallback);
@@ -94,19 +104,19 @@ class StatementExecutor
         }
     }
 
-    private function _errorMessageFromErrorInfo($errorInfo)
+    public function errorMessageFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 2);
     }
 
-    private function _errorCodesFromErrorInfo($errorInfo)
+    public function errorCodesFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 0) . " " . Arrays::getValue($errorInfo, 1);
     }
 
     public function lastDbErrorMessage()
     {
-        return $this->_errorMessageFromErrorInfo($this->_dbHandle->errorInfo());
+        return $this->errorMessageFromErrorInfo($this->_dbHandle->errorInfo());
     }
 
     public static function prepare($dbHandle, $sql, $boundValues)

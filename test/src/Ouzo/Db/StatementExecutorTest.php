@@ -15,8 +15,8 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->pdoMock = Mock::mock();
-        $this->dbMock = Mock::mock();
+        $this->pdoMock = Mock::mock('\PDOStatement');
+        $this->dbMock = Mock::mock('\PDO');
         Mock::when($this->pdoMock)->execute()->thenReturn(false);
         Mock::when($this->dbMock)->prepare('SELECT 1')->thenReturn($this->pdoMock);
         Mock::when($this->dbMock)->errorInfo()->thenReturn(array(1, 3, 'Preparation error'));

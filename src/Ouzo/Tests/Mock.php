@@ -131,7 +131,7 @@ class Mock
     public static function mock($className)
     {
         $mock = new Mock($className);
-        return DynamicProxy::newInstance($className, $mock);;
+        return DynamicProxy::newInstance($className, $mock);
     }
 
     public static function when($mock)
