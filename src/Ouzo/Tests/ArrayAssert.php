@@ -151,7 +151,7 @@ class ArrayAssert
         $contains = array_intersect_assoc($elements, $this->_actual);
         if (count($elements) != count($contains)) {
             $elementsString = Objects::toString($elements);
-            $this->fail("Cannot find key value pairs {$elementsString} in actual {$this->_actualString} n");
+            $this->fail("Cannot find key value pairs {$elementsString} in actual {$this->_actualString}", $elements);
         }
         return $this;
     }

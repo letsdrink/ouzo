@@ -20,6 +20,7 @@ class Controller
     private $_redirectLocation = '';
     private $_fileData = array();
     private $_routeRule = null;
+    private $_authCredentials = array();
 
     public function __construct(RouteRule $routeRule)
     {
@@ -28,7 +29,7 @@ class Controller
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
-        $viewName = Path::join(Strings::underscoreToCamelCase($this->currentController), $this->currentAction) ?: '/';
+        $viewName = Path::join(Strings::underscoreToCamelCase($this->currentController), $this->currentAction) ? : '/';
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
@@ -125,6 +126,17 @@ class Controller
     function __call($name, $args)
     {
         throw new NoControllerActionException('No action [' . $name . '] defined in controller [' . get_called_class() . '].');
+    }
+
+    public function httpAuthBasic($login, $password)
+    {
+        $this->setStatusResponse('httpAuthBasic');
+        $this->_authCredentials = array('login' => $login, 'password' => $password);
+    }
+
+    public function getAuthCredentials()
+    {
+        return $this->_authCredentials;
     }
 }
 
