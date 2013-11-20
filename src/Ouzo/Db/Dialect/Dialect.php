@@ -6,7 +6,7 @@ use Ouzo\Db\QueryType;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
 
-class Dialect
+abstract class Dialect
 {
     /**
      * @var Query
@@ -101,11 +101,24 @@ class Dialect
         return rtrim($sql);
     }
 
-    public function getExceptionForError($errorInfo)
+    private function _getExceptionForError($errorInfo)
     {
         switch (Arrays::getValue($errorInfo, 1)) {
             default:
                 return '\Ouzo\DbException';
         }
     }
+
+    public function getExceptionForError($errorInfo)
+    {
+        if (in_array($this->getErrorCode($errorInfo), $this->getConnectionErrorCodes())) {
+            return '\Ouzo\DbConnectionException';
+        }
+        return $this->_getExceptionForError($errorInfo);
+    }
+
+    abstract function getConnectionErrorCodes();
+
+    abstract function getErrorCode($errorInfo);
+
 }

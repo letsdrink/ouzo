@@ -6,6 +6,7 @@ use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
+
     public function from()
     {
         return $this->_buildFrom($this->_query->type, $this->_query->table);
@@ -21,12 +22,13 @@ class MySqlDialect extends Dialect
         return " FROM $table";
     }
 
-    public function getExceptionForError($errorInfo)
+    public function getConnectionErrorCodes()
     {
-        $connectionErrorCodes = array(2003, 2006);
-        $errorCode = Arrays::getValue($errorInfo, 1);
-        if (in_array($errorCode, $connectionErrorCodes))
-            return '\Ouzo\DbConnectionException';
-        return parent::getExceptionForError($errorInfo);
+        return array(2003, 2006);
+    }
+
+    function getErrorCode($errorInfo)
+    {
+        return Arrays::getValue($errorInfo, 1);
     }
 }

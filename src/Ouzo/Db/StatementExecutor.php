@@ -12,10 +12,10 @@ use PDO;
 class StatementExecutor
 {
 
-    private $_preparedQuery;
-    private $_boundValues;
     private $_sql;
     private $_dbHandle;
+    public $_boundValues;
+    public $_preparedQuery;
 
     private function __construct($dbHandle, $sql, $boundValues)
     {
@@ -94,12 +94,12 @@ class StatementExecutor
         }
     }
 
-    private function _errorMessageFromErrorInfo($errorInfo)
+    public function _errorMessageFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 2);
     }
 
-    private function _errorCodesFromErrorInfo($errorInfo)
+    public function _errorCodesFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 0) . " " . Arrays::getValue($errorInfo, 1);
     }

@@ -5,12 +5,14 @@ use Ouzo\Utilities\Arrays;
 
 class PostgresDialect extends Dialect
 {
-    public function getExceptionForError($errorInfo)
+
+    public function getConnectionErrorCodes()
     {
-        $connectionErrorCodes = array('57000', '57014', '57P01', '57P02', '57P03');
-        $errorCode = Arrays::getValue($errorInfo, 0);
-        if (in_array($errorCode, $connectionErrorCodes))
-            return '\Ouzo\DbConnectionException';
-        return parent::getExceptionForError($errorInfo);
+        return array('57000', '57014', '57P01', '57P02', '57P03');
+    }
+
+    function getErrorCode($errorInfo)
+    {
+        return Arrays::getValue($errorInfo, 0);
     }
 }
