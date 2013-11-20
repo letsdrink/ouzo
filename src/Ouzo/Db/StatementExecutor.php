@@ -42,12 +42,12 @@ class StatementExecutor
             if (!$obj->_preparedQuery->execute()) {
                 $dialect = Config::getValue('sql_dialect');
                 $adapter = new $dialect();
-                $errorInfo = $this->_preparedQuery->errorInfo();
+                $errorInfo = $obj->_preparedQuery->errorInfo();
                 $exceptionClassName = $adapter->getExceptionForError($errorInfo);
                 throw new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
                     $querySql,
-                    $this->_errorMessageFromErrorInfo($errorInfo),
-                    $this->_errorCodesFromErrorInfo($errorInfo)
+                    $obj->_errorMessageFromErrorInfo($errorInfo),
+                    $obj->_errorCodesFromErrorInfo($errorInfo)
                 ));
             }
             return call_user_func($afterCallback);
