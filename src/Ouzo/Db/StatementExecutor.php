@@ -12,10 +12,10 @@ use PDO;
 class StatementExecutor
 {
 
-    private $_preparedQuery;
     private $_sql;
     private $_dbHandle;
     public $_boundValues;
+    public $_preparedQuery;
 
     private function __construct($dbHandle, $sql, $boundValues)
     {
