@@ -19,4 +19,12 @@ class MySqlDialect extends Dialect
         }
         return " FROM $table";
     }
+
+    public function getExceptionForErrorCode($errorCode)
+    {
+        $connectionErrorCodes = array(2003, 2006);
+        if (in_array($errorCode, $connectionErrorCodes))
+            return '\Ouzo\DbConnectionException';
+        return parent::getExceptionForErrorCode($errorCode);
+    }
 }
