@@ -94,12 +94,12 @@ class StatementExecutor
         }
     }
 
-    private function _errorMessageFromErrorInfo($errorInfo)
+    public function _errorMessageFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 2);
     }
 
-    private function _errorCodesFromErrorInfo($errorInfo)
+    public function _errorCodesFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 0) . " " . Arrays::getValue($errorInfo, 1);
     }
