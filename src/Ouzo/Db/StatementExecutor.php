@@ -2,7 +2,7 @@
 
 namespace Ouzo\Db;
 
-use Ouzo\Config;
+use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\DbException;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
@@ -33,25 +33,32 @@ class StatementExecutor
 
             Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->_boundValues)));
 
-            $querySql = $humanizedSql . ' with params: (' . implode(', ', $obj->_boundValues) . ')';
-
+            $querySql = $obj->_createQuerySql($humanizedSql);
             if (!$obj->_preparedQuery) {
                 throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastDbErrorMessage());
             }
-
             if (!$obj->_preparedQuery->execute()) {
-                $dialect = Config::getValue('sql_dialect');
-                $adapter = new $dialect();
-                $errorInfo = $obj->_preparedQuery->errorInfo();
-                $exceptionClassName = $adapter->getExceptionForError($errorInfo);
-                throw new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
-                    $querySql,
-                    $obj->_errorMessageFromErrorInfo($errorInfo),
-                    $obj->_errorCodesFromErrorInfo($errorInfo)
-                ));
+                throw $obj->_getException($querySql);
             }
             return call_user_func($afterCallback);
         });
+    }
+
+    public function _createQuerySql($humanizedSql)
+    {
+        return $humanizedSql . ' with params: (' . implode(', ', $this->_boundValues) . ')';
+    }
+
+    public function _getException($querySql)
+    {
+        $errorInfo = $this->_preparedQuery->errorInfo();
+        $exceptionClassName = DialectFactory::create()->getExceptionForError($errorInfo);
+        return new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
+            $querySql,
+            $this->_errorMessageFromErrorInfo($errorInfo),
+            $this->_errorCodesFromErrorInfo($errorInfo)
+        ));
+
     }
 
     public function execute()
@@ -94,12 +101,12 @@ class StatementExecutor
         }
     }
 
-    public function _errorMessageFromErrorInfo($errorInfo)
+    private function _errorMessageFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 2);
     }
 
-    public function _errorCodesFromErrorInfo($errorInfo)
+    private function _errorCodesFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 0) . " " . Arrays::getValue($errorInfo, 1);
     }
