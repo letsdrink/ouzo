@@ -2,6 +2,7 @@
 namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\QueryType;
+use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
@@ -20,11 +21,12 @@ class MySqlDialect extends Dialect
         return " FROM $table";
     }
 
-    public function getExceptionForErrorCode($errorCode)
+    public function getExceptionForError($errorInfo)
     {
         $connectionErrorCodes = array(2003, 2006);
+        $errorCode = Arrays::getValue($errorInfo, 1);
         if (in_array($errorCode, $connectionErrorCodes))
             return '\Ouzo\DbConnectionException';
-        return parent::getExceptionForErrorCode($errorCode);
+        return parent::getExceptionForError($errorInfo);
     }
 }

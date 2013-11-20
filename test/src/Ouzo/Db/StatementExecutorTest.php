@@ -56,7 +56,6 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\DbConnectionException');
-
     }
 
     /**
@@ -66,7 +65,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
     {
         //given
         Config::overrideProperty('sql_dialect')->with('\Ouzo\Db\Dialect\PostgresDialect');
-        Mock::when($this->pdoMock)->errorInfo()->thenReturn(array('HY000', 7, 'Execution error'));
+        Mock::when($this->pdoMock)->errorInfo()->thenReturn(array('57P01', 7, 'Execution error'));
         $executor = StatementExecutor::prepare($this->pdoMock, 'SELECT 1');
 
         //when
@@ -74,7 +73,6 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\DbConnectionException');
-
     }
 }
  

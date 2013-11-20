@@ -3,6 +3,7 @@
 namespace Ouzo\Db;
 
 use Ouzo\Config;
+use Ouzo\Utilities\Arrays;
 
 class StatementExecutor
 {
@@ -19,30 +20,33 @@ class StatementExecutor
         $this->_querySQLWithParams = $querySqlWithParams;
     }
 
-    private function _lastErrorMessage()
-    {
-        $errorInfo = $this->_preparedStatement->errorInfo();
-        return $errorInfo[2];
-    }
-
-    private function _lastErrorCode()
-    {
-        $errorInfo = $this->_preparedStatement->errorInfo();
-        return $errorInfo[1];
-    }
-
     public function execute()
     {
         if (!$this->_preparedStatement->execute()) {
             $dialect = Config::getValue('sql_dialect');
             $adapter = new $dialect();
-            $exceptionClassName = $adapter->getExceptionForErrorCode($this->_lastErrorCode());
-            throw new $exceptionClassName("Exception: query: " . $this->_querySQLWithParams . " failed: " . $this->_lastErrorMessage());
+            $errorInfo = $this->_preparedStatement->errorInfo();
+            $exceptionClassName = $adapter->getExceptionForError($errorInfo);
+            throw new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
+                $this->_querySQLWithParams,
+                $this->_errorMessageFromErrorInfo($errorInfo),
+                $this->_errorCodesFromErrorInfo($errorInfo)
+            ));
         }
     }
 
     public static function prepare($preparedStatement, $querySqlWithParams)
     {
         return new self($preparedStatement, $querySqlWithParams);
+    }
+
+    private function _errorMessageFromErrorInfo($errorInfo)
+    {
+        return Arrays::getValue($errorInfo, 2);
+    }
+
+    private function _errorCodesFromErrorInfo($errorInfo)
+    {
+        return Arrays::getValue($errorInfo, 0) . "_" . Arrays::getValue($errorInfo, 1);
     }
 }

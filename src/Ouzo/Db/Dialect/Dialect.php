@@ -3,6 +3,7 @@ namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
 
 class Dialect
@@ -100,9 +101,9 @@ class Dialect
         return rtrim($sql);
     }
 
-    public function getExceptionForErrorCode($errorCode)
+    public function getExceptionForError($errorInfo)
     {
-        switch ($errorCode) {
+        switch (Arrays::getValue($errorInfo, 1)) {
             default:
                 return '\Ouzo\DbException';
         }
