@@ -3,6 +3,7 @@ namespace Ouzo;
 
 use InvalidArgumentException;
 use Ouzo\Db\ParameterType;
+use Ouzo\Db\StatementExecutor;
 use Ouzo\Db\Stats;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
@@ -105,9 +106,9 @@ class Db
 
             Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($query, Objects::toString($params)));
 
-            if (!$obj->query->execute()) {
-                throw new DbException('Exception: query: ' . $query . ' with params: (' . Objects::toString($params) . ') failed: ' . $obj->lastErrorMessage());
-            }
+            $queryWithParams = $query . ' with params: (' . Objects::toString($params) . ')';
+            StatementExecutor::prepare($obj->query, $queryWithParams)->execute();
+
             return $obj;
         });
     }
@@ -163,6 +164,11 @@ class Db
     {
         $this->_dbHandle->rollBack();
         $this->_startedTransaction = false;
+    }
+
+    public function lastErrorCode()
+    {
+        return $this->_dbHandle->errorCode();
     }
 
     public function lastErrorMessage()

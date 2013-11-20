@@ -9,6 +9,7 @@ use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class QueryExecutor
 {
@@ -93,9 +94,13 @@ class QueryExecutor
 
             Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
 
-            if (!$obj->_preparedQuery || !$obj->_preparedQuery->execute()) {
-                throw new DbException('Exception: query: ' . $humanizedSql . ' with params: (' . implode(', ', $obj->getBoundValues()) . ') failed: ' . $obj->lastErrorMessage());
+            $querySql = $humanizedSql . ' with params: (' . implode(', ', $obj->getBoundValues()) . ')';
+
+            if (!$obj->_preparedQuery) {
+                throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastErrorMessage());
             }
+
+            StatementExecutor::prepare($obj->_preparedQuery, $querySql)->execute();
             return $obj->_preparedQuery->$function($obj->_fetchStyle);
         });
     }

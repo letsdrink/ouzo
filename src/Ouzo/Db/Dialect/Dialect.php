@@ -99,4 +99,12 @@ class Dialect
         }
         return rtrim($sql);
     }
+
+    public function getExceptionForErrorCode($errorCode)
+    {
+        switch ($errorCode) {
+            default:
+                return '\Ouzo\DbException';
+        }
+    }
 }
