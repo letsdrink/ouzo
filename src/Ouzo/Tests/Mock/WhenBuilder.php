@@ -20,6 +20,12 @@ class WhenBuilder
 
     function thenReturn($result)
     {
-        $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $result);
+        $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $result, null);
     }
+
+    function thenThrow($exception)
+    {
+        $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, null, $exception);
+    }
+
 }
