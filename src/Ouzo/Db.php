@@ -2,18 +2,12 @@
 namespace Ouzo;
 
 use InvalidArgumentException;
-use Ouzo\Db\ParameterType;
 use Ouzo\Db\StatementExecutor;
 use Ouzo\Utilities\Arrays;
 use PDO;
-use PDOStatement;
 
 class Db
 {
-    /**
-     * @var PDOStatement
-     */
-    public $query = '';
     /**
      * @var PDO
      */
