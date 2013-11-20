@@ -494,4 +494,33 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('isset($id) && isset($name) && isset($phone)', $reduced);
     }
+
+    /**
+     * @test
+     */
+    public function shouldFindElement()
+    {
+        //when
+        $value = Arrays::find(array('a', 'b', 'c'), function ($element) {
+            return $element == 'b';
+        });
+
+        //then
+        $this->assertEquals('b', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function findShouldReturnNullWhenElementWasNotFound()
+    {
+        //when
+        $value = Arrays::find(array('a', 'c'), function ($element) {
+            return $element == 'b';
+        });
+
+        //then
+        $this->assertNull($value);
+    }
+
 }

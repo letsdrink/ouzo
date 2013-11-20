@@ -3,6 +3,7 @@
 namespace Ouzo\Tests;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\DynamicProxy;
 use Ouzo\Utilities\Joiner;
 use PHPUnit_Framework_ComparisonFailure;
 use PHPUnit_Framework_ExpectationFailedException;
@@ -120,20 +121,27 @@ class Mock
 {
     public $_stubbed_calls = array();
     public $_called_methods = array();
+    public $_className;
 
-    public static function mock()
+    function __construct($className)
     {
-        return new Mock();
+        $this->_className = $className;
     }
 
-    public static function when(Mock $mock)
+    public static function mock($className)
     {
-        return new WhenBuilder($mock);
+        $mock = new Mock($className);
+        return DynamicProxy::newInstance($className, $mock);;
+    }
+
+    public static function when($mock)
+    {
+        return new WhenBuilder(DynamicProxy::extractMethodHandler($mock));
     }
 
     public static function verify($mock)
     {
-        return new Verifier($mock);
+        return new Verifier(DynamicProxy::extractMethodHandler($mock));
     }
 
     function __call($name, $arguments)
