@@ -655,4 +655,22 @@ class Arrays
     {
         return array_reduce($elements, $function);
     }
+
+    /**
+     * Finds first element in array that is matched by function.
+     * Returns null if element was not found.
+     *
+     * @param array $elements
+     * @param callable $function
+     * @return mixed
+     */
+    public static function find(array $elements, $function)
+    {
+        foreach ($elements as $elements) {
+            if ($function($elements)) {
+                return $elements;
+            }
+        }
+        return null;
+    }
 }
