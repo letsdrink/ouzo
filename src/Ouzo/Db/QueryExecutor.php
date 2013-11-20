@@ -4,12 +4,9 @@ namespace Ouzo\Db;
 use InvalidArgumentException;
 use Ouzo\Config;
 use Ouzo\Db;
-use Ouzo\DbException;
-use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class QueryExecutor
 {
@@ -19,7 +16,6 @@ class QueryExecutor
     private $_boundValues = array();
 
     public $_sql;
-    public $_preparedQuery;
     public $_fetchStyle = PDO::FETCH_ASSOC;
 
     function __construct($db, $query)
@@ -66,7 +62,7 @@ class QueryExecutor
         $this->_query->type = QueryType::$DELETE;
         $this->_buildQuery();
         $this->_db->query($this->_sql, $this->_boundValues);
-        return $this->_db->query->rowCount();
+        return $this->_db->rowCount();
     }
 
     public function update(array $attributes)
@@ -75,7 +71,7 @@ class QueryExecutor
         $this->_query->updateAttributes = $attributes;
         $this->_buildQuery();
         $this->_db->query($this->_sql, $this->_boundValues);
-        return $this->_db->query->rowCount();
+        return $this->_db->rowCount();
     }
 
     public function count()
@@ -87,31 +83,7 @@ class QueryExecutor
 
     private function _fetch($function)
     {
-        $obj = $this;
-        $humanizedSql = QueryHumanizer::humanize($this->_sql);
-        return Stats::trace($humanizedSql, $this->_boundValues, function () use ($obj, $humanizedSql, $function) {
-            $obj->_prepareAndBind();
-
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
-
-            $querySql = $humanizedSql . ' with params: (' . implode(', ', $obj->getBoundValues()) . ')';
-
-            if (!$obj->_preparedQuery) {
-                throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastErrorMessage());
-            }
-
-            StatementExecutor::prepare($obj->_preparedQuery, $querySql)->execute();
-            return $obj->_preparedQuery->$function($obj->_fetchStyle);
-        });
-    }
-
-    public function _prepareAndBind()
-    {
-        $this->_preparedQuery = $this->_db->_dbHandle->prepare($this->_sql);
-        foreach ($this->_boundValues as $key => $valueBind) {
-            $type = ParameterType::getType($valueBind);
-            $this->_preparedQuery->bindValue($key + 1, $valueBind, $type);
-        }
+        return StatementExecutor::prepare($this->_db->_dbHandle, $this->_sql, $this->_boundValues)->executeAndFetch($function, $this->_fetchStyle);
     }
 
     public function getSql()

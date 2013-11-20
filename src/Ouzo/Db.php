@@ -4,10 +4,7 @@ namespace Ouzo;
 use InvalidArgumentException;
 use Ouzo\Db\ParameterType;
 use Ouzo\Db\StatementExecutor;
-use Ouzo\Db\Stats;
-use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Objects;
 use PDO;
 use PDOStatement;
 
@@ -21,6 +18,7 @@ class Db
      * @var PDO
      */
     public $_dbHandle = null;
+    public $_statementExecutor = null;
 
     protected $_fetchMode = PDO::FETCH_ASSOC;
 
@@ -98,37 +96,23 @@ class Db
 
     public function query($query, $params = array())
     {
-        $obj = $this;
-        return Stats::trace($query, $params, function () use ($query, $params, $obj) {
-            $obj->query = $obj->_dbHandle->prepare($query);
-
-            $obj->_bindQueryParams($params);
-
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($query, Objects::toString($params)));
-
-            $queryWithParams = $query . ' with params: (' . Objects::toString($params) . ')';
-            StatementExecutor::prepare($obj->query, $queryWithParams)->execute();
-
-            return $obj;
-        });
-    }
-
-    public function _bindQueryParams($params)
-    {
-        $params = Arrays::toArray($params);
-        foreach ($params as $key => $value) {
-            $this->query->bindValue($key + 1, $value, ParameterType::getType($value));
-        }
+        $this->_statementExecutor = StatementExecutor::prepare($this->_dbHandle, $query, $params);
+        return $this->_statementExecutor->execute();
     }
 
     public function fetchAll()
     {
-        return $this->query->fetchAll($this->_fetchMode);
+        return $this->_statementExecutor->fetchAll($this->_fetchMode);
     }
 
     public function fetch()
     {
-        return $this->query->fetch($this->_fetchMode);
+        return $this->_statementExecutor->fetch($this->_fetchMode);
+    }
+
+    public function rowCount()
+    {
+        return $this->_statementExecutor->rowCount();
     }
 
     public function setFetchMode($mode)
@@ -164,11 +148,6 @@ class Db
     {
         $this->_dbHandle->rollBack();
         $this->_startedTransaction = false;
-    }
-
-    public function lastErrorCode()
-    {
-        return $this->_dbHandle->errorCode();
     }
 
     public function lastErrorMessage()
