@@ -2,6 +2,7 @@
 
 namespace Ouzo\Tests;
 
+use Ouzo\Tests\Mock\Mock;
 use PHPUnit_Framework_ExpectationFailedException;
 
 class MockTestClass
