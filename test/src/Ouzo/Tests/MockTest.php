@@ -83,5 +83,21 @@ class MockTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @test
+     */
+    public function shouldReturnSimpleMockIfNoClassGiven()
+    {
+        //given
+        $mock = Mock::mock();
+        Mock::when($mock)->method()->thenReturn('result');
+
+        //when
+        $result = $mock->method();
+
+        //then
+        $this->assertEquals("result", $result);
+    }
+
 }
  

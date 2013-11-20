@@ -128,20 +128,34 @@ class Mock
         $this->_className = $className;
     }
 
-    public static function mock($className)
+    public static function mock($className = null)
     {
         $mock = new Mock($className);
+        if (!$className) {
+            return $mock;
+        }
         return DynamicProxy::newInstance($className, $mock);;
     }
 
     public static function when($mock)
     {
-        return new WhenBuilder(DynamicProxy::extractMethodHandler($mock));
+        if ($mock instanceof Mock) {
+            return new WhenBuilder($mock);
+        }
+        return new WhenBuilder(self::extractMock($mock));
     }
 
     public static function verify($mock)
     {
-        return new Verifier(DynamicProxy::extractMethodHandler($mock));
+        return new Verifier(self::extractMock($mock));
+    }
+
+    public static function extractMock($mock)
+    {
+        if ($mock instanceof Mock) {
+            return $mock;
+        }
+        return DynamicProxy::extractMethodHandler($mock);
     }
 
     function __call($name, $arguments)
