@@ -4,6 +4,7 @@ namespace Ouzo\Db;
 use InvalidArgumentException;
 use Ouzo\Config;
 use Ouzo\Db;
+use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;
@@ -23,8 +24,7 @@ class QueryExecutor
         $this->_db = $db;
         $this->_query = $query;
 
-        $dialect = Config::getValue('sql_dialect');
-        $this->_adapter = new $dialect();
+        $this->_adapter = DialectFactory::create();
     }
 
     public static function prepare($db, $query)

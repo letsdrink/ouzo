@@ -2,7 +2,7 @@
 
 namespace Ouzo\Db;
 
-use Ouzo\Config;
+use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\DbException;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
@@ -14,8 +14,8 @@ class StatementExecutor
 
     private $_sql;
     private $_dbHandle;
-    public $_boundValues;
-    public $_preparedQuery;
+    private $_boundValues;
+    private $_preparedQuery;
 
     private function __construct($dbHandle, $sql, $boundValues)
     {
@@ -24,34 +24,51 @@ class StatementExecutor
         $this->_sql = $sql;
     }
 
+    public function getBoundValues()
+    {
+        return $this->_boundValues;
+    }
+
+    public function getPreparedQuery()
+    {
+        return $this->_preparedQuery;
+    }
+
     private function _execute($afterCallback)
     {
         $obj = $this;
         $humanizedSql = QueryHumanizer::humanize($this->_sql);
-        return Stats::trace($humanizedSql, $this->_boundValues, function () use ($obj, $humanizedSql, $afterCallback) {
+        return Stats::trace($humanizedSql, $this->getBoundValues(), function () use ($obj, $humanizedSql, $afterCallback) {
             $obj->_prepareAndBind();
 
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->_boundValues)));
+            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
 
-            $querySql = $humanizedSql . ' with params: (' . implode(', ', $obj->_boundValues) . ')';
-
-            if (!$obj->_preparedQuery) {
+            $querySql = $obj->_createQuerySql($humanizedSql);
+            if (!$obj->getPreparedQuery()) {
                 throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastDbErrorMessage());
             }
-
-            if (!$obj->_preparedQuery->execute()) {
-                $dialect = Config::getValue('sql_dialect');
-                $adapter = new $dialect();
-                $errorInfo = $obj->_preparedQuery->errorInfo();
-                $exceptionClassName = $adapter->getExceptionForError($errorInfo);
-                throw new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
-                    $querySql,
-                    $obj->_errorMessageFromErrorInfo($errorInfo),
-                    $obj->_errorCodesFromErrorInfo($errorInfo)
-                ));
+            if (!$obj->getPreparedQuery()->execute()) {
+                throw $obj->_getException($querySql);
             }
             return call_user_func($afterCallback);
         });
+    }
+
+    public function _createQuerySql($humanizedSql)
+    {
+        return $humanizedSql . ' with params: (' . implode(', ', $this->_boundValues) . ')';
+    }
+
+    public function _getException($querySql)
+    {
+        $errorInfo = $this->_preparedQuery->errorInfo();
+        $exceptionClassName = DialectFactory::create()->getExceptionForError($errorInfo);
+        return new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
+            $querySql,
+            $this->_errorMessageFromErrorInfo($errorInfo),
+            $this->_errorCodesFromErrorInfo($errorInfo)
+        ));
+
     }
 
     public function execute()
@@ -66,7 +83,7 @@ class StatementExecutor
     {
         $obj = $this;
         return $this->_execute(function () use ($obj, $function, $fetchStyle) {
-            return $obj->_preparedQuery->$function($fetchStyle);
+            return $obj->getPreparedQuery()->$function($fetchStyle);
         });
     }
 
@@ -94,12 +111,12 @@ class StatementExecutor
         }
     }
 
-    public function _errorMessageFromErrorInfo($errorInfo)
+    private function _errorMessageFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 2);
     }
 
-    public function _errorCodesFromErrorInfo($errorInfo)
+    private function _errorCodesFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 0) . " " . Arrays::getValue($errorInfo, 1);
     }
