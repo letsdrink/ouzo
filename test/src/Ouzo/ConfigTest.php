@@ -182,6 +182,54 @@ TEMPLATE;
     /**
      * @test
      */
+    public function shouldRevertProperty()
+    {
+        // given
+        Config::overrideProperty('key1', 'key2')->with('first');
+        Config::overrideProperty('key1', 'key2')->with('second');
+
+        // when
+        Config::revertProperty('key1', 'key2');
+
+        // then
+        $value = Config::getValue('key1', 'key2');
+        $this->assertEquals('first', $value);
+
+        Config::clearProperty('key1', 'key2'); // cleanup
+    }
+
+    /**
+     * @test
+     */
+    public function revertCalledSecondTimeShouldDoNothingMore()
+    {
+        // given
+        Config::overrideProperty('key')->with('first');
+        Config::overrideProperty('key')->with('second');
+        Config::revertProperty('key');
+
+        // when
+        Config::revertProperty('key');
+
+        // then
+        $value = Config::getValue('key');
+        $this->assertEquals('first', $value);
+
+        Config::clearProperty('key'); // cleanup
+    }
+
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function revertOnNonExistingKeyShouldThrowException()
+    {
+        Config::revertProperty('key', 'does', 'not', 'exist');
+    }
+
+    /**
+     * @test
+     */
     public function shouldClearProperty()
     {
         // given

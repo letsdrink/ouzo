@@ -25,7 +25,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        Config::overrideProperty('sql_dialect')->with($this->configSqlDialect);
+        Config::revertProperty('sql_dialect');
         parent::tearDown();
     }
 

@@ -1,7 +1,9 @@
 <?php
 namespace Ouzo;
 
+use InvalidArgumentException;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Path;
 
 class Config
@@ -9,6 +11,7 @@ class Config
     private $_config = array();
     private static $_configInstance;
     private static $_customConfigs = array();
+    private $_overriddenConfig = array();
 
     private function __construct()
     {
@@ -117,24 +120,47 @@ class Config
         return new ConfigOverrideProperty(func_get_args());
     }
 
-    public static function overridePropertyArray($keys, $value)
+    public static function overridePropertyArray($keys, $value, $revert = false)
     {
-        self::getInstance()->_overrideProperty($keys, $value);
+        self::getInstance()->_overrideProperty($keys, $value, $revert);
     }
 
-    private function _overrideProperty($keys, $value)
+    private function _overrideProperty($keys, $value, $revert)
     {
         $keys = Arrays::toArray($keys);
         $config = & $this->_config;
+        $overriddenConfig = & $this->_overriddenConfig;
         foreach ($keys as $key) {
+            if ($revert && !isset($overriddenConfig[$key])) {
+                throw new InvalidArgumentException('Cannot revert. No configuration override for: ' . Objects::toString($keys));
+            }
             $config = & $config[$key];
+            if (!$revert) {
+                $overriddenConfig[$key] = array();
+            }
+            $overriddenConfig = & $overriddenConfig[$key];
         }
-        $config = $value;
+        if ($revert) {
+            $config = $overriddenConfig[0];
+        } else {
+            $overriddenConfig[] = $config;
+            $config = $value;
+        }
     }
 
     public static function clearProperty()
     {
         self::overridePropertyArray(func_get_args(), null);
+    }
+
+    public static function revertProperty()
+    {
+        self::revertPropertyArray(func_get_args());
+    }
+
+    private static function revertPropertyArray($keys)
+    {
+        self::overridePropertyArray($keys, null, true);
     }
 }
 
