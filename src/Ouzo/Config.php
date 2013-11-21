@@ -1,8 +1,8 @@
 <?php
 namespace Ouzo;
 
-use Ouzo\Config\ConfigImpl;
 use Ouzo\Config\ConfigOverrideProperty;
+use Ouzo\Config\ConfigRepository;
 
 class Config
 {
@@ -30,7 +30,7 @@ class Config
     private static function getInstance()
     {
         if (!self::isLoaded()) {
-            self::$_configInstance = new ConfigImpl();
+            self::$_configInstance = new ConfigRepository();
             self::$_configInstance->reload();
         }
         return self::$_configInstance;
@@ -39,7 +39,7 @@ class Config
     private static function getInstanceNoReload()
     {
         if (!self::isLoaded()) {
-            self::$_configInstance = new ConfigImpl();
+            self::$_configInstance = new ConfigRepository();
         }
         return self::$_configInstance;
     }

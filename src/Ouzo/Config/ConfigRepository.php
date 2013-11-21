@@ -3,11 +3,10 @@ namespace Ouzo\Config;
 
 use InvalidArgumentException;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Path;
 
-class ConfigImpl
+class ConfigRepository
 {
 
     private $_customConfigs = array();
