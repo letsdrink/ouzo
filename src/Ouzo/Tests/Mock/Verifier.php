@@ -16,18 +16,22 @@ class Verifier
         $this->mock = $mock;
     }
 
-    function __call($name, $arguments)
+    public function neverReceived()
     {
-        if (Arrays::find($this->mock->_called_methods, MethodCall::matches($name, $arguments))) {
-            return $this;
-        }
-
-        $calls = $this->actualCalls();
-        $expected = MethodCall::newInstance($name, $arguments)->toString();
-        $this->fail("Expected method was not called", $expected, $calls);
+        return new NotCalledVerifier($this->mock);
     }
 
-    private function fail($description, $expected, $actual)
+    function __call($name, $arguments)
+    {
+        if ($this->_wasCalled($name, $arguments)) {
+            return $this;
+        }
+        $calls = $this->_actualCalls();
+        $expected = MethodCall::newInstance($name, $arguments)->toString();
+        $this->_fail("Expected method was not called", $expected, $calls);
+    }
+
+    protected function _fail($description, $expected, $actual)
     {
         throw new PHPUnit_Framework_ExpectationFailedException(
             $description,
@@ -35,7 +39,7 @@ class Verifier
         );
     }
 
-    private function actualCalls()
+    protected function _actualCalls()
     {
         if (empty($this->mock->_called_methods)) {
             return "no interactions";
@@ -43,4 +47,8 @@ class Verifier
         return Joiner::on(', ')->join(Arrays::map($this->mock->_called_methods, MethodCall::toStringFunction()));
     }
 
+    protected  function _wasCalled($name, $arguments)
+    {
+        return Arrays::find($this->mock->_called_methods, MethodCall::matches($name, $arguments));
+    }
 }

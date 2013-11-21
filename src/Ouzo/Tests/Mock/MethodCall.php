@@ -38,4 +38,11 @@ class MethodCall
             return $methodCall->toString();
         };
     }
+
+    public static function matches($name, $arguments)
+    {
+        return function (MethodCall $methodCall) use($name, $arguments) {
+            return $methodCall->name == $name && $methodCall->arguments === $arguments;
+        };
+    }
 }
