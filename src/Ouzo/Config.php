@@ -125,27 +125,33 @@ class Config
         self::getInstance()->_overrideProperty($keys, $value, $revert);
     }
 
-    private function _overrideProperty($keys, $value, $revert)
+    private function _overrideProperty($keys, $value)
     {
         $keys = Arrays::toArray($keys);
         $config = & $this->_config;
         $overriddenConfig = & $this->_overriddenConfig;
         foreach ($keys as $key) {
-            if ($revert && !isset($overriddenConfig[$key])) {
+            $config = & $config[$key];
+            $overriddenConfig[$key] = array();
+            $overriddenConfig = & $overriddenConfig[$key];
+        }
+        $overriddenConfig = $config;
+        $config = $value;
+    }
+
+    private function _revertProperty($keys)
+    {
+        $keys = Arrays::toArray($keys);
+        $config = & $this->_config;
+        $overriddenConfig = & $this->_overriddenConfig;
+        foreach ($keys as $key) {
+            if (!isset($overriddenConfig[$key])) {
                 throw new InvalidArgumentException('Cannot revert. No configuration override for: ' . Objects::toString($keys));
             }
             $config = & $config[$key];
-            if (!$revert) {
-                $overriddenConfig[$key] = array();
-            }
             $overriddenConfig = & $overriddenConfig[$key];
         }
-        if ($revert) {
-            $config = $overriddenConfig[0];
-        } else {
-            $overriddenConfig[] = $config;
-            $config = $value;
-        }
+        $config = $overriddenConfig;
     }
 
     public static function clearProperty()
@@ -160,7 +166,7 @@ class Config
 
     private static function revertPropertyArray($keys)
     {
-        self::overridePropertyArray($keys, null, true);
+        self::getInstance()->_revertProperty($keys);
     }
 }
 
