@@ -14,8 +14,8 @@ class StatementExecutor
 
     private $_sql;
     private $_dbHandle;
-    public $_boundValues;
-    public $_preparedQuery;
+    private $_boundValues;
+    private $_preparedQuery;
 
     private function __construct($dbHandle, $sql, $boundValues)
     {
@@ -38,16 +38,16 @@ class StatementExecutor
     {
         $obj = $this;
         $humanizedSql = QueryHumanizer::humanize($this->_sql);
-        return Stats::trace($humanizedSql, $this->_boundValues, function () use ($obj, $humanizedSql, $afterCallback) {
+        return Stats::trace($humanizedSql, $this->getBoundValues(), function () use ($obj, $humanizedSql, $afterCallback) {
             $obj->_prepareAndBind();
 
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->_boundValues)));
+            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
 
             $querySql = $obj->_createQuerySql($humanizedSql);
-            if (!$obj->_preparedQuery) {
+            if (!$obj->getPreparedQuery()) {
                 throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastDbErrorMessage());
             }
-            if (!$obj->_preparedQuery->execute()) {
+            if (!$obj->getPreparedQuery()->execute()) {
                 throw $obj->_getException($querySql);
             }
             return call_user_func($afterCallback);
@@ -111,19 +111,19 @@ class StatementExecutor
         }
     }
 
-    public function errorMessageFromErrorInfo($errorInfo)
+    private function _errorMessageFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 2);
     }
 
-    public function errorCodesFromErrorInfo($errorInfo)
+    private function _errorCodesFromErrorInfo($errorInfo)
     {
         return Arrays::getValue($errorInfo, 0) . " " . Arrays::getValue($errorInfo, 1);
     }
 
     public function lastDbErrorMessage()
     {
-        return $this->errorMessageFromErrorInfo($this->_dbHandle->errorInfo());
+        return $this->_errorMessageFromErrorInfo($this->_dbHandle->errorInfo());
     }
 
     public static function prepare($dbHandle, $sql, $boundValues)
