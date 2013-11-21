@@ -83,7 +83,7 @@ class StatementExecutor
     {
         $obj = $this;
         return $this->_execute(function () use ($obj, $function, $fetchStyle) {
-            return $obj->_preparedQuery->$function($fetchStyle);
+            return $obj->getPreparedQuery()->$function($fetchStyle);
         });
     }
 
