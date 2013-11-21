@@ -10,23 +10,16 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 {
     private $pdoMock;
     private $dbMock;
-    private $configSqlDialect;
 
     protected function setUp()
     {
         parent::setUp();
+
         $this->pdoMock = Mock::mock();
         $this->dbMock = Mock::mock();
         Mock::when($this->pdoMock)->execute()->thenReturn(false);
         Mock::when($this->dbMock)->prepare('SELECT 1')->thenReturn($this->pdoMock);
         Mock::when($this->dbMock)->errorInfo()->thenReturn(array(1, 3, 'Preparation error'));
-        $this->configSqlDialect = Config::getValue('sql_dialect');
-    }
-
-    protected function tearDown()
-    {
-        Config::revertProperty('sql_dialect');
-        parent::tearDown();
     }
 
     /**
@@ -60,6 +53,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\DbConnectionException');
+        Config::revertProperty('sql_dialect');
     }
 
     /**
@@ -77,6 +71,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\DbConnectionException');
+        Config::revertProperty('sql_dialect');
     }
 }
  
