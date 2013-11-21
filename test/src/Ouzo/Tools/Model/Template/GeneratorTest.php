@@ -90,7 +90,6 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
     public function shouldThrowExceptionWhenDialectAdapterNotExists()
     {
         //given
-        $old = Config::getValue('sql_dialect');
         Config::overrideProperty('sql_dialect')->with('\Ouzo\Tools\Model\Template\MyImagineDialect');
 
         //when
@@ -101,7 +100,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         }
 
         //then
-        Config::overrideProperty('sql_dialect')->with($old);
+        Config::revertProperty('sql_dialect');
     }
 
     /**
