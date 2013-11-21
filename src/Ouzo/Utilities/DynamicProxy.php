@@ -13,7 +13,7 @@ class DynamicProxy
         $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid();
         eval(self::getProxyClassDefinition($name, $className));
         $object = null;
-        eval("\$object = new $name(\$methodHandler);");
+        eval("\$object = new $name();");
         $object->_methodHandler = $methodHandler;
         return $object;
     }

@@ -22,7 +22,22 @@ class MockTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldMockMethod()
+    public function shouldReturnMockObjectOfTheGivenType()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+
+        //when
+        $result = $mock instanceof MockTestClass;
+
+        //then
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMethod()
     {
         //given
         $mock = Mock::mock('Ouzo\Tests\MockTestClass');
