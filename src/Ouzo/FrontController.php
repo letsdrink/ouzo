@@ -9,7 +9,6 @@ use Ouzo\Utilities\Strings;
 class FrontController
 {
     public static $requestId;
-    public static $userId;
 
     private $_defaults;
     private $_currentAction;
@@ -151,7 +150,6 @@ class FrontController
 
     private function _logRequest()
     {
-        self::$userId = isset($_SESSION['id_user_ses']) ? $_SESSION['id_user_ses'] : null;
         Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', array($this->_currentController, $this->_currentAction));
     }
 

@@ -2,22 +2,25 @@
 namespace Ouzo\Logger;
 
 use Ouzo\Config;
-use Ouzo\FrontController;
+use Ouzo\Utilities\Arrays;
 
 class SyslogLogger implements LoggerInterface
 {
     private $_name;
     private $_logger;
+    private $_messageFormatter;
 
     function __construct($name)
     {
         $this->_name = $name;
+        $messageFormatterClass = 'Ouzo\Logger\DefaultMessageFormatter';
 
         $logger = Config::getValue('logger');
         if ($logger) {
             openlog($logger['ident'], $logger['option'], $logger['facility']);
+            $messageFormatterClass = Arrays::getValue($logger, 'formatter', $messageFormatterClass);
         }
-
+        $this->_messageFormatter = new $messageFormatterClass();
         $this->_logger = $logger;
     }
 
@@ -30,7 +33,7 @@ class SyslogLogger implements LoggerInterface
 
     private function log($level, $levelName, $message, $params)
     {
-        $message = sprintf("%s %s: [ID: %s] [UserID: %s] %s", $this->_name, $levelName, FrontController::$requestId, FrontController::$userId, $message);
+        $message = $this->_messageFormatter->format($this->_name, $levelName, $message);
         if (!empty($params)) {
             $message = call_user_func_array('sprintf', array_merge(array($message), $params));
         }
