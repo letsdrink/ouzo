@@ -57,7 +57,9 @@ class ConfigRepository
         $overriddenConfig = & $this->_overriddenConfig;
         foreach ($keys as $key) {
             $config = & $config[$key];
-            $overriddenConfig[$key] = array();
+            if (!isset($overriddenConfig[$key])) {
+                $overriddenConfig[$key] = array();
+            }
             $overriddenConfig = & $overriddenConfig[$key];
         }
         $overriddenConfig = $config;
@@ -69,14 +71,19 @@ class ConfigRepository
         $keys = Arrays::toArray($keys);
         $config = & $this->_config;
         $overriddenConfig = & $this->_overriddenConfig;
+        $overriddenKey = null;
         foreach ($keys as $key) {
             if (!isset($overriddenConfig[$key])) {
                 throw new InvalidArgumentException('Cannot revert. No configuration override for: ' . Objects::toString($keys));
             }
             $config = & $config[$key];
-            $overriddenConfig = & $overriddenConfig[$key];
+            if (is_array($overriddenConfig[$key])) {
+                $overriddenConfig = & $overriddenConfig[$key];
+            } else {
+                $overriddenKey = $key;
+            }
         }
-        $config = $overriddenConfig;
+        $config = $overriddenConfig[$overriddenKey];
     }
 
     public function getValue($args)
