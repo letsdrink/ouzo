@@ -18,11 +18,10 @@ class Verifier
 
     function __call($name, $arguments)
     {
-        foreach ($this->mock->_called_methods as $called_method) {
-            if ($called_method->name == $name && $called_method->arguments === $arguments) {
-                return $this;
-            }
+        if (Arrays::find($this->mock->_called_methods, MethodCall::matches($name, $arguments))) {
+            return $this;
         }
+
         $calls = $this->actualCalls();
         $expected = MethodCall::newInstance($name, $arguments)->toString();
         $this->fail("Expected method was not called", $expected, $calls);
