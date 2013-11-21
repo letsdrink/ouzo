@@ -1,57 +1,12 @@
 <?php
 namespace Ouzo;
 
-use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Path;
+use Ouzo\Config\ConfigOverrideProperty;
+use Ouzo\Config\ConfigRepository;
 
 class Config
 {
-    private $_config = array();
     private static $_configInstance;
-    private static $_customConfigs = array();
-
-    private function __construct()
-    {
-        $this->_reload();
-    }
-
-    private function _reload()
-    {
-        $this->_config = $this->_loadConfig();
-    }
-
-    private function _loadConfig()
-    {
-        $configEnv = $this->_getConfigEnv();
-        $configCustom = $this->_getConfigCustom();
-        $configSession = $this->_getConfigSession();
-        return array_replace_recursive($configEnv, $configCustom, $configSession);
-    }
-
-    private function _getConfigEnv()
-    {
-        $configPath = Path::join(ROOT_PATH, 'config', getenv('environment'), 'ConfigPanel.php');
-        if (file_exists($configPath)) {
-            /** @noinspection PhpIncludeInspection */
-            return require($configPath);
-        }
-        return array();
-    }
-
-    private function _getConfigCustom()
-    {
-        $customConfigs = array();
-        foreach (self::$_customConfigs as $config) {
-            $customConfigs = array_replace_recursive($customConfigs, $config->getConfig());
-        }
-        return $customConfigs;
-    }
-
-    private function _getConfigSession()
-    {
-        $session = isset($_SESSION) ? $_SESSION : array();
-        return Arrays::getValue($session, 'config', array());
-    }
 
     public static function isLoaded()
     {
@@ -69,33 +24,34 @@ class Config
      */
     public static function getValue()
     {
-        $configValue = self::getInstance()->_config;
-        $args = func_get_args();
-        foreach ($args as $arg) {
-            $configValue = Arrays::getValue($configValue, $arg);
-            if (!$configValue) {
-                return null;
-            }
-        }
-        return $configValue;
+        return self::getInstance()->getValue(func_get_args());
     }
 
     private static function getInstance()
     {
         if (!self::isLoaded()) {
-            self::$_configInstance = new self();
+            self::$_configInstance = new ConfigRepository();
+            self::$_configInstance->reload();
+        }
+        return self::$_configInstance;
+    }
+
+    private static function getInstanceNoReload()
+    {
+        if (!self::isLoaded()) {
+            self::$_configInstance = new ConfigRepository();
         }
         return self::$_configInstance;
     }
 
     public static function getPrefixSystem()
     {
-        return self::getInstance()->_config['global']['prefix_system'];
+        return self::getValue('global', 'prefix_system');
     }
 
     public static function all()
     {
-        return self::getInstance()->_config;
+        return self::getInstance()->all();
     }
 
     /**
@@ -103,12 +59,9 @@ class Config
      */
     public static function registerConfig($customConfig)
     {
-        self::$_customConfigs[] = $customConfig;
-        if (!self::isLoaded()) {
-            self::getInstance();
-        } else {
-            self::$_configInstance->_reload();
-        }
+        $config = self::getInstanceNoReload();
+        $config->addCustomConfig($customConfig);
+        $config->reload();
         return self::$_configInstance;
     }
 
@@ -117,38 +70,24 @@ class Config
         return new ConfigOverrideProperty(func_get_args());
     }
 
-    public static function overridePropertyArray($keys, $value)
-    {
-        self::getInstance()->_overrideProperty($keys, $value);
-    }
-
-    private function _overrideProperty($keys, $value)
-    {
-        $keys = Arrays::toArray($keys);
-        $config = & $this->_config;
-        foreach ($keys as $key) {
-            $config = & $config[$key];
-        }
-        $config = $value;
-    }
-
     public static function clearProperty()
     {
         self::overridePropertyArray(func_get_args(), null);
     }
-}
 
-class ConfigOverrideProperty
-{
-    private $keys;
-
-    function __construct($keys)
+    public static function revertProperty()
     {
-        $this->keys = $keys;
+        self::revertPropertyArray(func_get_args());
     }
 
-    function with($value)
+    public static function revertPropertyArray($keys)
     {
-        Config::overridePropertyArray($this->keys, $value);
+        self::getInstance()->revertProperty($keys);
     }
+
+    public static function overridePropertyArray($keys, $value, $revert = false)
+    {
+        self::getInstance()->overrideProperty($keys, $value, $revert);
+    }
+
 }
