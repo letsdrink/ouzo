@@ -14,8 +14,8 @@ class StatementExecutor
 
     private $_sql;
     private $_dbHandle;
-    public $_boundValues;
-    public $_preparedQuery;
+    private $_boundValues;
+    private $_preparedQuery;
 
     private function __construct($dbHandle, $sql, $boundValues)
     {
@@ -24,20 +24,30 @@ class StatementExecutor
         $this->_sql = $sql;
     }
 
+    public function getBoundValues()
+    {
+        return $this->_boundValues;
+    }
+
+    public function getPreparedQuery()
+    {
+        return $this->_preparedQuery;
+    }
+
     private function _execute($afterCallback)
     {
         $obj = $this;
         $humanizedSql = QueryHumanizer::humanize($this->_sql);
-        return Stats::trace($humanizedSql, $this->_boundValues, function () use ($obj, $humanizedSql, $afterCallback) {
+        return Stats::trace($humanizedSql, $this->getBoundValues(), function () use ($obj, $humanizedSql, $afterCallback) {
             $obj->_prepareAndBind();
 
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->_boundValues)));
+            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
 
             $querySql = $obj->_createQuerySql($humanizedSql);
-            if (!$obj->_preparedQuery) {
+            if (!$obj->getPreparedQuery()) {
                 throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastDbErrorMessage());
             }
-            if (!$obj->_preparedQuery->execute()) {
+            if (!$obj->getPreparedQuery()->execute()) {
                 throw $obj->_getException($querySql);
             }
             return call_user_func($afterCallback);
@@ -73,7 +83,7 @@ class StatementExecutor
     {
         $obj = $this;
         return $this->_execute(function () use ($obj, $function, $fetchStyle) {
-            return $obj->_preparedQuery->$function($fetchStyle);
+            return $obj->getPreparedQuery()->$function($fetchStyle);
         });
     }
 

@@ -22,7 +22,22 @@ class MockTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldMockMethod()
+    public function shouldReturnMockObjectOfTheGivenType()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+
+        //when
+        $result = $mock instanceof MockTestClass;
+
+        //then
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMethod()
     {
         //given
         $mock = Mock::mock('Ouzo\Tests\MockTestClass');
@@ -46,6 +61,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
         //when
         $mock->method("arg");
 
+
         //then
         Mock::verify($mock)->method("arg");
     }
@@ -63,6 +79,41 @@ class MockTest extends \PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf("PHPUnit_Framework_ExpectationFailedException");
+    }
+
+    /**
+     * @test
+     */
+    public function shouldVerifyMethodIsNotCalled()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+
+        //when
+        $mock->method("arg");
+        $mock->method2("arg");
+
+        //then
+        Mock::verify($mock)->neverReceived()->method("other");
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFailIfUnwantedMethodWasCalled()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock->method(1);
+
+        //when
+        try {
+            Mock::verify($mock)->neverReceived()->method("arg");
+        } //then
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals('method(1)', $e->getComparisonFailure()->getActual());
+            $this->assertEquals('method(1) is never called', $e->getComparisonFailure()->getExpected());
+        }
     }
 
     /**
