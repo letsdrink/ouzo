@@ -4,7 +4,7 @@ namespace Ouzo\Db;
 
 use Ouzo\Config;
 use Ouzo\Tests\CatchException;
-use Ouzo\Tests\Mock;
+use Ouzo\Tests\Mock\Mock;
 
 class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 {

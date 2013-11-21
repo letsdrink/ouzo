@@ -2,9 +2,9 @@
 namespace Ouzo\Tools\Model\Template;
 
 use Ouzo\Config;
+use Ouzo\Db\Dialect\Dialect;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
-use Ouzo\Utilities\Path;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 
@@ -91,19 +91,16 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
     {
         //given
         $old = Config::getValue('sql_dialect');
-        $dialectPath = Path::join(ROOT_PATH, 'src', 'Ouzo', 'Db', 'Dialect', 'MyImagineDialect.php');
-        file_put_contents($dialectPath, '<?php namespace Ouzo\Db\Dialect; class MyImagineDialect extends Dialect { }');
-        Config::overrideProperty('sql_dialect')->with('\\Ouzo\\Db\\Dialect\\MyImagineDialect');
+        Config::overrideProperty('sql_dialect')->with('\Ouzo\Tools\Model\Template\MyImagineDialect');
 
         //when
         try {
             new Generator('order_products');
+            $this->fail();
         } catch (GeneratorException $e) {
-
         }
 
         //then
-        unlink($dialectPath);
         Config::overrideProperty('sql_dialect')->with($old);
     }
 
@@ -157,5 +154,19 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertContains('class Product extends Model', $template);
         $this->assertContains('string description', $template);
         $this->assertContains("'table' => 'products'", $template);
+    }
+}
+
+class MyImagineDialect extends Dialect
+{
+
+    function getConnectionErrorCodes()
+    {
+        return array();
+    }
+
+    function getErrorCode($errorInfo)
+    {
+        return 0;
     }
 }

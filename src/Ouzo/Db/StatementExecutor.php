@@ -2,7 +2,7 @@
 
 namespace Ouzo\Db;
 
-use Ouzo\Config;
+use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\DbException;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
@@ -12,10 +12,10 @@ use PDO;
 class StatementExecutor
 {
 
-    private $_preparedQuery;
-    private $_boundValues;
     private $_sql;
     private $_dbHandle;
+    public $_boundValues;
+    public $_preparedQuery;
 
     private function __construct($dbHandle, $sql, $boundValues)
     {
@@ -41,27 +41,34 @@ class StatementExecutor
         return Stats::trace($humanizedSql, $this->_boundValues, function () use ($obj, $humanizedSql, $afterCallback) {
             $obj->_prepareAndBind();
 
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
+            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->_boundValues)));
 
-            $querySql = $humanizedSql . ' with params: (' . implode(', ', $obj->getBoundValues()) . ')';
-
-            if (!$obj->getPreparedQuery()) {
+            $querySql = $obj->_createQuerySql($humanizedSql);
+            if (!$obj->_preparedQuery) {
                 throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastDbErrorMessage());
             }
-
-            if (!$obj->getPreparedQuery()->execute()) {
-                $dialect = Config::getValue('sql_dialect');
-                $adapter = new $dialect();
-                $errorInfo = $this->getPreparedQuery()->errorInfo();
-                $exceptionClassName = $adapter->getExceptionForError($errorInfo);
-                throw new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
-                    $querySql,
-                    $this->errorMessageFromErrorInfo($errorInfo),
-                    $this->errorCodesFromErrorInfo($errorInfo)
-                ));
+            if (!$obj->_preparedQuery->execute()) {
+                throw $obj->_getException($querySql);
             }
             return call_user_func($afterCallback);
         });
+    }
+
+    public function _createQuerySql($humanizedSql)
+    {
+        return $humanizedSql . ' with params: (' . implode(', ', $this->_boundValues) . ')';
+    }
+
+    public function _getException($querySql)
+    {
+        $errorInfo = $this->_preparedQuery->errorInfo();
+        $exceptionClassName = DialectFactory::create()->getExceptionForError($errorInfo);
+        return new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
+            $querySql,
+            $this->_errorMessageFromErrorInfo($errorInfo),
+            $this->_errorCodesFromErrorInfo($errorInfo)
+        ));
+
     }
 
     public function execute()

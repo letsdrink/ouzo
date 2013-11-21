@@ -2,6 +2,8 @@
 
 namespace Ouzo\Tests;
 
+use Exception;
+use Ouzo\Tests\Mock\Mock;
 use PHPUnit_Framework_ExpectationFailedException;
 
 class MockTestClass
@@ -81,6 +83,39 @@ class MockTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('method(1), method2(1)', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(1, 2)', $e->getComparisonFailure()->getExpected());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSimpleMockIfNoClassGiven()
+    {
+        //given
+        $mock = Mock::mock();
+        Mock::when($mock)->method()->thenReturn('result');
+
+        //when
+        $result = $mock->method();
+
+        //then
+        $this->assertEquals("result", $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowException()
+    {
+        //given
+        $mock = Mock::mock();
+        $exception = new Exception("msg");
+        Mock::when($mock)->method()->thenThrow($exception);
+
+        //when
+        CatchException::when($mock)->method();
+
+        //then
+        CatchException::assertThat()->isEqualTo($exception);
     }
 
 }

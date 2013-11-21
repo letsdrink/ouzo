@@ -49,6 +49,11 @@ class CatchExceptionAssert
         PHPUnit_Framework_Assert::assertInstanceOf($exception, $this->exception);
     }
 
+    public function isEqualTo($exception)
+    {
+        PHPUnit_Framework_Assert::assertEquals($exception, $this->exception);
+    }
+
     public function notCaught()
     {
         PHPUnit_Framework_Assert::assertNull($this->exception);

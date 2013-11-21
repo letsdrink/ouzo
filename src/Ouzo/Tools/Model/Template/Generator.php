@@ -4,6 +4,7 @@ namespace Ouzo\Tools\Model\Template;
 use Exception;
 use Ouzo\Config;
 use Ouzo\Db;
+use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Inflector;
@@ -41,13 +42,12 @@ class Generator
      */
     public function dialectAdapter()
     {
-        $dbDialectFullClassPath = Config::getValue('sql_dialect');
-        $dbDialectObject = new $dbDialectFullClassPath();
-        $dbDialectShortName = $this->_objectShortClassName($dbDialectObject);
+        $dialect = DialectFactory::create();
+        $dialectShortName = $this->_objectShortClassName($dialect);
         $selfClassPath = $this->_thisNamespace($this);
-        $generatorDialect = "$selfClassPath\\Dialect\\$dbDialectShortName";
+        $generatorDialect = "$selfClassPath\\Dialect\\$dialectShortName";
         if (!class_exists($generatorDialect)) {
-            throw new GeneratorException("Model generator for '$dbDialectShortName' does not exists.");
+            throw new GeneratorException("Model generator for '$dialectShortName' does not exists.");
         }
         return new $generatorDialect($this->_tableName);
     }
