@@ -51,4 +51,14 @@ class Mock
         }
         return DynamicProxy::extractMethodHandler($mock);
     }
+
+    public static function any()
+    {
+        return new AnyArgument();
+    }
+
+    public static function anyArgList()
+    {
+        return new AnyArgumentList();
+    }
 } 

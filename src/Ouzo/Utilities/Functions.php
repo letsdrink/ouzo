@@ -116,4 +116,11 @@ class Functions
             return Functions::call($functionA, Functions::call($functionB, $input));
         };
     }
+
+    public static function toString()
+    {
+        return function ($object) {
+            return Objects::toString($object);
+        };
+    }
 }

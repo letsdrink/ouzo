@@ -119,6 +119,25 @@ class MockTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldFailIfUnwantedMethodWasCalledWithAnyArguments()
+    {
+        //given
+        $mock = Mock::mock();
+        $mock->method(1);
+
+        //when
+        try {
+            Mock::verify($mock)->neverReceived()->method(Mock::anyArgList());
+        } //then
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals('method(1)', $e->getComparisonFailure()->getActual());
+            $this->assertEquals('method(any arguments) is never called', $e->getComparisonFailure()->getExpected());
+        }
+    }
+
+    /**
+     * @test
+     */
     public function shouldShowActualInteractions()
     {
         //given
@@ -132,6 +151,25 @@ class MockTest extends \PHPUnit_Framework_TestCase
         } //then
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1), method2(1)', $e->getComparisonFailure()->getActual());
+            $this->assertEquals('method(1, 2)', $e->getComparisonFailure()->getExpected());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleArrayAndObjectParametersInActualInteractionsMessage()
+    {
+        //given
+        $mock = Mock::mock();
+        $mock->method(1, null, array(1, 2), new MockTestClass());
+
+        //when
+        try {
+            Mock::verify($mock)->method(1, 2);
+        } //then
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals('method(1, null, [1, 2], Ouzo\Tests\MockTestClass {})', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(1, 2)', $e->getComparisonFailure()->getExpected());
         }
     }
@@ -167,6 +205,38 @@ class MockTest extends \PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isEqualTo($exception);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMatchAnyArgument()
+    {
+        //given
+        $mock = Mock::mock();
+
+        //when
+        $mock->method("arg1", "arg2");
+
+
+        //then
+        Mock::verify($mock)->method(Mock::any(), "arg2");
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMatchAnyArgumentList()
+    {
+        //given
+        $mock = Mock::mock();
+
+        //when
+        $mock->method("arg1", "arg2");
+
+
+        //then
+        Mock::verify($mock)->method(Mock::anyArgList());
     }
 
 }

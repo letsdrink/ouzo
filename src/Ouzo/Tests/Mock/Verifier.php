@@ -47,8 +47,8 @@ class Verifier
         return Joiner::on(', ')->join(Arrays::map($this->mock->_called_methods, MethodCall::toStringFunction()));
     }
 
-    protected  function _wasCalled($name, $arguments)
+    protected function _wasCalled($name, $arguments)
     {
-        return Arrays::find($this->mock->_called_methods, MethodCall::matches($name, $arguments));
+        return Arrays::find($this->mock->_called_methods, new MethodCallMatcher($name, $arguments));
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Ouzo\Tests\Mock;
 
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Joiner;
 
 class MethodCall
@@ -17,7 +19,7 @@ class MethodCall
 
     public function toString()
     {
-        return $this->name . '(' . Joiner::on(', ')->join($this->arguments) . ')';
+        return $this->name . '(' . Joiner::on(', ')->join(Arrays::map($this->arguments, Functions::toString())) . ')';
     }
 
     public static function newInstance($name, $arguments)
@@ -36,13 +38,6 @@ class MethodCall
     {
         return function (MethodCall $methodCall) {
             return $methodCall->toString();
-        };
-    }
-
-    public static function matches($name, $arguments)
-    {
-        return function (MethodCall $methodCall) use($name, $arguments) {
-            return $methodCall->name == $name && $methodCall->arguments === $arguments;
         };
     }
 }
