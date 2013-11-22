@@ -210,7 +210,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldMatchAnyArgument()
+    public function shouldVerifyThatMethodWasCalledWithAnyArgument()
     {
         //given
         $mock = Mock::mock();
@@ -226,7 +226,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldMatchAnyArgumentList()
+    public function shouldVerifyThatMethodWasCalledWithAnyArgumentList()
     {
         //given
         $mock = Mock::mock();
@@ -237,6 +237,57 @@ class MockTest extends \PHPUnit_Framework_TestCase
 
         //then
         Mock::verify($mock)->method(Mock::anyArgList());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMethodForAnyArgument()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+
+        Mock::when($mock)->method("first", Mock::any())->thenReturn('result');
+
+        //when
+        $result = $mock->method("first", "any");
+
+        //then
+        $this->assertEquals("result", $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMethodForAnyArgumentList()
+    {
+        //given
+        $mock = Mock::mock();
+
+        Mock::when($mock)->method(Mock::anyArgList())->thenReturn('result');
+
+        //when
+        $result = $mock->method(1, 2);
+
+        //then
+        $this->assertEquals("result", $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullIfNoStubbedMethodMatchesTheCall()
+    {
+        //given
+        $mock = Mock::mock();
+
+        Mock::when($mock)->method(Mock::any(), 1)->thenReturn('result');
+
+        //when
+        $result = $mock->method(1, 2);
+
+        //then
+        $this->assertNull( $result);
     }
 
 }

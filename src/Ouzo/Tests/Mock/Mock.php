@@ -15,7 +15,7 @@ class SimpleMock
         $this->_called_methods[] = $methodCall;
 
         foreach ($this->_stubbed_calls as $stubbed_call) {
-            if ($stubbed_call->methodCall == $methodCall) {
+            if ($stubbed_call->matches($methodCall)) {
                 return $stubbed_call->evaluate();
             }
         }

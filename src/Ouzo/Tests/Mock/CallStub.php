@@ -22,4 +22,11 @@ class CallStub
         }
         return $this->result;
     }
+
+    public function matches(MethodCall $methodCall)
+    {
+        $matcher = new MethodCallMatcher($this->methodCall->name, $this->methodCall->arguments);
+        return $matcher->matches($methodCall);
+    }
+
 }
