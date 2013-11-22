@@ -193,7 +193,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldToStringObject()
+    public function shouldConvertObjectToString()
     {
         //given
         $obj = new stdClass();
@@ -204,7 +204,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         $toString = toString($obj);
 
         //then
-        $this->assertEquals('{<name> => "John", <id> => 1}', $toString);
+        $this->assertEquals('stdClass {<name> => "John", <id> => 1}', $toString);
     }
 
     /**

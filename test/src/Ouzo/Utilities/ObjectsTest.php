@@ -232,7 +232,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $stringifyObject = Objects::toString($object);
 
         //then
-        $this->assertEquals('{<field1> => "field1", <field2> => "field2"}', $stringifyObject);
+        $this->assertEquals('stdClass {<field1> => "field1", <field2> => "field2"}', $stringifyObject);
     }
 
     /**

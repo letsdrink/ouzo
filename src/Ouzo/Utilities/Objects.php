@@ -26,7 +26,7 @@ class Objects
     {
         $array = get_object_vars($object);
         $elements = self::stringifyArrayElements($array);
-        return '{' . implode(', ', $elements) . '}';
+        return get_class($object) . ' {' . implode(', ', $elements) . '}';
     }
 
     private static function stringifyArrayElements($array)
