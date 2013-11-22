@@ -2,6 +2,21 @@
 
 use Ouzo\Utilities\Objects;
 
+class ClassImplementingToString
+{
+    private $string;
+
+    function __construct($string)
+    {
+        $this->string = $string;
+    }
+
+    function __toString()
+    {
+        return $this->string;
+    }
+}
+
 class ObjectsTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -238,15 +253,30 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReturnStringWhenNotMatchTypes()
+    public function shouldStringifyObjectWithToString()
+    {
+        //given
+        $object = new ClassImplementingToString("string");
+
+        //when
+        $stringifiedObject = Objects::toString($object);
+
+        //then
+        $this->assertEquals('string', $stringifiedObject);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnStringWhenNoMatchedTypes()
     {
         //given
         $int = 1;
 
         //when
-        $trySingifyInt = Objects::toString($int);
+        $string = Objects::toString($int);
 
         //then
-        $this->assertSame('1', $trySingifyInt);
+        $this->assertSame('1', $string);
     }
 }
