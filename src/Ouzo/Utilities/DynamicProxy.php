@@ -18,7 +18,8 @@ class DynamicProxy
         return $object;
     }
 
-    private static function getProxyClassDefinition($name, $className) {
+    private static function getProxyClassDefinition($name, $className)
+    {
         $code = "class {$name} extends $className { public \$_methodHandler; ";
         foreach (self::getClassMethods($className) as $method) {
             $params = self::getParameterDeclaration($method);
@@ -37,10 +38,10 @@ class DynamicProxy
 
     private static function getParameterDeclaration(ReflectionFunctionAbstract $method)
     {
-        return Joiner::on(', ')->join(Arrays::map($method->getParameters(), function(ReflectionParameter $param) {
+        return Joiner::on(', ')->join(Arrays::map($method->getParameters(), function (ReflectionParameter $param) {
             $result = '$' . $param->name;
             if ($param->isDefaultValueAvailable()) {
-                $result .= " = " . $param->getDefaultValue();
+                $result .= " = null"; // methodHandler gets only passed arguments so anything would work here
             }
             return $result;
         }));

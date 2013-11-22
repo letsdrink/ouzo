@@ -9,7 +9,16 @@ class ProxiedClass
         return "result of fun1" . $a . $b;
     }
 
-    function fun2($p = 1)
+    function fun2($p1)
+    {
+    }
+}
+
+class ClassWithMethodDefaultParameters
+{
+    const C = 1;
+
+    function fun($p1 = 1, $p2 = null, $p3 = 'a', $p4 = array('1' => 2), $p5 = self::C)
     {
     }
 }
@@ -96,13 +105,13 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
     public function shouldWorkWithDefaultParameters()
     {
         $testMethodHandler = new TestMethodHandler();
-        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithMethodDefaultParameters', $testMethodHandler);
 
         //when
-        $proxy->fun2();
+        $proxy->fun();
 
         //then
-        $this->assertEquals(array(array('fun2', array())), $testMethodHandler->calls);
+        $this->assertEquals(array(array('fun', array())), $testMethodHandler->calls);
     }
 }
  
