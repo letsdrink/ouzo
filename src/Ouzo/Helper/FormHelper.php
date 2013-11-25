@@ -89,10 +89,13 @@ function checkboxTag($value, $checked, array $attributes = array())
     return $workaround . '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
 }
 
-function selectTag(array $items = array(), $value, array $attributes = array())
+function selectTag(array $items = array(), $value, array $attributes = array(), $defaultOption = null)
 {
     $attr = _prepareAttributes($attributes);
     $optionsString = '';
+    if ($defaultOption) {
+        $items = array_merge(array(null => $defaultOption), $items);
+    }
     foreach ($items as $optionValue => $optionName) {
         $optionsString .= optionTag($optionValue, $optionName, $value);
     }
@@ -102,7 +105,8 @@ function selectTag(array $items = array(), $value, array $attributes = array())
 function optionTag($value, $name, $current)
 {
     $selected = Arrays::findKeyByValue($current, $value) !== false ? 'selected' : '';
-    return '<option value="' . $value . '" ' . $selected . '>' . $name . '</option>';
+    $value = $value ? ' value="' . $value . '" ' : '';
+    return '<option' . $value . '' . $selected . '>' . $name . '</option>';
 }
 
 function passwordFieldTag($value, array $attributes = array())

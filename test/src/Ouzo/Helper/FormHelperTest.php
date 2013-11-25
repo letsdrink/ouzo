@@ -296,12 +296,27 @@ class FormHelperTest extends DbTransactionalTestCase
      */
     public function shouldEscapeInLinkTo()
     {
-        //given
-
         //when
         $linkTo = linkTo('<script>alert(\'hello\')</script>About', '/albums/about');
 
         //then
         $this->assertEquals('<a href="/albums/about" >&lt;script&gt;alert(\'hello\')&lt;/script&gt;About</a>', $linkTo);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetDefaultOptionInSelectTag()
+    {
+        //given
+        $items = array(1 => 'Opt1', 2 => 'Opt1');
+        $attributes = array('id' => "lab", 'name' => "lab", 'size' => "1");
+
+        //when
+        $result = selectTag($items, array(2), $attributes, 'default option');
+
+        //then
+        $expected = '<select id="lab" name="lab" size="1"><option>default option</option><option>Opt1</option><option value="1" >Opt1</option></select>';
+        $this->assertEquals($expected, $result);
     }
 }
