@@ -309,14 +309,14 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldSetDefaultOptionInSelectTag()
     {
         //given
-        $items = array(1 => 'Opt1', 2 => 'Opt1');
+        $items = array(1 => 'Opt1', 2 => 'Opt2');
         $attributes = array('id' => "lab", 'name' => "lab", 'size' => "1");
 
         //when
         $result = selectTag($items, array(2), $attributes, 'default option');
 
         //then
-        $expected = '<select id="lab" name="lab" size="1"><option>default option</option><option>Opt1</option><option value="1" >Opt1</option></select>';
+        $expected = '<select id="lab" name="lab" size="1"><option>default option</option><option value="1" >Opt1</option><option value="2" selected>Opt2</option></select>';
         $this->assertEquals($expected, $result);
     }
 
@@ -352,7 +352,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = $form->selectField('id_category', $items, array(), 'select category');
 
         //then
-        $expected = '<select id="product_id_category" name="product[id_category]"><option>select category</option><option>Cat1</option><option value="1" selected>Cat2</option></select>';
+        $expected = '<select id="product_id_category" name="product[id_category]"><option>select category</option><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>';
         $this->assertEquals($expected, $result);
     }
 }

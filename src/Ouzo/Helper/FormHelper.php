@@ -94,7 +94,7 @@ function selectTag(array $items = array(), $value, array $attributes = array(), 
     $attr = _prepareAttributes($attributes);
     $optionsString = '';
     if ($defaultOption) {
-        $items = array_merge(array(null => $defaultOption), $items);
+        $items = array(null => $defaultOption) + $items;
     }
     foreach ($items as $optionValue => $optionName) {
         $optionsString .= optionTag($optionValue, $optionName, $value);
