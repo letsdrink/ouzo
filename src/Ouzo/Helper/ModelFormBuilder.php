@@ -59,11 +59,11 @@ class ModelFormBuilder
         return textAreaTag($this->_object->$field, $attributes);
     }
 
-    public function selectField($field, array $items, $options = array())
+    public function selectField($field, array $items, $options = array(), $defaultOption = null)
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = array_merge($attributes, $options);
-        return selectTag($items, array($this->_object->$field), $attributes);
+        return selectTag($items, array($this->_object->$field), $attributes, $defaultOption);
     }
 
     public function hiddenField($field, $value = null, $options = array())

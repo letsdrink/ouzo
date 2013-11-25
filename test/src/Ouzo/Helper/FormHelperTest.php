@@ -319,4 +319,40 @@ class FormHelperTest extends DbTransactionalTestCase
         $expected = '<select id="lab" name="lab" size="1"><option>default option</option><option>Opt1</option><option value="1" >Opt1</option></select>';
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectTagForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $form = formFor($product);
+        $items = array(1 => 'Cat1', 2 => 'Cat2');
+
+        //when
+        $result = $form->selectField('id_category', $items);
+
+        //then
+        $expected = '<select id="product_id_category" name="product[id_category]"><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>';
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetDefaultOptionInSelectTagForModelClass()
+    {
+        //given
+        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $form = formFor($product);
+        $items = array(1 => 'Cat1', 2 => 'Cat2');
+
+        //when
+        $result = $form->selectField('id_category', $items, array(), 'select category');
+
+        //then
+        $expected = '<select id="product_id_category" name="product[id_category]"><option>select category</option><option>Cat1</option><option value="1" selected>Cat2</option></select>';
+        $this->assertEquals($expected, $result);
+    }
 }
