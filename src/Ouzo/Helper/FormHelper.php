@@ -105,7 +105,7 @@ function selectTag(array $items = array(), $value, array $attributes = array(), 
 function optionTag($value, $name, $current)
 {
     $selected = Arrays::findKeyByValue($current, $value) !== false ? 'selected' : '';
-    $value = $value ? ' value="' . $value . '" ' : '';
+    $value = Strings::isNotBlank($value) ? ' value="' . $value . '" ' : '';
     return '<option' . $value . '' . $selected . '>' . $name . '</option>';
 }
 

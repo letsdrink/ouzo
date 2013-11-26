@@ -355,4 +355,21 @@ class FormHelperTest extends DbTransactionalTestCase
         $expected = '<select id="product_id_category" name="product[id_category]"><option>select category</option><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>';
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectWhenOptionValuesStartFromZero()
+    {
+        //given
+        $items = array(0 => 'Opt1', 1 => 'Opt2');
+        $attributes = array('id' => "lab", 'name' => "lab", 'size' => "1");
+
+        //when
+        $result = selectTag($items, array(1), $attributes);
+
+        //then
+        $expected = '<select id="lab" name="lab" size="1"><option value="0" >Opt1</option><option value="1" selected>Opt2</option></select>';
+        $this->assertEquals($expected, $result);
+    }
 }
