@@ -68,7 +68,6 @@ class StatementExecutor
             $this->_errorMessageFromErrorInfo($errorInfo),
             $this->_errorCodesFromErrorInfo($errorInfo)
         ));
-
     }
 
     public function execute()

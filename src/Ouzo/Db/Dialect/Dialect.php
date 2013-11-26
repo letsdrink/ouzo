@@ -3,7 +3,6 @@ namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
-use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
 
 abstract class Dialect
@@ -103,14 +102,18 @@ abstract class Dialect
 
     public function getExceptionForError($errorInfo)
     {
-        if (in_array($this->getErrorCode($errorInfo), $this->getConnectionErrorCodes())) {
+        if ($this->isConnectionError($errorInfo)) {
             return '\Ouzo\DbConnectionException';
         }
         return '\Ouzo\DbException';
     }
 
+    public function isConnectionError($errorInfo)
+    {
+        return in_array($this->getErrorCode($errorInfo), $this->getConnectionErrorCodes());
+    }
+
     abstract function getConnectionErrorCodes();
 
     abstract function getErrorCode($errorInfo);
-
 }
