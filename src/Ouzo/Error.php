@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use ErrorException;
 use Exception;
 use Ouzo\Logger\Logger;
 use Ouzo\Routing\RouterException;
@@ -19,7 +20,7 @@ class Error
 
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        self::_handleError("$errstr ERRNO($errno)", "$errfile:$errline");
+        throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
     }
 
     private static function _clearOutputBuffers()
@@ -58,7 +59,6 @@ class Error
             echo "Message: " . $e->getMessage() . "<br>\n";
             echo "Trace: " . $e->getTraceAsString() . "<br>\n";
         }
-        exit(1);
     }
 
     static public function shutdownHandler()
