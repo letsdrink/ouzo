@@ -75,7 +75,6 @@ class Error
             echo "Message: " . $e->getMessage() . "<br>\n";
             echo "Trace: " . $e->getTraceAsString() . "<br>\n";
         }
-        //   exit(1);
     }
 
     static public function shutdownHandler()
