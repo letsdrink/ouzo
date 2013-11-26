@@ -18,9 +18,25 @@ class Error
         }
     }
 
+    public static function stopsExecution($errno)
+    {
+        switch ($errno) {
+            case E_ERROR:
+            case E_CORE_ERROR:
+            case E_COMPILE_ERROR:
+            case E_USER_ERROR:
+                return true;
+        }
+        return false;
+    }
+
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+        if (self::stopsExecution($errno)) {
+            self::_handleError($errstr, $errfile);
+        } else {
+            throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+        }
     }
 
     private static function _clearOutputBuffers()
@@ -59,6 +75,7 @@ class Error
             echo "Message: " . $e->getMessage() . "<br>\n";
             echo "Trace: " . $e->getTraceAsString() . "<br>\n";
         }
+        //   exit(1);
     }
 
     static public function shutdownHandler()
