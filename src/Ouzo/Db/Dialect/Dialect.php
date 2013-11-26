@@ -101,20 +101,12 @@ abstract class Dialect
         return rtrim($sql);
     }
 
-    private function _getExceptionForError($errorInfo)
-    {
-        switch (Arrays::getValue($errorInfo, 1)) {
-            default:
-                return '\Ouzo\DbException';
-        }
-    }
-
     public function getExceptionForError($errorInfo)
     {
         if (in_array($this->getErrorCode($errorInfo), $this->getConnectionErrorCodes())) {
             return '\Ouzo\DbConnectionException';
         }
-        return $this->_getExceptionForError($errorInfo);
+        return '\Ouzo\DbException';
     }
 
     abstract function getConnectionErrorCodes();
