@@ -198,6 +198,14 @@ class ModelQueryBuilder
     }
 
     /**
+     * Runs an update query against a set of models
+     */
+    public function update(array $attributes)
+    {
+        return QueryExecutor::prepare($this->_db, $this->_query)->update($attributes);
+    }
+
+    /**
      * @return ModelQueryBuilder
      */
     public function with($relationName)

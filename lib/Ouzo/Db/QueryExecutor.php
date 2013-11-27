@@ -68,6 +68,15 @@ class QueryExecutor
         return $this->_db->query->rowCount();
     }
 
+    public function update(array $attributes)
+    {
+        $this->_query->type = QueryType::$UPDATE;
+        $this->_query->updateAttributes = $attributes;
+        $this->_buildQuery();
+        $this->_db->query($this->_sql, $this->_boundValues);
+        return $this->_db->query->rowCount();
+    }
+
     public function count()
     {
         $this->_query->type = QueryType::$COUNT;
@@ -140,6 +149,8 @@ class QueryExecutor
 
     private function _addBindValues()
     {
+        $this->_addBindValue(array_values($this->_query->updateAttributes));
+
         foreach ($this->_query->whereClauses as $whereClause) {
             $this->_addBindValuesFromWhereClause($whereClause);
         }

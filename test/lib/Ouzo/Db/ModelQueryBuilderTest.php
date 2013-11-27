@@ -757,4 +757,19 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $query->fetch());
     }
 
+    /**
+     * @test
+     */
+    public function shouldUpdateModel()
+    {
+        //given
+        $product = Product::create(array('name' => 'bob'));
+
+        //when
+        $affectedRows = Product::where(array('name' => 'bob'))->update(array('name' => 'eric'));
+
+        //then
+        $this->assertEquals('eric', $product->reload()->name);
+        $this->assertEquals(1, $affectedRows);
+    }
 }

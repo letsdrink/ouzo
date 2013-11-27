@@ -5,12 +5,19 @@ use Ouzo\Db\JoinClause;
 use Ouzo\Db\QueryType;
 use Ouzo\Db\WhereClause;
 use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Joiner;
 
 class DialectUtil
 {
     public static function buildQueryPrefix($type)
     {
-        return $type == QueryType::$DELETE ? 'DELETE' : 'SELECT';
+        if ($type == QueryType::$DELETE) {
+            return 'DELETE';
+        }else if ($type == QueryType::$UPDATE) {
+            return 'UPDATE';
+        } else {
+            return 'SELECT';
+        }
     }
 
     public static function _addAliases()
@@ -59,6 +66,15 @@ class DialectUtil
             ->map('\Ouzo\Db\Dialect\DialectUtil::buildJoinQueryPart')
             ->toArray();
         return implode(" ", $elements);
+    }
+
+    public static function buildAttributesPartForUpdate($updateAttributes)
+    {
+        return Joiner::on(', ')->join(FluentArray::from($updateAttributes)
+            ->keys()
+            ->map(function ($column) {
+                return "$column = ?";
+            })->toArray());
     }
 
     public static function buildJoinQueryPart(JoinClause $joinClause)
