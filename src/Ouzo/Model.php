@@ -163,9 +163,18 @@ class Model extends Validatable
         return $this->_sequenceName;
     }
 
-    private function _findById($value)
+    private function _findByIdOrNull($value)
     {
         $result = $this->where(array($this->_primaryKeyName => $value))->fetch();
+        if (!$result) {
+            return null;
+        }
+        return $result;
+    }
+
+    private function _findById($value)
+    {
+        $result = $this->_findByIdOrNull($value);
         if (!$result) {
             throw new DbException($this->_tableName . " with " . $this->_primaryKeyName . "=" . $value . " not found");
         }
@@ -339,6 +348,14 @@ class Model extends Validatable
     static public function findById($value)
     {
         return static::metaInstance()->_findById($value);
+    }
+
+    /**
+     * @return static
+     */
+    static public function findByIdOrNull($value)
+    {
+        return static::metaInstance()->_findByIdOrNull($value);
     }
 
     /**

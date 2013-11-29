@@ -248,6 +248,39 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldBeSameReturnIn_FindById_and_FindByIdOrNull()
+    {
+        //given
+        $product = Product::create(array('name' => 'name'));
+
+        //when
+        $loadedProduct1 = Product::findById($product->getId());
+        $loadedProduct2 = Product::findByIdOrNull($product->getId());
+
+        //then
+        $this->assertEquals($loadedProduct1, $loadedProduct2);
+
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNull()
+    {
+        //given
+        $product = Product::create(array('name' => 'name'));
+
+        //when
+        $loadedProduct = Product::findByIdOrNull(00000);
+
+        //then
+        $this->assertNull($loadedProduct);
+
+    }
+
+    /**
+     * @test
+     */
     public function getShouldReturnFieldValue()
     {
         //given
