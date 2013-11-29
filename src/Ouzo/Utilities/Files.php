@@ -1,12 +1,10 @@
 <?php
-
 namespace Ouzo\Utilities;
 
 use Exception;
 
 class Files
 {
-
     public static function loadIfExists($path, $loadOnce = true)
     {
         if (file_exists($path)) {
@@ -32,6 +30,14 @@ class Files
             /** @noinspection PhpIncludeInspection */
             require($path);
         }
+    }
+
+    public static function delete($path)
+    {
+        if (!file_exists($path)) {
+            throw new FileNotFoundException('Cannot find file: ' . $path);
+        }
+        return unlink($path);
     }
 }
 
