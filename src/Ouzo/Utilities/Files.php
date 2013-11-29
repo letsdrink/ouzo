@@ -39,6 +39,14 @@ class Files
         }
         return unlink($path);
     }
+
+    public static function move($sourcePath, $destinationPath)
+    {
+        if (!file_exists($sourcePath)) {
+            throw new FileNotFoundException('Cannot find source file: ' . $sourcePath);
+        }
+        return rename($sourcePath, $destinationPath);
+    }
 }
 
 class FileNotFoundException extends Exception
