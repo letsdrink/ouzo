@@ -36,4 +36,39 @@ class FilesTest extends PHPUnit_Framework_TestCase
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\FileNotFoundException');
     }
+
+    /**
+     * @test
+     */
+    public function shouldMoveFile()
+    {
+        //given
+        $filePath = Path::joinWithTemp('files_test');
+        file_put_contents($filePath, 'test');
+        $newPath = Path::joinWithTemp('new_files_test');
+
+        //when
+        $isMoved = Files::move($filePath, $newPath);
+
+        //then
+        $this->assertTrue($isMoved);
+        $this->assertFalse(file_exists($filePath));
+        $this->assertTrue(file_exists($newPath));
+        Files::delete($newPath);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionWhenNotFoundSourceFileToMove()
+    {
+        //given
+        $files = new Files();
+
+        //when
+        CatchException::when($files)->move('/broken/path/file', '/broken/path/new_file');
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\FileNotFoundException');
+    }
 }
