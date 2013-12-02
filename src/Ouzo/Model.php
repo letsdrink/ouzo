@@ -165,11 +165,7 @@ class Model extends Validatable
 
     private function _findByIdOrNull($value)
     {
-        $result = $this->where(array($this->_primaryKeyName => $value))->fetch();
-        if (!$result) {
-            return null;
-        }
-        return $result;
+        return $this->where(array($this->_primaryKeyName => $value))->fetch();
     }
 
     private function _findById($value)
