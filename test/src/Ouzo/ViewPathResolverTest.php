@@ -33,4 +33,19 @@ class ViewPathResolverTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.xml.phtml', $path);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAjaxPathForAjax()
+    {
+        //given
+        $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
+
+        //when
+        $path = ViewPathResolver::resolveViewPath('exception');
+
+        //then
+        $this->assertEquals(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.ajax.phtml', $path);
+    }
 }

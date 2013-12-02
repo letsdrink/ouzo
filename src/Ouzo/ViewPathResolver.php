@@ -13,6 +13,9 @@ class ViewPathResolver
 
     private static function getViewPostfix()
     {
+        if (Uri::isAjax()) {
+            return '.ajax.phtml';
+        }
         $contentType = Arrays::first(explode(';', Arrays::getValue($_SERVER, 'CONTENT_TYPE')));
         return $contentType == 'text/xml' ? '.xml.phtml' : '.phtml';
     }
