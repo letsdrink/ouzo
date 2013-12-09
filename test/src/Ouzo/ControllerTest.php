@@ -4,6 +4,7 @@ use Ouzo\ControllerFactory;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
+use Ouzo\Utilities\Arrays;
 
 class SimpleTestController extends Controller
 {
@@ -15,6 +16,17 @@ class SimpleTestController extends Controller
     public function params()
     {
         $this->view->params = $this->params;
+    }
+
+    public function keep()
+    {
+        $this->notice(array('Keep this'), true);
+    }
+
+    public function read_kept()
+    {
+        $this->layout->renderAjax(Arrays::firstOrNull($_SESSION['messages']));
+        $this->layout->unsetLayout();
     }
 }
 
@@ -113,5 +125,21 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertEmpty($this->getAssigned('params'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldKeepNoticeToNextRequest()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/keep');
+
+        //when
+        $this->get('/simple_test/read_kept');
+
+        //then
+        $this->assertRendersContent('Keep this');
     }
 }

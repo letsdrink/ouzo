@@ -21,6 +21,7 @@ class Controller
     private $_fileData = array();
     private $_routeRule = null;
     private $_authCredentials = array();
+    private $_keepMessage = false;
 
     public function __construct(RouteRule $routeRule)
     {
@@ -90,7 +91,9 @@ class Controller
 
     private function _removeMessages()
     {
-        unset($_SESSION['messages']);
+        if (!$this->_keepMessage) {
+            unset($_SESSION['messages']);
+        }
     }
 
     public function renderAjaxView($viewName)
@@ -99,10 +102,11 @@ class Controller
         $this->layout->renderAjax($view);
     }
 
-    public function notice($messages)
+    public function notice($messages, $keep = false)
     {
         if (!empty($messages)) {
             $_SESSION['messages'] = Arrays::toArray($messages);
+            $this->_keepMessage = $keep;
         }
     }
 
