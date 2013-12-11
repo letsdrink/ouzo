@@ -273,6 +273,8 @@ class Model extends Validatable
     }
 
     /**
+     * @param $relation
+     * @param null $alias
      * @return ModelQueryBuilder
      */
     static public function join($relation, $alias = null)
@@ -281,11 +283,23 @@ class Model extends Validatable
     }
 
     /**
+     * @param $relation
+     * @param null $alias
      * @return ModelQueryBuilder
      */
     static public function innerJoin($relation, $alias = null)
     {
         return static::queryBuilder()->innerJoin($relation, $alias);
+    }
+
+    /**
+     * @param $relation
+     * @param null $alias
+     * @return ModelQueryBuilder
+     */
+    static public function rightJoin($relation, $alias = null)
+    {
+        return static::queryBuilder()->rightJoin($relation, $alias);
     }
 
     /**

@@ -3,7 +3,6 @@ use Model\Test\Category;
 use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
-use Ouzo\Db\Stats;
 use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Tests\Assert;
@@ -268,7 +267,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldReturnNull()
     {
         //given
-        $product = Product::create(array('name' => 'name'));
+        Product::create(array('name' => 'name'));
 
         //when
         $loadedProduct = Product::findByIdOrNull(00000);
@@ -534,7 +533,7 @@ class ModelTest extends DbTransactionalTestCase
         $category = Category::create(array('name' => 'phones'));
 
         //when
-        $found = Category::findBySql("select * from categories");
+        $found = Category::findBySql("SELECT * FROM categories");
 
         //then
         Assert::thatArray($found)->containsOnly($category);

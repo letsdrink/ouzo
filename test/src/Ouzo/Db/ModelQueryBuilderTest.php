@@ -323,6 +323,26 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldRightJoinWithOtherTable()
+    {
+        //given
+        $category = Category::create(array('name' => 'category 1'));
+        Category::create(array('name' => 'category 2'));
+        Category::create(array('name' => 'category 3'));
+        Category::create(array('name' => 'category 4'));
+        Product::create(array('name' => 'prod 1', 'id_category' => $category->id));
+        Product::create(array('name' => 'prod 2', 'id_category' => $category->id));
+
+        //when
+        $products = Product::where()->rightJoin('category')->fetchAll();
+
+        //then
+        $this->assertCount(5, $products);
+    }
+
+    /**
+     * @test
+     */
     public function shouldCountRecords()
     {
         //given

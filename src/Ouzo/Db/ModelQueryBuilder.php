@@ -37,7 +37,7 @@ class ModelQueryBuilder
 
     private function getModelAliasOrTable()
     {
-        return $this->_query->aliasTable ?: $this->_model->getTableName();
+        return $this->_query->aliasTable ? : $this->_model->getTableName();
     }
 
     private function selectModelColumns(Model $metaInstance, $alias)
@@ -208,6 +208,16 @@ class ModelQueryBuilder
     public function innerJoin($relationSelector, $aliases = null)
     {
         return $this->join($relationSelector, $aliases, 'INNER');
+    }
+
+    /**
+     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @return ModelQueryBuilder
+     */
+    public function rightJoin($relationSelector, $aliases = null)
+    {
+        return $this->join($relationSelector, $aliases, 'RIGHT');
     }
 
     private function addJoin(ModelJoin $modelJoin)
