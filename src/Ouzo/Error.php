@@ -9,6 +9,8 @@ use Ouzo\Utilities\Objects;
 
 class Error
 {
+    static $errorHandled = false;
+
     public static function exceptionHandler(Exception $exception)
     {
         if ($exception instanceof RouterException) {
@@ -33,7 +35,7 @@ class Error
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
         if (self::stopsExecution($errno)) {
-            self::_handleError($errstr, $errfile);
+            self::_handleError($errstr, self::trace($errfile, $errline));
         } else {
             throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
         }
@@ -61,6 +63,7 @@ class Error
     private static function _renderError($errorMessage, $errorTrace, $header, $viewName)
     {
         try {
+            self::$errorHandled = true;
             Logger::getLogger(__CLASS__)->error($errorMessage);
             Logger::getLogger(__CLASS__)->error(Objects::toString($errorTrace));
             /** @noinspection PhpIncludeInspection */
@@ -81,8 +84,13 @@ class Error
     {
         $error = error_get_last();
 
-        if ($error && $error['type'] & (E_ERROR | E_USER_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR)) {
-            self::errorHandler($error['type'], $error['message'], $error['file'], $error['line']);
+        if (!self::$errorHandled && $error && $error['type'] & (E_ERROR | E_USER_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR)) {
+            self::_handleError($error['message'], self::trace($error['file'], $error['line']));
         }
+    }
+
+    private static function trace($errfile, $errline)
+    {
+        return "$errfile:$errline";
     }
 }
