@@ -11,11 +11,7 @@ class Error
 {
     public static function exceptionHandler(Exception $exception)
     {
-        if ($exception instanceof RouterException) {
-            self::_renderNotFoundError($exception->getMessage(), $exception->getTraceAsString());
-        } else {
-            self::_handleError($exception->getMessage(), $exception->getTraceAsString());
-        }
+        self::_handleError($exception->getMessage(), $exception->getTraceAsString());
     }
 
     public static function stopsExecution($errno)
@@ -51,11 +47,6 @@ class Error
     private static function _handleError($errorMessage, $errorTrace)
     {
         self::_renderError($errorMessage, $errorTrace, "HTTP/1.1 500 Internal Server Error", 'exception');
-    }
-
-    private static function _renderNotFoundError($errorMessage, $errorTrace)
-    {
-        self::_renderError($errorMessage, $errorTrace, "HTTP/1.0 404 Not Found", '404');
     }
 
     private static function _renderError($errorMessage, $errorTrace, $header, $viewName)
