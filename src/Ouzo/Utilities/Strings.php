@@ -260,6 +260,28 @@ class Strings
     }
 
     /**
+     * Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT
+     *
+     * @param string $text
+     * @return string
+     */
+    public static function htmlEntityDecode($text)
+    {
+        return html_entity_decode($text, ENT_COMPAT, 'UTF-8');
+    }
+
+    /**
+     * Alias for htmlentities() with UTF-8 and defined flag ENT_COMPAT
+     *
+     * @param string $text
+     * @return string
+     */
+    public static function htmlEntities($text)
+    {
+        return htmlentities($text, ENT_COMPAT, 'UTF-8');
+    }
+
+    /**
      * Method checks if string representations of two objects are equal
      *
      * Example:
