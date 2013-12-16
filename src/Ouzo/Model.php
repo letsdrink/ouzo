@@ -375,7 +375,7 @@ class Model extends Validatable
     {
         $instance = static::newInstance($attributes);
         if (!$instance->isValid()) {
-            throw new Exception("Validation has failed for object: " . $instance->inspect() . "\nErrors: " . Objects::toString($instance->getErrors()));
+           throw new ValidationException("Validation has failed for object: " . $instance->inspect(), $instance->getErrors());
         }
         $instance->insert();
         return $instance;

@@ -6,6 +6,7 @@ use Model\Test\Product;
 use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Tests\Assert;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
 
@@ -537,5 +538,20 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         Assert::thatArray($found)->containsOnly($category);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowValidationExceptionIfModelInvalid()
+    {
+        //given
+        $product = new Product();
+
+        //when
+        CatchException::when($product)->create(array());
+
+        //then
+        CatchException::assertThat()->isInstanceOf('Ouzo\ValidationException');
     }
 }
