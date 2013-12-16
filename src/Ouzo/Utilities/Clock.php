@@ -10,6 +10,7 @@ class Clock
 
     public static function freeze()
     {
+        self::$freeze = false;
         self::$freezeDate = self::now();
         self::$freeze = true;
     }
