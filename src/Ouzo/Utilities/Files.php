@@ -51,8 +51,13 @@ class Files
     public static function convertUnitFileSize($size)
     {
         $units = array(" B", " KB", " MB", " GB");
-        $calculatedSize = round($size / pow(1024, ($i = (int)floor(log($size, 1024)))), 2);
-        return $calculatedSize . $units[$i];
+        $calculatedSize = $size;
+        $unit = Arrays::first($units);
+        if ($size) {
+            $calculatedSize = round($size / pow(1024, ($i = (int)floor(log($size, 1024)))), 2);
+            $unit = $units[$i];
+        }
+        return $calculatedSize . $unit;
     }
 }
 
