@@ -23,6 +23,19 @@ class ClassWithMethodDefaultParameters
     }
 }
 
+class TestClass {
+}
+
+class ClassWithTypedParameters
+{
+    function fun1(TestClass $p1)
+    {
+    }
+    function fun2(array $p1)
+    {
+    }
+}
+
 class TestMethodHandler
 {
     public $calls = array();
@@ -112,6 +125,22 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(array('fun', array())), $testMethodHandler->calls);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldWorkWithTypedParameters()
+    {
+        $testMethodHandler = new TestMethodHandler();
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithTypedParameters', $testMethodHandler);
+        $param = new TestClass();
+
+        //when
+        $proxy->fun1($param);
+
+        //then
+        $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
     }
 }
  
