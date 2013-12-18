@@ -85,6 +85,18 @@ class FilesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($result, $unit);
     }
 
+    /**
+     * @test
+     */
+    public function shouldReturnWhenZeroPassed()
+    {
+        //when
+        $unit = Files::convertUnitFileSize(0);
+
+        //then
+        $this->assertEquals('0 B', $unit);
+    }
+
     public function units()
     {
         return array(
