@@ -14,14 +14,14 @@ class DynamicProxy
         $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid();
         eval(self::getProxyClassDefinition($name, $className));
         $object = null;
-        eval("\$object = new $name();");
-        $object->_methodHandler = $methodHandler;
+        eval("\$object = new $name(\$methodHandler);");
         return $object;
     }
 
     private static function getProxyClassDefinition($name, $className)
     {
-        $code = "class {$name} extends $className { public \$_methodHandler; ";
+        $code = "class {$name} extends $className { public \$_methodHandler;\n";
+        $code .= "function __construct(\$methodHandler) { \$this->_methodHandler = \$methodHandler; }\n";
         foreach (self::getClassMethods($className) as $method) {
             $params = self::getParameterDeclaration($method);
             $code .= "function {$method->name}($params) { return call_user_func_array(array(\$this->_methodHandler, __FUNCTION__), func_get_args()); }\n";

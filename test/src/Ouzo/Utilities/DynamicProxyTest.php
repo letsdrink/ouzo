@@ -43,6 +43,13 @@ class ClassWithConstructor
     }
 }
 
+class ClassWithConstructorWithParams
+{
+    function __construct(array $a)
+    {
+    }
+}
+
 class TestMethodHandler
 {
     public $calls = array();
@@ -163,6 +170,21 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 
         //when
         $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithConstructor', $testMethodHandler);
+
+        //then
+        $this->assertNotNull($proxy);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldWorkForClassesWithConstructorWithParameters()
+    {
+        //given
+        $testMethodHandler = new TestMethodHandler();
+
+        //when
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithConstructorWithParams', $testMethodHandler);
 
         //then
         $this->assertNotNull($proxy);
