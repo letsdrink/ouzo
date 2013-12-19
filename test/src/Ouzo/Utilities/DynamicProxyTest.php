@@ -36,6 +36,13 @@ class ClassWithTypedParameters
     }
 }
 
+class ClassWithConstructor
+{
+    function __construct()
+    {
+    }
+}
+
 class TestMethodHandler
 {
     public $calls = array();
@@ -102,6 +109,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldExtractMethodHandler()
     {
+        //given
         $testMethodHandler = new TestMethodHandler();
         $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ProxiedClass', $testMethodHandler);
 
@@ -117,6 +125,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldWorkWithDefaultParameters()
     {
+        //given
         $testMethodHandler = new TestMethodHandler();
         $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithMethodDefaultParameters', $testMethodHandler);
 
@@ -132,6 +141,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldWorkWithTypedParameters()
     {
+        //given
         $testMethodHandler = new TestMethodHandler();
         $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithTypedParameters', $testMethodHandler);
         $param = new TestClass();
@@ -141,6 +151,21 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldWorkForClassesWithConstructor()
+    {
+        //given
+        $testMethodHandler = new TestMethodHandler();
+
+        //when
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithConstructor', $testMethodHandler);
+
+        //then
+        $this->assertNotNull($proxy);
     }
 }
  

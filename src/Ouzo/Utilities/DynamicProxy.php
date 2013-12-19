@@ -4,6 +4,7 @@ namespace Ouzo\Utilities;
 
 use ReflectionClass;
 use ReflectionFunctionAbstract;
+use ReflectionMethod;
 use ReflectionParameter;
 
 class DynamicProxy
@@ -33,7 +34,9 @@ class DynamicProxy
     {
         $class = new ReflectionClass($className);
         $methods = $class->getMethods();
-        return $methods;
+        return Arrays::filter($methods, function(ReflectionMethod $method) {
+            return !$method->isConstructor();
+        });
     }
 
     private static function getParameterDeclaration(ReflectionFunctionAbstract $method)
