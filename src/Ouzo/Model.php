@@ -347,7 +347,7 @@ class Model extends Validatable
         $meta = static::metaInstance();
         $results = $meta->_db->query($nativeSql, $params)->fetchAll();
 
-        return Arrays::map($results, function($row) use($meta) {
+        return Arrays::map($results, function ($row) use ($meta) {
             return $meta->newInstance($row);
         });
     }
@@ -375,7 +375,7 @@ class Model extends Validatable
     {
         $instance = static::newInstance($attributes);
         if (!$instance->isValid()) {
-           throw new ValidationException("Validation has failed for object: " . $instance->inspect(), $instance->getErrors());
+            throw new ValidationException("Validation has failed for object: " . $instance->inspect(), $instance->getErrors());
         }
         $instance->insert();
         return $instance;
