@@ -59,6 +59,7 @@ class Error
 
     private static function _renderUserError($errorMessage, $errorTrace)
     {
+        header("Contains-Error-Message: User");
         self::_renderError($errorMessage, $errorTrace, "HTTP/1.1 500 Internal Server Error", 'user_exception');
     }
 
