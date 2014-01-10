@@ -63,4 +63,4 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertNotContains('class="', $html);
     }
-} 
+}

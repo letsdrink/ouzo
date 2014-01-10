@@ -111,7 +111,7 @@ class ModelFormBuilder
 
     private function _mergeAttributes($attributes, $options)
     {
-        if (isset($options['class'])) {
+        if (isset($options['class']) && isset($attributes['class'])) {
             $options['class'] = Joiner::on(' ')->skipNulls()->join(array($options['class'], $attributes['class']));
         }
         return array_merge($attributes, $options);
