@@ -341,4 +341,29 @@ class Strings
     {
         return !Strings::isBlank($string);
     }
+
+    /**
+     * Abbreviate - abbreviates a string using ellipsis
+     *
+     * Example:
+     * <code>
+     * $result = Strings::abbreviate('ouzo is great', 5);
+     * </code>
+     * Result:
+     * <code>
+     * ouzo ...
+     * </code>
+     *
+     * @param string $string
+     * @param string $maxWidth
+     * @return string
+     */
+    public static function abbreviate($string, $maxWidth)
+    {
+        if (strlen($string) > $maxWidth) {
+            return substr($string, 0, $maxWidth) . '...';
+        }
+        return $string;
+    }
+
 }

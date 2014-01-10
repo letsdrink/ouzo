@@ -339,4 +339,34 @@ class StringsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Strings::isNotBlank('a '));
         $this->assertFalse(Strings::isNotBlank("\t\n\r"));
     }
+
+    /**
+     * @test
+     */
+    public function shouldAbbreviateString()
+    {
+        //given
+        $string = 'ouzo is great';
+
+        //when
+        $abbreviated = Strings::abbreviate($string, 5);
+
+        //then
+        $this->assertEquals("ouzo ...", $abbreviated);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotAbbreviateStringShorterThanLimit()
+    {
+        //given
+        $string = 'ouzo is great';
+
+        //when
+        $abbreviated = Strings::abbreviate($string, 13);
+
+        //then
+        $this->assertEquals($string, $abbreviated);
+    }
 }
