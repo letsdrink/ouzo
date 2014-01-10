@@ -13,7 +13,9 @@ class Error
 
     public static function exceptionHandler(Exception $exception)
     {
-        if ($exception instanceof RouterException) {
+        if ($exception instanceof UserException) {
+            self::_renderUserError($exception->getMessage(), $exception->getTraceAsString());
+        } elseif ($exception instanceof RouterException) {
             self::_renderNotFoundError($exception->getMessage(), $exception->getTraceAsString());
         } else {
             self::_handleError($exception->getMessage(), $exception->getTraceAsString());
@@ -53,6 +55,12 @@ class Error
     private static function _handleError($errorMessage, $errorTrace)
     {
         self::_renderError($errorMessage, $errorTrace, "HTTP/1.1 500 Internal Server Error", 'exception');
+    }
+
+    private static function _renderUserError($errorMessage, $errorTrace)
+    {
+        header("Contains-Error-Message: User");
+        self::_renderError($errorMessage, $errorTrace, "HTTP/1.1 500 Internal Server Error", 'user_exception');
     }
 
     private static function _renderNotFoundError($errorMessage, $errorTrace)
