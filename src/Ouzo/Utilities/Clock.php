@@ -8,10 +8,10 @@ class Clock
     static $freeze = false;
     static $freezeDate;
 
-    public static function freeze()
+    public static function freeze($date = null)
     {
         self::$freeze = false;
-        self::$freezeDate = self::now();
+        self::$freezeDate = $date ? new DateTime($date) : self::now();
         self::$freeze = true;
     }
 
