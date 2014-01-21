@@ -278,7 +278,9 @@ class Strings
      */
     public static function htmlEntities($text)
     {
-        return htmlentities($text, ENT_COMPAT, 'UTF-8');
+        $htmlentities = htmlentities($text, ENT_COMPAT, 'UTF-8');
+        $htmlentities = str_replace(array('&Oacute;', '&oacute;'), array('Ó', 'ó'), $htmlentities);
+        return $htmlentities;
     }
 
     /**

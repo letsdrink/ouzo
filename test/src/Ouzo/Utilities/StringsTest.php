@@ -369,4 +369,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals($string, $abbreviated);
     }
+
+    /**
+     * @test
+     */
+    public function shouldConvertEntitiesWithUtfChars()
+    {
+        //given
+        $string = '<strong>someting</strong> with ó';
+
+        //when
+        $entities = Strings::htmlEntities($string);
+
+        //then
+        $this->assertEquals('&lt;strong&gt;someting&lt;/strong&gt; with ó', $entities);
+    }
 }
