@@ -57,44 +57,44 @@ function translatableOptions($prefix, $options)
     return $result;
 }
 
-function labelTag($id, $name, array $attributes = array())
+function labelTag($name, $content, array $attributes = array())
 {
     $attr = _prepareAttributes($attributes);
     $attr = $attr ? ' ' . $attr : '';
-    return '<label for="' . $id . '"' . $attr . '>' . $name . '</label>';
+    return '<label for="' . $name . '"' . $attr . '>' . $content . '</label>';
 }
 
-function hiddenTag($value, array $attributes = array())
+function hiddenTag($name, $value, array $attributes = array())
 {
-    $attr = _prepareAttributes($attributes);
-    return '<input type="hidden" value="' . $value . '" ' . $attr . '/>';
+    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => $value));
+    return '<input type="hidden" ' . $attr . '/>';
 }
 
-function textFieldTag($value, array $attributes = array())
+function textFieldTag($name, $value, array $attributes = array())
 {
-    $attr = _prepareAttributes($attributes);
-    return '<input type="text" value="' . $value . '" ' . $attr . '/>';
+    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => $value));
+    return '<input type="text" ' . $attr . '/>';
 }
 
-function textAreaTag($value, array $attributes = array())
+function textAreaTag($name, $content, array $attributes = array())
 {
-    $attr = _prepareAttributes($attributes);
-    return '<textarea ' . $attr . '>' . $value . '</textarea>';
+    $attr = _prepareAttributes($attributes, array('name' => $name));
+    return '<textarea ' . $attr . '>' . $content . '</textarea>';
 }
 
-function checkboxTag($value, $checked, array $attributes = array())
+function checkboxTag($name, $value, $checked, array $attributes = array())
 {
-    $attr = _prepareAttributes($attributes);
-    $workaround = '<input name="' . $attributes['name'] . '" type="hidden" value="0" />';
+    $attr = _prepareAttributes($attributes, array('name' => $name));
+    $workaround = '<input name="' . $name . '" type="hidden" value="0" />';
     return $workaround . '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
 }
 
-function selectTag(array $items = array(), $value, array $attributes = array(), $defaultOption = null)
+function selectTag($name, array $items = array(), $value, array $attributes = array(), $promptOption = null)
 {
-    $attr = _prepareAttributes($attributes);
+    $attr = _prepareAttributes($attributes, array('name' => $name));
     $optionsString = '';
-    if ($defaultOption) {
-        $items = array(null => $defaultOption) + $items;
+    if ($promptOption) {
+        $items = array(null => $promptOption) + $items;
     }
     foreach ($items as $optionValue => $optionName) {
         $optionsString .= optionTag($optionValue, $optionName, $value);
@@ -109,10 +109,10 @@ function optionTag($value, $name, $current)
     return '<option' . $value . $selected . '>' . $name . '</option>';
 }
 
-function passwordFieldTag($value, array $attributes = array())
+function passwordFieldTag($name, $value, array $attributes = array())
 {
-    $attr = _prepareAttributes($attributes);
-    return '<input type="password" value="' . $value . '" ' . $attr . '/>';
+    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => $value));
+    return '<input type="password" ' . $attr . '/>';
 }
 
 function formTag($url, $method = 'POST', $attributes = array())
@@ -134,7 +134,7 @@ function endTag()
 function _methodWorkAroundTag($method)
 {
     if (_isUnsupportedMethod($method)) {
-        return hiddenTag($method, array('name' => '_method'));
+        return hiddenTag('_method', $method);
     }
     return '';
 }
@@ -144,7 +144,16 @@ function _isUnsupportedMethod($method)
     return in_array($method, array('PUT', 'PATCH', 'DELETE'));
 }
 
-function _prepareAttributes(array $attributes = array())
+function _prepareAttributes(array $attributes = array(), array $predefinedAttributes = array())
+{
+    if (isset($predefinedAttributes['name'])) {
+        $predefinedAttributes = array('id' => $predefinedAttributes['name']) + $predefinedAttributes;
+    }
+    $attributes = array_merge($predefinedAttributes, $attributes);
+    return _attributesToHtml($attributes);
+}
+
+function _attributesToHtml(array $attributes)
 {
     $attr = '';
     foreach ($attributes as $opt_key => $opt_value) {

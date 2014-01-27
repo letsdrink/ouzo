@@ -18,10 +18,10 @@ class FormHelperTest extends DbTransactionalTestCase
     {
         //given
         $items = array(1 => 'Opt1', 2 => 'Opt1');
-        $attributes = array('id' => "lab", 'name' => "lab", 'size' => "1");
+        $attributes = array('id' => "lab", 'size' => "1");
 
         //when
-        $result = selectTag($items, array(2), $attributes);
+        $result = selectTag("lab", $items, array(2), $attributes);
 
         //then
         $expected = '<select id="lab" name="lab" size="1"><option value="1" >Opt1</option><option value="2" selected>Opt1</option></select>';
@@ -43,7 +43,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $textField3 = $form->textField('name', array('style' => 'color: red;'));
 
         //then
-        $this->assertEquals('<input type="text" value="name" id="product_name" name="product[name]"/>', $textField1);
+        $this->assertEquals('<input type="text" id="product_name" name="product[name]" value="name"/>', $textField1);
         $this->assertContains('id="id_new"', $textField2);
         $this->assertContains('style="color: red;"', $textField3);
     }
@@ -100,12 +100,10 @@ class FormHelperTest extends DbTransactionalTestCase
         $form = formFor($product);
 
         //when
-        $result1 = $form->hiddenField('name');
-        $result2 = $form->hiddenField('name', 'new_name');
+        $html = $form->hiddenField('name');
 
         //then
-        $this->assertEquals('<input type="hidden" value="name" id="product_name" name="product[name]"/>', $result1);
-        $this->assertEquals('<input type="hidden" value="new_name" id="product_name" name="product[name]"/>', $result2);
+        $this->assertEquals('<input type="hidden" id="product_name" name="product[name]" value="name"/>', $html);
     }
 
     /**
@@ -138,7 +136,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = formFor($product)->passwordField('name');
 
         //then
-        $this->assertEquals('<input type="password" value="name" id="product_name" name="product[name]"/>', $result);
+        $this->assertEquals('<input type="password" id="product_name" name="product[name]" value="name"/>', $result);
     }
 
     /**
@@ -182,7 +180,7 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         $this->assertContains('method="POST"', $form);
-        $this->assertContains('value="' . $method . '" name="_method"', $form);
+        $this->assertContains('name="_method" value="' . $method .'"', $form);
     }
 
     /**
@@ -310,10 +308,10 @@ class FormHelperTest extends DbTransactionalTestCase
     {
         //given
         $items = array(1 => 'Opt1', 2 => 'Opt2');
-        $attributes = array('id' => "lab", 'name' => "lab", 'size' => "1");
+        $attributes = array('id' => "lab", 'size' => "1");
 
         //when
-        $result = selectTag($items, array(2), $attributes, 'default option');
+        $result = selectTag("lab", $items, array(2), $attributes, 'default option');
 
         //then
         $expected = '<select id="lab" name="lab" size="1"><option value="" >default option</option><option value="1" >Opt1</option><option value="2" selected>Opt2</option></select>';
@@ -363,10 +361,10 @@ class FormHelperTest extends DbTransactionalTestCase
     {
         //given
         $items = array(0 => 'Opt1', 1 => 'Opt2');
-        $attributes = array('id' => "lab", 'name' => "lab", 'size' => "1");
+        $attributes = array('size' => "1");
 
         //when
-        $result = selectTag($items, array(1), $attributes);
+        $result = selectTag("lab", $items, array(1), $attributes);
 
         //then
         $expected = '<select id="lab" name="lab" size="1"><option value="0" >Opt1</option><option value="1" selected>Opt2</option></select>';
