@@ -128,6 +128,9 @@ class QueryExecutor
     {
         $this->_addBindValue(array_values($this->_query->updateAttributes));
 
+        foreach ($this->_query->joinClauses as $joinClause) {
+            $this->_addBindValuesFromWhereClause($joinClause->onClause);
+        }
         foreach ($this->_query->whereClauses as $whereClause) {
             $this->_addBindValuesFromWhereClause($whereClause);
         }

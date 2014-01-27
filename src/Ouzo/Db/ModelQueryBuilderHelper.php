@@ -39,7 +39,7 @@ class ModelQueryBuilderHelper
         return $relationWithAliases;
     }
 
-    public static function createModelJoins($fromTable, $relationWithAliases, $type)
+    public static function createModelJoins($fromTable, $relationWithAliases, $type, $on)
     {
         $result = array();
         $field = '';
@@ -47,7 +47,7 @@ class ModelQueryBuilderHelper
         foreach ($relationWithAliases as $relationWithAlias) {
             $relation = $relationWithAlias->relation;
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
-            $modelJoin = new ModelJoin($field, $table, $relation, $relationWithAlias->alias, $type);
+            $modelJoin = new ModelJoin($field, $table, $relation, $relationWithAlias->alias, $type, $on);
             $table = $modelJoin->alias();
             $result[] = $modelJoin;
         }

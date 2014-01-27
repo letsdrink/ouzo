@@ -239,6 +239,23 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnSelectWithJoinWithOnClause()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->join('categories', 'id_category', 'id_category', null, 'LEFT', array('col' => 2));
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category AND col = ?', $sql);
+    }
+
+    /**
+     * @test
+     */
     public function shouldAddAliases()
     {
         // given

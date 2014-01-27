@@ -71,7 +71,8 @@ class DialectUtil
     public static function buildJoinQueryPart(JoinClause $joinClause)
     {
         $alias = $joinClause->alias ? " AS {$joinClause->alias}" : "";
-        return $joinClause->type . ' JOIN ' . $joinClause->joinTable . $alias . ' ON ' . $joinClause->getJoinColumnWithTable() . ' = ' . $joinClause->getJoinedColumnWithTable();
+        $on = self::buildWhereQuery(array($joinClause->onClause));
+        return $joinClause->type . ' JOIN ' . $joinClause->joinTable . $alias . ' ON ' . $joinClause->getJoinColumnWithTable() . ' = ' . $joinClause->getJoinedColumnWithTable() . ($on ? " AND $on" : '');
     }
 
     public static function buildAttributesPartForUpdate($updateAttributes)
