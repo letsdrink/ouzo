@@ -343,6 +343,24 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldLeftJoinWithOtherTable()
+    {
+        //given
+        $category = Category::create(array('name' => 'category 1'));
+        Product::create(array('name' => 'prod 1', 'id_category' => $category->id));
+        Product::create(array('name' => 'prod 2', 'id_category' => $category->id));
+        Product::create(array('name' => 'prod 3', 'id_category' => null));
+
+        //when
+        $products = Product::where()->leftJoin('category')->fetchAll();
+
+        //then
+        $this->assertCount(3, $products);
+    }
+
+    /**
+     * @test
+     */
     public function shouldCountRecords()
     {
         //given

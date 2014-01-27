@@ -220,6 +220,16 @@ class ModelQueryBuilder
         return $this->join($relationSelector, $aliases, 'RIGHT');
     }
 
+    /**
+     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @return ModelQueryBuilder
+     */
+    public function leftJoin($relationSelector, $aliases = null)
+    {
+        return $this->join($relationSelector, $aliases, 'LEFT');
+    }
+
     private function addJoin(ModelJoin $modelJoin)
     {
         if (!$this->isAlreadyJoined($modelJoin)) {
