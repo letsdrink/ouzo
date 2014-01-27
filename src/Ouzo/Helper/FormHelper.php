@@ -166,8 +166,3 @@ function formFor($model)
 {
     return new ModelFormBuilder($model);
 }
-
-function formForCustomBuilder($formBuilder)
-{
-    return $formBuilder;
-}
