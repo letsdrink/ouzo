@@ -62,6 +62,18 @@ class TestMethodHandler
 
 }
 
+
+class ClassWithStaticMethod
+{
+    function fun1(TestClass $p1)
+    {
+    }
+
+    static function fun2()
+    {
+    }
+}
+
 class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -189,5 +201,21 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertNotNull($proxy);
     }
+
+    /**
+     * @test
+     */
+    public function shouldWorkForClassWithStaticMethod()
+    {
+        //given
+        $testMethodHandler = new TestMethodHandler();
+
+        //when
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithStaticMethod', $testMethodHandler);
+
+        //then
+        $this->assertNotNull($proxy);
+    }
+
 }
  
