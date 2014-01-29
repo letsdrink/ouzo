@@ -50,6 +50,26 @@ class ClassWithConstructorWithParams
     }
 }
 
+class ClassWithStaticMethod
+{
+    function fun1(TestClass $p1)
+    {
+    }
+
+    static function fun2()
+    {
+    }
+}
+
+abstract class ClassWithAbstractMethod
+{
+    function fun1(TestClass $p1)
+    {
+    }
+
+    abstract function fun2();
+}
+
 class TestMethodHandler
 {
     public $calls = array();
@@ -62,17 +82,6 @@ class TestMethodHandler
 
 }
 
-
-class ClassWithStaticMethod
-{
-    function fun1(TestClass $p1)
-    {
-    }
-
-    static function fun2()
-    {
-    }
-}
 
 class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 {
@@ -212,6 +221,21 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 
         //when
         $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithStaticMethod', $testMethodHandler);
+
+        //then
+        $this->assertNotNull($proxy);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldWorkForClassWithAbstractMethod()
+    {
+        //given
+        $testMethodHandler = new TestMethodHandler();
+
+        //when
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithAbstractMethod', $testMethodHandler);
 
         //then
         $this->assertNotNull($proxy);
