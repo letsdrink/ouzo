@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo\Tests;
 
-use Ouzo\Utilities\Objects;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
@@ -219,6 +218,47 @@ class AssertTest extends PHPUnit_Framework_TestCase
 
         CatchException::when(Assert::thatArray($photos)->onMethod('getPhotoName'))->contains('photo3');
 
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    /**
+     * @test
+     */
+    public function containsShouldCheckSequences()
+    {
+        $array = array('ccc', 'aaa', 'bbb', 'ccc', 'ddd');
+        Assert::thatArray($array)->containsSequence('ccc', 'ddd');
+        Assert::thatArray($array)->containsSequence();
+        Assert::thatArray($array)->containsSequence('aaa');
+    }
+
+    /**
+     * @test
+     */
+    public function containsShouldThrowExceptionWhenOrderIsIncorrect()
+    {
+        $array = array('ccc', 'aaa', 'bbb', 'ccc', 'ddd');
+        CatchException::when(Assert::thatArray($array))->containsSequence('ddd', 'ccc');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    /**
+     * @test
+     */
+    public function containsShouldThrowExceptionWhenIsNotSequence()
+    {
+        $array = array('ccc', 'aaa', 'bbb', 'ccc', 'ddd');
+        CatchException::when(Assert::thatArray($array))->containsSequence('aaa', 'ddd');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    /**
+     * @test
+     */
+    public function containsShouldThrowExceptionWhenPassTooManyParameters()
+    {
+        $array = array('ccc', 'aaa', 'bbb', 'ccc', 'ddd');
+        CatchException::when(Assert::thatArray($array))->containsSequence('ccc', 'aaa', 'bbb', 'ccc', 'ddd', 'zzz');
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 

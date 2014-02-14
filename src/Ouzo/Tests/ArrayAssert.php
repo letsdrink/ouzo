@@ -155,4 +155,20 @@ class ArrayAssert
         }
         return $this;
     }
+
+    public function containsSequence()
+    {
+        $elements = func_get_args();
+        $result = false;
+        $size = count($this->_actual) - count($elements) + 1;
+        for ($i = 0; $i < $size; ++$i) {
+            if (array_slice($this->_actual, $i, count($elements)) == $elements) {
+                $result = true;
+            }
+        }
+        if (!$result) {
+            $this->fail("Sequence doesn't match to array", $elements);
+        }
+        return $this;
+    }
 }
