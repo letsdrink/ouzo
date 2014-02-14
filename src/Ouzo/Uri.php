@@ -128,4 +128,12 @@ class Uri
         parse_str($content, $parameters);
         return $parameters;
     }
+
+    public static function addPrefixIfNeeded($url)
+    {
+        $prefix = Config::getValue('global', 'prefix_system');
+        $url = Strings::removePrefix($url, $prefix);
+        return $prefix . $url;
+    }
+
 }
