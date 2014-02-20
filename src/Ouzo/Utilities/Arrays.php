@@ -673,4 +673,16 @@ class Arrays
         }
         return null;
     }
+
+    /**
+     * Computes the intersection of arrays
+     *
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    public static function intersect(array $a1, array $a2)
+    {
+        return array_intersect($a1, $a2);
+    }
 }

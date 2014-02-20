@@ -523,4 +523,20 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $this->assertNull($value);
     }
 
+    /**
+     * @test
+     */
+    public function shouldReturnArraysIntersection()
+    {
+        //given
+        $a1 = array('1', '4', '5');
+        $a2 = array('1', '4', '6');
+
+        //when
+        $intersection = Arrays::intersect($a1, $a2);
+
+        //then
+        $this->assertEquals(array('1', '4'), $intersection);
+    }
+
 }

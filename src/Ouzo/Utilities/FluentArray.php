@@ -63,6 +63,18 @@ class FluentArray
         return $this;
     }
 
+    public function intersect(array $array)
+    {
+        $this->_array = array_intersect($this->_array, $array);
+        return $this;
+    }
+
+    public function reverse()
+    {
+        $this->_array = array_reverse($this->_array);
+        return $this;
+    }
+
     public function toMap($keyFunction, $valueFunction = null)
     {
         $this->_array = Arrays::toMap($this->_array, $keyFunction, $valueFunction);
@@ -72,6 +84,11 @@ class FluentArray
     public function toArray()
     {
         return $this->_array;
+    }
+
+    public function firstOr($default)
+    {
+        return Arrays::firstOrNull($this->_array) ?: $default;
     }
 
     public function toJson()

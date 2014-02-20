@@ -94,4 +94,65 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('{"1":"a","2":"b","3":"c"}', $json);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnArraysIntersection()
+    {
+        //given
+        $a1 = array('1', '4', '5');
+        $a2 = array('1', '4', '6');
+
+        //when
+        $intersection =FluentArray::from($a1)->intersect($a2)->toArray();
+
+        //then
+        $this->assertEquals(array('1', '4'), $intersection);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReverseArray()
+    {
+        //given
+        $array = array('1', '2');
+
+        //when
+        $reversed =FluentArray::from($array)->reverse()->toArray();
+
+        //then
+        $this->assertEquals(array('2', '1'), $reversed);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTheFirstElement()
+    {
+        //given
+        $array = array('1', '2');
+
+        //when
+        $first = FluentArray::from($array)->firstOr(null);
+
+        //then
+        $this->assertEquals('1', $first);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDefaultIfNoFirstElement()
+    {
+        //given
+        $array = array();
+
+        //when
+        $first = FluentArray::from($array)->firstOr('default');
+
+        //then
+        $this->assertEquals('default', $first);
+    }
 }
