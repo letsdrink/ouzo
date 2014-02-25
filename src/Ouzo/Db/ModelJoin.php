@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Db;
 
+use Ouzo\Model;
+
 class ModelJoin
 {
     private $relation;
@@ -35,6 +37,9 @@ class ModelJoin
         return $this->alias ? : $this->relation->getRelationModelObject()->getTableName();
     }
 
+    /**
+     * @return Model
+     */
     public function getModelObject()
     {
         return $this->relation->getRelationModelObject();
