@@ -27,7 +27,7 @@ class ConfigRepository
 
     private function _getConfigEnv()
     {
-        $configPath = Path::join(ROOT_PATH, 'config', getenv('environment'), 'ConfigPanel.php');
+        $configPath = Path::join(ROOT_PATH, 'config', getenv('environment'), 'config.php');
         if (file_exists($configPath)) {
             /** @noinspection PhpIncludeInspection */
             return require($configPath);
