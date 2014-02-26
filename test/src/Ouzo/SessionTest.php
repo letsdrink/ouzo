@@ -61,6 +61,18 @@ class SessionTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getShouldReturnNullIfKeyDoesNotExist()
+    {
+        //when
+        $value = Session::get('key');
+
+        //then
+        $this->assertNull($value);
+    }
+
+    /**
+     * @test
+     */
     public function hasShouldReturnTrueIfItemExistsInSession()
     {
         //given
@@ -95,6 +107,48 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
         //when
         Session::flush();
+
+        //then
+        Assert::thatSession()->isEmpty();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFlushIfSessionIsEmpty()
+    {
+        //when
+        Session::flush();
+
+        //then
+        Assert::thatSession()->isEmpty();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveElementFromSession()
+    {
+        //given
+        Session::set('key1', 'value1');
+        Session::set('key2', 'value2');
+
+        //when
+        Session::remove('key1');
+
+        //then
+        Assert::thatSession()
+            ->hasSize('1')
+            ->containsKeyAndValue(array('key2' => 'value2'));
+    }
+
+    /**
+     * @test
+     */
+    public function removeShouldDoNothingIfElementDoesNotExist()
+    {
+        //when
+        Session::remove('key1');
 
         //then
         Assert::thatSession()->isEmpty();
