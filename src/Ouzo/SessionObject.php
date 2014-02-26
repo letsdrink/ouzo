@@ -39,7 +39,7 @@ class SessionObject
 
     public function all()
     {
-        return $_SESSION;
+        return isset($_SESSION) ? $_SESSION : null;
     }
 
     public function remove($keys)
