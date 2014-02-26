@@ -8,7 +8,6 @@ use Ouzo\Utilities\Path;
 
 class ConfigRepository
 {
-
     private $_customConfigs = array();
     private $_config = array();
     private $_overriddenConfig = array();
