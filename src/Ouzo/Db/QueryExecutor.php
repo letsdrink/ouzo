@@ -30,6 +30,9 @@ class QueryExecutor
         $this->_adapter = DialectFactory::create();
     }
 
+    /**
+     * @return QueryExecutor
+     */
     public static function prepare($db, $query)
     {
         if (empty($db) || !$db instanceof Db) {
@@ -62,23 +65,18 @@ class QueryExecutor
 
     public function delete()
     {
-        $this->_query->type = QueryType::$DELETE;
         $this->_buildQuery();
         return $this->_db->execute($this->_sql, $this->_boundValues);
     }
 
-    public function update(array $attributes)
+    public function update()
     {
-        $this->_query->type = QueryType::$UPDATE;
-        $this->_query->updateAttributes = $attributes;
         $this->_buildQuery();
         return $this->_db->execute($this->_sql, $this->_boundValues);
     }
 
-    public function insert(array $data, $sequence = '')
+    public function insert($sequence = '')
     {
-        $this->_query->type = QueryType::$INSERT;
-        $this->_query->updateAttributes = $data;
         $this->_buildQuery();
         $this->_db->execute($this->_sql, $this->_boundValues);
 

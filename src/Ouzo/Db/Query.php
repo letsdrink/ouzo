@@ -27,6 +27,16 @@ class Query
         return new Query($type);
     }
 
+    static function insert($attributes)
+    {
+        return Query::newInstance(QueryType::$INSERT)->attributes($attributes);
+    }
+
+    static function update($attributes)
+    {
+        return Query::newInstance(QueryType::$UPDATE)->attributes($attributes);
+    }
+
     static function select($selectColumns = null)
     {
         $query = new Query();
@@ -44,10 +54,26 @@ class Query
         return new Query(QueryType::$DELETE);
     }
 
-    function from($table)
+    function attributes($attributes)
+    {
+        $this->updateAttributes = $attributes;
+        return $this;
+    }
+
+    function table($table)
     {
         $this->table = $table;
         return $this;
+    }
+
+    function into($table)
+    {
+        return $this->table($table);
+    }
+
+    function from($table)
+    {
+        return $this->table($table);
     }
 
     function order($order)

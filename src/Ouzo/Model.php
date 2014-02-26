@@ -3,11 +3,11 @@ namespace Ouzo;
 
 use Exception;
 use InvalidArgumentException;
+use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryExecutor;
 use Ouzo\Db\Relation;
-use Ouzo\Db;
 use Ouzo\Db\RelationFetcher;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
@@ -142,8 +142,8 @@ class Model extends Validatable
         $primaryKey = $this->_primaryKeyName;
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
 
-        $value =  QueryExecutor::prepare($this->_db, Query::newInstance()->from($this->_tableName))
-            ->insert($attributes, $this->_sequenceName);
+        $query = Query::insert($attributes)->into($this->_tableName);
+        $value = QueryExecutor::prepare($this->_db, $query)->insert($this->_sequenceName);
 
         if ($primaryKey) {
             $this->$primaryKey = $value;
@@ -154,10 +154,11 @@ class Model extends Validatable
     public function update()
     {
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
-        $query = Query::newInstance()
-            ->from($this->_tableName)
+        $query = Query::update($attributes)
+            ->table($this->_tableName)
             ->where(array($this->_primaryKeyName => $this->getId()));
-        QueryExecutor::prepare($this->_db, $query)->update($attributes);
+
+        QueryExecutor::prepare($this->_db, $query)->update();
     }
 
     public function insertOrUpdate()

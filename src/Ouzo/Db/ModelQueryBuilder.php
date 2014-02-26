@@ -169,6 +169,7 @@ class ModelQueryBuilder
      */
     public function deleteAll()
     {
+        $this->_query->type = QueryType::$DELETE;
         return QueryExecutor::prepare($this->_db, $this->_query)->delete();
     }
 
@@ -188,6 +189,8 @@ class ModelQueryBuilder
      */
     public function update(array $attributes)
     {
+        $this->_query->type = QueryType::$UPDATE;
+        $this->_query->updateAttributes = $attributes;
         return QueryExecutor::prepare($this->_db, $this->_query)->update($attributes);
     }
 
