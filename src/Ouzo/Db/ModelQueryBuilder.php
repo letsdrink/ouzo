@@ -92,7 +92,9 @@ class ModelQueryBuilder
 
     public function count()
     {
-        return QueryExecutor::prepare($this->_db, $this->_query)->count();
+        $this->_query->type = QueryType::$COUNT;
+        $value = QueryExecutor::prepare($this->_db, $this->_query)->fetch();
+        return intval(Arrays::firstOrNull(Arrays::toArray($value)));
     }
 
     /**

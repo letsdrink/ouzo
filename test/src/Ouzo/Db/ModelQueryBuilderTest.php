@@ -401,6 +401,18 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldReturnZeroForCountingQueryThatAlwaysReturnsNothing()
+    {
+        //when
+        $count = Product::where(array('name' => array()))->count();
+
+        //then
+        $this->assertEquals(0, $count);
+    }
+
+    /**
+     * @test
+     */
     public function shouldCountRecordsWithJoinWithOtherTable()
     {
         //given

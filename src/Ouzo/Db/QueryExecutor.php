@@ -75,13 +75,6 @@ class QueryExecutor
         return $sequence ? $this->_db->_dbHandle->lastInsertId($sequence) : null;
     }
 
-    public function count()
-    {
-        $this->_query->type = QueryType::$COUNT;
-        $this->_query->selectColumns = 'count(*)';
-        return intval(Arrays::first($this->fetch()));
-    }
-
     private function _fetch($function)
     {
         return StatementExecutor::prepare($this->_db->_dbHandle, $this->_sql, $this->_boundValues)->executeAndFetch($function, $this->_fetchStyle);
