@@ -127,7 +127,7 @@ function formTag($url, $method = 'POST', $attributes = array())
     return $form;
 }
 
-function endTag()
+function endFormTag()
 {
     return '</form>';
 }
