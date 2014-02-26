@@ -27,4 +27,9 @@ class Assert
     {
         return ModelAssert::that($actual);
     }
+
+    public static function thatSession()
+    {
+        return ArrayAssert::that(isset($_SESSION) ? $_SESSION : array());
+    }
 }
