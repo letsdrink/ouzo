@@ -92,7 +92,7 @@ class Controller
     private function _removeMessages()
     {
         if (!$this->_keepMessage) {
-            unset($_SESSION['messages']);
+            Session::remove('messages');
         }
     }
 
@@ -105,7 +105,7 @@ class Controller
     public function notice($messages, $keep = false)
     {
         if (!empty($messages)) {
-            $_SESSION['messages'] = Arrays::toArray($messages);
+            Session::set('messages', Arrays::toArray($messages));
             $this->_keepMessage = $keep;
         }
     }

@@ -2,6 +2,7 @@
 namespace Ouzo\Config;
 
 use InvalidArgumentException;
+use Ouzo\Session;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Path;
@@ -46,7 +47,7 @@ class ConfigRepository
 
     private function _getConfigFromSession()
     {
-        return isset($_SESSION) ? Arrays::getValue($_SESSION, 'config', array()) : array();
+        return Session::get('config') ? : array();
     }
 
     public function overrideProperty($keys, $value)

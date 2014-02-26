@@ -2,6 +2,7 @@
 use Ouzo\Controller;
 use Ouzo\ControllerFactory;
 use Ouzo\Routing\Route;
+use Ouzo\Session;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Utilities\Arrays;
@@ -25,7 +26,7 @@ class SimpleTestController extends Controller
 
     public function read_kept()
     {
-        $this->layout->renderAjax(Arrays::firstOrNull($_SESSION['messages']));
+        $this->layout->renderAjax(Arrays::firstOrNull(Session::get('messages')));
         $this->layout->unsetLayout();
     }
 }
