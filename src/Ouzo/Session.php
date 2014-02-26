@@ -72,8 +72,8 @@ class Session
         return self::create()->all();
     }
 
-    public static function push($key, $value)
+    public static function push()
     {
-        return self::create()->push($key, $value);
+        return self::create()->push(func_get_args());
     }
 }

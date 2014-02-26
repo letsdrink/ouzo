@@ -7,6 +7,7 @@ use Ouzo\Utilities\Arrays;
 class SessionObject
 {
 
+    // TODO add nested has
     public function has($key)
     {
         return isset($_SESSION[$key]);
@@ -14,6 +15,10 @@ class SessionObject
 
     public function get($args)
     {
+        if (!isset($_SESSION)) {
+            return null;
+        }
+
         $value = $_SESSION;
         foreach ($args as $arg) {
             $value = Arrays::getValue($value, $arg);
@@ -31,7 +36,7 @@ class SessionObject
             $args = $args[0];
         }
         if (count($args) < 2) {
-            throw new InvalidArgumentException('Session#set needs at least two arguments: key and value');
+            throw new InvalidArgumentException('Method needs at least two arguments: key and value');
         }
 
         $value = array_pop($args);
@@ -64,16 +69,29 @@ class SessionObject
         return $_SESSION;
     }
 
+    // TODO add nested remove
     public function remove($key)
     {
         unset($_SESSION[$key]);
     }
 
-    public function push($key, $value)
+    // TODO remove duplicated code
+    public function push($args)
     {
-        $array = $this->get($key) ? : array();
+        $args = func_get_args();
+        if (count($args) == 1 && is_array($args[0])) {
+            $args = $args[0];
+        }
+        if (count($args) < 2) {
+            throw new InvalidArgumentException('Method needs at least two arguments: key and value');
+        }
+
+        $value = array_pop($args);
+        $keys = Arrays::toArray($args);
+
+        $array = $this->get($keys) ? : array();
         $array[] = $value;
-        $this->set($key, $array);
+        $this->_set($keys, $array);
     }
 
 }
