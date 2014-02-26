@@ -188,4 +188,38 @@ class SessionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('value1', $value1);
         $this->assertEquals('value2', $value2);
     }
+
+    /**
+     * @test
+     */
+    public function shouldPushSessionValue()
+    {
+        //when
+        Session::push('key', 'value');
+
+        //then
+        Assert::thatSession()->hasSize(1);
+
+        $value = Session::get('key');
+        Assert::thatArray($value)->containsExactly('value');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPushSessionValueWhenArrayIsNotEmpty()
+    {
+        // given
+        Session::push('key', 'value1');
+        Session::push('key', 'value2');
+
+        //when
+        Session::push('key', 'value3');
+
+        //then
+        Assert::thatSession()->hasSize(1);
+
+        $value = Session::get('key');
+        Assert::thatArray($value)->containsExactly('value1', 'value2', 'value3');
+    }
 }

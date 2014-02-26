@@ -4,11 +4,9 @@ namespace Ouzo;
 class Session
 {
 
-    const DEFAULT_NAMESPACE = 'ouzo';
-
-    public static function forNamespace($namespace = self::DEFAULT_NAMESPACE)
+    public static function forNamespace()
     {
-        return new NamespacedSession($namespace);
+        return new SessionObject();
     }
 
     public static function startSession()
@@ -60,5 +58,10 @@ class Session
     public static function all()
     {
         return self::forNamespace()->all();
+    }
+
+    public static function push($key, $value)
+    {
+        return self::forNamespace()->push($key, $value);
     }
 }
