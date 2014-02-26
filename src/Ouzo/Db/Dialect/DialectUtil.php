@@ -2,24 +2,12 @@
 namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\JoinClause;
-use Ouzo\Db\QueryType;
 use Ouzo\Db\WhereClause;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Joiner;
 
 class DialectUtil
 {
-    public static function buildQueryPrefix($type)
-    {
-        if ($type == QueryType::$DELETE) {
-            return 'DELETE';
-        }else if ($type == QueryType::$UPDATE) {
-            return 'UPDATE';
-        } else {
-            return 'SELECT';
-        }
-    }
-
     public static function _addAliases()
     {
         return function ($alias, $column) {

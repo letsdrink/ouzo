@@ -2,6 +2,7 @@
 namespace Ouzo\Config;
 
 use InvalidArgumentException;
+use Ouzo\Session;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Path;
@@ -46,23 +47,15 @@ class ConfigRepository
 
     private function _getConfigFromSession()
     {
-        return isset($_SESSION) ? Arrays::getValue($_SESSION, 'config', array()) : array();
+        return Session::get('config') ? : array();
     }
 
     public function overrideProperty($keys, $value)
     {
         $keys = Arrays::toArray($keys);
-        $config = & $this->_config;
-        $overriddenConfig = & $this->_overriddenConfig;
-        foreach ($keys as $key) {
-            $config = & $config[$key];
-            if (!isset($overriddenConfig[$key])) {
-                $overriddenConfig[$key] = array();
-            }
-            $overriddenConfig = & $overriddenConfig[$key];
-        }
-        $overriddenConfig = $config;
-        $config = $value;
+        $oldValue = Arrays::getNestedValue($this->_config, $keys);
+        Arrays::setNestedValue($this->_config, $keys, $value);
+        Arrays::setNestedValue($this->_overriddenConfig, $keys, $oldValue);
     }
 
     public function revertProperty($keys)
@@ -87,14 +80,7 @@ class ConfigRepository
 
     public function getValue($args)
     {
-        $configValue = $this->_config;
-        foreach ($args as $arg) {
-            $configValue = Arrays::getValue($configValue, $arg);
-            if (!$configValue) {
-                return null;
-            }
-        }
-        return $configValue;
+        return Arrays::getNestedValue($this->_config, $args);
     }
 
     public function all()

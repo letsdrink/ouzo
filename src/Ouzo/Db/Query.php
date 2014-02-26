@@ -22,6 +22,11 @@ class Query
         $this->type = $type ? $type : QueryType::$SELECT;
     }
 
+    static function newInstance($type = null)
+    {
+        return new Query($type);
+    }
+
     static function select($selectColumns = null)
     {
         $query = new Query();
@@ -71,7 +76,7 @@ class Query
 
     function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = array())
     {
-        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable?: $this->table, $alias, $type, new WhereClause($on, array()));
+        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ? : $this->table, $alias, $type, new WhereClause($on, array()));
         return $this;
     }
 

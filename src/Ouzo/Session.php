@@ -42,19 +42,19 @@ class Session
         }
     }
 
-    public static function has($key)
+    public static function has()
     {
-        return self::create()->has($key);
+        return self::create()->has(func_get_args());
     }
 
-    public static function get($key)
+    public static function get()
     {
-        return self::create()->get($key);
+        return self::create()->get(func_get_args());
     }
 
-    public static function set($key, $value)
+    public static function set()
     {
-        return self::create()->set($key, $value);
+        return self::create()->set(func_get_args());
     }
 
     public static function flush()
@@ -62,9 +62,9 @@ class Session
         return self::create()->flush();
     }
 
-    public static function remove($key)
+    public static function remove()
     {
-        return self::create()->remove($key);
+        return self::create()->remove(func_get_args());
     }
 
     public static function all()
@@ -72,8 +72,8 @@ class Session
         return self::create()->all();
     }
 
-    public static function push($key, $value)
+    public static function push()
     {
-        return self::create()->push($key, $value);
+        return self::create()->push(func_get_args());
     }
 }

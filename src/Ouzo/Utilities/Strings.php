@@ -362,8 +362,8 @@ class Strings
      */
     public static function abbreviate($string, $maxWidth)
     {
-        if (strlen($string) > $maxWidth) {
-            return substr($string, 0, $maxWidth) . '...';
+        if (mb_strlen($string) > $maxWidth) {
+            return mb_substr($string, 0, $maxWidth) . '...';
         }
         return $string;
     }

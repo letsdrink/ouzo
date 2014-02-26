@@ -100,7 +100,7 @@ class ModelFormBuilder
 
     public function end()
     {
-        return endTag();
+        return endFormTag();
     }
 
     public function getObject()

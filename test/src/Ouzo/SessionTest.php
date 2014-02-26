@@ -27,6 +27,19 @@ class SessionTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldSetNestedSessionValue()
+    {
+        //when
+        Session::set('key1', 'key2', 'value');
+
+        //then
+        Assert::thatSession()->hasSize(1);
+        $this->assertEquals('value', $_SESSION['key1']['key2']);
+    }
+
+    /**
+     * @test
+     */
     public function shouldSetMultipleSessionValues()
     {
         //when
@@ -49,10 +62,25 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function shouldGetSessionValue()
     {
         //given
-        Session::set('key', 'value');
+        $_SESSION['key'] = 'value';
 
         //when
         $value = Session::get('key');
+
+        //then
+        $this->assertEquals('value', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetNestedSessionValue()
+    {
+        //given
+        $_SESSION['key1']['key2'] = 'value';
+
+        //when
+        $value = Session::get('key1', 'key2');
 
         //then
         $this->assertEquals('value', $value);
@@ -189,6 +217,21 @@ class SessionTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldPushNestedSessionValue()
+    {
+        //when
+        Session::push('key1', 'key2', 'value');
+
+        //then
+        Assert::thatSession()->hasSize(1);
+
+        $value = Session::get('key1', 'key2');
+        Assert::thatArray($value)->containsExactly('value');
+    }
+
+    /**
+     * @test
+     */
     public function shouldPushSessionValueWhenArrayIsNotEmpty()
     {
         // given
@@ -202,6 +245,25 @@ class SessionTest extends PHPUnit_Framework_TestCase
         Assert::thatSession()->hasSize(1);
 
         $value = Session::get('key');
+        Assert::thatArray($value)->containsExactly('value1', 'value2', 'value3');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPushNestedSessionValueWhenArrayIsNotEmpty()
+    {
+        // given
+        Session::push('key1', 'key2', 'value1');
+        Session::push('key1', 'key2', 'value2');
+
+        //when
+        Session::push('key1', 'key2', 'value3');
+
+        //then
+        Assert::thatSession()->hasSize(1);
+
+        $value = Session::get('key1', 'key2');
         Assert::thatArray($value)->containsExactly('value1', 'value2', 'value3');
     }
 }

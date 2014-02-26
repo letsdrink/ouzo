@@ -3,48 +3,37 @@ namespace Ouzo\Db;
 
 use Ouzo\Config;
 use Ouzo\FrontController;
+use Ouzo\Session;
 use Ouzo\Uri;
-use Ouzo\Utilities\Arrays;
 
 class Stats
 {
     public static function queries()
     {
-        self::initializeIfUnset();
-        return $_SESSION['stats_queries'];
+        return Session::get('stats_queries') ? : array();
     }
 
     public static function queriesForRequest($request)
     {
-        self::initializeIfUnset();
-        return Arrays::getValue($_SESSION['stats_queries'], $request, array());
+        return Session::get('stats_queries', $request) ? : array();
     }
 
     public static function reset()
     {
-        self::initializeIfUnset();
-        unset($_SESSION['stats_queries']);
-    }
-
-    public static function initializeIfUnset()
-    {
-        if (!isset($_SESSION['stats_queries'])) {
-            $_SESSION['stats_queries'] = array();
-        }
+        Session::remove('stats_queries');
     }
 
     public static function trace($query, $params, $function)
     {
         if (Config::getValue('debug')) {
-            self::initializeIfUnset();
-
             $startTime = microtime(true);
             $result = $function();
             $time = number_format(microtime(true) - $startTime, 4, '.', '');
 
             $uri = new Uri();
             $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
-            $_SESSION['stats_queries'][$requestDetails][] = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+            $value = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+            Session::push('stats_queries', $requestDetails, $value);
 
             return $result;
         }

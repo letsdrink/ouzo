@@ -9,6 +9,9 @@ use PDO;
 
 class ModelQueryBuilder
 {
+    /**
+     * @var Db
+     */
     private $_db;
     private $_model;
     /**

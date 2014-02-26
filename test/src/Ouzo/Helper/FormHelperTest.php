@@ -21,10 +21,27 @@ class FormHelperTest extends DbTransactionalTestCase
         $attributes = array('id' => "lab", 'size' => "1");
 
         //when
-        $result = selectTag("lab", $items, array(2), $attributes);
+        $result = selectTag("lab", $items, 2, $attributes);
 
         //then
         $expected = '<select id="lab" name="lab" size="1"><option value="1" >Opt1</option><option value="2" selected>Opt1</option></select>';
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateMultipleSelectList()
+    {
+        //given
+        $items = array(1 => 'Opt1', 2 => 'Opt2', 3 => 'Opt3', 4 => 'Opt4');
+        $attributes = array('multiple' => "1", 'size' => "4");
+
+        //when
+        $result = selectTag("lab", $items, array(2, 4), $attributes);
+
+        //then
+        $expected = '<select id="lab" name="lab" multiple="1" size="4"><option value="1" >Opt1</option><option value="2" selected>Opt2</option><option value="3" >Opt3</option><option value="4" selected>Opt4</option></select>';
         $this->assertEquals($expected, $result);
     }
 

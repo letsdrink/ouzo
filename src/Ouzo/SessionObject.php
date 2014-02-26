@@ -1,24 +1,33 @@
 <?php
 namespace Ouzo;
 
+use InvalidArgumentException;
 use Ouzo\Utilities\Arrays;
 
 class SessionObject
 {
 
-    public function has($key)
+    public function has($keys)
     {
-        return isset($_SESSION[$key]);
+        return Arrays::hasNestedValue($_SESSION, Arrays::toArray($keys));
     }
 
-    public function get($key)
+    public function get($keys)
     {
-        return $this->has($key) ? $_SESSION[$key] : null;
+        if (!isset($_SESSION)) {
+            return null;
+        }
+        return Arrays::getNestedValue($_SESSION, $keys);
     }
 
-    public function set($key, $value)
+    public function set()
     {
-        $_SESSION[$key] = $value;
+        if (!isset($_SESSION)) {
+            return null;
+        }
+        list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
+
+        Arrays::setNestedValue($_SESSION, $keys, $value);
         return $this;
     }
 
@@ -30,18 +39,40 @@ class SessionObject
 
     public function all()
     {
-        return $_SESSION;
+        return isset($_SESSION) ? $_SESSION : null;
     }
 
-    public function remove($key)
+    public function remove($keys)
     {
-        unset($_SESSION[$key]);
+        if (!isset($_SESSION)) {
+            return null;
+        }
+        Arrays::removeNestedValue($_SESSION, Arrays::toArray($keys));
     }
 
-    public function push($key, $value)
+    public function push($args)
     {
-        $array = $this->get($key) ?: array();
+        if (!isset($_SESSION)) {
+            return null;
+        }
+        list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
+
+        $array = $this->get($keys) ? : array();
         $array[] = $value;
-        $this->set($key, $array);
+        Arrays::setNestedValue($_SESSION, $keys, $array);
+    }
+
+    private function getKeyAndValueArguments($args)
+    {
+        if (count($args) == 1 && is_array($args[0])) {
+            $args = $args[0];
+        }
+        if (count($args) < 2) {
+            throw new InvalidArgumentException('Method needs at least two arguments: key and value');
+        }
+
+        $value = array_pop($args);
+        $keys = Arrays::toArray($args);
+        return array($keys, $value);
     }
 }
