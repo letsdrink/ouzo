@@ -60,7 +60,7 @@ class Model extends Validatable
         $this->_primaryKeyName = $primaryKeyName;
         $this->_db = empty($params['db']) ? Db::getInstance() : $params['db'];
         $this->_fields = $fields;
-        if ($primaryKeyName) {
+        if ($primaryKeyName && !in_array($primaryKeyName, $this->_fields)) {
             $this->_fields[] = $primaryKeyName;
         }
         $this->_attributes = $this->filterAttributes($attributes);
