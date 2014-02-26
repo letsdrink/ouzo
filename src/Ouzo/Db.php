@@ -18,8 +18,6 @@ class Db
      */
     public $_statementExecutor = null;
 
-    protected $_fetchMode = PDO::FETCH_ASSOC;
-
     private static $_instance;
     public $_startedTransaction = false;
 
@@ -62,34 +60,13 @@ class Db
 
     public function update($table, array $data, $where)
     {
-        QueryExecutor::prepare($this, Query::newInstance()->from($table)->where($where))->update($data);
+        return QueryExecutor::prepare($this, Query::newInstance()->from($table)->where($where))->update($data);
     }
 
     public function query($query, $params = array())
     {
         $this->_statementExecutor = StatementExecutor::prepare($this->_dbHandle, $query, $params);
         return $this->_statementExecutor->execute();
-    }
-
-    public function fetchAll()
-    {
-        return $this->_statementExecutor->fetchAll($this->_fetchMode);
-    }
-
-    public function fetch()
-    {
-        return $this->_statementExecutor->fetch($this->_fetchMode);
-    }
-
-    public function rowCount()
-    {
-        return $this->_statementExecutor->rowCount();
-    }
-
-    public function setFetchMode($mode)
-    {
-        $this->_fetchMode = $mode;
-        return $this;
     }
 
     public function runInTransaction($callable)
