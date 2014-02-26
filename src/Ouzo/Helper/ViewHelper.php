@@ -2,6 +2,7 @@
 use Ouzo\Config;
 use Ouzo\ControllerUrl;
 use Ouzo\I18n;
+use Ouzo\Session;
 use Ouzo\Utilities\Date;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
@@ -66,9 +67,9 @@ function showErrors($errors)
 
 function showNotices()
 {
-    if (isset($_SESSION['messages'])) {
+    if (Session::has('messages')) {
         $noticeView = new View('notice_alert');
-        $noticeView->notices = $_SESSION['messages'];
+        $noticeView->notices = Session::get('messages');
         return $noticeView->render();
     }
 }

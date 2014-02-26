@@ -47,14 +47,14 @@ class Session
         return self::create()->has($key);
     }
 
-    public static function get($key)
+    public static function get()
     {
-        return self::create()->get($key);
+        return self::create()->get(func_get_args());
     }
 
-    public static function set($key, $value)
+    public static function set()
     {
-        return self::create()->set($key, $value);
+        return self::create()->set(func_get_args());
     }
 
     public static function flush()
@@ -72,8 +72,8 @@ class Session
         return self::create()->all();
     }
 
-    public static function push($key, $value)
+    public static function push()
     {
-        return self::create()->push($key, $value);
+        return self::create()->push(func_get_args());
     }
 }
