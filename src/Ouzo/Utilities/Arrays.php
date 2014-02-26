@@ -685,4 +685,37 @@ class Arrays
     {
         return array_intersect($a1, $a2);
     }
+
+    public static function setNestedValue(array &$array, array $keys, $value)
+    {
+        $current = & $array;
+        foreach ($keys as $key) {
+            if (!isset($current[$key])) {
+                $current[$key] = array();
+            }
+            $current = & $current[$key];
+        }
+        $current = $value;
+    }
+
+    public static function getNestedValue(array $array, array $keys)
+    {
+        foreach ($keys as $key) {
+            $array = self::getValue($array, $key);
+            if (!$array) {
+                return null;
+            }
+        }
+        return $array;
+    }
+
+    public static function removeNestedValue(array &$array, array $keys)
+    {
+        $key = array_shift($keys);
+        if (count($keys) == 0) {
+            unset($array[$key]);
+        } else {
+            self::removeNestedValue($array[$key], $keys);
+        }
+    }
 }

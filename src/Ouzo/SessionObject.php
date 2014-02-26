@@ -7,54 +7,24 @@ use Ouzo\Utilities\Arrays;
 class SessionObject
 {
 
-    // TODO add nested has
-    public function has($key)
+    public function has($keys)
     {
-        return isset($_SESSION[$key]);
+        return Arrays::getNestedValue($_SESSION, Arrays::toArray($keys)) != null;
     }
 
-    public function get($args)
+    public function get($keys)
     {
         if (!isset($_SESSION)) {
             return null;
         }
-
-        $value = $_SESSION;
-        foreach ($args as $arg) {
-            $value = Arrays::getValue($value, $arg);
-            if (!$value) {
-                return null;
-            }
-        }
-        return $value;
+        return Arrays::getNestedValue($_SESSION, $keys);
     }
 
     public function set()
     {
-        $args = func_get_args();
-        if (count($args) == 1 && is_array($args[0])) {
-            $args = $args[0];
-        }
-        if (count($args) < 2) {
-            throw new InvalidArgumentException('Method needs at least two arguments: key and value');
-        }
+        list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
 
-        $value = array_pop($args);
-        $keys = Arrays::toArray($args);
-        return $this->_set($keys, $value);
-    }
-
-    // TODO move to Arrays
-    private function _set($keys, $value)
-    {
-        $session = & $_SESSION;
-        foreach ($keys as $key) {
-            if (!isset($session[$key])) {
-                $session[$key] = array();
-            }
-            $session = & $session[$key];
-        }
-        $session = $value;
+        Arrays::setNestedValue($_SESSION, $keys, $value);
         return $this;
     }
 
@@ -69,16 +39,22 @@ class SessionObject
         return $_SESSION;
     }
 
-    // TODO add nested remove
-    public function remove($key)
+    public function remove($keys)
     {
-        unset($_SESSION[$key]);
+        Arrays::removeNestedValue($_SESSION, Arrays::toArray($keys));
     }
 
-    // TODO remove duplicated code
     public function push($args)
     {
-        $args = func_get_args();
+        list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
+
+        $array = $this->get($keys) ? : array();
+        $array[] = $value;
+        Arrays::setNestedValue($_SESSION, $keys, $array);
+    }
+
+    private function getKeyAndValueArguments($args)
+    {
         if (count($args) == 1 && is_array($args[0])) {
             $args = $args[0];
         }
@@ -88,10 +64,6 @@ class SessionObject
 
         $value = array_pop($args);
         $keys = Arrays::toArray($args);
-
-        $array = $this->get($keys) ? : array();
-        $array[] = $value;
-        $this->_set($keys, $array);
+        return array($keys, $value);
     }
-
 }

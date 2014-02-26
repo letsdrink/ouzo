@@ -42,9 +42,9 @@ class Session
         }
     }
 
-    public static function has($key)
+    public static function has()
     {
-        return self::create()->has($key);
+        return self::create()->has(func_get_args());
     }
 
     public static function get()
@@ -62,9 +62,9 @@ class Session
         return self::create()->flush();
     }
 
-    public static function remove($key)
+    public static function remove()
     {
-        return self::create()->remove($key);
+        return self::create()->remove(func_get_args());
     }
 
     public static function all()
