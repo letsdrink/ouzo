@@ -1,8 +1,6 @@
 <?php
 
-namespace Ouzo\Db;
-
-use Ouzo\Relations;
+namespace Ouzo;
 
 class RelationsCache
 {

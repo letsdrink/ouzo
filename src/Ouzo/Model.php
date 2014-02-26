@@ -7,7 +7,6 @@ use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
 use Ouzo\Db;
 use Ouzo\Db\RelationFetcher;
-use Ouzo\Db\RelationsCache;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
