@@ -539,4 +539,93 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array('1', '4'), $intersection);
     }
 
+    /**
+     * @test
+     */
+    public function shouldReturnNestedValue()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        $value = Arrays::getNestedValue($array, array('1', '2', '3'));
+
+        //then
+        $this->assertEquals('value', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function getNestedValueShouldReturnNullWhenKeyNotFound()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        $value = Arrays::getNestedValue($array, array('1', '4'));
+
+        //then
+        $this->assertNull($value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetNestedValue()
+    {
+        //given
+        $array = array();
+
+        //when
+        Arrays::setNestedValue($array, array('1', '2', '3'), 'value');
+
+        //then
+        $this->assertEquals(array('1' => array('2' => array('3' => 'value'))), $array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNestedValueAtRoot()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        Arrays::removeNestedValue($array, array('1'));
+
+        //then
+        $this->assertEquals(array(), $array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNestedValue()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        Arrays::removeNestedValue($array, array('1', '2'));
+
+        //then
+        $this->assertEquals(array('1' => array()), $array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotRemoveNestedValueWhenKeyNotFound()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        Arrays::removeNestedValue($array, array('1', '4'));
+
+        //then
+        $this->assertEquals(array('1' => array('2' => array('3' => 'value'))), $array);
+    }
 }
