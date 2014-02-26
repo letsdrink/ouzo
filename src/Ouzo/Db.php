@@ -1,7 +1,8 @@
 <?php
 namespace Ouzo;
 
-use InvalidArgumentException;
+use Ouzo\Db\Query;
+use Ouzo\Db\QueryExecutor;
 use Ouzo\Db\StatementExecutor;
 use Ouzo\Utilities\Arrays;
 use PDO;
@@ -12,6 +13,9 @@ class Db
      * @var PDO
      */
     public $_dbHandle = null;
+    /**
+     * @var StatementExecutor
+     */
     public $_statementExecutor = null;
 
     protected $_fetchMode = PDO::FETCH_ASSOC;
@@ -53,39 +57,12 @@ class Db
 
     public function insert($table, array $data, $sequence = '')
     {
-        if (empty($table)) {
-            throw new InvalidArgumentException('$table cannot be empty');
-        }
-
-        $columns = array_keys($data);
-        $values = array_values($data);
-
-        $joinedColumns = implode(', ', $columns);
-        $joinedValues = implode(', ', array_fill(0, count($values), '?'));
-
-        $query = "INSERT INTO $table ($joinedColumns) VALUES ($joinedValues)";
-
-        $this->query($query, $values);
-
-        return $sequence ? $this->_dbHandle->lastInsertId($sequence) : null;
+        return QueryExecutor::prepare($this, Query::newInstance()->from($table))->insert($data, $sequence);
     }
 
     public function update($table, array $data, $where)
     {
-        $query = 'UPDATE ' . $table . ' SET ';
-        $query .= implode(' = ?, ', array_keys($data)) . ' = ? ';
-
-        if (!empty($where)) {
-            $query .= 'WHERE ' . implode(' = ? AND ', array_keys($where)) . ' = ?';
-        }
-
-        $values = array_values($data);
-
-        if (!empty($where)) {
-            $values = array_merge($values, array_values($where));
-        }
-
-        $this->query($query, $values);
+        QueryExecutor::prepare($this, Query::newInstance()->from($table)->where($where))->update($data);
     }
 
     public function query($query, $params = array())

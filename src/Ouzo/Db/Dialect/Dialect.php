@@ -15,21 +15,36 @@ abstract class Dialect
     public function select()
     {
         if ($this->_query->type == QueryType::$SELECT) {
-            return ' ' . (empty($this->_query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
+            return 'SELECT ' . (empty($this->_query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
         }
         if ($this->_query->type == QueryType::$COUNT) {
-            return ' count(*)';
+            return 'SELECT count(*)';
         }
         return '';
     }
 
     public function update()
     {
-        if ($this->_query->type == QueryType::$UPDATE) {
-            $attributes = DialectUtil::buildAttributesPartForUpdate($this->_query->updateAttributes);
-            return " {$this->_query->table} set $attributes";
-        }
-        return '';
+        $attributes = DialectUtil::buildAttributesPartForUpdate($this->_query->updateAttributes);
+        return "UPDATE {$this->_query->table} set $attributes";
+    }
+
+    public function insert()
+    {
+        $data = $this->_query->updateAttributes;
+
+        $columns = array_keys($data);
+        $values = array_values($data);
+
+        $joinedColumns = implode(', ', $columns);
+        $joinedValues = implode(', ', array_fill(0, count($values), '?'));
+
+        return "INSERT INTO {$this->_query->table} ($joinedColumns) VALUES ($joinedValues)";
+    }
+
+    public function delete()
+    {
+        return "DELETE";
     }
 
     public function join()
@@ -83,10 +98,19 @@ abstract class Dialect
     public function buildQuery(Query $query)
     {
         $this->_query = $query;
-        $sql = DialectUtil::buildQueryPrefix($query->type);
+        $sql = '';
 
         if ($query->type == QueryType::$UPDATE) {
             $sql .= $this->update();
+            $sql .= $this->where();
+
+        } else if ($query->type == QueryType::$INSERT) {
+            $sql .= $this->insert();
+
+        } else if ($query->type == QueryType::$DELETE) {
+            $sql .= $this->delete();
+            $sql .= $this->from();
+            $sql .= $this->join();
             $sql .= $this->where();
         } else {
             $sql .= $this->select();
