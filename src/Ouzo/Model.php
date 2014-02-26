@@ -51,7 +51,7 @@ class Model extends Validatable
         $attributes = $params['attributes'];
         $fields = $params['fields'];
 
-        $this->_relations = new Relations(get_called_class(), $params, $primaryKeyName);
+        $this->_relations = RelationsCache::getRelations(get_called_class(), $params, $primaryKeyName);
 
         if (isset($attributes[$primaryKeyName]) && !$attributes[$primaryKeyName]) unset($attributes[$primaryKeyName]);
 
@@ -64,6 +64,36 @@ class Model extends Validatable
             $this->_fields[] = $primaryKeyName;
         }
         $this->_attributes = $this->filterAttributes($attributes);
+    }
+
+    public function __set($name, $value)
+    {
+        $this->_attributes[$name] = $value;
+    }
+
+    public function __get($name)
+    {
+        if (empty($name)) {
+            throw new Exception('Illegal attribute: field name for Model cannot be empty');
+        }
+        if (array_key_exists($name, $this->_attributes)) {
+            return $this->_attributes[$name];
+        }
+        if ($this->_relations->hasRelation($name)) {
+            $this->_fetchRelation($name);
+            return $this->_attributes[$name];
+        }
+        return null;
+    }
+
+    public function __isset($name)
+    {
+        return isset($this->_attributes[$name]);
+    }
+
+    public function __unset($name)
+    {
+        unset($this->_attributes[$name]);
     }
 
     public function assignAttributes($attributes)
@@ -209,26 +239,6 @@ class Model extends Validatable
     public static function getFieldsWithoutPrimaryKey()
     {
         return static::metaInstance()->_getFieldsWithoutPrimaryKey();
-    }
-
-    public function __get($name)
-    {
-        if (empty($name)) {
-            throw new Exception('Illegal attribute: field name for Model cannot be empty');
-        }
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
-        }
-        if ($this->_relations->hasRelation($name)) {
-            $this->_fetchRelation($name);
-            return $this->_attributes[$name];
-        }
-        return null;
-    }
-
-    public function __set($name, $value)
-    {
-        $this->_attributes[$name] = $value;
     }
 
     private function _fetchRelation($name)

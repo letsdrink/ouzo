@@ -10,6 +10,7 @@ use Ouzo\Db\Stats;
 use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Tests\Assert;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
 
@@ -322,6 +323,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
     /**
      * @test
+     * @group non-sqlite3
      */
     public function shouldRightJoinWithOtherTable()
     {
@@ -338,6 +340,28 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //then
         $this->assertCount(5, $products);
+    }
+
+    /**
+     * @test
+     * @group sqlite3
+     */
+    public function shouldThrowExceptionRightJoinWithOtherTable()
+    {
+        //given
+        $category = Category::create(array('name' => 'category 1'));
+        Category::create(array('name' => 'category 2'));
+        Category::create(array('name' => 'category 3'));
+        Category::create(array('name' => 'category 4'));
+        Product::create(array('name' => 'prod 1', 'id_category' => $category->id));
+        Product::create(array('name' => 'prod 2', 'id_category' => $category->id));
+        $products = Product::where()->rightJoin('category');
+
+        //when
+        CatchException::when($products)->fetchAll();
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\BadMethodCallException');
     }
 
     /**

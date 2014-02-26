@@ -1,24 +1,33 @@
 <?php
 namespace Ouzo;
 
-use Ouzo\Utilities\Arrays;
+use RuntimeException;
 
 class Session
 {
-    private $_sessionNamespace;
 
-    public function __construct($namespace)
+    public static function create()
     {
-        $this->_sessionNamespace = $namespace;
+        return new SessionObject();
     }
 
-    static public function startSession()
+    public static function startSession()
     {
-        if (!empty($_SERVER['REQUEST_URI'])) {
-            self::_setSavePath();
-            if (session_id() == '') {
-                session_start();
-            }
+        if (version_compare(phpversion(), '5.4.0', '>=') && \PHP_SESSION_ACTIVE === session_status()) {
+            throw new RuntimeException('Failed to start the session: already started by PHP.');
+        }
+
+        if (version_compare(phpversion(), '5.4.0', '<') && isset($_SESSION) && session_id()) {
+            throw new RuntimeException('Failed to start the session: already started by PHP ($_SESSION is set).');
+        }
+
+        if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
+            throw new RuntimeException(sprintf('Failed to start the session: headers already sent by "%s" at line %d.', $file, $line));
+        }
+
+        self::_setSavePath();
+        if (!session_start()) {
+            throw new RuntimeException('Failed to start the session');
         }
     }
 
@@ -33,31 +42,38 @@ class Session
         }
     }
 
-    public function get($key)
+    public static function has($key)
     {
-        return Arrays::getValue($this->all(), $key);
+        return self::create()->has($key);
     }
 
-    public function set($key, $value)
+    public static function get($key)
     {
-        $_SESSION[$this->_sessionNamespace][$key] = $value;
-        return $this;
+        return self::create()->get($key);
     }
 
-    public function push($value)
+    public static function set($key, $value)
     {
-        $_SESSION[$this->_sessionNamespace][] = $value;
-        return $this;
+        return self::create()->set($key, $value);
     }
 
-    public function delete()
+    public static function flush()
     {
-        unset($_SESSION[$this->_sessionNamespace]);
-        return $this;
+        return self::create()->flush();
     }
 
-    public function all()
+    public static function remove($key)
     {
-        return Arrays::getValue($_SESSION, $this->_sessionNamespace, array());
+        return self::create()->remove($key);
+    }
+
+    public static function all()
+    {
+        return self::create()->all();
+    }
+
+    public static function push($key, $value)
+    {
+        return self::create()->push($key, $value);
     }
 }

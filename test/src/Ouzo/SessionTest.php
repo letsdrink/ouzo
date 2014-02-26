@@ -15,14 +15,13 @@ class SessionTest extends PHPUnit_Framework_TestCase
      */
     public function shouldSetSessionValue()
     {
-        //given
-        $session = new Session('example');
-
         //when
-        $session->set('key', 'value');
+        Session::set('key', 'value');
 
         //then
-        Assert::thatArray($_SESSION['example'])->contains('value');
+        Assert::thatSession()
+            ->hasSize(1)
+            ->containsKeyAndValue(array('key' => 'value'));
     }
 
     /**
@@ -30,17 +29,18 @@ class SessionTest extends PHPUnit_Framework_TestCase
      */
     public function shouldSetMultipleSessionValues()
     {
-        //given
-        $session = new Session('example');
-
         //when
-        $session
-            ->set('key1', 'value1')
+        Session::set('key1', 'value1')
             ->set('key2', 'value2')
             ->set('key3', 'value3');
 
         //then
-        Assert::thatArray($_SESSION['example'])->hasSize(3);
+        Assert::thatSession()
+            ->hasSize(3)
+            ->containsKeyAndValue(array(
+                'key1' => 'value1',
+                'key2' => 'value2',
+                'key3' => 'value3'));
     }
 
     /**
@@ -49,11 +49,10 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function shouldGetSessionValue()
     {
         //given
-        $session = new Session('example');
-        $session->set('key', 'value');
+        Session::set('key', 'value');
 
         //when
-        $value = $session->get('key');
+        $value = Session::get('key');
 
         //then
         $this->assertEquals('value', $value);
@@ -62,65 +61,147 @@ class SessionTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldDeleteSessionNamespace()
+    public function getShouldReturnNullIfKeyDoesNotExist()
     {
-        //given
-        $session = new Session('example');
-        $session->set('key', 'value');
-
         //when
-        $session->delete();
+        $value = Session::get('key');
 
         //then
-        Assert::thatArray($_SESSION)->isEmpty();
+        $this->assertNull($value);
     }
 
     /**
      * @test
      */
-    public function shouldPushValueToSessionNamespace()
+    public function hasShouldReturnTrueIfItemExistsInSession()
     {
         //given
-        $session = new Session('example');
-        $session->set('key', 'value');
+        Session::set('key', 'value');
 
         //when
-        $session->push('value_pushed');
+        $value = Session::has('key');
 
         //then
-        Assert::thatArray($_SESSION['example'])->hasSize(2)->containsOnly('value', 'value_pushed');
+        $this->assertTrue($value);
     }
 
     /**
      * @test
      */
-    public function shouldGetAllSessionNamespaceEntries()
+    public function hasShouldReturnFalseIfItemDoesNotExistInSession()
     {
-        //given
-        $session = new Session('example');
-        $session
-            ->set('key1', 'value1')
-            ->set('key2', 'value2');
-
         //when
-        $all = $session->all();
+        $value = Session::has('key');
 
         //then
-        Assert::thatArray($all)->hasSize(2)->containsOnly('value1', 'value2');
+        $this->assertFalse($value);
     }
 
     /**
      * @test
      */
-    public function shouldGetEmptyArrayIfNotFoundNamespace()
+    public function shouldFlushSession()
     {
         //given
-        $session = new Session('example');
+        Session::set('key', 'value');
 
         //when
-        $all = $session->all();
+        Session::flush();
 
         //then
-        Assert::thatArray($all)->isEmpty();
+        Assert::thatSession()->isEmpty();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFlushIfSessionIsEmpty()
+    {
+        //when
+        Session::flush();
+
+        //then
+        Assert::thatSession()->isEmpty();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveElementFromSession()
+    {
+        //given
+        Session::set('key1', 'value1');
+        Session::set('key2', 'value2');
+
+        //when
+        Session::remove('key1');
+
+        //then
+        Assert::thatSession()
+            ->hasSize('1')
+            ->containsKeyAndValue(array('key2' => 'value2'));
+    }
+
+    /**
+     * @test
+     */
+    public function removeShouldDoNothingIfElementDoesNotExist()
+    {
+        //when
+        Session::remove('key1');
+
+        //then
+        Assert::thatSession()->isEmpty();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetAllValuesFromSession()
+    {
+        //given
+        Session::set('key', 'value');
+
+        //when
+        $all = Session::all();
+
+        //then
+        Assert::thatArray($all)
+            ->hasSize(1)
+            ->containsKeyAndValue(array('key' => 'value'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPushSessionValue()
+    {
+        //when
+        Session::push('key', 'value');
+
+        //then
+        Assert::thatSession()->hasSize(1);
+
+        $value = Session::get('key');
+        Assert::thatArray($value)->containsExactly('value');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPushSessionValueWhenArrayIsNotEmpty()
+    {
+        // given
+        Session::push('key', 'value1');
+        Session::push('key', 'value2');
+
+        //when
+        Session::push('key', 'value3');
+
+        //then
+        Assert::thatSession()->hasSize(1);
+
+        $value = Session::get('key');
+        Assert::thatArray($value)->containsExactly('value1', 'value2', 'value3');
     }
 }
