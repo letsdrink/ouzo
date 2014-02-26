@@ -6,7 +6,6 @@ use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
-
     public function from()
     {
         return $this->_buildFrom($this->_query->type, $this->_query->table);
