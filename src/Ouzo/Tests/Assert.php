@@ -1,6 +1,9 @@
 <?php
 namespace Ouzo\Tests;
 
+use Ouzo\Session;
+use Ouzo\Utilities\Arrays;
+
 /**
  * Fluent custom array assertion to simplify your tests.
  *
@@ -18,5 +21,10 @@ class Assert
     public static function thatArray(array $actual)
     {
         return ArrayAssert::that($actual);
+    }
+
+    public static function thatSession($namespace = Session::DEFAULT_NAMESPACE)
+    {
+        return ArrayAssert::that(Arrays::getValue($_SESSION, $namespace, array()));
     }
 }

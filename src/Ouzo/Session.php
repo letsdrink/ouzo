@@ -47,11 +47,6 @@ class Session
         return self::forNamespace()->set($key, $value);
     }
 
-    public static function push($value)
-    {
-        return self::forNamespace()->push($value);
-    }
-
     public static function flush()
     {
         return self::forNamespace()->flush();

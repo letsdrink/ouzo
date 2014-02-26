@@ -28,12 +28,6 @@ class NamespacedSession
         return $this;
     }
 
-    public function push($value)
-    {
-        $_SESSION[$this->_namespace][] = $value;
-        return $this;
-    }
-
     public function flush()
     {
         unset($_SESSION[$this->_namespace]);
