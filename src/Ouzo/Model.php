@@ -7,6 +7,7 @@ use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
 use Ouzo\Db;
 use Ouzo\Db\RelationFetcher;
+use Ouzo\Db\RelationsCache;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
@@ -51,7 +52,7 @@ class Model extends Validatable
         $attributes = $params['attributes'];
         $fields = $params['fields'];
 
-        $this->_relations = new Relations(get_called_class(), $params, $primaryKeyName);
+        $this->_relations = RelationsCache::getRelations(get_called_class(), $params, $primaryKeyName);
 
         if (isset($attributes[$primaryKeyName]) && !$attributes[$primaryKeyName]) unset($attributes[$primaryKeyName]);
 
