@@ -2,6 +2,7 @@
 namespace Ouzo\Shell;
 
 use Ouzo\Shell;
+use Ouzo\UserException;
 
 class Dispatcher
 {
@@ -10,8 +11,12 @@ class Dispatcher
 
     static public function runScript($argv)
     {
-        $dispatcher = new Dispatcher($argv);
-        $dispatcher->dispatch();
+        try {
+            $dispatcher = new Dispatcher($argv);
+            $dispatcher->dispatch();
+        } catch (UserException $e) {
+            echo "Error: " . $e->getMessage() . "\n";
+        }
     }
 
     public function __construct($argv)
@@ -24,12 +29,16 @@ class Dispatcher
     {
         $this->_argsShift();
 
-        $shellScript = $this->_getScriptShell();
+        $appName = $this->_getApplicationName();
+
+        $shellScript = $this->_getScriptShell($appName);
 
         if ($shellScript instanceof Shell) {
             $method = empty($this->params['method']) ? '' : $this->params['method'];
             $argv = $this->params['argv'];
             $shellScript->runCommand($method, $argv);
+        } else {
+            throw new DispatcherAppDoesNotExistException(sprintf("Class '%s' is not shell application.", $this->_getAppClassName($appName)));
         }
     }
 
@@ -86,14 +95,28 @@ class Dispatcher
         return array_shift($this->args);
     }
 
-    private function _getScriptShell($name = '')
+    private function _getScriptShell($applicationName)
     {
-        if (empty($name)) {
-            $className = $this->params['app'] . 'Shell';
+        if (empty($applicationName)) {
+            throw new DispatcherAppException("Empty application name.");
+        }
+        $className = $this->_getAppClassName($applicationName);
+
+        if (!class_exists($className)) {
+            throw new DispatcherAppException(sprintf("Class '%s' for application '%s' does not exist.", $className, $applicationName));
         }
 
         $class = new $className();
-
         return $class;
+    }
+
+    private function _getApplicationName()
+    {
+        return $this->params['app'];
+    }
+
+    private function _getAppClassName($applicationName)
+    {
+        return $applicationName . 'Shell';
     }
 }
