@@ -9,17 +9,23 @@ use Ouzo\Utilities\Path;
 
 class ClassStub
 {
-    private $_stubFile;
     private $_stubContent;
     private $_attributes = array();
     private $_placeholderWithReplacements = array();
 
     const FIELDS_COUNT_IN_LINE = 7;
 
-    function __construct($stubFile = 'class.stub')
+    function __construct($dialectName = '')
     {
-        $this->_stubFile = $stubFile;
-        $this->_stubContent = file_get_contents(Path::join(__DIR__, 'stubs', $stubFile));
+        $stubFilePath = $this->_getStubFilePath($dialectName);
+        $this->_stubContent = file_get_contents($stubFilePath);
+    }
+
+    private function _getStubFilePath($dialectName)
+    {
+        $suffix = $dialectName ? ".$dialectName" : '';
+        $stubFileName = 'class.stub' . $suffix;
+        return Path::join(__DIR__, 'stubs', $stubFileName);
     }
 
     public function addColumn(DatabaseColumn $databaseColumn)
@@ -79,5 +85,6 @@ class ClassStub
         $this->replacePlaceholders($this->_getPlaceholderReplacements());
         return $this->_stubContent;
     }
+
 
 }
