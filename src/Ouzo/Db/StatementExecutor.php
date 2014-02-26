@@ -9,10 +9,6 @@ use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;
 
-//fetchMode
-//execute that returns row count
-//
-
 class StatementExecutor
 {
 
@@ -74,6 +70,9 @@ class StatementExecutor
         ));
     }
 
+    /**
+     * Returns number of affected rows
+     */
     public function execute()
     {
         $obj = $this;

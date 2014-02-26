@@ -52,6 +52,9 @@ class Db
         return StatementExecutor::prepare($this->_dbHandle, $query, $params);
     }
 
+    /**
+     * Returns number of affected rows
+     */
     public function execute($query, $params = array())
     {
         return StatementExecutor::prepare($this->_dbHandle, $query, $params)->execute();
