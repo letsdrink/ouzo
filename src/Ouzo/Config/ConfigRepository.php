@@ -53,17 +53,9 @@ class ConfigRepository
     public function overrideProperty($keys, $value)
     {
         $keys = Arrays::toArray($keys);
-        $config = & $this->_config;
-        $overriddenConfig = & $this->_overriddenConfig;
-        foreach ($keys as $key) {
-            $config = & $config[$key];
-            if (!isset($overriddenConfig[$key])) {
-                $overriddenConfig[$key] = array();
-            }
-            $overriddenConfig = & $overriddenConfig[$key];
-        }
-        $overriddenConfig = $config;
-        $config = $value;
+        $oldValue = Arrays::getNestedValue($this->_config, $keys);
+        Arrays::setNestedValue($this->_config, $keys, $value);
+        Arrays::setNestedValue($this->_overriddenConfig, $keys, $oldValue);
     }
 
     public function revertProperty($keys)
