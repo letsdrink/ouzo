@@ -17,6 +17,9 @@ use ReflectionClass;
 
 class Model extends Validatable
 {
+    /**
+     * @var Db
+     */
     private $_db;
     private $_attributes;
     private $_tableName;
