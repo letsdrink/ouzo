@@ -44,6 +44,9 @@ class SessionObject
 
     public function remove($keys)
     {
+        if (!isset($_SESSION)) {
+            return null;
+        }
         Arrays::removeNestedValue($_SESSION, Arrays::toArray($keys));
     }
 
