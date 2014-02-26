@@ -4,7 +4,6 @@ namespace Ouzo\Db;
 use Ouzo\Db;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
 use PDO;
 
@@ -31,6 +30,7 @@ class ModelQueryBuilder
         $this->_query = new Query();
         $this->_query->table = $model->getTableName();
         $this->_query->aliasTable = $alias;
+        $this->_query->selectType = PDO::FETCH_NUM;
         $this->_query->selectColumns = array();
         $this->selectModelColumns($model, $this->getModelAliasOrTable());
     }
@@ -125,33 +125,38 @@ class ModelQueryBuilder
 
     private function _processResults($results)
     {
+        $aliasToOffset = $this->_createAliasToOffsetMap();
         $models = array();
         foreach ($results as $row) {
-            $models[] = $this->convertRowToModel($row);
+            $models[] = $this->convertRowToModel($row, $aliasToOffset);
         }
         return $this->_fetchRelations($models);
     }
 
-    private function convertRowToModel($row)
+    private function _createAliasToOffsetMap()
     {
-        $model = $this->_extractModelFromResult($this->_model, $this->getModelAliasOrTable(), $row);
+        $aliasToOffset = array();
+
+        $aliasToOffset[$this->getModelAliasOrTable()] = 0;
+        $offset = count($this->_model->getFields());
+        foreach ($this->_joinedModels as $joinedModel) {
+            $aliasToOffset[$joinedModel->alias()] = $offset;
+            $offset += count($joinedModel->getModelObject()->getFields());
+        }
+        return $aliasToOffset;
+    }
+
+    private function convertRowToModel($row, $aliasToOffset)
+    {
+        $model = ModelQueryBuilderHelper::extractModelFromResult($this->_model, $row, $aliasToOffset[$this->getModelAliasOrTable()]);
 
         foreach ($this->_joinedModels as $joinedModel) {
             if ($joinedModel->storeField()) {
-                $instance = $this->_extractModelFromResult($joinedModel->getModelObject(), $joinedModel->alias(), $row);
+                $instance = ModelQueryBuilderHelper::extractModelFromResult($joinedModel->getModelObject(), $row, $aliasToOffset[$joinedModel->alias()]);
                 Objects::setValueRecursively($model, $joinedModel->destinationField(), $instance);
             }
         }
         return $model;
-    }
-
-    private function _extractModelFromResult(Model $metaInstance, $alias, array $result)
-    {
-        $attributes = ColumnAliasHandler::extractAttributesForPrefix($result, $this->aliasPrefixForSelect($alias));
-        if (Arrays::any($attributes, Functions::notEmpty())) {
-            return $metaInstance->newInstance($attributes);
-        }
-        return null;
     }
 
     /**

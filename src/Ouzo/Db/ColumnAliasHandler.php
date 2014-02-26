@@ -17,12 +17,4 @@ class ColumnAliasHandler
             }
         )->toArray();
     }
-
-    public static function extractAttributesForPrefix($result, $prefix)
-    {
-        return FluentArray::from($result)
-            ->filterByKeys(Functions::startsWith($prefix))
-            ->mapKeys(Functions::removePrefix($prefix))
-            ->toArray();
-    }
 }

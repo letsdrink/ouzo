@@ -55,6 +55,7 @@ class Config
     }
 
     /**
+     * @param $customConfig
      * @return Config
      */
     public static function registerConfig($customConfig)
@@ -89,5 +90,4 @@ class Config
     {
         self::getInstance()->overrideProperty($keys, $value, $revert);
     }
-
 }
