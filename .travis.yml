@@ -16,7 +16,9 @@ before_script:
     - mysql -u travis -e 'create database ouzo_test' && cat test/test-db/recreate_schema_mysql.sql | mysql -u travis ouzo_test
     - cat test/test-db/recreate_schema_sqlite3.sql | sqlite3 ouzo_test
     
-script: phpunit --configuration phpunit.xml test
+script:
+    - if [[ "$DB" == "sqlite3" ]]; then phpunit --configuration phpunit.xml --exclude-group non-sqlite3 test; fi
+    - if [[ "$DB" != "sqlite3" ]]; then phpunit --configuration phpunit.xml --exclude-group sqlite3 test; fi
 
 after_script:
   - php vendor/bin/coveralls -v
