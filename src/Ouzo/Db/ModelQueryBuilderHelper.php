@@ -4,7 +4,6 @@ namespace Ouzo\Db;
 use InvalidArgumentException;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Functions;
 
 class ModelQueryBuilderHelper
 {
@@ -57,21 +56,14 @@ class ModelQueryBuilderHelper
 
     public static function extractModelFromResult(Model $metaInstance, array $result, $offsetInResultSet)
     {
-        $attributes = self::extractAttributes($metaInstance, $result, $offsetInResultSet);
-        if (Arrays::any($attributes, Functions::notEmpty())) {
-            return $metaInstance->newInstance($attributes);
-        }
-        return null;
-    }
-
-    public static function extractAttributes(Model $metaInstance, array $result, $offsetInResultSet)
-    {
         $attributes = array();
         $offset = $offsetInResultSet;
-        foreach ($metaInstance->getFields() as $field) {
+        $hasAnyNonEmptyAttribute = false;
+        foreach ($metaInstance->_getFields() as $field) {
             $attributes[$field] = $result[$offset];
+            $hasAnyNonEmptyAttribute = $hasAnyNonEmptyAttribute || $result[$offset];
             $offset++;
         }
-        return $attributes;
+        return $hasAnyNonEmptyAttribute ? $metaInstance->newInstance($attributes) : null;
     }
 } 
