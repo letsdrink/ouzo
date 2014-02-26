@@ -91,6 +91,7 @@ function checkboxTag($name, $value, $checked, array $attributes = array())
 
 function selectTag($name, array $items = array(), $value, array $attributes = array(), $promptOption = null)
 {
+    $value = Arrays::toArray($value);
     $attr = _prepareAttributes($attributes, array('name' => $name));
     $optionsString = '';
     if ($promptOption) {
