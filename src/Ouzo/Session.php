@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use RuntimeException;
+
 class Session
 {
 
@@ -11,11 +13,21 @@ class Session
 
     public static function startSession()
     {
-        if (!empty($_SERVER['REQUEST_URI'])) {
-            self::_setSavePath();
-            if (session_id() == '') {
-                session_start();
-            }
+        if (version_compare(phpversion(), '5.4.0', '>=') && \PHP_SESSION_ACTIVE === session_status()) {
+            throw new RuntimeException('Failed to start the session: already started by PHP.');
+        }
+
+        if (version_compare(phpversion(), '5.4.0', '<') && isset($_SESSION) && session_id()) {
+            throw new RuntimeException('Failed to start the session: already started by PHP ($_SESSION is set).');
+        }
+
+        if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
+            throw new RuntimeException(sprintf('Failed to start the session: headers already sent by "%s" at line %d.', $file, $line));
+        }
+
+        self::_setSavePath();
+        if (!session_start()) {
+            throw new RuntimeException('Failed to start the session');
         }
     }
 
