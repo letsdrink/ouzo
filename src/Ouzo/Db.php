@@ -1,8 +1,6 @@
 <?php
 namespace Ouzo;
 
-use Ouzo\Db\Query;
-use Ouzo\Db\QueryExecutor;
 use Ouzo\Db\StatementExecutor;
 use Ouzo\Utilities\Arrays;
 use PDO;
@@ -53,16 +51,9 @@ class Db
         return Arrays::first($db->query("SELECT $functionName($paramsQueryString)", $parameters)->fetch());
     }
 
-    public function insert($table, array $data, $sequence = '')
-    {
-        return QueryExecutor::prepare($this, Query::newInstance()->from($table))->insert($data, $sequence);
-    }
-
-    public function update($table, array $data, $where)
-    {
-        return QueryExecutor::prepare($this, Query::newInstance()->from($table)->where($where))->update($data);
-    }
-
+    /**
+     * @return StatementExecutor
+     */
     public function query($query, $params = array())
     {
         $this->_statementExecutor = StatementExecutor::prepare($this->_dbHandle, $query, $params);
