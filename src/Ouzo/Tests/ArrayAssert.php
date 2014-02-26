@@ -167,7 +167,7 @@ class ArrayAssert
             }
         }
         if (!$result) {
-            $this->fail("Sequence doesn't match to array", $elements);
+            $this->fail("Sequence doesn't match array", $elements);
         }
         return $this;
     }

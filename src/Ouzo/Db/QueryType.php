@@ -7,4 +7,5 @@ class QueryType
     static $COUNT = 2;
     static $DELETE = 3;
     static $UPDATE = 4;
+    static $INSERT = 5;
 }

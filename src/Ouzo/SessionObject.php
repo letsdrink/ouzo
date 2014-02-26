@@ -9,7 +9,7 @@ class SessionObject
 
     public function has($keys)
     {
-        return Arrays::getNestedValue($_SESSION, Arrays::toArray($keys)) != null;
+        return Arrays::hasNestedValue($_SESSION, Arrays::toArray($keys));
     }
 
     public function get($keys)
@@ -39,11 +39,14 @@ class SessionObject
 
     public function all()
     {
-        return $_SESSION;
+        return isset($_SESSION) ? $_SESSION : null;
     }
 
     public function remove($keys)
     {
+        if (!isset($_SESSION)) {
+            return null;
+        }
         Arrays::removeNestedValue($_SESSION, Arrays::toArray($keys));
     }
 
