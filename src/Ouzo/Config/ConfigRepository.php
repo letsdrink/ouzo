@@ -88,14 +88,7 @@ class ConfigRepository
 
     public function getValue($args)
     {
-        $configValue = $this->_config;
-        foreach ($args as $arg) {
-            $configValue = Arrays::getValue($configValue, $arg);
-            if (!$configValue) {
-                return null;
-            }
-        }
-        return $configValue;
+        return Arrays::getNestedValue($this->_config, $args);
     }
 
     public function all()

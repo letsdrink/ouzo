@@ -22,6 +22,9 @@ class SessionObject
 
     public function set()
     {
+        if (!isset($_SESSION)) {
+            return null;
+        }
         list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
 
         Arrays::setNestedValue($_SESSION, $keys, $value);
@@ -46,6 +49,9 @@ class SessionObject
 
     public function push($args)
     {
+        if (!isset($_SESSION)) {
+            return null;
+        }
         list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
 
         $array = $this->get($keys) ? : array();
