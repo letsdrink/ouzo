@@ -19,7 +19,7 @@ class NamespacedSession
 
     public function get($key)
     {
-        return Arrays::getValue($this->all(), $key);
+        return $this->has($key) ? $_SESSION[$this->_namespace][$key] : null;
     }
 
     public function set($key, $value)
