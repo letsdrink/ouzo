@@ -11,6 +11,9 @@ use PDO;
 
 class QueryExecutor
 {
+    /**
+     * @var Db
+     */
     private $_db;
     private $_adapter;
     private $_query;
@@ -72,6 +75,16 @@ class QueryExecutor
         $this->_buildQuery();
         $this->_db->query($this->_sql, $this->_boundValues);
         return $this->_db->rowCount();
+    }
+
+    public function insert(array $data, $sequence = '')
+    {
+        $this->_query->type = QueryType::$INSERT;
+        $this->_query->updateAttributes = $data;
+        $this->_buildQuery();
+        $this->_db->query($this->_sql, $this->_boundValues);
+
+        return $sequence ? $this->_db->_dbHandle->lastInsertId($sequence) : null;
     }
 
     public function count()
