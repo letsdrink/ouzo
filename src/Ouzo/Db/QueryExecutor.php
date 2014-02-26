@@ -64,7 +64,7 @@ class QueryExecutor
     {
         $this->_query->type = QueryType::$DELETE;
         $this->_buildQuery();
-        return $this->_db->query($this->_sql, $this->_boundValues)->rowCount();
+        return $this->_db->execute($this->_sql, $this->_boundValues);
     }
 
     public function update(array $attributes)
@@ -72,7 +72,7 @@ class QueryExecutor
         $this->_query->type = QueryType::$UPDATE;
         $this->_query->updateAttributes = $attributes;
         $this->_buildQuery();
-        return $this->_db->query($this->_sql, $this->_boundValues)->rowCount();
+        return $this->_db->execute($this->_sql, $this->_boundValues);
     }
 
     public function insert(array $data, $sequence = '')
@@ -80,7 +80,7 @@ class QueryExecutor
         $this->_query->type = QueryType::$INSERT;
         $this->_query->updateAttributes = $data;
         $this->_buildQuery();
-        $this->_db->query($this->_sql, $this->_boundValues);
+        $this->_db->execute($this->_sql, $this->_boundValues);
 
         return $sequence ? $this->_db->_dbHandle->lastInsertId($sequence) : null;
     }

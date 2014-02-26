@@ -11,10 +11,6 @@ class Db
      * @var PDO
      */
     public $_dbHandle = null;
-    /**
-     * @var StatementExecutor
-     */
-    public $_statementExecutor = null;
 
     private static $_instance;
     public $_startedTransaction = false;
@@ -51,13 +47,14 @@ class Db
         return Arrays::first($db->query("SELECT $functionName($paramsQueryString)", $parameters)->fetch());
     }
 
-    /**
-     * @return StatementExecutor
-     */
     public function query($query, $params = array())
     {
-        $this->_statementExecutor = StatementExecutor::prepare($this->_dbHandle, $query, $params);
-        return $this->_statementExecutor->execute();
+        return StatementExecutor::prepare($this->_dbHandle, $query, $params);
+    }
+
+    public function execute($query, $params = array())
+    {
+        return StatementExecutor::prepare($this->_dbHandle, $query, $params)->execute();
     }
 
     public function runInTransaction($callable)

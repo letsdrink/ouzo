@@ -78,7 +78,7 @@ class StatementExecutor
     {
         $obj = $this;
         return $this->_execute(function () use ($obj) {
-            return $obj;
+            return $obj->getPreparedQuery()->rowCount();
         });
     }
 
@@ -92,17 +92,12 @@ class StatementExecutor
 
     public function fetch($fetchMode = PDO::FETCH_ASSOC)
     {
-        return $this->_preparedQuery->fetch($fetchMode);
+        return $this->executeAndFetch('fetch', $fetchMode);
     }
 
     public function fetchAll($fetchMode = PDO::FETCH_ASSOC)
     {
-        return $this->_preparedQuery->fetchAll($fetchMode);
-    }
-
-    public function rowCount()
-    {
-        return $this->_preparedQuery->rowCount();
+        return $this->executeAndFetch('fetchAll', $fetchMode);
     }
 
     public function _prepareAndBind()
@@ -131,6 +126,6 @@ class StatementExecutor
 
     public static function prepare($dbHandle, $sql, $boundValues)
     {
-        return new self($dbHandle, $sql, $boundValues);
+        return new StatementExecutor($dbHandle, $sql, $boundValues);
     }
 }
