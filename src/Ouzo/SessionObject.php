@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use InvalidArgumentException;
 use Ouzo\Utilities\Arrays;
 
 class SessionObject
@@ -11,14 +12,44 @@ class SessionObject
         return isset($_SESSION[$key]);
     }
 
-    public function get($key)
+    public function get($args)
     {
-        return $this->has($key) ? $_SESSION[$key] : null;
+        $value = $_SESSION;
+        foreach ($args as $arg) {
+            $value = Arrays::getValue($value, $arg);
+            if (!$value) {
+                return null;
+            }
+        }
+        return $value;
     }
 
-    public function set($key, $value)
+    public function set()
     {
-        $_SESSION[$key] = $value;
+        $args = func_get_args();
+        if (count($args) == 1 && is_array($args[0])) {
+            $args = $args[0];
+        }
+        if (count($args) < 2) {
+            throw new InvalidArgumentException('Session#set needs at least two arguments: key and value');
+        }
+
+        $value = array_pop($args);
+        $keys = Arrays::toArray($args);
+        return $this->_set($keys, $value);
+    }
+
+    // TODO move to Arrays
+    private function _set($keys, $value)
+    {
+        $session = & $_SESSION;
+        foreach ($keys as $key) {
+            if (!isset($session[$key])) {
+                $session[$key] = array();
+            }
+            $session = & $session[$key];
+        }
+        $session = $value;
         return $this;
     }
 
@@ -40,8 +71,9 @@ class SessionObject
 
     public function push($key, $value)
     {
-        $array = $this->get($key) ?: array();
+        $array = $this->get($key) ? : array();
         $array[] = $value;
         $this->set($key, $array);
     }
+
 }
