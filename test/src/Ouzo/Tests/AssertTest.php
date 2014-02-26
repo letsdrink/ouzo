@@ -262,6 +262,24 @@ class AssertTest extends PHPUnit_Framework_TestCase
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
+    /**
+     * @test
+     */
+    public function excludeShouldThrowExceptionWhenFoundInArray()
+    {
+        CatchException::when(Assert::thatArray(array('1', '2', '3', '4')))->exclude(7, 8, 4);
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    /**
+     * @test
+     */
+    public function excludeShouldCheckExclude()
+    {
+        Assert::thatArray(array('1', '2', '3', '4'))->exclude(7, 8, 9);
+        Assert::thatArray(array('one', 'two', 'three', 'four'))->exclude('eleven');
+    }
+
     private function _assertNot()
     {
         $args = func_get_args();

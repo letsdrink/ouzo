@@ -171,4 +171,22 @@ class ArrayAssert
         }
         return $this;
     }
+
+    public function exclude()
+    {
+        $elements = func_get_args();
+        $currentArray = $this->_actual;
+        $foundElement = '';
+        $anyFound = Arrays::any($elements, function ($element) use ($currentArray, &$foundElement) {
+            $checkInArray = in_array($element, $currentArray);
+            if ($checkInArray) {
+                $foundElement = $element;
+            }
+            return $checkInArray;
+        });
+        if ($anyFound) {
+            $this->fail("Found element {$foundElement} in array {$this->_actualString}", $elements);
+        }
+        return $this;
+    }
 }
