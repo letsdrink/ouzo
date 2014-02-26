@@ -32,7 +32,8 @@ class Stats
 
             $uri = new Uri();
             $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
-            Session::push('stats_queries', $requestDetails, array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString()));
+            $value = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+            Session::push('stats_queries', $requestDetails, $value);
 
             return $result;
         }
