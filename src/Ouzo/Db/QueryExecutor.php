@@ -63,13 +63,7 @@ class QueryExecutor
         return $this->_fetch('fetchAll');
     }
 
-    public function delete()
-    {
-        $this->_buildQuery();
-        return $this->_db->execute($this->_sql, $this->_boundValues);
-    }
-
-    public function update()
+    public function execute()
     {
         $this->_buildQuery();
         return $this->_db->execute($this->_sql, $this->_boundValues);
@@ -77,9 +71,7 @@ class QueryExecutor
 
     public function insert($sequence = '')
     {
-        $this->_buildQuery();
-        $this->_db->execute($this->_sql, $this->_boundValues);
-
+        $this->execute();
         return $sequence ? $this->_db->_dbHandle->lastInsertId($sequence) : null;
     }
 

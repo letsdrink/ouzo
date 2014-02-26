@@ -170,7 +170,7 @@ class ModelQueryBuilder
     public function deleteAll()
     {
         $this->_query->type = QueryType::$DELETE;
-        return QueryExecutor::prepare($this->_db, $this->_query)->delete();
+        return QueryExecutor::prepare($this->_db, $this->_query)->execute();
     }
 
     /**
@@ -191,7 +191,7 @@ class ModelQueryBuilder
     {
         $this->_query->type = QueryType::$UPDATE;
         $this->_query->updateAttributes = $attributes;
-        return QueryExecutor::prepare($this->_db, $this->_query)->update($attributes);
+        return QueryExecutor::prepare($this->_db, $this->_query)->execute();
     }
 
     /**

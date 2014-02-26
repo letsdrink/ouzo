@@ -13,7 +13,7 @@ class EmptyQueryExecutor
         return array();
     }
 
-    public function delete()
+    public function execute()
     {
         return 0;
     }

@@ -158,7 +158,7 @@ class Model extends Validatable
             ->table($this->_tableName)
             ->where(array($this->_primaryKeyName => $this->getId()));
 
-        QueryExecutor::prepare($this->_db, $query)->update();
+        QueryExecutor::prepare($this->_db, $query)->execute();
     }
 
     public function insertOrUpdate()
