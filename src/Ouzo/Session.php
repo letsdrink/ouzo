@@ -1,18 +1,17 @@
 <?php
 namespace Ouzo;
 
-use Ouzo\Utilities\Arrays;
-
 class Session
 {
-    private $_sessionNamespace;
 
-    public function __construct($namespace)
+    const DEFAULT_NAMESPACE = 'ouzo';
+
+    public static function forNamespace($namespace = self::DEFAULT_NAMESPACE)
     {
-        $this->_sessionNamespace = $namespace;
+        return new NamespacedSession($namespace);
     }
 
-    static public function startSession()
+    public static function startSession()
     {
         if (!empty($_SERVER['REQUEST_URI'])) {
             self::_setSavePath();
@@ -33,31 +32,38 @@ class Session
         }
     }
 
-    public function get($key)
+    public static function has($key)
     {
-        return Arrays::getValue($this->all(), $key);
+        return self::forNamespace()->has($key);
     }
 
-    public function set($key, $value)
+    public static function get($key)
     {
-        $_SESSION[$this->_sessionNamespace][$key] = $value;
-        return $this;
+        return self::forNamespace()->get($key);
     }
 
-    public function push($value)
+    public static function set($key, $value)
     {
-        $_SESSION[$this->_sessionNamespace][] = $value;
-        return $this;
+        return self::forNamespace()->set($key, $value);
     }
 
-    public function delete()
+    public static function push($value)
     {
-        unset($_SESSION[$this->_sessionNamespace]);
-        return $this;
+        return self::forNamespace()->push($value);
     }
 
-    public function all()
+    public static function flush()
     {
-        return Arrays::getValue($_SESSION, $this->_sessionNamespace, array());
+        return self::forNamespace()->flush();
+    }
+
+    public static function remove($key)
+    {
+        return self::forNamespace()->remove($key);
+    }
+
+    public static function all()
+    {
+        return self::forNamespace()->all();
     }
 }
