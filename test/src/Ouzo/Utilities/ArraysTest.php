@@ -628,4 +628,49 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals(array('1' => array('2' => array('3' => 'value'))), $array);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfArrayHasNestedValue()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        $value = Arrays::hasNestedValue($array, array('1', '2', '3'));
+
+        //then
+        $this->assertTrue($value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfArrayHasNestedValueForRoot()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        $value = Arrays::hasNestedValue($array, array('1'));
+
+        //then
+        $this->assertTrue($value);
+    }
+
+    /**
+     * @test
+     */
+    public function hasNestedValueShouldReturnFalseWhenKeyDoesNotExist()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        $value = Arrays::hasNestedValue($array, array('1', '4'));
+
+        //then
+        $this->assertFalse($value);
+    }
 }

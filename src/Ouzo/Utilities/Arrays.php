@@ -718,4 +718,16 @@ class Arrays
             self::removeNestedValue($array[$key], $keys);
         }
     }
+
+    public static function hasNestedValue(array $array, array $keys)
+    {
+        foreach ($keys as $key) {
+            if (!isset($array[$key])) {
+                return false;
+            }
+            $array = self::getValue($array, $key);
+        }
+        return true;
+    }
+
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Ouzo\Shell;
 use Ouzo\Shell\InputArgument;
+use Ouzo\Shell;
 use Ouzo\Tools\Model\Template\Generator;
 use Ouzo\Tools\Model\Template\GeneratorException;
 
@@ -22,7 +22,7 @@ class ModelTemplateGeneratorShell extends Shell
             $this->out('');
             $this->out('Generate model class template for specified table.');
             $this->out('');
-            $this->out('parameters: -t=table_name [-c=ClassName] [-f=/path/to/file.php]');
+            $this->out('parameters: -t=table_name [-c=ClassName] [-f=/path/to/file.php] [-p=prefixToRemove]');
             $this->out('');
         }
         $this->_generateModel();
@@ -39,16 +39,17 @@ class ModelTemplateGeneratorShell extends Shell
         $tableName = $this->getArgument('t');
         $className = $this->getArgument('c');
         $fileName = $this->getArgument('f');
+        $tablePrefixToRemove = $this->getArgument('p') ? : 't';
         if (empty($tableName))
-            $this->fail("Specify table name e.g. -t=t_user");
+            $this->fail("Specify table name e.g. -t=users");
         try {
-            $modelGenerator = new Generator($tableName, $className);
+            $modelGenerator = new Generator($tableName, $className, $tablePrefixToRemove);
             $this->out('---------------------------------');
             $this->out('Class name: ' . $modelGenerator->getTemplateClassName());
             $this->out('---------------------------------');
             $this->out($modelGenerator->templateContents());
             $this->out('---------------------------------');
-            if ($fileName){
+            if ($fileName) {
                 $this->out("Saving class to file: '$fileName'");
                 $modelGenerator->saveToFile($fileName);
             }
