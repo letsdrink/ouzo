@@ -11,7 +11,12 @@ class UriHelperGenerator
      * RouteRule[]
      */
     private $_routes;
-    private $_generatedFunctions = "<?php\n";
+    private $_generatedFunctions = "<?php
+function checkParameter(\$parameter) {
+\tif (!isset(\$parameter)) {
+\t\tthrow new \\InvalidArgumentException(\"Missing parameters\");
+\t}
+}\n\n";
 
     /**
      * @return UriHelperGenerator
@@ -47,41 +52,26 @@ class UriHelperGenerator
         $uriWithVariables = str_replace(':', '$', $uri);
         $parametersString = implode(', ', $parameters);
 
-        $ifStatement = $this->_createIf($parameters);
+        $checkParametersStatement = $this->_createCheckParameters($parameters);
 
         $function = <<<FUNCTION
 function $name($parametersString)
 {
-    {$ifStatement}return url("$uriWithVariables");
+{$checkParametersStatement}return url("$uriWithVariables");
 }\n\n
 FUNCTION;
         return $name ? $function : '';
     }
 
-    private function _createIf($parameters)
+    private function _createCheckParameters($parameters)
     {
         if ($parameters) {
-            $condition = $this->_createIfCondition($parameters);
-            $if = <<<IF
-if ($condition) {
-        throw new \InvalidArgumentException("Missing parameters");
-    }\n\t
-IF;
-            return $if;
+            $checkFunctionParameters = Arrays::map($parameters, function ($element) {
+                return "\tcheckParameter($element);";
+            });
+            return implode("\n", $checkFunctionParameters) . "\n\t";
         }
-        return '';
-    }
-
-    private function _createIfCondition($parameters)
-    {
-        return Arrays::reduce($parameters, function ($result, $element) {
-            if ($result == null) {
-                $result .= '!isset(' . $element . ') && ';
-            } else {
-                $result .= ' && !isset(' . $element . ')';
-            }
-            return rtrim($result, '&& ');
-        });
+        return "\t";
     }
 
     private function _prepareParameters($uri)
