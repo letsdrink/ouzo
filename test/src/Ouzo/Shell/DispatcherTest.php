@@ -1,8 +1,7 @@
 <?php
 use Ouzo\Shell\Dispatcher;
-use Ouzo\Shell;
 use Ouzo\Shell\InputArgument;
-use Ouzo\Tests\CatchException;
+use Ouzo\Shell;
 use Ouzo\Tests\MockShellOutput;
 
 class SampleShell extends Shell
@@ -59,21 +58,6 @@ class DispatcherTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->expectOutputRegex('/ARG:John/');
-    }
-
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionIfAppIsNotSpecified()
-    {
-        //given
-        $argv = array('shell.php');
-
-        //when
-        CatchException::when($this)->_invokeDispatcher($argv);
-
-        //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\Shell\DispatcherException');
     }
 
     /**
