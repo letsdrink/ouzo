@@ -9,7 +9,7 @@ class SessionObject
 
     public function has($keys)
     {
-        return Arrays::getNestedValue($_SESSION, Arrays::toArray($keys)) != null;
+        return Arrays::hasNestedValue($_SESSION, Arrays::toArray($keys));
     }
 
     public function get($keys)
