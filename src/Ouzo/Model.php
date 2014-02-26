@@ -66,6 +66,36 @@ class Model extends Validatable
         $this->_attributes = $this->filterAttributes($attributes);
     }
 
+    public function __set($name, $value)
+    {
+        $this->_attributes[$name] = $value;
+    }
+
+    public function __get($name)
+    {
+        if (empty($name)) {
+            throw new Exception('Illegal attribute: field name for Model cannot be empty');
+        }
+        if (array_key_exists($name, $this->_attributes)) {
+            return $this->_attributes[$name];
+        }
+        if ($this->_relations->hasRelation($name)) {
+            $this->_fetchRelation($name);
+            return $this->_attributes[$name];
+        }
+        return null;
+    }
+
+    public function __isset($name)
+    {
+        return isset($this->_attributes[$name]);
+    }
+
+    public function __unset($name)
+    {
+        unset($this->_attributes[$name]);
+    }
+
     public function assignAttributes($attributes)
     {
         $this->_attributes = array_merge($this->_attributes, $this->filterAttributesPreserveNull($attributes));
@@ -209,26 +239,6 @@ class Model extends Validatable
     public static function getFieldsWithoutPrimaryKey()
     {
         return static::metaInstance()->_getFieldsWithoutPrimaryKey();
-    }
-
-    public function __get($name)
-    {
-        if (empty($name)) {
-            throw new Exception('Illegal attribute: field name for Model cannot be empty');
-        }
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
-        }
-        if ($this->_relations->hasRelation($name)) {
-            $this->_fetchRelation($name);
-            return $this->_attributes[$name];
-        }
-        return null;
-    }
-
-    public function __set($name, $value)
-    {
-        $this->_attributes[$name] = $value;
     }
 
     private function _fetchRelation($name)

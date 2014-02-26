@@ -554,4 +554,34 @@ class ModelTest extends DbTransactionalTestCase
         //then
         CatchException::assertThat()->isInstanceOf('Ouzo\ValidationException');
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsSetVariable()
+    {
+        //given
+        $product = new Product();
+        $product->price = '123';
+
+        //then
+        $this->assertFalse(isset($product->name));
+        $this->assertTrue(isset($product->price));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldUnsetVariable()
+    {
+        //given
+        $product = new Product();
+        $product->name = 'Phone';
+
+        //when
+        unset($product->name);
+
+        //then
+        $this->assertEmpty($product->name);
+    }
 }
