@@ -1,5 +1,6 @@
 <?php
 namespace Ouzo\Tests;
+use Ouzo\Model;
 
 /**
  * Fluent custom array assertion to simplify your tests.
@@ -11,6 +12,8 @@ namespace Ouzo\Tests;
  *  Assert::thatArray($animals)->containsOnly('pig', 'dog', 'cat');
  *  Assert::thatArray($animals)->containsExactly('cat', 'dog', 'pig');
  *  Assert::thatArray(array('id' => 123, 'name' => 'john'))->containsKeyAndValue(array('id' => 123));
+ *
+ *  Assert::thatModel(new User(['name' => 'bob']))->hasSameAttributesAs(new User(['name' => 'bob']));
  * </code>
  */
 class Assert
@@ -18,5 +21,10 @@ class Assert
     public static function thatArray(array $actual)
     {
         return ArrayAssert::that($actual);
+    }
+
+    public static function thatModel(Model $actual)
+    {
+        return ModelAssert::that($actual);
     }
 }
