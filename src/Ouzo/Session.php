@@ -4,7 +4,7 @@ namespace Ouzo;
 class Session
 {
 
-    public static function forNamespace()
+    public static function create()
     {
         return new SessionObject();
     }
@@ -32,36 +32,36 @@ class Session
 
     public static function has($key)
     {
-        return self::forNamespace()->has($key);
+        return self::create()->has($key);
     }
 
     public static function get($key)
     {
-        return self::forNamespace()->get($key);
+        return self::create()->get($key);
     }
 
     public static function set($key, $value)
     {
-        return self::forNamespace()->set($key, $value);
+        return self::create()->set($key, $value);
     }
 
     public static function flush()
     {
-        return self::forNamespace()->flush();
+        return self::create()->flush();
     }
 
     public static function remove($key)
     {
-        return self::forNamespace()->remove($key);
+        return self::create()->remove($key);
     }
 
     public static function all()
     {
-        return self::forNamespace()->all();
+        return self::create()->all();
     }
 
     public static function push($key, $value)
     {
-        return self::forNamespace()->push($key, $value);
+        return self::create()->push($key, $value);
     }
 }

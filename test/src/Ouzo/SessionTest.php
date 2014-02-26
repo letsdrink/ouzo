@@ -174,24 +174,6 @@ class SessionTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldNotClashNamespaces()
-    {
-        //given
-        Session::forNamespace('first')->set('key1', 'value1');
-        Session::forNamespace('second')->set('key2', 'value2');
-
-        //when
-        $value1 = Session::forNamespace('first')->get('key1');
-        $value2 = Session::forNamespace('second')->get('key2');
-
-        //then
-        $this->assertEquals('value1', $value1);
-        $this->assertEquals('value2', $value2);
-    }
-
-    /**
-     * @test
-     */
     public function shouldPushSessionValue()
     {
         //when
