@@ -6,7 +6,8 @@ use Ouzo\Model;
 
 class Category extends Model
 {
-    private $_fields = array('name', 'id_parent');
+    //id is not required here but it should not cause errors (it's here just for a test)
+    private $_fields = array('id', 'name', 'id_parent');
 
     public function __construct($attributes = array())
     {
