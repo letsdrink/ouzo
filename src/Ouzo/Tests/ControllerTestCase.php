@@ -140,7 +140,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRenderedContent()
     {
-       return Assert::thatString($this->_frontController->getCurrentControllerObject()->layout->layoutContent());
+        return Assert::thatString($this->_frontController->getCurrentControllerObject()->layout->layoutContent());
     }
 
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
