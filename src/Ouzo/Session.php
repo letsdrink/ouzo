@@ -3,6 +3,22 @@ namespace Ouzo;
 
 use RuntimeException;
 
+/**
+ * Class Session
+ * @package Ouzo\Utilities
+ *
+ * Session is facade for session handling. Session data is stored in files. Path can be set in configuration if you
+ * want to change your system's default.
+ *
+ * All session handling methods (except of all and flush) supports nested keys e.g.
+ * <code>
+ *  Session::set('key1', 'key2', 'value');
+ *  Session::get('key1', 'key2', 'value');
+ *  Session::push('key1', 'key2', 'value');
+ *  Session::has('key1', 'key2');
+ *  Session::remove('key1', 'key2');
+ * </code>
+ */
 class Session
 {
 
