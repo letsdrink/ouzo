@@ -123,7 +123,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/sample/save');
 
         //then
-        $this->assertRendersContent('save');
+        $this->assertRenderedContent()->isEqualTo('save');
     }
 
     /**
@@ -172,7 +172,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/sample/save?hash=1235');
 
         //then
-        $this->assertRendersContent('save');
+        $this->assertRenderedContent()->isEqualTo('save');
     }
 
     /**
@@ -187,7 +187,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/restful');
 
         //then
-        $this->assertRendersContent('index');
+        $this->assertRenderedContent()->isEqualTo('index');
     }
 
     /**
@@ -202,7 +202,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->post('/restful', array());
 
         //then
-        $this->assertRendersNotEqualContent('index');
+        $this->assertRenderedContent()->isNotEqualTo('index');
     }
 
     /**
@@ -217,7 +217,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/restful/fresh');
 
         //then
-        $this->assertRendersContent('fresh');
+        $this->assertRenderedContent()->isEqualTo('fresh');
     }
 
     /**
@@ -247,7 +247,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->post('/restful', array());
 
         //then
-        $this->assertRendersContent('create');
+        $this->assertRenderedContent()->isEqualTo('create');
     }
 
     /**
@@ -262,7 +262,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/restful');
 
         //then
-        $this->assertRendersNotEqualContent('create');
+        $this->assertRenderedContent()->isNotEqualTo('create');
     }
 
     /**
@@ -277,7 +277,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/restful/12', array());
 
         //then
-        $this->assertRendersContent('show=12');
+        $this->assertRenderedContent()->isEqualTo('show=12');
     }
 
     /**
@@ -307,7 +307,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/restful/12/edit', array());
 
         //then
-        $this->assertRendersContent('edit=12');
+        $this->assertRenderedContent()->isEqualTo('edit=12');
     }
 
     /**
@@ -337,7 +337,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->put('/restful/12', array());
 
         //then
-        $this->assertRendersContent('update=12');
+        $this->assertRenderedContent()->isEqualTo('update=12');
     }
 
     /**
@@ -352,7 +352,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/restful/12');
 
         //then
-        $this->assertRendersNotEqualContent('update=12');
+        $this->assertRenderedContent()->isNotEqualTo('update=12');
     }
 
     /**
@@ -367,7 +367,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->patch('/restful/12', array());
 
         //then
-        $this->assertRendersContent('update=12');
+        $this->assertRenderedContent()->isEqualTo('update=12');
     }
 
     /**
@@ -382,7 +382,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/restful/12');
 
         //then
-        $this->assertRendersNotEqualContent('update=12');
+        $this->assertRenderedContent()->isNotEqualTo('update=12');
     }
 
     /**
@@ -397,7 +397,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->delete('/restful/12', array());
 
         //then
-        $this->assertRendersContent('destroy=12');
+        $this->assertRenderedContent()->isEqualTo('destroy=12');
     }
 
     /**
@@ -412,7 +412,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->patch('/restful/12', array());
 
         //then
-        $this->assertRendersNotEqualContent('destroy=12');
+        $this->assertRenderedContent()->isNotEqualTo('destroy=12');
     }
 
     /**
@@ -442,7 +442,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/');
 
         //then
-        $this->assertRendersContent('index');
+        $this->assertRenderedContent()->isEqualTo('index');
     }
 
     /**

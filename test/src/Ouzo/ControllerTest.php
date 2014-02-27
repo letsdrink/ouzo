@@ -65,7 +65,7 @@ class ControllerTest extends ControllerTestCase
         $this->get('/simple_test/download');
 
         //then
-        $this->assertDownloadFile('file.txt');
+        $this->assertDownloadsFile('file.txt');
     }
 
     /**
@@ -141,6 +141,6 @@ class ControllerTest extends ControllerTestCase
         $this->get('/simple_test/read_kept');
 
         //then
-        $this->assertRendersContent('Keep this');
+        $this->assertRenderedContent()->isEqualTo('Keep this');
     }
 }
