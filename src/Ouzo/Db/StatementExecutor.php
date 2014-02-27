@@ -11,8 +11,8 @@ use PDO;
 
 class StatementExecutor
 {
-
     private $_sql;
+    private $_humanizedSql;
     private $_dbHandle;
     private $_boundValues;
     private $_preparedQuery;
@@ -22,6 +22,7 @@ class StatementExecutor
         $this->_boundValues = $boundValues;
         $this->_dbHandle = $dbHandle;
         $this->_sql = $sql;
+        $this->_humanizedSql = QueryHumanizer::humanize($sql);
     }
 
     public function getBoundValues()
@@ -37,22 +38,27 @@ class StatementExecutor
     private function _execute($afterCallback)
     {
         $obj = $this;
-        $humanizedSql = QueryHumanizer::humanize($this->_sql);
-        return Stats::trace($humanizedSql, $this->getBoundValues(), function () use ($obj, $humanizedSql, $afterCallback) {
-            $obj->_prepareAndBind();
-
-            Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($humanizedSql, Objects::toString($obj->getBoundValues())));
-
-            $querySql = $obj->_createQuerySql($humanizedSql);
-            if (!$obj->getPreparedQuery()) {
-                throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $obj->lastDbErrorMessage());
-            }
-            if (!$obj->getPreparedQuery()->execute()) {
-                throw $obj->_getException($querySql);
-            }
-            return call_user_func($afterCallback);
+        return Stats::trace($this->_humanizedSql, $this->getBoundValues(), function () use ($obj, $afterCallback) {
+            return $obj->_internalExecute($afterCallback);
         });
     }
+
+    function _internalExecute($afterCallback)
+    {
+        $this->_prepareAndBind();
+
+        Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($this->_humanizedSql, Objects::toString($this->getBoundValues())));
+
+        $querySql = $this->_createQuerySql($this->_humanizedSql);
+        if (!$this->getPreparedQuery()) {
+            throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $this->lastDbErrorMessage());
+        }
+        if (!$this->getPreparedQuery()->execute()) {
+            throw $this->_getException($querySql);
+        }
+        return call_user_func($afterCallback);
+    }
+
 
     public function _createQuerySql($humanizedSql)
     {
