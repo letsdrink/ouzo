@@ -6,7 +6,7 @@ use Ouzo\Tools\Model\Template\Generator;
 use Ouzo\Tools\Model\Template\GeneratorException;
 
 
-class ModelTemplateGeneratorShell extends Shell
+class ModelGeneratorShell extends Shell
 {
     public function configure()
     {
@@ -20,7 +20,7 @@ class ModelTemplateGeneratorShell extends Shell
         $this->out('Model generator');
         if (!$this->getArgument('t')) {
             $this->out('');
-            $this->out('Generate model class template for specified table.');
+            $this->out('Generate model class for specified table.');
             $this->out('');
             $this->out('parameters: -t=table_name [-c=ClassName] [-f=/path/to/file.php] [-p=prefixToRemove]');
             $this->out('');
