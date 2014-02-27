@@ -124,10 +124,10 @@ class ControllerTestCase extends DbTransactionalTestCase
     {
         $modelVariable = $this->_frontController->getCurrentControllerObject()->view->$variable;
         $this->assertNotNull($modelVariable);
-        $this->assertEquals($modelObject->attributes(), $modelVariable->attributes());
+        Assert::thatModel($modelVariable)->hasSameAttributesAs($modelObject);
     }
 
-    public function assertDownloadFile($file)
+    public function assertDownloadsFile($file)
     {
         $this->assertEquals($file, $this->_downloadHandler->getFileName());
     }
@@ -138,24 +138,9 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->assertEquals($value, $this->_frontController->getCurrentControllerObject()->view->$variable);
     }
 
-    public function assertRendersContent($content)
+    public function assertRenderedContent()
     {
-        $this->assertEquals($content, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
-    }
-
-    public function assertRendersNotEqualContent($content)
-    {
-        $this->assertNotEquals($content, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
-    }
-
-    public function assertRenderedContentContains($string)
-    {
-        $this->assertContains($string, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
-    }
-
-    public function assertRenderedContentNotContains($string)
-    {
-        $this->assertNotContains($string, $this->_frontController->getCurrentControllerObject()->layout->layoutContent());
+        return Assert::thatString($this->_frontController->getCurrentControllerObject()->layout->layoutContent());
     }
 
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
@@ -167,11 +152,6 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function getAssigned($name)
     {
         return $this->_frontController->getCurrentControllerObject()->view->$name;
-    }
-
-    public function assertAttributesEquals($expected, $actual)
-    {
-        $this->assertEquals($expected->attributes(), $actual->attributes());
     }
 
     public function getRenderedJsonAsArray()

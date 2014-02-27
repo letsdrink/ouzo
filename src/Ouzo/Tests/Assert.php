@@ -14,6 +14,8 @@ use Ouzo\Model;
  *  Assert::thatArray(array('id' => 123, 'name' => 'john'))->containsKeyAndValue(array('id' => 123));
  *
  *  Assert::thatModel(new User(['name' => 'bob']))->hasSameAttributesAs(new User(['name' => 'bob']));
+ *
+ *  Assert::thatString("Frodo")->startsWith("Fro")->endsWith("do")->contains("rod")->doesNotContain("fro")->hasSize(5)->matches('/Fro\w+/');
  * </code>
  */
 class Assert
@@ -32,4 +34,10 @@ class Assert
     {
         return ArrayAssert::that(isset($_SESSION) ? $_SESSION : array());
     }
+
+    public static function thatString($string)
+    {
+        return StringAssert::that($string);
+    }
+
 }
