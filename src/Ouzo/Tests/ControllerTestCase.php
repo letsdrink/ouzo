@@ -124,7 +124,7 @@ class ControllerTestCase extends DbTransactionalTestCase
     {
         $modelVariable = $this->_frontController->getCurrentControllerObject()->view->$variable;
         $this->assertNotNull($modelVariable);
-        $this->assertEquals($modelObject->attributes(), $modelVariable->attributes());
+        Assert::thatModel($modelVariable)->hasSameAttributesAs($modelObject);
     }
 
     public function assertDownloadsFile($file)
