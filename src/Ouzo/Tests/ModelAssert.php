@@ -24,12 +24,21 @@ class ModelAssert
     }
 
     /**
+     * Compares all attributes. If one model has loaded a relation and other has not, they are considered not equal.
+     */
+    public function isEqualTo(Model $expected)
+    {
+        $this->_assertSameType($expected);
+        PHPUnit_Framework_Assert::assertEquals($expected->attributes(), $this->_actual->attributes(), 'Models have different attributes ');
+    }
+
+    /**
      * Compares only attributes listed in Models fields!
      */
     public function hasSameAttributesAs(Model $expected)
     {
         $this->_assertSameType($expected);
-        $this->_assertSameAttributes($expected);
+        $this->_assertSamePersistentAttributes($expected);
     }
 
     private function _assertSameType(Model $expected)
@@ -38,11 +47,12 @@ class ModelAssert
             'Expected object of type ' . $expected->getModelName() . ' but got ' . $this->_actual->getModelName());
     }
 
-    private function _assertSameAttributes(Model $expected)
+    private function _assertSamePersistentAttributes(Model $expected)
     {
         $expectedAttributes = Arrays::filterByAllowedKeys($expected->attributes(), $expected->getFields());
         $actualAttributes = Arrays::filterByAllowedKeys($this->_actual->attributes(), $this->_actual->getFields());
 
         PHPUnit_Framework_Assert::assertEquals($expectedAttributes, $actualAttributes, 'Models have different attributes ');
     }
+
 }

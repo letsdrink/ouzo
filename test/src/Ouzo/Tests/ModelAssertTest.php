@@ -49,5 +49,29 @@ class ModelAssertTest extends DbTransactionalTestCase
         Assert::thatModel($product)->hasSameAttributesAs($productWithoutLoadedCategory);
     }
 
+    /**
+     * @test
+     */
+    public function shouldFailIfModelsAreNotEqual()
+    {
+        $product = new Product(array('name' => 'abc'));
+        $otherProduct = new Product(array('name' => 'abc'));
+        $otherProduct->non_persistent_field = 'a';
+
+        CatchException::when(Assert::thatModel($product))->isEqualTo($otherProduct);
+
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPassIfModelsAreEqual()
+    {
+        $product = new Product(array('name' => 'abc'));
+        $otherProduct = new Product(array('name' => 'abc'));
+
+        Assert::thatModel($product)->isEqualTo($otherProduct);
+    }
 }
  
