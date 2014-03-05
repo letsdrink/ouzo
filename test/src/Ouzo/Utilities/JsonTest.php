@@ -66,4 +66,19 @@ class JsonTest extends PHPUnit_Framework_TestCase
         //then
         ArrayAssert::that($decoded)->hasSize(3)->contains('john', '123', '127.0.0.1');
     }
+
+    /**
+     * @test
+     */
+    public function shouldEncodeArrayToJson()
+    {
+        //given
+        $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
+
+        //when
+        $encoded = Json::encode($array);
+
+        //then
+        $this->assertEquals('{"key1":"value1","key2":"value2","key3":"value3"}', $encoded);
+    }
 }
