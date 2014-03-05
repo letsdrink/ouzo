@@ -27,6 +27,7 @@ class Model extends Validatable
     private $_primaryKeyName;
     private $_fields;
     private $_relations;
+    private $_afterSaveCallbacks = array();
 
     /**
      * Creates a new model object.
@@ -39,6 +40,8 @@ class Model extends Validatable
      * 'hasOne' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
      * 'hasMany' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
      * 'belongsTo' => array('name' => array('class' => 'Class'))
+     *
+     * 'afterSave' => array('_afterSave', function ($attributes) { ... })
      *
      * 'fields' - mapped column names
      * 'attributes' -  array of column => value
@@ -69,6 +72,7 @@ class Model extends Validatable
             $this->_fields[] = $primaryKeyName;
         }
         $this->_attributes = $this->filterAttributes($attributes);
+        $this->_afterSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'afterSave'));
     }
 
     public function __set($name, $value)
@@ -151,6 +155,9 @@ class Model extends Validatable
         if ($primaryKey) {
             $this->$primaryKey = $value;
         }
+
+        $this->_callAfterSaveCallbacks();
+
         return $value;
     }
 
@@ -162,6 +169,17 @@ class Model extends Validatable
             ->where(array($this->_primaryKeyName => $this->getId()));
 
         QueryExecutor::prepare($this->_db, $query)->execute();
+        $this->_callAfterSaveCallbacks();
+    }
+
+    private function _callAfterSaveCallbacks()
+    {
+        foreach ($this->_afterSaveCallbacks as $callback) {
+            if (is_string($callback)) {
+                $callback = array($this, $callback);
+            }
+            call_user_func($callback, $this->_attributes);
+        }
     }
 
     public function insertOrUpdate()
