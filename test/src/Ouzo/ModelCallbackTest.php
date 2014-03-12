@@ -16,10 +16,11 @@ class TestCallback
 
 class CallbackTestModel extends Model
 {
-    public function __construct($attributes = array(), $callback)
+    public function __construct($attributes = array(), $beforeSaveCallback = null, $afterSaveCallback = null)
     {
         parent::__construct(array(
-            'afterSave' => $callback,
+            'beforeSave' => $beforeSaveCallback,
+            'afterSave' => $afterSaveCallback,
             'table' => 'products',
             'primaryKey' => 'id',
             'attributes' => $attributes,
@@ -42,13 +43,13 @@ class ModelCallbackTest extends DbTransactionalTestCase
         //given
         $callback = new TestCallback();
         $attributes = array('name' => 'bmw');
-        $model = new CallbackTestModel($attributes, $callback);
+        $model = new CallbackTestModel($attributes, null, $callback);
 
         //when
         $model->insert();
 
         //then
-        $this->assertEquals(array(array('name' => 'bmw', 'id' => $model->id)), $callback->args);
+        $this->assertEquals(array($model), $callback->args);
     }
 
     /**
@@ -59,14 +60,51 @@ class ModelCallbackTest extends DbTransactionalTestCase
         //given
         $callback = new TestCallback();
         $attributes = array('name' => 'bmw');
-        $model = new CallbackTestModel($attributes, $callback);
+        $model = new CallbackTestModel($attributes, null, $callback);
         $model->insert();
 
         //when
         $model->updateAttributes(array('name' => 'audi'));
 
         //then
-        $this->assertEquals(array(array('name' => 'audi', 'id' => $model->id)), $callback->args);
+        $this->assertEquals(array($model), $callback->args);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCallBeforeSaveCallbackOnInsert()
+    {
+        //given
+        $callback = function($model) {
+            $model->name = $model->name . '_updated';
+        };
+        $model = new CallbackTestModel(array('name' => 'bmw'), $callback, null);
+
+        //when
+        $model->insert();
+
+        //then
+        $this->assertEquals('bmw_updated', $model->reload()->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCallBeforeSaveCallbackOnUpdate()
+    {
+        //given
+        $callback = function($model) {
+            $model->name = $model->name . '_updated';
+        };
+        $model = new CallbackTestModel(array('name' => 'bmw'), $callback, null);
+        $model->insert();
+
+        //when
+        $model->updateAttributes(array('name' => 'audi'));
+
+        //then
+        $this->assertEquals('audi_updated', $model->reload()->name);
     }
 
     /**
