@@ -384,4 +384,34 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('&lt;strong&gt;someting&lt;/strong&gt; with ó', $entities);
     }
+
+    /**
+     * @test
+     */
+    public function shouldTrimString()
+    {
+        //given
+        $string = '  sdf ';
+
+        //when
+        $result = Strings::trimToNull($string);
+
+        //then
+        $this->assertEquals('sdf', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTrimStringToNull()
+    {
+        //given
+        $string = '   ';
+
+        //when
+        $result = Strings::trimToNull($string);
+
+        //then
+        $this->assertNull($result);
+    }
 }
