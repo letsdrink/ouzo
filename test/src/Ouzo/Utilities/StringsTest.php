@@ -414,4 +414,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertNull($result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldTrimNull()
+    {
+        //given
+        $string = null;
+
+        //when
+        $result = Strings::trimToNull($string);
+
+        //then
+        $this->assertNull($result);
+    }
 }
