@@ -21,6 +21,21 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldPreserveCamelcaseInUnderscoreToCamelCase()
+    {
+        //given
+        $string = 'lannistersAlways_pay_their_debts';
+
+        //when
+        $camelcase = Strings::underscoreToCamelCase($string);
+
+        //then
+        $this->assertEquals('LannistersAlwaysPayTheirDebts', $camelcase);
+    }
+
+    /**
+     * @test
+     */
     public function shouldConvertCamelCaseToUnderscore()
     {
         //given

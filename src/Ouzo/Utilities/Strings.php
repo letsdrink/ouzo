@@ -25,7 +25,7 @@ class Strings
      */
     public static function underscoreToCamelCase($string)
     {
-        $words = explode('_', strtolower($string));
+        $words = explode('_', $string);
         $return = '';
         foreach ($words as $word) {
             $return .= ucfirst(trim($word));
