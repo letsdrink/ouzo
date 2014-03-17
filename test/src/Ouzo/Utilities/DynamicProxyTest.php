@@ -82,6 +82,10 @@ class TestMethodHandler
 
 }
 
+interface TestInterface
+{
+    function fun1(TestClass $p1);
+}
 
 class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 {
@@ -239,6 +243,23 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertNotNull($proxy);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateProxyForInterface()
+    {
+        //when
+        $testMethodHandler = new TestMethodHandler();
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\TestInterface', $testMethodHandler);
+        $param = new TestClass();
+
+        //when
+        $proxy->fun1($param);
+
+        //then
+        $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
     }
 
 }
