@@ -29,9 +29,9 @@ class StatsTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, Stats::getNumberOfRequests());
 
         $queries = Arrays::first(Stats::queries());
-        $this->assertEquals(Stats::getTotalTime(), $queries[0]['time']);
-        $this->assertEquals('SELECT * FROM table WHERE id = ?', $queries[0]['query']);
-        $this->assertEquals('10', $queries[0]['params']);
+        $this->assertEquals(Stats::getTotalTime(), $queries['queries'][0]['time']);
+        $this->assertEquals('SELECT * FROM table WHERE id = ?', $queries['queries'][0]['query']);
+        $this->assertEquals('10', $queries['queries'][0]['params']);
     }
 
     /**
@@ -65,6 +65,21 @@ class StatsTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, Stats::getRequestNumberOfQueries('/request1#'));
     }
 
+    /**
+     * @test
+     */
+    public function shouldTraceInfoAboutHttpRequest()
+    {
+        //given
+        $this->_createHttpTraceRequest('/request1', array('param1' => 1, 'param2' => 2));
+
+        //when
+        $queries = Arrays::first(Stats::queries());
+
+        //then
+        ArrayAssert::that($queries['request_params'][0])->hasSize(2)->containsKeyAndValue(array('param1' => 1, 'param2' => 2));
+    }
+
     private function _createTraceRequest($request)
     {
         $_SERVER['REQUEST_URI'] = $request;
@@ -72,5 +87,11 @@ class StatsTest extends PHPUnit_Framework_TestCase
             usleep(80000);
             return "result";
         });
+    }
+
+    private function _createHttpTraceRequest($request, $params = array())
+    {
+        $_SERVER['REQUEST_URI'] = $request;
+        Stats::traceHttpRequest($params);
     }
 }

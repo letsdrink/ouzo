@@ -1,10 +1,10 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Db\Stats;
 use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Router;
-use Ouzo\Utilities\Strings;
 
 class FrontController
 {
@@ -105,6 +105,7 @@ class FrontController
     {
         $currentAction = $this->_currentControllerObject->currentAction;
         $this->_currentControllerObject->$currentAction();
+        Stats::traceHttpRequest($this->_currentControllerObject->params);
     }
 
     private function _doActionOnResponse()
@@ -157,5 +158,4 @@ class FrontController
     {
         return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
     }
-
 }
