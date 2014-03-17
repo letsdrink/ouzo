@@ -2,10 +2,13 @@
 namespace Ouzo;
 
 use Exception;
+use Ouzo\Db\Stats;
 use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Route;
+use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
+use Ouzo\Utilities\Arrays;
 
 class SampleControllerException extends Exception
 {
@@ -459,5 +462,21 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
         $this->assertEquals('restful', $currentController);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTraceRequestInfo()
+    {
+        //given
+        Route::resource('restful');
+        $this->get('/restful?param=1');
+
+        //when
+        $queries = Arrays::first(Stats::queries());
+
+        //then
+        ArrayAssert::that($queries['request_params'][0])->hasSize(1)->containsKeyAndValue(array('param' => 1));
     }
 }
