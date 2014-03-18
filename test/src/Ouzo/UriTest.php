@@ -276,7 +276,7 @@ class UriTest extends PHPUnit_Framework_TestCase
         return array(
             array('/users//index', '/users/index'),
             array('///', '/'),
-            array('/actions//', '/actions/')
+            array('/actions//', '/actions')
         );
     }
 
