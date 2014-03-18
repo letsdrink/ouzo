@@ -4,7 +4,6 @@ namespace Ouzo\Tests\Mock;
 
 
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Objects;
 
 class MethodCallMatcher
 {
