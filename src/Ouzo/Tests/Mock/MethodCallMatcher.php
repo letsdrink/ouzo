@@ -40,7 +40,7 @@ class MethodCallMatcher
 
     public function argMatches($expected, $actual)
     {
-        return $expected instanceof AnyArgument || $this->equal($expected, $actual);
+        return $expected instanceof AnyArgument || $expected == $actual;
     }
 
     function __invoke(MethodCall $methodCall)
@@ -48,11 +48,4 @@ class MethodCallMatcher
         return $this->matches($methodCall);
     }
 
-    private function equal($expected, $actual)
-    {
-        if (is_object($expected) && is_object($actual)) {
-            return $expected == $actual;
-        }
-        return $expected === $actual;
-    }
 }
