@@ -54,6 +54,9 @@ class Uri
     public function getPath()
     {
         $parseUrl = parse_url($this->_pathProvider->getPath(), PHP_URL_PATH) ? : '/';
+        if (preg_match('/.+\/$/', $parseUrl)) {
+            $parseUrl = rtrim($parseUrl, '/');
+        }
         return $this->_removeDuplicatedSlashes($parseUrl);
     }
 

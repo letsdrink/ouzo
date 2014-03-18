@@ -402,6 +402,23 @@ class RouterTest extends PHPUnit_Framework_TestCase
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
     }
 
+    /**
+     * @test
+     */
+    public function shouldFindRouteRuleWithDefaultRoute()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('GET', '/users/');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('index', $rule->getAction());
+    }
+
     public function requestMethods()
     {
         return array(
