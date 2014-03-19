@@ -4,6 +4,7 @@ namespace Ouzo\Request;
 class RequestContext
 {
     private static $_currentController;
+    private static $_currentControllerObject;
 
     public static function getCurrentController()
     {
@@ -13,5 +14,15 @@ class RequestContext
     public static function setCurrentController($currentController)
     {
         self::$_currentController = $currentController;
+    }
+
+    public static function getCurrentControllerObject()
+    {
+        return self::$_currentControllerObject;
+    }
+
+    public static function setCurrentControllerObject($currentControllerObject)
+    {
+        self::$_currentControllerObject = $currentControllerObject;
     }
 }

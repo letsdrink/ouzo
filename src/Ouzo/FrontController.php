@@ -47,6 +47,7 @@ class FrontController
         RequestContext::setCurrentController($this->_currentController);
 
         $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
+        RequestContext::setCurrentControllerObject($this->_currentControllerObject);
 
         $this->sessionInitializer->startSession();
 
@@ -61,11 +62,6 @@ class FrontController
         }
 
         $this->_doActionOnResponse();
-    }
-
-    public function getCurrentControllerObject()
-    {
-        return $this->_currentControllerObject;
     }
 
     private function _redirect($url)
