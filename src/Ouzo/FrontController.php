@@ -46,10 +46,10 @@ class FrontController
 
         RequestContext::setCurrentController($this->_currentController);
 
+        $this->sessionInitializer->startSession();
+
         $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
         RequestContext::setCurrentControllerObject($this->_currentControllerObject);
-
-        $this->sessionInitializer->startSession();
 
         $this->_logRequest();
 
