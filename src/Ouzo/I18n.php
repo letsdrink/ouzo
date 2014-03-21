@@ -20,9 +20,9 @@ class I18n
         return self::$_translator->translate($key, $params);
     }
 
-    public static function reset()
+    public static function reset($translator = null)
     {
-        self::$_translator = null;
+        self::$_translator = $translator;
     }
 
     private static function _loadLabels()
