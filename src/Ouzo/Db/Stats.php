@@ -26,18 +26,23 @@ class Stats
     public static function trace($query, $params, $function)
     {
         if (Config::getValue('debug')) {
-            $startTime = microtime(true);
-            $result = $function();
-            $time = number_format(microtime(true) - $startTime, 4, '.', '');
-
-            $uri = new Uri();
-            $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
-            $value = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
-            Session::push('stats_queries', $requestDetails, 'queries', $value);
-
-            return $result;
+            return self::traceNoCheck($query, $params, $function);
         }
         return $function();
+    }
+
+    public static function traceNoCheck($query, $params, $function)
+    {
+        $startTime = microtime(true);
+        $result = $function();
+        $time = number_format(microtime(true) - $startTime, 4, '.', '');
+
+        $uri = new Uri();
+        $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
+        $value = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+        Session::push('stats_queries', $requestDetails, 'queries', $value);
+
+        return $result;
     }
 
     /**
