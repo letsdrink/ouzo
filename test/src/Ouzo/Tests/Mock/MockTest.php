@@ -287,7 +287,124 @@ class MockTest extends \PHPUnit_Framework_TestCase
         $result = $mock->method(1, 2);
 
         //then
-        $this->assertNull( $result);
+        $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMultipleCallsWithDifferentResults()
+    {
+        //given
+        $mock = Mock::mock();
+        Mock::when($mock)->method()->thenReturn('result1');
+        Mock::when($mock)->method()->thenReturn('result2');
+
+        //when
+        $result1 = $mock->method();
+        $result2 = $mock->method();
+
+        //then
+        $this->assertEquals("result1", $result1);
+        $this->assertEquals("result2", $result2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnLastResultForMultipleCalls()
+    {
+        //given
+        $mock = Mock::mock();
+        Mock::when($mock)->method()->thenReturn('result');
+
+        //when
+        $result1 = $mock->method();
+        $result2 = $mock->method();
+
+        //then
+        $this->assertEquals("result", $result1);
+        $this->assertEquals("result", $result2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMultipleCallsInOneCallToWhen()
+    {
+        //given
+        $mock = Mock::mock();
+        Mock::when($mock)->method()->thenReturn('result1', 'result2');
+
+        //when
+        $result1 = $mock->method();
+        $result2 = $mock->method();
+
+        //then
+        $this->assertEquals("result1", $result1);
+        $this->assertEquals("result2", $result2);
+    }
+
+
+    /**
+     * @test
+     */
+    public function shouldStubMultipleExceptions()
+    {
+        //given
+        $exception1 = new Exception("msg1");
+        $exception2 = new Exception("msg2");
+        $mock = Mock::mock();
+
+        Mock::when($mock)->method()->thenThrow($exception1);
+        Mock::when($mock)->method()->thenThrow($exception2);
+
+        //when then
+        CatchException::when($mock)->method();
+        CatchException::assertThat()->isEqualTo($exception1);
+
+        CatchException::when($mock)->method();
+        CatchException::assertThat()->isEqualTo($exception2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMultipleExceptionsInOneCallToWhen()
+    {
+        //given
+        $exception1 = new Exception("msg1");
+        $exception2 = new Exception("msg2");
+        $mock = Mock::mock();
+
+        Mock::when($mock)->method()->thenThrow($exception1, $exception2);
+
+        //when then
+        CatchException::when($mock)->method();
+        CatchException::assertThat()->isEqualTo($exception1);
+
+        CatchException::when($mock)->method();
+        CatchException::assertThat()->isEqualTo($exception2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMultipleCallsWithResultsAndExceptions()
+    {
+        //given
+        $exception = new Exception("msg");
+        $mock = Mock::mock();
+        Mock::when($mock)->method()->thenReturn('result');
+        Mock::when($mock)->method()->thenThrow($exception);
+
+        //when
+        $result = $mock->method();
+        CatchException::when($mock)->method();
+
+        //then
+        $this->assertEquals("result", $result);
+        CatchException::assertThat()->isEqualTo($exception);
     }
 
 }
