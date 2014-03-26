@@ -51,4 +51,63 @@ class PathTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals("${tmp}${s}my${s}file.txt", $path);
     }
 
+    /**
+     * @test
+     */
+    public function shouldRemoveDotsFromRelativePath()
+    {
+        //given
+        $path = 'dir/../dir2/file.txt';
+
+        //when
+        $normalized = Path::normalize($path);
+
+        //then
+        $this->assertEquals("dir2/file.txt", $normalized);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveDotsFromAbsolutePath()
+    {
+        //given
+        $path = '/tmp/../dir2/file.txt';
+
+        //when
+        $normalized = Path::normalize($path);
+
+        //then
+        $this->assertEquals("/dir2/file.txt", $normalized);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotRemoveLeadingDots()
+    {
+        //given
+        $path = '../file.txt';
+
+        //when
+        $normalized = Path::normalize($path);
+
+        //then
+        $this->assertEquals("../file.txt", $normalized);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveDoubleSlashes()
+    {
+        //given
+        $path = '//dir/file.txt';
+
+        //when
+        $normalized = Path::normalize($path);
+
+        //then
+        $this->assertEquals("/dir/file.txt", $normalized);
+    }
 }

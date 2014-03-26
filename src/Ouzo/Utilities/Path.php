@@ -14,4 +14,19 @@ class Path
         $args = array_merge(array(sys_get_temp_dir()), func_get_args());
         return call_user_func_array('\Ouzo\Utilities\Path::join', $args);
     }
+
+    public static function normalize($path)
+    {
+        $parts = explode('/', trim($path, '/'));
+        $result = array();
+        foreach ($parts as $part) {
+            if ($part == '..' && !empty($result)) {
+                array_pop($result);
+            } else if ($part != '.' && !empty($part)) {
+                array_push($result, $part);
+            }
+        }
+        $root = $path[0] == '/' ? '/' : '';
+        return $root . implode('/', $result);
+    }
 }
