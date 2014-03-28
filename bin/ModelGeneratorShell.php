@@ -1,10 +1,8 @@
 <?php
-
 use Ouzo\Shell\InputArgument;
 use Ouzo\Shell;
 use Ouzo\Tools\Model\Template\Generator;
 use Ouzo\Tools\Model\Template\GeneratorException;
-
 
 class ModelGeneratorShell extends Shell
 {
@@ -57,5 +55,4 @@ class ModelGeneratorShell extends Shell
             $this->fail($e->getMessage());
         }
     }
-
 }
