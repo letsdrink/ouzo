@@ -33,6 +33,7 @@ class Router
     }
 
     /**
+     * @param $path
      * @return RouteRule
      */
     private function _findRouteRule($path)

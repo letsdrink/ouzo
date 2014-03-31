@@ -95,7 +95,7 @@ class RouteRule
             return true;
         }
         if (preg_match('#:\w*#', $this->getUri())) {
-            $replacedUri = preg_replace('#:\w*#', '\w*', $this->getUri());
+            $replacedUri = preg_replace('#:\w*#', '[A-Za-z0-9.\-~_]+', $this->getUri());
             return preg_match('#^' . $replacedUri . '$#', $uri);
         }
         if (!$this->getAction()) {
