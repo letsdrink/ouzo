@@ -2,7 +2,7 @@
     "name": "letsdrink/ouzo",
     "description": "Ouzo PHP MVC framework",
     "homepage": "http://ouzoframework.org/",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "license": "MIT",
     "keywords": ["php", "mvc", "framework", "orm", "tdd"],
     "authors": [
