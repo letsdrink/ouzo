@@ -19,6 +19,7 @@ class Controller
     private $_statusResponse = 'show';
     private $_redirectLocation = '';
     private $_fileData = array();
+    private $_headers = array();
     private $_routeRule = null;
     private $_authCredentials = array();
     private $_keepMessage = false;
@@ -37,6 +38,16 @@ class Controller
         $requestParameters = Uri::getRequestParameters();
         $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
         $this->params = array_merge($_POST, $_GET, $requestParameters, $parameters);
+    }
+
+    public function header($header)
+    {
+        $this->_headers[] = $header;
+    }
+
+    public function getHeaders()
+    {
+        return $this->_headers;
     }
 
     public function redirect($url, $messages = array())

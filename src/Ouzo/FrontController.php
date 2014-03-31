@@ -107,6 +107,7 @@ class FrontController
     private function _doActionOnResponse()
     {
         $controller = $this->_currentControllerObject;
+        $this->_sendHeaders($controller->getHeaders());
         switch ($controller->getStatusResponse()) {
             case 'show':
                 $controller->display();
@@ -133,6 +134,13 @@ class FrontController
         }
     }
 
+    private function _sendHeaders($headers)
+    {
+        array_map(function ($header) {
+            header($header);
+        }, $headers);
+    }
+
     private function _startOutputBuffer()
     {
         ob_start();
@@ -154,4 +162,5 @@ class FrontController
     {
         return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
     }
+
 }
