@@ -18,6 +18,8 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function __construct()
     {
+        parent::__construct();
+
         $config = Config::getValue('global');
         $this->_prefixSystem = $config['prefix_system'];
 
