@@ -2,6 +2,16 @@
 
 namespace Ouzo\Tests\Mock;
 
+class TestClass
+{
+    private $value;
+
+    function __construct($value)
+    {
+        $this->value = $value;
+    }
+}
+
 class MethodCallMatcherTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -14,6 +24,21 @@ class MethodCallMatcherTest extends \PHPUnit_Framework_TestCase
 
         //when
         $result = $matcher->matches(new MethodCall('fun', array(1, 2, '3')));
+
+        //then
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMatchExactObjectArguments()
+    {
+        //given
+        $matcher = new MethodCallMatcher('fun', array(new TestClass('value')));
+
+        //when
+        $result = $matcher->matches(new MethodCall('fun', array(new TestClass('value'))));
 
         //then
         $this->assertTrue($result);

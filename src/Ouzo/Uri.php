@@ -65,7 +65,11 @@ class Uri
     public function getPathWithoutPrefix()
     {
         $prefix = Config::getValue('global', 'prefix_system');
-        return Strings::removePrefix($this->getPath(), $prefix);
+        $path = Strings::removePrefix($this->getPath(), $prefix);
+        if (preg_match('#.+/$#', $path)) {
+            $path = rtrim($path, '/');
+        }
+        return $path;
     }
 
     public function getParam($param)

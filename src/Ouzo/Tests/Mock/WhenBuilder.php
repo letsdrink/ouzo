@@ -18,14 +18,24 @@ class WhenBuilder
         return $this;
     }
 
-    function thenReturn($result)
+    /**
+     * @param mixed ...
+     */
+    function thenReturn()
     {
-        $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $result, null);
+        foreach (func_get_args() as $result) {
+            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $result, null);
+        }
     }
 
+    /**
+     * @param mixed ...
+     */
     function thenThrow($exception)
     {
-        $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, null, $exception);
+        foreach (func_get_args() as $exception) {
+            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, null, $exception);
+        }
     }
 
 }

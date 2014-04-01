@@ -1,6 +1,7 @@
 {
     "name": "letsdrink/ouzo",
     "description": "Ouzo PHP MVC framework",
+    "homepage": "http://ouzoframework.org/",
     "minimum-stability": "stable",
     "license": "MIT",
     "keywords": ["php", "mvc", "framework", "orm", "tdd"],
@@ -14,6 +15,9 @@
         "psr-0": {
             "Ouzo": "src/"
         }
+    },
+    "require": {
+        "d11wtq/boris": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*@dev",

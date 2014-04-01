@@ -46,7 +46,7 @@ class ArrayAssert
 
         $elementsString = Objects::toString($elements);
         if (sizeof($elements) > sizeof($this->_actual) || sizeof($this->_actual) > $found) {
-            $this->fail("Not all of expected $elementsString were found in actual {$this->_actualString}", $elements);
+            $this->fail("Expected only $elementsString elements in actual {$this->_actualString}", $elements);
         }
         if (sizeof($elements) < sizeof($this->_actual) || sizeof($this->_actual) < $found) {
             $this->fail("There are more in expected $elementsString than in actual {$this->_actualString}", $elements);

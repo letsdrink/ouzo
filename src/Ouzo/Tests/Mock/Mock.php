@@ -12,7 +12,7 @@ class Mock
         if (!$className) {
             return $mock;
         }
-        return DynamicProxy::newInstance($className, $mock);;
+        return DynamicProxy::newInstance($className, $mock);
     }
 
     public static function when($mock)

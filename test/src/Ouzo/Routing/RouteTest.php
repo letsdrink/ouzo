@@ -389,4 +389,19 @@ class RouteTest extends PHPUnit_Framework_TestCase
             ->onMethod('getName')
             ->contains('bigFeetPath', 'freshBigFootPath', 'editBigFootPath', 'bigFootPath');
     }
+
+    /**
+     * @test
+     */
+    public function shouldSetRuleNameForMultipartCamelcaseAction()
+    {
+        //given
+        Route::post('/users/save', 'users#saveMyUser');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('saveMyUserUsersPath', $routes[0]->getName());
+    }
 }

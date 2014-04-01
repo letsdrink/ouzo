@@ -2,6 +2,8 @@
 
 namespace Ouzo\Tests\Mock;
 
+use Ouzo\Utilities\Arrays;
+
 class SimpleMock
 {
     public $_stubbed_calls = array();
@@ -12,11 +14,30 @@ class SimpleMock
         $methodCall = new MethodCall($name, $arguments);
         $this->_called_methods[] = $methodCall;
 
-        foreach ($this->_stubbed_calls as $stubbed_call) {
-            if ($stubbed_call->matches($methodCall)) {
-                return $stubbed_call->evaluate();
-            }
+        $matching = $this->getMatchingStubbedCalls($methodCall);
+
+        if (empty($matching)) {
+            return null;
         }
-        return null;
+
+        $firstMatching = Arrays::first($matching);
+        $this->removeMatchedCall($matching);
+
+        return $firstMatching->evaluate();
+    }
+
+    private function getMatchingStubbedCalls($methodCall)
+    {
+        $matching = Arrays::filter($this->_stubbed_calls, function ($stubbed_call) use ($methodCall) {
+            return $stubbed_call->matches($methodCall);
+        });
+        return $matching;
+    }
+
+    private function removeMatchedCall($matching)
+    {
+        if (count($matching) > 1) {
+            array_shift($this->_stubbed_calls);
+        }
     }
 }

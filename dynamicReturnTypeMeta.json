@@ -1,0 +1,30 @@
+{
+    "methodCalls": [
+        {
+            "class": "Ouzo\\Tests\\Mock\\Mock",
+            "method": "mock",
+            "position": 0
+        },
+        {
+            "class": "Ouzo\\Tests\\Mock\\Mock",
+            "method": "verify",
+            "position": 0
+        },
+        {
+            "class": "Ouzo\\Tests\\Mock\\Mock",
+            "method": "when",
+            "position": 0
+        },
+        {
+            "class": "Ouzo\\Tests\\CatchException",
+            "method": "when",
+            "position": 0
+        },
+        {
+            "class": "Ouzo\\Utilities\\DynamicProxy",
+            "method": "newInstance",
+            "position": 0
+        }
+    ],
+    "functionCalls": []
+}

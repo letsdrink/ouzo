@@ -36,6 +36,10 @@ class Db
     public function connectDb($params = array())
     {
         $this->_dbHandle = $this->_createPdo($params);
+        $attributes = Arrays::getValue($params, 'attributes', array());
+        foreach($attributes as $attribute => $value) {
+            $this->_dbHandle->setAttribute($attribute, $value);
+        }
         return $this;
     }
 

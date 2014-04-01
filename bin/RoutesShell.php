@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Shell;

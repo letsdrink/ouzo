@@ -1,6 +1,7 @@
 <?php
 use Ouzo\Routing\Route;
 use Ouzo\Routing\Router;
+use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Uri;
@@ -400,6 +401,41 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('users', $rule->getController());
         $this->assertEquals('destroy', $rule->getAction());
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRuleWithDefaultRoute()
+    {
+        //given
+        Route::resource('users');
+        $router = $this->_createRouter('GET', '/users/');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('index', $rule->getAction());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteWithSpecialCharactersInParameter()
+    {
+        //given
+        Route::get('/resources/:file', 'resources#server');
+        $router = $this->_createRouter('GET', '/resources/file_name.js');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('resources', $rule->getController());
+        $this->assertEquals('server', $rule->getAction());
+        ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('file' => 'file_name.js'));
     }
 
     public function requestMethods()

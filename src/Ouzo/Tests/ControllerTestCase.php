@@ -3,6 +3,7 @@ namespace Ouzo\Tests;
 
 use Ouzo\Config;
 use Ouzo\FrontController;
+use Ouzo\Request\RequestContext;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
@@ -114,17 +115,17 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRenders($string)
     {
-        $statusResponse = $this->_frontController->getCurrentControllerObject()->getStatusResponse();
-        $location = $this->_frontController->getCurrentControllerObject()->getRedirectLocation();
+        $statusResponse = RequestContext::getCurrentControllerObject()->getStatusResponse();
+        $location = RequestContext::getCurrentControllerObject()->getRedirectLocation();
         if ($statusResponse != 'show') {
             $this->fail("Expected render $string but was $statusResponse $location");
         }
-        $this->assertEquals($string, $this->_frontController->getCurrentControllerObject()->view->getViewName());
+        $this->assertEquals($string, RequestContext::getCurrentControllerObject()->view->getViewName());
     }
 
     public function assertAssignsModel($variable, $modelObject)
     {
-        $modelVariable = $this->_frontController->getCurrentControllerObject()->view->$variable;
+        $modelVariable = RequestContext::getCurrentControllerObject()->view->$variable;
         $this->assertNotNull($modelVariable);
         Assert::thatModel($modelVariable)->hasSameAttributesAs($modelObject);
     }
@@ -136,13 +137,13 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertAssignsValue($variable, $value)
     {
-        $this->assertNotNull($this->_frontController->getCurrentControllerObject()->view->$variable);
-        $this->assertEquals($value, $this->_frontController->getCurrentControllerObject()->view->$variable);
+        $this->assertNotNull(RequestContext::getCurrentControllerObject()->view->$variable);
+        $this->assertEquals($value, RequestContext::getCurrentControllerObject()->view->$variable);
     }
 
     public function assertRenderedContent()
     {
-        return Assert::thatString($this->_frontController->getCurrentControllerObject()->layout->layoutContent());
+        return Assert::thatString(RequestContext::getCurrentControllerObject()->layout->layoutContent());
     }
 
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
@@ -153,11 +154,11 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function getAssigned($name)
     {
-        return $this->_frontController->getCurrentControllerObject()->view->$name;
+        return RequestContext::getCurrentControllerObject()->view->$name;
     }
 
     public function getRenderedJsonAsArray()
     {
-        return json_decode($this->_frontController->getCurrentControllerObject()->layout->layoutContent(), true);
+        return json_decode(RequestContext::getCurrentControllerObject()->layout->layoutContent(), true);
     }
 }

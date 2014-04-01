@@ -21,6 +21,21 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldPreserveCamelcaseInUnderscoreToCamelCase()
+    {
+        //given
+        $string = 'lannistersAlways_pay_their_debts';
+
+        //when
+        $camelcase = Strings::underscoreToCamelCase($string);
+
+        //then
+        $this->assertEquals('LannistersAlwaysPayTheirDebts', $camelcase);
+    }
+
+    /**
+     * @test
+     */
     public function shouldConvertCamelCaseToUnderscore()
     {
         //given
@@ -383,5 +398,50 @@ class StringsTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('&lt;strong&gt;someting&lt;/strong&gt; with ó', $entities);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTrimString()
+    {
+        //given
+        $string = '  sdf ';
+
+        //when
+        $result = Strings::trimToNull($string);
+
+        //then
+        $this->assertEquals('sdf', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTrimStringToNull()
+    {
+        //given
+        $string = '   ';
+
+        //when
+        $result = Strings::trimToNull($string);
+
+        //then
+        $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTrimNull()
+    {
+        //given
+        $string = null;
+
+        //when
+        $result = Strings::trimToNull($string);
+
+        //then
+        $this->assertNull($result);
     }
 }

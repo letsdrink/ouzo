@@ -1,10 +1,10 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Db\Stats;
 use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Router;
-use Ouzo\Utilities\Strings;
 
 class FrontController
 {
@@ -46,9 +46,10 @@ class FrontController
 
         RequestContext::setCurrentController($this->_currentController);
 
-        $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
-
         $this->sessionInitializer->startSession();
+
+        $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
+        RequestContext::setCurrentControllerObject($this->_currentControllerObject);
 
         $this->_logRequest();
 
@@ -61,11 +62,6 @@ class FrontController
         }
 
         $this->_doActionOnResponse();
-    }
-
-    public function getCurrentControllerObject()
-    {
-        return $this->_currentControllerObject;
     }
 
     private function _redirect($url)
@@ -105,11 +101,13 @@ class FrontController
     {
         $currentAction = $this->_currentControllerObject->currentAction;
         $this->_currentControllerObject->$currentAction();
+        Stats::traceHttpRequest($this->_currentControllerObject->params);
     }
 
     private function _doActionOnResponse()
     {
         $controller = $this->_currentControllerObject;
+        $this->_sendHeaders($controller->getHeaders());
         switch ($controller->getStatusResponse()) {
             case 'show':
                 $controller->display();
@@ -134,6 +132,13 @@ class FrontController
                 $this->_showOutputBuffer();
                 break;
         }
+    }
+
+    private function _sendHeaders($headers)
+    {
+        array_map(function ($header) {
+            header($header);
+        }, $headers);
     }
 
     private function _startOutputBuffer()

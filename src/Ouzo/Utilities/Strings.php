@@ -25,7 +25,7 @@ class Strings
      */
     public static function underscoreToCamelCase($string)
     {
-        $words = explode('_', strtolower($string));
+        $words = explode('_', $string);
         $return = '';
         foreach ($words as $word) {
             $return .= ucfirst(trim($word));
@@ -368,4 +368,28 @@ class Strings
         return $string;
     }
 
+
+    /**
+     * Removes control characters from both ends of this string returning null if the string is empty ("") after the trim or if it is null.
+     *
+     * Example:
+     * <code>
+     * $result = Strings::trimToNull('  ');
+     * </code>
+     * Result:
+     * <code>
+     * null
+     * </code>
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function trimToNull($string)
+    {
+        $string = trim($string);
+        if (mb_strlen($string) == 0) {
+            return null;
+        }
+        return $string;
+    }
 }
