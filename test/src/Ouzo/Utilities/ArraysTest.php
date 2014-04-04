@@ -673,4 +673,25 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertFalse($value);
     }
+
+    /**
+     * @test
+     */
+    public function shouldFilterNotBlank()
+    {
+        //given
+        $array = array(
+            0 => 'foo',
+            1 => false,
+            2 => -1,
+            3 => null,
+            4 => ''
+        );
+
+        //when
+        $filtered = Arrays::filterNotBlank($array);
+
+        //then
+        Assert::thatArray($filtered)->hasSize(2)->contains('foo', -1);
+    }
 }

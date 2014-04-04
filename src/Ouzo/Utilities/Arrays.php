@@ -109,7 +109,7 @@ class Arrays
      * )
      * </code>
      *
-     * @param array $elements
+     * @param array $array
      * @return array
      */
     static function flatten(array $array)
@@ -553,6 +553,17 @@ class Arrays
     }
 
     /**
+     * This method filter array will remove all values that are blank.
+     *
+     * @param array $elements
+     * @return array
+     */
+    public static function filterNotBlank(array $elements)
+    {
+        return array_filter($elements);
+    }
+
+    /**
      * Make array from element. Returns the given argument if it's already an array.
      *
      * Example:
@@ -681,9 +692,9 @@ class Arrays
      * @param array $array2
      * @return array
      */
-    public static function intersect(array $a1, array $a2)
+    public static function intersect(array $array1, array $array2)
     {
-        return array_intersect($a1, $a2);
+        return array_intersect($array1, $array2);
     }
 
     public static function setNestedValue(array &$array, array $keys, $value)
@@ -729,5 +740,4 @@ class Arrays
         }
         return true;
     }
-
 }
