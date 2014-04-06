@@ -3,6 +3,7 @@
 namespace Ouzo\Db;
 
 
+use Ouzo\Db;
 use Ouzo\Tests\Assert;
 
 class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
@@ -94,13 +95,13 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
     {
          //given
         $sql = "select * from users where surname = ?";
-        $params = array("' or '1' = '1");
+        $param = "' or '1' = '1";
 
         //when
-        $result = PreparedStatementEmulator::substitute($sql, $params);
+        $result = PreparedStatementEmulator::substitute($sql, array($param));
 
         //then
-        Assert::thatString($result)->isEqualTo("select * from users where surname = ''' or ''1'' = ''1'");
+        Assert::thatString($result)->isEqualTo("select * from users where surname = " . Db::getInstance()->_dbHandle->quote($param));
     }
 }
  
