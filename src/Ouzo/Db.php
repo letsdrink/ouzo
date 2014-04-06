@@ -51,17 +51,17 @@ class Db
         return Arrays::first($db->query("SELECT $functionName($paramsQueryString)", $parameters)->fetch());
     }
 
-    public function query($query, $params = array())
+    public function query($query, $params = array(), $options = array())
     {
-        return StatementExecutor::prepare($this->_dbHandle, $query, $params);
+        return StatementExecutor::prepare($this->_dbHandle, $query, $params, $options);
     }
 
     /**
      * Returns number of affected rows
      */
-    public function execute($query, $params = array())
+    public function execute($query, $params = array(), $options = array())
     {
-        return StatementExecutor::prepare($this->_dbHandle, $query, $params)->execute();
+        return StatementExecutor::prepare($this->_dbHandle, $query, $params, $options)->execute();
     }
 
     public function runInTransaction($callable)

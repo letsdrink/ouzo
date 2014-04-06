@@ -16,6 +16,7 @@ class Query
     public $whereClauses = array();
     public $joinClauses = array();
     public $type;
+    public $options = array();
 
     function __construct($type = null)
     {

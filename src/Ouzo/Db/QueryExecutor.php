@@ -77,7 +77,8 @@ class QueryExecutor
 
     private function _fetch($function)
     {
-        return StatementExecutor::prepare($this->_db->_dbHandle, $this->_sql, $this->_boundValues)->executeAndFetch($function, $this->_fetchStyle);
+        $statement = StatementExecutor::prepare($this->_db->_dbHandle, $this->_sql, $this->_boundValues, $this->_query->options);
+        return $statement->executeAndFetch($function, $this->_fetchStyle);
     }
 
     public function getSql()

@@ -17,8 +17,13 @@ class StatementExecutor
     private $_boundValues;
     private $_preparedQuery;
 
-    private function __construct($dbHandle, $sql, $boundValues)
+    private function __construct($dbHandle, $sql, $boundValues, $options)
     {
+        if (Arrays::getValue($options, Options::EMULATE_PREPARES)) {
+            $sql = PreparedStatementEmulator::substitute($sql, $boundValues);
+            $boundValues = array();
+        }
+
         $this->_boundValues = $boundValues;
         $this->_dbHandle = $dbHandle;
         $this->_sql = $sql;
@@ -129,8 +134,8 @@ class StatementExecutor
         return $this->_errorMessageFromErrorInfo($this->_dbHandle->errorInfo());
     }
 
-    public static function prepare($dbHandle, $sql, $boundValues)
+    public static function prepare($dbHandle, $sql, $boundValues, $options)
     {
-        return new StatementExecutor($dbHandle, $sql, $boundValues);
+        return new StatementExecutor($dbHandle, $sql, $boundValues, $options);
     }
 }

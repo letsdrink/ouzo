@@ -306,4 +306,10 @@ class ModelQueryBuilder
         return clone $this;
     }
 
+    function options(array $options)
+    {
+        $this->_query->options = $options;
+        return $this;
+    }
+
 }

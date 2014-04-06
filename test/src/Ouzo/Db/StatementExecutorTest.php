@@ -29,7 +29,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
     {
         //given
         Mock::when($this->pdoMock)->errorInfo()->thenReturn(array('HY000', '20102', 'Execution error'));
-        $executor = StatementExecutor::prepare($this->dbMock, 'SELECT 1', array());
+        $executor = StatementExecutor::prepare($this->dbMock, 'SELECT 1', array(), array());
 
         //when
         CatchException::when($executor)->execute();
@@ -46,7 +46,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
         //given
         Config::overrideProperty('sql_dialect')->with('\Ouzo\Db\Dialect\MySqlDialect');
         Mock::when($this->pdoMock)->errorInfo()->thenReturn(array('HY000', 2003, 'Execution error'));
-        $executor = StatementExecutor::prepare($this->dbMock, 'SELECT 1', array());
+        $executor = StatementExecutor::prepare($this->dbMock, 'SELECT 1', array(), array());
 
         //when
         CatchException::when($executor)->execute();
@@ -64,7 +64,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
         //given
         Config::overrideProperty('sql_dialect')->with('\Ouzo\Db\Dialect\PostgresDialect');
         Mock::when($this->pdoMock)->errorInfo()->thenReturn(array('57P01', 7, 'Execution error'));
-        $executor = StatementExecutor::prepare($this->dbMock, 'SELECT 1', array());
+        $executor = StatementExecutor::prepare($this->dbMock, 'SELECT 1', array(), array());
 
         //when
         CatchException::when($executor)->execute();

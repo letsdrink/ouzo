@@ -5,8 +5,10 @@ use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
 use Ouzo\Db\ModelQueryBuilder;
+use Ouzo\Db\Options;
 use Ouzo\Db\Relation;
 use Ouzo\Db\Stats;
+use Ouzo\Db;
 use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Tests\Assert;
@@ -16,6 +18,12 @@ use Ouzo\Utilities\Arrays;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $_SESSION = array();
+    }
+
     /**
      * @test
      */
@@ -1075,5 +1083,23 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertEquals('eric', $product->reload()->name);
         $this->assertEquals(1, $affectedRows);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSubstituteParams()
+    {
+        //given
+        Stats::reset();
+        $modelQueryBuilder = new ModelQueryBuilder(Product::metaInstance());
+
+        //when
+        $modelQueryBuilder->where(array('name' => 'bob'))->options(array(Options::EMULATE_PREPARES => true))->fetchAll();
+
+        //then
+        $query = Arrays::first(Arrays::first(Arrays::first(Stats::queries())));
+        Assert::thatString($query['query'])->isEqualTo( "SELECT products.* FROM products WHERE name = 'bob'");
+        Assert::thatArray($query['params'])->isEmpty();
     }
 }
