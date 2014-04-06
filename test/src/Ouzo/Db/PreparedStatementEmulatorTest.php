@@ -86,5 +86,21 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
         //then
         Assert::thatString($result)->isEqualTo("select * from users where name = 'bob?' and age = '26' and  surname = 'smith?'");
     }
+
+    /**
+     * @test
+     */
+    public function shouldQuoteParams()
+    {
+         //given
+        $sql = "select * from users where surname = ?";
+        $params = array("' or '1' = '1");
+
+        //when
+        $result = PreparedStatementEmulator::substitute($sql, $params);
+
+        //then
+        Assert::thatString($result)->isEqualTo("select * from users where surname = ''' or ''1'' = ''1'");
+    }
 }
  

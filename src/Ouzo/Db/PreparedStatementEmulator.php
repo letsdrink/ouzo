@@ -2,6 +2,7 @@
 
 namespace Ouzo\Db;
 
+use Ouzo\Db;
 use Ouzo\Utilities\Objects;
 
 class ParameterPlaceHolderCallback
@@ -37,7 +38,8 @@ class ParameterPlaceHolderCallback
         if (is_bool($value)) {
             return Objects::booleanToString($value);
         }
-        return "'$value'";
+        $value = Db::getInstance()->_dbHandle->quote($value);
+        return $value;
     }
 
     private function isInString()
