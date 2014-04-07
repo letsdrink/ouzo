@@ -7,9 +7,8 @@ use Ouzo\Utilities\Arrays;
 
 class PDOExceptionExtractor
 {
-    public static function getException($pdoStatement, $querySql)
+    public static function getException($errorInfo, $querySql)
     {
-        $errorInfo = $pdoStatement->errorInfo();
         $exceptionClassName = DialectFactory::create()->getExceptionForError($errorInfo);
         return new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
             $querySql,

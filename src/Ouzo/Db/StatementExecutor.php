@@ -2,9 +2,7 @@
 
 namespace Ouzo\Db;
 
-use Ouzo\DbException;
 use Ouzo\Logger\Logger;
-use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;
 
@@ -14,18 +12,18 @@ class StatementExecutor
     private $_humanizedSql;
     private $_dbHandle;
     private $_boundValues;
+    /**
+     * @var PDOExecutor
+     */
+    private $_pdoExecutor;
 
-    private function __construct($dbHandle, $sql, $boundValues, $options)
+    private function __construct($dbHandle, $sql, $boundValues, $pdoExecutor)
     {
-        if (Arrays::getValue($options, Options::EMULATE_PREPARES)) {
-            $sql = PreparedStatementEmulator::substitute($sql, $boundValues);
-            $boundValues = array();
-        }
-
         $this->_boundValues = $boundValues;
         $this->_dbHandle = $dbHandle;
         $this->_sql = $sql;
         $this->_humanizedSql = QueryHumanizer::humanize($sql);
+        $this->_pdoExecutor = $pdoExecutor;
     }
 
     private function _execute($afterCallback)
@@ -38,17 +36,13 @@ class StatementExecutor
 
     function _internalExecute($afterCallback)
     {
-        Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($this->_humanizedSql, Objects::toString($this->_boundValues)));
+        $sqlString = $this->_humanizedSql . ' with params: '. Objects::toString($this->_boundValues);
+        Logger::getLogger(__CLASS__)->info("Query: %s", array($sqlString));
 
-        $pdoStatement = $this->_createPDOStatement();
+        $pdoStatement = $this->_pdoExecutor->createPDOStatement($this->_dbHandle, $this->_sql, $this->_boundValues, $sqlString);
         $result = call_user_func($afterCallback, $pdoStatement);
+       // $pdoStatement->closeCursor();
         return $result;
-    }
-
-
-    public function _createQuerySql($humanizedSql)
-    {
-        return $humanizedSql . ' with params: (' . implode(', ', $this->_boundValues) . ')';
     }
 
     /**
@@ -78,33 +72,9 @@ class StatementExecutor
         return $this->executeAndFetch('fetchAll', $fetchMode);
     }
 
-    public function _createPDOStatement()
-    {
-        $queryString = $this->_createQuerySql($this->_humanizedSql);
-        $pdoStatement = $this->_dbHandle->prepare($this->_sql);
-
-        if (!$pdoStatement) {
-            throw new DbException('Exception: query: ' . $queryString . ' failed: ' . $this->lastDbErrorMessage());
-        }
-
-        foreach ($this->_boundValues as $key => $valueBind) {
-            $type = ParameterType::getType($valueBind);
-            $pdoStatement->bindValue($key + 1, $valueBind, $type);
-        }
-
-        if (!$pdoStatement->execute()) {
-            throw PDOExceptionExtractor::getException($pdoStatement, $queryString);
-        }
-        return $pdoStatement;
-    }
-
-    public function lastDbErrorMessage()
-    {
-        return PDOExceptionExtractor::errorMessageFromErrorInfo($this->_dbHandle->errorInfo());
-    }
-
     public static function prepare($dbHandle, $sql, $boundValues, $options)
     {
-        return new StatementExecutor($dbHandle, $sql, $boundValues, $options);
+        $pdoExecutor = PDOExecutor::newInstance($options);
+        return new StatementExecutor($dbHandle, $sql, $boundValues, $pdoExecutor);
     }
 }
