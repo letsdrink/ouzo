@@ -10,7 +10,7 @@ class EmulatedPDOPreparedStatementExecutor extends PDOExecutor
 
         $pdoStatement = $dbHandle->query($sql);
         if (!$pdoStatement) {
-            throw PDOExceptionExtractor::getException($pdoStatement->errorInfo(), $queryString);
+            throw PDOExceptionExtractor::getException($dbHandle->errorInfo(), $queryString);
         }
         return $pdoStatement;
     }
