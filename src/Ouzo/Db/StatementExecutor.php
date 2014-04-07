@@ -38,11 +38,6 @@ class StatementExecutor
         return $this->_boundValues;
     }
 
-    public function getPdoStatement()
-    {
-        return $this->_pdoStatement;
-    }
-
     private function _execute($afterCallback)
     {
         $obj = $this;
@@ -57,7 +52,7 @@ class StatementExecutor
 
         $this->_prepareAndBind();
 
-        return call_user_func($afterCallback);
+        return call_user_func($afterCallback, $this->_pdoStatement);
     }
 
 
@@ -71,17 +66,15 @@ class StatementExecutor
      */
     public function execute()
     {
-        $obj = $this;
-        return $this->_execute(function () use ($obj) {
-            return $obj->getPdoStatement()->rowCount();
+        return $this->_execute(function ($pdoStatement) {
+            return $pdoStatement->rowCount();
         });
     }
 
     public function executeAndFetch($function, $fetchStyle)
     {
-        $obj = $this;
-        return $this->_execute(function () use ($obj, $function, $fetchStyle) {
-            return $obj->getPdoStatement()->$function($fetchStyle);
+        return $this->_execute(function ($pdoStatement) use ($function, $fetchStyle) {
+            return $pdoStatement->$function($fetchStyle);
         });
     }
 
