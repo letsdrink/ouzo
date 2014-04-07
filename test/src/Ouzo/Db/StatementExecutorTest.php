@@ -5,9 +5,13 @@ namespace Ouzo\Db;
 use Ouzo\Config;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use PDOStatement;
 
 class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var PDOStatement
+     */
     private $pdoMock;
     private $dbMock;
 

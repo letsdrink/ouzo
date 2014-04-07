@@ -2,12 +2,12 @@
 
 namespace Ouzo\Db;
 
-use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\DbException;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;
+use PDOStatement;
 
 class StatementExecutor
 {
@@ -15,7 +15,10 @@ class StatementExecutor
     private $_humanizedSql;
     private $_dbHandle;
     private $_boundValues;
-    private $_preparedQuery;
+    /**
+     * @var PDOStatement
+     */
+    private $_pdoStatement;
 
     private function __construct($dbHandle, $sql, $boundValues, $options)
     {
@@ -35,9 +38,9 @@ class StatementExecutor
         return $this->_boundValues;
     }
 
-    public function getPreparedQuery()
+    public function getPdoStatement()
     {
-        return $this->_preparedQuery;
+        return $this->_pdoStatement;
     }
 
     private function _execute($afterCallback)
@@ -50,17 +53,10 @@ class StatementExecutor
 
     function _internalExecute($afterCallback)
     {
-        $this->_prepareAndBind();
-
         Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($this->_humanizedSql, Objects::toString($this->getBoundValues())));
 
-        $querySql = $this->_createQuerySql($this->_humanizedSql);
-        if (!$this->getPreparedQuery()) {
-            throw new DbException('Exception: query: ' . $querySql . ' failed: ' . $this->lastDbErrorMessage());
-        }
-        if (!$this->getPreparedQuery()->execute()) {
-            throw $this->_getException($querySql);
-        }
+        $this->_prepareAndBind();
+
         return call_user_func($afterCallback);
     }
 
@@ -70,17 +66,6 @@ class StatementExecutor
         return $humanizedSql . ' with params: (' . implode(', ', $this->_boundValues) . ')';
     }
 
-    public function _getException($querySql)
-    {
-        $errorInfo = $this->_preparedQuery->errorInfo();
-        $exceptionClassName = DialectFactory::create()->getExceptionForError($errorInfo);
-        return new $exceptionClassName(sprintf("Exception: query: %s failed: %s (%s)",
-            $querySql,
-            $this->_errorMessageFromErrorInfo($errorInfo),
-            $this->_errorCodesFromErrorInfo($errorInfo)
-        ));
-    }
-
     /**
      * Returns number of affected rows
      */
@@ -88,7 +73,7 @@ class StatementExecutor
     {
         $obj = $this;
         return $this->_execute(function () use ($obj) {
-            return $obj->getPreparedQuery()->rowCount();
+            return $obj->getPdoStatement()->rowCount();
         });
     }
 
@@ -96,7 +81,7 @@ class StatementExecutor
     {
         $obj = $this;
         return $this->_execute(function () use ($obj, $function, $fetchStyle) {
-            return $obj->getPreparedQuery()->$function($fetchStyle);
+            return $obj->getPdoStatement()->$function($fetchStyle);
         });
     }
 
@@ -112,26 +97,26 @@ class StatementExecutor
 
     public function _prepareAndBind()
     {
-        $this->_preparedQuery = $this->_dbHandle->prepare($this->_sql);
+        $queryString = $this->_createQuerySql($this->_humanizedSql);
+        $this->_pdoStatement = $this->_dbHandle->prepare($this->_sql);
+
+        if (!$this->_pdoStatement) {
+            throw new DbException('Exception: query: ' . $queryString . ' failed: ' . $this->lastDbErrorMessage());
+        }
+
         foreach ($this->_boundValues as $key => $valueBind) {
             $type = ParameterType::getType($valueBind);
-            $this->_preparedQuery->bindValue($key + 1, $valueBind, $type);
+            $this->_pdoStatement->bindValue($key + 1, $valueBind, $type);
         }
-    }
 
-    private function _errorMessageFromErrorInfo($errorInfo)
-    {
-        return Arrays::getValue($errorInfo, 2);
-    }
-
-    private function _errorCodesFromErrorInfo($errorInfo)
-    {
-        return Arrays::getValue($errorInfo, 0) . " " . Arrays::getValue($errorInfo, 1);
+        if (!$this->_pdoStatement->execute()) {
+            throw PDOExceptionExtractor::getException($this->_pdoStatement, $queryString);
+        }
     }
 
     public function lastDbErrorMessage()
     {
-        return $this->_errorMessageFromErrorInfo($this->_dbHandle->errorInfo());
+        return PDOExceptionExtractor::errorMessageFromErrorInfo($this->_dbHandle->errorInfo());
     }
 
     public static function prepare($dbHandle, $sql, $boundValues, $options)
