@@ -41,7 +41,7 @@ class StatementExecutor
 
         $pdoStatement = $this->_pdoExecutor->createPDOStatement($this->_dbHandle, $this->_sql, $this->_boundValues, $sqlString);
         $result = call_user_func($afterCallback, $pdoStatement);
-       // $pdoStatement->closeCursor();
+        $pdoStatement->closeCursor();
         return $result;
     }
 
