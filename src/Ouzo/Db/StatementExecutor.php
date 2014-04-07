@@ -7,7 +7,6 @@ use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;
-use PDOStatement;
 
 class StatementExecutor
 {
@@ -15,10 +14,6 @@ class StatementExecutor
     private $_humanizedSql;
     private $_dbHandle;
     private $_boundValues;
-    /**
-     * @var PDOStatement
-     */
-    private $_pdoStatement;
 
     private function __construct($dbHandle, $sql, $boundValues, $options)
     {
@@ -33,26 +28,21 @@ class StatementExecutor
         $this->_humanizedSql = QueryHumanizer::humanize($sql);
     }
 
-    public function getBoundValues()
-    {
-        return $this->_boundValues;
-    }
-
     private function _execute($afterCallback)
     {
         $obj = $this;
-        return Stats::trace($this->_humanizedSql, $this->getBoundValues(), function () use ($obj, $afterCallback) {
+        return Stats::trace($this->_humanizedSql, $this->_boundValues, function () use ($obj, $afterCallback) {
             return $obj->_internalExecute($afterCallback);
         });
     }
 
     function _internalExecute($afterCallback)
     {
-        Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($this->_humanizedSql, Objects::toString($this->getBoundValues())));
+        Logger::getLogger(__CLASS__)->info("Query: %s Params: %s", array($this->_humanizedSql, Objects::toString($this->_boundValues)));
 
-        $this->_prepareAndBind();
-
-        return call_user_func($afterCallback, $this->_pdoStatement);
+        $pdoStatement = $this->_createPDOStatement();
+        $result = call_user_func($afterCallback, $pdoStatement);
+        return $result;
     }
 
 
@@ -88,23 +78,24 @@ class StatementExecutor
         return $this->executeAndFetch('fetchAll', $fetchMode);
     }
 
-    public function _prepareAndBind()
+    public function _createPDOStatement()
     {
         $queryString = $this->_createQuerySql($this->_humanizedSql);
-        $this->_pdoStatement = $this->_dbHandle->prepare($this->_sql);
+        $pdoStatement = $this->_dbHandle->prepare($this->_sql);
 
-        if (!$this->_pdoStatement) {
+        if (!$pdoStatement) {
             throw new DbException('Exception: query: ' . $queryString . ' failed: ' . $this->lastDbErrorMessage());
         }
 
         foreach ($this->_boundValues as $key => $valueBind) {
             $type = ParameterType::getType($valueBind);
-            $this->_pdoStatement->bindValue($key + 1, $valueBind, $type);
+            $pdoStatement->bindValue($key + 1, $valueBind, $type);
         }
 
-        if (!$this->_pdoStatement->execute()) {
-            throw PDOExceptionExtractor::getException($this->_pdoStatement, $queryString);
+        if (!$pdoStatement->execute()) {
+            throw PDOExceptionExtractor::getException($pdoStatement, $queryString);
         }
+        return $pdoStatement;
     }
 
     public function lastDbErrorMessage()
