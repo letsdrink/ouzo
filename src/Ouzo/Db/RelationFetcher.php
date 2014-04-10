@@ -4,7 +4,6 @@ namespace Ouzo\Db;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
-use Ouzo\Utilities\Objects;
 
 class RelationFetcher
 {
@@ -20,7 +19,7 @@ class RelationFetcher
         $localKeyName = $this->_relation->getLocalKey();
         $localKeys = FluentArray::from($results)
             ->map(Functions::extractField($localKeyName))
-            ->filter(Functions::notEmpty())
+            ->filterNotBlank()
             ->unique()
             ->toArray();
 

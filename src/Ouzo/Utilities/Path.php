@@ -5,7 +5,7 @@ class Path
 {
     public static function join()
     {
-        $args = FluentArray::from(func_get_args())->filter(Functions::notBlank())->toArray();
+        $args = Arrays::filterNotBlank(func_get_args());
         return preg_replace('~[/\\\]+~', DIRECTORY_SEPARATOR, implode(DIRECTORY_SEPARATOR, $args));
     }
 

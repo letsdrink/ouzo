@@ -33,6 +33,12 @@ class FluentArray
         return $this;
     }
 
+    public function filterNotBlank()
+    {
+        $this->_array = array_filter($this->_array);
+        return $this;
+    }
+
     public function filterByKeys($function)
     {
         $this->_array = Arrays::filterByKeys($this->_array, $function);
