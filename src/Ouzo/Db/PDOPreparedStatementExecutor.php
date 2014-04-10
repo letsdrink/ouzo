@@ -9,7 +9,7 @@ class PDOPreparedStatementExecutor extends PDOExecutor
         $pdoStatement = $dbHandle->prepare($sql);
 
         if (!$pdoStatement) {
-            throw PDOExceptionExtractor::getException($pdoStatement->errorInfo(), $queryString);
+            throw PDOExceptionExtractor::getException($dbHandle->errorInfo(), $queryString);
         }
 
         foreach ($boundValues as $key => $valueBind) {

@@ -1,10 +1,10 @@
 <?php
 
-use Ouzo\Db\EmulatedPDOPreparedStatementExecutor;
+use Ouzo\Db\PDOPreparedStatementExecutor;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 
-class EmulatedPDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCase
+class PDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var PDOStatement
@@ -18,7 +18,7 @@ class EmulatedPDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCas
 
         $this->pdoMock = Mock::mock();
         $this->dbMock = Mock::mock();
-        Mock::when($this->pdoMock)->execute()->thenReturn(false);
+        Mock::when($this->dbMock)->prepare('SELECT 1')->thenReturn($this->pdoMock);
         Mock::when($this->dbMock)->errorInfo()->thenReturn(array(1, 3, 'Preparation error'));
     }
 
@@ -29,7 +29,7 @@ class EmulatedPDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCas
     {
         //given
         Mock::when($this->pdoMock)->errorInfo()->thenReturn(array('HY000', '20102', 'Execution error'));
-        $executor = new EmulatedPDOPreparedStatementExecutor();
+        $executor = new PDOPreparedStatementExecutor();
 
         //when
         CatchException::when($executor)->createPDOStatement($this->dbMock, 'sql', array(), 'sql string');
@@ -37,6 +37,5 @@ class EmulatedPDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCas
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
     }
-
 }
  
