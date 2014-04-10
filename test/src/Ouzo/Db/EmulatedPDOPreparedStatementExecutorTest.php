@@ -18,7 +18,7 @@ class EmulatedPDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCas
 
         $this->pdoMock = Mock::mock();
         $this->dbMock = Mock::mock();
-        Mock::when($this->pdoMock)->execute()->thenReturn(false);
+        Mock::when($this->pdoMock)->query(Mock::anyArgList())->thenReturn(false);
         Mock::when($this->dbMock)->errorInfo()->thenReturn(array(1, 3, 'Preparation error'));
     }
 
