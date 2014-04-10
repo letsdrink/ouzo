@@ -123,4 +123,13 @@ class Functions
             return Objects::toString($object);
         };
     }
+
+    /**
+     * @SuppressWarnings("unused")
+     * $type is just a hint for dynamicReturnType plugin
+     */
+    public static function extract($type = null)
+    {
+        return new Extractor();
+    }
 }

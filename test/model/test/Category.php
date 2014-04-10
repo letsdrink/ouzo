@@ -4,6 +4,10 @@ namespace Model\Test;
 use Ouzo\Db;
 use Ouzo\Model;
 
+/**
+ * @property string name
+ * @property Category parent
+ */
 class Category extends Model
 {
     //id is not required here but it should not cause errors (it's here just for a test)

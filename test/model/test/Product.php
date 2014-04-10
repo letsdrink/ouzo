@@ -3,6 +3,12 @@ namespace Model\Test;
 
 use Ouzo\Model;
 
+
+/**
+ * @property string description
+ * @property string name
+ * @property Category category
+ */
 class Product extends Model
 {
     private $_fields = array('description', 'name', 'id_category', 'id_manufacturer', 'sale');
@@ -32,5 +38,10 @@ class Product extends Model
     public function getDescription()
     {
         return 'This is product,';
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
     }
 }

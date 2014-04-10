@@ -24,6 +24,11 @@
             "class": "Ouzo\\Utilities\\DynamicProxy",
             "method": "newInstance",
             "position": 0
+        },
+        {
+            "class": "Ouzo\\Utilities\\Functions",
+            "method": "extract",
+            "position": 0
         }
     ],
     "functionCalls": []
