@@ -2,7 +2,13 @@
 
 namespace Ouzo\Utilities;
 
-
+/**
+ * Sample usage:
+ *
+ * <code>
+ *  $cities = Arrays::map($users, Functions::extract()->getAddress('home')->city);
+ * </code>
+ */
 class Extractor
 {
     private $_operations = array();
