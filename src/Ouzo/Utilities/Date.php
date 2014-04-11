@@ -49,4 +49,9 @@ class Date
     {
         return self::formatDate($date) . ' 23:59:59.9999';
     }
+
+    public static function formatTime($date, $format = 'H:i')
+    {
+        return self::formatDate($date, $format);
+    }
 }

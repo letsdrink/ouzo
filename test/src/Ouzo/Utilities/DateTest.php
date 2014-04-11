@@ -171,4 +171,19 @@ class DateTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('2013-09-09 23:59:59.9999', $begin);
     }
+
+    /**
+     * @test
+     */
+    public function shouldFormatTime()
+    {
+        //given
+        $date = '2013-09-09 13:03:43';
+
+        //when
+        $timeOnly = Date::formatTime($date);
+
+        //then
+        $this->assertEquals('13:03', $timeOnly);
+    }
 }
