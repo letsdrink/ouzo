@@ -404,4 +404,36 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('saveMyUserUsersPath', $routes[0]->getName());
     }
+
+    /**
+     * @test
+     */
+    public function shouldAddPutRoute()
+    {
+        //given
+        Route::put('/users/save', 'users#save');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('users', $routes[0]->getController());
+        $this->assertEquals('save', $routes[0]->getAction());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddDeleteRoute()
+    {
+        //given
+        Route::delete('/users/:id/delete', 'users#delete');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('users', $routes[0]->getController());
+        $this->assertEquals('delete', $routes[0]->getAction());
+    }
 }

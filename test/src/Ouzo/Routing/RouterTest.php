@@ -456,6 +456,45 @@ class RouterTest extends PHPUnit_Framework_TestCase
         ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('id' => '12'));
     }
 
+    /**
+     * @test
+     */
+    public function shouldFindRouteRulePut()
+    {
+        //given
+        Route::put('/user/index', 'user#index');
+        $router = $this->_createRouter('PUT', '/user/index');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('/user/index', $rule->getUri());
+        $this->assertEquals('PUT', $rule->getMethod());
+        $this->assertEquals('user', $rule->getController());
+        $this->assertEquals('index', $rule->getAction());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindRouteRuleDelete()
+    {
+        //given
+        Route::delete('/user/:id/delete', 'user#delete');
+        $router = $this->_createRouter('DELETE', '/user/12/delete');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('/user/:id/delete', $rule->getUri());
+        $this->assertEquals('DELETE', $rule->getMethod());
+        $this->assertEquals('user', $rule->getController());
+        $this->assertEquals('delete', $rule->getAction());
+        Assert::thatArray($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('id' => 12));
+    }
+
     public function requestMethods()
     {
         return array(
