@@ -1,4 +1,17 @@
 <?php
+namespace Ouzo\Api;
+
+use Ouzo\Controller;
+
+class SomeController extends Controller
+{
+    public function action()
+    {
+        $this->layout->renderAjax('some controller - action');
+        $this->layout->unsetLayout();
+    }
+}
+
 namespace Ouzo;
 
 use Exception;
@@ -478,5 +491,20 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
         ArrayAssert::that($queries['request_params'][0])->hasSize(1)->containsKeyAndValue(array('param' => 1));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleControllerInNamespace()
+    {
+        //given
+        Route::get('/api/some/action', 'api/some#action');
+
+        //when
+        $this->get('/api/some/action');
+
+        //then
+        $this->assertRenderedContent()->isEqualTo('some controller - action');
     }
 }
