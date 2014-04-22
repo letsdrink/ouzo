@@ -14,6 +14,8 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Functions;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
 {
@@ -580,6 +582,35 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertEquals($product->getId(), $orderProducts[0]->product->getId());
         $this->assertEquals($cars, $orderProducts[0]->product->category->parent);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchRelationThroughOneToManyRelation()
+    {
+        //given
+        $phones = Category::create(array('name' => 'phones'));
+        $sony = Manufacturer::create(array('name' => 'sony'));
+        Product::create(array('name' => 'best ever sony', 'id_category' => $phones->id, 'id_manufacturer' => $sony->id));
+
+        $tablets = Category::create(array('name' => 'tablets'));
+        $samsung = Manufacturer::create(array('name' => 'samsung'));
+        Product::create(array('name' => 'best ever samsung', 'id_category' => $tablets->id, 'id_manufacturer' => $samsung->id));
+
+        //when
+        $categories = Category::where()
+            ->with('products->manufacturer')
+            ->fetchAll();
+        Stats::reset();
+
+        //then
+        Assert::thatArray(FluentArray::from($categories)
+            ->map(Functions::extract()->products)
+            ->flatten()
+            ->map(Functions::extract()->manufacturer->name)->toArray())->containsOnly('sony', 'samsung');
+
+        $this->assertEquals(0, Stats::getNumberOfQueries()); //no lazily loaded relations
     }
 
     /**

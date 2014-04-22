@@ -20,6 +20,7 @@ class FieldTransformer
         if ($this->field) {
             $fields = FluentArray::from($results)
                 ->map(Functions::extractFieldRecursively($this->field))
+                ->flatten()
                 ->filterNotBlank()
                 ->toArray();
             $this->transformer->transform($fields);

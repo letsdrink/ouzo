@@ -5,6 +5,7 @@ use Ouzo\Db;
 use Ouzo\Model;
 
 /**
+ * @property int id
  * @property string name
  * @property Category parent
  */

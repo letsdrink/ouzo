@@ -16,7 +16,7 @@ class Extractor
     public function __get($field)
     {
         $this->_operations[] = function ($input) use ($field) {
-            return isset($input->$field) ? $input->$field : null;
+            return Objects::getValue($input, $field);
         };
         return $this;
     }

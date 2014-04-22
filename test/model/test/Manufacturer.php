@@ -4,6 +4,11 @@ namespace Model\Test;
 
 use Ouzo\Model;
 
+/**
+ * @property int id
+ * @property string name
+ * @property Product[] products
+ */
 class Manufacturer extends Model
 {
     private $_fields = array('name');
