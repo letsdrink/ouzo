@@ -438,6 +438,24 @@ class RouterTest extends PHPUnit_Framework_TestCase
         ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('file' => 'file_name.js'));
     }
 
+    /**
+     * @test
+     */
+    public function shouldFindRouteWithNamespace()
+    {
+        //given
+        Route::post('/api/users/:id/archive', 'api/users#archive');
+        $router = $this->_createRouter('POST', '/api/users/12/archive');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('api/users', $rule->getController());
+        $this->assertEquals('archive', $rule->getAction());
+        ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('id' => '12'));
+    }
+
     public function requestMethods()
     {
         return array(

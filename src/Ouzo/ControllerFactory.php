@@ -3,7 +3,7 @@ namespace Ouzo;
 
 use Exception;
 use Ouzo\Routing\RouteRule;
-use Ouzo\Utilities\Strings;
+use Ouzo\Utilities\ClassName;
 
 class ControllerFactory
 {
@@ -15,7 +15,7 @@ class ControllerFactory
     public function createController(RouteRule $routeRule)
     {
         $controller = $routeRule->getController();
-        $controllerName = Strings::underscoreToCamelCase($controller);
+        $controllerName = ClassName::pathToFullyQualifiedName($controller);
         $controller = $this->controllerPath . $controllerName . "Controller";
 
         $this->_validateControllerExists($controller);

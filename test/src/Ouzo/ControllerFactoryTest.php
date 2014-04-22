@@ -1,15 +1,28 @@
 <?php
+namespace Ouzo\Api;
+
+use Ouzo\Controller;
+
+class MultipleNsController extends Controller
+{
+    public function test_action()
+    {
+
+    }
+}
+
 namespace Ouzo;
 
 use Ouzo\Routing\RouteRule;
 use Ouzo\Tests\CatchException;
+use PHPUnit_Framework_TestCase;
 
 class SimpleTestController extends Controller
 {
 
 }
 
-class ControllerFactoryTest extends \PHPUnit_Framework_TestCase
+class ControllerFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -44,5 +57,21 @@ class ControllerFactoryTest extends \PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\ControllerNotFoundException');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldResolveControllerWithNamespace()
+    {
+        //given
+        $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', 'api/multiple_ns#test_action', true);
+        $factory = new ControllerFactory('\\Ouzo\\');
+
+        //when
+        $currentController = $factory->createController($routeRule);
+
+        //then
+        $this->assertInstanceOf('\Ouzo\Api\MultipleNsController', $currentController);
     }
 }
