@@ -33,6 +33,7 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_frontController->sessionInitializer = $this->_sessionInitializer;
         $this->_frontController->downloadHandler = $this->_downloadHandler;
         $this->_frontController->outputDisplayer = new MockOutputDisplayer();
+        $this->_frontController->headerSender = new MockHeaderSender();
     }
 
     public function get($url)
@@ -160,5 +161,16 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function getRenderedJsonAsArray()
     {
         return json_decode(RequestContext::getCurrentControllerObject()->layout->layoutContent(), true);
+    }
+
+    public function assertResponseHeader($expected)
+    {
+        $actual = $this->getResponseHeaders();
+        Assert::thatArray($actual)->contains($expected);
+    }
+
+    public function getResponseHeaders()
+    {
+        return $this->_frontController->headerSender->getHeaders();
     }
 }

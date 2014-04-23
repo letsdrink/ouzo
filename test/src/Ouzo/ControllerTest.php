@@ -29,6 +29,11 @@ class SimpleTestController extends Controller
         $this->layout->renderAjax(Arrays::firstOrNull(Session::get('messages')));
         $this->layout->unsetLayout();
     }
+
+    public function check_http_header()
+    {
+        $this->header('HTTP/1.1 200 OK');
+    }
 }
 
 class ControllerTest extends ControllerTestCase
@@ -142,5 +147,20 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertRenderedContent()->isEqualTo('Keep this');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsHeaderIsCorrectly()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        $this->get('/simple_test/check_http_header');
+
+        //then
+        $this->assertResponseHeader('HTTP/1.1 200 OK');
     }
 }

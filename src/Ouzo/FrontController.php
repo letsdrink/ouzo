@@ -20,6 +20,7 @@ class FrontController
     public $downloadHandler;
     public $outputDisplayer;
     public $httpAuthBasicHandler;
+    public $headerSender;
 
     public function __construct()
     {
@@ -33,6 +34,7 @@ class FrontController
         $this->controllerFactory = new ControllerFactory();
         $this->outputDisplayer = new OutputDisplayer();
         $this->httpAuthBasicHandler = new HttpAuthBasicHandler();
+        $this->headerSender = new HeaderSender();
     }
 
     public function init()
@@ -136,9 +138,7 @@ class FrontController
 
     private function _sendHeaders($headers)
     {
-        array_map(function ($header) {
-            header($header);
-        }, $headers);
+        $this->headerSender->send($headers);
     }
 
     private function _startOutputBuffer()
