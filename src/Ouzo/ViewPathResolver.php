@@ -16,7 +16,7 @@ class ViewPathResolver
             return '.ajax.phtml';
         }
 
-        switch (ContentType::getFromServer()) {
+        switch (ContentType::value()) {
             case 'text/xml':
                 return '.xml.phtml';
             case 'application/json':
