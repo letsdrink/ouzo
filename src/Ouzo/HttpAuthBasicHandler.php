@@ -20,6 +20,7 @@ class HttpAuthBasicHandler
         $validResponse = md5($A1 . ':' . $data['nonce'] . ':' . $data['nc'] . ':' . $data['cnonce'] . ':' . $data['qop'] . ':' . $A2);
 
         if ($data['response'] != $validResponse) {
+            header('HTTP/1.1 401 Unauthorized');
             die('Wrong Credentials!');
         }
         return true;
@@ -29,6 +30,7 @@ class HttpAuthBasicHandler
     {
         $data = $this->_httpDigestParse($_SERVER['PHP_AUTH_DIGEST']);
         if (!$data || $data['username'] != $login) {
+            header('HTTP/1.1 401 Unauthorized');
             die('Wrong Credentials!');
         }
     }
