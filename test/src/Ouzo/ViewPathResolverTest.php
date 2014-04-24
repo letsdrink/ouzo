@@ -48,4 +48,19 @@ class ViewPathResolverTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.ajax.phtml', $path);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnJsonPath()
+    {
+        //given
+        $_SERVER["CONTENT_TYPE"] = 'application/json';
+
+        //when
+        $path = ViewPathResolver::resolveViewPath('exception');
+
+        //then
+        $this->assertEquals(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.json.phtml', $path);
+    }
 }

@@ -16,7 +16,15 @@ class ViewPathResolver
         if (Uri::isAjax()) {
             return '.ajax.phtml';
         }
+
         $contentType = Arrays::first(explode(';', Arrays::getValue($_SERVER, 'CONTENT_TYPE')));
-        return $contentType == 'text/xml' ? '.xml.phtml' : '.phtml';
+        switch ($contentType) {
+            case 'text/xml':
+                return '.xml.phtml';
+            case 'application/json':
+                return '.json.phtml';
+            default:
+                return '.phtml';
+        }
     }
 }
