@@ -65,7 +65,7 @@ class Error
 
     private static function _renderNotFoundError($errorMessage, $errorTrace)
     {
-        self::_renderError($errorMessage, $errorTrace, "HTTP/1.0 404 Not Found", '404');
+        self::_renderError($errorMessage, $errorTrace, "HTTP/1.1 404 Not Found", '404');
     }
 
     private static function _renderError($errorMessage, $errorTrace, $header, $viewName)
@@ -77,6 +77,7 @@ class Error
             /** @noinspection PhpIncludeInspection */
             self::_clearOutputBuffers();
             header($header);
+            header('Content-type: ' . $_SERVER['CONTENT_TYPE']);
 
             /** @noinspection PhpIncludeInspection */
             require(ViewPathResolver::resolveViewPath($viewName));
