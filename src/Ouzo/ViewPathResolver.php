@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo;
 
-use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Path;
 
 class ViewPathResolver
@@ -17,11 +16,11 @@ class ViewPathResolver
             return '.ajax.phtml';
         }
 
-        $contentType = Arrays::first(explode(';', Arrays::getValue($_SERVER, 'CONTENT_TYPE')));
-        switch ($contentType) {
+        switch (ContentType::getFromServer()) {
             case 'text/xml':
                 return '.xml.phtml';
             case 'application/json':
+            case 'text/json':
                 return '.json.phtml';
             default:
                 return '.phtml';

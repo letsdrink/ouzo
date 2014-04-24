@@ -25,6 +25,7 @@ class FrontController
     public function __construct()
     {
         self::$requestId = uniqid();
+        ContentType::init();
 
         $this->_defaults = Config::getValue('global');
 

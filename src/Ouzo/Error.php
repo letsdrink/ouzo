@@ -77,7 +77,7 @@ class Error
             /** @noinspection PhpIncludeInspection */
             self::_clearOutputBuffers();
             header($header);
-            header('Content-type: ' . $_SERVER['CONTENT_TYPE']);
+            header('Content-type: ' . ContentType::value());
 
             /** @noinspection PhpIncludeInspection */
             require(ViewPathResolver::resolveViewPath($viewName));
