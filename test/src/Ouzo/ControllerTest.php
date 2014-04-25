@@ -24,9 +24,19 @@ class SimpleTestController extends Controller
         $this->notice(array('Keep this'), true);
     }
 
+    public function keep_set_url()
+    {
+        $this->notice(array('Keep this'), false, '/simple_test/read_kept');
+    }
+
+    public function do_not_keep()
+    {
+        $this->notice(array('Keep this'), false);
+    }
+
     public function read_kept()
     {
-        $this->layout->renderAjax(Arrays::firstOrNull(Session::get('messages')));
+        $this->layout->renderAjax(Arrays::firstOrNull(Session::has('messages') ? Session::get('messages') : array()));
         $this->layout->unsetLayout();
     }
 
@@ -147,6 +157,55 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertRenderedContent()->isEqualTo('Keep this');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotKeepNoticeToNextRequest()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/do_not_keep');
+
+        //when
+        $this->get('/simple_test/read_kept');
+
+        //then
+        $this->assertRenderedContent()->isEqualTo(null);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldKeepNoticeToFirstUrlVisit()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/keep_set_url');
+
+        //when
+        $this->get('/simple_test/read_kept');
+
+        //then
+        $this->assertRenderedContent()->isEqualTo('Keep this');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNoticeOnFirstUrlVisit()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/keep_set_url');
+
+        //when
+        $this->get('/simple_test/read_kept');
+        $this->get('/simple_test/read_kept');
+
+        //then
+        $this->assertRenderedContent()->isEqualTo(null);
     }
 
     /**

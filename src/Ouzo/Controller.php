@@ -53,7 +53,7 @@ class Controller
 
     public function redirect($url, $messages = array())
     {
-        $this->notice($messages);
+        $this->notice($messages, false, $url);
 
         $this->_redirectLocation = $url;
         $this->_statusResponse = 'redirect';
@@ -103,8 +103,11 @@ class Controller
 
     private function _removeMessages()
     {
-        if (!$this->_keepMessage) {
-            Session::remove('messages');
+        if (!$this->_keepMessage && Session::has('messages')) {
+            $messages = Arrays::filter(Session::get('messages'), function (Notice $notice) {
+                return !$notice->requestUrlMatches();
+            });
+            $this->saveMessagesWithEmptyCheck($messages);
         }
     }
 
@@ -114,10 +117,11 @@ class Controller
         $this->layout->renderAjax($view);
     }
 
-    public function notice($messages, $keep = false)
+    public function notice($messages, $keep = false, $url = null)
     {
         if (!empty($messages)) {
-            Session::set('messages', Arrays::toArray($messages));
+            $messages = $this->wrapAsNotices($messages, $url);
+            Session::set('messages', $messages);
             $this->_keepMessage = $keep;
         }
     }
@@ -153,6 +157,23 @@ class Controller
     public function getAuthCredentials()
     {
         return $this->_authCredentials;
+    }
+
+    private function wrapAsNotices($messages, $url)
+    {
+        $array = Arrays::toArray($messages);
+        return array_map(function ($msg) use ($url) {
+            return new Notice($msg, $url);
+        }, $array);
+    }
+
+    private function saveMessagesWithEmptyCheck($messages)
+    {
+        if (!$messages) {
+            Session::remove('messages');
+        } else {
+            Session::set('messages', $messages);
+        }
     }
 }
 
