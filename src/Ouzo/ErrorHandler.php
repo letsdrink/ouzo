@@ -37,9 +37,7 @@ class ErrorHandler
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
         if (self::stopsExecution($errno)) {
-            $e = new ErrorException($errstr, $errno, 0, $errfile, $errline);
-
-            self::_handleError($e);
+            self::_handleError(new ErrorException($errstr, $errno, 0, $errfile, $errline));
         } else {
             throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
         }

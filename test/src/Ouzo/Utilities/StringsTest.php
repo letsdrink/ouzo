@@ -444,4 +444,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertNull($result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldAppendPrefix()
+    {
+        //given
+        $string = 'Targaryen';
+
+        //when
+        $stringWithSuffix = Strings::appendPrefix($string, 'Daenerys ');
+
+        //then
+        $this->assertEquals('Daenerys Targaryen', $stringWithSuffix);
+    }
 }
