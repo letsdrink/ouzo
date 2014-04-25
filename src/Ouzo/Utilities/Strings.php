@@ -213,6 +213,28 @@ class Strings
     }
 
     /**
+     * Adds prefix to the string.
+     *
+     * Example:
+     * <code>
+     * $string = 'Targaryen';
+     * $stringWithSuffix = Strings::appendPrefix($string, 'Daenerys ');
+     * </code>
+     * Result:
+     * <code>
+     * Daenerys Targaryen
+     * </code>
+     *
+     * @param string $string
+     * @param string $prefix
+     * @return string
+     */
+    public static function appendPrefix($string, $prefix = '')
+    {
+        return $string ? $prefix . $string : $string;
+    }
+
+    /**
      * Converts a word into the format for an Ouzo table name. Converts 'ModelName' to 'model_names'.
      *
      * Example:
