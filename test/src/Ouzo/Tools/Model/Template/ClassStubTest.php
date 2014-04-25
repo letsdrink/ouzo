@@ -50,9 +50,7 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase
             ->addPlaceholderReplacement('fields', 'fields')
             ->addPlaceholderReplacement('properties', 'properties')
             ->addPlaceholderReplacement('class', 'class')
-            ->addPlaceholderReplacement('sequence', 'sequence')
-            ->addPlaceholderReplacement('primary', 'primary')
-            ->addPlaceholderReplacement('table', 'table');
+            ->addPlaceholderReplacement('table_setup', 'table_setup');
 
         //then
         $this->assertNotRegExp('/{(\w*)}/', $classStub->contents());

@@ -43,7 +43,8 @@ class ClassStub
     public function replacePlaceholders($replacement)
     {
         foreach ($replacement as $key => $value) {
-            $this->_stubContent = preg_replace("/{($key)}/", $value, $this->_stubContent);
+            $searchRegExp = ($value) ? "/{($key)}/" : "/\s*{($key)}*/";
+            $this->_stubContent = preg_replace($searchRegExp, $value, $this->_stubContent);
         }
         return $this;
     }

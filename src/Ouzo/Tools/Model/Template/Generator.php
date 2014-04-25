@@ -78,14 +78,9 @@ class Generator
 
     public function templateContents()
     {
-        $classStub = new ClassStub($this->_dialectShortName);
-        $classStub->addPlaceholderReplacement('sequence', $this->_adapter->sequence())
-            ->addPlaceholderReplacement('primary', $this->_adapter->primaryKey())
-            ->addPlaceholderReplacement('table', $this->_adapter->tableName())
-            ->addPlaceholderReplacement('class', $this->getTemplateClassName());
-        $columns = $this->_getColumnsWithoutPrimary();
-        Arrays::map($columns, array($classStub, 'addColumn'));
-        return $classStub->contents();
+        $tableInfo = new TableInfo($this->_adapter);
+        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo);
+        return $stubReplacer->contents();
     }
 
     public function saveToFile($fileName)
@@ -95,15 +90,6 @@ class Generator
         }
         file_put_contents($fileName, $this->templateContents());
     }
-
-    public function _getColumnsWithoutPrimary()
-    {
-        $primaryKeyName = $this->_adapter->primaryKey();
-        return Arrays::filter($this->_adapter->columns(), function (DatabaseColumn $column) use ($primaryKeyName) {
-            return ($column->name != $primaryKeyName);
-        });
-    }
-
 }
 
 class GeneratorException extends Exception

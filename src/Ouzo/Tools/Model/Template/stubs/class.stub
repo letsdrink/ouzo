@@ -4,8 +4,8 @@ namespace Model;
 use Ouzo\Model;
 
 /**
-{properties}*/
-
+{properties}
+*/
 class {class} extends Model
 {
     private $_fields = array({fields});
@@ -13,10 +13,11 @@ class {class} extends Model
     public function __construct($attributes = array())
     {
         parent::__construct(array(
-            'table' => '{table}',
-            'sequence' => '{sequence}',
-            'primaryKey' => '{primary}',
+            {table_table}
+            {table_primaryKey}
+            {table_sequence}
             'attributes' => $attributes,
-            'fields' => $this->_fields));
+            'fields' => $this->_fields
+        ));
     }
 }
