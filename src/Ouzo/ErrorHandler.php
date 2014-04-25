@@ -60,7 +60,7 @@ class ErrorHandler
     private static function _renderUserError($exception)
     {
         header("Contains-Error-Message: User");
-        self::_renderError($exception);
+        self::_renderError($exception, 'user_exception');
     }
 
     private static function _renderNotFoundError($exception)
@@ -68,7 +68,7 @@ class ErrorHandler
         self::_renderError($exception);
     }
 
-    private static function _renderError(OuzoExceptionData $exceptionData)
+    private static function _renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
     {
         try {
             $errorMessage = $exceptionData->getMessage();
@@ -81,7 +81,7 @@ class ErrorHandler
             header('Content-type: ' . ContentType::value());
 
             /** @noinspection PhpIncludeInspection */
-            require(ViewPathResolver::resolveViewPath('exception'));
+            require(ViewPathResolver::resolveViewPath($viewName));
         } catch (Exception $e) {
             echo "Framework critical error. Exception thrown in exception handler.<br>\n";
             echo "<hr>\n";
