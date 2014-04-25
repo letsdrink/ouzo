@@ -93,7 +93,7 @@ class OuzoExceptionData
 
     public function getHeader()
     {
-        return 'HTTP/1.1' . Arrays::getValue(self::$_messages, $this->_httpCode, '500 Internal Server Error');
+        return 'HTTP/1.1 ' . Arrays::getValue(self::$_messages, $this->_httpCode, '500 Internal Server Error');
     }
 
     public function getMessage()
