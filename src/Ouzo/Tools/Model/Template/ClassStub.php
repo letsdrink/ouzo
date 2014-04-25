@@ -5,6 +5,7 @@ namespace Ouzo\Tools\Model\Template;
 
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Path;
 
 class ClassStub
@@ -68,15 +69,10 @@ class ClassStub
     public function getFieldsAsString()
     {
         $fields = array_keys($this->_attributes);
-        $index = 0;
-        $escapedFields = Arrays::map($fields, function ($field) use (&$index) {
-            $field = "'$field'";
-            if (($index > 0) && ($index % ClassStub::FIELDS_COUNT_IN_LINE) == 0) {
-                $field = "\n\t\t\t$field";
-            }
-            $index++;
-            return $field;
-        });
+        $escapedFields = Arrays::map($fields, Functions::compose(Functions::append("'"), Functions::prepend("'")));
+        for($index = self::FIELDS_COUNT_IN_LINE; $index < sizeof($escapedFields); $index += self::FIELDS_COUNT_IN_LINE){
+            $escapedFields[$index] = "\n\t\t\t" . $escapedFields[$index];
+        }
         return implode(', ', $escapedFields);
     }
 
@@ -93,6 +89,4 @@ class ClassStub
         $this->replacePlaceholders($this->_getPlaceholderReplacements());
         return $this->_stubContent;
     }
-
-
 }
