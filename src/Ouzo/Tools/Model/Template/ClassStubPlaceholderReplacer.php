@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo\Tools\Model\Template;
 
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
 class ClassStubPlaceholderReplacer
@@ -29,6 +30,8 @@ class ClassStubPlaceholderReplacer
     public function contents()
     {
         $this->_setupTablePlaceholderReplacements();
+        $this->classStub->addPlaceholderReplacement('class', $this->className);
+        Arrays::map($this->tableInfo->tableColumns, array($this->classStub, 'addColumn'));
         return $this->classStub->contents();
     }
 

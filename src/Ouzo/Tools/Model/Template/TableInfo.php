@@ -22,7 +22,7 @@ class TableInfo
         $this->tableColumns = $this->_getColumnsWithoutPrimary($dialect);
     }
 
-    public function _getColumnsWithoutPrimary(Dialect $dialect)
+    private function _getColumnsWithoutPrimary(Dialect $dialect)
     {
         $primaryKeyName = $this->primaryKeyName;
         return Arrays::filter($dialect->columns(), function (DatabaseColumn $column) use ($primaryKeyName) {

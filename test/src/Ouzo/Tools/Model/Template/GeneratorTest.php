@@ -152,22 +152,6 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertContains('class Product extends Model', $template);
         $this->assertContains('string description', $template);
-        $this->assertContains("'table' => 'products'", $template);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnFieldsWithoutPrimaryKey()
-    {
-        //given
-        $generator = new Generator('products');
-
-        //when
-        $columns = $generator->_getColumnsWithoutPrimary();
-
-        //then
-        Assert::thatArray($columns)->onProperty('name')->containsOnly('sale', 'description', 'name', 'id_manufacturer', 'id_category');
     }
 }
 

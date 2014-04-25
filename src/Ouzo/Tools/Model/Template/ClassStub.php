@@ -15,16 +15,15 @@ class ClassStub
 
     const FIELDS_COUNT_IN_LINE = 7;
 
-    function __construct($dialectName = '')
+    function __construct()
     {
-        $stubFilePath = $this->_getStubFilePath($dialectName);
+        $stubFilePath = $this->_getStubFilePath();
         $this->_stubContent = file_get_contents($stubFilePath);
     }
 
-    private function _getStubFilePath($dialectName)
+    private function _getStubFilePath()
     {
-        $suffix = $dialectName ? ".$dialectName" : '';
-        $stubFileName = 'class.stub' . $suffix;
+        $stubFileName = 'class.stub';
         return Path::join(__DIR__, 'stubs', $stubFileName);
     }
 
