@@ -63,16 +63,16 @@ class OuzoExceptionData
     private $_errors;
     private $_stackTrace;
 
-    function __construct($_httpCode, $_errors, $_stackTrace)
+    function __construct($httpCode, $errors, $stackTrace)
     {
-        $this->_errors = $_errors;
-        $this->_httpCode = $_httpCode;
-        $this->_stackTrace = $_stackTrace;
+        $this->_errors = $errors;
+        $this->_httpCode = $httpCode;
+        $this->_stackTrace = $stackTrace;
     }
 
-    public static function forException($_httpCode, Exception $exception)
+    public static function forException($httpCode, Exception $exception)
     {
-        return new OuzoExceptionData($_httpCode, array(Error::forException($exception)), $exception->getTraceAsString());
+        return new OuzoExceptionData($httpCode, array(Error::forException($exception)), $exception->getTraceAsString());
     }
 
 
