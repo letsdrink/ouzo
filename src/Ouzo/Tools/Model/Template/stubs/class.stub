@@ -5,7 +5,7 @@ use Ouzo\Model;
 
 /**
 {properties}
-*/
+ */
 class {class} extends Model
 {
     private $_fields = array({fields});

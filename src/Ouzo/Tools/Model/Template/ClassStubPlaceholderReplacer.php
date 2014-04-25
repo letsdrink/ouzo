@@ -40,14 +40,14 @@ class ClassStubPlaceholderReplacer
         $tableName = $this->tableInfo->tableName;
         $defaultTableName = Strings::tableize($this->className);
         $placeholderTableName = ($tableName != $defaultTableName) ? $tableName : '';
-        $this->_addTableSetupItem('table', $placeholderTableName);
+        $this->classStub->addTableSetupItem('table', $placeholderTableName);
     }
 
     private function _setupPrimaryKeyReplacement()
     {
         $primaryKey = $this->tableInfo->primaryKeyName;
         $placeholderPrimaryKey = ($primaryKey != 'id') ? $primaryKey : '';
-        $this->_addTableSetupItem('primaryKey', $placeholderPrimaryKey);
+        $this->classStub->addTableSetupItem('primaryKey', $placeholderPrimaryKey);
     }
 
     private function _setupSequenceReplacement()
@@ -55,14 +55,6 @@ class ClassStubPlaceholderReplacer
         $sequenceName = $this->tableInfo->sequenceName;
         $defaultSequenceName = $this->tableInfo->tableName . '_' . $this->tableInfo->primaryKeyName . '_seq';
         $placeholderSequenceName = ($sequenceName != $defaultSequenceName) ? $sequenceName : '';
-        $this->_addTableSetupItem('sequence', $placeholderSequenceName);
-    }
-
-    private function _addTableSetupItem($name, $value)
-    {
-        if ($value) {
-            $value = sprintf("'%s' => '%s',", $name, $value);
-        }
-        $this->classStub->addPlaceholderReplacement("table_$name", $value);
+        $this->classStub->addTableSetupItem('sequence', $placeholderSequenceName);
     }
 }

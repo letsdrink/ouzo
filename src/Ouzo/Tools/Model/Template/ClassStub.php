@@ -39,6 +39,14 @@ class ClassStub
         return $this;
     }
 
+    public function addTableSetupItem($name, $value)
+    {
+        if ($value) {
+            $value = sprintf("'%s' => '%s',", $name, $value);
+        }
+        $this->addPlaceholderReplacement("table_$name", $value);
+    }
+
     public function replacePlaceholders($replacement)
     {
         foreach ($replacement as $key => $value) {
@@ -50,11 +58,11 @@ class ClassStub
 
     public function getPropertiesAsString()
     {
-        $propertiesString = '';
+        $properties = array();
         foreach ($this->_attributes as $name => $type) {
-            $propertiesString .= " * @property $type $name\n";
+            $properties[] = " * @property $type $name";
         }
-        return $propertiesString;
+        return implode("\n", $properties);
     }
 
     public function getFieldsAsString()
