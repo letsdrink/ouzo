@@ -26,6 +26,7 @@ class ViewPathResolverTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $_SERVER["CONTENT_TYPE"] = 'text/xml;encoding';
+        ContentType::init();
 
         //when
         $path = ViewPathResolver::resolveViewPath('exception');
@@ -56,6 +57,7 @@ class ViewPathResolverTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $_SERVER["CONTENT_TYPE"] = 'application/json';
+        ContentType::init();
 
         //when
         $path = ViewPathResolver::resolveViewPath('exception');
