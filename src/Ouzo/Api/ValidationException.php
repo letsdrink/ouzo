@@ -1,14 +1,14 @@
 <?php
 namespace Ouzo\Api;
 
-use Exception;
+use Ouzo\ExceptionHandling\OuzoException;
 
-class ValidationException extends Exception
+class ValidationException extends OuzoException
 {
     const HTTP_CODE = 400;
 
-    function __construct($message, $code = 0, Exception $previous = null)
+    public function __construct($errors)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct(self::HTTP_CODE, $errors);
     }
 }

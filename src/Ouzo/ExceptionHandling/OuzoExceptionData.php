@@ -23,7 +23,6 @@ class OuzoExceptionData
         return new OuzoExceptionData($httpCode, array(Error::forException($exception)), $exception->getTraceAsString());
     }
 
-
     public function getErrors()
     {
         return $this->_errors;

@@ -20,6 +20,8 @@ class ErrorHandler
             self::_renderUserError(OuzoExceptionData::forException(500, $exception));
         } elseif ($exception instanceof RouterException) {
             self::_renderNotFoundError(OuzoExceptionData::forException(404, $exception));
+        } elseif ($exception instanceof OuzoException) {
+            self::_handleError($exception->asExceptionData());
         } else {
             self::_handleError(OuzoExceptionData::forException(500, $exception));
         }

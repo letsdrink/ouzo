@@ -18,4 +18,9 @@ class Error
     {
         return new Error($exception->getCode(), $exception->getMessage());
     }
+
+    public function toArray()
+    {
+        return array('message' => $this->message, 'code' => $this->code);
+    }
 }
