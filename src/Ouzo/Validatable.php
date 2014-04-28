@@ -59,7 +59,7 @@ class Validatable
     public function validateNotBlank($value, $errorMessage, $errorField = null)
     {
         if (Strings::isBlank($value)) {
-            $this->_addError($errorMessage);
+            $this->error($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -67,7 +67,7 @@ class Validatable
     public function validateTrue($value, $errorMessage, $errorField = null)
     {
         if (!$value) {
-            $this->_addError($errorMessage);
+            $this->error($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -75,7 +75,7 @@ class Validatable
     public function validateUnique(array $values, $errorMessage, $errorField = null)
     {
         if (count($values) != count(array_unique($values))) {
-            $this->_addError($errorMessage);
+            $this->error($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -83,7 +83,7 @@ class Validatable
     public function validateDateTime($value, $errorMessage, $errorField = null)
     {
         if (!strtotime($value)) {
-            $this->_addError($errorMessage);
+            $this->error($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -91,7 +91,7 @@ class Validatable
     public function validateStringMaxLength($value, $maxLength, $errorMessage, $errorField = null)
     {
         if ((strlen($value) - 1) > $maxLength) {
-            $this->_addError($errorMessage);
+            $this->error($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -99,13 +99,13 @@ class Validatable
     public function validateNotEmpty($value, $errorMessage, $errorField = null)
     {
         if (empty($value)) {
-            $this->_addError($errorMessage);
+            $this->error($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
 
-    protected function _addError($error)
+    protected function error($error, $code = 0)
     {
-        $this->_errors[] = $error instanceof Error ? $error : new Error(0, $error);
+        $this->_errors[] = $error instanceof Error ? $error : new Error($code, $error);
     }
 }

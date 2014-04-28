@@ -30,7 +30,7 @@ class Product extends Model
     {
         parent::validate();
         if (!$this->name) {
-            parent::_addError('Empty name');
+            parent::error('Empty name');
             $this->_errorFields[] = 'name';
         }
     }
