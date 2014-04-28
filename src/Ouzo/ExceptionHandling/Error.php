@@ -1,5 +1,5 @@
 <?php
-namespace Ouzo;
+namespace Ouzo\ExceptionHandling;
 
 use Exception;
 

@@ -1,11 +1,14 @@
 <?php
-namespace Ouzo;
+namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
 use Exception;
+use Ouzo\ContentType;
 use Ouzo\Logger\Logger;
 use Ouzo\Routing\RouterException;
+use Ouzo\UserException;
 use Ouzo\Utilities\Objects;
+use Ouzo\ViewPathResolver;
 
 class ErrorHandler
 {
