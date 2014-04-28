@@ -5,19 +5,19 @@ use Exception;
 
 class OuzoException extends Exception
 {
-    private $_httCode;
+    private $_httpCode;
     private $_errors;
 
-    public function __construct($httCode, $errors)
+    public function __construct($httpCode, $errors)
     {
-        $this->_httCode = $httCode;
+        $this->_httpCode = $httpCode;
         $this->_errors = $errors;
         parent::__construct();
     }
 
-    public function getHttCode()
+    public function getHttpCode()
     {
-        return $this->_httCode;
+        return $this->_httpCode;
     }
 
     public function getErrors()
@@ -27,6 +27,6 @@ class OuzoException extends Exception
 
     public function asExceptionData()
     {
-        return new OuzoExceptionData($this->_httCode, $this->_errors, $this->getTraceAsString());
+        return new OuzoExceptionData($this->_httpCode, $this->_errors, $this->getTraceAsString());
     }
 }

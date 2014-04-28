@@ -1,6 +1,9 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\ExceptionHandling\Error;
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Strings;
 
 class Validatable
@@ -16,6 +19,11 @@ class Validatable
     }
 
     public function getErrors()
+    {
+        return Arrays::map($this->_errors, Functions::extractField('message'));
+    }
+
+    public function getErrorObjects()
     {
         return $this->_errors;
     }
@@ -34,7 +42,7 @@ class Validatable
     public function validateAssociated(Validatable $validatable)
     {
         $validatable->validate();
-        $this->_errors = array_merge($this->_errors, $validatable->getErrors());
+        $this->_errors = array_merge($this->getErrorObjects(), $validatable->getErrorObjects());
         $this->_errorFields = array_merge($this->_errorFields, $validatable->getErrorFields());
     }
 
@@ -51,7 +59,7 @@ class Validatable
     public function validateNotBlank($value, $errorMessage, $errorField = null)
     {
         if (Strings::isBlank($value)) {
-            $this->_errors[] = $errorMessage;
+            $this->_addError($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -59,7 +67,7 @@ class Validatable
     public function validateTrue($value, $errorMessage, $errorField = null)
     {
         if (!$value) {
-            $this->_errors[] = $errorMessage;
+            $this->_addError($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -67,7 +75,7 @@ class Validatable
     public function validateUnique(array $values, $errorMessage, $errorField = null)
     {
         if (count($values) != count(array_unique($values))) {
-            $this->_errors[] = $errorMessage;
+            $this->_addError($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -75,7 +83,7 @@ class Validatable
     public function validateDateTime($value, $errorMessage, $errorField = null)
     {
         if (!strtotime($value)) {
-            $this->_errors[] = $errorMessage;
+            $this->_addError($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -83,7 +91,7 @@ class Validatable
     public function validateStringMaxLength($value, $maxLength, $errorMessage, $errorField = null)
     {
         if ((strlen($value) - 1) > $maxLength) {
-            $this->_errors[] = $errorMessage;
+            $this->_addError($errorMessage);
             $this->_errorFields[] = $errorField;
         }
     }
@@ -91,8 +99,13 @@ class Validatable
     public function validateNotEmpty($value, $errorMessage, $errorField = null)
     {
         if (empty($value)) {
-            $this->_errors[] = $errorMessage;
+            $this->_addError($errorMessage);
             $this->_errorFields[] = $errorField;
         }
+    }
+
+    protected function _addError($error)
+    {
+        $this->_errors[] = $error instanceof Error ? $error : new Error(0, $error);
     }
 }
