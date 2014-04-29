@@ -84,4 +84,16 @@ class StringAssert
         PHPUnit_Framework_Assert::assertEquals($length, mb_strlen($this->_actual));
         return $this;
     }
+
+    public function isNull()
+    {
+        PHPUnit_Framework_Assert::assertNull($this->_actual);
+        return $this;
+    }
+
+    public function isNotNull()
+    {
+        PHPUnit_Framework_Assert::assertNotNull($this->_actual);
+        return $this;
+    }
 } 

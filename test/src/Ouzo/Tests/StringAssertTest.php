@@ -19,7 +19,7 @@ class StringAssertTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldMatchRegex()
     {
-       Assert::thatString("Frodo12")->matches('/Fro\w+\d+/');
+        Assert::thatString("Frodo12")->matches('/Fro\w+\d+/');
     }
 
     /**
@@ -165,5 +165,20 @@ class StringAssertTest extends \PHPUnit_Framework_TestCase
 
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsStringIsNull()
+    {
+        Assert::thatString(null)->isNull();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsStringIsNotNull()
+    {
+        Assert::thatString('Floki')->isNotNull();
+    }
 }
- 
