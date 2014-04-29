@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Exception;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\ClassName;
@@ -148,12 +149,6 @@ class Controller
         throw new NoControllerActionException('No action [' . $name . '] defined in controller [' . get_called_class() . '].');
     }
 
-    public function httpAuthBasic($login, $password)
-    {
-        $this->setStatusResponse('httpAuthBasic');
-        $this->_authCredentials = array('login' => $login, 'password' => $password);
-    }
-
     public function getAuthCredentials()
     {
         return $this->_authCredentials;
@@ -177,6 +172,6 @@ class Controller
     }
 }
 
-class NoControllerActionException extends \Exception
+class NoControllerActionException extends Exception
 {
 }
