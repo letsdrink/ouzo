@@ -2,6 +2,7 @@
 namespace Ouzo\ExceptionHandling;
 
 use Exception;
+use Ouzo\Utilities\Arrays;
 
 class OuzoException extends Exception
 {
@@ -11,7 +12,7 @@ class OuzoException extends Exception
     public function __construct($httpCode, $errors)
     {
         $this->_httpCode = $httpCode;
-        $this->_errors = $errors;
+        $this->_errors = Arrays::toArray($errors);
         parent::__construct();
     }
 
