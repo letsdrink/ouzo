@@ -34,7 +34,6 @@ class FrontController
         $this->downloadHandler = new DownloadHandler();
         $this->controllerFactory = new ControllerFactory();
         $this->outputDisplayer = new OutputDisplayer();
-        $this->httpAuthBasicHandler = new HttpAuthBasicHandler();
         $this->headerSender = new HeaderSender();
     }
 
@@ -127,12 +126,6 @@ class FrontController
                 break;
             case 'stream':
                 $this->downloadHandler->streamMediaFile($controller->getFileData());
-                break;
-            case 'httpAuthBasic':
-                $credentials = $controller->getAuthCredentials();
-                $this->httpAuthBasicHandler->authenticate($credentials['login'], $credentials['password']);
-                $controller->display();
-                $this->_showOutputBuffer();
                 break;
         }
     }

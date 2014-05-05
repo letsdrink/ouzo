@@ -1,5 +1,5 @@
 <?php
-namespace Ouzo;
+namespace Ouzo\ExceptionHandling;
 
 use Exception;
 
@@ -17,5 +17,10 @@ class Error
     public static function forException(Exception $exception)
     {
         return new Error($exception->getCode(), $exception->getMessage());
+    }
+
+    public function toArray()
+    {
+        return array('message' => $this->message, 'code' => $this->code);
     }
 }

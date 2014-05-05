@@ -168,6 +168,14 @@ class RouteRule
 
     private function _getNameToNonRest()
     {
-        return $this->getAction() . '_' . $this->getController();
+        return $this->getAction() . '_' . $this->_handleNestedResource();
+    }
+
+    private function _handleNestedResource()
+    {
+        $controller = $this->getController();
+        $parts = explode('/', $controller);
+        rsort($parts);
+        return implode('_', $parts);
     }
 }

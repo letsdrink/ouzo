@@ -3,9 +3,9 @@ namespace Ouzo\Api;
 
 use Ouzo\ExceptionHandling\OuzoException;
 
-class ValidationException extends OuzoException
+class NotFoundException extends OuzoException
 {
-    const HTTP_CODE = 400;
+    const HTTP_CODE = 404;
 
     public function __construct($errors)
     {

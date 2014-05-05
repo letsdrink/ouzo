@@ -20,9 +20,9 @@ class Bootstrap
 
     public function runApplication()
     {
-        set_exception_handler('\Ouzo\ErrorHandler::exceptionHandler');
-        set_error_handler('\Ouzo\ErrorHandler::errorHandler');
-        register_shutdown_function('\Ouzo\ErrorHandler::shutdownHandler');
+        set_exception_handler('\Ouzo\ExceptionHandling\ErrorHandler::exceptionHandler');
+        set_error_handler('\Ouzo\ExceptionHandling\ErrorHandler::errorHandler');
+        register_shutdown_function('\Ouzo\ExceptionHandling\ErrorHandler::shutdownHandler');
 
         $loader = new Loader();
         $loader

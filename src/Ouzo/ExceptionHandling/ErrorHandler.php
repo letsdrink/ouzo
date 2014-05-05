@@ -1,11 +1,14 @@
 <?php
-namespace Ouzo;
+namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
 use Exception;
+use Ouzo\ContentType;
 use Ouzo\Logger\Logger;
 use Ouzo\Routing\RouterException;
+use Ouzo\UserException;
 use Ouzo\Utilities\Objects;
+use Ouzo\ViewPathResolver;
 
 class ErrorHandler
 {
@@ -17,6 +20,8 @@ class ErrorHandler
             self::_renderUserError(OuzoExceptionData::forException(500, $exception));
         } elseif ($exception instanceof RouterException) {
             self::_renderNotFoundError(OuzoExceptionData::forException(404, $exception));
+        } elseif ($exception instanceof OuzoException) {
+            self::_handleError($exception->asExceptionData());
         } else {
             self::_handleError(OuzoExceptionData::forException(500, $exception));
         }
@@ -54,7 +59,7 @@ class ErrorHandler
 
     private static function _handleError($exception)
     {
-        self::_renderError($exception, 'exception');
+        self::_renderError($exception);
     }
 
     private static function _renderUserError($exception)
@@ -65,10 +70,10 @@ class ErrorHandler
 
     private static function _renderNotFoundError($exception)
     {
-        self::_renderError($exception, '404');
+        self::_renderError($exception);
     }
 
-    private static function _renderError(OuzoExceptionData $exceptionData, $viewName)
+    private static function _renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
     {
         try {
             $errorMessage = $exceptionData->getMessage();

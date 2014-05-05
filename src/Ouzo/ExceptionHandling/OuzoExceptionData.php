@@ -1,5 +1,5 @@
 <?php
-namespace Ouzo;
+namespace Ouzo\ExceptionHandling;
 
 use Exception;
 use Ouzo\Http\ResponseMapper;
@@ -22,7 +22,6 @@ class OuzoExceptionData
     {
         return new OuzoExceptionData($httpCode, array(Error::forException($exception)), $exception->getTraceAsString());
     }
-
 
     public function getErrors()
     {

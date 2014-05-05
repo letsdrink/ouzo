@@ -219,4 +219,33 @@ FUNCT;
         $this->assertEquals($generator->getGeneratedFunctions(), file_get_contents($path));
         unlink($path);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateCorrectNestedResources()
+    {
+        //given
+        Route::get('/api/users/:id/orders', 'api/users#orders');
+
+        //when
+        $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
+
+        //then
+        $expected = <<<FUNCT
+<?php
+function checkParameter(\$parameter) {
+\tif (!isset(\$parameter)) {
+\t\tthrow new \InvalidArgumentException("Missing parameters");
+\t}
+}
+
+function ordersUsersApiPath(\$id)
+{
+	checkParameter(\$id);
+	return url("/api/users/\$id/orders");
+}
+FUNCT;
+        $this->assertEquals($expected, $generated);
+    }
 }

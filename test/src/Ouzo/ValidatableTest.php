@@ -1,13 +1,16 @@
 <?php
-
+use Ouzo\ExceptionHandling\Error;
 use Ouzo\Tests\Assert;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Validatable;
 
 class ValidatableChild extends Validatable
 {
     function __construct($errors = array(), $errorFields = array())
     {
-        $this->_errors = $errors;
+        $this->_errors = Arrays::map($errors, function ($error) {
+            return new Error(0, $error);
+        });
         $this->_errorFields = $errorFields;
     }
 
@@ -23,7 +26,9 @@ class ValidatableParent extends Validatable
 
     function __construct($child, $errors = array(), $errorFields = array())
     {
-        $this->_errors = $errors;
+        $this->_errors = Arrays::map($errors, function ($error) {
+            return new Error(0, $error);
+        });
         $this->_errorFields = $errorFields;
         $this->child = $child;
     }

@@ -17,7 +17,7 @@ class FluentArray
 
     public function map($function)
     {
-        $this->_array = array_map($function, $this->_array);
+        $this->_array = Arrays::map($this->_array, $function);
         return $this;
     }
 
@@ -29,13 +29,13 @@ class FluentArray
 
     public function filter($function)
     {
-        $this->_array = array_filter($this->_array, $function);
+        $this->_array = Arrays::filter($this->_array, $function);
         return $this;
     }
 
     public function filterNotBlank()
     {
-        $this->_array = array_filter($this->_array);
+        $this->_array = Arrays::filterNotBlank($this->_array);
         return $this;
     }
 
@@ -94,7 +94,7 @@ class FluentArray
 
     public function firstOr($default)
     {
-        return Arrays::firstOrNull($this->_array) ?: $default;
+        return Arrays::firstOrNull($this->_array) ? : $default;
     }
 
     public function toJson()
