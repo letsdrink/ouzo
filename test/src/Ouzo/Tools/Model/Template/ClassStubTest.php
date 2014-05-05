@@ -50,6 +50,7 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase
             ->addPlaceholderReplacement('fields', 'fields')
             ->addPlaceholderReplacement('properties', 'properties')
             ->addPlaceholderReplacement('class', 'class')
+            ->addPlaceholderReplacement('namespace', '/User')
             ->addPlaceholderReplacement('table_table', 'table_table')
             ->addPlaceholderReplacement('table_primaryKey', 'table_primaryKey')
             ->addPlaceholderReplacement('table_sequence', 'table_sequence');

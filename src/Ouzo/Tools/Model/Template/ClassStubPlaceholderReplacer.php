@@ -12,11 +12,13 @@ class ClassStubPlaceholderReplacer
     private $tableInfo;
     private $className;
     private $classStub;
+    private $classNamespace;
 
-    function __construct($className, $tableInfo)
+    function __construct($className, $tableInfo, $classNamespace = '')
     {
         $this->className = $className;
         $this->tableInfo = $tableInfo;
+        $this->classNamespace = $classNamespace;
         $this->classStub = new ClassStub();
     }
 
@@ -31,6 +33,7 @@ class ClassStubPlaceholderReplacer
     {
         $this->_setupTablePlaceholderReplacements();
         $this->classStub->addPlaceholderReplacement('class', $this->className);
+        $this->classStub->addPlaceholderReplacement('namespace', $this->classNamespace);
         Arrays::map($this->tableInfo->tableColumns, array($this->classStub, 'addColumn'));
         return $this->classStub->contents();
     }

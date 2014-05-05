@@ -3,8 +3,8 @@ namespace Ouzo\Tools\Model\Template;
 
 use Exception;
 use Ouzo\Config;
-use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
+use Ouzo\Db;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Inflector;
@@ -17,11 +17,13 @@ class Generator
     private $_adapter;
     private $_dialectShortName;
     private $_tablePrefix;
+    private $_nameSpace;
 
-    function __construct($tableName, $className = null, $tablePrefix = 't')
+    function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't')
     {
         $this->_tableName = $tableName;
         $this->_className = $className;
+        $this->_nameSpace = $nameSpace;
         $this->_tablePrefix = $tablePrefix;
         $this->_adapter = $this->dialectAdapter();
         $this->_dialectShortName = $this->_getDialectShortName($this->_adapter);
@@ -69,17 +71,17 @@ class Generator
 
     public function getTemplateClassName()
     {
-        $parts = explode('_', $this->_tableName);
-        $parts = $this->_removeTablePrefix($parts);
-        $parts[] = Inflector::singularize(array_pop($parts));
-        $parts = Arrays::map($parts, 'ucfirst');
-        return implode('', $parts);
+        if ($this->_className) {
+            return $this->_tableName;
+        } else {
+            return $this->_classNameFromTableName();
+        }
     }
 
     public function templateContents()
     {
         $tableInfo = new TableInfo($this->_adapter);
-        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo);
+        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo, $this->getClassNamespace());
         return $stubReplacer->contents();
     }
 
@@ -88,7 +90,34 @@ class Generator
         if (is_file($fileName)) {
             throw new GeneratorException("File already exists '$fileName'.");
         }
+        $this->_preparePaths(dirname($fileName));
         file_put_contents($fileName, $this->templateContents());
+    }
+
+    public function getClassNamespace()
+    {
+        $parts = explode('\\', $this->_nameSpace);
+        $parts = Arrays::map($parts, 'ucfirst');
+        if (Arrays::first($parts) != 'Model') {
+            $parts = array_merge(array('Model'), $parts);
+        }
+        return implode('\\', $parts);
+    }
+
+    private function _classNameFromTableName()
+    {
+        $parts = explode('_', $this->_tableName);
+        $parts = $this->_removeTablePrefix($parts);
+        $parts[] = Inflector::singularize(array_pop($parts));
+        $parts = Arrays::map($parts, 'ucfirst');
+        return implode('', $parts);
+    }
+
+    private function _preparePaths($basename)
+    {
+        if (!is_dir($basename)) {
+            mkdir($basename, 0777, true);
+        }
     }
 }
 

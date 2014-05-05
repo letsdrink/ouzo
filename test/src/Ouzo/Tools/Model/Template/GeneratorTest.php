@@ -153,6 +153,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertContains('class Product extends Model', $template);
         $this->assertContains('string description', $template);
     }
+
 }
 
 /**

@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Ouzo\Tools\Model\Template;
-
 
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
