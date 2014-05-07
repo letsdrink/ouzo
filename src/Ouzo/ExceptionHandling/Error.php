@@ -2,6 +2,8 @@
 namespace Ouzo\ExceptionHandling;
 
 use Exception;
+use Ouzo\Config;
+use Ouzo\I18n;
 
 class Error
 {
@@ -16,7 +18,10 @@ class Error
 
     public static function forException(Exception $exception)
     {
-        return new Error($exception->getCode(), $exception->getMessage());
+        if (Config::getValue('debug')) {
+            return new Error($exception->getCode(), $exception->getMessage());
+        }
+        return new Error($exception->getCode(), I18n::t('exception.unknown'));
     }
 
     public function toArray()
