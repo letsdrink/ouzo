@@ -10,7 +10,7 @@ class AcceptHeaderParser
     public static function parse($data)
     {
         $array = array();
-        $items = explode(',', $data);
+        $items = Arrays::filterNotBlank(explode(',', $data));
         foreach ($items as $item) {
             $elements = explode(';', $item);
             $media = Arrays::first($elements);

@@ -3,8 +3,8 @@ namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
 use Exception;
-use Ouzo\ContentType;
 use Ouzo\Logger\Logger;
+use Ouzo\Response\ResponseTypeResolve;
 use Ouzo\Routing\RouterException;
 use Ouzo\UserException;
 use Ouzo\Utilities\Objects;
@@ -83,10 +83,11 @@ class ErrorHandler
             Logger::getLogger(__CLASS__)->error(Objects::toString($errorTrace));
             self::_clearOutputBuffers();
             header($exceptionData->getHeader());
-            header('Content-type: ' . ContentType::value());
+            $responseType = ResponseTypeResolve::resolve();
+            header('Content-type: ' . $responseType);
 
             /** @noinspection PhpIncludeInspection */
-            require(ViewPathResolver::resolveViewPath($viewName));
+            require(ViewPathResolver::resolveViewPath($viewName, $responseType));
         } catch (Exception $e) {
             echo "Framework critical error. Exception thrown in exception handler.<br>\n";
             echo "<hr>\n";

@@ -42,5 +42,17 @@ class AcceptHeaderParserTest extends PHPUnit_Framework_TestCase
             '*/*' => null
         )), array_keys($parsed));
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnEmptyArrayForNull()
+    {
+        //when
+        $parsed = AcceptHeaderParser::parse(null);
+
+        //then
+        $this->assertEmpty($parsed);
+    }
 }
  

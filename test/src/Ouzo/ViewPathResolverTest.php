@@ -10,10 +10,10 @@ class ViewPathResolverTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnHtmlPathForTextContentType()
     {
         //given
-        $_SERVER["CONTENT_TYPE"] = 'text/html;encoding';
+        $type = 'text/html';
 
         //when
-        $path = ViewPathResolver::resolveViewPath('exception');
+        $path = ViewPathResolver::resolveViewPath('exception', $type);
 
         //then
         $this->assertEquals(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.phtml', $path);
@@ -25,11 +25,10 @@ class ViewPathResolverTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnXmlPathForXmlContentType()
     {
         //given
-        $_SERVER["CONTENT_TYPE"] = 'text/xml;encoding';
-        ContentType::init();
+        $type = 'text/xml';
 
         //when
-        $path = ViewPathResolver::resolveViewPath('exception');
+        $path = ViewPathResolver::resolveViewPath('exception', $type);
 
         //then
         $this->assertEquals(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.xml.phtml', $path);
@@ -44,7 +43,7 @@ class ViewPathResolverTest extends \PHPUnit_Framework_TestCase
         $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
 
         //when
-        $path = ViewPathResolver::resolveViewPath('exception');
+        $path = ViewPathResolver::resolveViewPath('exception', 'text/xml');
 
         //then
         $this->assertEquals(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.ajax.phtml', $path);
@@ -56,11 +55,10 @@ class ViewPathResolverTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnJsonPath()
     {
         //given
-        $_SERVER["CONTENT_TYPE"] = 'application/json';
-        ContentType::init();
+        $type = 'application/json';
 
         //when
-        $path = ViewPathResolver::resolveViewPath('exception');
+        $path = ViewPathResolver::resolveViewPath('exception', $type);
 
         //then
         $this->assertEquals(ROOT_PATH . 'application' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'exception.json.phtml', $path);
