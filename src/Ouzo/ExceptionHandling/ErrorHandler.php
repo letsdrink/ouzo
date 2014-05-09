@@ -86,6 +86,10 @@ class ErrorHandler
             $responseType = ResponseTypeResolve::resolve();
             header('Content-type: ' . $responseType);
 
+            array_walk($exceptionData->getAdditionalHeaders(), function ($header) {
+                header($header);
+            });
+
             /** @noinspection PhpIncludeInspection */
             require(ViewPathResolver::resolveViewPath($viewName, $responseType));
         } catch (Exception $e) {

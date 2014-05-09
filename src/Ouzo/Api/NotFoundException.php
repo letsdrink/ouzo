@@ -7,8 +7,8 @@ class NotFoundException extends OuzoException
 {
     const HTTP_CODE = 404;
 
-    public function __construct($errors)
+    public function __construct($errors, $headers = array())
     {
-        parent::__construct(self::HTTP_CODE, $errors);
+        parent::__construct(self::HTTP_CODE, $errors, $headers);
     }
 }

@@ -2,8 +2,8 @@
 use Ouzo\AuthBasicController;
 use Ouzo\ControllerFactory;
 use Ouzo\Routing\Route;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
-use Ouzo\Tests\MockCredentialsProvider;
 
 class AuthSampleController extends AuthBasicController
 {
@@ -41,10 +41,10 @@ class AuthBasicControllerTest extends ControllerTestCase
     public function shouldNotCallActionWhenNoCredentials()
     {
         //when
-        $this->get('/auth_sample/index');
+        CatchException::when($this)->get('/auth_sample/index');
 
         //then
-        $this->assertRenderedContent()->isNull();
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\UnauthorizedException');
     }
 
     /**
@@ -57,10 +57,10 @@ class AuthBasicControllerTest extends ControllerTestCase
         $_SERVER['PHP_AUTH_PW'] = 'invalid';
 
         //when
-        $this->get('/auth_sample/index');
+        CatchException::when($this)->get('/auth_sample/index');
 
         //then
-        $this->assertRenderedContent()->isNull();
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\UnauthorizedException');
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Api\UnauthorizedException;
 use Ouzo\Utilities\Arrays;
 
 class AuthBasicController extends Controller
@@ -22,9 +23,7 @@ class AuthBasicController extends Controller
         $login = Arrays::getValue($_SERVER, 'PHP_AUTH_USER');
         $pass = Arrays::getValue($_SERVER, 'PHP_AUTH_PW');
         if ($this->login != $login || $this->password != $pass) {
-            $this->header('WWW-Authenticate: Basic realm="' . $this->realm . '"');
-            $this->header('HTTP/1.0 401 Unauthorized');
-            return false;
+            throw new UnauthorizedException('Unauthorized user.', array('WWW-Authenticate: Basic realm="' . $this->realm . '"'));
         }
         return true;
     }

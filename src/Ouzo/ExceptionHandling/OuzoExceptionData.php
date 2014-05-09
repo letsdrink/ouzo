@@ -10,12 +10,14 @@ class OuzoExceptionData
     private $_httpCode;
     private $_errors;
     private $_stackTrace;
+    private $_additionalHeaders;
 
-    function __construct($httpCode, $errors, $stackTrace)
+    function __construct($httpCode, $errors, $stackTrace, $additionalHeaders = array())
     {
         $this->_errors = $errors;
         $this->_httpCode = $httpCode;
         $this->_stackTrace = $stackTrace;
+        $this->_additionalHeaders = $additionalHeaders;
     }
 
     public static function forException($httpCode, Exception $exception)
@@ -41,6 +43,11 @@ class OuzoExceptionData
     public function getHeader()
     {
         return ResponseMapper::getMessageWithHttpProtocol($this->_httpCode);
+    }
+
+    public function getAdditionalHeaders()
+    {
+        return $this->_additionalHeaders;
     }
 
     public function getMessage()

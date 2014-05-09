@@ -3,9 +3,9 @@ namespace Ouzo\Api;
 
 use Ouzo\ExceptionHandling\OuzoException;
 
-class ValidationException extends OuzoException
+class UnauthorizedException extends OuzoException
 {
-    const HTTP_CODE = 400;
+    const HTTP_CODE = 401;
 
     public function __construct($errors, $headers = array())
     {
