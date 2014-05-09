@@ -86,7 +86,8 @@ class ErrorHandler
             $responseType = ResponseTypeResolve::resolve();
             header('Content-type: ' . $responseType);
 
-            array_walk($exceptionData->getAdditionalHeaders(), function ($header) {
+            $additionalHeaders = $exceptionData->getAdditionalHeaders();
+            array_walk($additionalHeaders, function ($header) {
                 header($header);
             });
 

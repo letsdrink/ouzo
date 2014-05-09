@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use Ouzo\Api\UnauthorizedException;
+use Ouzo\ExceptionHandling\Error;
 use Ouzo\Utilities\Arrays;
 
 class AuthBasicController extends Controller
@@ -23,7 +24,9 @@ class AuthBasicController extends Controller
         $login = Arrays::getValue($_SERVER, 'PHP_AUTH_USER');
         $pass = Arrays::getValue($_SERVER, 'PHP_AUTH_PW');
         if ($this->login != $login || $this->password != $pass) {
-            throw new UnauthorizedException('Unauthorized user.', array('WWW-Authenticate: Basic realm="' . $this->realm . '"'));
+            $code = defined('UNAUTHORIZED') ? UNAUTHORIZED : 0;
+            $error = new Error($code, I18n::t('exception.unauthorized'));
+            throw new UnauthorizedException($error, array('WWW-Authenticate: Basic realm="' . $this->realm . '"'));
         }
         return true;
     }
