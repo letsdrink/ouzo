@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests;
 
 use Ouzo\Model;
@@ -9,7 +8,7 @@ use PHPUnit_Framework_Assert;
 class ModelAssert
 {
     /**
-     * @var \Ouzo\Model
+     * @var Model
      */
     private $_actual;
 
@@ -54,5 +53,4 @@ class ModelAssert
 
         PHPUnit_Framework_Assert::assertEquals($expectedAttributes, $actualAttributes, 'Models have different attributes ');
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Db;
 
 class PDOPreparedStatementExecutor extends PDOExecutor
@@ -22,4 +21,4 @@ class PDOPreparedStatementExecutor extends PDOExecutor
         }
         return $pdoStatement;
     }
-} 
+}

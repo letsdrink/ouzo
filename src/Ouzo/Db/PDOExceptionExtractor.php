@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Db;
 
 use Ouzo\Db\Dialect\DialectFactory;
@@ -26,4 +25,4 @@ class PDOExceptionExtractor
     {
         return Arrays::getValue($errorInfo, 0) . " " . Arrays::getValue($errorInfo, 1);
     }
-} 
+}

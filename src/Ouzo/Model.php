@@ -296,6 +296,7 @@ class Model extends Validatable
     }
 
     /**
+     * @param array $attributes
      * @return static
      */
     public static function newInstance(array $attributes)
@@ -321,6 +322,8 @@ class Model extends Validatable
     }
 
     /**
+     * @param $columns
+     * @param int $type
      * @return ModelQueryBuilder
      */
     static public function select($columns, $type = PDO::FETCH_NUM)
@@ -359,6 +362,8 @@ class Model extends Validatable
     }
 
     /**
+     * @param string $params
+     * @param array $values
      * @return ModelQueryBuilder
      */
     static public function where($params = '', $values = array())
@@ -367,6 +372,7 @@ class Model extends Validatable
     }
 
     /**
+     * @param null $alias
      * @return ModelQueryBuilder
      */
     static public function queryBuilder($alias = null)
@@ -386,6 +392,11 @@ class Model extends Validatable
     }
 
     /**
+     * @param $where
+     * @param $whereValues
+     * @param array $orderBy
+     * @param int $limit
+     * @param int $offset
      * @return Model[]
      */
     static public function find($where, $whereValues, $orderBy = array(), $limit = 0, $offset = 0)
@@ -409,6 +420,7 @@ class Model extends Validatable
     }
 
     /**
+     * @param $value
      * @return static
      */
     static public function findById($value)
@@ -417,6 +429,7 @@ class Model extends Validatable
     }
 
     /**
+     * @param $value
      * @return static
      */
     static public function findByIdOrNull($value)
@@ -425,6 +438,8 @@ class Model extends Validatable
     }
 
     /**
+     * @param $attributes
+     * @throws ValidationException
      * @return static
      */
     static public function create($attributes)
@@ -440,6 +455,7 @@ class Model extends Validatable
     /**
      * Should be used for tests purposes only.
      *
+     * @param $attributes
      * @return static
      */
     static public function createWithoutValidation($attributes)
@@ -472,6 +488,7 @@ class Model extends Validatable
     }
 
     /**
+     * @param $name
      * @return Relation
      */
     public function getRelation($name)

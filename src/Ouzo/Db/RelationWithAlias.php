@@ -16,4 +16,4 @@ class RelationWithAlias
     {
         return "{$this->relation} {$this->alias}";
     }
-} 
+}

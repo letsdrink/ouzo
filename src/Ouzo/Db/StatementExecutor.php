@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Db;
 
 use Ouzo\Logger\Logger;

@@ -13,6 +13,7 @@ class Joiner
     }
 
     /**
+     * @param $separator
      * @return Joiner
      */
     public static function on($separator)

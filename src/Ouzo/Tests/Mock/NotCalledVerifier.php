@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests\Mock;
 
 class NotCalledVerifier extends Verifier
@@ -13,4 +12,4 @@ class NotCalledVerifier extends Verifier
         $expected = MethodCall::newInstance($name, $arguments)->toString() . ' is never called';
         $this->_fail("Unwanted method was called", $expected, $calls);
     }
-} 
+}

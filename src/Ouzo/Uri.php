@@ -139,5 +139,4 @@ class Uri
         $url = Strings::removePrefix($url, $prefix);
         return $prefix . $url;
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Utilities;
 
 /**
@@ -39,4 +38,4 @@ class Extractor
         }
         return $input;
     }
-} 
+}

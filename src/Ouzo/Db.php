@@ -11,9 +11,9 @@ class Db
      * @var PDO
      */
     public $_dbHandle = null;
+    public $_startedTransaction = false;
 
     private static $_instance;
-    public $_startedTransaction = false;
 
     public function __construct($loadDefault = true)
     {

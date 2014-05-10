@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Db;
 
 class RelationToFetch
@@ -24,4 +23,4 @@ class RelationToFetch
             return $relationToFetch->equals($other);
         };
     }
-} 
+}

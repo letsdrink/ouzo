@@ -25,6 +25,7 @@ class Logger
     private static $_logger;
 
     /**
+     * @param $name
      * @return LoggerInterface
      */
     public static function getLogger($name)

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests;
 
 use PHPUnit_Framework_Assert;
@@ -96,4 +95,4 @@ class StringAssert
         PHPUnit_Framework_Assert::assertNotNull($this->_actual);
         return $this;
     }
-} 
+}

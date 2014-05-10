@@ -31,6 +31,9 @@ class QueryExecutor
     }
 
     /**
+     * @param $db
+     * @param $query
+     * @throws InvalidArgumentException
      * @return QueryExecutor
      */
     public static function prepare($db, $query)

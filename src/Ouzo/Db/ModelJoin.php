@@ -5,6 +5,9 @@ use Ouzo\Model;
 
 class ModelJoin
 {
+    /**
+     * @var Relation
+     */
     private $relation;
     private $alias;
     private $destinationField;

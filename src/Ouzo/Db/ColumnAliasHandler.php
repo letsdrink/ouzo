@@ -2,7 +2,6 @@
 namespace Ouzo\Db;
 
 use Ouzo\Utilities\FluentArray;
-use Ouzo\Utilities\Functions;
 
 class ColumnAliasHandler
 {

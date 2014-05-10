@@ -1,5 +1,6 @@
 <?php
 namespace Ouzo\Tests;
+
 use Ouzo\Model;
 
 /**
@@ -39,5 +40,4 @@ class Assert
     {
         return StringAssert::that($string);
     }
-
 }

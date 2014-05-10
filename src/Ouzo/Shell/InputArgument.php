@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Shell;
 
+use Exception;
+
 class InputArgument
 {
     const VALUE_NONE = 1;
@@ -53,6 +55,6 @@ class InputArgument
     }
 }
 
-class InputArgumentException extends \Exception
+class InputArgumentException extends Exception
 {
 }

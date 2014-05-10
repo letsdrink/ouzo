@@ -20,6 +20,8 @@ class Relations
     }
 
     /**
+     * @param $name
+     * @throws InvalidArgumentException
      * @return Relation
      */
     public function getRelation($name)

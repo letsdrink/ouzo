@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Logger;
 
 use Ouzo\FrontController;

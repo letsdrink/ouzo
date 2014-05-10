@@ -1,12 +1,8 @@
 <?php
-
-
 namespace Ouzo\Tools\Model\Template;
-
 
 class DatabaseColumn
 {
-
     public $name;
     public $type;
     public $default;

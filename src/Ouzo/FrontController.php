@@ -156,5 +156,4 @@ class FrontController
     {
         return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
     }
-
 }

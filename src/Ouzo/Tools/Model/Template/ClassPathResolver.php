@@ -31,5 +31,4 @@ class ClassPathResolver
     {
         return Path::join(ROOT_PATH, 'application', $this->resolvePathFromNameSpace(), $this->className . ".php");
     }
-
 }

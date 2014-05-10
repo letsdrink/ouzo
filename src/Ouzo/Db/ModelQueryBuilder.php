@@ -55,6 +55,8 @@ class ModelQueryBuilder
     }
 
     /**
+     * @param string $where
+     * @param array $values
      * @return ModelQueryBuilder
      */
     public function where($where = '', $values = array())
@@ -64,6 +66,7 @@ class ModelQueryBuilder
     }
 
     /**
+     * @param $columns
      * @return ModelQueryBuilder
      */
     public function order($columns)
@@ -73,6 +76,7 @@ class ModelQueryBuilder
     }
 
     /**
+     * @param $offset
      * @return ModelQueryBuilder
      */
     public function offset($offset)
@@ -82,6 +86,7 @@ class ModelQueryBuilder
     }
 
     /**
+     * @param $limit
      * @return ModelQueryBuilder
      */
     public function limit($limit)
@@ -199,7 +204,8 @@ class ModelQueryBuilder
     /**
      * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @param null $aliases - alias of the first joined table or array of aliases for nested joins
-     * @param $type - join type, defaults to LEFT
+     * @param string $type - join type, defaults to LEFT
+     * @param array $on
      * @return ModelQueryBuilder
      */
     public function join($relationSelector, $aliases = null, $type = 'LEFT', $on = array())
@@ -236,6 +242,7 @@ class ModelQueryBuilder
     /**
      * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param array $on
      * @return ModelQueryBuilder
      */
     public function leftJoin($relationSelector, $aliases = null, $on = array())
@@ -286,6 +293,8 @@ class ModelQueryBuilder
     }
 
     /**
+     * @param $columns
+     * @param int $type
      * @return ModelQueryBuilder
      */
     public function select($columns, $type = PDO::FETCH_NUM)
@@ -311,5 +320,4 @@ class ModelQueryBuilder
         $this->_query->options = $options;
         return $this;
     }
-
 }

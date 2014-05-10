@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Http;
 
 use Ouzo\Utilities\Arrays;

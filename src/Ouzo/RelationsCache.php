@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo;
 
 class RelationsCache
@@ -7,6 +6,9 @@ class RelationsCache
     private static $_relations = array();
 
     /**
+     * @param $modelClass
+     * @param $params
+     * @param $primaryKeyName
      * @return Relations
      */
     public static function getRelations($modelClass, $params, $primaryKeyName)
@@ -16,4 +18,4 @@ class RelationsCache
         }
         return self::$_relations[$modelClass];
     }
-} 
+}

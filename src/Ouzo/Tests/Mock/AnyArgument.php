@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests\Mock;
 
 class AnyArgument
@@ -8,4 +7,4 @@ class AnyArgument
     {
         return "any";
     }
-} 
+}

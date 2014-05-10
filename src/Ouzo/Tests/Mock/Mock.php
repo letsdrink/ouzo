@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\DynamicProxy;
@@ -42,4 +41,4 @@ class Mock
     {
         return new AnyArgumentList();
     }
-} 
+}

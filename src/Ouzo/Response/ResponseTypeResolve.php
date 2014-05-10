@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Response;
 
 use Ouzo\ContentType;
@@ -10,7 +9,7 @@ class ResponseTypeResolve
 {
     public static function resolve()
     {
-        $accept = array_keys(RequestHeaders::accept()) ?: array('*/*');
+        $accept = array_keys(RequestHeaders::accept()) ? : array('*/*');
         $supported = array(
             'application/json' => 'application/json',
             'application/xml' => 'application/xml',

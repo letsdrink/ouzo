@@ -28,4 +28,4 @@ class DeleteDirectory
             unlink($file->getPathname());
         }
     }
-} 
+}

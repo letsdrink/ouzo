@@ -1,7 +1,5 @@
 <?php
-
 namespace Ouzo\Tests\Mock;
-
 
 use Ouzo\Utilities\Arrays;
 
@@ -47,5 +45,4 @@ class MethodCallMatcher
     {
         return $this->matches($methodCall);
     }
-
 }

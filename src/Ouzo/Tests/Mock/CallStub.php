@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests\Mock;
 
 class CallStub
@@ -28,5 +27,4 @@ class CallStub
         $matcher = new MethodCallMatcher($this->methodCall->name, $this->methodCall->arguments);
         return $matcher->matches($methodCall);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Db;
 
 use Ouzo\Utilities\Arrays;
@@ -15,4 +14,4 @@ abstract class PDOExecutor
         }
         return new PDOPreparedStatementExecutor();
     }
-} 
+}

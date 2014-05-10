@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Utilities;
 
 use ReflectionClass;
@@ -63,4 +62,4 @@ class DynamicProxy
     {
         return $proxy->_methodHandler;
     }
-} 
+}

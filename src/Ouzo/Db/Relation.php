@@ -81,5 +81,4 @@ class Relation
     {
         return "Relation {$this->name} {$this->class} {$this->localKey} {$this->foreignKey}";
     }
-
 }

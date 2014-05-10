@@ -66,4 +66,4 @@ class ModelQueryBuilderHelper
         }
         return $hasAnyNonEmptyAttribute ? $metaInstance->newInstance($attributes) : null;
     }
-} 
+}

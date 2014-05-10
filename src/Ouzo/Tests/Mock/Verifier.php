@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\Arrays;

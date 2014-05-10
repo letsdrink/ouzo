@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests\Mock;
 
 class WhenBuilder
@@ -37,5 +36,4 @@ class WhenBuilder
             $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, null, $exception);
         }
     }
-
 }

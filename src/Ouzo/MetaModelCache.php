@@ -6,6 +6,7 @@ class MetaModelCache
     private static $_modelMetaInstances = array();
 
     /**
+     * @param $modelClass
      * @return Model
      */
     public static function getMetaInstance($modelClass)

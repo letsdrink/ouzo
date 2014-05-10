@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo;
 
 class Notice
@@ -33,5 +32,4 @@ class Notice
         $uri = new Uri();
         return $uri->getPath();
     }
-
 }
