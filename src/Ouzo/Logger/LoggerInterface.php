@@ -3,15 +3,15 @@ namespace Ouzo\Logger;
 
 interface LoggerInterface
 {
-    function setName($name);
+    public function setName($name);
 
-    function error($message, $params = null);
+    public function error($message, $params = null);
 
-    function info($message, $params = null);
+    public function info($message, $params = null);
 
-    function debug($message, $params = null);
+    public function debug($message, $params = null);
 
-    function warning($message, $params = null);
+    public function warning($message, $params = null);
 
-    function fatal($message, $params = null);
+    public function fatal($message, $params = null);
 }

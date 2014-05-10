@@ -15,7 +15,7 @@ class ModelJoin
     private $type;
     private $on;
 
-    function __construct($destinationField, $fromTable, $relation, $alias, $type, $on)
+    public function __construct($destinationField, $fromTable, $relation, $alias, $type, $on)
     {
         $this->relation = $relation;
         $this->alias = $alias;
@@ -25,12 +25,12 @@ class ModelJoin
         $this->on = $on;
     }
 
-    function storeField()
+    public function storeField()
     {
         return $this->destinationField() && !$this->relation->isCollection();
     }
 
-    function destinationField()
+    public function destinationField()
     {
         return $this->destinationField;
     }

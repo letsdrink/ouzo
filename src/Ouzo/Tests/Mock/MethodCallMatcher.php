@@ -8,7 +8,7 @@ class MethodCallMatcher
     private $name;
     private $arguments;
 
-    function __construct($name, $arguments)
+    public function __construct($name, $arguments)
     {
         $this->name = $name;
         $this->arguments = $arguments;
@@ -41,7 +41,7 @@ class MethodCallMatcher
         return $expected instanceof AnyArgument || $expected == $actual;
     }
 
-    function __invoke(MethodCall $methodCall)
+    public function __invoke(MethodCall $methodCall)
     {
         return $this->matches($methodCall);
     }

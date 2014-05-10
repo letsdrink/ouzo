@@ -10,7 +10,7 @@ class PostgresDialect extends Dialect
         return array('57000', '57014', '57P01', '57P02', '57P03');
     }
 
-    function getErrorCode($errorInfo)
+    public function getErrorCode($errorInfo)
     {
         return Arrays::getValue($errorInfo, 0);
     }

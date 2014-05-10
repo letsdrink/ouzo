@@ -7,7 +7,7 @@ use Ouzo\Utilities\ClassName;
 
 class ControllerFactory
 {
-    function __construct($controllerPath = "\\Controller\\")
+    public function __construct($controllerPath = "\\Controller\\")
     {
         $this->controllerPath = $controllerPath;
     }

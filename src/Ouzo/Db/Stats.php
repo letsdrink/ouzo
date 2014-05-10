@@ -85,7 +85,7 @@ class Stats
         return sizeof(self::queriesForRequest($request));
     }
 
-    static function getBacktraceString()
+    public static function getBacktraceString()
     {
         $trace = debug_backtrace();
         $trace = array_slice($trace, 2);
@@ -97,7 +97,7 @@ class Stats
         return $stack;
     }
 
-    static function formatStackFrame($index, array $frame)
+    public static function formatStackFrame($index, array $frame)
     {
         $stack = '';
         if (isset($frame['file']) && isset($frame['line']) && isset($frame['function'])) {

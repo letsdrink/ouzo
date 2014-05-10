@@ -3,7 +3,7 @@ namespace Ouzo\Tests\Mock;
 
 class NotCalledVerifier extends Verifier
 {
-    function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
         if (!$this->_wasCalled($name, $arguments)) {
             return $this;

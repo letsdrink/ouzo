@@ -7,14 +7,14 @@ class CallStub
     public $result;
     public $exception;
 
-    function __construct($methodCall, $result, $exception)
+    public function __construct($methodCall, $result, $exception)
     {
         $this->methodCall = $methodCall;
         $this->result = $result;
         $this->exception = $exception;
     }
 
-    function evaluate()
+    public function evaluate()
     {
         if ($this->exception) {
             throw $this->exception;

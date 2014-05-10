@@ -8,7 +8,7 @@ class TimeAgo
 {
     private $_date;
 
-    function __construct($date)
+    public function __construct($date)
     {
         $this->_date = $date;
     }

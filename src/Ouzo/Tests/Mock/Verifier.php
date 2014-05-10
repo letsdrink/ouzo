@@ -10,7 +10,7 @@ class Verifier
 {
     private $mock;
 
-    function __construct(SimpleMock $mock)
+    public function __construct(SimpleMock $mock)
     {
         $this->mock = $mock;
     }
@@ -20,7 +20,7 @@ class Verifier
         return new NotCalledVerifier($this->mock);
     }
 
-    function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
         if ($this->_wasCalled($name, $arguments)) {
             return $this;

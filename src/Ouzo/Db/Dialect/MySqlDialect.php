@@ -26,7 +26,7 @@ class MySqlDialect extends Dialect
         return array(2003, 2006);
     }
 
-    function getErrorCode($errorInfo)
+    public function getErrorCode($errorInfo)
     {
         return Arrays::getValue($errorInfo, 1);
     }

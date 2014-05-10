@@ -305,17 +305,17 @@ class ModelQueryBuilder
         return $this;
     }
 
-    function __clone()
+    public function __clone()
     {
         $this->_query = clone $this->_query;
     }
 
-    function copy()
+    public function copy()
     {
         return clone $this;
     }
 
-    function options(array $options)
+    public function options(array $options)
     {
         $this->_query->options = $options;
         return $this;

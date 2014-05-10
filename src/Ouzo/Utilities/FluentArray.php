@@ -5,7 +5,7 @@ class FluentArray
 {
     private $_array;
 
-    function __construct($_array)
+    public function __construct($_array)
     {
         $this->_array = $_array;
     }

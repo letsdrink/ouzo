@@ -3,7 +3,7 @@ namespace Ouzo\Tests\Mock;
 
 class AnyArgument
 {
-    function __toString()
+    public function __toString()
     {
         return "any";
     }

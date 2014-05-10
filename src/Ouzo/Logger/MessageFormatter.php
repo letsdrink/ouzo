@@ -3,5 +3,5 @@ namespace Ouzo\Logger;
 
 interface MessageFormatter
 {
-    function format($logger, $level, $message);
+    public function format($logger, $level, $message);
 }

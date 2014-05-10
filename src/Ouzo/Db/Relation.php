@@ -14,7 +14,7 @@ class Relation
     private $foreignKey;
     private $collection;
 
-    function __construct($name, $class, $localKey, $foreignKey, $collection)
+    public function __construct($name, $class, $localKey, $foreignKey, $collection)
     {
         $this->name = $name;
         $this->class = $class;
@@ -38,7 +38,7 @@ class Relation
         return $this->localKey;
     }
 
-    function getForeignKey()
+    public function getForeignKey()
     {
         return $this->foreignKey;
     }
@@ -77,7 +77,7 @@ class Relation
         return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection);
     }
 
-    function __toString()
+    public function __toString()
     {
         return "Relation {$this->name} {$this->class} {$this->localKey} {$this->foreignKey}";
     }

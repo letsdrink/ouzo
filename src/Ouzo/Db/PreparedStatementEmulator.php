@@ -10,12 +10,12 @@ class ParameterPlaceHolderCallback
     private $_param_index = 0;
     private $_quote_count = 0;
 
-    function __construct($boundValues)
+    public function __construct($boundValues)
     {
         $this->_boundValues = $boundValues;
     }
 
-    function __invoke($matches)
+    public function __invoke($matches)
     {
         if ($matches[0] == "'") {
             $this->_quote_count++;

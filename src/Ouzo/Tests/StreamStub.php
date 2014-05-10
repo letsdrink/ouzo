@@ -4,6 +4,7 @@ namespace Ouzo\Tests;
 class StreamStub
 {
     public $context;
+
     public static $position = 0;
     public static $body = '';
     public static $streamName;

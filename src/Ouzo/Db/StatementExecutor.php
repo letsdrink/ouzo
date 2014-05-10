@@ -33,7 +33,7 @@ class StatementExecutor
         });
     }
 
-    function _internalExecute($afterCallback)
+    public function _internalExecute($afterCallback)
     {
         $sqlString = $this->_humanizedSql . ' with params: '. Objects::toString($this->_boundValues);
         Logger::getLogger(__CLASS__)->info("Query: %s", array($sqlString));

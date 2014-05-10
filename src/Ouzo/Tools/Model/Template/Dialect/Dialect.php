@@ -5,7 +5,7 @@ class Dialect
 {
     private $_tableName;
 
-    function __construct($tableName)
+    public function __construct($tableName)
     {
         $this->_tableName = $tableName;
     }

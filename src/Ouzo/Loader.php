@@ -10,7 +10,7 @@ class Loader
     private $_classPath = array();
     private $_loadPath;
 
-    function __construct($loadPath = ROOT_PATH)
+    public function __construct($loadPath = ROOT_PATH)
     {
         $this->_loadPath = $loadPath;
     }

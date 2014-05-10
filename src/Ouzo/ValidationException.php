@@ -8,7 +8,7 @@ class ValidationException extends Exception
 {
     private $_errors;
 
-    function __construct($message, array $errors)
+    public function __construct($message, array $errors)
     {
         parent::__construct($message . "\nErrors: " . Objects::toString($errors));
         $this->_errors = $errors;

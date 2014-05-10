@@ -137,7 +137,7 @@ abstract class Dialect
         return in_array($this->getErrorCode($errorInfo), $this->getConnectionErrorCodes());
     }
 
-    abstract function getConnectionErrorCodes();
+    abstract public function getConnectionErrorCodes();
 
-    abstract function getErrorCode($errorInfo);
+    abstract public function getErrorCode($errorInfo);
 }

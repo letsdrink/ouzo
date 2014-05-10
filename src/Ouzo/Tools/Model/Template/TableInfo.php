@@ -14,7 +14,7 @@ class TableInfo
     /**
      * @param Dialect $dialect
      */
-    function __construct($dialect)
+    public function __construct($dialect)
     {
         $this->tableName = $dialect->tableName();
         $this->primaryKeyName = $dialect->primaryKey();

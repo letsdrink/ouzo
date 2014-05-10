@@ -6,12 +6,12 @@ class WhenBuilder
     private $mock;
     private $methodCall;
 
-    function __construct(SimpleMock $mock)
+    public function __construct(SimpleMock $mock)
     {
         $this->mock = $mock;
     }
 
-    function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
         $this->methodCall = new MethodCall($name, $arguments);
         return $this;
@@ -20,7 +20,7 @@ class WhenBuilder
     /**
      * @param mixed ...
      */
-    function thenReturn()
+    public function thenReturn()
     {
         foreach (func_get_args() as $result) {
             $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $result, null);
@@ -30,7 +30,7 @@ class WhenBuilder
     /**
      * @param mixed ...
      */
-    function thenThrow($exception)
+    public function thenThrow($exception)
     {
         foreach (func_get_args() as $exception) {
             $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, null, $exception);

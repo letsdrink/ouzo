@@ -7,7 +7,7 @@ class Joiner
     private $_skipNulls;
     private $_function;
 
-    function __construct($separator)
+    public function __construct($separator)
     {
         $this->_separator = $separator;
     }

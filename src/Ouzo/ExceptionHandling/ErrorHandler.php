@@ -12,7 +12,7 @@ use Ouzo\ViewPathResolver;
 
 class ErrorHandler
 {
-    static $errorHandled = false;
+    public static $errorHandled = false;
 
     public static function exceptionHandler(Exception $exception)
     {
@@ -101,7 +101,7 @@ class ErrorHandler
         }
     }
 
-    static public function shutdownHandler()
+    public static function shutdownHandler()
     {
         $error = error_get_last();
 

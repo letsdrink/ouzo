@@ -9,7 +9,7 @@ class Dispatcher
     public $args = array();
     public $params = array();
 
-    static public function runScript($argv)
+    public static function runScript($argv)
     {
         try {
             $dispatcher = new Dispatcher($argv);

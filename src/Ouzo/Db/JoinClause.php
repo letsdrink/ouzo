@@ -7,11 +7,12 @@ class JoinClause
     public $alias;
     public $joinColumn;
     public $joinedColumn;
-    private $_joinedColumnTable;
     public $type;
     public $onClause;
 
-    function __construct($joinTable, $joinColumn, $joinedColumn, $joinedColumnTable, $alias = null, $type = 'LEFT', $onClause)
+    private $_joinedColumnTable;
+
+    public function __construct($joinTable, $joinColumn, $joinedColumn, $joinedColumnTable, $alias = null, $type = 'LEFT', $onClause)
     {
         $this->joinTable = $joinTable;
         $this->joinColumn = $joinColumn;

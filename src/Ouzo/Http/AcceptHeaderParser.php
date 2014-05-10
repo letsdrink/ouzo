@@ -27,7 +27,7 @@ class AcceptHeaderParser
         });
     }
 
-    static function _compare($a, $b)
+    public static function _compare($a, $b)
     {
         $a_q = floatval(Arrays::getValue($a, 'q', 1));
         $b_q = floatval(Arrays::getValue($b, 'q', 1));
@@ -42,7 +42,7 @@ class AcceptHeaderParser
         }
     }
 
-    static function _compareSubType($a, $b)
+    public static function _compareSubType($a, $b)
     {
         if ($a === '*' && $b !== '*') {
             return 1;

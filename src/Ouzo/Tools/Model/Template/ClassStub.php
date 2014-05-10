@@ -13,7 +13,7 @@ class ClassStub
 
     const FIELDS_COUNT_IN_LINE = 7;
 
-    function __construct()
+    public function __construct()
     {
         $stubFilePath = $this->_getStubFilePath();
         $this->_stubContent = file_get_contents($stubFilePath);

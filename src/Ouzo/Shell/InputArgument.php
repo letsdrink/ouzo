@@ -8,6 +8,7 @@ class InputArgument
     const VALUE_NONE = 1;
     const VALUE_REQUIRED = 2;
     const VALUE_OPTIONAL = 3;
+
     private $_longName;
     private $_shortName;
     private $_option;

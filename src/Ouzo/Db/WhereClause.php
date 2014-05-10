@@ -8,7 +8,7 @@ class WhereClause
     public $where;
     public $values;
 
-    function __construct($where, $whereValues)
+    public function __construct($where, $whereValues)
     {
         $this->where = $where;
         $this->values = is_array($where) ? Arrays::flatten(array_values($where)) : $whereValues;

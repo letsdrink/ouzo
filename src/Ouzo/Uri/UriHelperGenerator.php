@@ -26,7 +26,7 @@ function checkParameter(\$parameter) {
         return new self(Route::getRoutes());
     }
 
-    function __construct($routes)
+    public function __construct($routes)
     {
         $this->_routes = $routes;
         $this->_generateFunctions();

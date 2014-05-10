@@ -10,7 +10,7 @@ class MethodCall
     public $name;
     public $arguments;
 
-    function __construct($name, $arguments)
+    public function __construct($name, $arguments)
     {
         $this->name = $name;
         $this->arguments = $arguments;

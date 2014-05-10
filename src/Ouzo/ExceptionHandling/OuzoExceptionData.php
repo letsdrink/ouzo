@@ -12,7 +12,7 @@ class OuzoExceptionData
     private $_stackTrace;
     private $_additionalHeaders;
 
-    function __construct($httpCode, $errors, $stackTrace, $additionalHeaders = array())
+    public function __construct($httpCode, $errors, $stackTrace, $additionalHeaders = array())
     {
         $this->_errors = $errors;
         $this->_httpCode = $httpCode;

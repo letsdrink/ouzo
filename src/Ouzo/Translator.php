@@ -7,7 +7,7 @@ class Translator
 {
     private $_labels;
 
-    function __construct($labels)
+    public function __construct($labels)
     {
         $this->_labels = $labels;
     }

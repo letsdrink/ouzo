@@ -12,6 +12,7 @@ use Ouzo\Utilities\Strings;
 class ControllerTestCase extends DbTransactionalTestCase
 {
     protected $_frontController;
+
     private $_prefixSystem;
     private $_redirectHandler;
     private $_sessionInitializer;

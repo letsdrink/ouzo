@@ -9,7 +9,7 @@ class FieldTransformer
     private $field;
     private $transformer;
 
-    function __construct($field, $transformer)
+    public function __construct($field, $transformer)
     {
         $this->field = $field;
         $this->transformer = $transformer;

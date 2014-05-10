@@ -22,7 +22,7 @@ class QueryExecutor
     public $_sql;
     public $_fetchStyle = PDO::FETCH_ASSOC;
 
-    function __construct($db, $query)
+    public function __construct($db, $query)
     {
         $this->_db = $db;
         $this->_query = $query;

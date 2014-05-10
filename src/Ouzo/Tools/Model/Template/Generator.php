@@ -19,7 +19,7 @@ class Generator
     private $_tablePrefix;
     private $_nameSpace;
 
-    function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't')
+    public function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't')
     {
         $this->_tableName = $tableName;
         $this->_className = $className;

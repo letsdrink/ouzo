@@ -7,6 +7,7 @@ use Ouzo\Utilities\Path;
 class I18n
 {
     const DEFAULT_LANGUAGE = 'en';
+
     private static $_translator;
 
     public static function t($key, $params = array())

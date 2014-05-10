@@ -8,6 +8,7 @@ use Ouzo\Shell\Output;
 class Shell
 {
     public $stdout;
+
     private $_arguments;
     private $_inputDefinition;
 

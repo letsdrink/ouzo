@@ -14,7 +14,7 @@ class ClassStubPlaceholderReplacer
     private $classStub;
     private $classNamespace;
 
-    function __construct($className, $tableInfo, $classNamespace = '')
+    public function __construct($className, $tableInfo, $classNamespace = '')
     {
         $this->className = $className;
         $this->tableInfo = $tableInfo;

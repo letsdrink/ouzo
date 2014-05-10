@@ -8,12 +8,12 @@ use Ouzo\Utilities\Strings;
 
 class Sqlite3Dialect extends Dialect
 {
-    function getConnectionErrorCodes()
+    public function getConnectionErrorCodes()
     {
         return array(10, 11, 14);
     }
 
-    function getErrorCode($errorInfo)
+    public function getErrorCode($errorInfo)
     {
         return Arrays::getValue($errorInfo, 1);
     }

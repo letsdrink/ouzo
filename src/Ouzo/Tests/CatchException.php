@@ -7,9 +7,10 @@ use PHPUnit_Framework_Assert;
 class CatchException
 {
     private $object;
+
     private static $exception;
 
-    function __construct($object)
+    public function __construct($object)
     {
         $this->object = $object;
     }
@@ -39,7 +40,7 @@ class CatchExceptionAssert
 {
     private $exception;
 
-    function __construct($exception)
+    public function __construct($exception)
     {
         $this->exception = $exception;
     }

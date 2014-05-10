@@ -7,12 +7,12 @@ class ConfigOverrideProperty
 {
     private $keys;
 
-    function __construct($keys)
+    public function __construct($keys)
     {
         $this->keys = $keys;
     }
 
-    function with($value)
+    public function with($value)
     {
         Config::overridePropertyArray($this->keys, $value);
     }

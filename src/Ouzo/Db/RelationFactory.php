@@ -7,7 +7,7 @@ use Ouzo\Utilities\Arrays;
 
 class RelationFactory
 {
-    static function create($relationType, $relation, $relationParams, $primaryKeyName)
+    public static function create($relationType, $relation, $relationParams, $primaryKeyName)
     {
         if ($relationType == 'hasOne') {
             return self::hasOne($relation, $relationParams, $primaryKeyName);

@@ -5,8 +5,8 @@ use DateTime;
 
 class Clock
 {
-    static $freeze = false;
-    static $freezeDate;
+    public static $freeze = false;
+    public static $freezeDate;
 
     public static function freeze($date = null)
     {

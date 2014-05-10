@@ -9,7 +9,7 @@ class RelationFetcher
 {
     private $_relation;
 
-    function __construct(Relation $relation)
+    public function __construct(Relation $relation)
     {
         $this->_relation = $relation;
     }

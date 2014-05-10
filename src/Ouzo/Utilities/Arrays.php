@@ -112,7 +112,7 @@ class Arrays
      * @param array $array
      * @return array
      */
-    static function flatten(array $array)
+    public static function flatten(array $array)
     {
         $return = array();
         array_walk_recursive($array, function ($a) use (&$return) {
@@ -143,7 +143,7 @@ class Arrays
      * @param string $value
      * @return bool|int|string
      */
-    static public function findKeyByValue(array $elements, $value)
+    public static function findKeyByValue(array $elements, $value)
     {
         if ($value === 0) {
             $value = '0';

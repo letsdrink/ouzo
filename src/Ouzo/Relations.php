@@ -9,6 +9,7 @@ class Relations
 {
     private $_relations;
     private $modelClass;
+
     private static $relationNames = array('hasOne', 'belongsTo', 'hasMany');
 
     public function __construct($modelClass, array $params, $primaryKeyName)

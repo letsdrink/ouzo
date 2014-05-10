@@ -5,7 +5,7 @@ class SelectColumnCallback
 {
     private $prev_table;
 
-    function __invoke($matches)
+    public function __invoke($matches)
     {
         $table = $matches[1];
         $column = $matches[2];

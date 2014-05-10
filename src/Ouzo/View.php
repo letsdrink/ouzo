@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Exception;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
@@ -99,6 +100,6 @@ class View
     }
 }
 
-class ViewException extends \Exception
+class ViewException extends Exception
 {
 }

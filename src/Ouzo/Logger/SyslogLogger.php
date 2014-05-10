@@ -10,7 +10,7 @@ class SyslogLogger implements LoggerInterface
     private $_logger;
     private $_messageFormatter;
 
-    function __construct($name)
+    public function __construct($name)
     {
         $this->_name = $name;
         $messageFormatterClass = 'Ouzo\Logger\DefaultMessageFormatter';
@@ -24,7 +24,7 @@ class SyslogLogger implements LoggerInterface
         $this->_logger = $logger;
     }
 
-    function __destruct()
+    public function __destruct()
     {
         if ($this->_logger) {
             closelog();
@@ -72,7 +72,7 @@ class SyslogLogger implements LoggerInterface
         return Config::getValue('debug');
     }
 
-    function setName($name)
+    public function setName($name)
     {
         $this->_name = $name;
     }

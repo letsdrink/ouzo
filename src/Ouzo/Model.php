@@ -316,7 +316,7 @@ class Model extends Validatable
     /**
      * @return Model[]
      */
-    static public function all()
+    public static function all()
     {
         return static::queryBuilder()->fetchAll();
     }
@@ -326,7 +326,7 @@ class Model extends Validatable
      * @param int $type
      * @return ModelQueryBuilder
      */
-    static public function select($columns, $type = PDO::FETCH_NUM)
+    public static function select($columns, $type = PDO::FETCH_NUM)
     {
         return static::queryBuilder()->select($columns, $type);
     }
@@ -336,7 +336,7 @@ class Model extends Validatable
      * @param null $alias
      * @return ModelQueryBuilder
      */
-    static public function join($relation, $alias = null)
+    public static function join($relation, $alias = null)
     {
         return static::queryBuilder()->join($relation, $alias);
     }
@@ -346,7 +346,7 @@ class Model extends Validatable
      * @param null $alias
      * @return ModelQueryBuilder
      */
-    static public function innerJoin($relation, $alias = null)
+    public static function innerJoin($relation, $alias = null)
     {
         return static::queryBuilder()->innerJoin($relation, $alias);
     }
@@ -356,7 +356,7 @@ class Model extends Validatable
      * @param null $alias
      * @return ModelQueryBuilder
      */
-    static public function rightJoin($relation, $alias = null)
+    public static function rightJoin($relation, $alias = null)
     {
         return static::queryBuilder()->rightJoin($relation, $alias);
     }
@@ -366,7 +366,7 @@ class Model extends Validatable
      * @param array $values
      * @return ModelQueryBuilder
      */
-    static public function where($params = '', $values = array())
+    public static function where($params = '', $values = array())
     {
         return static::queryBuilder()->where($params, $values);
     }
@@ -375,13 +375,13 @@ class Model extends Validatable
      * @param null $alias
      * @return ModelQueryBuilder
      */
-    static public function queryBuilder($alias = null)
+    public static function queryBuilder($alias = null)
     {
         $obj = static::metaInstance();
         return new ModelQueryBuilder($obj, $obj->_db, $alias);
     }
 
-    static public function count($where = null, $bindValues = null)
+    public static function count($where = null, $bindValues = null)
     {
         return static::metaInstance()->where($where, $bindValues)->count();
     }
@@ -399,7 +399,7 @@ class Model extends Validatable
      * @param int $offset
      * @return Model[]
      */
-    static public function find($where, $whereValues, $orderBy = array(), $limit = 0, $offset = 0)
+    public static function find($where, $whereValues, $orderBy = array(), $limit = 0, $offset = 0)
     {
         return static::metaInstance()->where($where, $whereValues)->order($orderBy)->limit($limit)->offset($offset)->fetchAll();
     }
@@ -409,7 +409,7 @@ class Model extends Validatable
      * @param array $params - bind parameters
      * @return Model[]
      */
-    static public function findBySql($nativeSql, $params = array())
+    public static function findBySql($nativeSql, $params = array())
     {
         $meta = static::metaInstance();
         $results = $meta->_db->query($nativeSql, $params)->fetchAll();
@@ -423,7 +423,7 @@ class Model extends Validatable
      * @param $value
      * @return static
      */
-    static public function findById($value)
+    public static function findById($value)
     {
         return static::metaInstance()->_findById($value);
     }
@@ -432,7 +432,7 @@ class Model extends Validatable
      * @param $value
      * @return static
      */
-    static public function findByIdOrNull($value)
+    public static function findByIdOrNull($value)
     {
         return static::metaInstance()->_findByIdOrNull($value);
     }
@@ -442,7 +442,7 @@ class Model extends Validatable
      * @throws ValidationException
      * @return static
      */
-    static public function create($attributes)
+    public static function create($attributes)
     {
         $instance = static::newInstance($attributes);
         if (!$instance->isValid()) {
@@ -458,7 +458,7 @@ class Model extends Validatable
      * @param $attributes
      * @return static
      */
-    static public function createWithoutValidation($attributes)
+    public static function createWithoutValidation($attributes)
     {
         $instance = static::newInstance($attributes);
         $instance->insert();

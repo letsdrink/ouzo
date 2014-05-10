@@ -6,7 +6,7 @@ class RelationToFetch
     public $field;
     public $relation;
 
-    function __construct($field, $relation)
+    public function __construct($field, $relation)
     {
         $this->field = $field;
         $this->relation = $relation;

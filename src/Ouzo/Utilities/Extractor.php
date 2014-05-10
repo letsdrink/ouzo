@@ -20,7 +20,7 @@ class Extractor
         return $this;
     }
 
-    function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
         $this->_operations[] = function ($input) use ($name, $arguments) {
             return call_user_func_array(array($input, $name), $arguments);
