@@ -2,6 +2,7 @@ CHANGELOG
 =========
 
 Release 1.1
+-----------
 
 Enhancements:
 * Added callback methods to Model: beforeSave and afterSave.
