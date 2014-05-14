@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+use Ouzo\Utilities\Files;
+use Symfony\Component\Console\Application;
+
+putenv('environment=prod');
+
+define('ROOT_PATH', realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+
+require 'vendor/autoload.php';
+
+Files::loadIfExists(ROOT_PATH . 'test/application/config/routes.php');
+
+$app = new Application();
+$app->add(new ConsoleCommand());
+$app->run();
