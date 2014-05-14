@@ -13,4 +13,5 @@ Files::loadIfExists(ROOT_PATH . 'test/application/config/routes.php');
 
 $app = new Application();
 $app->add(new ConsoleCommand());
+$app->add(new RoutesCommand());
 $app->run();

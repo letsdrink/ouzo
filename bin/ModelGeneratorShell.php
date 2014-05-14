@@ -36,6 +36,8 @@ class ModelGeneratorShell extends Shell
 
     /**
      * @param Generator $modelGenerator
+     * @param $fileName
+     * @throws GeneratorException
      */
     private function _saveClassToFile($modelGenerator, $fileName)
     {

@@ -13,9 +13,9 @@
     ],
     "autoload": {
         "psr-0": {
-            "Ouzo": "src/"
-        },
-        "classmap": ["bin/"]
+            "Ouzo": "src/",
+            "": "bin/"
+        }
     },
     "require": {
         "d11wtq/boris": "dev-master",

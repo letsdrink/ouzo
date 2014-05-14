@@ -1,28 +1,43 @@
 <?php
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
-use Ouzo\Shell;
-use Ouzo\Shell\InputArgument;
 use Ouzo\Uri\UriHelperGenerator;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Path;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class RoutesShell extends Shell
+class RoutesCommand extends Command
 {
+    /**
+     * @var InputInterface
+     */
+    private $_input;
+    /**
+     * @var OutputInterface
+     */
+    private $_output;
+
     public function configure()
     {
-        $this->addArgument('controller', 'c', InputArgument::VALUE_OPTIONAL);
-        $this->addArgument('generate', 'g', InputArgument::VALUE_NONE);
+        $this->setName('ouzo:routes')
+            ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL)
+            ->addOption('generate', 'g', InputOption::VALUE_NONE);
     }
 
-    public function main()
+    public function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($this->getArgument('generate')) {
+        $this->_input = $input;
+        $this->_output = $output;
+
+        if ($input->getOption('generate')) {
             $path = Path::join(ROOT_PATH, 'application', 'helper', 'GeneratedUriHelper.php');
             UriHelperGenerator::generate()->saveToFile($path);
-            $this->out('File with uri helpers is generated in ' . $path);
+            $output->writeln('File with uri helpers is generated in ' . $path);
         } else {
-            if ($this->getArgument('controller')) {
+            if ($input->getOption('controller')) {
                 $this->controller();
             } else {
                 $this->all();
@@ -32,7 +47,7 @@ class RoutesShell extends Shell
 
     private function controller()
     {
-        $controller = $this->getArgument('controller');
+        $controller = $this->_input->getOption('controller');
         $this->_renderRoutes(Route::getRoutesForController($controller));
     }
 
@@ -57,8 +72,7 @@ class RoutesShell extends Shell
             $action = $rule->getAction() ? '#' . $rule->getAction() : $rule->getAction();
             $controllerAction = $rule->getController() . $action;
 
-            $text = sprintf("\t%30s \t %-10s %-40s %s", $name, $showMethod, $uri, $controllerAction);
-            $this->out($text);
+            $this->_output->writeln(sprintf("\t%30s \t %-10s %-40s %s", $name, $showMethod, $uri, $controllerAction));
 
             $this->_printExceptIfExists($rule);
 
@@ -80,10 +94,9 @@ class RoutesShell extends Shell
         if ($except) {
             $obj = $this;
             $text = sprintf("\t\t\t\t\t\t%13s", 'except:');
-            $obj->out($text);
+            $obj->_output->writeln($text);
             Arrays::map($except, function ($except) use ($obj) {
-                $text = sprintf("\t\t\t\t\t\t\t%-10s", $except);
-                $obj->out($text);
+                $obj->_output->writeln(sprintf("\t\t\t\t\t\t\t%-10s", $except));
                 return $except;
             });
         }
