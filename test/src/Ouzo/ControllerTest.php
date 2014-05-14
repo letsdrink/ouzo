@@ -3,6 +3,7 @@ use Ouzo\Controller;
 use Ouzo\ControllerFactory;
 use Ouzo\Routing\Route;
 use Ouzo\Session;
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Utilities\Arrays;
@@ -111,6 +112,25 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2'), $this->getAssigned('params'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldParseQueryStringWithNestedParams()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        $this->get('/simple_test/params?p1=v1&id[]=1&id[]=2&id[]=3');
+
+        //then
+        $actual = $this->getAssigned('params');
+        Assert::thatArray($actual)
+            ->hasSize(2)
+            ->containsKeyAndValue(array('p1' => 'v1'));
+        Assert::thatArray($actual['id'])->hasSize(3)->containsExactly(1, 2, 3);
     }
 
     /**
