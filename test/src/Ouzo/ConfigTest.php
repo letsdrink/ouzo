@@ -27,6 +27,9 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         Config::overrideProperty('debug')->with(true);
         Config::overrideProperty('language')->with('en');
         Config::overridePropertyArray(array('global', 'prefix_system'), '');
+        if (file_exists('/tmp/SampleConfigFile.php')) {
+            unlink('/tmp/SampleConfigFile.php');
+        }
     }
 
     /**
@@ -98,7 +101,6 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         //when
         $value = Config::getValue('default');
-        $this->_deleteSampleConfigFile();
 
         //then
         $this->assertEquals('SampleAuthFile', $value['auth']);
@@ -118,7 +120,6 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
         //when
         $value = Config::getValue('default');
-        $this->_deleteSampleConfigFile();
 
         //then
         $this->assertEquals('file', $value['file']);
@@ -140,11 +141,6 @@ class SampleConfigFile
 }
 TEMPLATE;
         file_put_contents('/tmp/SampleConfigFile.php', $classTemplate);
-    }
-
-    private function _deleteSampleConfigFile()
-    {
-        unlink('/tmp/SampleConfigFile.php');
     }
 
     /**
