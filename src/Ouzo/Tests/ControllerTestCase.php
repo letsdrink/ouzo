@@ -11,7 +11,6 @@ class ControllerTestCase extends DbTransactionalTestCase
 {
     protected $_frontController;
 
-    private $_prefixSystem;
     private $_redirectHandler;
     private $_sessionInitializer;
     private $_downloadHandler;
@@ -19,9 +18,6 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function __construct()
     {
         parent::__construct();
-
-        $config = Config::getValue('global');
-        $this->_prefixSystem = $config['prefix_system'];
 
         $this->_redirectHandler = new MockRedirectHandler();
         $this->_sessionInitializer = new MockSessionInitializer();
@@ -35,9 +31,14 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_frontController->headerSender = new MockHeaderSender();
     }
 
+    private static function _prefixSystem()
+    {
+        return Config::getValue('global', 'prefix_system');
+    }
+
     public function get($url)
     {
-        $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
 
@@ -59,7 +60,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function post($url, $data)
     {
-        $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = $data;
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
@@ -69,7 +70,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function put($url, $data)
     {
-        $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = array_merge($data, array('_method' => 'PUT'));
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
@@ -78,7 +79,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function patch($url)
     {
-        $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['_method'] = 'PATCH';
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
@@ -87,7 +88,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function delete($url)
     {
-        $_SERVER['REQUEST_URI'] = $this->_prefixSystem . $url;
+        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['_method'] = 'DELETE';
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
@@ -101,7 +102,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     private function _removePrefix($string)
     {
-        return Strings::removePrefix($string, $this->_prefixSystem);
+        return Strings::removePrefix($string, self::_prefixSystem());
     }
 
     public function assertRenders($string)
