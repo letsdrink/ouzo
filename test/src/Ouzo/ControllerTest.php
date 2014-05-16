@@ -1,4 +1,5 @@
 <?php
+use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\ControllerFactory;
 use Ouzo\Routing\Route;
@@ -37,7 +38,23 @@ class SimpleTestController extends Controller
 
     public function read_kept()
     {
-        $this->layout->renderAjax(Arrays::firstOrNull(Session::has('messages') ? Session::get('messages') : array()));
+        $this->layout->renderAjax(Arrays::firstOrNull(Session::get('messages') ?: array()));
+        $this->layout->unsetLayout();
+    }
+
+    public function add_notice_for_full_url()
+    {
+        $this->notice(array('notice'), false, 'prefix/simple_test/read_kept');
+    }
+
+    public function add_notice_for_short_url()
+    {
+        $this->notice(array('notice'), false, '/simple_test/read_kept');
+    }
+
+    public function other_action()
+    {
+        $this->layout->renderAjax("other_action");
         $this->layout->unsetLayout();
     }
 
@@ -241,5 +258,60 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertResponseHeader('HTTP/1.1 200 OK');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNoticeIfShortUrlMatches()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/add_notice_for_short_url');
+
+        //when
+        $this->get('/simple_test/read_kept');
+        $this->get('/simple_test/read_kept');
+
+        //then
+        $this->assertRenderedContent()->isNull();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNoticeIfFullUrlMatches()
+    {
+        //given
+        Config::overrideProperty('global', 'prefix_system')->with('prefix');
+
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/add_notice_for_full_url');
+
+        //when
+        $this->get('/simple_test/read_kept');
+        $this->get('/simple_test/read_kept');
+
+        //then
+        $this->assertRenderedContent()->isNull();
+
+        Config::revertProperty('global', 'prefix_system');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotRemoveNoticeIfUrlDoenNotMatche()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/add_notice_for_short_url');
+
+        //when
+        $this->get('/simple_test/other_action');
+        $this->get('/simple_test/read_kept');
+
+        //then
+        $this->assertRenderedContent()->isEqualTo('notice');
     }
 }
