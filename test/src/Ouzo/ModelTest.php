@@ -584,4 +584,21 @@ class ModelTest extends DbTransactionalTestCase
         //then
         $this->assertEmpty($product->name);
     }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfInvalidSequence()
+    {
+        //given
+        $model = new Model(array('table' => 'products', 'primaryKey' => 'id', 'fields' => array('name'), 'sequence' => 'invalid_seq', 'attributes' => array(
+            'name' => 'name'
+        )));
+
+        //when
+        CatchException::when($model)->insert();
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
+    }
 }

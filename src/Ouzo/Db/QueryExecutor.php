@@ -75,7 +75,7 @@ class QueryExecutor
     public function insert($sequence = '')
     {
         $this->execute();
-        return $sequence ? $this->_db->_dbHandle->lastInsertId($sequence) : null;
+        return $sequence ? $this->_db->lastInsertId($sequence) : null;
     }
 
     private function _fetch($function)

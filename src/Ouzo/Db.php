@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Db\PDOExceptionExtractor;
 use Ouzo\Db\StatementExecutor;
 use Ouzo\Utilities\Arrays;
 use PDO;
@@ -114,5 +115,14 @@ class Db
         }
         $dsn = $this->_buildDsn($params);
         return new PDO($dsn, $params['user'], $params['pass']);
+    }
+
+    public function lastInsertId($sequence)
+    {
+        $lastInsertId = $this->_dbHandle->lastInsertId($sequence);
+        if (!$lastInsertId) {
+            throw PDOExceptionExtractor::getException($this->_dbHandle->errorInfo(), "Cannot get sequence value: $sequence");
+        }
+        return $lastInsertId;
     }
 }
