@@ -65,7 +65,7 @@ class ConfigRepository
         $overriddenConfig = & $this->_overriddenConfig;
         $overriddenKey = null;
         foreach ($keys as $key) {
-            if (!isset($overriddenConfig[$key])) {
+            if (!array_key_exists($key, $overriddenConfig)) {
                 throw new InvalidArgumentException('Cannot revert. No configuration override for: ' . Objects::toString($keys));
             }
             $config = & $config[$key];
