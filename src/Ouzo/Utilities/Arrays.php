@@ -712,7 +712,7 @@ class Arrays
     public static function getNestedValue(array $array, array $keys)
     {
         foreach ($keys as $key) {
-            $array = self::getValue($array, $key);
+            $array = self::getValue(self::toArray($array), $key);
             if (!$array) {
                 return null;
             }

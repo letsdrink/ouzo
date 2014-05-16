@@ -694,4 +694,19 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($filtered)->hasSize(2)->contains('foo', -1);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnEmptyArrayWhenNotFoundInNestedValue()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        $value = Arrays::getNestedValue($array, array('1', '2', '3', '4'));
+
+        //then
+        $this->assertNull($value);
+    }
 }
