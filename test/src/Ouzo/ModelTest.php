@@ -599,6 +599,9 @@ class ModelTest extends DbTransactionalTestCase
         CatchException::when($model)->insert();
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
+        if (!$model->id) {
+            CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
+            //drivers other than postgres return last inserted id even if invalid sequence is given
+        }
     }
 }
