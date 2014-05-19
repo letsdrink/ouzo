@@ -720,17 +720,35 @@ class Arrays
         return $array;
     }
 
+    /**
+     * @deprecated
+     */
     public static function removeNestedValue(array &$array, array $keys)
+    {
+        trigger_error('Use Arrays::removeNestedKey instead', E_USER_DEPRECATED);
+        self::removeNestedKey($array, $keys);
+    }
+
+    public static function removeNestedKey(array &$array, array $keys)
     {
         $key = array_shift($keys);
         if (count($keys) == 0) {
             unset($array[$key]);
         } else {
-            self::removeNestedValue($array[$key], $keys);
+            self::removeNestedKey($array[$key], $keys);
         }
     }
 
+    /**
+     * @deprecated
+     */
     public static function hasNestedValue(array $array, array $keys)
+    {
+        trigger_error('Use Arrays::hasNestedKey instead', E_USER_DEPRECATED);
+        return self::hasNestedKey($array, $keys);
+    }
+
+    public static function hasNestedKey(array $array, array $keys)
     {
         foreach ($keys as $key) {
             if (!isset($array[$key])) {

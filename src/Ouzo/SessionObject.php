@@ -9,7 +9,7 @@ class SessionObject
 
     public function has($keys)
     {
-        return Arrays::hasNestedValue($_SESSION, Arrays::toArray($keys));
+        return Arrays::hasNestedKey($_SESSION, Arrays::toArray($keys));
     }
 
     public function get($keys)
@@ -47,7 +47,7 @@ class SessionObject
         if (!isset($_SESSION)) {
             return null;
         }
-        Arrays::removeNestedValue($_SESSION, Arrays::toArray($keys));
+        Arrays::removeNestedKey($_SESSION, Arrays::toArray($keys));
     }
 
     public function push($args)

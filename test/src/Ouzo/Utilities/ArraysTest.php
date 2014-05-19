@@ -587,13 +587,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldRemoveNestedValueAtRoot()
+    public function shouldRemoveNestedKeyAtRoot()
     {
         //given
         $array = array('1' => array('2' => array('3' => 'value')));
 
         //when
-        Arrays::removeNestedValue($array, array('1'));
+        Arrays::removeNestedKey($array, array('1'));
 
         //then
         $this->assertEquals(array(), $array);
@@ -602,13 +602,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldRemoveNestedValue()
+    public function shouldRemoveNestedKey()
     {
         //given
         $array = array('1' => array('2' => array('3' => 'value')));
 
         //when
-        Arrays::removeNestedValue($array, array('1', '2'));
+        Arrays::removeNestedKey($array, array('1', '2'));
 
         //then
         $this->assertEquals(array('1' => array()), $array);
@@ -616,14 +616,28 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @expectedExceptionMessage Use Arrays::removeNestedKey instead
      */
-    public function shouldNotRemoveNestedValueWhenKeyNotFound()
+    public function shouldThrowDeprecatedExceptionWhenUseRemoveNestedValue()
     {
         //given
         $array = array('1' => array('2' => array('3' => 'value')));
 
         //when
-        Arrays::removeNestedValue($array, array('1', '4'));
+        Arrays::removeNestedValue($array, array('1', '2'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotRemoveNestedKeyWhenKeyNotFound()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        Arrays::removeNestedKey($array, array('1', '4'));
 
         //then
         $this->assertEquals(array('1' => array('2' => array('3' => 'value'))), $array);
@@ -632,13 +646,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldCheckIfArrayHasNestedValue()
+    public function shouldCheckIfArrayHasNestedKey()
     {
         //given
         $array = array('1' => array('2' => array('3' => 'value')));
 
         //when
-        $value = Arrays::hasNestedValue($array, array('1', '2', '3'));
+        $value = Arrays::hasNestedKey($array, array('1', '2', '3'));
 
         //then
         $this->assertTrue($value);
@@ -647,13 +661,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldCheckIfArrayHasNestedValueForRoot()
+    public function shouldCheckIfArrayHasNestedKeyForRoot()
     {
         //given
         $array = array('1' => array('2' => array('3' => 'value')));
 
         //when
-        $value = Arrays::hasNestedValue($array, array('1'));
+        $value = Arrays::hasNestedKey($array, array('1'));
 
         //then
         $this->assertTrue($value);
@@ -661,14 +675,28 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @expectedExceptionMessage Use Arrays::hasNestedKey instead
      */
-    public function hasNestedValueShouldReturnFalseWhenKeyDoesNotExist()
+    public function shouldThrowDeprecatedExceptionWhenUseHasNestedValue()
     {
         //given
         $array = array('1' => array('2' => array('3' => 'value')));
 
         //when
-        $value = Arrays::hasNestedValue($array, array('1', '4'));
+        Arrays::hasNestedValue($array, array('1'));
+    }
+
+    /**
+     * @test
+     */
+    public function hasNestedKeyShouldReturnFalseWhenKeyDoesNotExist()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        $value = Arrays::hasNestedKey($array, array('1', '4'));
 
         //then
         $this->assertFalse($value);
