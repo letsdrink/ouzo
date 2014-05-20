@@ -37,6 +37,10 @@ Enhancements:
 * When authorization is invalid UnauthorizedException is thrown.
 * [ModelGenerator] Added default table information.
 * [ModelGenerator] Setting namespace in generated model class.
+* [Core] Migrated Shell to Symfony Console.
+* [Core] Removed Shell (now using Symfony Console).
+* [Core] Support url with and without prefix in notices.
+* [Utilities] Renamed Arrays::hasNestedValue to Arrays::hasNestedKey and Arrays::removeNestedValue to Arrays::removeNestedKey (issue #54).
 
 Bug fixes:
 * [Routes] Fixed invalid method name in generated uri helper for camelcase methods in controllers (issuse #69).
@@ -50,5 +54,8 @@ Bug fixes:
 * [ORM] Fixed nested 'with' and one-to-many relations (issue #82).
 * [Routes] Fixed nested resources in uri generator. 
 * [Core] Support for redirect url.
-
-
+* [Tests] Parsing url setting in method ControllerTestCase::get (issue #79).
+* [Utilities] Fixed Arrays::getNestedValue when pass more keys than are in the array.
+* [Tests] Fixed deleting sample config file in ConfigTest.
+* [ORM] Throw exception if invalid sequence in model (issue #85).
+* [Core] Fixed revert of null properties in config.
