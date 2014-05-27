@@ -13,14 +13,16 @@ class Relation
     private $localKey;
     private $foreignKey;
     private $collection;
+    private $condition;
 
-    public function __construct($name, $class, $localKey, $foreignKey, $collection)
+    public function __construct($name, $class, $localKey, $foreignKey, $collection, $condition = '')
     {
         $this->name = $name;
         $this->class = $class;
         $this->localKey = $localKey;
         $this->foreignKey = $foreignKey;
         $this->collection = $collection;
+        $this->condition = $condition;
     }
 
     public static function inline($params)
@@ -46,6 +48,11 @@ class Relation
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getCondition()
+    {
+        return $this->condition;
     }
 
     /**
@@ -74,7 +81,7 @@ class Relation
 
     public function withName($name)
     {
-        return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection);
+        return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection, $this->condition);
     }
 
     public function __toString()

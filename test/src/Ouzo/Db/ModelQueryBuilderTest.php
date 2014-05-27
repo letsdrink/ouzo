@@ -1114,4 +1114,42 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('eric', $product->reload()->name);
         $this->assertEquals(1, $affectedRows);
     }
+
+    /**
+     * @test
+     */
+    public function shouldLazilyFetchHasManyWithCondition()
+    {
+        //given
+        $category = Category::create(array('name' => 'sony'));
+        Product::create(array('name' => 'bob', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'billy', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'peter', 'id_category' => $category->getId()));
+
+        //when
+        $products_start_from_b = $category->products_starting_with_b;
+
+        //then
+        Assert::thatArray($products_start_from_b)->hasSize(2)->onProperty('name')->containsOnly('bob', 'billy');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchHasManyWithCondition()
+    {
+        //given
+        $category = Category::create(array('name' => 'sony'));
+        Product::create(array('name' => 'bob', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'billy', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'peter', 'id_category' => $category->getId()));
+
+        //when
+        $searchCategory = Category::where()->with('products_starting_with_b')->fetch();
+
+        //then
+        Assert::thatArray(Arrays::getValue($searchCategory->attributes(), 'products_starting_with_b'))
+            ->hasSize(2)
+            ->onProperty('name')->containsOnly('bob', 'billy');
+    }
 }

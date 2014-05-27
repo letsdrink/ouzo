@@ -17,7 +17,14 @@ class Category extends Model
     public function __construct($attributes = array())
     {
         parent::__construct(array(
-            'hasMany' => array('products' => array('class' => 'Test\Product', 'foreignKey' => 'id_category')),
+            'hasMany' => array(
+                'products' => array('class' => 'Test\Product', 'foreignKey' => 'id_category'),
+                'products_starting_with_b' => array(
+                    'class' => 'Test\Product',
+                    'foreignKey' => 'id_category',
+                    'condition' => "products.name LIKE 'b%'"
+                )
+            ),
             'belongsTo' => array('parent' => array('class' => 'Test\Category', 'foreignKey' => 'id_parent', 'referencedColumn' => 'id')),
             'attributes' => $attributes,
             'fields' => $this->_fields));

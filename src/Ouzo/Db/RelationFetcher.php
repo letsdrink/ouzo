@@ -35,7 +35,9 @@ class RelationFetcher
     private function _loadRelationObjectsIndexedById($localKeys)
     {
         $relationObject = $this->_relation->getRelationModelObject();
-        $relationObjects = $relationObject::where(array($this->_relation->getForeignKey() => $localKeys))->fetchAll();
+        $relationObjects = $relationObject::where(array($this->_relation->getForeignKey() => $localKeys))
+            ->where($this->_relation->getCondition())
+            ->fetchAll();
         return Arrays::groupBy($relationObjects, Functions::extractField($this->_relation->getForeignKey()));
     }
 

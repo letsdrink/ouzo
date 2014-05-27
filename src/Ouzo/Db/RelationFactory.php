@@ -79,6 +79,7 @@ class RelationFactory
     private static function newRelation($name, $localKey, $foreignKey, $collection, $params)
     {
         $class = $params['class'];
-        return new Relation($name, $class, $localKey, $foreignKey, $collection);
+        $condition = Arrays::getValue($params, 'condition', '');
+        return new Relation($name, $class, $localKey, $foreignKey, $collection, $condition);
     }
 }
