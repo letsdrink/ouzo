@@ -1,7 +1,8 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
     "hash": "76580d527a172ec184dafcbaf68e5ec5",
     "packages": [
@@ -192,16 +193,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "2.0.6",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "bccecf50645068b44f49a84009e2a0499a500b99"
+                "reference": "58401826c8cfc8fd689b60026e91c337df374bca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/bccecf50645068b44f49a84009e2a0499a500b99",
-                "reference": "bccecf50645068b44f49a84009e2a0499a500b99",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/58401826c8cfc8fd689b60026e91c337df374bca",
+                "reference": "58401826c8cfc8fd689b60026e91c337df374bca",
                 "shasum": ""
             },
             "require": {
@@ -253,7 +254,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-04-30 09:01:21"
+            "time": "2014-05-26 14:55:24"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -444,12 +445,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3d589867b977ff64a060e883ce0edfc350051237"
+                "reference": "620a672be667898f4f4b0e21a4ce349873ebc35a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3d589867b977ff64a060e883ce0edfc350051237",
-                "reference": "3d589867b977ff64a060e883ce0edfc350051237",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/620a672be667898f4f4b0e21a4ce349873ebc35a",
+                "reference": "620a672be667898f4f4b0e21a4ce349873ebc35a",
                 "shasum": ""
             },
             "require": {
@@ -509,7 +510,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-05-05 06:17:28"
+            "time": "2014-05-24 08:20:39"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -612,12 +613,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/satooshi/php-coveralls.git",
-                "reference": "9fce7133a1d79b19f38a8fc975009703468172f0"
+                "reference": "b7271847c84d160f5b0aae83e45c225e8ffc96f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/satooshi/php-coveralls/zipball/9fce7133a1d79b19f38a8fc975009703468172f0",
-                "reference": "9fce7133a1d79b19f38a8fc975009703468172f0",
+                "url": "https://api.github.com/repos/satooshi/php-coveralls/zipball/b7271847c84d160f5b0aae83e45c225e8ffc96f4",
+                "reference": "b7271847c84d160f5b0aae83e45c225e8ffc96f4",
                 "shasum": ""
             },
             "require": {
@@ -679,7 +680,7 @@
                 "github",
                 "test"
             ],
-            "time": "2014-03-27 16:05:26"
+            "time": "2014-05-14 13:09:37"
         },
         {
             "name": "sebastian/diff",
@@ -885,7 +886,7 @@
         },
         {
             "name": "symfony/config",
-            "version": "v2.4.4",
+            "version": "v2.4.5",
             "target-dir": "Symfony/Component/Config",
             "source": {
                 "type": "git",
@@ -935,7 +936,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.4.4",
+            "version": "v2.4.5",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
@@ -991,7 +992,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.4.4",
+            "version": "v2.4.5",
             "target-dir": "Symfony/Component/Filesystem",
             "source": {
                 "type": "git",
@@ -1040,7 +1041,7 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v2.4.4",
+            "version": "v2.4.5",
             "target-dir": "Symfony/Component/Stopwatch",
             "source": {
                 "type": "git",
@@ -1089,17 +1090,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.4.4",
+            "version": "v2.4.5",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "65539ecde838f9c0d18b006b2101e3deb4b5c9ff"
+                "reference": "fd22bb88c3a6f73c898b39bec185a9e211b06265"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/65539ecde838f9c0d18b006b2101e3deb4b5c9ff",
-                "reference": "65539ecde838f9c0d18b006b2101e3deb4b5c9ff",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/fd22bb88c3a6f73c898b39bec185a9e211b06265",
+                "reference": "fd22bb88c3a6f73c898b39bec185a9e211b06265",
                 "shasum": ""
             },
             "require": {
@@ -1134,7 +1135,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-18 20:37:09"
+            "time": "2014-05-12 09:27:48"
         }
     ],
     "aliases": [
