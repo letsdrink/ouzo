@@ -61,7 +61,7 @@ class ModelQueryBuilder
      */
     public function where($where = '', $values = array())
     {
-        $this->_query->whereClauses[] = new WhereClause($where, $values);
+        $this->_query->whereClauses[] = $where instanceof WhereClause ? $where : new WhereClause($where, $values);
         return $this;
     }
 

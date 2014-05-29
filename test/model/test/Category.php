@@ -2,6 +2,7 @@
 namespace Model\Test;
 
 use Ouzo\Db;
+use Ouzo\Db\WhereClause;
 use Ouzo\Model;
 
 /**
@@ -22,7 +23,15 @@ class Category extends Model
                 'products_starting_with_b' => array(
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
-                    'condition' => "products.name LIKE 'b%'"
+                    'conditions' => "products.name LIKE 'b%'",
+                ),
+                'products_ending_with_b_or_y' => array(
+                    'class' => 'Test\Product',
+                    'foreignKey' => 'id_category',
+                    'conditions' => function () {
+                        return new WhereClause("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
+                    },
+//                    'conditions' => array("products.name" => "test"),
                 )
             ),
             'belongsTo' => array('parent' => array('class' => 'Test\Category', 'foreignKey' => 'id_parent', 'referencedColumn' => 'id')),

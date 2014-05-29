@@ -52,6 +52,9 @@ class Relation
 
     public function getCondition()
     {
+        if (is_callable($this->condition)) {
+            return call_user_func($this->condition);
+        }
         return $this->condition;
     }
 

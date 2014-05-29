@@ -1118,7 +1118,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldLazilyFetchHasManyWithCondition()
+    public function shouldLazilyFetchHasManyWithStringCondition()
     {
         //given
         $category = Category::create(array('name' => 'sony'));
@@ -1127,16 +1127,16 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(array('name' => 'peter', 'id_category' => $category->getId()));
 
         //when
-        $products_start_from_b = $category->products_starting_with_b;
+        $products_starting_from_b = $category->products_starting_with_b;
 
         //then
-        Assert::thatArray($products_start_from_b)->hasSize(2)->onProperty('name')->containsOnly('bob', 'billy');
+        Assert::thatArray($products_starting_from_b)->hasSize(2)->onProperty('name')->containsOnly('bob', 'billy');
     }
 
     /**
      * @test
      */
-    public function shouldFetchHasManyWithCondition()
+    public function shouldFetchHasManyWithStringCondition()
     {
         //given
         $category = Category::create(array('name' => 'sony'));
@@ -1148,7 +1148,45 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $searchCategory = Category::where()->with('products_starting_with_b')->fetch();
 
         //then
-        Assert::thatArray(Arrays::getValue($searchCategory->attributes(), 'products_starting_with_b'))
+        Assert::thatArray(self::getNoLazy($searchCategory, 'products_starting_with_b'))
+            ->hasSize(2)
+            ->onProperty('name')->containsOnly('bob', 'billy');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLazilyFetchHasManyWithCallbackCondition()
+    {
+        //given
+        $category = Category::create(array('name' => 'sony'));
+        Product::create(array('name' => 'bob', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'billy', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'peter', 'id_category' => $category->getId()));
+
+        //when
+        $products_ending_with_b_or_y = $category->products_ending_with_b_or_y;
+
+        //then
+        Assert::thatArray($products_ending_with_b_or_y)->hasSize(2)->onProperty('name')->containsOnly('bob', 'billy');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchHasManyWithCallbackCondition()
+    {
+        //given
+        $category = Category::create(array('name' => 'sony'));
+        Product::create(array('name' => 'bob', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'billy', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'peter', 'id_category' => $category->getId()));
+
+        //when
+        $searchCategory = Category::where()->with('products_ending_with_b_or_y')->fetch();
+
+        //then
+        Assert::thatArray(self::getNoLazy($searchCategory, 'products_ending_with_b_or_y'))
             ->hasSize(2)
             ->onProperty('name')->containsOnly('bob', 'billy');
     }
