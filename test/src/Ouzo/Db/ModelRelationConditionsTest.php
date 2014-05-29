@@ -113,6 +113,38 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Assert::thatArray($searchCategory)->hasSize(2)->onProperty('name')->containsOnly('sony', 'sony');
     }
 
+    /**
+     * @test
+     */
+    public function shouldFetchHasManyJoinWithCallbackCondition()
+    {
+        //given
+        $category = Category::create(array('name' => 'samsung'));
+        Product::create(array('name' => 'cris', 'id_category' => $category->getId()));
+
+        //when
+        $searchCategory = Category::innerJoin('products_ending_with_b_or_y')->fetchAll();
+
+        //then
+        Assert::thatArray($searchCategory)->hasSize(2)->onProperty('name')->containsOnly('sony', 'sony');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchHasManyJoinWithArrayCondition()
+    {
+        //given
+        $category = Category::create(array('name' => 'samsung'));
+        Product::create(array('name' => 'cris', 'id_category' => $category->getId()));
+
+        //when
+        $searchCategory = Category::innerJoin('products_name_bob')->fetchAll();
+
+        //then
+        Assert::thatArray($searchCategory)->hasSize(1)->onProperty('name')->containsOnly('sony');
+    }
+
     static function getNoLazy(Model $model, $attribute)
     {
         return Arrays::getValue($model->attributes(), $attribute);
