@@ -31,7 +31,11 @@ class Category extends Model
                     'conditions' => function () {
                         return new WhereClause("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
                     },
-//                    'conditions' => array("products.name" => "test"),
+                ),
+                'products_name_bob' => array(
+                    'class' => 'Test\Product',
+                    'foreignKey' => 'id_category',
+                    'conditions' => array("products.name" => "bob")
                 )
             ),
             'belongsTo' => array('parent' => array('class' => 'Test\Category', 'foreignKey' => 'id_parent', 'referencedColumn' => 'id')),
