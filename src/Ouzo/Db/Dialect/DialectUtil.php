@@ -60,6 +60,9 @@ class DialectUtil
     {
         $alias = $joinClause->alias ? " AS {$joinClause->alias}" : "";
         $on = self::buildWhereQuery($joinClause->onClauses);
+        if ($joinClause->alias) {
+            $on = preg_replace("#(?<=^| ){$joinClause->joinTable}(?=\\.)#", $joinClause->alias, $on);
+        }
         return $joinClause->type . ' JOIN ' . $joinClause->joinTable . $alias . ' ON ' . $joinClause->getJoinColumnWithTable() . ' = ' . $joinClause->getJoinedColumnWithTable() . ($on ? " AND $on" : '');
     }
 

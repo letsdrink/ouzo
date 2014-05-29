@@ -183,6 +183,19 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         $this->assertEquals('billy', $product->name);
     }
 
+    /**
+     * @test
+     */
+    public function shouldFetchHasOneWithAlias()
+    {
+        //when
+        $searchCategory = Category::alias('c')->innerJoin('product_named_billy', 'p')->fetch();
+
+        //then
+        $product = self::getNoLazy($searchCategory, 'product_named_billy');
+        $this->assertEquals('billy', $product->name);
+    }
+
     static function getNoLazy(Model $model, $attribute)
     {
         return Arrays::getValue($model->attributes(), $attribute);
