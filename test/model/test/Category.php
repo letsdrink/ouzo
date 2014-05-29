@@ -38,6 +38,13 @@ class Category extends Model
                     'conditions' => array("products.name" => "bob")
                 )
             ),
+            'hasOne' => array(
+                'product_named_billy' => array(
+                    'class' => 'Test\Product',
+                    'foreignKey' => 'id_category',
+                    'conditions' => "products.name = 'billy'"
+                )
+            ),
             'belongsTo' => array('parent' => array('class' => 'Test\Category', 'foreignKey' => 'id_parent', 'referencedColumn' => 'id')),
             'attributes' => $attributes,
             'fields' => $this->_fields));

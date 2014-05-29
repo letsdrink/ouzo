@@ -145,6 +145,44 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Assert::thatArray($searchCategory)->hasSize(1)->onProperty('name')->containsOnly('sony');
     }
 
+    /**
+     * @test
+     */
+    public function shouldFetchHasOneJoinWithStringCondition()
+    {
+        //when
+        $searchCategory = Category::innerJoin('product_named_billy')->fetch();
+
+        //then
+        $product = self::getNoLazy($searchCategory, 'product_named_billy');
+        $this->assertEquals('billy', $product->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLazilyFetchHasOneWithStringCondition()
+    {
+        //when
+        $product = $this->_category->product_named_billy;
+
+        //then
+        $this->assertEquals('billy', $product->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFetchHasOneWithStringCondition()
+    {
+        //when
+        $searchCategory = Category::where()->with('product_named_billy')->fetch();
+
+        //then
+        $product = self::getNoLazy($searchCategory, 'product_named_billy');
+        $this->assertEquals('billy', $product->name);
+    }
+
     static function getNoLazy(Model $model, $attribute)
     {
         return Arrays::getValue($model->attributes(), $attribute);
