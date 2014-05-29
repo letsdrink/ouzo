@@ -495,4 +495,9 @@ class Model extends Validatable
     {
         return $this->_relations->getRelation($name);
     }
+
+    public function __toString()
+    {
+        return $this->inspect();
+    }
 }

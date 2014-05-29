@@ -54,7 +54,8 @@ class ModelJoin
         $joinTable = $joinedModel->getTableName();
         $joinKey = $this->relation->getForeignKey();
         $idName = $this->relation->getLocalKey();
-        return new JoinClause($joinTable, $joinKey, $idName, $this->fromTable, $this->alias, $this->type, new WhereClause($this->on, array()));
+        $onClauses = array(new WhereClause($this->on, array()), $this->relation->getCondition());
+        return new JoinClause($joinTable, $joinKey, $idName, $this->fromTable, $this->alias, $this->type, $onClauses);
     }
 
     public function equals(ModelJoin $other)
@@ -70,7 +71,7 @@ class ModelJoin
 
     public static function equalsPredicate($other)
     {
-        return function ($modelJoin) use($other) {
+        return function ($modelJoin) use ($other) {
             return $modelJoin->equals($other);
         };
     }

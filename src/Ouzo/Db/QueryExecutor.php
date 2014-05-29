@@ -126,9 +126,8 @@ class QueryExecutor
     {
         $this->_addBindValue(array_values($this->_query->updateAttributes));
 
-        foreach ($this->_query->joinClauses as $joinClause) {
-            $this->_addBindValuesFromWhereClause($joinClause->onClause);
-        }
+        $this->_addBindValuesFromJoinClauses($this->_query->joinClauses);
+
         foreach ($this->_query->whereClauses as $whereClause) {
             $this->_addBindValuesFromWhereClause($whereClause);
         }
@@ -137,6 +136,15 @@ class QueryExecutor
         }
         if ($this->_query->offset) {
             $this->_addBindValue($this->_query->offset);
+        }
+    }
+
+    private function _addBindValuesFromJoinClauses($joinClauses)
+    {
+        foreach ($joinClauses as $joinClause) {
+            foreach ($joinClause->onClauses as $onClause) {
+                $this->_addBindValuesFromWhereClause($onClause);
+            }
         }
     }
 

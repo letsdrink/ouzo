@@ -55,7 +55,7 @@ class Relation
         if (is_callable($this->condition)) {
             return call_user_func($this->condition);
         }
-        return $this->condition;
+        return new WhereClause($this->condition);
     }
 
     /**

@@ -103,7 +103,8 @@ class Query
 
     public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = array())
     {
-        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ? : $this->table, $alias, $type, new WhereClause($on, array()));
+        $onClauses = array(new WhereClause($on, array()));
+        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ? : $this->table, $alias, $type, $onClauses);
         return $this;
     }
 
