@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-Release 1.2
+Release 1.2 - IN PROGRESS
 -----------
 Enhancements:
 * [ORM] Added conditions to relations.
