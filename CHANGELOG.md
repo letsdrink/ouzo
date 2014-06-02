@@ -6,8 +6,7 @@ Release 1.2
 Enhancements:
 * [ORM] Added conditions to relations.
 
-Bug fixes:
-
+* * *
 
 Release 1.1
 -----------
