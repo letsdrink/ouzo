@@ -334,31 +334,35 @@ class Model extends Validatable
     /**
      * @param $relation
      * @param null $alias
+     * @param string $type
+     * @param array $on
      * @return ModelQueryBuilder
      */
-    public static function join($relation, $alias = null)
+    public static function join($relation, $alias = null, $type = 'LEFT', $on = array())
     {
-        return static::queryBuilder()->join($relation, $alias);
+        return static::queryBuilder()->join($relation, $alias, $type, $on);
     }
 
     /**
      * @param $relation
      * @param null $alias
+     * @param array $on
      * @return ModelQueryBuilder
      */
-    public static function innerJoin($relation, $alias = null)
+    public static function innerJoin($relation, $alias = null, $on = array())
     {
-        return static::queryBuilder()->innerJoin($relation, $alias);
+        return static::queryBuilder()->innerJoin($relation, $alias, $on);
     }
 
     /**
      * @param $relation
      * @param null $alias
+     * @param array $on
      * @return ModelQueryBuilder
      */
-    public static function rightJoin($relation, $alias = null)
+    public static function rightJoin($relation, $alias = null, $on = array())
     {
-        return static::queryBuilder()->rightJoin($relation, $alias);
+        return static::queryBuilder()->rightJoin($relation, $alias, $on);
     }
 
     /**

@@ -222,21 +222,23 @@ class ModelQueryBuilder
     /**
      * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param array $on
      * @return ModelQueryBuilder
      */
-    public function innerJoin($relationSelector, $aliases = null)
+    public function innerJoin($relationSelector, $aliases = null, $on = array())
     {
-        return $this->join($relationSelector, $aliases, 'INNER');
+        return $this->join($relationSelector, $aliases, 'INNER', $on);
     }
 
     /**
      * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param array $on
      * @return ModelQueryBuilder
      */
-    public function rightJoin($relationSelector, $aliases = null)
+    public function rightJoin($relationSelector, $aliases = null, $on = array())
     {
-        return $this->join($relationSelector, $aliases, 'RIGHT');
+        return $this->join($relationSelector, $aliases, 'RIGHT', $on);
     }
 
     /**
