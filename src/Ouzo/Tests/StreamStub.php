@@ -23,6 +23,7 @@ class StreamStub
 
     public function stream_write($data)
     {
+        static::$body .= $data;
         return strlen($data);
     }
 
