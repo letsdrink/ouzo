@@ -121,7 +121,7 @@ class Controller
     public function notice($messages, $keep = false, $url = null)
     {
         if (!empty($messages)) {
-            $url = Uri::addPrefixIfNeeded($url);
+            $url = $url ? Uri::addPrefixIfNeeded($url) : null;
             $messages = $this->wrapAsNotices($messages, $url);
             Session::set('messages', $messages);
             $this->_keepMessage = $keep;

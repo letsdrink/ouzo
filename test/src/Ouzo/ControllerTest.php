@@ -2,7 +2,9 @@
 use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\ControllerFactory;
+use Ouzo\Notice;
 use Ouzo\Routing\Route;
+use Ouzo\Routing\RouteRule;
 use Ouzo\Session;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
@@ -313,5 +315,24 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertRenderedContent()->isEqualTo('notice');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotStoreEmptyUrlForNotices()
+    {
+        //given
+        Config::overridePropertyArray(array('global', 'prefix_system'), 'prefix');
+        $_SESSION = array();
+        $controller = new Controller(new RouteRule('', '', '', false));
+        
+        //when
+        $controller->notice('hello');
+        
+        //then
+        Assert::thatArray(Session::get('messages'))->containsOnly(new Notice('hello', null));
+
+        Config::revertPropertyArray(array('global', 'prefix_system'));
     }
 }
