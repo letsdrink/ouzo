@@ -301,7 +301,7 @@ class ControllerTest extends ControllerTestCase
     /**
      * @test
      */
-    public function shouldNotRemoveNoticeIfUrlDoenNotMatche()
+    public function shouldNotRemoveNoticeIfUrlDoesNotMatch()
     {
         //given
         Route::allowAll('/simple_test', 'simple_test');
