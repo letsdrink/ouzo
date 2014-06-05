@@ -15,6 +15,10 @@ class MockTestClass
     function method2()
     {
     }
+
+    function method3(array &$a)
+    {
+    }
 }
 
 class MockTest extends \PHPUnit_Framework_TestCase
@@ -405,6 +409,24 @@ class MockTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals("result", $result);
         CatchException::assertThat()->isEqualTo($exception);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMethodThatTakesParamByRef()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $a = array();
+        Mock::when($mock)->method3(Mock::anyArgList())->thenReturn('result');
+
+        //when
+        $result = $mock->method3($a);
+
+        //then
+        $this->assertEquals("result", $result);
+        Mock::verify($mock)->method3($a);
     }
 
 }

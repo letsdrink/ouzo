@@ -50,6 +50,9 @@ class DynamicProxy
             if ($param->isArray()) {
                 $result .= 'array ';
             }
+            if ($param->isPassedByReference()) {
+                $result .= '&';
+            }
             $result .= '$' . $param->name;
             if ($param->isDefaultValueAvailable()) {
                 $result .= " = null"; // methodHandler gets only the passed arguments so anything would work here

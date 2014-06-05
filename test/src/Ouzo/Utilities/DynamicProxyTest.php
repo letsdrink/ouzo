@@ -70,6 +70,14 @@ abstract class ClassWithAbstractMethod
     abstract function fun2();
 }
 
+
+class ClassWithMethodThatTakesParamsByRef
+{
+    function fun1(array &$p1)
+    {
+    }
+}
+
 class TestMethodHandler
 {
     public $calls = array();
@@ -254,6 +262,23 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         $testMethodHandler = new TestMethodHandler();
         $proxy = DynamicProxy::newInstance('Ouzo\Utilities\TestInterface', $testMethodHandler);
         $param = new TestClass();
+
+        //when
+        $proxy->fun1($param);
+
+        //then
+        $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateProxyForMethodWithParamsByRef()
+    {
+        //when
+        $testMethodHandler = new TestMethodHandler();
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithMethodThatTakesParamsByRef', $testMethodHandler);
+        $param = array();
 
         //when
         $proxy->fun1($param);
