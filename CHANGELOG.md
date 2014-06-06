@@ -6,6 +6,7 @@ Release 1.2 - IN PROGRESS
 Enhancements:
 * [ORM] Added conditions to relations.
 * [Core] Added StdOutput logger.
+* [Core] Added Error::getByCode.
 
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
