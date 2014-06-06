@@ -10,7 +10,7 @@ Enhancements:
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
 * [Core] Fixed notices url in controller.
-* [Mock} Fixed handling of params by reference (issue #89).
+* [Mock] Fixed handling of params by reference (issue #89).
 
 * * *
 
