@@ -1,4 +1,7 @@
 <?php
+use Model\Test\Category;
+use Model\Test\Product;
+use Ouzo\Tests\Assert;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
@@ -105,7 +108,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
         $a2 = array('1', '4', '6');
 
         //when
-        $intersection =FluentArray::from($a1)->intersect($a2)->toArray();
+        $intersection = FluentArray::from($a1)->intersect($a2)->toArray();
 
         //then
         $this->assertEquals(array('1', '4'), $intersection);
@@ -120,7 +123,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
         $array = array('1', '2');
 
         //when
-        $reversed =FluentArray::from($array)->reverse()->toArray();
+        $reversed = FluentArray::from($array)->reverse()->toArray();
 
         //then
         $this->assertEquals(array('2', '1'), $reversed);
@@ -154,5 +157,58 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('default', $first);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByField()
+    {
+        //given
+        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+
+        //when
+        $uniqueByName = FluentArray::from($array)->uniqueBy('name')->toArray();
+
+        //then
+        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByFunctionResults()
+    {
+        //given
+        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+
+        //when
+        $uniqueByName = FluentArray::from($array)->uniqueBy(Functions::extract()->name)->toArray();
+
+        //then
+        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByNestedField()
+    {
+        //given
+        $category = new Category(array('name' => 'cat1'));
+
+        $product1 = new Product(array('name' => 'bob'));
+        $product1->category = $category;
+
+        $product2 = new Product(array('name' => 'john'));
+        $product2->category = $category;
+
+        $array = array($product1, $product2);
+
+        //when
+        $uniqueByName = FluentArray::from($array)->uniqueBy('category->name')->toArray();
+
+        //then
+        Assert::thatArray($uniqueByName)->hasSize(1);
     }
 }

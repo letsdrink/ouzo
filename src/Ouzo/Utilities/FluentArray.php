@@ -51,6 +51,15 @@ class FluentArray
         return $this;
     }
 
+    /**
+     * @return FluentArray
+     */
+    public function uniqueBy($selector)
+    {
+        return $this->toMap(Functions::extractExpression($selector))
+            ->values();
+    }
+
     public function keys()
     {
         $this->_array = array_keys($this->_array);
