@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Utilities;
 
+use Exception;
+
 class Functions
 {
     public static function extractId()
@@ -22,6 +24,19 @@ class Functions
         return function ($object) use ($names) {
             return Objects::getValueRecursively($object, $names);
         };
+    }
+
+    public static function extractExpression($selector)
+    {
+        if (is_callable($selector)) {
+            return $selector;
+        } else if (!is_string($selector)) {
+            throw new Exception('Invalid selector: ' . $selector);
+        } else if (preg_match('/\(\)|->/', $selector)) {
+            return Functions::extractFieldRecursively($selector);
+        } else {
+            return Functions::extractField($selector);
+        }
     }
 
     public static function identity()
