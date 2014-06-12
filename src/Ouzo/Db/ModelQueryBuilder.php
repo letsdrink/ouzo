@@ -4,6 +4,8 @@ namespace Ouzo\Db;
 use Ouzo\Db;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
 use PDO;
 
@@ -136,9 +138,14 @@ class ModelQueryBuilder
     private function _processResults($results)
     {
         $aliasToOffset = $this->_createAliasToOffsetMap();
+        $joinsToStore = FluentArray::from($this->_joinedModels)
+            ->filter(Functions::extract()->storeField())
+            ->uniqueBy(Functions::extract()->destinationField())
+            ->toArray();
+
         $models = array();
         foreach ($results as $row) {
-            $models[] = $this->convertRowToModel($row, $aliasToOffset);
+            $models[] = $this->convertRowToModel($row, $aliasToOffset, $joinsToStore);
         }
         return $this->_fetchRelations($models);
     }
@@ -156,11 +163,11 @@ class ModelQueryBuilder
         return $aliasToOffset;
     }
 
-    private function convertRowToModel($row, $aliasToOffset)
+    private function convertRowToModel($row, $aliasToOffset, $joinsToStore)
     {
         $model = ModelQueryBuilderHelper::extractModelFromResult($this->_model, $row, $aliasToOffset[$this->getModelAliasOrTable()]);
 
-        foreach ($this->_joinedModels as $joinedModel) {
+        foreach ($joinsToStore as $joinedModel) {
             if ($joinedModel->storeField()) {
                 $instance = ModelQueryBuilderHelper::extractModelFromResult($joinedModel->getModelObject(), $row, $aliasToOffset[$joinedModel->alias()]);
                 Objects::setValueRecursively($model, $joinedModel->destinationField(), $instance);

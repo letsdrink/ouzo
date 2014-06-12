@@ -262,6 +262,29 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldNotOverrideFetchedModelWhenDuplicatedJoinWithDifferentAlias()
+    {
+        //given
+        $vans = Category::create(array('name' => 'phones'));
+        $product = Product::create(array('name' => 'Reno', 'id_category' => $vans->getId()));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $orderProduct = OrderProduct::join('product->category', array('p1', 'c'))
+            ->join('product', 'p2')
+            ->where(array(
+                'p1.name' => 'Reno',
+                'p2.name' => 'Reno',
+            ))
+            ->fetch();
+
+        //then
+        $this->assertEquals($vans, self::getNoLazy(self::getNoLazy($orderProduct, 'product'), 'category'));
+    }
+
+    /**
+     * @test
+     */
     public function shouldJoinHasOneRelation()
     {
         //given
