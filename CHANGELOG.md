@@ -5,6 +5,13 @@ Release 1.2 - IN PROGRESS
 -----------
 Enhancements:
 * [ORM] Added conditions to relations.
+* [Core] Added StdOutput logger.
+* [Core] Added Error::getByCode.
+
+Bug fixes:
+* [Tests] Fixed StreamStub write method.
+* [Core] Fixed notices url in controller.
+* [Mock] Fixed handling of params by reference (issue #89).
 
 * * *
 

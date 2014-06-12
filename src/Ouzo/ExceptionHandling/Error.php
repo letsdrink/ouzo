@@ -28,4 +28,10 @@ class Error
     {
         return array('message' => $this->message, 'code' => $this->code);
     }
+
+    public static function getByCode($code, $params = array(), $prefix = 'errors.')
+    {
+        $message = I18n::t($prefix . $code, $params);
+        return new Error($code, $message);
+    }
 }
