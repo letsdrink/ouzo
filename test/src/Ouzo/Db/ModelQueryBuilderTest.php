@@ -285,6 +285,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldNotOverrideFetchedModelWhenThereIsWithForJoinedField()
+    {
+        //given
+        $vans = Category::create(array('name' => 'phones'));
+        $product = Product::create(array('name' => 'Reno', 'id_category' => $vans->getId()));
+        OrderProduct::create(array('id_product' => $product->getId()));
+
+        //when
+        $orderProduct = OrderProduct::join('product->category')
+            ->with('product->manufacturer')
+            ->fetch();
+
+        //then
+        $this->assertEquals($vans, self::getNoLazy(self::getNoLazy($orderProduct, 'product'), 'category'));
+    }
+
+    /**
+     * @test
+     */
     public function shouldJoinHasOneRelation()
     {
         //given

@@ -125,12 +125,15 @@ class ModelQueryBuilder
         return !$this->_selectModel ? $result : $this->_processResults($result);
     }
 
-    private function _fetchRelations($results)
+    private function _fetchRelations($results, $joinsToStore)
     {
+        $joinedRelations = Arrays::map($joinsToStore, Functions::extract()->destinationField());
         foreach ($this->_relationsToFetch as $relationToFetch) {
-            $relationFetcher = new RelationFetcher($relationToFetch->relation);
-            $fieldTransformer = new FieldTransformer($relationToFetch->field, $relationFetcher);
-            $fieldTransformer->transform($results);
+            if (!in_array($relationToFetch->nestedField, $joinedRelations)) {
+                $relationFetcher = new RelationFetcher($relationToFetch->relation);
+                $fieldTransformer = new FieldTransformer($relationToFetch->field, $relationFetcher);
+                $fieldTransformer->transform($results);
+            }
         }
         return $results;
     }
@@ -147,7 +150,7 @@ class ModelQueryBuilder
         foreach ($results as $row) {
             $models[] = $this->convertRowToModel($row, $aliasToOffset, $joinsToStore);
         }
-        return $this->_fetchRelations($models);
+        return $this->_fetchRelations($models, $joinsToStore);
     }
 
     private function _createAliasToOffsetMap()
@@ -283,8 +286,9 @@ class ModelQueryBuilder
         $field = '';
 
         foreach ($relations as $relation) {
-            $this->_addRelationToFetch(new RelationToFetch($field, $relation));
-            $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
+            $nestedField = $field ? $field . '->' . $relation->getName() : $relation->getName();
+            $this->_addRelationToFetch(new RelationToFetch($field, $relation, $nestedField));
+            $field = $nestedField;
         }
         return $this;
     }
