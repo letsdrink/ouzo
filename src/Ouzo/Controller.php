@@ -54,6 +54,7 @@ class Controller
 
     public function redirect($url, $messages = array())
     {
+        $url = trim($url);
         $this->notice($messages, false, $url);
 
         $this->_redirectLocation = $url;
