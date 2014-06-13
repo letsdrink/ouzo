@@ -129,7 +129,7 @@ class ModelQueryBuilder
     {
         $joinedRelations = Arrays::map($joinsToStore, Functions::extract()->destinationField());
         foreach ($this->_relationsToFetch as $relationToFetch) {
-            if (!in_array($relationToFetch->nestedField, $joinedRelations)) {
+            if (!in_array($relationToFetch->destinationField, $joinedRelations)) {
                 $relationFetcher = new RelationFetcher($relationToFetch->relation);
                 $fieldTransformer = new FieldTransformer($relationToFetch->field, $relationFetcher);
                 $fieldTransformer->transform($results);

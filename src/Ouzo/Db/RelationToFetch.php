@@ -5,18 +5,18 @@ class RelationToFetch
 {
     public $field;
     public $relation;
-    public $nestedField;
+    public $destinationField;
 
-    public function __construct($field, $relation, $nestedField)
+    public function __construct($field, $relation, $destinationField)
     {
         $this->field = $field;
         $this->relation = $relation;
-        $this->nestedField = $nestedField;
+        $this->destinationField = $destinationField;
     }
 
     public function equals(RelationToFetch $other)
     {
-        return $this->relation === $other->relation && $this->field === $other->field && $this->nestedField === $other->nestedField;
+        return $this->relation === $other->relation && $this->field === $other->field && $this->destinationField === $other->destinationField;
     }
 
     public static function equalsPredicate($other)

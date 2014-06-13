@@ -19,7 +19,7 @@ class FieldTransformer
     {
         if ($this->field) {
             $fields = FluentArray::from($results)
-                ->map(Functions::extractFieldRecursively($this->field))
+                ->map(Functions::extractExpression($this->field))
                 ->flatten()
                 ->filterNotBlank()
                 ->toArray();
