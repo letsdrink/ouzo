@@ -68,6 +68,25 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldIgnoreOrderLimitAndOffsetForSelectCount()
+    {
+        // given
+        $query = Query::count()
+            ->table('products')
+            ->order('name desc')
+            ->limit(1)
+            ->offset(10);
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT count(*) FROM products', $sql);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnSelectColumnsFrom()
     {
         // given
