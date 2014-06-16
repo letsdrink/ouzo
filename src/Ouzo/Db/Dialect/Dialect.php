@@ -112,16 +112,21 @@ abstract class Dialect
             $sql .= $this->from();
             $sql .= $this->join();
             $sql .= $this->where();
+
+        } else if ($query->type == QueryType::$COUNT) {
+            $sql .= $this->select();
+            $sql .= $this->from();
+            $sql .= $this->join();
+            $sql .= $this->where();
+
         } else {
             $sql .= $this->select();
             $sql .= $this->from();
             $sql .= $this->join();
             $sql .= $this->where();
-            if ($query->type != QueryType::$COUNT) {
-                $sql .= $this->order();
-                $sql .= $this->limit();
-                $sql .= $this->offset();
-            }
+            $sql .= $this->order();
+            $sql .= $this->limit();
+            $sql .= $this->offset();
         }
         return rtrim($sql);
     }
