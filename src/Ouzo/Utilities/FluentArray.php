@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Utilities;
 
+use Exception;
+
 class FluentArray
 {
     private $_array;
@@ -52,12 +54,13 @@ class FluentArray
     }
 
     /**
+     * @param $selector
+     * @throws Exception
      * @return FluentArray
      */
     public function uniqueBy($selector)
     {
-        return $this->toMap(Functions::extractExpression($selector))
-            ->values();
+        return $this->toMap(Functions::extractExpression($selector))->values();
     }
 
     public function keys()

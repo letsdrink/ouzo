@@ -124,6 +124,9 @@ class Functions
     /**
      * Returns the composition of two functions.
      * composition is defined as the function h such that h(a) == A(B(a)) for each a.
+     * @param $functionA
+     * @param $functionB
+     * @return callable
      */
     public static function compose($functionA, $functionB)
     {
