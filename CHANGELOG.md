@@ -7,11 +7,17 @@ Enhancements:
 * [ORM] Added conditions to relations.
 * [Core] Added StdOutput logger.
 * [Core] Added Error::getByCode.
+* [Core] Added Functions::extractExpression.
+* [Core] Added FluentArray::uniqueBy.
+* [ORM] Ignore order, limit and offset for count queries.
 
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
 * [Core] Fixed notices url in controller.
 * [Mock] Fixed handling of params by reference (issue #89).
+* [ORM] Set joined models on results only once for duplicated joins with different aliases.
+* [Core] Trim url in Controller::redirect method.
+* [ORM] Fixed fetch relations which are already fetched.
 
 * * *
 
