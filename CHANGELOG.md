@@ -10,6 +10,7 @@ Enhancements:
 * [Core] Added Functions::extractExpression.
 * [Core] Added FluentArray::uniqueBy.
 * [ORM] Ignore order, limit and offset for count queries.
+* [ORM] Group by support in model.
 
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
