@@ -19,6 +19,7 @@ Bug fixes:
 * [ORM] Set joined models on results only once for duplicated joins with different aliases.
 * [Core] Trim url in Controller::redirect method.
 * [ORM] Fixed fetch relations which are already fetched.
+* [Core] Fixed interface in ConsoleCommand.
 
 * * *
 
