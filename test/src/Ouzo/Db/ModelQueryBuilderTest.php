@@ -1156,4 +1156,48 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('eric', $product->reload()->name);
         $this->assertEquals(1, $affectedRows);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGroupByCategory()
+    {
+        //given
+        $category1 = Category::create(array('name' => 'computer'));
+        $category2 = Category::create(array('name' => 'phone'));
+        Product::create(array('name' => 'notebook', 'id_category' => $category1->getId()));
+        Product::create(array('name' => 'laptop', 'id_category' => $category1->getId()));
+        Product::create(array('name' => 'smartphone', 'id_category' => $category2->getId()));
+
+        //when
+        $result = Product::select('id_category, count(*)')->groupBy('id_category')->fetchAll();
+
+        //then
+        Assert::thatArray($result)->containsOnly(array($category1->getId(), 2), array($category2->getId(), 1));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGroupByCategoryUsingArray()
+    {
+        //given
+        $category = Category::create(array('name' => 'computer'));
+        Product::create(array('name' => 'notebook', 'id_category' => $category->getId()));
+
+        //when
+        $result = Product::select('id_category, count(*)')->groupBy(array('id_category'))->fetchAll();
+
+        //then
+        Assert::thatArray($result)->containsOnly(array($category->getId(), 1));
+    }
+
+    /**
+     * @test
+     * @expectedException \Ouzo\DbException
+     */
+    public function shouldThrowExceptionForGroupByWithoutSelect()
+    {
+        Product::where()->groupBy('id_category');
+    }
 }

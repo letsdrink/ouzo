@@ -2,6 +2,8 @@
 namespace Ouzo\Db;
 
 use Ouzo\Db;
+use Ouzo\DbException;
+use Ouzo\ExceptionHandling\OuzoException;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
@@ -331,6 +333,17 @@ class ModelQueryBuilder
     public function options(array $options)
     {
         $this->_query->options = $options;
+        return $this;
+    }
+
+    public function groupBy($groupBy)
+    {
+        if ($this->_selectModel) {
+            throw new DbException("Cannot use group by without specifying columns.\n"
+                . "e.g. Model::select('column, count(*)')->groupBy('column')->fetchAll();");
+        }
+
+        $this->_query->groupBy = $groupBy;
         return $this;
     }
 }

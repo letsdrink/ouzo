@@ -137,6 +137,23 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnGroupBy()
+    {
+        // given
+        $query = Query::select(array('category', 'count(*)'))
+            ->table('products')
+            ->groupBy('category');
+
+        // when
+        $sql = $this->_dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT category, count(*) FROM products GROUP BY category', $sql);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnSelectWithOffset()
     {
         // given

@@ -65,10 +65,20 @@ abstract class Dialect
         return '';
     }
 
+    public function groupBy()
+    {
+        $groupBy = $this->_query->groupBy;
+        if ($groupBy) {
+            return ' GROUP BY ' .  (is_array($groupBy) ? implode(', ', $groupBy) : $groupBy);
+        }
+        return '';
+    }
+
     public function order()
     {
-        if ($this->_query->order) {
-            return ' ORDER BY ' . (is_array($this->_query->order) ? implode(', ', $this->_query->order) : $this->_query->order);
+        $order = $this->_query->order;
+        if ($order) {
+            return ' ORDER BY ' . (is_array($order) ? implode(', ', $order) : $order);
         }
         return '';
     }
@@ -124,6 +134,7 @@ abstract class Dialect
             $sql .= $this->from();
             $sql .= $this->join();
             $sql .= $this->where();
+            $sql .= $this->groupBy();
             $sql .= $this->order();
             $sql .= $this->limit();
             $sql .= $this->offset();

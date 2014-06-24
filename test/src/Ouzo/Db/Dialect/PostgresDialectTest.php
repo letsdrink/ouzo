@@ -87,6 +87,23 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnGroupBy()
+    {
+        // given
+        $query = Query::select(array('category', 'count(*)'))
+            ->table('products')
+            ->groupBy('category');
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT category, count(*) FROM products GROUP BY category', $sql);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnSelectColumnsFrom()
     {
         // given

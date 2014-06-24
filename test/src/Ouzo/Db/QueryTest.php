@@ -48,13 +48,14 @@ class QueryTest extends PHPUnit_Framework_TestCase {
     public function shouldCreateSelectQueryWithWhereOrderLimitOffset()
     {
         // when
-        $query = Query::select()->from('table')->where(array('name' => 'bob'))->limit(5)->offset(10)->order(array('name asc'));
+        $query = Query::select()->from('table')->where(array('name' => 'bob'))->limit(5)->offset(10)->groupBy('group')->order(array('name asc'));
 
         // then
         $this->assertEquals('table', $query->table);
         $this->assertEquals(array('name' => 'bob'), $query->whereClauses[0]->where);
         $this->assertEquals(5, $query->limit);
         $this->assertEquals(10, $query->offset);
+        $this->assertEquals('group', $query->groupBy);
         $this->assertEquals(array('name asc'), $query->order);
     }
 

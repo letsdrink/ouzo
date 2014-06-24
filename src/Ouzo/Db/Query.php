@@ -17,6 +17,7 @@ class Query
     public $joinClauses = array();
     public $type;
     public $options = array();
+    public $groupBy;
 
     public function __construct($type = null)
     {
@@ -111,6 +112,12 @@ class Query
     public function addJoin(JoinClause $join)
     {
         $this->joinClauses[] = $join;
+        return $this;
+    }
+
+    public function groupBy($groupBy)
+    {
+        $this->groupBy = $groupBy;
         return $this;
     }
 }
