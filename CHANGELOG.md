@@ -49,7 +49,7 @@ Enhancements:
 * New way to handle HTTP Auth Basic - using AuthBasicController.
 * Added method Strings::appendPrefix.
 * Added class ResponseMapper which translates HTTP code to HTTP header.
-* Added OuzoException which is a wrapper for generic PHP excepion.
+* Added OuzoException which is a wrapper for generic PHP exception.
 * Added class Error with exception code and message inside.
 * Added API exceptions to handle appropriate HTTP error codes (InternalException, NotFoundException, UnauthorizedException, ValidationException).
 * Added methods StringAssert::isNull and StringAssert::isNotNull.
@@ -64,8 +64,8 @@ Enhancements:
 * [Utilities] Renamed Arrays::hasNestedValue to Arrays::hasNestedKey and Arrays::removeNestedValue to Arrays::removeNestedKey (issue #54).
 
 Bug fixes:
-* [Routes] Fixed invalid method name in generated uri helper for camelcase methods in controllers (issuse #69).
-* [Mock] Fixed DynamicProxy so that it works with interfaces (issuse #70).
+* [Routes] Fixed invalid method name in generated uri helper for camel case methods in controllers (issues #69).
+* [Mock] Fixed DynamicProxy so that it works with interfaces (issues #70).
 * [Mock] Fixed method matcher.
 * [Routes] Fixed parsing default routing (issue #62).
 * [Mock] Fixed mock verification.
