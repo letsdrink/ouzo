@@ -3,6 +3,7 @@ use Ouzo\Config;
 use Ouzo\ControllerUrl;
 use Ouzo\I18n;
 use Ouzo\Session;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Date;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
@@ -68,7 +69,8 @@ function showErrors(array $errors = array())
 function showNotices(array $notices = array())
 {
     if (Session::has('messages') || $notices) {
-        $notices = array_merge(Session::get('messages'), $notices);
+        $sessionMessages = Arrays::filterNotBlank(Arrays::toArray(Session::get('messages')));
+        $notices = array_merge($sessionMessages, $notices);
         $noticeView = new View('notice_alert');
         $noticeView->notices = $notices;
         return $noticeView->render();
@@ -78,7 +80,8 @@ function showNotices(array $notices = array())
 function showSuccess(array $notices = array())
 {
     if (Session::has('messages') || $notices) {
-        $notices = array_merge(Session::get('messages'), $notices);
+        $sessionMessages = Arrays::filterNotBlank(Arrays::toArray(Session::get('messages')));
+        $notices = array_merge($sessionMessages, $notices);
         $noticeView = new View('success_alert');
         $noticeView->notices = $notices;
         return $noticeView->render();
