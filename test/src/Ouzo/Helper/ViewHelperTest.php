@@ -12,7 +12,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     {
         $url = url(array('controller' => 'users', 'action' => 'show', 'extraParams' => array('id' => 3, 'age' => 34)));
 
-        $this->assertEquals(\Ouzo\Config::getPrefixSystem() . '/users/show/id/3/age/34', $url);
+        $this->assertEquals(Config::getPrefixSystem() . '/users/show/id/3/age/34', $url);
     }
 
     /**
@@ -22,12 +22,12 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     {
         $url = url(array('string' => '/users/show'));
 
-        $this->assertEquals(\Ouzo\Config::getPrefixSystem() . '/users/show', $url);
+        $this->assertEquals(Config::getPrefixSystem() . '/users/show', $url);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionForInvalidArguments()
     {
@@ -36,7 +36,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionForEmptyParams()
     {
@@ -45,7 +45,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionForEmptyString()
     {
@@ -244,15 +244,5 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertNull($file);
-    }
-
-    /**
-     * @test
-     */
-    public function should()
-    {
-        //given
-        //when
-        //then
     }
 }
