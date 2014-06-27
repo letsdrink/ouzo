@@ -245,4 +245,14 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertNull($file);
     }
+
+    /**
+     * @test
+     */
+    public function should()
+    {
+        //given
+        //when
+        //then
+    }
 }

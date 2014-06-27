@@ -56,7 +56,7 @@ function _getHtmlFileTag($type, $url)
     return null;
 }
 
-function showErrors($errors = array())
+function showErrors(array $errors = array())
 {
     if ($errors) {
         $errorView = new View('error_alert');
@@ -65,25 +65,27 @@ function showErrors($errors = array())
     }
 }
 
-function showNotices($notices = array())
+function showNotices(array $notices = array())
 {
     if (Session::has('messages') || $notices) {
+        $notices = array_merge(Session::get('messages'), $notices);
         $noticeView = new View('notice_alert');
-        $noticeView->notices = Session::get('messages') ?: $notices;
+        $noticeView->notices = $notices;
         return $noticeView->render();
     }
 }
 
-function showSuccess($notices = array())
+function showSuccess(array $notices = array())
 {
     if (Session::has('messages') || $notices) {
+        $notices = array_merge(Session::get('messages'), $notices);
         $noticeView = new View('success_alert');
-        $noticeView->notices = Session::get('messages') ?: $notices;
+        $noticeView->notices = $notices;
         return $noticeView->render();
     }
 }
 
-function showWarnings($warnings = array())
+function showWarnings(array $warnings = array())
 {
     if ($warnings) {
         $warningView = new View('warning_alert');
