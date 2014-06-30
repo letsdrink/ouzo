@@ -1,8 +1,9 @@
 <?php
-
 namespace Ouzo\Tests;
 
-class StringAssertTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class StringAssertTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -180,5 +181,21 @@ class StringAssertTest extends \PHPUnit_Framework_TestCase
     public function shouldCheckIsStringIsNotNull()
     {
         Assert::thatString('Floki')->isNotNull();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsStringIsEmpty()
+    {
+        Assert::thatString('')->isEmpty();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsStringIsNotEmpty()
+    {
+        Assert::thatString('Lady Stoneheart')->isNotEmpty();
     }
 }

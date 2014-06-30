@@ -15,7 +15,6 @@ use PHPUnit_Framework_Assert;
  *  Assert::thatString("Frodo")->isEqualNotTo("asd");
  * </code>
  */
-
 class StringAssert
 {
     private $_actual;
@@ -93,6 +92,18 @@ class StringAssert
     public function isNotNull()
     {
         PHPUnit_Framework_Assert::assertNotNull($this->_actual);
+        return $this;
+    }
+
+    public function isEmpty()
+    {
+        PHPUnit_Framework_Assert::assertEmpty($this->_actual);
+        return $this;
+    }
+
+    public function isNotEmpty()
+    {
+        PHPUnit_Framework_Assert::assertNotEmpty($this->_actual);
         return $this;
     }
 }
