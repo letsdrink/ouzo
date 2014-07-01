@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests;
 
 use Exception;
@@ -7,7 +6,6 @@ use PHPUnit_Framework_TestCase;
 
 class MyClass
 {
-
     public function someMethodThatThrowsException()
     {
         throw new Exception('Fatal error');
@@ -16,12 +14,10 @@ class MyClass
     public function someMethod()
     {
     }
-
 }
 
 class CatchExceptionTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -52,4 +48,18 @@ class CatchExceptionTest extends PHPUnit_Framework_TestCase
         CatchException::assertThat()->notCaught();
     }
 
+    /**
+     * @test
+     */
+    public function shouldCheckIsMessageContains()
+    {
+        //given
+        $object = new MyClass();
+
+        //when
+        CatchException::when($object)->someMethodThatThrowsException();
+
+        //then
+        CatchException::assertThat()->equalMessage('Fatal error');
+    }
 }
