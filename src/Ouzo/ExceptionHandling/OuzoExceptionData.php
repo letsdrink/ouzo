@@ -56,4 +56,11 @@ class OuzoExceptionData
             return $value->message;
         })->join($this->_errors);
     }
+
+    public function getOriginalMessage()
+    {
+        return Joiner::on(', ')->map(function ($key, $value) {
+            return $value->originalMessage;
+        })->join($this->_errors);
+    }
 }

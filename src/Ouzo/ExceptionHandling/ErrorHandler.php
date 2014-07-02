@@ -76,10 +76,11 @@ class ErrorHandler
     private static function _renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
     {
         try {
+            /** @noinspection PhpUnusedLocalVariableInspection */
             $errorMessage = $exceptionData->getMessage();
             $errorTrace = $exceptionData->getStackTrace();
             self::$errorHandled = true;
-            Logger::getLogger(__CLASS__)->error($errorMessage);
+            Logger::getLogger(__CLASS__)->error($exceptionData->getOriginalMessage());
             Logger::getLogger(__CLASS__)->error(Objects::toString($errorTrace));
             self::_clearOutputBuffers();
             header($exceptionData->getHeader());

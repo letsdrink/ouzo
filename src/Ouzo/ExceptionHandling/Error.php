@@ -9,11 +9,13 @@ class Error
 {
     public $code;
     public $message;
+    public $originalMessage;
 
-    public function __construct($code, $message)
+    public function __construct($code, $message, $originalMessage = null)
     {
         $this->code = $code;
         $this->message = $message;
+        $this->originalMessage = $originalMessage ?: $message;
     }
 
     public static function forException(Exception $exception)
@@ -21,7 +23,7 @@ class Error
         if (Config::getValue('debug')) {
             return new Error($exception->getCode(), $exception->getMessage());
         }
-        return new Error($exception->getCode(), I18n::t('exception.unknown'));
+        return new Error($exception->getCode(), I18n::t('exception.unknown'), $exception->getMessage());
     }
 
     public function toArray()
