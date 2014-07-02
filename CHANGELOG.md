@@ -11,6 +11,9 @@ Enhancements:
 * [Core] Added FluentArray::uniqueBy.
 * [ORM] Ignore order, limit and offset for count queries.
 * [ORM] Group by support in model.
+* [Core] Improved handling of alerts.
+* [Tests] Added StringAssert::isEmpty and StringAssert::isNotEmpty methods.
+* [Tests] Added CatchException::equalMessage method.
 
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
@@ -20,6 +23,7 @@ Bug fixes:
 * [Core] Trim url in Controller::redirect method.
 * [ORM] Fixed fetch relations which are already fetched.
 * [Core] Fixed interface in ConsoleCommand.
+* [Core] Fixed logging original error messages in error handler.
 
 * * *
 
