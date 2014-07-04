@@ -7,13 +7,14 @@ Enhancements:
 * [ORM] Added conditions to relations.
 * [Core] Added StdOutput logger.
 * [Core] Added Error::getByCode.
-* [Core] Added Functions::extractExpression.
-* [Core] Added FluentArray::uniqueBy.
+* [Utilities] Added Functions::extractExpression.
+* [Utilities] Added FluentArray::uniqueBy.
 * [ORM] Ignore order, limit and offset for count queries.
 * [ORM] Group by support in model.
 * [Core] Improved handling of alerts.
 * [Tests] Added StringAssert::isEmpty and StringAssert::isNotEmpty methods.
 * [Tests] Added CatchException::equalMessage method.
+* [Utilities] Added method Files::size.
 
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
