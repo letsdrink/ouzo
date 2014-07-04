@@ -59,6 +59,11 @@ class Files
         }
         return $calculatedSize . $unit;
     }
+
+    public static function size($path)
+    {
+        return (int)file_exists($path) ? filesize($path) : 0;
+    }
 }
 
 class FileNotFoundException extends Exception

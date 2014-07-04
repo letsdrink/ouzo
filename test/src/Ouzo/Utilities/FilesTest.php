@@ -97,6 +97,22 @@ class FilesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('0 B', $unit);
     }
 
+    /**
+     * @test
+     */
+    public function shouldReturnFileSize()
+    {
+        //given
+        $filePath = Path::joinWithTemp('files_test');
+        file_put_contents($filePath, 'test');
+
+        //when
+        $size = Files::size($filePath);
+
+        //then
+        $this->assertEquals(4, $size);
+    }
+
     public function units()
     {
         return array(
