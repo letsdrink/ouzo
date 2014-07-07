@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use Exception;
+use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
 class I18n
@@ -30,7 +31,7 @@ class I18n
     {
         $language = Config::getValue('language') ? : I18n::DEFAULT_LANGUAGE;
         $path = Path::join(ROOT_PATH, 'locales', $language . '.php');
-        if (!file_exists($path)) {
+        if (!Files::exists($path)) {
             throw new Exception('Cannot find declared language file: ' . $language);
         }
         /** @noinspection PhpIncludeInspection */

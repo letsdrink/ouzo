@@ -116,7 +116,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         $generator->saveToFile($fileName);
 
         //then
-        $this->assertTrue(file_exists($fileName));
+        $this->assertFileExists($fileName);
         unlink($fileName);
     }
 

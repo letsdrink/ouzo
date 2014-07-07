@@ -7,7 +7,7 @@ class Files
 {
     public static function loadIfExists($path, $loadOnce = true)
     {
-        if (file_exists($path)) {
+        if (self::exists($path)) {
             self::_require($path, $loadOnce);
             return true;
         }
@@ -34,7 +34,7 @@ class Files
 
     public static function delete($path)
     {
-        if (!file_exists($path)) {
+        if (!self::exists($path)) {
             throw new FileNotFoundException('Cannot find file: ' . $path);
         }
         return unlink($path);
@@ -42,7 +42,7 @@ class Files
 
     public static function move($sourcePath, $destinationPath)
     {
-        if (!file_exists($sourcePath)) {
+        if (!self::exists($sourcePath)) {
             throw new FileNotFoundException('Cannot find source file: ' . $sourcePath);
         }
         return rename($sourcePath, $destinationPath);
@@ -62,7 +62,12 @@ class Files
 
     public static function size($path)
     {
-        return (int)file_exists($path) ? filesize($path) : 0;
+        return (int)self::exists($path) ? filesize($path) : 0;
+    }
+
+    public static function exists($path)
+    {
+        return file_exists($path);
     }
 }
 

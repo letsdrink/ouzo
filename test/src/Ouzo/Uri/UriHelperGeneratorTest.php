@@ -215,7 +215,7 @@ FUNCT;
         $generator->saveToFile($path);
 
         //then
-        $this->assertTrue(file_exists($path));
+        $this->assertFileExists($path);
         $this->assertEquals($generator->getGeneratedFunctions(), file_get_contents($path));
         unlink($path);
     }

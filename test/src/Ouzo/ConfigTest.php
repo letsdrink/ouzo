@@ -1,6 +1,7 @@
 <?php
 use Ouzo\Config;
 use Ouzo\Tests\Assert;
+use Ouzo\Utilities\Files;
 
 class SampleConfig
 {
@@ -27,7 +28,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         Config::overrideProperty('debug')->with(true);
         Config::overrideProperty('language')->with('en');
         Config::overridePropertyArray(array('global', 'prefix_system'), '');
-        if (file_exists('/tmp/SampleConfigFile.php')) {
+        if (Files::exists('/tmp/SampleConfigFile.php')) {
             unlink('/tmp/SampleConfigFile.php');
         }
     }

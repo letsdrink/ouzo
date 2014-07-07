@@ -19,7 +19,7 @@ class FilesTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertTrue($isDeleted);
-        $this->assertFalse(file_exists($filePath));
+        $this->assertFileNotExists($filePath);
     }
 
     /**
@@ -52,8 +52,8 @@ class FilesTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertTrue($isMoved);
-        $this->assertFalse(file_exists($filePath));
-        $this->assertTrue(file_exists($newPath));
+        $this->assertFileNotExists($filePath);
+        $this->assertFileExists($newPath);
         Files::delete($newPath);
     }
 

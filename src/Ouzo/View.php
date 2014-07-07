@@ -80,7 +80,7 @@ class View
 
     private function _requireIfExists($path)
     {
-        if (file_exists($path)) {
+        if (Files::exists($path)) {
             $this->_require($path);
             return true;
         }
