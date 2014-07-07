@@ -98,4 +98,16 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('a', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldSurroundStringWithGivenCharacter()
+    {
+        //when
+        $result = Functions::call(Functions::surroundWith('.'), 'test');
+
+        //then
+        $this->assertEquals('.test.', $result);
+    }
 }

@@ -150,4 +150,11 @@ class Functions
     {
         return new Extractor();
     }
+
+    public static function surroundWith($character)
+    {
+        return function ($string) use ($character) {
+            return $character . $string . $character;
+        };
+    }
 }
