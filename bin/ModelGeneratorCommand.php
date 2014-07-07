@@ -1,4 +1,5 @@
 <?php
+use Ouzo\Config;
 use Ouzo\Tools\Model\Template\ClassPathResolver;
 use Ouzo\Tools\Model\Template\Generator;
 use Ouzo\Tools\Model\Template\GeneratorException;
@@ -21,25 +22,17 @@ class ModelGeneratorCommand extends Command
     public function configure()
     {
         $this->setName('ouzo:model_generator')
-            ->addOption('table', 't', InputOption::VALUE_REQUIRED)
-            ->addOption('class', 'c', InputOption::VALUE_REQUIRED)
-            ->addOption('file', 'f', InputOption::VALUE_REQUIRED)
-            ->addOption('namespace', 'n', InputOption::VALUE_REQUIRED);
+            ->addOption('table', 't', InputOption::VALUE_REQUIRED, 'Table name')
+            ->addOption('class', 'c', InputOption::VALUE_REQUIRED, 'Class name. If not specified class name is generated base on table name')
+            ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Class file path. If not specified namespace and class name is used')
+            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace. Default namespace is Model.', 'Model')
+            ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name.', 't');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->_input = $input;
         $this->_output = $output;
-
-        $output->writeln('Model generator');
-        if (!$input->getOption('table')) {
-            $output->writeln('');
-            $output->writeln('Generate model class for specified table.');
-            $output->writeln('');
-            $output->writeln('parameters: -t=table_name [-n=My\Name\Space] [-c=ClassName] [-f=/path/to/file.php] [-p=prefixToRemove]');
-            $output->writeln('');
-        }
         $this->_generateModel();
     }
 
@@ -64,16 +57,17 @@ class ModelGeneratorCommand extends Command
 
     private function _generateModel()
     {
-        $tableName = $this->_input->getOption('t');
-        $className = $this->_input->getOption('c');
-        $fileName = $this->_input->getOption('f');
-        $nameSpace = $this->_input->getOption('n');
-        $tablePrefixToRemove = $this->_input->getOption('p') ? : 't';
+        $tableName = $this->_input->getOption('table');
+        $className = $this->_input->getOption('class');
+        $fileName = $this->_input->getOption('file');
+        $nameSpace = $this->_input->getOption('namespace');
+        $tablePrefixToRemove = $this->_input->getOption('remove_prefix') ? : 't';
         if (empty($tableName))
             $this->fail("Specify table name e.g. -t=users");
         try {
             $modelGenerator = new Generator($tableName, $className, $nameSpace, $tablePrefixToRemove);
             $this->_output->writeln('---------------------------------');
+            $this->_output->writeln('Database name: ' . Config::getValue('db', 'dbname'));
             $this->_output->writeln('Class name: ' . $modelGenerator->getTemplateClassName());
             $this->_output->writeln('---------------------------------');
             $this->_output->writeln($modelGenerator->templateContents());

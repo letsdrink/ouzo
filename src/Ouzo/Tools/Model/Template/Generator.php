@@ -72,7 +72,7 @@ class Generator
     public function getTemplateClassName()
     {
         if ($this->_className) {
-            return $this->_tableName;
+            return $this->_className;
         } else {
             return $this->_classNameFromTableName();
         }
