@@ -105,4 +105,18 @@ class JoinerTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('1 => A, 2 => B, 3 => C', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldJoinMapApplyingFunctionOnValues()
+    {
+        //when
+        $result = Joiner::on(', ')->mapValues(function ($value) {
+            return "val = $value";
+        })->join(array(1 => 'A', 2 => 'B', 3 => 'C'));
+
+        //then
+        $this->assertEquals('val = A, val = B, val = C', $result);
+    }
 }

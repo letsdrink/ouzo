@@ -15,7 +15,8 @@ Enhancements:
 * [Tests] Added StringAssert::isEmpty and StringAssert::isNotEmpty methods.
 * [Tests] Added CatchException::equalMessage method.
 * [Utilities] Added method Files::size.
-* [Functions] Added Functions::surroundWith.
+* [Utilities] Added Functions::surroundWith.
+* [Utilities] Added Joiner::mapValues.
 
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
