@@ -23,10 +23,10 @@ class ModelGeneratorCommand extends Command
     {
         $this->setName('ouzo:model_generator')
             ->addOption('table', 't', InputOption::VALUE_REQUIRED, 'Table name')
-            ->addOption('class', 'c', InputOption::VALUE_REQUIRED, 'Class name. If not specified class name is generated base on table name')
+            ->addOption('class', 'c', InputOption::VALUE_REQUIRED, 'Class name. If not specified class name is generated based on table name')
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Class file path. If not specified namespace and class name is used')
-            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace. Default namespace is Model.', 'Model')
-            ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name.', 't');
+            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g Model\MyModel)', 'Model')
+            ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name', 't');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -69,6 +69,7 @@ class ModelGeneratorCommand extends Command
             $this->_output->writeln('---------------------------------');
             $this->_output->writeln('Database name: ' . Config::getValue('db', 'dbname'));
             $this->_output->writeln('Class name: ' . $modelGenerator->getTemplateClassName());
+            $this->_output->writeln('Class namespace: ' . $modelGenerator->getClassNamespace());
             $this->_output->writeln('---------------------------------');
             $this->_output->writeln($modelGenerator->templateContents());
             $this->_output->writeln('---------------------------------');
