@@ -3,8 +3,8 @@ namespace Ouzo\Tools\Model\Template;
 
 use Exception;
 use Ouzo\Config;
-use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Db;
+use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Inflector;
@@ -23,10 +23,15 @@ class Generator
     {
         $this->_tableName = $tableName;
         $this->_className = $className;
-        $this->_nameSpace = $nameSpace;
+        $this->_nameSpace = $this->_normalizeNameSpace($nameSpace);
         $this->_tablePrefix = $tablePrefix;
         $this->_adapter = $this->dialectAdapter();
         $this->_dialectShortName = $this->_getDialectShortName($this->_adapter);
+    }
+
+    private function _normalizeNameSpace($nameSpace)
+    {
+        return str_replace('/', '\\', $nameSpace);
     }
 
     private function _getDialectShortName($adapterObject)
