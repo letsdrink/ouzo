@@ -63,7 +63,7 @@ class ModelGeneratorCommand extends Command
         $nameSpace = $this->_input->getOption('namespace');
         $tablePrefixToRemove = $this->_input->getOption('remove_prefix') ? : 't';
         if (empty($tableName))
-            $this->fail("Specify table name e.g. -t=users");
+            $this->fail("Specify table name e.g. -t users");
         try {
             $modelGenerator = new Generator($tableName, $className, $nameSpace, $tablePrefixToRemove);
             $this->_output->writeln('---------------------------------');
