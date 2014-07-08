@@ -38,8 +38,7 @@ class ModelGeneratorCommand extends Command
 
     public function fail($message, $exitCode = 1)
     {
-        $this->_output->writeln('ERROR: ' . $message);
-        exit($exitCode);
+        throw new \Exception($message, $exitCode);
     }
 
     /**
@@ -67,9 +66,9 @@ class ModelGeneratorCommand extends Command
         try {
             $modelGenerator = new Generator($tableName, $className, $nameSpace, $tablePrefixToRemove);
             $this->_output->writeln('---------------------------------');
-            $this->_output->writeln('Database name: ' . Config::getValue('db', 'dbname'));
-            $this->_output->writeln('Class name: ' . $modelGenerator->getTemplateClassName());
-            $this->_output->writeln('Class namespace: ' . $modelGenerator->getClassNamespace());
+            $this->_writeInfo('Database name: <info>%s</info>', Config::getValue('db', 'dbname'));
+            $this->_writeInfo('Class name: <info>%s</info>', $modelGenerator->getTemplateClassName());
+            $this->_writeInfo('Class namespace: <info>%s</info>', $modelGenerator->getClassNamespace());
             $this->_output->writeln('---------------------------------');
             $this->_output->writeln($modelGenerator->templateContents());
             $this->_output->writeln('---------------------------------');
@@ -82,5 +81,10 @@ class ModelGeneratorCommand extends Command
         } catch (GeneratorException $e) {
             $this->fail($e->getMessage());
         }
+    }
+
+    private function _writeInfo($info, $value)
+    {
+        $this->_output->writeln(sprintf($info, $value));
     }
 }
