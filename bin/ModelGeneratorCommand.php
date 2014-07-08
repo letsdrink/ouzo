@@ -25,7 +25,7 @@ class ModelGeneratorCommand extends Command
             ->addOption('table', 't', InputOption::VALUE_REQUIRED, 'Table name')
             ->addOption('class', 'c', InputOption::VALUE_REQUIRED, 'Class name. If not specified class name is generated based on table name')
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Class file path. If not specified namespace and class name is used')
-            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g Model\MyModel)', 'Model')
+            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g \'Model\MyModel\'). Hint: Remember to escape backslash (\\\\)!', 'Model')
             ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name', 't');
     }
 
