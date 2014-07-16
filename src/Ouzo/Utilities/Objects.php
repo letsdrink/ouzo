@@ -89,16 +89,10 @@ class Objects
 
     public static function getValue($object, $field, $default = null)
     {
-        $model = $object instanceOf Model;
-        if (!self::_fieldNotExistOrNull($model, $object, $field)) {
+        if (isset($object->$field)) {
             return $object->$field;
         }
         return $default;
-    }
-
-    private static function _fieldNotExistOrNull($model, $object, $field)
-    {
-        return ($model && !$object->$field) || (!$model && !property_exists($object, $field));
     }
 
     public static function callMethod($object, $methodName, $default)

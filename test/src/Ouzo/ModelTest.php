@@ -296,13 +296,44 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function getShouldReturnDefaultWhenNull()
+    public function getShouldReturnDefaultWhenNotExistentNestedField()
     {
         //given
         $product = new Product(array());
 
         //when
         $value = $product->get('type->name', 'default');
+
+        //then
+        $this->assertEquals('default', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function getShouldReturnDefaultForNotExistentField()
+    {
+        //given
+        $product = new Product(array());
+
+        //when
+        $value = $product->get('name', 'default');
+
+        //then
+        $this->assertEquals('default', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function getShouldReturnDefaultForNullField()
+    {
+        //given
+        $product = new Product(array());
+        $product->assignAttributes(array('name' => null));
+
+        //when
+        $value = $product->get('name', 'default');
 
         //then
         $this->assertEquals('default', $value);

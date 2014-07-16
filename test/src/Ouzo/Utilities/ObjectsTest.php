@@ -17,6 +17,10 @@ class ClassImplementingToString
     }
 }
 
+class ClassWithProperty {
+    public $property;
+}
+
 class ObjectsTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -49,6 +53,37 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('default', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDefaultForNonExistentProperty()
+    {
+        //given
+        $object = new ClassWithProperty();
+
+        //when
+        $result = Objects::getValueRecursively($object, 'NonExistentProperty', 'default');
+
+        //then
+        $this->assertEquals('default', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnValueOfExistingNotNullProperty()
+    {
+        //given
+        $object = new ClassWithProperty();
+        $object->property = 'prop';
+
+        //when
+        $result = Objects::getValueRecursively($object, 'property', 'default');
+
+        //then
+        $this->assertEquals('prop', $result);
     }
 
     /**
