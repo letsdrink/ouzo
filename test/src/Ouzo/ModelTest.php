@@ -342,6 +342,22 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldReturnNestedValueThroughLazyRelation()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+
+        //when
+        $result = $product->get('category->name');
+
+        //then
+        $this->assertEquals('phones', $result);
+    }
+
+    /**
+     * @test
+     */
     public function getShouldInvokeMethod()
     {
         //given
