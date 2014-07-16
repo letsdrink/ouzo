@@ -138,5 +138,23 @@ class ExtractorTest extends DbTransactionalTestCase
         //then
         Assert::thatString($result)->isEqualTo('category');
     }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfNoOperationGiven()
+    {
+        //given
+        $function = Functions::extract();
+
+        //when
+        try {
+            Functions::call($function, new Product());
+            $this->fail();
+
+        } //then
+        catch (InvalidArgumentException $e) {
+        }
+    }
 }
  

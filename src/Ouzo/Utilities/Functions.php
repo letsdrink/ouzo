@@ -148,7 +148,7 @@ class Functions
      */
     public static function extract($type = null)
     {
-        return new Extractor();
+        return new NonCallableExtractor();
     }
 
     public static function surroundWith($character)
