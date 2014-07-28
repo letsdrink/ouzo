@@ -1,8 +1,6 @@
 <?php
 namespace Ouzo\Utilities;
 
-use Ouzo\Model;
-
 class Objects
 {
     public static function toString($var)

@@ -1,7 +1,8 @@
 <?php
 
-namespace Ouzo\Utilities;
+namespace Ouzo;
 
+use Ouzo\Utilities\Clock;
 use PHPUnit_Framework_TestCase;
 
 class TimeAgoTest extends PHPUnit_Framework_TestCase
