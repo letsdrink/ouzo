@@ -716,7 +716,7 @@ class Arrays
         foreach ($keys as $key) {
             $array = self::getValue(self::toArray($array), $key);
             if (!$array) {
-                return null;
+                return $array;
             }
         }
         return $array;

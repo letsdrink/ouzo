@@ -572,6 +572,37 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getNestedValueShouldReturnEmptyValue()
+    {
+        //given
+        $array = array('1' => array('2' => ''));
+
+        //when
+        $value = Arrays::getNestedValue($array, array('1', '2'));
+
+        //then
+        $this->assertTrue($value === '');
+    }
+
+    /**
+     * @test
+     */
+    public function getNestedValueShouldReturnZero()
+    {
+        //given
+        $array = array('1' => array('2' => '0'));
+
+        //when
+        $value = Arrays::getNestedValue($array, array('1', '2'));
+
+        //then
+        $this->assertTrue($value === '0');
+    }
+
+
+    /**
+     * @test
+     */
     public function shouldSetNestedValue()
     {
         //given
