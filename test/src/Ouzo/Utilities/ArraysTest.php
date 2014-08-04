@@ -728,7 +728,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $array = array('1' => array('2' => array('3' => null)));
 
         //when
-        $value = Arrays::hasNestedKey($array, array('1', '2', '3'), TREAT_NULL_AS_VALUE);
+        $value = Arrays::hasNestedKey($array, array('1', '2', '3'), Arrays::TREAT_NULL_AS_VALUE);
 
         //then
         $this->assertTrue($value);

@@ -3,14 +3,14 @@ namespace Ouzo\Utilities;
 
 use InvalidArgumentException;
 
-define('TREAT_NULL_AS_VALUE', 1);
-
 /**
  * Class Arrays
  * @package Ouzo\Utilities
  */
 class Arrays
 {
+    const TREAT_NULL_AS_VALUE = 1;
+
     /**
      * Returns true if every element in array satisfies the predicate.
      *
@@ -744,7 +744,7 @@ class Arrays
     public static function hasNestedKey(array $array, array $keys, $flags = null)
     {
         foreach ($keys as $key) {
-            if (!array_key_exists($key, $array) || (!($flags & TREAT_NULL_AS_VALUE) && !isset($array[$key]))) {
+            if (!array_key_exists($key, $array) || (!($flags & self::TREAT_NULL_AS_VALUE) && !isset($array[$key]))) {
                 return false;
             }
             $array = self::getValue($array, $key);
