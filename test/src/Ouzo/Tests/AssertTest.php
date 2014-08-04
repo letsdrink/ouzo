@@ -280,6 +280,25 @@ class AssertTest extends PHPUnit_Framework_TestCase
         Assert::thatArray(array('one', 'two', 'three', 'four'))->exclude('eleven');
     }
 
+    /**
+     * @test
+     */
+    public function shouldExtractPropertyRecursively()
+    {
+        //given
+        $obj[0] = new stdClass();
+        $obj[0]->property1 = new stdClass();
+        $obj[0]->property1->name = 'name1';
+        $obj[1] = new stdClass();
+        $obj[1]->property1 = new stdClass();
+        $obj[1]->property1->name = 'name2';
+
+        //when
+
+        //then
+        Assert::thatArray($obj)->onProperty('property1->name')->containsExactly('name1', 'name2');
+    }
+
     private function _assertNot()
     {
         $args = func_get_args();
