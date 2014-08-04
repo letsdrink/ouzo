@@ -675,20 +675,6 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException PHPUnit_Framework_Error_Deprecated
-     * @expectedExceptionMessage Use Arrays::hasNestedKey instead
-     */
-    public function shouldThrowDeprecatedExceptionWhenUseHasNestedValue()
-    {
-        //given
-        $array = array('1' => array('2' => array('3' => 'value')));
-
-        //when
-        Arrays::hasNestedValue($array, array('1'));
-    }
-
-    /**
-     * @test
      */
     public function hasNestedKeyShouldReturnFalseWhenKeyDoesNotExist()
     {
@@ -702,6 +688,35 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($value);
     }
 
+    /**
+     * @test
+     */
+    public function hasNestedKeyShouldReturnTrueWhenKeyIsNullAndNullIsValue()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => null)));
+
+        //when
+        $value = Arrays::hasNestedKey($array, array('1', '2', '3'), TREAT_NULL_AS_VALUE);
+
+        //then
+        $this->assertTrue($value);
+    }
+
+    /**
+     * @test
+     */
+    public function hasNestedKeyShouldReturnFalseWhenKeyIsNullAndNullIsNotValue()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => null)));
+
+        //when
+        $value = Arrays::hasNestedKey($array, array('1', '2', '3'));
+
+        //then
+        $this->assertFalse($value);
+    }
     /**
      * @test
      */
