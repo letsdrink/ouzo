@@ -271,6 +271,32 @@ class UriTest extends PHPUnit_Framework_TestCase
         $this->assertNull($path);
     }
 
+    /**
+     * @test
+     * @dataProvider protocols
+     */
+    public function shouldReturnCorrectProtocol($header, $value, $expected)
+    {
+        //given
+        $_SERVER[$header] = $value;
+
+        //when
+        $protocol = Uri::getProtocol();
+
+        //then
+        $this->assertEquals($expected, $protocol);
+    }
+
+    public function protocols()
+    {
+        return array(
+            array('HTTP_X_FORWARDED_PROTO', 'https', 'https://'),
+            array('HTTPS', 'on', 'https://'),
+            array('HTTPS', 1, 'https://'),
+            array('HTTPS', 'off', 'http://')
+        );
+    }
+
     public function malformedSlashes()
     {
         return array(

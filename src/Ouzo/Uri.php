@@ -27,8 +27,8 @@ class Uri
         $paramsArray = array();
         if (!empty($pathElements[2])) {
             $params = $pathElements[2];
-            $paramsGet = strpos($params, '&') ? str_replace('?', '', (strstr($params, '?') ? : $params)) : '';
-            $paramsUrl = strstr($params, '?', true) ? : $params;
+            $paramsGet = strpos($params, '&') ? str_replace('?', '', (strstr($params, '?') ?: $params)) : '';
+            $paramsUrl = strstr($params, '?', true) ?: $params;
             parse_str($paramsGet, $parsedParamsGet);
             $paramsArray = array_merge($paramsArray, $this->_parseParams($paramsUrl), $parsedParamsGet);
         }
@@ -53,7 +53,7 @@ class Uri
 
     public function getPath()
     {
-        $parseUrl = parse_url($this->_pathProvider->getPath(), PHP_URL_PATH) ? : '/';
+        $parseUrl = parse_url($this->_pathProvider->getPath(), PHP_URL_PATH) ?: '/';
         return $this->_removeDuplicatedSlashes($parseUrl);
     }
 
@@ -138,5 +138,24 @@ class Uri
         $prefix = Config::getValue('global', 'prefix_system');
         $url = Strings::removePrefix($url, $prefix);
         return $prefix . $url;
+    }
+
+    public static function getProtocol()
+    {
+        return (
+            self::_isServerVariableSetAndHasValue('HTTPS', array('on', 1)) ||
+            self::_isServerVariableSetAndHasValue('HTTP_X_FORWARDED_PROTO', 'https')
+        ) ? 'https://' : 'http://';
+    }
+
+    private static function _isServerVariableSetAndHasValue($variableName, $values)
+    {
+        $value = Arrays::getValue($_SERVER, $variableName);
+        return in_array($value, Arrays::toArray($values));
+    }
+
+    public static function getHost()
+    {
+        return Arrays::getValue($_SERVER, 'HTTP_HOST');
     }
 }
