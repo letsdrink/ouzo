@@ -49,8 +49,10 @@ class ModelQueryBuilder
 
     private function selectModelColumns(Model $metaInstance, $alias)
     {
-        $prefix = $this->aliasPrefixForSelect($alias);
-        $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases($prefix, $metaInstance->_getFields(), $alias);
+        if($this->_selectModel) {
+            $prefix = $this->aliasPrefixForSelect($alias);
+            $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases($prefix, $metaInstance->_getFields(), $alias);
+        }
     }
 
     private function aliasPrefixForSelect($alias)
