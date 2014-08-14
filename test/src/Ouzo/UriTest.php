@@ -1,5 +1,6 @@
 <?php
 use Ouzo\Config;
+use Ouzo\ContentType;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Uri;
@@ -231,12 +232,31 @@ class UriTest extends PHPUnit_Framework_TestCase
         //given
         StreamStub::register('json');
         StreamStub::$body = '{"name":"jonh","id":123,"ip":"127.0.0.1"}';
+        ContentType::set('application/json');
 
         //when
         $parameters = Uri::getRequestParameters('json://input');
 
         //then
         ArrayAssert::that($parameters)->hasSize(3);
+        StreamStub::unregister();
+    }
+
+    /**
+     * @test
+     * @expectedException Exception
+     */
+    public function should()
+    {
+        //given
+        StreamStub::register('json');
+        StreamStub::$body = '{"name":"jonh","id":123,"ip":"127.0.0.1}';
+        ContentType::set('application/json');
+
+        //when
+        Uri::getRequestParameters('json://input');
+
+        //then
         StreamStub::unregister();
     }
 

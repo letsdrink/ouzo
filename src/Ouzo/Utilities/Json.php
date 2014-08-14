@@ -20,7 +20,6 @@ class Json
 
     public static function isJson($string)
     {
-        self::decode($string);
-        return self::lastError() == JSON_ERROR_NONE;
+        return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $string));
     }
 }
