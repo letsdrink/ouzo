@@ -1,8 +1,8 @@
 <?php
 namespace Ouzo;
 
-use Exception;
 use Ouzo\Api\InternalException;
+use Ouzo\ExceptionHandling\Error;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;
@@ -130,7 +130,7 @@ class Uri
     {
         if (Strings::equal(ContentType::value(), 'application/json')) {
             if (!Json::isJson($content)) {
-                throw new InternalException('JSON string is malformed');
+                throw new InternalException(new Error(0, 'JSON string is malformed'));
             }
             return Json::decode($content, true);
         }
