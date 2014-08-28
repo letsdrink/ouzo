@@ -62,7 +62,7 @@ class CatchExceptionAssert
         PHPUnit_Framework_Assert::assertNull($this->exception);
     }
 
-    public function equalMessage($message)
+    public function hasMessage($message)
     {
         if ($this->exception instanceof OuzoException) {
             Assert::thatArray($this->exception->getErrors())->onProperty('message')->contains($message);
