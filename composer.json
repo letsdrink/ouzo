@@ -4,7 +4,13 @@
     "homepage": "http://ouzoframework.org/",
     "minimum-stability": "stable",
     "license": "MIT",
-    "keywords": ["php", "mvc", "framework", "orm", "tdd"],
+    "keywords": [
+        "php",
+        "mvc",
+        "framework",
+        "orm",
+        "tdd"
+    ],
     "authors": [
         {
             "name": "Ouzo developers",
@@ -15,7 +21,8 @@
         "psr-0": {
             "Ouzo": "src/",
             "": "bin/"
-        }
+        },
+        "classmap": ["test/"]
     },
     "require": {
         "d11wtq/boris": "dev-master",
@@ -26,6 +33,14 @@
         "satooshi/php-coveralls": "dev-master"
     },
     "archive": {
-        "exclude": ["/test", "/build", "/config", "/vendor", "/*.xml", "/*.sh", "/bootstrap_test.php"]
+        "exclude": [
+            "/test",
+            "/build",
+            "/config",
+            "/vendor",
+            "/*.xml",
+            "/*.sh",
+            "/bootstrap_test.php"
+        ]
     }
 }

@@ -24,13 +24,6 @@ class Bootstrap
         set_error_handler('\Ouzo\ExceptionHandling\ErrorHandler::errorHandler');
         register_shutdown_function('\Ouzo\ExceptionHandling\ErrorHandler::shutdownHandler');
 
-        $loader = new Loader();
-        $loader
-            ->setIncludePath('application/')
-            ->setIncludePath('vendor/letsdrink/ouzo/src/')
-            ->setIncludePath('locales/')
-            ->register();
-
         $this->_includeRoutes();
 
         $controller = new FrontController();
