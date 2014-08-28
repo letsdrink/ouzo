@@ -13,7 +13,7 @@ Enhancements:
 * [ORM] Group by support in model.
 * [Core] Improved handling of alerts.
 * [Tests] Added StringAssert::isEmpty and StringAssert::isNotEmpty methods.
-* [Tests] Added CatchException::equalMessage method.
+* [Tests] Added CatchException::hasMessage method.
 * [Utilities] Added method Files::size.
 * [Utilities] Added Functions::surroundWith.
 * [Utilities] Added Joiner::mapValues.
