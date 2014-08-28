@@ -17,6 +17,11 @@ Enhancements:
 * [Utilities] Added method Files::size.
 * [Utilities] Added Functions::surroundWith.
 * [Utilities] Added Joiner::mapValues.
+* [Utilities] Added method Files::exists.
+* [Tools] Improvement model generator API.
+* [Utilities] Added new extractor in ArrayAssert.
+* [Core] Added methods to getting protocol and host in Uri class (Uri::getProtocol and Uri::getHost).
+* [Core] Remove custom Ouzo loader. Replaced by composer.
 
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
@@ -27,6 +32,11 @@ Bug fixes:
 * [ORM] Fixed fetch relations which are already fetched.
 * [Core] Fixed interface in ConsoleCommand.
 * [Core] Fixed logging original error messages in error handler.
+* [Utilities] Fixed throw exception if empty extractor is called (issue #97). 
+* [ORM] Fixed Model::__isset so that it works for lazy relations.
+* [Utilities] Arrays::hasNestedKey: added a flag to treat null as a value (added const `TREAT_NULL_AS_VALUE`).
+* [Core] Fixed parsing json in Uri class.
+* [ORM] Fixed #100.
 
 * * *
 
