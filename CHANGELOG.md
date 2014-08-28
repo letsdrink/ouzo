@@ -18,10 +18,10 @@ Enhancements:
 * [Utilities] Added Functions::surroundWith.
 * [Utilities] Added Joiner::mapValues.
 * [Utilities] Added method Files::exists.
-* [Tools] Improvement model generator API.
-* [Utilities] Added new extractor in ArrayAssert.
-* [Core] Added methods to getting protocol and host in Uri class (Uri::getProtocol and Uri::getHost).
-* [Core] Remove custom Ouzo loader. Replaced by composer.
+* [Tools] Improved model generator API.
+* [Utilities] Added a new extractor in ArrayAssert.
+* [Core] Added methods that extract protocol and host in Uri class (Uri::getProtocol and Uri::getHost).
+* [Core] Replaced custom Ouzo loader with composer loader.
 
 Bug fixes:
 * [Tests] Fixed StreamStub write method.
@@ -29,13 +29,13 @@ Bug fixes:
 * [Mock] Fixed handling of params by reference (issue #89).
 * [ORM] Set joined models on results only once for duplicated joins with different aliases.
 * [Core] Trim url in Controller::redirect method.
-* [ORM] Fixed fetch relations which are already fetched.
+* [ORM] Fixed relations fetching. Relations are fetched only once.
 * [Core] Fixed interface in ConsoleCommand.
-* [Core] Fixed logging original error messages in error handler.
-* [Utilities] Fixed throw exception if empty extractor is called (issue #97). 
+* [Core] Fixed logging of original error messages in error handler.
+* [Utilities] Throw exception if empty extractor is called (issue #97). 
 * [ORM] Fixed Model::__isset so that it works for lazy relations.
 * [Utilities] Arrays::hasNestedKey: added a flag to treat null as a value (added const `TREAT_NULL_AS_VALUE`).
-* [Core] Fixed parsing json in Uri class.
+* [Core] Fixed json parsing in Uri class.
 * [ORM] Fixed #100.
 
 * * *
