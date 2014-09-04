@@ -93,6 +93,13 @@ class ModelFormBuilder
         return checkboxTag($this->_generateName($field), '1', $checked, $attributes);
     }
 
+    public function radioField($field, array $options = array())
+    {
+        $attributes = $this->_generatePredefinedAttributes($field);
+        $attributes = $this->_mergeAttributes($attributes, $options);
+        return radioButtonTag($this->_generateName($field), $this->_object->$field, $attributes);
+    }
+
     public function start($url, $method = 'post', $attributes = array())
     {
         return formTag($url, $method, $attributes);
