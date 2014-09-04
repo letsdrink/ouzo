@@ -116,6 +116,12 @@ function passwordFieldTag($name, $value, array $attributes = array())
     return '<input type="password" ' . $attr . '/>';
 }
 
+function radioButtonTag($name, $value, array $attributes = array())
+{
+    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => $value));
+    return '<input type="radio" ' . $attr . '/>';
+}
+
 function formTag($url, $method = 'POST', $attributes = array())
 {
     $method = strtoupper($method);

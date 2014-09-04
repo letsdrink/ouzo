@@ -197,7 +197,7 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         $this->assertContains('method="POST"', $form);
-        $this->assertContains('name="_method" value="' . $method .'"', $form);
+        $this->assertContains('name="_method" value="' . $method . '"', $form);
     }
 
     /**
@@ -385,6 +385,19 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         $expected = '<select id="lab" name="lab" size="1"><option value="0" >Opt1</option><option value="1" selected>Opt2</option></select>';
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateRadioButtonTag()
+    {
+        //when
+        $result = radioButtonTag('age', 33);
+
+        //then
+        $expected = '<input type="radio" id="age" name="age" value="33"/>';
         $this->assertEquals($expected, $result);
     }
 }
