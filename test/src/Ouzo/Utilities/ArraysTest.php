@@ -748,6 +748,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertFalse($value);
     }
+
     /**
      * @test
      */
@@ -782,5 +783,43 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertNull($value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateArrayWithFlattenKeys()
+    {
+        //given
+        $array = array(
+            'customer' => array(
+                'name' => 'Name',
+                'phone' => '123456789',
+            ),
+            'other' => array(
+                'ids_map' => array(
+                    '1qaz' => 'qaz',
+                    '2wsx' => 'wsx'
+                ),
+                'first' => array(
+                    'second' => array(
+                        'third' => 'some value'
+                    )
+                )
+            )
+        );
+
+        //when
+        $flatten = Arrays::flattenKeysRecursively($array);
+
+        //then
+        $expected = array(
+            'customer.name' => 'Name',
+            'customer.phone' => '123456789',
+            'other.ids_map.1qaz' => 'qaz',
+            'other.ids_map.2wsx' => 'wsx',
+            'other.first.second.third' => 'some value'
+        );
+        $this->assertEquals($expected, $flatten);
     }
 }

@@ -4,6 +4,7 @@ namespace Ouzo\Tests;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
+use PHPUnit_Framework_Assert;
 use PHPUnit_Framework_ComparisonFailure;
 use PHPUnit_Framework_ExpectationFailedException;
 
@@ -187,6 +188,14 @@ class ArrayAssert
         if ($anyFound) {
             $this->fail("Found element {$foundElement} in array {$this->_actualString}", $elements);
         }
+        return $this;
+    }
+
+    public function hasEqualKeysRecursively(array $array)
+    {
+        $currentArrayFlatten = Arrays::flattenKeysRecursively($this->_actual);
+        $arrayFlatten = Arrays::flattenKeysRecursively($array);
+        PHPUnit_Framework_Assert::assertEquals(array_keys($arrayFlatten), array_keys($currentArrayFlatten));
         return $this;
     }
 }

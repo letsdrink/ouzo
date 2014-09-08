@@ -299,6 +299,41 @@ class AssertTest extends PHPUnit_Framework_TestCase
         Assert::thatArray($obj)->onProperty('property1->name')->containsExactly('name1', 'name2');
     }
 
+    /**
+     * @test
+     */
+    public function shouldCheckKeysRecursivelyAreEqual()
+    {
+        //given
+        $array = array(
+            'customer' => array(
+                'name' => 'Name',
+                'phone' => '123456789',
+            ),
+            'other' => array(
+                'ids_map' => array(
+                    '1qaz' => 'qaz',
+                    '2wsx' => 'wsx'
+                )
+            )
+        );
+
+        //then
+        $expected = array(
+            'customer' => array(
+                'name' => 'New name',
+                'phone' => '45456456',
+            ),
+            'other' => array(
+                'ids_map' => array(
+                    '1qaz' => 'QQQ',
+                    '2wsx' => 'EVV'
+                )
+            )
+        );
+        Assert::thatArray($array)->hasEqualKeysRecursively($expected);
+    }
+
     private function _assertNot()
     {
         $args = func_get_args();
@@ -343,4 +378,6 @@ class AssertTest extends PHPUnit_Framework_TestCase
     {
         call_user_func_array(array($this, '_assertNot'), array_merge(array('containsKeyAndValue'), func_get_args()));
     }
+
+
 }

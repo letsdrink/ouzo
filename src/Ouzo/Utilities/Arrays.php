@@ -701,12 +701,12 @@ class Arrays
 
     public static function setNestedValue(array &$array, array $keys, $value)
     {
-        $current = & $array;
+        $current = &$array;
         foreach ($keys as $key) {
             if (!isset($current[$key])) {
                 $current[$key] = array();
             }
-            $current = & $current[$key];
+            $current = &$current[$key];
         }
         $current = $value;
     }
@@ -750,5 +750,25 @@ class Arrays
             $array = self::getValue($array, $key);
         }
         return true;
+    }
+
+    public static function flattenKeysRecursively(array $array)
+    {
+        return self::_prepareArrayToFlattenKeyRecursively($array);
+    }
+
+    private static function _prepareArrayToFlattenKeyRecursively($array, $parent = null, $finalValue = null)
+    {
+        static $result = array();
+        if (is_array($array) * count($array) > 0) {
+            foreach ($array as $key => $value) {
+                $finalValue = !is_array($value) ? $value : null;
+                self::_prepareArrayToFlattenKeyRecursively($value, $parent . '.' . $key, $finalValue);
+            }
+        } else {
+            $newKey = ltrim($parent, '.');
+            $result[$newKey] = $finalValue;
+        }
+        return $result;
     }
 }
