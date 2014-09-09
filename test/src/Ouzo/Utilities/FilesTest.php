@@ -1,5 +1,7 @@
 <?php
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
@@ -111,6 +113,30 @@ class FilesTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(4, $size);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetFieldsRecursivelyByExtension()
+    {
+        //given
+        mkdir('/tmp/tests_find_files/new_dir/second_new_dir', 0777, true);
+        touch('/tmp/tests_find_files/file1a.phtml');
+        touch('/tmp/tests_find_files/new_dir/file2a.phtml');
+        touch('/tmp/tests_find_files/new_dir/second_new_dir/file3a.phtml');
+
+        //when
+        $files = Files::getFilesRecursivelyWithSpecifiedExtension('/tmp/tests_find_files', 'phtml');
+
+        //then
+        Assert::thatArray($files)->hasSize(3)
+            ->contains(
+                '/tmp/tests_find_files/new_dir/second_new_dir/file3a.phtml',
+                '/tmp/tests_find_files/new_dir/file2a.phtml',
+                '/tmp/tests_find_files/file1a.phtml'
+            );
+        DeleteDirectory::recursive('/tmp/tests_find_files');
     }
 
     public function units()

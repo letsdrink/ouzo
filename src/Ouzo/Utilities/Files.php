@@ -2,6 +2,10 @@
 namespace Ouzo\Utilities;
 
 use Exception;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use RegexIterator;
 
 class Files
 {
@@ -68,6 +72,14 @@ class Files
     public static function exists($path)
     {
         return file_exists($path);
+    }
+
+    public static function getFilesRecursivelyWithSpecifiedExtension($dir, $extension)
+    {
+        $directory = new RecursiveDirectoryIterator($dir);
+        $iterator = new RecursiveIteratorIterator($directory);
+        $filter = new RegexIterator($iterator, "/.$extension$/i", RecursiveRegexIterator::GET_MATCH);
+        return array_keys(iterator_to_array($filter));
     }
 }
 
