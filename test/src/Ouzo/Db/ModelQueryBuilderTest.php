@@ -1200,4 +1200,22 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     {
         Product::where()->groupBy('id_category');
     }
+
+    /**
+     * @test
+     */
+    public function shouldSelectFunctionShouldSelectOnlySpecifiedColumns()
+    {
+        //given
+        $category1 = Category::create(array('name' => 'category for billy'));
+        Product::create(array('name' => 'billy', 'id_category' => $category1->getId()));
+
+        //when
+        $names = Category::select(array('categories.name'))
+            ->join('product_named_billy')
+            ->fetch();
+
+        //then
+        Assert::thatArray($names)->containsExactly('category for billy');
+    }
 }
