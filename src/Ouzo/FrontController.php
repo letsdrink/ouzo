@@ -5,6 +5,7 @@ use Ouzo\Db\Stats;
 use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Router;
+use Ouzo\Utilities\Functions;
 
 class FrontController
 {
@@ -57,6 +58,16 @@ class FrontController
 
         $this->_startOutputBuffer();
 
+        $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
+        if ($afterInitCallback) {
+            Functions::call($afterInitCallback, array());
+        }
+
+        $this->_invokeControllerMethods();
+    }
+
+    private function _invokeControllerMethods()
+    {
         $this->_invokeInit();
         if ($this->_invokeBeforeMethods()) {
             $this->_invokeAction();
@@ -156,4 +167,5 @@ class FrontController
     {
         return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
     }
+
 }

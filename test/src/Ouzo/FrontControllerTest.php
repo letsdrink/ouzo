@@ -507,4 +507,26 @@ class FrontControllerTest extends ControllerTestCase
         //then
         $this->assertRenderedContent()->isEqualTo('some controller - action');
     }
+
+    /**
+     * @test
+     */
+    public function shouldCallbackInvokeAfterInit()
+    {
+        //given
+        $callback = array($this, '_afterInitCallback');
+        Config::overrideProperty('callback', 'afterControllerInit')->with($callback);
+        Route::get('/sample/save', 'sample#save');
+
+        //when
+        CatchException::when($this)->get('/sample/save');
+
+        //then
+        CatchException::assertThat()->hasMessage("afterInitCallback");
+    }
+
+    public function _afterInitCallback()
+    {
+        throw new Exception("afterInitCallback");
+    }
 }
