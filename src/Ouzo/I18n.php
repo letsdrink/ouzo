@@ -31,7 +31,8 @@ class I18n
     public static function labels($key = '')
     {
         $labels = self::_loadLabels();
-        return $key ? Arrays::getValue($labels, $key) : $labels;
+        $explodedKey = explode('.', $key);
+        return $key ? Arrays::getNestedValue($labels, $explodedKey) : $labels;
     }
 
     private static function _loadLabels()
