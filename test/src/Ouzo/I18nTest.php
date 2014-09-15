@@ -66,5 +66,28 @@ class I18nTest extends \PHPUnit_Framework_TestCase
         CatchException::assertThat()->isInstanceOf('Exception');
     }
 
+    /**
+     * @test
+     */
+    public function shouldReturnLabel()
+    {
+        //when
+        $allLabels = I18n::labels('timeAgo');
+
+        //then
+        $this->assertGreaterThan(1, sizeof($allLabels));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAllLabels()
+    {
+        //when
+        $allLabels = I18n::labels();
+
+        //then
+        $this->assertGreaterThan(1, sizeof($allLabels));
+    }
 
 }

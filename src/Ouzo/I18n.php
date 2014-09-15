@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use Exception;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
@@ -27,9 +28,15 @@ class I18n
         self::$_translator = $translator;
     }
 
+    public static function labels($key = '')
+    {
+        $labels = self::_loadLabels();
+        return $key ? Arrays::getValue($labels, $key) : $labels;
+    }
+
     private static function _loadLabels()
     {
-        $language = Config::getValue('language') ? : I18n::DEFAULT_LANGUAGE;
+        $language = Config::getValue('language') ?: I18n::DEFAULT_LANGUAGE;
         $path = Path::join(ROOT_PATH, 'locales', $language . '.php');
         if (!Files::exists($path)) {
             throw new Exception('Cannot find declared language file: ' . $language);
