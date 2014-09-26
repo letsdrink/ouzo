@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+Release 1.3 - IN PROGRESS
+-----------
+Enhancements:
+* [Core] Added radio button to form builder.
+* [Tests] Added ArrayAssert::hasEqualKeysRecursively method.
+* [Utilities] Added Arrays::flattenKeysRecursively method.
+* [Utilities] Added Files::getFilesRecursivelyWithSpecifiedExtension method.
+* [Core] Added possibility to callback after init.
+* [Localization] Added I18n::labels method to get all labels or sepcified label.
+
+Bug fixes:
+
 Release 1.2
 -----------
 Enhancements:
@@ -42,7 +54,6 @@ Bug fixes:
 
 Release 1.1
 -----------
-
 Enhancements:
 * Added callback methods to Model: beforeSave and afterSave.
 * Added method Json::encode.
