@@ -118,7 +118,7 @@ class FilesTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldGetFieldsRecursivelyByExtension()
+    public function shouldGetFilesRecursivelyByExtension()
     {
         //given
         mkdir('/tmp/tests_find_files/new_dir/second_new_dir', 0777, true);
