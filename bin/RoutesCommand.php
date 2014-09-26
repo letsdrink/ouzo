@@ -58,26 +58,18 @@ class RoutesCommand extends Command
 
     private function _renderRoutes($routes = array())
     {
-        $prevMethod = '';
-        foreach ($routes as $rule) {
-            $method = $this->_getRuleMethod($rule);
-            if ($prevMethod != $method) {
-                $showMethod = $method;
-            } else {
-                $showMethod = '';
-            }
+        $table = $this->getHelper('table');
+        $table->setHeaders(array('URL Helper', 'HTTP Verb', 'Path', 'Controller#Action'));
 
-            $name = $rule->getName();
-            $uri = $rule->getUri();
-            $action = $rule->getAction() ? '#' . $rule->getAction() : $rule->getAction();
-            $controllerAction = $rule->getController() . $action;
-
-            $this->_output->writeln(sprintf("\t%30s \t %-10s %-40s %s", $name, $showMethod, $uri, $controllerAction));
-
-            $this->_printExceptIfExists($rule);
-
-            $prevMethod = $method;
+        foreach ($routes as $route) {
+            $method = $this->_getRuleMethod($route);
+            $action = $route->getAction() ? '#' . $route->getAction() : $route->getAction();
+            $controllerAction = $route->getController() . $action;
+            $table->addRow(array($route->getName(), $method, $route->getUri(), $controllerAction));
+            $this->_printExceptIfExists($route, $table);
         }
+
+        $table->render($this->_output);
     }
 
     private function _getRuleMethod(RouteRule $rule)
@@ -88,15 +80,13 @@ class RoutesCommand extends Command
         return is_array($rule->getMethod()) ? 'ANY' : $rule->getMethod();
     }
 
-    private function _printExceptIfExists(RouteRule $rule)
+    private function _printExceptIfExists(RouteRule $rule, $table)
     {
         $except = $rule->getExcept();
         if ($except) {
-            $obj = $this;
-            $text = sprintf("\t\t\t\t\t\t%13s", 'except:');
-            $obj->_output->writeln($text);
-            Arrays::map($except, function ($except) use ($obj) {
-                $obj->_output->writeln(sprintf("\t\t\t\t\t\t\t%-10s", $except));
+            $table->addRow(array('', '', '  <info>except:</info>', ''));
+            Arrays::map($except, function ($except) use ($table) {
+                $table->addRow(array('', '', '    ' . $except, ''));
                 return $except;
             });
         }
