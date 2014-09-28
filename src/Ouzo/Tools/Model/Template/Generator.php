@@ -52,6 +52,7 @@ class Generator
     }
 
     /**
+     * @throws GeneratorException
      * @return Dialect
      */
     public function dialectAdapter()

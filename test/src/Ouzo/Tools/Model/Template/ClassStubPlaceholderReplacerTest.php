@@ -1,11 +1,11 @@
 <?php
-
 namespace Ouzo\Tools\Model\Template;
 
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
+use PHPUnit_Framework_TestCase;
 
-class ClassStubPlaceholderReplacerTest extends \PHPUnit_Framework_TestCase
+class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -71,5 +71,24 @@ class ClassStubPlaceholderReplacerTest extends \PHPUnit_Framework_TestCase
             ->doesNotContain('{table_sequence}')
             ->doesNotContain("'sequence'");
     }
+
+    /**
+     * @test
+     */
+    public function shouldAddEmptyPrimaryKeyEntryWhenNoFoundPrimaryKeyInTable()
+    {
+        //given
+        $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
+        Mock::when($dialect)->primaryKey()->thenReturn('');
+        Mock::when($dialect)->columns()->thenReturn(array());
+        $classStubReplacer = new ClassStubPlaceholderReplacer('Customer', new TableInfo($dialect));
+
+        //when
+        $classContents = $classStubReplacer->contents();
+
+        //then
+        Assert::thatString($classContents)
+            ->isNotEqualTo('')
+            ->contains('primaryKey');
+    }
 }
- 

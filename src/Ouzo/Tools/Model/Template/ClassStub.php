@@ -7,11 +7,11 @@ use Ouzo\Utilities\Path;
 
 class ClassStub
 {
+    const FIELDS_COUNT_IN_LINE = 7;
+
     private $_stubContent;
     private $_attributes = array();
     private $_placeholderWithReplacements = array();
-
-    const FIELDS_COUNT_IN_LINE = 7;
 
     public function __construct()
     {
@@ -45,6 +45,17 @@ class ClassStub
         $this->addPlaceholderReplacement("table_$name", $value);
     }
 
+    public function addTablePrimaryKey($primaryKey)
+    {
+        if (empty($primaryKey)) {
+            $value = sprintf("'%s' => '',", 'primaryKey');
+            $this->addPlaceholderReplacement("table_primaryKey", $value);
+        } else {
+            $placeholderPrimaryKey = ($primaryKey != 'id') ? $primaryKey : '';
+            $this->addTableSetupItem('primaryKey', $placeholderPrimaryKey);
+        }
+    }
+
     public function replacePlaceholders($replacement)
     {
         foreach ($replacement as $key => $value) {
@@ -67,7 +78,7 @@ class ClassStub
     {
         $fields = array_keys($this->_attributes);
         $escapedFields = Arrays::map($fields, Functions::compose(Functions::append("'"), Functions::prepend("'")));
-        for($index = self::FIELDS_COUNT_IN_LINE; $index < sizeof($escapedFields); $index += self::FIELDS_COUNT_IN_LINE){
+        for ($index = self::FIELDS_COUNT_IN_LINE; $index < sizeof($escapedFields); $index += self::FIELDS_COUNT_IN_LINE) {
             $escapedFields[$index] = "\n\t\t\t" . $escapedFields[$index];
         }
         return implode(', ', $escapedFields);
