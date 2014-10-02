@@ -49,8 +49,7 @@ class ClassStubPlaceholderReplacer
     private function _setupPrimaryKeyReplacement()
     {
         $primaryKey = $this->tableInfo->primaryKeyName;
-        $placeholderPrimaryKey = ($primaryKey != 'id') ? $primaryKey : '';
-        $this->classStub->addTableSetupItem('primaryKey', $placeholderPrimaryKey);
+        $this->classStub->addTablePrimaryKey($primaryKey);
     }
 
     private function _setupSequenceReplacement()

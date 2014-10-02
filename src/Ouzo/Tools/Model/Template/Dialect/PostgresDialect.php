@@ -54,7 +54,9 @@ class PostgresDialect extends Dialect
 
     private function _getTableColumns($tableName)
     {
-        $schema = Db::getInstance()->query("SELECT column_name, data_type, column_default FROM information_schema.columns WHERE table_name='$tableName'")->fetchAll();
+        $schema = Db::getInstance()
+            ->query("SELECT column_name, data_type, column_default FROM information_schema.columns WHERE table_name = '$tableName' ORDER BY ordinal_position")
+            ->fetchAll();
         $tableColumns = array();
         foreach ($schema as $columnInfo) {
             $columnName = $columnInfo['column_name'];

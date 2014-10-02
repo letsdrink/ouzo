@@ -91,7 +91,7 @@ class Functions
     public static function notBlank()
     {
         return function ($string) {
-            return trim($string);
+            return Strings::isNotBlank($string);
         };
     }
 
