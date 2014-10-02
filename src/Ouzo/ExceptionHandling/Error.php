@@ -4,6 +4,7 @@ namespace Ouzo\ExceptionHandling;
 use Exception;
 use Ouzo\Config;
 use Ouzo\I18n;
+use Ouzo\UserException;
 
 class Error
 {
@@ -20,10 +21,15 @@ class Error
 
     public static function forException(Exception $exception)
     {
-        if (Config::getValue('debug')) {
+        if (self::_shouldReturnExceptionOriginalMessage($exception)) {
             return new Error($exception->getCode(), $exception->getMessage());
         }
         return new Error($exception->getCode(), I18n::t('exception.unknown'), $exception->getMessage());
+    }
+
+    private static function _shouldReturnExceptionOriginalMessage($exception)
+    {
+        return Config::getValue('debug') || ($exception instanceof UserException);
     }
 
     public function toArray()
