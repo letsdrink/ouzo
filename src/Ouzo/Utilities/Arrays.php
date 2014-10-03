@@ -754,21 +754,20 @@ class Arrays
 
     public static function flattenKeysRecursively(array $array)
     {
-        return self::_prepareArrayToFlattenKeyRecursively($array);
+        $result = array();
+        self::_flattenKeyRecursively($array, $result, '');
+        return $result;
     }
 
-    private static function _prepareArrayToFlattenKeyRecursively($array, $parent = null, $finalValue = null)
+    private static function _flattenKeyRecursively($array, &$result, $parentKey)
     {
-        static $result = array();
-        if (is_array($array) * count($array) > 0) {
-            foreach ($array as $key => $value) {
-                $finalValue = !is_array($value) ? $value : null;
-                self::_prepareArrayToFlattenKeyRecursively($value, $parent . '.' . $key, $finalValue);
+        foreach ($array as $key => $value) {
+            $itemKey = ($parentKey ? $parentKey . '.' : '') . $key;
+            if (is_array($value)) {
+                self::_flattenKeyRecursively($value, $result, $itemKey);
+            } else {
+                $result[$itemKey] = $value;
             }
-        } else {
-            $newKey = ltrim($parent, '.');
-            $result[$newKey] = $finalValue;
         }
-        return $result;
     }
 }
