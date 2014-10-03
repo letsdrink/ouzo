@@ -599,7 +599,6 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($value === '0');
     }
 
-
     /**
      * @test
      */

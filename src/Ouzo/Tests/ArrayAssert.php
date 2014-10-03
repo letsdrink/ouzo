@@ -193,9 +193,9 @@ class ArrayAssert
 
     public function hasEqualKeysRecursively(array $array)
     {
-        $currentArrayFlatten = Arrays::flattenKeysRecursively($this->_actual);
-        $arrayFlatten = Arrays::flattenKeysRecursively($array);
-        PHPUnit_Framework_Assert::assertEquals(array_keys($arrayFlatten), array_keys($currentArrayFlatten));
+        $currentArrayFlatten = array_keys(Arrays::flattenKeysRecursively($this->_actual));
+        $arrayFlatten = array_keys(Arrays::flattenKeysRecursively($array));
+        PHPUnit_Framework_Assert::assertSame(array_diff($currentArrayFlatten, $arrayFlatten), array_diff($arrayFlatten, $currentArrayFlatten));
         return $this;
     }
 }
