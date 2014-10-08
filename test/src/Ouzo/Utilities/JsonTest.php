@@ -40,21 +40,6 @@ class JsonTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldCheckStringIsJson()
-    {
-        //given
-        $json = '{"name":"john","id":123,"ip":"127.0.0.1"}';
-
-        //when
-        $isJson = Json::isJson($json);
-
-        //then
-        $this->assertTrue($isJson);
-    }
-
-    /**
-     * @test
-     */
     public function shouldDecodeJsonAsArray()
     {
         //given

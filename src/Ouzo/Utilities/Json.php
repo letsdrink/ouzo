@@ -17,9 +17,4 @@ class Json
     {
         return json_last_error();
     }
-
-    public static function isJson($string)
-    {
-        return !preg_match('/[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \\n\\r\\t]/', preg_replace('/"(\\.|[^"\\\\])*"/', '', $string));
-    }
 }

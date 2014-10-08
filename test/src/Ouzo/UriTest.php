@@ -2,6 +2,7 @@
 use Ouzo\Config;
 use Ouzo\ContentType;
 use Ouzo\Tests\ArrayAssert;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Uri;
 
@@ -235,18 +236,22 @@ class UriTest extends PHPUnit_Framework_TestCase
         ContentType::set('application/json');
 
         //when
-        $parameters = Uri::getRequestParameters('json://input');
+        $parameters = $this->getRequestParameters('json://input');
 
         //then
         ArrayAssert::that($parameters)->hasSize(3);
         StreamStub::unregister();
     }
 
+    function getRequestParameters($stream)
+    {
+        return Uri::getRequestParameters($stream);
+    }
+
     /**
      * @test
-     * @expectedException Exception
      */
-    public function should()
+    public function shouldFailForInvalidJson()
     {
         //given
         StreamStub::register('json');
@@ -254,9 +259,46 @@ class UriTest extends PHPUnit_Framework_TestCase
         ContentType::set('application/json');
 
         //when
-        Uri::getRequestParameters('json://input');
+        CatchException::when($this)->getRequestParameters('json://input');
 
         //then
+        CatchException::assertThat()->isInstanceOf('Ouzo\Api\InternalException');
+        StreamStub::unregister();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAcceptUtfLiteralsInJson()
+    {
+        //given
+        StreamStub::register('json');
+        StreamStub::$body = '{"name":"\u0142ucja"}';
+        ContentType::set('application/json');
+
+        //when
+        $parameters = $this->getRequestParameters('json://input');
+
+        //then
+        ArrayAssert::that($parameters)->containsKeyAndValue(array("name" => "łucja"));
+        StreamStub::unregister();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAcceptEmptyJson()
+    {
+        //given
+        StreamStub::register('json');
+        StreamStub::$body = '';
+        ContentType::set('application/json');
+
+        //when
+        $parameters = $this->getRequestParameters('json://input');
+
+        //then
+        ArrayAssert::that($parameters)->hasSize(0);
         StreamStub::unregister();
     }
 

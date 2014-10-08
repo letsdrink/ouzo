@@ -129,10 +129,11 @@ class Uri
     private static function _parseRequest($content)
     {
         if (Strings::equal(ContentType::value(), 'application/json')) {
-            if (!Json::isJson($content)) {
+            $json = Json::decode($content, true);
+            if (Json::lastError() !== 0) {
                 throw new InternalException(new Error(0, 'JSON string is malformed'));
             }
-            return Json::decode($content, true);
+            return $json;
         }
         parse_str($content, $parameters);
         return $parameters;
