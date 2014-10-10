@@ -3,6 +3,7 @@ namespace Ouzo;
 
 use Ouzo\Db\PDOExceptionExtractor;
 use Ouzo\Db\StatementExecutor;
+use Ouzo\Db\TransactionalProxy;
 use Ouzo\Utilities\Arrays;
 use PDO;
 
@@ -38,7 +39,7 @@ class Db
     {
         $this->_dbHandle = $this->_createPdo($params);
         $attributes = Arrays::getValue($params, 'attributes', array());
-        foreach($attributes as $attribute => $value) {
+        foreach ($attributes as $attribute => $value) {
             $this->_dbHandle->setAttribute($attribute, $value);
         }
         return $this;
@@ -65,12 +66,17 @@ class Db
         return StatementExecutor::prepare($this->_dbHandle, $query, $params, $options)->execute();
     }
 
+    public static function transactional($object)
+    {
+        return TransactionalProxy::newInstance($object);
+    }
+
     public function runInTransaction($callable)
     {
         if (!$this->_startedTransaction) {
-            $this->_dbHandle->beginTransaction();
+            $this->beginTransaction();
             $result = call_user_func($callable);
-            $this->_dbHandle->commit();
+            $this->commitTransaction();
             return $result;
         }
         return call_user_func($callable);

@@ -29,6 +29,16 @@
             "class": "Ouzo\\Utilities\\Functions",
             "method": "extract",
             "position": 0
+        },
+        {
+            "class": "Ouzo\\Db\\TransactionalProxy",
+            "method": "newInstance",
+            "position": 0
+        },
+        {
+            "class": "Ouzo\\Db",
+            "method": "transactional",
+            "position": 0
         }
     ],
     "functionCalls": []
