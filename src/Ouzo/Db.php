@@ -66,6 +66,10 @@ class Db
         return StatementExecutor::prepare($this->_dbHandle, $query, $params, $options)->execute();
     }
 
+    /**
+     * Returns a new transactional proxy for given target object.
+     * All methods called on proxy are run in a transaction.
+     */
     public static function transactional($object)
     {
         return TransactionalProxy::newInstance($object);
