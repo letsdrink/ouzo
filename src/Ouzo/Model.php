@@ -54,7 +54,7 @@ class Model extends Validatable
     {
         $this->_prepareParameters($params);
 
-        $tableName = Arrays::getValue($params, 'table') ? : Strings::tableize($this->getModelName());
+        $tableName = Arrays::getValue($params, 'table') ?: Strings::tableize($this->getModelName());
         $primaryKeyName = Arrays::getValue($params, 'primaryKey', 'id');
         $sequenceName = Arrays::getValue($params, 'sequence', "{$tableName}_{$primaryKeyName}_seq");
 
@@ -63,7 +63,9 @@ class Model extends Validatable
 
         $this->_relations = RelationsCache::getRelations(get_called_class(), $params, $primaryKeyName);
 
-        if (isset($attributes[$primaryKeyName]) && !$attributes[$primaryKeyName]) unset($attributes[$primaryKeyName]);
+        if (isset($attributes[$primaryKeyName]) && Strings::isBlank($attributes[$primaryKeyName])) {
+            unset($attributes[$primaryKeyName]);
+        }
 
         $this->_tableName = $tableName;
         $this->_sequenceName = $sequenceName;

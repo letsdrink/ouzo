@@ -3,6 +3,7 @@ use Model\Test\Category;
 use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
+use Ouzo\Db;
 use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Tests\Assert;
@@ -650,5 +651,20 @@ class ModelTest extends DbTransactionalTestCase
             CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
             //drivers other than postgres return last inserted id even if invalid sequence is given
         }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleZeroAsPrimaryKey()
+    {
+        //given
+        Db::getInstance()->execute("INSERT INTO products(id, name) values(0, 'Phone')");
+
+        //when
+        $product = Product::where(array('id' => 0))->fetch();
+
+        //then
+        $this->assertTrue(0 === $product->id);
     }
 }
