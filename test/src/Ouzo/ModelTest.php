@@ -658,13 +658,10 @@ class ModelTest extends DbTransactionalTestCase
      */
     public function shouldHandleZeroAsPrimaryKey()
     {
-        //given
-        Db::getInstance()->execute("INSERT INTO products(id, name) values(0, 'Phone')");
-
         //when
-        $product = Product::where(array('id' => 0))->fetch();
+        $product = new Product(array('id' => 0, 'name' => 'Phone'));
 
         //then
-        $this->assertTrue(0 === $product->id || '0' === $product->id);
+        $this->assertTrue(0 === $product->id);
     }
 }
