@@ -665,6 +665,6 @@ class ModelTest extends DbTransactionalTestCase
         $product = Product::where(array('id' => 0))->fetch();
 
         //then
-        $this->assertTrue(0 === $product->id);
+        $this->assertTrue(0 === $product->id || '0' === $product->id);
     }
 }
