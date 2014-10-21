@@ -459,4 +459,23 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('Daenerys Targaryen', $stringWithSuffix);
     }
+
+    /**
+     * @test
+     */
+    public function shouldSprintfStringWithAssocArrayAsParam()
+    {
+        //given
+        $sprintfString = "This is %{what}! %{what}? This is %{place}!";
+        $assocArray = array(
+            'what' => 'madness',
+            'place' => 'Sparta'
+        );
+
+        //when
+        $resultString = Strings::sprintAssoc($sprintfString, $assocArray);
+
+        //then
+        $this->assertEquals('This is madness! madness? This is Sparta!', $resultString);
+    }
 }
