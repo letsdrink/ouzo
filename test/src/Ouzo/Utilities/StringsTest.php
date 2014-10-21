@@ -478,4 +478,23 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('This is madness! madness? This is Sparta!', $resultString);
     }
+
+    /**
+     * @test
+     */
+    public function shouldSprintfStringAndReplaceWithEmptyIfNoPlaceholderFound()
+    {
+        //given
+        $sprintfString = "This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!";
+        $assocArray = array(
+            'what' => 'madness',
+            'place' => 'Sparta'
+        );
+
+        //when
+        $resultString = Strings::sprintAssocDefault($sprintfString, $assocArray);
+
+        //then
+        $this->assertEquals('This is madness! This is Sparta! No, this is invalid  placeholder!', $resultString);
+    }
 }
