@@ -3,8 +3,8 @@ namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
-use PHPUnit_Framework_ComparisonFailure;
 use PHPUnit_Framework_ExpectationFailedException;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 class Verifier
 {
@@ -34,7 +34,7 @@ class Verifier
     {
         throw new PHPUnit_Framework_ExpectationFailedException(
             $description,
-            new PHPUnit_Framework_ComparisonFailure($expected, $actual, $expected, $actual)
+            new ComparisonFailure($expected, $actual, $expected, $actual)
         );
     }
 

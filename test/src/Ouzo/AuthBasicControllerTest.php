@@ -45,6 +45,7 @@ class AuthBasicControllerTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Api\UnauthorizedException');
+        ob_end_clean();
     }
 
     /**
@@ -61,6 +62,7 @@ class AuthBasicControllerTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Api\UnauthorizedException');
+        ob_end_clean();
     }
 
     /**
