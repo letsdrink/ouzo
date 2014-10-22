@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 class Translator
 {
@@ -15,15 +16,7 @@ class Translator
     public function translate($key, $params = array())
     {
         $explodedKey = explode('.', $key);
-        $translation = Arrays::getNestedValue($this->_labels, $explodedKey) ? : $key;
-        return $this->sprintf_assoc($translation, $params);
-    }
-
-    private function sprintf_assoc($string, $params)
-    {
-        foreach ($params as $k => $v) {
-            $string = preg_replace("/%{($k)}/", $v, $string);
-        }
-        return $string;
+        $translation = Arrays::getNestedValue($this->_labels, $explodedKey) ?: $key;
+        return Strings::sprintAssoc($translation, $params);
     }
 }
