@@ -1,15 +1,20 @@
 <?php
-use Ouzo\AuthBasicController;
+
+use Ouzo\Controller;
 use Ouzo\ControllerFactory;
+use Ouzo\Extension\AuthBasicExtension;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 
-class AuthSampleController extends AuthBasicController
+class AuthSampleController extends Controller
 {
     public function init()
     {
-        $this->httpAuthBasic('login', 'pass');
+        AuthBasicExtension::register($this, array(
+            'login' => 'login',
+            'password' => 'pass'
+        ));
     }
 
     public function index()
