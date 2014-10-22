@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo;
 
-use Exception;
 use Ouzo\Db\Stats;
 use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
@@ -57,20 +56,11 @@ class FrontController
 
         $this->_logRequest();
 
-        $this->_startOutputBuffer();
-
-        try {
-            $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
-            if ($afterInitCallback) {
-                Functions::call($afterInitCallback, array());
-            }
-            $this->_invokeControllerMethods();
-
-        } catch (Exception $e) {
-            $this->clearOutputBuffer();
-            throw $e;
+        $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
+        if ($afterInitCallback) {
+            Functions::call($afterInitCallback, array());
         }
-        $this->clearOutputBuffer();
+        $this->_invokeControllerMethods();
     }
 
     private function _invokeControllerMethods()
@@ -130,6 +120,7 @@ class FrontController
         $this->_sendHeaders($controller->getHeaders());
         switch ($controller->getStatusResponse()) {
             case 'show':
+                $this->_startOutputBuffer();
                 $controller->display();
                 $this->_showOutputBuffer();
                 break;
@@ -161,6 +152,7 @@ class FrontController
     private function _showOutputBuffer()
     {
         $page = ob_get_contents();
+        ob_end_clean();
         $this->outputDisplayer->display($page);
     }
 
@@ -181,10 +173,4 @@ class FrontController
         }
         return call_user_func($callback, $this->_currentControllerObject);
     }
-
-    private function clearOutputBuffer()
-    {
-        ob_end_clean();
-    }
-
 }

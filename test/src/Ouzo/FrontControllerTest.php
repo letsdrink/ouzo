@@ -29,11 +29,6 @@ class SampleControllerException extends Exception
 
 class SampleController extends Controller
 {
-    public function action()
-    {
-        echo "OUTPUT";
-    }
-
     public function redirect_to()
     {
         $this->redirect('/sample/add');
@@ -110,21 +105,6 @@ class FrontControllerTest extends ControllerTestCase
         parent::setUp();
         $this->_frontController->controllerFactory = new ControllerFactory('\\Ouzo\\');
         Route::$routes = array();
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotDisplayOutput()
-    {
-        //given
-        Route::allowAll('/sample', 'sample');
-
-        //when
-        $this->get('/sample/action');
-
-        //then
-        $this->expectOutputString('');
     }
 
     /**
