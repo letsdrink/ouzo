@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Exception;
 use Ouzo\Db\Stats;
 use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
@@ -58,12 +59,18 @@ class FrontController
 
         $this->_startOutputBuffer();
 
-        $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
-        if ($afterInitCallback) {
-            Functions::call($afterInitCallback, array());
-        }
+        try {
+            $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
+            if ($afterInitCallback) {
+                Functions::call($afterInitCallback, array());
+            }
+            $this->_invokeControllerMethods();
 
-        $this->_invokeControllerMethods();
+        } catch (Exception $e) {
+            $this->clearOutputBuffer();
+            throw $e;
+        }
+        $this->clearOutputBuffer();
     }
 
     private function _invokeControllerMethods()
@@ -92,8 +99,8 @@ class FrontController
 
     private function _invokeBeforeMethods()
     {
-        foreach ($this->_currentControllerObject->before as $method) {
-            if (!$this->_currentControllerObject->$method()) {
+        foreach ($this->_currentControllerObject->before as $callback) {
+            if (!($this->callCallback($callback))) {
                 return false;
             }
             if ($this->_isRedirect()) {
@@ -105,8 +112,8 @@ class FrontController
 
     private function _invokeAfterMethods()
     {
-        foreach ($this->_currentControllerObject->after as $method) {
-            $this->_currentControllerObject->$method();
+        foreach ($this->_currentControllerObject->after as $callback) {
+            $this->callCallback($callback);
         }
     }
 
@@ -154,7 +161,6 @@ class FrontController
     private function _showOutputBuffer()
     {
         $page = ob_get_contents();
-        ob_end_clean();
         $this->outputDisplayer->display($page);
     }
 
@@ -167,4 +173,18 @@ class FrontController
     {
         return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
     }
+
+    private function callCallback($callback)
+    {
+        if (is_string($callback)) {
+            $callback = array($this->_currentControllerObject, $callback);
+        }
+        return call_user_func($callback, $this->_currentControllerObject);
+    }
+
+    private function clearOutputBuffer()
+    {
+        ob_end_clean();
+    }
+
 }

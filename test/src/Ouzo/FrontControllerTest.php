@@ -444,7 +444,6 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
         $this->assertRedirectsTo('/sample/add');
-        ob_end_clean();
     }
 
     /**
@@ -524,7 +523,6 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->hasMessage("afterInitCallback");
-        ob_end_clean();
     }
 
     public function _afterInitCallback()
