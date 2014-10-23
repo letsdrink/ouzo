@@ -46,6 +46,20 @@ class Functions
         };
     }
 
+    public static function constant($value)
+    {
+        return function () use($value) {
+            return $value;
+        };
+    }
+
+    public static function throwException(Exception $exception)
+    {
+        return function () use($exception) {
+            throw $exception;
+        };
+    }
+
     public static function trim()
     {
         return function ($string) {
