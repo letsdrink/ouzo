@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Tests\Mock;
 
+use Ouzo\Utilities\Functions;
+
 class WhenBuilder
 {
     private $mock;
@@ -23,7 +25,7 @@ class WhenBuilder
     public function thenReturn()
     {
         foreach (func_get_args() as $result) {
-            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $result, null);
+            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, Functions::constant($result));
         }
     }
 
@@ -33,7 +35,17 @@ class WhenBuilder
     public function thenThrow($exception)
     {
         foreach (func_get_args() as $exception) {
-            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, null, $exception);
+            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, Functions::throwException($exception));
+        }
+    }
+
+    /**
+     * @param mixed ...
+     */
+    public function thenAnswer()
+    {
+        foreach (func_get_args() as $callback) {
+            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $callback);
         }
     }
 }

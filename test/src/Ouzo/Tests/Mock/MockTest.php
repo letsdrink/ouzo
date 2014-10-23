@@ -3,7 +3,9 @@
 namespace Ouzo\Tests;
 
 use Exception;
+use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Utilities\Arrays;
 use PHPUnit_Framework_ExpectationFailedException;
 
 class MockTestClass
@@ -209,6 +211,24 @@ class MockTest extends \PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isEqualTo($exception);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMethodWithCallback()
+    {
+        //given
+        $mock = Mock::mock();
+        Mock::when($mock)->method(Mock::any())->thenAnswer(function (MethodCall $methodCall) {
+            return $methodCall->name . ' ' . Arrays::first($methodCall->arguments);
+        });
+
+        //when
+        $result = $mock->method('arg');
+
+        //then
+        $this->assertEquals("method arg", $result);
     }
 
     /**
