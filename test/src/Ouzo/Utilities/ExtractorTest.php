@@ -34,6 +34,21 @@ class ExtractorTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldExtractFieldWithZero()
+    {
+        //given
+        $function = Functions::extract()->id;
+
+        //when
+        $result = Functions::call($function, new Product(array('id' => 0)));
+
+        //then
+        $this->assertTrue($result === 0);
+    }
+
+    /**
+     * @test
+     */
     public function shouldExtractNestedField()
     {
         //given
