@@ -497,4 +497,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('This is madness! This is Sparta! No, this is invalid  placeholder!', $resultString);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsStringContainsSubstring()
+    {
+        //given
+        $string = 'Fear cuts deeper than swords';
+
+        //when
+        $contains = Strings::contains($string, 'deeper');
+
+        //then
+        $this->assertTrue($contains);
+    }
 }

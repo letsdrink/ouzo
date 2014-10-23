@@ -462,6 +462,7 @@ class Strings
      *
      * @param string $string
      * @param array $params
+     * @param string $default
      * @return string
      */
     public static function sprintAssocDefault($string, $params, $default = '')
@@ -471,5 +472,10 @@ class Strings
         }
         $string = preg_replace("/%{\w*}/", $default, $string);
         return $string;
+    }
+
+    public static function contains($string, $substring)
+    {
+        return strstr($string, $substring) !== false;
     }
 }
