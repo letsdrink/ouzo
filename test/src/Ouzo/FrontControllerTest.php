@@ -21,7 +21,10 @@ use Ouzo\Routing\Route;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
+use Ouzo\Tests\Mock\MethodCall;
+use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\DynamicProxy;
 
 class SampleControllerException extends Exception
 {
@@ -29,6 +32,12 @@ class SampleControllerException extends Exception
 
 class SampleController extends Controller
 {
+    public function action()
+    {
+        echo "OUTPUT";
+        $this->header('Location : http://foo.com');
+    }
+
     public function redirect_to()
     {
         $this->redirect('/sample/add');
@@ -105,6 +114,30 @@ class FrontControllerTest extends ControllerTestCase
         parent::setUp();
         $this->_frontController->controllerFactory = new ControllerFactory('\\Ouzo\\');
         Route::$routes = array();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotDisplayOutputBeforeHeadersAreSent()
+    {
+        //given
+        $self = $this;
+        $this->_frontController->headerSender = Mock::mock();
+
+        $obLevel = ob_get_level();
+        Mock::when($this->_frontController->headerSender)->send(Mock::any())->thenAnswer(function () use ($self, $obLevel) {
+            //if there's a nested buffer, nothing was sent to output
+            $self->assertTrue(ob_get_level() > $obLevel);
+            $self->assertEquals('OUTPUT', ob_get_contents());
+        });
+
+        Route::allowAll('/sample', 'sample');
+
+        //when
+        $this->get('/sample/action');
+
+        //then no exceptions
     }
 
     /**
