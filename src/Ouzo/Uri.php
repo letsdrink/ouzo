@@ -135,8 +135,7 @@ class Uri
             }
             return $json;
         }
-        parse_str($content, $parameters);
-        return $parameters;
+        return array();
     }
 
     public static function addPrefixIfNeeded($url)
