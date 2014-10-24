@@ -38,7 +38,7 @@ class Controller
         $this->layout = new Layout();
         $requestParameters = Uri::getRequestParameters();
         $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
-        $this->params = array_merge($_POST, $_GET, $requestParameters, $parameters);
+        $this->params = array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
 
     public function header($header)
