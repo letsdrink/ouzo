@@ -129,8 +129,7 @@ class Uri
         if (Json::isJson($content)) {
             return Json::decode($content, true);
         }
-        parse_str($content, $parameters);
-        return $parameters;
+        return array();
     }
 
     public static function addPrefixIfNeeded($url)
