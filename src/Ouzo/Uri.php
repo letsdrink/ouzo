@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Api\InternalException;
+use Ouzo\ExceptionHandling\Error;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;
@@ -126,10 +128,41 @@ class Uri
 
     private static function _parseRequest($content)
     {
-        if (Json::isJson($content)) {
-            return Json::decode($content, true);
+        $jsonParameters = self::_jsonParameters($content);
+        if ($jsonParameters) {
+            return $jsonParameters;
         }
+
+        $putParameters = self::_putRequestParameters($content);
+        if ($putParameters) {
+            return $putParameters;
+        }
+
         return array();
+    }
+
+    private static function _jsonParameters($content)
+    {
+        if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
+            $json = Json::decode($content, true);
+            if (Json::lastError() !== 0) {
+                throw new InternalException(new Error(0, 'JSON string is malformed'));
+            }
+            return Arrays::toArray($json);
+        }
+        return false;
+    }
+
+    private static function _putRequestParameters($content)
+    {
+        if (
+            Strings::equal(Arrays::getValue($_SERVER, 'REQUEST_METHOD'), 'PUT')
+            && Strings::equalsIgnoreCase(ContentType::value(), 'application/x-www-form-urlencoded')
+        ) {
+            parse_str($content, $parameters);
+            return Arrays::toArray($parameters);
+        }
+        return false;
     }
 
     public static function addPrefixIfNeeded($url)

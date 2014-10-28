@@ -1,6 +1,8 @@
 <?php
 use Ouzo\Config;
+use Ouzo\ContentType;
 use Ouzo\Tests\ArrayAssert;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Uri;
 
@@ -209,17 +211,96 @@ class UriTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldParsePutRequestInStream()
+    {
+        //given
+        $_SERVER['REQUEST_METHOD'] = 'PUT';
+        StreamStub::register('put');
+        StreamStub::$body = 'a=test2&t=test3';
+        ContentType::set('application/x-www-form-urlencoded');
+
+        //when
+        $parameters = $this->getRequestParameters('put://input');
+
+        //then
+        ArrayAssert::that($parameters)
+            ->hasSize(2)
+            ->contains('test2')
+            ->contains('test3');
+        StreamStub::unregister();
+    }
+
+    public function shouldCorrectParseStream()
+    {
+        //given
+        StreamStub::register('uri');
+        StreamStub::$body = 'album%5Bdigital_photos%5D=false&name=john&phones%5B%5D=123&phones%5B%5D=456&phones%5B%5D=789&colors%5Bfloor%5D=red&colors%5Bdoors%5D=blue';
+
+        //when
+        $parameters = Uri::getRequestParameters('uri://input');
+
+        //then
+        ArrayAssert::that($parameters)->hasSize(4);
+        StreamStub::unregister();
+    }
+
+    /**
+     * @test
+     */
     public function shouldCorrectParseJsonInStream()
     {
         //given
         StreamStub::register('json');
         StreamStub::$body = '{"name":"jonh","id":123,"ip":"127.0.0.1"}';
+        ContentType::set('application/json');
 
         //when
-        $parameters = Uri::getRequestParameters('json://input');
+        $parameters = $this->getRequestParameters('json://input');
 
         //then
         ArrayAssert::that($parameters)->hasSize(3);
+        StreamStub::unregister();
+    }
+
+    function getRequestParameters($stream)
+    {
+        return Uri::getRequestParameters($stream);
+    }
+
+
+    /**
+     * @test
+     */
+    public function shouldAcceptEmptyJson()
+    {
+        //given
+        StreamStub::register('json');
+        StreamStub::$body = '';
+        ContentType::set('application/json');
+
+        //when
+        $parameters = $this->getRequestParameters('json://input');
+
+        //then
+        ArrayAssert::that($parameters)->hasSize(0);
+        StreamStub::unregister();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFailForInvalidJson()
+    {
+        //given
+        StreamStub::register('json');
+        StreamStub::$body = '{"name":"jonh","id":123,"ip":"127.0.0.1}';
+        ContentType::set('application/json');
+
+        //when
+        CatchException::when($this)->getRequestParameters('json://input');
+
+        //then
+        CatchException::assertThat()->isInstanceOf('Ouzo\Api\InternalException');
         StreamStub::unregister();
     }
 
