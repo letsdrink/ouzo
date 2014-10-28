@@ -230,6 +230,20 @@ class UriTest extends PHPUnit_Framework_TestCase
         StreamStub::unregister();
     }
 
+    public function shouldCorrectParseStream()
+    {
+        //given
+        StreamStub::register('uri');
+        StreamStub::$body = 'album%5Bdigital_photos%5D=false&name=john&phones%5B%5D=123&phones%5B%5D=456&phones%5B%5D=789&colors%5Bfloor%5D=red&colors%5Bdoors%5D=blue';
+
+        //when
+        $parameters = Uri::getRequestParameters('uri://input');
+
+        //then
+        ArrayAssert::that($parameters)->hasSize(4);
+        StreamStub::unregister();
+    }
+
     /**
      * @test
      */
