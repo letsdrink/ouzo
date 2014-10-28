@@ -128,14 +128,41 @@ class Uri
 
     private static function _parseRequest($content)
     {
+        $jsonParameters = self::_jsonParameters($content);
+        if ($jsonParameters) {
+            return $jsonParameters;
+        }
+
+        $putParameters = self::_putRequestParameters($content);
+        if ($putParameters) {
+            return $putParameters;
+        }
+
+        return array();
+    }
+
+    private static function _jsonParameters($content)
+    {
         if (Strings::equal(ContentType::value(), 'application/json')) {
             $json = Json::decode($content, true);
             if (Json::lastError() !== 0) {
                 throw new InternalException(new Error(0, 'JSON string is malformed'));
             }
-            return $json;
+            return Arrays::toArray($json);
         }
-        return array();
+        return false;
+    }
+
+    private static function _putRequestParameters($content)
+    {
+        if (
+            Strings::equal(Arrays::getValue($_SERVER, 'REQUEST_METHOD'), 'PUT')
+            && Strings::equal(ContentType::value(), 'application/x-www-form-urlencoded')
+        ) {
+            parse_str($content, $parameters);
+            return Arrays::toArray($parameters);
+        }
+        return false;
     }
 
     public static function addPrefixIfNeeded($url)
