@@ -499,6 +499,26 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldLazyFetchHasManyThroughRelation()
+    {
+        //given
+        $order1 = Order::create(array('name' => 'order#1'));
+        $order2 = Order::create(array('name' => 'order#2'));
+
+        $product = Product::create(array('name' => 'sony'));
+        $product->addOrder($order1);
+        $product->addOrder($order2);
+
+        //when
+        $products = $product->orders;
+
+        //then
+        Assert::thatArray($products)->containsOnly($order1, $order2);
+    }
+
+    /**
+     * @test
+     */
     public function shouldLazyFetchHasManyRelationWithoutChildren()
     {
         //given

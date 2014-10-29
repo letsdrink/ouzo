@@ -675,6 +675,56 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldFetchHasManyThroughRelation()
+    {
+        //given
+        $order1 = Order::create(array('name' => 'order#1'));
+        $order2 = Order::create(array('name' => 'order#2'));
+
+        $product = Product::create(array('name' => 'sony'));
+        $product->addOrder($order1);
+        $product->addOrder($order2);
+
+        Stats::reset();
+
+        //when
+        $product = Product::where()
+            ->with('orders')
+            ->fetch();
+
+        //then
+        Assert::thatArray($product->orders)->containsOnly($order1, $order2);
+        $this->assertEquals(3, Stats::getNumberOfQueries()); //no lazily loaded relations
+    }
+
+    /**
+     * @test
+     */
+    public function shouldJoinHasManyThroughRelation()
+    {
+        //given
+        $order1 = Order::create(array('name' => 'order#1'));
+        $order2 = Order::create(array('name' => 'order#2'));
+
+        $product = Product::create(array('name' => 'sony'));
+        $product->addOrder($order1);
+        $product->addOrder($order2);
+
+        Stats::reset();
+
+        //when
+        $product = Product::join('orders')
+            ->where('order_products.id in not null and orders.id is not null')
+            ->fetch();
+
+        //then
+        Assert::thatArray($product->orders)->containsOnly($order1, $order2);
+        $this->assertEquals(3, Stats::getNumberOfQueries()); //no lazily loaded relations
+    }
+
+    /**
+     * @test
+     */
     public function shouldFetchOtherObjectsByArbitraryAttributes()
     {
         //given

@@ -4,7 +4,7 @@ namespace Ouzo\Db;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
-class FieldTransformer
+class FieldTransformer implements ResultsTransformer
 {
     private $field;
     private $transformer;
@@ -15,7 +15,7 @@ class FieldTransformer
         $this->transformer = $transformer;
     }
 
-    public function transform(&$results)
+    public function transform(array &$results)
     {
         if ($this->field) {
             $fields = FluentArray::from($results)

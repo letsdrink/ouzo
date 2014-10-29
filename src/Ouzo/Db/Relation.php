@@ -91,4 +91,14 @@ class Relation
     {
         return "Relation {$this->name} {$this->class} {$this->localKey} {$this->foreignKey}";
     }
+
+    public function getResultTransformer()
+    {
+        return  new RelationFetcher($this);
+    }
+
+    public function getNestedRelations($model)
+    {
+        return array();
+    }
 }

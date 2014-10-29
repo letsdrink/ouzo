@@ -291,8 +291,7 @@ class Model extends Validatable
 
     private function _fetchRelation($name)
     {
-        $relation = $this->getRelation($name);
-        $relationFetcher = new RelationFetcher($relation);
+        $relationFetcher = $this->getRelation($name)->getResultTransformer();
         $results = array($this);
         $relationFetcher->transform($results);
     }

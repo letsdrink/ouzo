@@ -5,7 +5,7 @@ use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
-class RelationFetcher
+class RelationFetcher implements ResultsTransformer
 {
     private $_relation;
 
@@ -14,7 +14,7 @@ class RelationFetcher
         $this->_relation = $relation;
     }
 
-    public function transform(&$results)
+    public function transform(array &$results)
     {
         $localKeyName = $this->_relation->getLocalKey();
         $localKeys = FluentArray::from($results)

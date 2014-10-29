@@ -4,6 +4,9 @@ namespace Ouzo\Db;
 class RelationToFetch
 {
     public $field;
+    /**
+     * @var Relation
+     */
     public $relation;
     public $destinationField;
 

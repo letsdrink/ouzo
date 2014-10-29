@@ -23,6 +23,10 @@ class RelationFactory
 
     public static function hasMany($name, $params, $primaryKey)
     {
+        if (isset($params['through'])) {
+            return new JoinTableRelation($name, $params['class'], $params['through'], $params['field']);
+        }
+
         self::validateParams($params);
 
         $localKey = Arrays::getValue($params, 'referencedColumn', $primaryKey);

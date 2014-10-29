@@ -8,6 +8,7 @@ use Ouzo\Model;
  * @property string description
  * @property string name
  * @property Category category
+ * @property Order[] orders
  */
 class Product extends Model
 {
@@ -23,6 +24,10 @@ class Product extends Model
                 'categoryWithNameByDescription' => array('class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name')
             ),
             'hasOne' => array('orderProduct' => array('class' => 'Test\OrderProduct', 'foreignKey' => 'id_product')),
+            'hasMany' => array(
+                'orderProducts' => array('class' => 'Test\OrderProduct', 'foreignKey' => 'id_product'),
+                'orders' => array('through' => 'orderProducts', 'field' => 'order', 'class' => 'Test\Order')
+            ),
             'fields' => $this->_fields));
     }
 
@@ -43,5 +48,10 @@ class Product extends Model
     public function getCategory()
     {
         return $this->category;
+    }
+
+    public function addOrder($order)
+    {
+        OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $this->getId()));
     }
 }

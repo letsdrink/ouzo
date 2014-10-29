@@ -17,6 +17,7 @@ class ModelQueryBuilderHelper
             $model = $root;
             foreach ($relationNames as $name) {
                 $relation = $model->getRelation($name);
+                $relations += $relation->getNestedRelations($model);
                 $relations[] = $relation;
                 $model = $relation->getRelationModelObject();
             }
