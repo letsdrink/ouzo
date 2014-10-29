@@ -10,12 +10,12 @@ class SyslogLogger implements LoggerInterface
     private $_logger;
     private $_messageFormatter;
 
-    public function __construct($name)
+    public function __construct($name, $configuration)
     {
         $this->_name = $name;
         $messageFormatterClass = 'Ouzo\Logger\DefaultMessageFormatter';
 
-        $logger = Config::getValue('logger');
+        $logger = Config::getValue('logger', $configuration);
         if ($logger) {
             openlog($logger['ident'], $logger['option'], $logger['facility']);
             $messageFormatterClass = Arrays::getValue($logger, 'formatter', $messageFormatterClass);
