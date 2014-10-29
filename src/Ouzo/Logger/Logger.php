@@ -24,6 +24,7 @@ use Ouzo\Config;
 class Logger
 {
     private static $_logger;
+    private static $_configuration;
 
     /**
      * @param $name
@@ -32,9 +33,10 @@ class Logger
      */
     public static function getLogger($name, $configuration = 'default')
     {
-        if (!self::$_logger) {
+        if (!self::$_logger || self::$_configuration != $configuration) {
             self::$_logger = self::_loadLogger($name, $configuration);
         }
+        self::$_configuration = $configuration;
         self::$_logger->setName($name);
         return self::$_logger;
     }
