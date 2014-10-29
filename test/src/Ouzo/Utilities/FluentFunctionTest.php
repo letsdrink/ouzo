@@ -25,4 +25,19 @@ class FluentFunctionTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('*** extra phone! ***', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldNegate()
+    {
+        //given
+        $function = FluentFunctions::startsWith("start")->negate();
+
+        //when
+        $result = Functions::call($function, "starts with prefix");
+
+        //then
+        $this->assertFalse($result);
+    }
 }

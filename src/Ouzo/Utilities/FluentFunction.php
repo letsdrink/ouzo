@@ -10,7 +10,6 @@ namespace Ouzo\Utilities;
  * @method FluentFunction extractFieldRecursively($expression)
  * @method FluentFunction extractExpression($expression)
  * @method FluentFunction trim()
- * @method FluentFunction not()
  * @method FluentFunction isArray()
  * @method FluentFunction prepend($string)
  * @method FluentFunction append($string)
@@ -22,6 +21,7 @@ namespace Ouzo\Utilities;
  * @method FluentFunction toString()
  * @method FluentFunction surroundWith($string)
  * @method FluentFunction equals($value)
+ * @method FluentFunction notEquals($value)
  */
 class FluentFunction
 {
@@ -39,5 +39,13 @@ class FluentFunction
             $object = Functions::call($function, $object);
         }
         return $object;
+    }
+
+    public function negate()
+    {
+        $this->_functions[] = function ($object) {
+            return !$object;
+        };
+        return $this;
     }
 }

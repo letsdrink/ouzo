@@ -178,4 +178,11 @@ class Functions
             return $value == $object;
         };
     }
+
+    public static function notEquals($object)
+    {
+        return function ($value) use ($object) {
+            return $value != $object;
+        };
+    }
 }
