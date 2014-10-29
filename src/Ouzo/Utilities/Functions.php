@@ -171,4 +171,11 @@ class Functions
             return $character . $string . $character;
         };
     }
+
+    public static function equals($object)
+    {
+        return function ($value) use ($object) {
+            return $value == $object;
+        };
+    }
 }
