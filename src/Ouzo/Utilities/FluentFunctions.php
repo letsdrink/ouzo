@@ -10,7 +10,6 @@ namespace Ouzo\Utilities;
  * @method static FluentFunction extractFieldRecursively($expression)
  * @method static FluentFunction extractExpression($expression)
  * @method static FluentFunction trim()
- * @method static FluentFunction not()
  * @method static FluentFunction isArray()
  * @method static FluentFunction prepend($string)
  * @method static FluentFunction append($string)
@@ -22,6 +21,7 @@ namespace Ouzo\Utilities;
  * @method static FluentFunction toString()
  * @method static FluentFunction surroundWith($string)
  * @method static FluentFunction equals($value)
+ * @method static FluentFunction negate()
  */
 class FluentFunctions
 {
