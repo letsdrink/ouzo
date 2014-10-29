@@ -22,6 +22,7 @@ namespace Ouzo\Utilities;
  * @method static FluentFunction surroundWith($string)
  * @method static FluentFunction equals($value)
  * @method static FluentFunction negate()
+ * @method static FluentFunction notEquals($value)
  */
 class FluentFunctions
 {

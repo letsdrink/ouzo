@@ -21,6 +21,7 @@ namespace Ouzo\Utilities;
  * @method FluentFunction toString()
  * @method FluentFunction surroundWith($string)
  * @method FluentFunction equals($value)
+ * @method FluentFunction notEquals($value)
  */
 class FluentFunction
 {
