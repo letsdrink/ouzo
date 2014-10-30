@@ -44,10 +44,14 @@ class ModelQueryBuilderHelper
         $result = array();
         $field = '';
         $table = $fromTable;
+        $fetch = true;
+
         foreach ($relationWithAliases as $relationWithAlias) {
             $relation = $relationWithAlias->relation;
+
             $field = $field ? $field . '->' . $relation->getName() : $relation->getName();
-            $modelJoin = new ModelJoin($field, $table, $relation, $relationWithAlias->alias, $type, $on);
+            $fetch = $fetch && !$relation->isCollection();
+            $modelJoin = new ModelJoin($field, $table, $relation, $relationWithAlias->alias, $type, $on, $fetch);
             $table = $modelJoin->alias();
             $result[] = $modelJoin;
         }

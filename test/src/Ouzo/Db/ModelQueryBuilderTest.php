@@ -591,6 +591,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldNotFetchRelationJoinedThroughHasMany()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $samsung = Manufacturer::create(array('name' => 'samsung'));
+        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $samsung->getId()));
+        Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+
+        //when
+        $joined = Category::join('products->manufacturer')->where('products.id = ?', $product->getId())->fetch();
+
+        //then
+        $this->assertNull(Arrays::getValue($joined->attributes(), 'products'));
+        $this->assertEquals($category, $joined);
+    }
+
+    /**
+     * @test
+     */
     public function shouldFetchWithRelationWhenObjectHasNoForeignKeyValue()
     {
         //given
