@@ -7,36 +7,34 @@ use Ouzo\Utilities\Arrays;
 class SyslogLogger implements LoggerInterface
 {
     private $_name;
-    private $_logger;
-    private $_messageFormatter;
+    private $_configuration;
 
     public function __construct($name, $configuration)
     {
         $this->_name = $name;
-        $messageFormatterClass = 'Ouzo\Logger\DefaultMessageFormatter';
-
-        $logger = Config::getValue('logger', $configuration);
-        if ($logger) {
-            openlog($logger['ident'], $logger['option'], $logger['facility']);
-            $messageFormatterClass = Arrays::getValue($logger, 'formatter', $messageFormatterClass);
-        }
-        $this->_messageFormatter = new $messageFormatterClass();
-        $this->_logger = $logger;
+        $this->_configuration = $configuration;
     }
 
     public function __destruct()
     {
-        if ($this->_logger) {
-            closelog();
-        }
+        closelog();
     }
 
     private function log($level, $levelName, $message, $params)
     {
-        $message = $this->_messageFormatter->format($this->_name, $levelName, $message);
+        $messageFormatterClass = '\Ouzo\Logger\DefaultMessageFormatter';
+        $logger = Config::getValue('logger', $this->_configuration);
+        if ($logger) {
+            openlog($logger['ident'], $logger['option'], $logger['facility']);
+            $messageFormatterClass = Arrays::getValue($logger, 'formatter', $messageFormatterClass);
+        }
+
+        $messageFormatter = new $messageFormatterClass();
+        $message = $messageFormatter->format($this->_name, $levelName, $message);
         if (!empty($params)) {
             $message = call_user_func_array('sprintf', array_merge(array($message), $params));
         }
+
         syslog($level, $message);
     }
 
