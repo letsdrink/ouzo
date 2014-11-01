@@ -23,7 +23,6 @@ class Controller
     private $_fileData = array();
     private $_headers = array();
     private $_routeRule = null;
-    private $_authCredentials = array();
     private $_keepMessage = false;
 
     public function __construct(RouteRule $routeRule)
@@ -39,7 +38,7 @@ class Controller
         $this->layout = new Layout();
         $requestParameters = Uri::getRequestParameters();
         $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
-        $this->params = array_merge($_POST, $_GET, $requestParameters, $parameters);
+        $this->params = array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
 
     public function header($header)
@@ -149,11 +148,6 @@ class Controller
     public function __call($name, $args)
     {
         throw new NoControllerActionException('No action [' . $name . '] defined in controller [' . get_called_class() . '].');
-    }
-
-    public function getAuthCredentials()
-    {
-        return $this->_authCredentials;
     }
 
     private function wrapAsNotices($messages, $url)

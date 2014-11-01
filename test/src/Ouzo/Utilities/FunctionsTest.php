@@ -110,4 +110,22 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('.test.', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfParameterIsEqualToValue()
+    {
+        $this->assertFalse(Functions::call(Functions::equals('value'), 'other'));
+        $this->assertTrue(Functions::call(Functions::equals('value'), 'value'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfParameterIsNotEqualToValue()
+    {
+        $this->assertTrue(Functions::call(Functions::notEquals('value'), 'other'));
+        $this->assertFalse(Functions::call(Functions::notEquals('value'), 'value'));
+    }
 }

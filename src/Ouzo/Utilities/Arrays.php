@@ -679,9 +679,9 @@ class Arrays
      */
     public static function find(array $elements, $function)
     {
-        foreach ($elements as $elements) {
-            if ($function($elements)) {
-                return $elements;
+        foreach ($elements as $element) {
+            if ($function($element)) {
+                return $element;
             }
         }
         return null;

@@ -211,6 +211,25 @@ class UriTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldParsePutRequestInStream()
+    {
+        //given
+        $_SERVER['REQUEST_METHOD'] = 'PUT';
+        StreamStub::register('put');
+        StreamStub::$body = 'a=test2&t=test3';
+        ContentType::set('application/x-www-form-urlencoded');
+
+        //when
+        $parameters = $this->getRequestParameters('put://input');
+
+        //then
+        ArrayAssert::that($parameters)
+            ->hasSize(2)
+            ->contains('test2')
+            ->contains('test3');
+        StreamStub::unregister();
+    }
+
     public function shouldCorrectParseStream()
     {
         //given

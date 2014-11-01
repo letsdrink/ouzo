@@ -22,7 +22,7 @@ class SimpleMock
         $firstMatching = Arrays::first($matching);
         $this->removeMatchedCall($matching);
 
-        return $firstMatching->evaluate();
+        return $firstMatching->evaluate($methodCall);
     }
 
     private function getMatchingStubbedCalls($methodCall)

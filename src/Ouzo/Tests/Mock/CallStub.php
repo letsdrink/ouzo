@@ -4,22 +4,17 @@ namespace Ouzo\Tests\Mock;
 class CallStub
 {
     public $methodCall;
-    public $result;
-    public $exception;
+    public $callback;
 
-    public function __construct($methodCall, $result, $exception)
+    public function __construct($methodCall, $callback)
     {
         $this->methodCall = $methodCall;
-        $this->result = $result;
-        $this->exception = $exception;
+        $this->callback = $callback;
     }
 
-    public function evaluate()
+    public function evaluate($methodCall)
     {
-        if ($this->exception) {
-            throw $this->exception;
-        }
-        return $this->result;
+        return call_user_func($this->callback, $methodCall);
     }
 
     public function matches(MethodCall $methodCall)

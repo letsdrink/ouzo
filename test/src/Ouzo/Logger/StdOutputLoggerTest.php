@@ -1,8 +1,7 @@
 <?php
-
-
 use Ouzo\Config;
 use Ouzo\Logger\LoggerInterface;
+use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
@@ -19,7 +18,7 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
         parent::setUp();
         Clock::freeze('2014-01-01 11:11:11');
         StreamStub::register('test');
-        $this->logger = new \Ouzo\Logger\StdOutputLogger('TEST', 'test');
+        $this->logger = new StdOutputLogger('TEST', 'default', 'test');
     }
 
     protected function tearDown()
@@ -27,7 +26,6 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
         StreamStub::unregister();
         parent::tearDown();
     }
-
 
     /**
      * @test
@@ -48,7 +46,6 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function shouldWriteInfoMessage()
     {
-        //given
         //when
         $this->logger->info('My info log line with param %s and %s.', array(42, 'Zaphod'));
 
@@ -62,7 +59,6 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function shouldWriteWarningMessage()
     {
-        //given
         //when
         $this->logger->warning('My warning log line without params.');
 
@@ -76,7 +72,6 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function shouldWriteFatalMessage()
     {
-        //given
         //when
         $this->logger->fatal('My fatal log line without params.');
 
@@ -122,4 +117,3 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
         return file_get_contents($streamFile);
     }
 }
- 

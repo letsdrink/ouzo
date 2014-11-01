@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Utilities\StrSubstitutor;
 
 class StrSubstitutorTest extends PHPUnit_Framework_TestCase
@@ -32,5 +31,20 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('Czesc {{NAME}}', $substituted);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldChangeToEmptyString()
+    {
+        //given
+        $strSubstitutor = new StrSubstitutor(array('EMPTY' => ''));
+
+        //when
+        $substituted = $strSubstitutor->replace('Czesc {{EMPTY}}');
+
+        //then
+        $this->assertEquals('Czesc ', $substituted);
     }
 }

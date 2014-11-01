@@ -414,4 +414,68 @@ class Strings
         }
         return $string;
     }
+
+    /**
+     * Replace all occurrences of placeholder in string with values from associative array.
+     *
+     * Example:
+     * <code>
+     * $sprintfString = "This is %{what}! %{what}? This is %{place}!";
+     * $assocArray = array(
+     *   'what' => 'madness',
+     *   'place' => 'Sparta'
+     * );
+     * </code>
+     * Result:
+     * <code>
+     * 'This is madness! madness? This is Sparta!'
+     * </code>
+     *
+     * @param string $string
+     * @param array $params
+     * @return string
+     */
+    public static function sprintAssoc($string, $params)
+    {
+        foreach ($params as $k => $v) {
+            $string = preg_replace("/%{($k)}/", $v, $string);
+        }
+        return $string;
+    }
+
+    /**
+     * Replace all occurrences of placeholder in string with values from associative array.
+     * When no value for placeholder is found in array, a default empty value is used if not otherwise specified.
+     *
+     * Example:
+     * <code>
+     * $sprintfString = "This is %{what}! %{what}? This is %{place}!";
+     * $assocArray = array(
+     *   'what' => 'madness',
+     *   'place' => 'Sparta'
+     * );
+     * </code>
+     * Result:
+     * <code>
+     * 'This is madness! madness? This is Sparta!'
+     * </code>
+     *
+     * @param string $string
+     * @param array $params
+     * @param string $default
+     * @return string
+     */
+    public static function sprintAssocDefault($string, $params, $default = '')
+    {
+        foreach ($params as $k => $v) {
+            $string = preg_replace("/%{($k)}/", $v, $string);
+        }
+        $string = preg_replace("/%{\w*}/", $default, $string);
+        return $string;
+    }
+
+    public static function contains($string, $substring)
+    {
+        return strstr($string, $substring) !== false;
+    }
 }

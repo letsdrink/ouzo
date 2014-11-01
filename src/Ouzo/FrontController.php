@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Exception;
 use Ouzo\Db\Stats;
 use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
@@ -56,17 +57,22 @@ class FrontController
 
         $this->_logRequest();
 
-        $this->_startOutputBuffer();
-
         $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
         if ($afterInitCallback) {
             Functions::call($afterInitCallback, array());
         }
 
-        $this->_invokeControllerMethods();
+        try {
+            ob_start();
+            $this->_invokeControllerMethods();
+        } catch (Exception $e) {
+            ob_end_flush();
+            throw $e;
+        }
+        ob_end_flush();
     }
 
-    private function _invokeControllerMethods()
+    function _invokeControllerMethods()
     {
         $this->_invokeInit();
         if ($this->_invokeBeforeMethods()) {
@@ -92,8 +98,8 @@ class FrontController
 
     private function _invokeBeforeMethods()
     {
-        foreach ($this->_currentControllerObject->before as $method) {
-            if (!$this->_currentControllerObject->$method()) {
+        foreach ($this->_currentControllerObject->before as $callback) {
+            if (!($this->callCallback($callback))) {
                 return false;
             }
             if ($this->_isRedirect()) {
@@ -105,8 +111,8 @@ class FrontController
 
     private function _invokeAfterMethods()
     {
-        foreach ($this->_currentControllerObject->after as $method) {
-            $this->_currentControllerObject->$method();
+        foreach ($this->_currentControllerObject->after as $callback) {
+            $this->callCallback($callback);
         }
     }
 
@@ -123,8 +129,7 @@ class FrontController
         $this->_sendHeaders($controller->getHeaders());
         switch ($controller->getStatusResponse()) {
             case 'show':
-                $controller->display();
-                $this->_showOutputBuffer();
+                $this->renderOutput();
                 break;
             case 'redirect':
                 $this->_redirect($controller->getRedirectLocation());
@@ -146,18 +151,6 @@ class FrontController
         $this->headerSender->send($headers);
     }
 
-    private function _startOutputBuffer()
-    {
-        ob_start();
-    }
-
-    private function _showOutputBuffer()
-    {
-        $page = ob_get_contents();
-        ob_end_clean();
-        $this->outputDisplayer->display($page);
-    }
-
     private function _logRequest()
     {
         Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', array($this->_currentController, $this->_currentAction));
@@ -166,5 +159,22 @@ class FrontController
     private function _isRedirect()
     {
         return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
+    }
+
+    private function callCallback($callback)
+    {
+        if (is_string($callback)) {
+            $callback = array($this->_currentControllerObject, $callback);
+        }
+        return call_user_func($callback, $this->_currentControllerObject);
+    }
+
+    private function renderOutput()
+    {
+        ob_start();
+        $this->_currentControllerObject->display();
+        $page = ob_get_contents();
+        ob_end_clean();
+        $this->outputDisplayer->display($page);
     }
 }

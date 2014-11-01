@@ -101,7 +101,6 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertDownloadsFile('file.txt');
-        ob_end_clean();
     }
 
     /**
@@ -117,7 +116,6 @@ class ControllerTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\NoControllerActionException');
-        ob_end_clean();
     }
 
     /**

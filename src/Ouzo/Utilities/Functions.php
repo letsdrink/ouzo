@@ -46,6 +46,20 @@ class Functions
         };
     }
 
+    public static function constant($value)
+    {
+        return function () use($value) {
+            return $value;
+        };
+    }
+
+    public static function throwException(Exception $exception)
+    {
+        return function () use($exception) {
+            throw $exception;
+        };
+    }
+
     public static function trim()
     {
         return function ($string) {
@@ -155,6 +169,20 @@ class Functions
     {
         return function ($string) use ($character) {
             return $character . $string . $character;
+        };
+    }
+
+    public static function equals($object)
+    {
+        return function ($value) use ($object) {
+            return $value == $object;
+        };
+    }
+
+    public static function notEquals($object)
+    {
+        return function ($value) use ($object) {
+            return $value != $object;
         };
     }
 }

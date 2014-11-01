@@ -32,7 +32,7 @@ class Extractor
     {
         foreach ($this->_operations as $operation) {
             $input = $operation($input);
-            if (!$input) {
+            if ($input === null) {
                 return null;
             }
         }
