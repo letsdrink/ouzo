@@ -1,12 +1,12 @@
 <?php
 namespace Ouzo\Utilities\Validator;
 
-class Validator
+class Validate
 {
     public static function isTrue($value, $message = '')
     {
         if ($value !== true) {
-            throw new ValidatorException($message);
+            throw new ValidateException($message);
         }
         return true;
     }
@@ -14,7 +14,7 @@ class Validator
     public static function isEmail($value, $message = '')
     {
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            throw new ValidatorException($message);
+            throw new ValidateException($message);
         }
         return true;
     }
@@ -22,7 +22,7 @@ class Validator
     public static function isNotNull($value, $message = '')
     {
         if ($value === null) {
-            throw new ValidatorException($message);
+            throw new ValidateException($message);
         }
         return true;
     }

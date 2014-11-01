@@ -1,8 +1,8 @@
 <?php
 use Ouzo\Tests\CatchException;
-use Ouzo\Utilities\Validator\Validator;
+use Ouzo\Utilities\Validator\Validate;
 
-class ValidatorTest extends PHPUnit_Framework_TestCase
+class ValidateTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -13,10 +13,10 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $value = 'some text value';
 
         //when
-        CatchException::when(new Validator())->isTrue($value, 'This value is not true');
+        CatchException::when(new Validate())->isTrue($value, 'This value is not true');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidatorException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidateException');
         CatchException::assertThat()->hasMessage('This value is not true');
     }
 
@@ -29,7 +29,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $value = 'text';
 
         //when
-        $isTrue = Validator::isTrue(strlen($value) == 4, 'Length is not correct');
+        $isTrue = Validate::isTrue(strlen($value) == 4, 'Length is not correct');
 
         //then
         $this->assertTrue($isTrue);
@@ -44,10 +44,10 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $value = 'some_bad_email';
 
         //when
-        CatchException::when(new Validator())->isEmail($value, 'Is not correct email');
+        CatchException::when(new Validate())->isEmail($value, 'Is not correct email');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidatorException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidateException');
         CatchException::assertThat()->hasMessage('Is not correct email');
     }
 
@@ -60,7 +60,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $value = 'foo.bar@example.pl';
 
         //when
-        $isEmail = Validator::isEmail($value, 'Is not correct email');
+        $isEmail = Validate::isEmail($value, 'Is not correct email');
 
         //then
         $this->assertTrue($isEmail);
@@ -75,10 +75,10 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $value = null;
 
         //when
-        CatchException::when(new Validator())->isNotNull($value, 'Is null');
+        CatchException::when(new Validate())->isNotNull($value, 'Is null');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidatorException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidateException');
         CatchException::assertThat()->hasMessage('Is null');
     }
 
@@ -91,7 +91,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $value = 'not null';
 
         //when
-        $isNotNull = Validator::isNotNull($value, 'Is null');
+        $isNotNull = Validate::isNotNull($value, 'Is null');
 
         //then
         $this->assertTrue($isNotNull);
