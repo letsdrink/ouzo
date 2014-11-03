@@ -11,6 +11,12 @@ class MockDownloadHandler
         return $this;
     }
 
+    public function streamMediaFile(array $fileData)
+    {
+        $this->_fileName = $fileData['label'];
+        return $this;
+    }
+
     public function getFileName()
     {
         return $this->_fileName;
