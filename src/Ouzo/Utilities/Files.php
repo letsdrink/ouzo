@@ -81,6 +81,17 @@ class Files
         $filter = new RegexIterator($iterator, "/.$extension$/i", RecursiveRegexIterator::GET_MATCH);
         return array_keys(iterator_to_array($filter));
     }
+
+    public static function copyContent($inputFile, $outputFile, $bufferSize = 1024)
+    {
+        $input = fopen($inputFile, 'r');
+        $output = fopen($outputFile, "w");
+        while ($data = fread($input, $bufferSize)) {
+            fwrite($output, $data);
+        }
+        fclose($input);
+        fclose($output);
+    }
 }
 
 class FileNotFoundException extends Exception
