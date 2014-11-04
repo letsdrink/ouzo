@@ -30,4 +30,18 @@ class ClockTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals('2011-01-02 12:34', Clock::nowAsString());
     }
 
+    /**
+     * @test
+     */
+    public function shouldUseGivenFormat()
+    {
+        //given
+        Clock::freeze('2011-01-02 12:34');
+
+        //when
+        $result = Clock::nowAsString('Y-m-d');
+
+        //then
+        $this->assertEquals('2011-01-02', $result);
+    }
 }

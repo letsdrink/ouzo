@@ -15,9 +15,9 @@ class Clock
         self::$freeze = true;
     }
 
-    public static function nowAsString()
+    public static function nowAsString($format = 'Y-m-d H:i:s')
     {
-        return self::now()->format('Y-m-d H:i:s');
+        return self::now()->format($format);
     }
 
     public static function now()
