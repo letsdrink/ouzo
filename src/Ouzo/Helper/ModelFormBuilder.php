@@ -3,6 +3,7 @@ namespace Ouzo\Helper;
 
 use Ouzo\I18n;
 use Ouzo\Utilities\Joiner;
+use Ouzo\Utilities\Strings;
 
 class ModelFormBuilder
 {
@@ -15,7 +16,7 @@ class ModelFormBuilder
 
     private function _objectName()
     {
-        return strtolower($this->_object->getModelName());
+        return Strings::camelCaseToUnderscore($this->_object->getModelName());
     }
 
     private function _generateId($name)
