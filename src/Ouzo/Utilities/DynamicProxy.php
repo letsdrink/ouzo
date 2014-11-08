@@ -8,9 +8,11 @@ use ReflectionParameter;
 
 class DynamicProxy
 {
+    private static $counter;
+
     public static function newInstance($className, $methodHandler)
     {
-        $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid();
+        $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid() . '_' . self::$counter++;
         eval(self::getProxyClassDefinition($name, $className));
         $object = null;
         eval("\$object = new $name(\$methodHandler);");
