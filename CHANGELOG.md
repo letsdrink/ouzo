@@ -10,8 +10,10 @@ Enhancements:
 * [Utilities] Added Files::getFilesRecursivelyWithSpecifiedExtension method.
 * [Core] Added possibility to callback after init.
 * [Localization] Added I18n::labels method to get all labels or sepcified label.
+* [Tests] Changed CatchException asserts to fluent methods.
 
 Bug fixes:
+* [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined.
 
 Release 1.2
 -----------
