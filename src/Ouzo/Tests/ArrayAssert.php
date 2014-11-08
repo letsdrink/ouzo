@@ -112,7 +112,7 @@ class ArrayAssert
 
     public function onProperty($property)
     {
-        $this->_actual = Arrays::map($this->_actual, Functions::extractExpression($property));
+        $this->_actual = Arrays::map($this->_actual, Functions::extractExpression($property, true));
         return $this;
     }
 

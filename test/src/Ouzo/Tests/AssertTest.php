@@ -7,15 +7,27 @@ use stdClass;
 class Photo
 {
     private $_photoName;
+    private $_data;
 
-    function __construct($photoName)
+    function __construct($photoName, $data = '')
     {
         $this->_photoName = $photoName;
+        $this->_data = $data;
     }
 
     public function getPhotoName()
     {
         return $this->_photoName;
+    }
+}
+
+class PhotoFrame {
+
+    private $photo;
+
+    function __construct($photo)
+    {
+        $this->photo = $photo;
     }
 }
 
@@ -285,7 +297,6 @@ class AssertTest extends PHPUnit_Framework_TestCase
      */
     public function shouldExtractPropertyRecursively()
     {
-        //given
         $obj[0] = new stdClass();
         $obj[0]->property1 = new stdClass();
         $obj[0]->property1->name = 'name1';
@@ -293,10 +304,27 @@ class AssertTest extends PHPUnit_Framework_TestCase
         $obj[1]->property1 = new stdClass();
         $obj[1]->property1->name = 'name2';
 
-        //when
-
-        //then
         Assert::thatArray($obj)->onProperty('property1->name')->containsExactly('name1', 'name2');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldExtractPrivateProperty()
+    {
+        $photos = array(new Photo('vacation', 'vvv'), new Photo('portrait', 'ppp'));
+
+        Assert::thatArray($photos)->onProperty('_data')->containsExactly('vvv', 'ppp');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldExtractPrivatePropertyRecursively()
+    {
+        $photos = array(new PhotoFrame(new Photo('vacation', 'vvv')));
+
+        Assert::thatArray($photos)->onProperty('photo->_data')->containsExactly('vvv');
     }
 
     /**

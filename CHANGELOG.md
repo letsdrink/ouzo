@@ -8,9 +8,11 @@ Enhancements:
 * [Tests] Added ArrayAssert::hasEqualKeysRecursively method.
 * [Utilities] Added Arrays::flattenKeysRecursively method.
 * [Utilities] Added Files::getFilesRecursivelyWithSpecifiedExtension method.
-* [Core] Added possibility to callback after init.
-* [Localization] Added I18n::labels method to get all labels or sepcified label.
+* [Core] Added after init callback.
+* [Localization] Added I18n::labels method to get all labels or specified label.
 * [Tests] Changed CatchException asserts to fluent methods.
+* [Utilities] Objects::getValue can access private methods.
+* [Tests] ArrayAssert::onProperty can access private methods.
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined.

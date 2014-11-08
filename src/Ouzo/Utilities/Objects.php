@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo\Utilities;
 
+use ReflectionObject;
+
 class Objects
 {
     public static function toString($var)
@@ -64,11 +66,11 @@ class Objects
         }
     }
 
-    public static function getValueRecursively($object, $names, $default = null)
+    public static function getValueRecursively($object, $names, $default = null, $accessPrivate = false)
     {
         $fields = array_filter(explode('->', $names));
         foreach ($fields as $field) {
-            $object = self::getValueOrCallMethod($object, $field, null);
+            $object = self::getValueOrCallMethod($object, $field, null, $accessPrivate);
             if ($object === null) {
                 return $default;
             }
@@ -76,19 +78,27 @@ class Objects
         return $object;
     }
 
-    public static function getValueOrCallMethod($object, $field, $default)
+    public static function getValueOrCallMethod($object, $field, $default, $accessPrivate = false)
     {
-        $value = self::getValue($object, $field, null);
+        $value = self::getValue($object, $field, null, $accessPrivate);
         if ($value !== null) {
             return $value;
         }
         return self::callMethod($object, $field, $default);
     }
 
-    public static function getValue($object, $field, $default = null)
+    public static function getValue($object, $field, $default = null, $accessPrivate = false)
     {
         if (isset($object->$field)) {
             return $object->$field;
+        }
+        if ($accessPrivate) {
+            $class = new ReflectionObject($object);
+            if ($class->hasProperty($field)) {
+                $property = $class->getProperty($field);
+                $property->setAccessible(true);
+                return $property->getValue($object);
+            }
         }
         return $default;
     }

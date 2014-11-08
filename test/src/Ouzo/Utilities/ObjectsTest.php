@@ -19,6 +19,7 @@ class ClassImplementingToString
 
 class ClassWithProperty {
     public $property;
+    private $privateProperty = 'private value';
 }
 
 class ObjectsTest extends PHPUnit_Framework_TestCase
@@ -68,6 +69,36 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('default', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnValueForPrivatePropertyWhenFlagIsOn()
+    {
+        //given
+        $object = new ClassWithProperty();
+
+        //when
+        $result = Objects::getValueRecursively($object, 'privateProperty', null, true);
+
+        //then
+        $this->assertEquals('private value', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullForPrivatePropertyWhenFlagIsOff()
+    {
+        //given
+        $object = new ClassWithProperty();
+
+        //when
+        $result = Objects::getValueRecursively($object, 'privateProperty');
+
+        //then
+        $this->assertNull($result);
     }
 
     /**

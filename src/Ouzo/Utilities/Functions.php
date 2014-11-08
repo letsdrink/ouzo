@@ -12,30 +12,30 @@ class Functions
         };
     }
 
-    public static function extractField($name)
+    public static function extractField($name, $accessPrivate = false)
     {
-        return function ($object) use ($name) {
-            return $object->$name;
+        return function ($object) use ($name, $accessPrivate) {
+            return Objects::getValue($object, $name, null, $accessPrivate);
         };
     }
 
-    public static function extractFieldRecursively($names)
+    public static function extractFieldRecursively($names, $accessPrivate = false)
     {
-        return function ($object) use ($names) {
-            return Objects::getValueRecursively($object, $names);
+        return function ($object) use ($names, $accessPrivate) {
+            return Objects::getValueRecursively($object, $names, $accessPrivate);
         };
     }
 
-    public static function extractExpression($selector)
+    public static function extractExpression($selector, $accessPrivate = false)
     {
         if (is_callable($selector)) {
             return $selector;
         } else if (!is_string($selector)) {
             throw new Exception('Invalid selector: ' . $selector);
         } else if (preg_match('/\(\)|->/', $selector)) {
-            return Functions::extractFieldRecursively($selector);
+            return Functions::extractFieldRecursively($selector, $accessPrivate);
         } else {
-            return Functions::extractField($selector);
+            return Functions::extractField($selector, $accessPrivate);
         }
     }
 
