@@ -1,8 +1,6 @@
 <?php
 namespace Ouzo\Tests;
 
-use PHPUnit_Framework_Assert;
-
 /**
  * Fluent string assertions inspired by java fest assertions
  *
@@ -31,79 +29,79 @@ class StringAssert
 
     public function contains($substring)
     {
-        PHPUnit_Framework_Assert::assertContains($substring, $this->_actual);
+        AssertAdapter::assertContains($substring, $this->_actual);
         return $this;
     }
 
     public function doesNotContain($substring)
     {
-        PHPUnit_Framework_Assert::assertNotContains($substring, $this->_actual);
+        AssertAdapter::assertNotContains($substring, $this->_actual);
         return $this;
     }
 
     public function startsWith($prefix)
     {
-        PHPUnit_Framework_Assert::assertStringStartsWith($prefix, $this->_actual);
+        AssertAdapter::assertStringStartsWith($prefix, $this->_actual);
         return $this;
     }
 
     public function endsWith($postfix)
     {
-        PHPUnit_Framework_Assert::assertStringEndsWith($postfix, $this->_actual);
+        AssertAdapter::assertStringEndsWith($postfix, $this->_actual);
         return $this;
     }
 
     public function isEqualToIgnoringCase($string)
     {
-        PHPUnit_Framework_Assert::assertEquals($string, $this->_actual, 'Failed asserting that two strings are equal ignoring case.', 0, 10, FALSE, TRUE);
+        AssertAdapter::assertEqualsIgnoringCase($string, $this->_actual, 'Failed asserting that two strings are equal ignoring case.');
         return $this;
     }
 
     public function isEqualTo($string)
     {
-        PHPUnit_Framework_Assert::assertEquals($string, $this->_actual);
+        AssertAdapter::assertEquals($string, $this->_actual);
         return $this;
     }
 
     public function isNotEqualTo($string)
     {
-        PHPUnit_Framework_Assert::assertNotEquals($string, $this->_actual);
+        AssertAdapter::assertNotEquals($string, $this->_actual);
         return $this;
     }
 
     public function matches($regex)
     {
-        PHPUnit_Framework_Assert::assertRegExp($regex, $this->_actual);
+        AssertAdapter::assertRegExp($regex, $this->_actual);
         return $this;
     }
 
     public function hasSize($length)
     {
-        PHPUnit_Framework_Assert::assertEquals($length, mb_strlen($this->_actual));
+        AssertAdapter::assertEquals($length, mb_strlen($this->_actual));
         return $this;
     }
 
     public function isNull()
     {
-        PHPUnit_Framework_Assert::assertNull($this->_actual);
+        AssertAdapter::assertNull($this->_actual);
         return $this;
     }
 
     public function isNotNull()
     {
-        PHPUnit_Framework_Assert::assertNotNull($this->_actual);
+        AssertAdapter::assertNotNull($this->_actual);
         return $this;
     }
 
     public function isEmpty()
     {
-        PHPUnit_Framework_Assert::assertEmpty($this->_actual);
+        AssertAdapter::assertEmpty($this->_actual);
         return $this;
     }
 
     public function isNotEmpty()
     {
-        PHPUnit_Framework_Assert::assertNotEmpty($this->_actual);
+        AssertAdapter::assertNotEmpty($this->_actual);
         return $this;
     }
 }
