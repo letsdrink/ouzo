@@ -50,16 +50,19 @@ class CatchExceptionAssert
     public function isInstanceOf($exception)
     {
         PHPUnit_Framework_Assert::assertInstanceOf($exception, $this->exception);
+        return $this;
     }
 
     public function isEqualTo($exception)
     {
         PHPUnit_Framework_Assert::assertEquals($exception, $this->exception);
+        return $this;
     }
 
     public function notCaught()
     {
         PHPUnit_Framework_Assert::assertNull($this->exception);
+        return $this;
     }
 
     public function hasMessage($message)
@@ -71,5 +74,6 @@ class CatchExceptionAssert
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException('Message not contains in exceptions');
         }
+        return $this;
     }
 }

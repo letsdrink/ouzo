@@ -1,5 +1,6 @@
 <?php
 use Model\Test\Category;
+use Model\Test\ModelWithoutPrimaryKey;
 use Model\Test\Order;
 use Model\Test\OrderProduct;
 use Model\Test\Product;
@@ -260,13 +261,12 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals($loadedProduct1, $loadedProduct2);
-
     }
 
     /**
      * @test
      */
-    public function shouldReturnNull()
+    public function findByIdOrNullShouldReturnNullWhenIdNotFound()
     {
         //given
         Product::create(array('name' => 'name'));
@@ -663,5 +663,19 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertTrue(0 === $product->id);
+    }
+
+    /**
+     * @test
+     */
+    public function findByIdShould()
+    {
+        //when
+        CatchException::when(new ModelWithoutPrimaryKey())->findById(1);
+
+        //then
+        CatchException::assertThat()
+            ->isInstanceOf('\Ouzo\DbException')
+            ->hasMessage('Primary key is not defined for table products');
     }
 }

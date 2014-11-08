@@ -248,6 +248,9 @@ class Model extends Validatable
 
     private function _findById($value)
     {
+        if (!$this->_primaryKeyName) {
+            throw new DbException('Primary key is not defined for table ' . $this->_tableName);
+        }
         $result = $this->_findByIdOrNull($value);
         if (!$result) {
             throw new DbException($this->_tableName . " with " . $this->_primaryKeyName . "=" . $value . " not found");
