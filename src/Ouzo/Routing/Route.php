@@ -23,7 +23,7 @@ use Ouzo\Utilities\Strings;
  *  Route::getRoutesForController('agents');
  * </code>
  */
-class Route
+class Route implements RouteInterface
 {
     /**
      * @var RouteRule[]
@@ -87,6 +87,9 @@ class Route
 
     private static function _addRoute($method, $uri, $action, $requireAction = true, $options = array(), $isResource = false)
     {
+        $uri = self::_clean($uri);
+        $action = self::_clean($action);
+
         if (self::$validate && self::_existRouteRule($method, $uri)) {
             $methods = is_array($method) ? implode(', ', $method) : $method;
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
@@ -129,4 +132,16 @@ class Route
             true, array(), true
         );
     }
+
+    public static function group($name, $routeFunction)
+    {
+        GroupedRoute::setGroupName($name);
+        $routeFunction();
+    }
+
+    private static function _clean($string)
+    {
+        return preg_replace('/\/+/', '/', $string);
+    }
 }
+

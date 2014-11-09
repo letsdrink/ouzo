@@ -1,4 +1,5 @@
 <?php
+use Ouzo\Routing\GroupedRoute;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
@@ -435,5 +436,26 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('users', $routes[0]->getController());
         $this->assertEquals('delete', $routes[0]->getAction());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddRouteInGroup()
+    {
+        //given
+        Route::group('api', function() {
+            GroupedRoute::post('/users/:id/archive', 'users#archive');
+        });
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertCount(1, $routes);
+        $this->assertEquals('/api/users/:id/archive', $routes[0]->getUri());
+        $this->assertEquals('archive', $routes[0]->getAction());
+        $this->assertEquals('api/users', $routes[0]->getController());
+        $this->assertEquals('POST', $routes[0]->getMethod());
     }
 }
