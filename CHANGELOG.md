@@ -13,6 +13,7 @@ Enhancements:
 * [Tests] Changed CatchException asserts to fluent methods.
 * [Utilities] Objects::getValue can access private methods.
 * [Tests] ArrayAssert::onProperty can access private methods.
+* [Core] Added support for pluralization in translations.
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined.
