@@ -380,7 +380,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         //then
-        $this->assertEquals("UPDATE products set col1 = ?, col2 = ? WHERE col1 = ? AND col2 = ?", $sql);
+        $this->assertEquals("UPDATE products SET col1 = ?, col2 = ? WHERE col1 = ? AND col2 = ?", $sql);
     }
 
     /**
