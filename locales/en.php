@@ -2,7 +2,8 @@
 
 return array(
     'product' => array(
-        'description' => 'Product description'
+        'description' => 'Product description',
+        'quantity' => '%{count} product|%{count} products'
     ),
     'timeAgo' => array(
         'justNow' => 'just now',

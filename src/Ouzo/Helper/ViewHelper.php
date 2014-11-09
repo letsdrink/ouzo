@@ -117,9 +117,9 @@ function pluralise($count, $words)
     return $words[$count == 1 ? 'singular' : 'plural'];
 }
 
-function t($textKey, $params = array())
+function t($textKey, $params = array(), $choice = null)
 {
-    return I18n::t($textKey, $params);
+    return I18n::t($textKey, $params, $choice);
 }
 
 function toString($object)

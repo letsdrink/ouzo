@@ -12,13 +12,16 @@ class I18n
 
     private static $_translator;
 
-    public static function t($key, $params = array())
+    public static function t($key, $params = array(), $choice = null)
     {
         if (!$key) {
             return '';
         }
         if (!self::$_translator) {
             self::$_translator = self::_getTranslator();
+        }
+        if ($choice != null) {
+            return self::$_translator->translateWithChoice($key, $choice, $params);
         }
         return self::$_translator->translate($key, $params);
     }
@@ -37,7 +40,7 @@ class I18n
 
     private static function _loadLabels()
     {
-        $language = Config::getValue('language') ?: I18n::DEFAULT_LANGUAGE;
+        $language = self::getLanguage();
         $path = Path::join(ROOT_PATH, 'locales', $language . '.php');
         if (!Files::exists($path)) {
             throw new Exception('Cannot find declared language file: ' . $language);
@@ -49,6 +52,11 @@ class I18n
     private static function _getTranslator()
     {
         $_labels = self::_loadLabels();
-        return new Translator($_labels);
+        return new Translator(self::getLanguage(), $_labels);
+    }
+
+    private static function getLanguage()
+    {
+        return Config::getValue('language') ?: I18n::DEFAULT_LANGUAGE;
     }
 }
