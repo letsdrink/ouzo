@@ -15,7 +15,9 @@ abstract class Dialect
     public function select()
     {
         if ($this->_query->type == QueryType::$SELECT) {
-            return 'SELECT ' . (empty($this->_query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
+            return 'SELECT ' .
+                ($this->_query->distinct ? 'DISTINCT ' : '') .
+                (empty($this->_query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
         }
         if ($this->_query->type == QueryType::$COUNT) {
             return 'SELECT count(*)';
@@ -26,7 +28,7 @@ abstract class Dialect
     public function update()
     {
         $attributes = DialectUtil::buildAttributesPartForUpdate($this->_query->updateAttributes);
-        return "UPDATE {$this->_query->table} set $attributes";
+        return "UPDATE {$this->_query->table} SET $attributes";
     }
 
     public function insert()
@@ -69,7 +71,7 @@ abstract class Dialect
     {
         $groupBy = $this->_query->groupBy;
         if ($groupBy) {
-            return ' GROUP BY ' .  (is_array($groupBy) ? implode(', ', $groupBy) : $groupBy);
+            return ' GROUP BY ' . (is_array($groupBy) ? implode(', ', $groupBy) : $groupBy);
         }
         return '';
     }

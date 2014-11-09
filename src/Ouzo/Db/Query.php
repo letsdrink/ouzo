@@ -7,6 +7,7 @@ class Query
 {
     public $table;
     public $aliasTable;
+    public $distinct = false;
     public $selectColumns;
     public $selectType = PDO::FETCH_ASSOC;
     public $order;
@@ -43,6 +44,13 @@ class Query
     {
         $query = new Query();
         $query->selectColumns = $selectColumns;
+        return $query;
+    }
+
+    public static function selectDistinct($selectColumns = null)
+    {
+        $query = self::select($selectColumns);
+        $query->distinct = true;
         return $query;
     }
 

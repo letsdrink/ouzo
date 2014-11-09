@@ -11,9 +11,10 @@ Enhancements:
 * [Core] Added after init callback.
 * [Localization] Added I18n::labels method to get all labels or specified label.
 * [Tests] Changed CatchException asserts to fluent methods.
-* [Utilities] Objects::getValue can access private methods.
-* [Tests] ArrayAssert::onProperty can access private methods.
+* [Utilities] Objects::getValue can access private fields.
+* [Tests] ArrayAssert::onProperty can access private fields.
 * [Core] Added support for pluralization in translations.
+* [ORM] Added Model::selectDistinct method.
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined.

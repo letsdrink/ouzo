@@ -726,6 +726,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldReturnDistinctResults()
+    {
+        //given
+        Product::create(array('name' => 'a', 'description' => 'bob'));
+        Product::create(array('name' => 'b', 'description' => 'john'));
+        Product::create(array('name' => 'c', 'description' => 'bob'));
+
+        //when
+        $result = Product::selectDistinct('description')->fetchAll();
+
+        //then
+        $this->assertCount(2, $result);
+        $this->assertEquals('bob', $result[0][0]);
+        $this->assertEquals('john', $result[1][0]);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnSpecifiedColumnAsArray()
     {
         //given

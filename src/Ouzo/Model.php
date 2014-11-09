@@ -337,6 +337,16 @@ class Model extends Validatable
     }
 
     /**
+     * @param $columns
+     * @param int $type
+     * @return ModelQueryBuilder
+     */
+    public static function selectDistinct($columns, $type = PDO::FETCH_NUM)
+    {
+        return static::queryBuilder()->selectDistinct($columns, $type);
+    }
+
+    /**
      * @param $relation
      * @param null $alias
      * @param string $type

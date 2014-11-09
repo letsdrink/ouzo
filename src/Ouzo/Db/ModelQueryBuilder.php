@@ -325,6 +325,17 @@ class ModelQueryBuilder
         return $this;
     }
 
+    /**
+     * @param $columns
+     * @param int $type
+     * @return ModelQueryBuilder
+     */
+    public function selectDistinct($columns, $type = PDO::FETCH_NUM)
+    {
+        $this->_query->distinct = true;
+        return $this->select($columns, $type);
+    }
+
     public function __clone()
     {
         $this->_query = clone $this->_query;
