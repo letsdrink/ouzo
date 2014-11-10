@@ -15,6 +15,7 @@ Enhancements:
 * [Tests] ArrayAssert::onProperty can access private fields.
 * [Core] Added support for pluralization in translations.
 * [ORM] Added Model::selectDistinct method.
+* [ORM] Added support for model default values.
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined.

@@ -49,7 +49,6 @@ class Model extends Validatable
      * 'attributes' -  array of column => value
      * </code>
      */
-
     public function __construct(array $params)
     {
         $this->_prepareParameters($params);
@@ -58,8 +57,7 @@ class Model extends Validatable
         $primaryKeyName = Arrays::getValue($params, 'primaryKey', 'id');
         $sequenceName = Arrays::getValue($params, 'sequence', "{$tableName}_{$primaryKeyName}_seq");
 
-        $attributes = $params['attributes'];
-        $fields = $params['fields'];
+        list($attributes, $fields) = $this->_extractFieldsAndAttributes($params);
 
         $this->_relations = RelationsCache::getRelations(get_called_class(), $params, $primaryKeyName);
 
@@ -461,7 +459,7 @@ class Model extends Validatable
      * @throws ValidationException
      * @return static
      */
-    public static function create($attributes)
+    public static function create(array $attributes = array())
     {
         $instance = static::newInstance($attributes);
         if (!$instance->isValid()) {
@@ -477,7 +475,7 @@ class Model extends Validatable
      * @param $attributes
      * @return static
      */
-    public static function createWithoutValidation($attributes)
+    public static function createWithoutValidation(array $attributes = array())
     {
         $instance = static::newInstance($attributes);
         $instance->insert();
@@ -518,5 +516,35 @@ class Model extends Validatable
     public function __toString()
     {
         return $this->inspect();
+    }
+
+    private function _extractFieldsAndDefaults($fields)
+    {
+        $newFields = array();
+        $defaults = array();
+        $fieldKeys = array_keys($fields);
+        foreach ($fieldKeys as $fieldKey) {
+            if (is_numeric($fieldKey)) {
+                $newFields[] = $fields[$fieldKey];
+            } else {
+                $newFields[] = $fieldKey;
+                $value = $fields[$fieldKey];
+                if (is_callable($value)) {
+                    $value = $value();
+                }
+                $defaults[$fieldKey] = $value;
+            }
+        }
+        return array($newFields, $defaults);
+    }
+
+    private function _extractFieldsAndAttributes(array $params)
+    {
+        $attributes = $params['attributes'];
+        $fields = $params['fields'];
+
+        list($fields, $defaults) = $this->_extractFieldsAndDefaults($fields);
+        $attributes = array_merge($defaults, $attributes);
+        return array($attributes, $fields);
     }
 }
