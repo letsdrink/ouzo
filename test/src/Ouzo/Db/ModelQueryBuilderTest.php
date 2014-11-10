@@ -10,6 +10,7 @@ use Ouzo\Db\Relation;
 use Ouzo\Db\Stats;
 use Ouzo\DbException;
 use Ouzo\Model;
+use Ouzo\Restrictions;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
@@ -118,6 +119,21 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertCount(1, $loadedProducts);
         $this->assertEquals($product, $loadedProducts[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAcceptRestrictionsAsValueInWhere()
+    {
+        //given
+        $product = Product::create(array('name' => 'tech'));
+
+        //when
+        $loadedProduct = Product::where(array('name' => Restrictions::equalTo('tech')))->fetch();
+
+        //then
+        $this->assertEquals($product, $loadedProduct);
     }
 
     /**
