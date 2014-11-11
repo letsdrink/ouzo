@@ -2,22 +2,11 @@
 
 namespace Ouzo\Restriction;
 
-class EqualToRestriction extends Restriction {
 
-    private $value;
-
-    function __construct($value)
-    {
-        $this->value = $value;
-    }
+class EqualToRestriction extends SingleValueRestriction {
 
     public function toSql($fieldName)
     {
         return $fieldName . ' = ?';
-    }
-
-    public function getValues()
-    {
-        return $this->value;
     }
 }

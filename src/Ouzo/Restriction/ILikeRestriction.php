@@ -2,22 +2,10 @@
 
 namespace Ouzo\Restriction;
 
-class ILikeRestriction extends Restriction {
-
-    private $value;
-
-    function __construct($value)
-    {
-        $this->value = $value;
-    }
+class ILikeRestriction extends SingleValueRestriction {
 
     public function toSql($fieldName)
     {
         return $fieldName . ' ILIKE ?';
-    }
-
-    public function getValues()
-    {
-        return $this->value;
     }
 }
