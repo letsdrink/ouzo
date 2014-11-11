@@ -4,8 +4,13 @@ namespace Ouzo;
 
 
 use Ouzo\Restriction\EqualToRestriction;
+use Ouzo\Restriction\GreaterOrEqualToRestriction;
+use Ouzo\Restriction\GreaterThanRestriction;
 use Ouzo\Restriction\ILikeRestriction;
+use Ouzo\Restriction\LessOrEqualToRestriction;
+use Ouzo\Restriction\LessThanRestriction;
 use Ouzo\Restriction\LikeRestriction;
+use Ouzo\Restriction\NotEqualToRestriction;
 
 class Restrictions
 {
@@ -13,6 +18,11 @@ class Restrictions
     public static function equalTo($value)
     {
         return new EqualToRestriction($value);
+    }
+
+    public static function notEqualTo($value)
+    {
+        return new NotEqualToRestriction($value);
     }
 
     public static function like($value)
@@ -23,5 +33,25 @@ class Restrictions
     public static function iLike($value)
     {
         return new ILikeRestriction($value);
+    }
+
+    public static function greaterThan($value)
+    {
+        return new GreaterThanRestriction($value);
+    }
+
+    public static function lessThan($value)
+    {
+        return new LessThanRestriction($value);
+    }
+
+    public static function greaterOrEqualTo($value)
+    {
+        return new GreaterOrEqualToRestriction($value);
+    }
+
+    public static function lessOrEqualTo($value)
+    {
+        return new LessOrEqualToRestriction($value);
     }
 }
