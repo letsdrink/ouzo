@@ -3,6 +3,7 @@
 namespace Ouzo;
 
 
+use Ouzo\Restriction\BetweenRestriction;
 use Ouzo\Restriction\EqualToRestriction;
 use Ouzo\Restriction\GreaterOrEqualToRestriction;
 use Ouzo\Restriction\GreaterThanRestriction;
@@ -53,5 +54,10 @@ class Restrictions
     public static function lessOrEqualTo($value)
     {
         return new LessOrEqualToRestriction($value);
+    }
+
+    public static function between($value1, $value2)
+    {
+        return new BetweenRestriction($value1, $value2);
     }
 }
