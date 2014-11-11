@@ -124,21 +124,6 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldAcceptRestrictionsAsValueInWhere()
-    {
-        //given
-        $product = Product::create(array('name' => 'tech'));
-
-        //when
-        $loadedProduct = Product::where(array('name' => Restrictions::equalTo('tech')))->fetch();
-
-        //then
-        $this->assertEquals($product, $loadedProduct);
-    }
-
-    /**
-     * @test
-     */
     public function shouldAcceptRestrictionsMixedWithValuesInWhere()
     {
         //given

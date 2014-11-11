@@ -2,7 +2,7 @@
 
 use Ouzo\Restrictions;
 
-class EqualToRestrictionTest extends PHPUnit_Framework_TestCase
+class ILikeRestrictionTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -11,13 +11,13 @@ class EqualToRestrictionTest extends PHPUnit_Framework_TestCase
     public function shouldCreateProperSql()
     {
         //given
-        $restriction = Restrictions::equalTo('value');
+        $restriction = Restrictions::iLike('value');
 
         //when
         $sql = $restriction->toSql('key');
 
         //then
-        $this->assertEquals('key = ?', $sql);
+        $this->assertEquals('key ILIKE ?', $sql);
         $this->assertEquals('value', $restriction->getValues());
     }
 }
