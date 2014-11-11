@@ -31,11 +31,6 @@ class Restrictions
         return new LikeRestriction($value);
     }
 
-    public static function iLike($value)
-    {
-        return new ILikeRestriction($value);
-    }
-
     public static function greaterThan($value)
     {
         return new GreaterThanRestriction($value);

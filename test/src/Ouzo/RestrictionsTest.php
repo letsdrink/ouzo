@@ -4,7 +4,8 @@ use Model\Test\Product;
 use Ouzo\Restrictions;
 use Ouzo\Tests\DbTransactionalTestCase;
 
-class RestrictionsTest extends DbTransactionalTestCase {
+class RestrictionsTest extends DbTransactionalTestCase
+{
 
     /**
      * @test
@@ -25,21 +26,6 @@ class RestrictionsTest extends DbTransactionalTestCase {
      * @test
      */
     public function shouldReturnResultUsingLikeRestriction()
-    {
-        //given
-        $product = Product::create(array('name' => 'tech'));
-
-        //when
-        $loadedProduct = Product::where(array('name' => Restrictions::like('te%')))->fetch();
-
-        //then
-        $this->assertEquals($product, $loadedProduct);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnResultUsingILikeRestriction()
     {
         //given
         $product = Product::create(array('name' => 'tech'));
@@ -80,19 +66,4 @@ class RestrictionsTest extends DbTransactionalTestCase {
         //then
         $this->assertNull($loadedProduct);
     }
-
-    /**
-     * @test
-     */
-    public function shouldReturnNothingUsingILikeRestrictionWhenRestrictionDoesNotMatch()
-    {
-        //given
-        Product::create(array('name' => 'tech'));
-
-        //when
-        $loadedProduct = Product::where(array('name' => Restrictions::ilike('te')))->fetch();
-
-        //then
-        $this->assertNull($loadedProduct);
-    }
-} 
+}
