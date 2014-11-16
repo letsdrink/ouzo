@@ -12,7 +12,7 @@ class I18n
 
     private static $_translator;
 
-    public static function t($key, $params = array(), $choice = null)
+    public static function t($key, $params = array(), PluralizeOption $pluralize = null)
     {
         if (!$key) {
             return '';
@@ -20,8 +20,8 @@ class I18n
         if (!self::$_translator) {
             self::$_translator = self::_getTranslator();
         }
-        if ($choice != null) {
-            return self::$_translator->translateWithChoice($key, $choice, $params);
+        if ($pluralize != null) {
+            return self::$_translator->translateWithChoice($key, $pluralize->getValue(), $params);
         }
         return self::$_translator->translate($key, $params);
     }
@@ -58,5 +58,10 @@ class I18n
     private static function getLanguage()
     {
         return Config::getValue('language') ?: I18n::DEFAULT_LANGUAGE;
+    }
+
+    public static function pluralizeBasedOn($value)
+    {
+        return new PluralizeOption($value);
     }
 }

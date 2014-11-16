@@ -2,6 +2,7 @@
 use Ouzo\Config;
 use Ouzo\ControllerUrl;
 use Ouzo\I18n;
+use Ouzo\PluralizeOption;
 use Ouzo\Session;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Date;
@@ -117,9 +118,9 @@ function pluralise($count, $words)
     return $words[$count == 1 ? 'singular' : 'plural'];
 }
 
-function t($textKey, $params = array(), $choice = null)
+function t($textKey, $params = array(), PluralizeOption $pluralize = null)
 {
-    return I18n::t($textKey, $params, $choice);
+    return I18n::t($textKey, $params, $pluralize);
 }
 
 function toString($object)
