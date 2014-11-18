@@ -821,4 +821,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         );
         $this->assertEquals($expected, $flatten);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCountElements()
+    {
+        //given
+        $array = array(1, 2, 3);
+
+        //when
+        $count = Arrays::count($array, function ($element) {
+            return $element < 3;
+        });
+
+        //then
+        $this->assertEquals(2, $count);
+    }
 }

@@ -770,4 +770,34 @@ class Arrays
             }
         }
     }
+
+    /**
+     * Returns the number of elements for which the predicate returns true.
+     *
+     * Example:
+     * <code>
+     * $array = array(1, 2, 3);
+     * $count = Arrays::count($array, function ($element) {
+     *      return $element < 3;
+     * });
+     * </code>
+     * Result:
+     * <code>
+     * 2
+     * </code>
+     *
+     * @param array $elements
+     * @param callable $predicate
+     * @return int
+     */
+    public static function count(array $elements, $predicate)
+    {
+        $count = 0;
+        foreach ($elements as $element) {
+            if (Functions::call($predicate, $element)) {
+                $count++;
+            }
+        }
+        return $count;
+    }
 }
