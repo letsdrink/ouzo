@@ -12,14 +12,17 @@ class MockTestClass
 {
     function method()
     {
+        return null;
     }
 
     function method2()
     {
+        return null;
     }
 
     function method3(array &$a)
     {
+        return null;
     }
 }
 
@@ -114,7 +117,8 @@ class MockTest extends \PHPUnit_Framework_TestCase
 
         //when
         try {
-            Mock::verify($mock)->neverReceived()->method("arg");
+            Mock::verify($mock)->neverReceived()->method(1);
+            $this->fail('expected failure');
         } //then
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1)', $e->getComparisonFailure()->getActual());
@@ -134,6 +138,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
         //when
         try {
             Mock::verify($mock)->neverReceived()->method(Mock::anyArgList());
+            $this->fail();
         } //then
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1)', $e->getComparisonFailure()->getActual());
@@ -154,6 +159,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
         //when
         try {
             Mock::verify($mock)->method(1, 2);
+            $this->fail();
         } //then
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1), method2(1)', $e->getComparisonFailure()->getActual());
@@ -173,6 +179,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
         //when
         try {
             Mock::verify($mock)->method(1, 2);
+            $this->fail();
         } //then
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1, null, [1, 2], Ouzo\Tests\MockTestClass {})', $e->getComparisonFailure()->getActual());
@@ -447,6 +454,57 @@ class MockTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals("result", $result);
         Mock::verify($mock)->method3($a);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubWithArgumentMatcher()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+
+        Mock::when($mock)->method(Mock::argThat()->startsWith('matching'))->thenReturn('result');
+
+        //when then
+        $this->assertEquals("result",  $mock->method("matching arg"));
+        $this->assertNull($mock->method("something else"));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldVerifyWithArgumentMatcher()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+
+        //when
+        $mock->method("matching arg");
+
+        //then
+        Mock::verify($mock)->method(Mock::argThat()->startsWith('matching'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFailVerificationWithArgumentMatcher()
+    {
+        //given
+        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+
+        $mock->method("something else");
+
+        //when
+        try {
+            Mock::verify($mock)->method(Mock::argThat()->extractField('name')->startsWith('matching'));
+            $this->fail('Expected failure');
+        } //then
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals('method("something else")', $e->getComparisonFailure()->getActual());
+            $this->assertEquals('method(argThat()->extractField("name")->startsWith("matching"))', $e->getComparisonFailure()->getExpected());
+        }
     }
 
 }

@@ -38,7 +38,7 @@ class MethodCallMatcher
 
     public function argMatches($expected, $actual)
     {
-        return $expected instanceof AnyArgument || $expected == $actual;
+        return ($expected instanceof ArgumentMatcher && $expected->matches($actual)) || $expected == $actual;
     }
 
     public function __invoke(MethodCall $methodCall)
