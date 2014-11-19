@@ -162,6 +162,36 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldSkipElements()
+    {
+        //given
+        $array = array(1, 2, 3, 4, 5);
+
+        //when
+        $result = FluentArray::from($array)->skip(2)->toArray();
+
+        //then
+        $this->assertEquals(array(3, 4, 5), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLimitElements()
+    {
+        //given
+        $array = array(1, 2, 3, 4, 5);
+
+        //when
+        $result = FluentArray::from($array)->limit(3)->toArray();
+
+        //then
+        $this->assertEquals(array(1, 2, 3), $result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnObjectsUniqueByField()
     {
         //given
