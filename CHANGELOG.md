@@ -16,9 +16,19 @@ Enhancements:
 * [Core] Added support for pluralization in translations.
 * [ORM] Added Model::selectDistinct method.
 * [ORM] Added support for model default values.
+* [Core] Displayed routes in table (issue #93).
+* [ORM] Added TransactionalProxy.
+* [Core] Migrate to PHPUnit 4.3.3 and adding assert adapter (issue #119).
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined.
+* [Utilities] Fixed generating model fields in correct order (issue #102).
+* [Utilities] Fixed generating empty primary key when not in table (issue #98).
+* [Utilities] Fixed Functions::notBlank (issue #106).
+* [Core] Fixed throwing orginal message when throw UserException (issue #109).
+* [Utilities] Fixed Arrays::flattenKeysRecursively (issue #110).
+* [Core] Fixed parsing of Json inputs (#114).
+* [ORM] Fixed zero as primary key.
 
 Release 1.2
 -----------
