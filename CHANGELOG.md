@@ -19,6 +19,18 @@ Enhancements:
 * [Core] Displayed routes in table (issue #93).
 * [ORM] Added TransactionalProxy.
 * [Core] Migrate to PHPUnit 4.3.3 and adding assert adapter (issue #119).
+* [Utilities] Added Strings::sprintAssoc method.
+* [Extensions] Added HTTP Auth Basic extension.
+* [Utilities] Added Strings::contains method.
+* [Utilities] Added Functions::constant, Functions::notEquals, Functions::equals and Functions::throwException methods.
+* [Mock] Added thenAnswer.
+* [Utilities] Added FluentFunctions class.
+* [Core] Added RequestHeaders::all method.
+* [Core] Added possibility to configure multiple loggers configurations.
+* [ORM] Optimisation - do not select columns of models that will not be stored in fields.
+* [Utilities] Added Validate class (issue #117).
+* [Tests] Implement streamMediaFile in MockDownloadHandler.
+* [Utilities] Added Files::copyContent method.
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined.
@@ -29,6 +41,12 @@ Bug fixes:
 * [Utilities] Fixed Arrays::flattenKeysRecursively (issue #110).
 * [Core] Fixed parsing of Json inputs (#114).
 * [ORM] Fixed zero as primary key.
+* [Utilities] Fixed extractor for 'empty' values like 0 or empty array.
+* [Core] Fixed HTTP request parameters priority.
+* [Core] Fixed parse PUT HTTP request.
+* [Core] Fixed uri ContentType letter case insensitive.
+* [ORM] Fixed not fetching relation joined through hasMany (which resulted in an error).
+* [Core] Fixed generating form name in ModelFormBuilder.
 
 Release 1.2
 -----------
