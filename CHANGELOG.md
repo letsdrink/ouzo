@@ -12,9 +12,9 @@ Enhancements:
 * [Localization] Added I18n::labels method to get all labels or specified label.
 * [Tests] Changed CatchException asserts to fluent methods.
 * [Utilities] Objects::getValue can access private fields.
-* [Tests] ArrayAssert::onProperty can access private fields.
-* [Core] Added support for pluralization in translations.
-* [ORM] Added Model::selectDistinct method.
+* [Tests] ArrayAssert::onProperty can access private fields (issue #113).
+* [Core] Added support for pluralization in translations (issue #111).
+* [ORM] Added Model::selectDistinct method (issue #91).
 * [ORM] Added support for model default values.
 * [Core] Displayed routes in table (issue #93).
 * [ORM] Added TransactionalProxy.
@@ -31,9 +31,10 @@ Enhancements:
 * [Utilities] Added Validate class (issue #117).
 * [Tests] Implement streamMediaFile in MockDownloadHandler.
 * [Utilities] Added Files::copyContent method.
+* [Core] Added possibility to group routes (#80).
 
 Bug fixes:
-* [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined.
+* [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined (issue #121).
 * [Utilities] Fixed generating model fields in correct order (issue #102).
 * [Utilities] Fixed generating empty primary key when not in table (issue #98).
 * [Utilities] Fixed Functions::notBlank (issue #106).
@@ -47,6 +48,7 @@ Bug fixes:
 * [Core] Fixed uri ContentType letter case insensitive.
 * [ORM] Fixed not fetching relation joined through hasMany (which resulted in an error).
 * [Core] Fixed generating form name in ModelFormBuilder.
+* [Mock] Fixed DynamicProxy uses uniqid (issue #127).
 
 Release 1.2
 -----------
