@@ -24,7 +24,7 @@ class StrSubstitutor
     {
         $matched = $match[0];
         $name = $match[1];
-        $default = $this->_default ?: $matched;
+        $default = is_null($this->_default) ? $matched : $this->_default;
         return isset($this->_values[$name]) ? $this->_values[$name] : $default;
     }
 }
