@@ -36,6 +36,21 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReplaceMissingPlaceholdersWithDefault()
+    {
+        //given
+        $strSubstitutor = new StrSubstitutor(array(), 'Unknown');
+
+        //when
+        $substituted = $strSubstitutor->replace('Hi {{NAME}}');
+
+        //then
+        $this->assertEquals('Hi Unknown', $substituted);
+    }
+
+    /**
+     * @test
+     */
     public function shouldChangeToEmptyString()
     {
         //given
