@@ -25,7 +25,7 @@
         "classmap": ["test/"]
     },
     "require": {
-        "d11wtq/boris": "dev-master",
+        "d11wtq/boris": "1.0.8",
         "symfony/console": "2.5.0"
     },
     "require-dev": {
