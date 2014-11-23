@@ -4,10 +4,12 @@ namespace Ouzo\Utilities;
 class StrSubstitutor
 {
     private $_values;
+    private $_default;
 
-    public function __construct($values = array())
+    public function __construct($values = array(), $default = null)
     {
         $this->_values = $values;
+        $this->_default = $default;
     }
 
     public function replace($string)
@@ -22,6 +24,7 @@ class StrSubstitutor
     {
         $matched = $match[0];
         $name = $match[1];
-        return isset($this->_values[$name]) ? $this->_values[$name] : $matched;
+        $default = is_null($this->_default) ? $matched : $this->_default;
+        return isset($this->_values[$name]) ? $this->_values[$name] : $default;
     }
 }

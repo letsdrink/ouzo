@@ -41,4 +41,10 @@ class Mock
     {
         return new AnyArgumentList();
     }
+
+    public static function argThat()
+    {
+        return new FluentArgumentMatcher();
+    }
+
 }

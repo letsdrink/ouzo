@@ -27,15 +27,16 @@ class UriHelperGeneratorTest extends PHPUnit_Framework_TestCase
         //then
         $expected = <<<FUNCT
 <?php
-function checkParameter(\$parameter) {
-\tif (!isset(\$parameter)) {
-\t\tthrow new \InvalidArgumentException("Missing parameters");
-\t}
+function checkParameter(\$parameter)
+{
+    if (!isset(\$parameter)) {
+        throw new \InvalidArgumentException("Missing parameters");
+    }
 }
 
 function showItemUsersPath()
 {
-\treturn url("/users/show_item");
+    return url("/users/show_item");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -55,15 +56,16 @@ FUNCT;
         //then
         $expected = <<<FUNCT
 <?php
-function checkParameter(\$parameter) {
-\tif (!isset(\$parameter)) {
-\t\tthrow new \InvalidArgumentException("Missing parameters");
-\t}
+function checkParameter(\$parameter)
+{
+    if (!isset(\$parameter)) {
+        throw new \InvalidArgumentException("Missing parameters");
+    }
 }
 
 function saveUsersPath()
 {
-\treturn url("/users/save");
+    return url("/users/save");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -83,15 +85,16 @@ FUNCT;
         //then
         $expected = <<<FUNCT
 <?php
-function checkParameter(\$parameter) {
-\tif (!isset(\$parameter)) {
-\t\tthrow new \InvalidArgumentException("Missing parameters");
-\t}
+function checkParameter(\$parameter)
+{
+    if (!isset(\$parameter)) {
+        throw new \InvalidArgumentException("Missing parameters");
+    }
 }
 
 function getDuplicatedUsersPath()
 {
-\treturn url("/users/get_duplicated");
+    return url("/users/get_duplicated");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -111,17 +114,18 @@ FUNCT;
         //then
         $expected = <<<FUNCT
 <?php
-function checkParameter(\$parameter) {
-\tif (!isset(\$parameter)) {
-\t\tthrow new \InvalidArgumentException("Missing parameters");
-\t}
+function checkParameter(\$parameter)
+{
+    if (!isset(\$parameter)) {
+        throw new \InvalidArgumentException("Missing parameters");
+    }
 }
 
 function showUsersPath(\$id, \$call_id)
 {
-\tcheckParameter(\$id);
-\tcheckParameter(\$call_id);
-\treturn url("/users/show/id/\$id/call_id/\$call_id");
+    checkParameter(\$id);
+    checkParameter(\$call_id);
+    return url("/users/show/id/\$id/call_id/\$call_id");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -141,15 +145,16 @@ FUNCT;
         //then
         $expected = <<<FUNCT
 <?php
-function checkParameter(\$parameter) {
-\tif (!isset(\$parameter)) {
-\t\tthrow new \InvalidArgumentException("Missing parameters");
-\t}
+function checkParameter(\$parameter)
+{
+    if (!isset(\$parameter)) {
+        throw new \InvalidArgumentException("Missing parameters");
+    }
 }
 
 function userItemPath()
 {
-\treturn url("/users/show_item");
+    return url("/users/show_item");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -169,32 +174,33 @@ FUNCT;
         //then
         $expected = <<<FUNCT
 <?php
-function checkParameter(\$parameter) {
-\tif (!isset(\$parameter)) {
-\t\tthrow new \InvalidArgumentException("Missing parameters");
-\t}
+function checkParameter(\$parameter)
+{
+    if (!isset(\$parameter)) {
+        throw new \InvalidArgumentException("Missing parameters");
+    }
 }
 
 function usersPath()
 {
-\treturn url("/users");
+    return url("/users");
 }
 
 function freshUserPath()
 {
-\treturn url("/users/fresh");
+    return url("/users/fresh");
 }
 
 function editUserPath(\$id)
 {
-\tcheckParameter(\$id);
-\treturn url("/users/\$id/edit");
+    checkParameter(\$id);
+    return url("/users/\$id/edit");
 }
 
 function userPath(\$id)
 {
-\tcheckParameter(\$id);
-\treturn url("/users/\$id");
+    checkParameter(\$id);
+    return url("/users/\$id");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -234,16 +240,17 @@ FUNCT;
         //then
         $expected = <<<FUNCT
 <?php
-function checkParameter(\$parameter) {
-\tif (!isset(\$parameter)) {
-\t\tthrow new \InvalidArgumentException("Missing parameters");
-\t}
+function checkParameter(\$parameter)
+{
+    if (!isset(\$parameter)) {
+        throw new \InvalidArgumentException("Missing parameters");
+    }
 }
 
 function ordersUsersApiPath(\$id)
 {
-	checkParameter(\$id);
-	return url("/api/users/\$id/orders");
+    checkParameter(\$id);
+    return url("/api/users/\$id/orders");
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
