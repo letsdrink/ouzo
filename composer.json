@@ -21,7 +21,9 @@
         "psr-0": {
             "Ouzo": "src/",
             "": "bin/"
-        },
+        }
+    },
+    "autoload-dev": {
         "classmap": ["test/"]
     },
     "require": {
