@@ -8,12 +8,12 @@ class AutoloadPaths {
     public static function getControllerPath()
     {
         $controllerPath = Config::getValue('autoload', 'namespace', 'controller');
-        return $controllerPath ? $controllerPath : "\\Controller\\";
+        return $controllerPath ? $controllerPath : "\\Application\\Controller\\";
     }
 
     public static function getModelPath()
     {
         $controllerPath = Config::getValue('autoload', 'namespace', 'model');
-        return $controllerPath ? $controllerPath : "\\Model\\";
+        return $controllerPath ? $controllerPath : "\\Application\\Model\\";
     }
 } 

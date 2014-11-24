@@ -2,8 +2,8 @@
 
 namespace Ouzo\Tests;
 
-use Model\Test\Category;
-use Model\Test\Product;
+use Application\Model\Test\Category;
+use Application\Model\Test\Product;
 
 class ModelAssertTest extends DbTransactionalTestCase
 {

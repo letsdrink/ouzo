@@ -1,5 +1,5 @@
 <?php
-use Model\Test\Product;
+use Application\Model\Test\Product;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
 
@@ -259,7 +259,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $model = $form->getObject();
 
         //then
-        $this->assertInstanceOf('\Model\Test\Product', $model);
+        $this->assertInstanceOf('\Application\Model\Test\Product', $model);
     }
 
     public function requestUnsupportedMethods()

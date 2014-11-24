@@ -1,6 +1,6 @@
 <?php
-use Model\Test\Category;
-use Model\Test\Product;
+use Application\Model\Test\Category;
+use Application\Model\Test\Product;
 use Ouzo\Model;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;

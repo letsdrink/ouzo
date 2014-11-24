@@ -1,9 +1,9 @@
 <?php
-use Model\Test\Category;
-use Model\Test\Manufacturer;
-use Model\Test\Order;
-use Model\Test\OrderProduct;
-use Model\Test\Product;
+use Application\Model\Test\Category;
+use Application\Model\Test\Manufacturer;
+use Application\Model\Test\Order;
+use Application\Model\Test\OrderProduct;
+use Application\Model\Test\Product;
 use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;

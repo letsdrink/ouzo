@@ -1,5 +1,5 @@
 <?php
-use Model\Test\Product;
+use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
