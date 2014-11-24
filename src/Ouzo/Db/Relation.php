@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo\Db;
 
+use Ouzo\AutoloadPaths;
 use Ouzo\DbException;
 use Ouzo\MetaModelCache;
 use Ouzo\Model;
@@ -63,7 +64,7 @@ class Relation
      */
     public function getRelationModelObject()
     {
-        return MetaModelCache::getMetaInstance('\Model\\' . $this->class);
+        return MetaModelCache::getMetaInstance(AutoloadPaths::getModelPath() . $this->class);
     }
 
     public function isCollection()

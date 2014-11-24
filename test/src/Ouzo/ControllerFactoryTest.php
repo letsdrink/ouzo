@@ -24,6 +24,19 @@ class SimpleTestController extends Controller
 
 class ControllerFactoryTest extends PHPUnit_Framework_TestCase
 {
+
+    public function setUp()
+    {
+        parent::setUp();
+        Config::overrideProperty('autoload', 'namespace', 'controller')->with('\\Ouzo\\');
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        Config::clearProperty('autoload', 'namespace', 'controller');
+    }
+
     /**
      * @test
      */
@@ -31,7 +44,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     {
         //given
         $routeRule = new RouteRule('GET', '/simple_test/action1', 'simple_test#action1', false);
-        $factory = new ControllerFactory('\\Ouzo\\');
+        $factory = new ControllerFactory();
 
         $config = Config::getValue('global');
         $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/simple_test/action1";
@@ -50,7 +63,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     {
         //given
         $routeRule = new RouteRule('GET', '/simple_test/action', 'not_exists#action', false);
-        $factory = new ControllerFactory('\\Ouzo\\');
+        $factory = new ControllerFactory();
 
         //when
         CatchException::when($factory)->createController($routeRule);
@@ -66,7 +79,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     {
         //given
         $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', 'api/multiple_ns#test_action', true);
-        $factory = new ControllerFactory('\\Ouzo\\');
+        $factory = new ControllerFactory();
 
         //when
         $currentController = $factory->createController($routeRule);

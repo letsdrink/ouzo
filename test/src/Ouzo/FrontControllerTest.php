@@ -21,10 +21,8 @@ use Ouzo\Routing\Route;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
-use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\DynamicProxy;
 
 class SampleControllerException extends Exception
 {
@@ -109,11 +107,23 @@ class RestfulController extends Controller
 
 class FrontControllerTest extends ControllerTestCase
 {
+
+    function __construct()
+    {
+        Config::overrideProperty('autoload', 'namespace', 'controller')->with('\\Ouzo\\');
+        parent::__construct();
+    }
+
     public function setUp()
     {
         parent::setUp();
-        $this->_frontController->controllerFactory = new ControllerFactory('\\Ouzo\\');
         Route::$routes = array();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        Config::clearProperty('autoload', 'namespace', 'controller');
     }
 
     /**

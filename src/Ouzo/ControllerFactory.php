@@ -7,9 +7,9 @@ use Ouzo\Utilities\ClassName;
 
 class ControllerFactory
 {
-    public function __construct($controllerPath = "\\Controller\\")
+    public function __construct()
     {
-        $this->controllerPath = $controllerPath;
+        $this->controllerPath = AutoloadPaths::getControllerPath();
     }
 
     public function createController(RouteRule $routeRule)
