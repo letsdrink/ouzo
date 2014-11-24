@@ -128,4 +128,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(Functions::call(Functions::notEquals('value'), 'other'));
         $this->assertFalse(Functions::call(Functions::notEquals('value'), 'value'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfParameterIsInstanceOfGivenType()
+    {
+        $this->assertTrue(Functions::call(Functions::isInstanceOf('stdClass'), new \stdClass()));
+        $this->assertFalse(Functions::call(Functions::isInstanceOf('stdClass'), 'value'));
+    }
 }

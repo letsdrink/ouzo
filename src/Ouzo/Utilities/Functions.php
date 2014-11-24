@@ -48,14 +48,14 @@ class Functions
 
     public static function constant($value)
     {
-        return function () use($value) {
+        return function () use ($value) {
             return $value;
         };
     }
 
     public static function throwException(Exception $exception)
     {
-        return function () use($exception) {
+        return function () use ($exception) {
             throw $exception;
         };
     }
@@ -78,6 +78,13 @@ class Functions
     {
         return function ($object) {
             return is_array($object);
+        };
+    }
+
+    public static function isInstanceOf($type)
+    {
+        return function ($object) use ($type) {
+            return $object instanceof $type;
         };
     }
 
