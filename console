@@ -1,5 +1,8 @@
 #!/usr/bin/env php
 <?php
+use Command\ConsoleCommand;
+use Command\ModelGeneratorCommand;
+use Command\RoutesCommand;
 use Ouzo\Utilities\Files;
 use Symfony\Component\Console\Application;
 

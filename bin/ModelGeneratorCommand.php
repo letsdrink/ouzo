@@ -1,4 +1,6 @@
 <?php
+namespace Command;
+
 use Ouzo\Config;
 use Ouzo\Tools\Model\Template\ClassPathResolver;
 use Ouzo\Tools\Model\Template\Generator;

@@ -1,4 +1,6 @@
 <?php
+namespace Command;
+
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\UriHelperGenerator;
