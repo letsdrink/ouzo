@@ -1,9 +1,9 @@
 <?php
-use Model\Test\Category;
-use Model\Test\ModelWithoutPrimaryKey;
-use Model\Test\Order;
-use Model\Test\OrderProduct;
-use Model\Test\Product;
+use Application\Model\Test\Category;
+use Application\Model\Test\ModelWithoutPrimaryKey;
+use Application\Model\Test\Order;
+use Application\Model\Test\OrderProduct;
+use Application\Model\Test\Product;
 use Ouzo\Db;
 use Ouzo\DbException;
 use Ouzo\Model;
@@ -400,7 +400,7 @@ class ModelTest extends DbTransactionalTestCase
         $string = $product->inspect();
 
         //then
-        $this->assertStringStartsWith('Model\Test\Product', $string);
+        $this->assertStringStartsWith('Application\Model\Test\Product', $string);
     }
 
     /**

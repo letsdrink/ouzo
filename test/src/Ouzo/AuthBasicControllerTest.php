@@ -1,7 +1,7 @@
 <?php
 
+use Ouzo\Config;
 use Ouzo\Controller;
-use Ouzo\ControllerFactory;
 use Ouzo\Extension\AuthBasicExtension;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
@@ -26,10 +26,16 @@ class AuthSampleController extends Controller
 
 class AuthBasicControllerTest extends ControllerTestCase
 {
+
+    function __construct()
+    {
+        Config::overrideProperty('autoload', 'namespace', 'controller')->with('\\');
+        parent::__construct();
+    }
+
     public function setUp()
     {
         parent::setUp();
-        $this->_frontController->controllerFactory = new ControllerFactory('\\');
         Route::$validate = false;
         Route::allowAll('/auth_sample', 'auth_sample');
     }
@@ -38,6 +44,7 @@ class AuthBasicControllerTest extends ControllerTestCase
     {
         Route::$validate = true;
         parent::tearDown();
+        Config::clearProperty('autoload', 'namespace', 'controller');
     }
 
     /**

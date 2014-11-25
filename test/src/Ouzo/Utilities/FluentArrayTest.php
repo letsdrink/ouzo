@@ -1,6 +1,6 @@
 <?php
-use Model\Test\Category;
-use Model\Test\Product;
+use Application\Model\Test\Category;
+use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;

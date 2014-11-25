@@ -1,7 +1,7 @@
 <?php
 namespace Ouzo\Db;
 
-use Model\Test\OrderProduct;
+use Application\Model\Test\OrderProduct;
 use Ouzo\Tests\Assert;
 
 class ModelQueryBuilderHelperTest extends \PHPUnit_Framework_TestCase

@@ -1,6 +1,6 @@
 <?php
 
-use Model\Test\ProductWithDefaults;
+use Application\Model\Test\ProductWithDefaults;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class ModelDefaultFieldValuesTest extends DbTransactionalTestCase {
