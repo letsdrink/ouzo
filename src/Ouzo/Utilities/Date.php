@@ -54,4 +54,11 @@ class Date
     {
         return self::formatDate($date, $format);
     }
+
+    public static function formatTimestamp($timestamp, $format = self::DEFAULT_TIME_FORMAT)
+    {
+        $dateTime = new DateTime();
+        $dateTime->setTimestamp($timestamp);
+        return $dateTime->format($format);
+    }
 }

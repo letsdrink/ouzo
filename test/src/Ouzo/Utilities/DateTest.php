@@ -186,4 +186,19 @@ class DateTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('13:03', $timeOnly);
     }
+
+    /**
+     * @test
+     */
+    public function shouldFormatTimestamp()
+    {
+        //given
+        $timestamp = '1417083911';
+
+        //when
+        $date = Date::formatTimestamp($timestamp);
+
+        //then
+        $this->assertEquals('2014-11-27 11:25', $date);
+    }
 }
