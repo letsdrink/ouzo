@@ -10,7 +10,7 @@ class Comparator
      * Second provided comparator is first tie breaker, third is second tie breaker and so on.
      *
      * @param mixed ...
-     * @return comparator
+     * @return callable
      */
     public static function compound()
     {
@@ -23,7 +23,7 @@ class Comparator
      * Comparator returns an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
      *
      * @param $expression
-     * @return comparator
+     * @return callable
      */
     public static function compareBy($expression)
     {
@@ -34,7 +34,7 @@ class Comparator
      * Returns comparator according to which order between element is reversed.
      *
      * @param $comparator
-     * @return comparator
+     * @return callable
      */
     public static function reverse($comparator)
     {
