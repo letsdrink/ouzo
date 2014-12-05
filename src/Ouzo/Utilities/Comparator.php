@@ -40,4 +40,19 @@ class Comparator
     {
         return new ReversedComparator($comparator);
     }
+
+    /**
+     * Returns a comparator that uses default comparison operators.
+     *
+     * @return callable
+     */
+    public static function natural()
+    {
+        return function ($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a < $b) ? -1 : 1;
+        };
+    }
 }

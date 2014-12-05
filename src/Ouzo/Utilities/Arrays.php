@@ -755,12 +755,9 @@ class Arrays
      * @return array sorted according to the comparator
      * @throws InvalidArgumentException
      */
-    public static function sort(array &$array, $comparator = null)
+    public static function sort(array $array, $comparator = null)
     {
-        $success = $comparator ? usort($array, $comparator) : sort($array);
-        if (!$success) {
-            throw new InvalidArgumentException('not an array');
-        }
+        $comparator ? usort($array, $comparator) : sort($array);
         return $array;
     }
 

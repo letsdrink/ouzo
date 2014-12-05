@@ -55,17 +55,31 @@ class ComparatorTest extends PHPUnit_Framework_TestCase
     public function shouldProperlyCompareUsingReversed()
     {
         //given
-        $alwaysLess = Functions::constant(-1);
-        $alwaysGreater = Functions::constant(1);
-        $alwaysEqual = Functions::constant(0);
-        $reversedLess = Comparator::reverse($alwaysLess);
-        $reversedGreater = Comparator::reverse($alwaysGreater);
-        $reversedEqual = Comparator::reverse($alwaysEqual);
+        $reversed = Comparator::reverse(Comparator::natural());
 
         //when
-        $greater = $reversedLess(null, null);
-        $lesser = $reversedGreater(null, null);
-        $equal = $reversedEqual(null, null);
+        $greater = $reversed(1, 2);
+        $lesser = $reversed(2, 1);
+        $equal = $reversed(1, 1);
+
+        //then
+        $this->assertEquals(-1, $lesser);
+        $this->assertEquals(1, $greater);
+        $this->assertEquals(0, $equal);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldProperlyCompareUsingDefault()
+    {
+        //given
+        $reversed = Comparator::natural();
+
+        //when
+        $greater = $reversed(2, 1);
+        $lesser = $reversed(1, 2);
+        $equal = $reversed(1, 1);
 
         //then
         $this->assertEquals(-1, $lesser);
