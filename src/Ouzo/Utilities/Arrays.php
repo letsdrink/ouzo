@@ -712,10 +712,9 @@ class Arrays
     }
 
     /**
-     * Returns a new array with is sorted according to comparator given.
+     * Returns a new array with is sorted using given comparator.
      * The comparator function must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
-     * As a comparator <code>Functions::compare</code> may be provided.
-     * If comparator is omitted then values are sorted using default '<' comparison.
+     * To obtain comparator one may use <code>Comparator</code> class (for instance <code>Comparator::natural()</code> which yields ordering using comparison operators).
      *
      * Example:
      * <code>
@@ -755,9 +754,9 @@ class Arrays
      * @return array sorted according to the comparator
      * @throws InvalidArgumentException
      */
-    public static function sort(array $array, $comparator = null)
+    public static function sort(array $array, $comparator)
     {
-        $comparator ? usort($array, $comparator) : sort($array);
+        usort($array, $comparator);
         return $array;
     }
 

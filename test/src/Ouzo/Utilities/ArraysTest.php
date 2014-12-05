@@ -373,7 +373,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $array = array(1, 3, 2);
 
         //when
-        $sorted = Arrays::sort($array);
+        $sorted = Arrays::sort($array, Comparator::natural());
 
         //then
         $this->assertEquals(array(1, 2, 3), $sorted);
