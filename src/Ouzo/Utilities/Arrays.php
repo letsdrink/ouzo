@@ -711,6 +711,59 @@ class Arrays
         $current = $value;
     }
 
+    /**
+     * Returns a new array with is sorted according to comparator given.
+     * The comparator function must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
+     * As a comparator <code>Functions::compare</code> may be provided.
+     * If comparator is omitted then values are sorted using default '<' comparison.
+     *
+     * Example:
+     * <code>
+     * class Foo
+     * {
+     *      private $value;
+     *      function __construct($value)
+     *      {
+     *          $this->value = $value;
+     *      }
+     *      public function getValue()
+     *      {
+     *          return $this->value;
+     *      }
+     * }
+     * $values = array(new Foo(1), new Foo(3), new Foo(2));
+     * $sorted = Arrays::sort($values, Comparator::compareBy('getValue()'));
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] =>  class Foo (1) {
+     *                  private $value => int(1)
+     *              }
+     *      [1] =>  class Foo (1) {
+     *                  private $value => int(2)
+     *              }
+     *      [2] =>  class Foo (1) {
+     *                  private $value => int(3)
+     *              }
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @param $comparator
+     * @return array sorted according to the comparator
+     * @throws InvalidArgumentException
+     */
+    public static function sort(array &$array, $comparator = null)
+    {
+        $success = $comparator ? usort($array, $comparator) : sort($array);
+        if (!$success) {
+            throw new InvalidArgumentException('not an array');
+        }
+        return $array;
+    }
+
     public static function getNestedValue(array $array, array $keys)
     {
         foreach ($keys as $key) {
