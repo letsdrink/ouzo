@@ -282,7 +282,7 @@ class Strings
     }
 
     /**
-     * Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT
+     * Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT.
      *
      * @param string $text
      * @return string
@@ -293,7 +293,7 @@ class Strings
     }
 
     /**
-     * Alias for htmlentities() with UTF-8 and defined flag ENT_COMPAT
+     * Alias for htmlentities() with UTF-8 and defined flag ENT_COMPAT.
      *
      * @param string $text
      * @return string
@@ -306,7 +306,7 @@ class Strings
     }
 
     /**
-     * Method checks if string representations of two objects are equal
+     * Method checks if string representations of two objects are equal.
      *
      * Example:
      * <code>
@@ -327,7 +327,7 @@ class Strings
     }
 
     /**
-     * Method checks if string is blank
+     * Method checks if string is blank.
      *
      * Example:
      * <code>
@@ -347,7 +347,7 @@ class Strings
     }
 
     /**
-     * Method checks if string is not blank
+     * Method checks if string is not blank.
      *
      * Example:
      * <code>
@@ -367,7 +367,7 @@ class Strings
     }
 
     /**
-     * Abbreviate - abbreviates a string using ellipsis
+     * Abbreviate - abbreviates a string using ellipsis.
      *
      * Example:
      * <code>
@@ -474,6 +474,13 @@ class Strings
         return $string;
     }
 
+    /**
+     * Check is string contains substring.
+     *
+     * @param string $string
+     * @param string $substring
+     * @return bool
+     */
     public static function contains($string, $substring)
     {
         return strstr($string, $substring) !== false;
