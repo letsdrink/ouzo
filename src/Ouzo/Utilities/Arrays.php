@@ -688,7 +688,7 @@ class Arrays
     }
 
     /**
-     * Computes the intersection of arrays
+     * Computes the intersection of arrays.
      *
      * @param array $array1
      * @param array $array2
@@ -699,6 +699,32 @@ class Arrays
         return array_intersect($array1, $array2);
     }
 
+    /**
+     * Setting nested value.
+     *
+     * Example:
+     * <code>
+     * $array = array();
+     * Arrays::setNestedValue($array, array('1', '2', '3'), 'value');
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [1] => Array
+     *          (
+     *              [2] => Array
+     *                  (
+     *                      [3] => value
+     *                  )
+     *          )
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @param array $keys
+     * @param $value
+     */
     public static function setNestedValue(array &$array, array $keys, $value)
     {
         $current = &$array;
@@ -760,6 +786,23 @@ class Arrays
         return $array;
     }
 
+    /**
+     * Return nested value when found, otherwise return <i>null</i> value.
+     *
+     * Example:
+     * <code>
+     * $array = array('1' => array('2' => array('3' => 'value')));
+     * $value = Arrays::getNestedValue($array, array('1', '2', '3'));
+     * </code>
+     * Result:
+     * <code>
+     * value
+     * </code>
+     *
+     * @param array $array
+     * @param array $keys
+     * @return array|mixed|null
+     */
     public static function getNestedValue(array $array, array $keys)
     {
         foreach ($keys as $key) {
@@ -773,6 +816,8 @@ class Arrays
 
     /**
      * @deprecated
+     * @param array $array
+     * @param array $keys
      */
     public static function removeNestedValue(array &$array, array $keys)
     {
@@ -780,6 +825,27 @@ class Arrays
         self::removeNestedKey($array, $keys);
     }
 
+    /**
+     * Returns array with removed keys even are nested.
+     *
+     * Example:
+     * <code>
+     * $array = array('1' => array('2' => array('3' => 'value')));$array = array('1' => array('2' => array('3' => 'value')));
+     * Arrays::removeNestedKey($array, array('1', '2'));
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [1] => Array
+     *          (
+     *          )
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @param array $keys
+     */
     public static function removeNestedKey(array &$array, array $keys)
     {
         $key = array_shift($keys);
@@ -790,6 +856,34 @@ class Arrays
         }
     }
 
+    /**
+     * Check is array has nested keys. Possibly check array with null values using flag <i>Arrays::TREAT_NULL_AS_VALUE</i>.
+     *
+     * Example:
+     * <code>
+     * $array = array('1' => array('2' => array('3' => 'value')));
+     * $value = Arrays::hasNestedKey($array, array('1', '2', '3'));
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     *
+     * Example with null values:
+     * <code>
+     * $array = array('1' => array('2' => array('3' => null)));
+     * $value = Arrays::hasNestedKey($array, array('1', '2', '3'), Arrays::TREAT_NULL_AS_VALUE);
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     *
+     * @param array $array
+     * @param array $keys
+     * @param null $flags
+     * @return bool
+     */
     public static function hasNestedKey(array $array, array $keys, $flags = null)
     {
         foreach ($keys as $key) {
@@ -801,6 +895,45 @@ class Arrays
         return true;
     }
 
+    /**
+     * Returns maps of the flatten keys with corresponding values.
+     *
+     * Example:
+     * <code>
+     * $array = array(
+     *      'customer' => array(
+     *          'name' => 'Name',
+     *          'phone' => '123456789'
+     *      ),
+     *      'other' => array(
+     *          'ids_map' => array(
+     *              '1qaz' => 'qaz',
+     *              '2wsx' => 'wsx'
+     *          ),
+     *          'first' => array(
+     *              'second' => array(
+     *                  'third' => 'some value'
+     *              )
+     *          )
+     *      )
+     * );
+     * $flatten = Arrays::flattenKeysRecursively($array)
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [customer.name] => Name
+     *      [customer.phone] => 123456789
+     *      [other.ids_map.1qaz] => qaz
+     *      [other.ids_map.2wsx] => wsx
+     *      [other.first.second.third] => some value
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @return array
+     */
     public static function flattenKeysRecursively(array $array)
     {
         $result = array();
