@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo\Routing;
 
-
 class GroupedRoute implements RouteInterface
 {
     private static $name;

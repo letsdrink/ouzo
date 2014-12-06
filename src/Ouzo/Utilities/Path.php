@@ -85,7 +85,7 @@ class Path
         foreach ($parts as $part) {
             if ($part == '..' && !empty($result)) {
                 array_pop($result);
-            } else if ($part != '.' && !empty($part)) {
+            } elseif ($part != '.' && !empty($part)) {
                 array_push($result, $part);
             }
         }

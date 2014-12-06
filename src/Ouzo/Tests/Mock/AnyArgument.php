@@ -8,7 +8,7 @@ class AnyArgument implements ArgumentMatcher
         return "any";
     }
 
-    function matches($argument)
+    public function matches($argument)
     {
         return true;
     }

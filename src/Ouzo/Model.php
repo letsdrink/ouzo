@@ -493,7 +493,6 @@ class Model extends Validatable
 
     public function nullifyIfEmpty(&$attributes, $field)
     {
-
         if (isset($attributes[$field]) && !$attributes[$field]) {
             $attributes[$field] = null;
         }

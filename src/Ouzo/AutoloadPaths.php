@@ -1,10 +1,8 @@
 <?php
-
 namespace Ouzo;
 
-
-class AutoloadPaths {
-
+class AutoloadPaths
+{
     public static function getControllerPath()
     {
         $controllerPath = Config::getValue('autoload', 'namespace', 'controller');
@@ -16,4 +14,4 @@ class AutoloadPaths {
         $controllerPath = Config::getValue('autoload', 'namespace', 'model');
         return $controllerPath ? $controllerPath : "\\Application\\Model\\";
     }
-} 
+}

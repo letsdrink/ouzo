@@ -30,9 +30,9 @@ class Functions
     {
         if (is_callable($selector)) {
             return $selector;
-        } else if (!is_string($selector)) {
+        } elseif (!is_string($selector)) {
             throw new Exception('Invalid selector: ' . $selector);
-        } else if (preg_match('/\(\)|->/', $selector)) {
+        } elseif (preg_match('/\(\)|->/', $selector)) {
             return Functions::extractFieldRecursively($selector, $accessPrivate);
         } else {
             return Functions::extractField($selector, $accessPrivate);

@@ -20,10 +20,11 @@ class MySqlDialect extends Dialect
     private function _getPrimaryKey($tableName)
     {
         $primaryKey = Db::getInstance()->query("SHOW KEYS FROM $tableName WHERE Key_name = 'PRIMARY'")->fetch();
-        if ($primaryKey)
+        if ($primaryKey) {
             return Arrays::getValue($primaryKey, 'Column_name');
-        else
+        } else {
             return '';
+        }
     }
 
     private function _getTableColumns($tableName)
@@ -42,10 +43,12 @@ class MySqlDialect extends Dialect
     public function dataTypeToPhpType($dataType)
     {
         $dataType = mb_strtolower($dataType);
-        if (preg_match('/int/', $dataType))
+        if (preg_match('/int/', $dataType)) {
             return 'int';
-        if (preg_match('/double.*|float.*|decimal.*/', $dataType))
+        }
+        if (preg_match('/double.*|float.*|decimal.*/', $dataType)) {
             return 'float';
+        }
         switch ($dataType) {
             case 'bool':
                 return 'bool';

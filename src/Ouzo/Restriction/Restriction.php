@@ -1,11 +1,9 @@
 <?php
-
 namespace Ouzo\Restriction;
 
+abstract class Restriction
+{
+    abstract public function toSql($fieldName);
 
-abstract class Restriction {
-
-    public abstract function toSql($fieldName);
-
-    public abstract function getValues();
-} 
+    abstract public function getValues();
+}

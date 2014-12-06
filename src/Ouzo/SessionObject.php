@@ -6,7 +6,6 @@ use Ouzo\Utilities\Arrays;
 
 class SessionObject
 {
-
     public function has($keys)
     {
         return Arrays::hasNestedKey($_SESSION, Arrays::toArray($keys));

@@ -144,4 +144,3 @@ class Route implements RouteInterface
         return preg_replace('/\/+/', '/', $string);
     }
 }
-

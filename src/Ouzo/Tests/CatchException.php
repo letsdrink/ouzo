@@ -67,7 +67,7 @@ class CatchExceptionAssert
     {
         if ($this->exception instanceof OuzoException) {
             Assert::thatArray($this->exception->getErrors())->onProperty('message')->contains($message);
-        } else if ($this->exception instanceof Exception) {
+        } elseif ($this->exception instanceof Exception) {
             AssertAdapter::assertEquals($message, $this->exception->getMessage());
         } else {
             AssertAdapter::fail('Message not contains in exceptions');

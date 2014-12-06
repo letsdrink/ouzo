@@ -37,7 +37,7 @@ class DynamicProxy
     private static function getClassMethods($class)
     {
         $methods = $class->getMethods();
-        return Arrays::filter($methods, function(ReflectionMethod $method) {
+        return Arrays::filter($methods, function (ReflectionMethod $method) {
             return !$method->isConstructor() && !$method->isStatic();
         });
     }

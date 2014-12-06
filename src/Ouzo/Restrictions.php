@@ -1,7 +1,5 @@
 <?php
-
 namespace Ouzo;
-
 
 use Ouzo\Restriction\BetweenRestriction;
 use Ouzo\Restriction\EqualToRestriction;
@@ -15,7 +13,6 @@ use Ouzo\Restriction\NotEqualToRestriction;
 
 class Restrictions
 {
-
     public static function equalTo($value)
     {
         return new EqualToRestriction($value);

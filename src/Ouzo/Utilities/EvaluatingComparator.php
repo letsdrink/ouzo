@@ -1,18 +1,16 @@
 <?php
-
 namespace Ouzo\Utilities;
 
 class EvaluatingComparator
 {
-
     private $toEvaluate;
 
-    function __construct($toEvaluate)
+    public function __construct($toEvaluate)
     {
         $this->toEvaluate = $toEvaluate;
     }
 
-    function __invoke($lhs, $rhs)
+    public function __invoke($lhs, $rhs)
     {
         $functionToEvaluate = $this->toEvaluate;
         $lhsValue = $functionToEvaluate($lhs);

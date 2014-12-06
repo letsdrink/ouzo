@@ -5,7 +5,6 @@ use PHPUnit_Framework_Assert;
 
 class AssertAdapter
 {
-
     public static function assertTrue($condition, $message = '')
     {
         PHPUnit_Framework_Assert::assertTrue($condition, $message);
@@ -23,7 +22,7 @@ class AssertAdapter
 
     public static function assertEqualsIgnoringCase($expected, $actual, $message = '')
     {
-        PHPUnit_Framework_Assert::assertEquals($expected, $actual, $message, 0, 10, FALSE, TRUE);
+        PHPUnit_Framework_Assert::assertEquals($expected, $actual, $message, 0, 10, false, true);
     }
 
     public static function assertNotEquals($expected, $actual, $message = '')

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\FluentFunction;
@@ -9,7 +8,7 @@ class FluentArgumentMatcher extends FluentFunction implements ArgumentMatcher
 {
     private $description = 'argThat()';
 
-    function matches($argument)
+    public function matches($argument)
     {
         return Functions::call($this, $argument);
     }

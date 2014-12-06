@@ -47,10 +47,11 @@ class Objects
         $elements = array();
         $isAssociative = array_keys($array) !== range(0, sizeof($array) - 1);
         array_walk($array, function ($element, $key) use (&$elements, $isAssociative) {
-            if ($isAssociative)
+            if ($isAssociative) {
                 $elements[] = "<$key> => " . Objects::toString($element);
-            else
+            } else {
                 $elements[] = Objects::toString($element);
+            }
         });
         return $elements;
     }

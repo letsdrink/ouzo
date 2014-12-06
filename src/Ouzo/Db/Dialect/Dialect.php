@@ -115,22 +115,18 @@ abstract class Dialect
         if ($query->type == QueryType::$UPDATE) {
             $sql .= $this->update();
             $sql .= $this->where();
-
-        } else if ($query->type == QueryType::$INSERT) {
+        } elseif ($query->type == QueryType::$INSERT) {
             $sql .= $this->insert();
-
-        } else if ($query->type == QueryType::$DELETE) {
+        } elseif ($query->type == QueryType::$DELETE) {
             $sql .= $this->delete();
             $sql .= $this->from();
             $sql .= $this->join();
             $sql .= $this->where();
-
-        } else if ($query->type == QueryType::$COUNT) {
+        } elseif ($query->type == QueryType::$COUNT) {
             $sql .= $this->select();
             $sql .= $this->from();
             $sql .= $this->join();
             $sql .= $this->where();
-
         } else {
             $sql .= $this->select();
             $sql .= $this->from();

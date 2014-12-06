@@ -21,7 +21,6 @@ use RuntimeException;
  */
 class Session
 {
-
     public static function create()
     {
         return new SessionObject();

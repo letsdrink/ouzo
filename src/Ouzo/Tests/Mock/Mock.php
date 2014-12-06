@@ -46,5 +46,4 @@ class Mock
     {
         return new FluentArgumentMatcher();
     }
-
 }

@@ -20,7 +20,7 @@ class ParameterPlaceHolderCallback
         if ($matches[0] == "'") {
             $this->_quote_count++;
             return "'";
-        } else if (!$this->isInString()) {
+        } elseif (!$this->isInString()) {
             return $this->substituteParam();
         } else {
             return "?";
@@ -47,8 +47,8 @@ class ParameterPlaceHolderCallback
     }
 }
 
-class PreparedStatementEmulator {
-
+class PreparedStatementEmulator
+{
     public static function substitute($sql, $params)
     {
         return preg_replace_callback('/[\'?]/', new ParameterPlaceHolderCallback($params), $sql);

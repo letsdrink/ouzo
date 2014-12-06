@@ -1,13 +1,12 @@
 <?php
-
 namespace Ouzo\Restriction;
 
-class BetweenRestriction extends Restriction {
-
+class BetweenRestriction extends Restriction
+{
     private $value1;
     private $value2;
 
-    function __construct($value1, $value2)
+    public function __construct($value1, $value2)
     {
         $this->value1 = $value1;
         $this->value2 = $value2;

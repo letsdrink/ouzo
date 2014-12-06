@@ -5,7 +5,7 @@ use Ouzo\Utilities\Arrays;
 
 abstract class PDOExecutor
 {
-    public abstract function createPDOStatement($dbHandle, $sql, $boundValues, $queryString);
+    abstract public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString);
 
     public static function newInstance($options)
     {

@@ -8,7 +8,7 @@ class TransactionalProxy
 {
     private $_object;
 
-    function __construct($object)
+    public function __construct($object)
     {
         $this->_object = $object;
     }

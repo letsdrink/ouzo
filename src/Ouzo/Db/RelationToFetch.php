@@ -21,7 +21,7 @@ class RelationToFetch
 
     public static function equalsPredicate($other)
     {
-        return function ($relationToFetch) use($other) {
+        return function ($relationToFetch) use ($other) {
             return $relationToFetch->equals($other);
         };
     }
