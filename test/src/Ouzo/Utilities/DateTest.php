@@ -166,10 +166,10 @@ class DateTest extends PHPUnit_Framework_TestCase
         $date = '2013-09-09 13:03:43';
 
         //when
-        $begin = Date::endOfDay($date);
+        $end = Date::endOfDay($date);
 
         //then
-        $this->assertEquals('2013-09-09 23:59:59.9999', $begin);
+        $this->assertEquals('2013-09-09 23:59:59.9999', $end);
     }
 
     /**
