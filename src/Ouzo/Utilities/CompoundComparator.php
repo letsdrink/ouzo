@@ -1,7 +1,10 @@
 <?php
-
 namespace Ouzo\Utilities;
 
+/**
+ * Class CompoundComparator
+ * @package Ouzo\Utilities
+ */
 class CompoundComparator
 {
     /**
@@ -9,12 +12,12 @@ class CompoundComparator
      */
     private $comparators;
 
-    function __construct(array $comparators)
+    public function __construct(array $comparators)
     {
         $this->comparators = $comparators;
     }
 
-    function __invoke($lhs, $rhs)
+    public function __invoke($lhs, $rhs)
     {
         foreach ($this->comparators as $comparator) {
             $result = $comparator($lhs, $rhs);
