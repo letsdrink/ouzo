@@ -5,8 +5,17 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
+/**
+ * Class DeleteDirectory
+ * @package Ouzo\Utilities
+ */
 class DeleteDirectory
 {
+    /**
+     * Recursively deletes directories and files.
+     *
+     * @param string $path
+     */
     public static function recursive($path)
     {
         if (is_dir($path)) {
