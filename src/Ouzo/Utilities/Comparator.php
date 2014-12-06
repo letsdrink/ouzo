@@ -1,10 +1,12 @@
 <?php
-
 namespace Ouzo\Utilities;
 
+/**
+ * Class Comparator
+ * @package Ouzo\Utilities
+ */
 class Comparator
 {
-
     /**
      * Combines comparators into one resolving order using first comparator and resolving conflicts using tie breakers.
      * Second provided comparator is first tie breaker, third is second tie breaker and so on.
