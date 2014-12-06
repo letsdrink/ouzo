@@ -5,7 +5,6 @@ use Ouzo\Restriction\BetweenRestriction;
 use Ouzo\Restriction\EqualToRestriction;
 use Ouzo\Restriction\GreaterOrEqualToRestriction;
 use Ouzo\Restriction\GreaterThanRestriction;
-use Ouzo\Restriction\ILikeRestriction;
 use Ouzo\Restriction\LessOrEqualToRestriction;
 use Ouzo\Restriction\LessThanRestriction;
 use Ouzo\Restriction\LikeRestriction;
