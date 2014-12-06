@@ -12,6 +12,7 @@ env:
     - db=sqlite3
 
 before_script:
+    - echo 'date.timezone = "Europe/Warsaw"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - composer install
     - psql -c 'create database ouzo_test' -U postgres && psql -v ON_ERROR_STOP=1 -e -U postgres -f test/test-db/recreate_schema.sql ouzo_test
     - mysql -u travis -e 'create database ouzo_test' && cat test/test-db/recreate_schema_mysql.sql | mysql -u travis ouzo_test
