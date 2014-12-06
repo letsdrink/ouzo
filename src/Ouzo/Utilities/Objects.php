@@ -3,8 +3,18 @@ namespace Ouzo\Utilities;
 
 use ReflectionObject;
 
+/**
+ * Class Objects
+ * @package Ouzo\Utilities
+ */
 class Objects
 {
+    /**
+     * Convert given object to the string.
+     *
+     * @param mixed $var
+     * @return string
+     */
     public static function toString($var)
     {
         switch (gettype($var)) {
@@ -51,11 +61,22 @@ class Objects
         return '[' . implode(', ', $elements) . ']';
     }
 
+    /**
+     * Convert boolean to string 'true' or 'false'.
+     *
+     * @param bool $var
+     * @return string
+     */
     public static function booleanToString($var)
     {
         return $var ? 'true' : 'false';
     }
 
+    /**
+     * @param mixed $object
+     * @param string $names
+     * @param mixed $value
+     */
     public static function setValueRecursively($object, $names, $value)
     {
         $fields = explode('->', $names);
@@ -66,6 +87,13 @@ class Objects
         }
     }
 
+    /**
+     * @param mixed $object
+     * @param string $names
+     * @param null|mixed $default
+     * @param bool $accessPrivate
+     * @return mixed|null
+     */
     public static function getValueRecursively($object, $names, $default = null, $accessPrivate = false)
     {
         $fields = array_filter(explode('->', $names));
@@ -78,6 +106,13 @@ class Objects
         return $object;
     }
 
+    /**
+     * @param mixed $object
+     * @param string $field
+     * @param mixed $default
+     * @param bool $accessPrivate
+     * @return mixed|null
+     */
     public static function getValueOrCallMethod($object, $field, $default, $accessPrivate = false)
     {
         $value = self::getValue($object, $field, null, $accessPrivate);
@@ -87,6 +122,13 @@ class Objects
         return self::callMethod($object, $field, $default);
     }
 
+    /**
+     * @param mixed $object
+     * @param string $field
+     * @param null|mixed $default
+     * @param bool $accessPrivate
+     * @return mixed|null
+     */
     public static function getValue($object, $field, $default = null, $accessPrivate = false)
     {
         if (isset($object->$field)) {
@@ -103,6 +145,12 @@ class Objects
         return $default;
     }
 
+    /**
+     * @param mixed $object
+     * @param string $methodName
+     * @param mixed $default
+     * @return mixed
+     */
     public static function callMethod($object, $methodName, $default)
     {
         $name = rtrim($methodName, '()');
