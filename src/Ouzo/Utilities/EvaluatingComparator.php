@@ -1,6 +1,10 @@
 <?php
 namespace Ouzo\Utilities;
 
+/**
+ * Class EvaluatingComparator
+ * @package Ouzo\Utilities
+ */
 class EvaluatingComparator
 {
     private $toEvaluate;
