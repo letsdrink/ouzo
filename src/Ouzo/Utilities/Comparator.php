@@ -1,5 +1,8 @@
 <?php
 namespace Ouzo\Utilities;
+use Ouzo\Utilities\Comparator\CompoundComparator;
+use Ouzo\Utilities\Comparator\EvaluatingComparator;
+use Ouzo\Utilities\Comparator\ReversedComparator;
 
 /**
  * Class Comparator

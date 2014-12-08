@@ -1,9 +1,9 @@
 <?php
-namespace Ouzo\Utilities;
+namespace Ouzo\Utilities\Comparator;
 
 /**
  * Class EvaluatingComparator
- * @package Ouzo\Utilities
+ * @package Ouzo\Utilities\Comparator
  */
 class EvaluatingComparator
 {

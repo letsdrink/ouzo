@@ -1,5 +1,5 @@
 <?php
-namespace Ouzo\Utilities;
+namespace Ouzo\Utilities\Comparator;
 
 class ReversedComparator
 {

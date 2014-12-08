@@ -2,7 +2,6 @@
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\ComparableHelper;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\Functions;
 
