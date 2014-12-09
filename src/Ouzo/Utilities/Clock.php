@@ -12,6 +12,13 @@ class Clock
     public static $freeze = false;
     public static $freezeDate;
 
+    public $dateTime;
+
+    function __construct(DateTime $dateTime)
+    {
+        $this->dateTime = $dateTime;
+    }
+
     /**
      * Freeze clock on given date, if given null or none freeze on now.
      *
@@ -40,7 +47,7 @@ class Clock
      * @param string $format
      * @return string
      */
-    public static function nowAsString($format = 'Y-m-d H:i:s')
+    public static function nowAsString($format = null)
     {
         return self::now()->format($format);
     }
@@ -48,7 +55,7 @@ class Clock
     /**
      * Return DateTime object which is currently freeze.
      *
-     * @return DateTime
+     * @return Clock
      */
     public static function now()
     {
@@ -56,6 +63,92 @@ class Clock
         if (self::$freeze) {
             $date->setTimestamp(self::$freezeDate->getTimestamp());
         }
-        return $date;
+        return new Clock($date);
+    }
+
+    public static function at($date)
+    {
+        return new Clock(new DateTime($date));
+    }
+
+    public function getTimestamp()
+    {
+        return $this->dateTime->getTimestamp();
+    }
+
+    public function format($format = null)
+    {
+        $format = $format ?: 'Y-m-d H:i:s';
+        return $this->dateTime->format($format);
+    }
+
+    public function toDateTime()
+    {
+        return $this->dateTime;
+    }
+
+    private function _modify($interval)
+    {
+        return new Clock($this->dateTime->modify($interval));
+    }
+
+    public function minusDays($days)
+    {
+        return $this->_modify("-$days days");
+    }
+
+    public function minusHours($hours)
+    {
+        return $this->_modify("-$hours hours");
+    }
+
+    public function minusMinutes($minutes)
+    {
+        return $this->_modify("-$minutes minutes");
+    }
+
+    public function minusMonths($months)
+    {
+        return $this->_modify("-$months months");
+    }
+
+    public function minusSeconds($seconds)
+    {
+        return $this->_modify("-$seconds seconds");
+    }
+
+    public function minusYears($years)
+    {
+        return $this->_modify("-$years years");
+    }
+
+    public function plusDays($days)
+    {
+        return $this->_modify("+$days days");
+    }
+
+    public function plusHours($hours)
+    {
+        return $this->_modify("+$hours hours");
+    }
+
+    public function plusMinutes($minutes)
+    {
+        return $this->_modify("+$minutes minutes");
+    }
+
+    public function plusMonths($months)
+    {
+        return $this->_modify("+$months months");
+    }
+
+    public function plusSeconds($seconds)
+    {
+        return $this->_modify("+$seconds seconds");
+    }
+
+    public function plusYears($years)
+    {
+        return $this->_modify("+$years years");
     }
 }

@@ -44,4 +44,79 @@ class ClockTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('2011-01-02', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldAddIntervals()
+    {
+        //given
+        Clock::freeze('2000-01-01 00:00:00');
+
+        //when
+        $result = Clock::now()
+            ->plusYears(1)
+            ->plusMonths(2)
+            ->plusDays(3)
+            ->plusHours(4)
+            ->plusMinutes(5)
+            ->plusSeconds(6)
+            ->format();
+
+        //then
+        $this->assertEquals('2001-03-04 04:05:06', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSubtractIntervals()
+    {
+        //given
+        Clock::freeze('2001-03-04 04:05:06');
+
+        //when
+        $result = Clock::now()
+            ->minusYears(1)
+            ->minusMonths(2)
+            ->minusDays(3)
+            ->minusHours(4)
+            ->minusMinutes(5)
+            ->minusSeconds(6)
+            ->format();
+
+        //then
+        $this->assertEquals('2000-01-01 00:00:00', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTimestamp()
+    {
+        //given
+        Clock::freeze('2011-01-02 12:34');
+
+        //when
+        $timestamp = Clock::now()->getTimestamp();
+
+        //then
+        $dateTime = new DateTime('2011-01-02 12:34');
+        $this->assertEquals($dateTime->getTimestamp(), $timestamp);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateClockForGivenDate()
+    {
+        //given
+        $clock = Clock::at('2011-01-02 12:34:13');
+
+        //when
+        $result = $clock->format();
+
+        //then
+        $this->assertEquals('2011-01-02 12:34:13', $result);
+    }
 }

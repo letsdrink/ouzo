@@ -51,7 +51,7 @@ class Date
      */
     public static function addInterval($interval, $format = self::DEFAULT_TIME_FORMAT)
     {
-        $date = Clock::now();
+        $date = Clock::now()->toDateTime();
         $date->add(new DateInterval($interval));
         return $date->format($format);
     }
@@ -67,7 +67,7 @@ class Date
      */
     public static function modifyNow($interval, $format = self::DEFAULT_TIME_FORMAT)
     {
-        return Clock::now()->modify($interval)->format($format);
+        return Clock::now()->toDateTime()->modify($interval)->format($format);
     }
 
     /**
