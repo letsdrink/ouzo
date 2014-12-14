@@ -8,7 +8,7 @@ class ViewPathResolver
 {
     public static function resolveViewPath($name, $responseType)
     {
-        return Path::join(ROOT_PATH, 'application', 'view', $name . self::getViewPostfix($responseType));
+        return Path::join(ROOT_PATH, AutoloadPaths::getViewPath(), $name . self::getViewPostfix($responseType));
     }
 
     private static function getViewPostfix($responseType)

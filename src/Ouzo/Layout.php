@@ -29,7 +29,7 @@ class Layout
     public function renderLayout()
     {
         if ($this->_layout) {
-            $layoutPath = Path::join(ROOT_PATH, 'application', 'layout', $this->_layout . '.phtml');
+            $layoutPath = Path::join(ROOT_PATH, AutoloadPaths::getLayoutPath(), $this->_layout . '.phtml');
             /** @noinspection PhpIncludeInspection */
             require_once($layoutPath);
         }

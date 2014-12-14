@@ -19,7 +19,7 @@ class ClassPathResolverTest extends \PHPUnit_Framework_TestCase
         $classPath = $resolver->getClassFileName();
 
         //then
-        Assert::thatString($classPath)->endsWith(Path::join('application', 'model', 'my', 'name', 'space', 'UserAcl.php'));
+        Assert::thatString($classPath)->endsWith(Path::join('Application', 'model', 'my', 'name', 'space', 'UserAcl.php'));
     }
 }
  

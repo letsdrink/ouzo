@@ -1,6 +1,7 @@
 <?php
 namespace Command;
 
+use Ouzo\AutoloadPaths;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\UriHelperGenerator;
@@ -35,7 +36,7 @@ class RoutesCommand extends Command
         $this->_output = $output;
 
         if ($input->getOption('generate')) {
-            $path = Path::join(ROOT_PATH, 'application', 'helper', 'GeneratedUriHelper.php');
+            $path = Path::join(ROOT_PATH, AutoloadPaths::getHelperPath(), 'GeneratedUriHelper.php');
             UriHelperGenerator::generate()->saveToFile($path);
             $output->writeln('File with uri helpers is generated in ' . $path);
         } else {
