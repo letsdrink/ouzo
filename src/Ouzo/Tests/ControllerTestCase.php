@@ -107,6 +107,8 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRenders($string)
     {
+        $string = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $string);
+
         $statusResponse = RequestContext::getCurrentControllerObject()->getStatusResponse();
         $location = RequestContext::getCurrentControllerObject()->getRedirectLocation();
         if ($statusResponse != 'show') {
