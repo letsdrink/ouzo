@@ -28,13 +28,13 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
-        Config::overrideProperty('autoload', 'namespace', 'controller')->with('\\Ouzo\\');
+        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
     }
 
     public function tearDown()
     {
         parent::tearDown();
-        Config::clearProperty('autoload', 'namespace', 'controller');
+        Config::clearProperty('namespace', 'controller');
     }
 
     /**

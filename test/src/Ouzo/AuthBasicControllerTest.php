@@ -29,7 +29,7 @@ class AuthBasicControllerTest extends ControllerTestCase
 
     function __construct()
     {
-        Config::overrideProperty('autoload', 'namespace', 'controller')->with('\\');
+        Config::overrideProperty('namespace', 'controller')->with('\\');
         parent::__construct();
     }
 
@@ -44,7 +44,7 @@ class AuthBasicControllerTest extends ControllerTestCase
     {
         Route::$validate = true;
         parent::tearDown();
-        Config::clearProperty('autoload', 'namespace', 'controller');
+        Config::clearProperty('namespace', 'controller');
     }
 
     /**

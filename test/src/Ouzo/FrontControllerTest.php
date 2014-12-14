@@ -110,7 +110,7 @@ class FrontControllerTest extends ControllerTestCase
 
     function __construct()
     {
-        Config::overrideProperty('autoload', 'namespace', 'controller')->with('\\Ouzo\\');
+        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         parent::__construct();
     }
 
@@ -123,7 +123,7 @@ class FrontControllerTest extends ControllerTestCase
     public function tearDown()
     {
         parent::tearDown();
-        Config::clearProperty('autoload', 'namespace', 'controller');
+        Config::clearProperty('namespace', 'controller');
     }
 
     /**
