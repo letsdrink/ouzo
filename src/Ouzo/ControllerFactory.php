@@ -9,14 +9,14 @@ class ControllerFactory
 {
     public function __construct()
     {
-        $this->controllerPath = AutoloadPaths::getControllerPath();
+        $this->controllerNamespace = AutoloadNamespaces::getControllerNamespace();
     }
 
     public function createController(RouteRule $routeRule)
     {
         $controller = $routeRule->getController();
         $controllerName = ClassName::pathToFullyQualifiedName($controller);
-        $controller = $this->controllerPath . $controllerName . "Controller";
+        $controller = $this->controllerNamespace . $controllerName . "Controller";
 
         $this->_validateControllerExists($controller);
 
