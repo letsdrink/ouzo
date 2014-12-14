@@ -32,7 +32,7 @@ class Controller
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
-        $viewName = Path::join(ClassName::pathToFullyQualifiedName($this->currentController), $this->currentAction) ? : '/';
+        $viewName = (ClassName::pathToFullyQualifiedName($this->currentController) . '/' . $this->currentAction) ? : '/';
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
