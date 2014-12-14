@@ -24,10 +24,6 @@ class ViewPathResolver
             return $viewForType;
         }
 
-        if (Uri::isAjax()) {
-            return '.ajax.phtml';
-        } else {
-            return '.phtml';
-        }
+        return Uri::isAjax() ? '.ajax.phtml' : '.phtml';
     }
 }
