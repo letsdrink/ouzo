@@ -1,4 +1,5 @@
 <?php
+use Ouzo\AutoloadNamespaces;
 use Ouzo\Config;
 use Ouzo\ControllerUrl;
 use Ouzo\I18n;
@@ -20,7 +21,7 @@ function renderWidget($widgetName)
     $className = ucfirst($widgetName);
     $viewWidget = new View($className . '/' . $widgetName);
 
-    $classLoad = '\Widget\\' . $className;
+    $classLoad = AutoloadNamespaces::getWidgetNamespace() . $className;
     $widget = new $classLoad($viewWidget);
 
     return $widget->render();
