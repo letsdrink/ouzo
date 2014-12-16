@@ -37,4 +37,49 @@ class RequestHeadersTest extends PHPUnit_Framework_TestCase
                 'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30'
             ));
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnIpFromCLIENT_IP()
+    {
+        //given
+        $_SERVER['HTTP_CLIENT_IP'] = '10.170.12.51';
+
+        //when
+        $ip = RequestHeaders::ip();
+
+        //then
+        $this->assertEquals('10.170.12.51', $ip);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnIpFromX_FORWARDED_FOR()
+    {
+        //given
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '10.170.12.52';
+
+        //when
+        $ip = RequestHeaders::ip();
+
+        //then
+        $this->assertEquals('10.170.12.52', $ip);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnIpFromREMOTE_ADDR()
+    {
+        //given
+        $_SERVER['REMOTE_ADDR'] = '10.170.12.53';
+
+        //when
+        $ip = RequestHeaders::ip();
+
+        //then
+        $this->assertEquals('10.170.12.53', $ip);
+    }
 }

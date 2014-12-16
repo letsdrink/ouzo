@@ -14,7 +14,7 @@ class Clock
 
     public $dateTime;
 
-    function __construct(DateTime $dateTime)
+    public function __construct(DateTime $dateTime)
     {
         $this->dateTime = $dateTime;
     }

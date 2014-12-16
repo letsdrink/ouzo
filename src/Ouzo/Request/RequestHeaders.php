@@ -13,6 +13,18 @@ class RequestHeaders
         return AcceptHeaderParser::parse($accept);
     }
 
+    public static function ip()
+    {
+        $ip = Arrays::getValue($_SERVER, 'HTTP_CLIENT_IP');
+        if (!$ip) {
+            $ip = Arrays::getValue($_SERVER, 'HTTP_X_FORWARDED_FOR');
+        }
+        if (!$ip) {
+            $ip = Arrays::getValue($_SERVER, 'REMOTE_ADDR');
+        }
+        return $ip;
+    }
+
     public static function all()
     {
         //this implementation is for PHP where function getallheaders() doesn't exists in CLI

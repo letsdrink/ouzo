@@ -5,7 +5,6 @@ use Ouzo\Utilities\Path;
 
 class ApplicationPaths
 {
-
     public static function getViewPath()
     {
         $controllerPath = Config::getValue('path', 'view');
