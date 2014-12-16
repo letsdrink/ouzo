@@ -28,7 +28,8 @@ abstract class Dialect
     public function update()
     {
         $attributes = DialectUtil::buildAttributesPartForUpdate($this->_query->updateAttributes);
-        return "UPDATE {$this->_query->table} SET $attributes";
+        $table = $this->table();
+        return "UPDATE $table SET $attributes";
     }
 
     public function insert()
@@ -101,10 +102,15 @@ abstract class Dialect
         return '';
     }
 
-    public function from()
+    public function table()
     {
         $alias = $this->_query->aliasTable ? ' AS ' . $this->_query->aliasTable : '';
-        return ' FROM ' . $this->_query->table . $alias;
+        return $this->_query->table . $alias;
+    }
+
+    public function from()
+    {
+        return ' FROM ' . $this->table();
     }
 
     public function buildQuery(Query $query)
