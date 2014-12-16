@@ -6,19 +6,14 @@ use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
-    public function from()
-    {
-        return $this->_buildFrom($this->_query->type, $this->_query->table);
-    }
-
-    private function _buildFrom($type, $table)
+    public function table()
     {
         $alias = $this->_query->aliasTable;
         if ($alias) {
-            $aliasOperator = $type == QueryType::$DELETE ? '' : ' AS ';
-            return " FROM $table" . $aliasOperator . $alias;
+            $aliasOperator = $this->_query->type == QueryType::$DELETE ? '' : ' AS ';
+            return $this->_query->table . $aliasOperator . $alias;
         }
-        return " FROM $table";
+        return $this->_query->table;
     }
 
     public function getConnectionErrorCodes()

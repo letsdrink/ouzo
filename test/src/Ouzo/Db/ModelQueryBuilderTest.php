@@ -1275,4 +1275,26 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         Assert::thatArray($names)->containsExactly('category for billy');
     }
+
+    /**
+     * @test
+     * @group non-sqlite3
+     */
+    public function shouldAliasTableInUpdateQuery()
+    {
+        //given
+        Category::create(array('name' => 'old'));
+
+        //when
+        Category::alias('c')
+            ->where(array(
+                'c.name' => 'old'
+            ))
+            ->update(array(
+                'name' => "new"
+            ));
+
+        //then
+        Assert::thatArray(Category::all())->onProperty('name')->containsExactly('new');
+    }
 }
