@@ -335,4 +335,19 @@ class ControllerTest extends ControllerTestCase
 
         Config::revertPropertyArray(array('global', 'prefix_system'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldRenderAjaxViewWithoutViewName()
+    {
+        //given
+        $controller = new Controller(new RouteRule('', '', 'controller', false));
+
+        //when
+        $controller->renderAjaxView();
+
+        //then
+        $this->assertEquals('Controller', $controller->view->getViewName());
+    }
 }

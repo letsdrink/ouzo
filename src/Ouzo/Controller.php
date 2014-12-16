@@ -112,9 +112,9 @@ class Controller
         }
     }
 
-    public function renderAjaxView($viewName)
+    public function renderAjaxView($viewName = null)
     {
-        $view = $this->view->render($viewName);
+        $view = $viewName ? $this->view->render($viewName) : $this->currentController . '/' . $this->currentAction;
         $this->layout->renderAjax($view);
     }
 
