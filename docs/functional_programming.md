@@ -20,6 +20,6 @@ $cities = FluentArray::from($users)
              ->toArray();
 ```
 
-[FluentArray](FluentArray)
+[FluentArray](fluent_array.md)
 
-[Functions::extract](Functions#extract)
+[Functions::extract](functions.md#extract)

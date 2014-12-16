@@ -1,4 +1,4 @@
-Methods in FluentFunctions return instance of FluentFunction that contains all functions from [[Functions]].
+Methods in FluentFunctions return instance of FluentFunction that contains all functions from [Functions](functions.md).
 
 ### Example:
 
