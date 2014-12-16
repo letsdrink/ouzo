@@ -1297,4 +1297,23 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         Assert::thatArray(Category::all())->onProperty('name')->containsExactly('new');
     }
+
+    /**
+     * @test
+     * @group sqlite3
+     */
+    public function shouldThrowExceptionIfAliasInUpdateQuery()
+    {
+        //when
+        CatchException::when(Category::alias('c')
+            ->where(array(
+                'c.name' => 'old'
+            )))
+            ->update(array(
+            'name' => "new"
+        ));
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\InvalidArgumentException');
+    }
 }
