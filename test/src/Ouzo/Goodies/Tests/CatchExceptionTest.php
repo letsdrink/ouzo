@@ -62,4 +62,20 @@ class CatchExceptionTest extends PHPUnit_Framework_TestCase
         //then
         CatchException::assertThat()->hasMessage('Fatal error');
     }
+
+    /**
+     * @test
+     */
+    public function getShouldReturnException()
+    {
+        // given
+        $object = new MyClass();
+        CatchException::when($object)->someMethodThatThrowsException();
+
+        // when
+        $exception = CatchException::get();
+
+        // then
+        $this->assertInstanceOf('Exception', $exception);
+    }
 }
