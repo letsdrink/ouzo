@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-Release 1.3 - IN PROGRESS
+Release 1.3
 -----------
 Enhancements:
 * [Core] Added radio button to form builder.
