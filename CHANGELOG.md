@@ -39,6 +39,9 @@ Enhancements:
 * [Utilities] Added Functions::isInstanceOf.
 * [Utilities] Added Date::formatTimestamp.
 * [Utilities] Added Comparators.
+* [Utilities] Enhanced the Clock class.
+* [Core] Paths to model, controller and widget are configurable from config (issue #147).
+* [Utilities] Added RequestHeaders::ip.
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined (issue #121).
@@ -59,6 +62,7 @@ Bug fixes:
 * [Core] Fixed invalid formatting of GeneratedUriHelper (issue #131).
 * [Utilities] Fixed Boris (issue #136).
 * [Core] Updated path resolver to return correct view depend on request headers.
+* [ORM] accept single param in Model::findBySql (issue #145).
 
 Release 1.2
 -----------
