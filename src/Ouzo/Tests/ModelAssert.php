@@ -3,7 +3,6 @@ namespace Ouzo\Tests;
 
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
-use PHPUnit_Framework_Assert;
 
 class ModelAssert
 {
@@ -28,7 +27,7 @@ class ModelAssert
     public function isEqualTo(Model $expected)
     {
         $this->_assertSameType($expected);
-        PHPUnit_Framework_Assert::assertEquals($expected->attributes(), $this->_actual->attributes(), 'Models have different attributes ');
+        AssertAdapter::assertEquals($expected->attributes(), $this->_actual->attributes(), 'Models have different attributes ');
     }
 
     /**
@@ -42,7 +41,7 @@ class ModelAssert
 
     private function _assertSameType(Model $expected)
     {
-        PHPUnit_Framework_Assert::assertEquals(get_class($expected), get_class($this->_actual),
+        AssertAdapter::assertEquals(get_class($expected), get_class($this->_actual),
             'Expected object of type ' . $expected->getModelName() . ' but got ' . $this->_actual->getModelName());
     }
 
@@ -51,6 +50,6 @@ class ModelAssert
         $expectedAttributes = Arrays::filterByAllowedKeys($expected->attributes(), $expected->getFields());
         $actualAttributes = Arrays::filterByAllowedKeys($this->_actual->attributes(), $this->_actual->getFields());
 
-        PHPUnit_Framework_Assert::assertEquals($expectedAttributes, $actualAttributes, 'Models have different attributes ');
+        AssertAdapter::assertEquals($expectedAttributes, $actualAttributes, 'Models have different attributes ');
     }
 }

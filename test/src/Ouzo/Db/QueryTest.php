@@ -16,6 +16,20 @@ class QueryTest extends PHPUnit_Framework_TestCase {
 
         // then
         $this->assertEquals(QueryType::$SELECT, $query->type);
+        $this->assertFalse($query->distinct);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateSelectDistinctQuery()
+    {
+        // when
+        $query = Query::selectDistinct();
+
+        // then
+        $this->assertEquals(QueryType::$SELECT, $query->type);
+        $this->assertTrue($query->distinct);
     }
 
     /**

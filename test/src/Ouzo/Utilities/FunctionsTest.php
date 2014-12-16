@@ -1,7 +1,7 @@
 <?php
 namespace Ouzo\Utilities;
 
-use Model\Test\Product;
+use Application\Model\Test\Product;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
@@ -109,5 +109,32 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('.test.', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfParameterIsEqualToValue()
+    {
+        $this->assertFalse(Functions::call(Functions::equals('value'), 'other'));
+        $this->assertTrue(Functions::call(Functions::equals('value'), 'value'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfParameterIsNotEqualToValue()
+    {
+        $this->assertTrue(Functions::call(Functions::notEquals('value'), 'other'));
+        $this->assertFalse(Functions::call(Functions::notEquals('value'), 'value'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfParameterIsInstanceOfGivenType()
+    {
+        $this->assertTrue(Functions::call(Functions::isInstanceOf('stdClass'), new \stdClass()));
+        $this->assertFalse(Functions::call(Functions::isInstanceOf('stdClass'), 'value'));
     }
 }

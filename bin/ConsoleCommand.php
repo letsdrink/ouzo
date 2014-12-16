@@ -1,4 +1,6 @@
 <?php
+namespace Command;
+
 use Boris\Boris;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

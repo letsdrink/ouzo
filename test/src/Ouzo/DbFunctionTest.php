@@ -2,7 +2,7 @@
 
 namespace Ouzo;
 
-use Model\Test\Category;
+use Application\Model\Test\Category;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class DbFunctionTest extends DbTransactionalTestCase

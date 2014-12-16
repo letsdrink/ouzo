@@ -1,12 +1,11 @@
 <?php
-
 namespace Ouzo\Utilities;
 
 use InvalidArgumentException;
 
 class NonCallableExtractor
 {
-    function __construct()
+    public function __construct()
     {
         $this->extractor = new Extractor();
     }
@@ -27,4 +26,4 @@ class NonCallableExtractor
     {
         throw new InvalidArgumentException("Empty Extractor cannot be invoked!");
     }
-} 
+}

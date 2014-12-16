@@ -113,4 +113,16 @@ class FluentArray
     {
         return json_encode($this->_array);
     }
+
+    public function limit($number)
+    {
+        $this->_array = array_slice($this->_array, 0, $number);
+        return $this;
+    }
+
+    public function skip($number)
+    {
+        $this->_array = array_slice($this->_array, $number);
+        return $this;
+    }
 }

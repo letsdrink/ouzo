@@ -1,8 +1,9 @@
 <?php
-use Model\Test\Category;
-use Model\Test\Order;
-use Model\Test\OrderProduct;
-use Model\Test\Product;
+use Application\Model\Test\Category;
+use Application\Model\Test\ModelWithoutPrimaryKey;
+use Application\Model\Test\Order;
+use Application\Model\Test\OrderProduct;
+use Application\Model\Test\Product;
 use Ouzo\Db;
 use Ouzo\DbException;
 use Ouzo\Model;
@@ -260,13 +261,12 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals($loadedProduct1, $loadedProduct2);
-
     }
 
     /**
      * @test
      */
-    public function shouldReturnNull()
+    public function findByIdOrNullShouldReturnNullWhenIdNotFound()
     {
         //given
         Product::create(array('name' => 'name'));
@@ -400,7 +400,7 @@ class ModelTest extends DbTransactionalTestCase
         $string = $product->inspect();
 
         //then
-        $this->assertStringStartsWith('Model\Test\Product', $string);
+        $this->assertStringStartsWith('Application\Model\Test\Product', $string);
     }
 
     /**
@@ -591,6 +591,38 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldAcceptParamsInFindBySql()
+    {
+        //given
+        Category::create(array('name' => 'phones1'));
+        Category::create(array('name' => 'phones2'));
+
+        //when
+        $found = Category::findBySql("SELECT * FROM categories where name = ?", array('phones1'));
+
+        //then
+        Assert::thatArray($found)->onProperty('name')->containsOnly('phones1');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAcceptSingleParamInFindBySql()
+    {
+        //given
+        Category::create(array('name' => 'phones1'));
+        Category::create(array('name' => 'phones2'));
+
+        //when
+        $found = Category::findBySql("SELECT * FROM categories where name = ?", 'phones1');
+
+        //then
+        Assert::thatArray($found)->onProperty('name')->containsOnly('phones1');
+    }
+
+    /**
+     * @test
+     */
     public function shouldThrowValidationExceptionIfModelInvalid()
     {
         //given
@@ -663,5 +695,19 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertTrue(0 === $product->id);
+    }
+
+    /**
+     * @test
+     */
+    public function findByIdShould()
+    {
+        //when
+        CatchException::when(new ModelWithoutPrimaryKey())->findById(1);
+
+        //then
+        CatchException::assertThat()
+            ->isInstanceOf('\Ouzo\DbException')
+            ->hasMessage('Primary key is not defined for table products');
     }
 }

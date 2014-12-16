@@ -15,7 +15,9 @@ abstract class Dialect
     public function select()
     {
         if ($this->_query->type == QueryType::$SELECT) {
-            return 'SELECT ' . (empty($this->_query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
+            return 'SELECT ' .
+                ($this->_query->distinct ? 'DISTINCT ' : '') .
+                (empty($this->_query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->_query->selectColumns));
         }
         if ($this->_query->type == QueryType::$COUNT) {
             return 'SELECT count(*)';
@@ -26,7 +28,8 @@ abstract class Dialect
     public function update()
     {
         $attributes = DialectUtil::buildAttributesPartForUpdate($this->_query->updateAttributes);
-        return "UPDATE {$this->_query->table} set $attributes";
+        $table = $this->table();
+        return "UPDATE $table SET $attributes";
     }
 
     public function insert()
@@ -69,7 +72,7 @@ abstract class Dialect
     {
         $groupBy = $this->_query->groupBy;
         if ($groupBy) {
-            return ' GROUP BY ' .  (is_array($groupBy) ? implode(', ', $groupBy) : $groupBy);
+            return ' GROUP BY ' . (is_array($groupBy) ? implode(', ', $groupBy) : $groupBy);
         }
         return '';
     }
@@ -99,10 +102,15 @@ abstract class Dialect
         return '';
     }
 
-    public function from()
+    public function table()
     {
         $alias = $this->_query->aliasTable ? ' AS ' . $this->_query->aliasTable : '';
-        return ' FROM ' . $this->_query->table . $alias;
+        return $this->_query->table . $alias;
+    }
+
+    public function from()
+    {
+        return ' FROM ' . $this->table();
     }
 
     public function buildQuery(Query $query)
@@ -113,22 +121,18 @@ abstract class Dialect
         if ($query->type == QueryType::$UPDATE) {
             $sql .= $this->update();
             $sql .= $this->where();
-
-        } else if ($query->type == QueryType::$INSERT) {
+        } elseif ($query->type == QueryType::$INSERT) {
             $sql .= $this->insert();
-
-        } else if ($query->type == QueryType::$DELETE) {
+        } elseif ($query->type == QueryType::$DELETE) {
             $sql .= $this->delete();
             $sql .= $this->from();
             $sql .= $this->join();
             $sql .= $this->where();
-
-        } else if ($query->type == QueryType::$COUNT) {
+        } elseif ($query->type == QueryType::$COUNT) {
             $sql .= $this->select();
             $sql .= $this->from();
             $sql .= $this->join();
             $sql .= $this->where();
-
         } else {
             $sql .= $this->select();
             $sql .= $this->from();

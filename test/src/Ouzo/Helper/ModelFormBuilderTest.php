@@ -1,6 +1,6 @@
 <?php
 
-use Model\Test\Product;
+use Application\Model\Test\Product;
 use Ouzo\Helper\ModelFormBuilder;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;

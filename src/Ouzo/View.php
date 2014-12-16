@@ -46,10 +46,10 @@ class View
 
     private function _loadHelperAndView()
     {
-        $helperPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.helper.php');
+        $helperPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . '.helper.php');
         Files::loadIfExists($helperPath);
 
-        $viewPath = Path::join(ROOT_PATH, 'application', 'view', $this->_viewName . '.phtml');
+        $viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . '.phtml');
         $viewLoaded = $this->_requireIfExists($viewPath);
         if (!$viewLoaded) {
             throw new ViewException('No view found [' . $this->_viewName . ']');
@@ -68,9 +68,9 @@ class View
     private function _loadHelpers()
     {
         $viewHelperPath = Path::join('Helper', 'ViewHelper.php');
-        $appHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'ApplicationHelper.php');
+        $appHelperPath = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'ApplicationHelper.php');
         $formHelperPath = Path::join('Helper', 'FormHelper.php');
-        $urlHelperPath = Path::join(ROOT_PATH, 'application', 'helper', 'UrlHelper.php');
+        $urlHelperPath = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'UrlHelper.php');
 
         $this->_requireOnce($viewHelperPath);
         Files::loadIfExists($appHelperPath);

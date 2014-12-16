@@ -2,6 +2,7 @@
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
+use Ouzo\AutoloadNamespaces;
 use Ouzo\MetaModelCache;
 use Ouzo\Utilities\Arrays;
 
@@ -46,7 +47,7 @@ class RelationFactory
         self::validateParams($params);
         $class = $params['class'];
         $localKey = $params['foreignKey'];
-        $foreignKey = Arrays::getValue($params, 'referencedColumn') ? : MetaModelCache::getMetaInstance('\Model\\' . $class)->getIdName();
+        $foreignKey = Arrays::getValue($params, 'referencedColumn') ? : MetaModelCache::getMetaInstance(AutoloadNamespaces::getModelNamespace() . $class)->getIdName();
 
         return self::newRelation($name, $localKey, $foreignKey, false, $params);
     }

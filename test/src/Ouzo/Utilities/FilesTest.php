@@ -1,6 +1,8 @@
 <?php
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use Ouzo\Tests\StreamStub;
+use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
@@ -151,5 +153,27 @@ class FilesTest extends PHPUnit_Framework_TestCase
             array(10737418240, '10 GB'),
             array(153545080832, '143 GB'),
         );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCopyFileContent()
+    {
+        //given
+        StreamStub::register('logfile');
+        StreamStub::$body = 'content';
+        $tmpFileName = Path::joinWithTemp('test' . Clock::nowAsString());
+
+        //when
+        Files::copyContent('logfile://input', $tmpFileName);
+
+        //then
+        $content = file_get_contents($tmpFileName);
+
+        StreamStub::unregister();
+        Files::delete($tmpFileName);
+
+        $this->assertEquals('content', $content);
     }
 }

@@ -8,10 +8,61 @@ Enhancements:
 * [Tests] Added ArrayAssert::hasEqualKeysRecursively method.
 * [Utilities] Added Arrays::flattenKeysRecursively method.
 * [Utilities] Added Files::getFilesRecursivelyWithSpecifiedExtension method.
-* [Core] Added possibility to callback after init.
-* [Localization] Added I18n::labels method to get all labels or sepcified label.
+* [Core] Added after init callback.
+* [Localization] Added I18n::labels method to get all labels or specified label.
+* [Tests] Changed CatchException asserts to fluent methods.
+* [Utilities] Objects::getValue can access private fields.
+* [Tests] ArrayAssert::onProperty can access private fields (issue #113).
+* [Core] Added support for pluralization in translations (issue #111).
+* [ORM] Added Model::selectDistinct method (issue #91).
+* [ORM] Added support for model default values (issue #66).
+* [Core] Displayed routes in table (issue #93).
+* [ORM] Added TransactionalProxy.
+* [Core] Migrate to PHPUnit 4.3.3 and adding assert adapter (issue #119).
+* [Utilities] Added Strings::sprintAssoc method.
+* [Extensions] Added HTTP Auth Basic extension.
+* [Utilities] Added Strings::contains method.
+* [Utilities] Added Functions::constant, Functions::notEquals, Functions::equals and Functions::throwException methods.
+* [Mock] Added thenAnswer method.
+* [Utilities] Added FluentFunctions class.
+* [Core] Added RequestHeaders::all method.
+* [Core] Added possibility to configure multiple loggers configurations.
+* [ORM] Optimisation - do not select columns of models that will not be stored in fields.
+* [Utilities] Added Validate class (issue #117).
+* [Tests] Implement streamMediaFile in MockDownloadHandler.
+* [Utilities] Added Files::copyContent method.
+* [Core] Added possibility to group routes (#80).
+* [ORM] Extended criteria API in query builder - Restriction (issue #68).
+* [Utilities] Added Arrays::count method.
+* [Mock] Added argument matcher.
+* [Utilities] Added a default value to the StrSubstitutor.
+* [Utilities] Added Functions::isInstanceOf.
+* [Utilities] Added Date::formatTimestamp.
+* [Utilities] Added Comparators.
+* [Utilities] Enhanced the Clock class.
+* [Core] Paths to model, controller and widget are configurable from config (issue #147).
+* [Utilities] Added RequestHeaders::ip.
 
 Bug fixes:
+* [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined (issue #121).
+* [Utilities] Fixed generating model fields in correct order (issue #102).
+* [Utilities] Fixed generating empty primary key when not in table (issue #98).
+* [Utilities] Fixed Functions::notBlank (issue #106).
+* [Core] Fixed throwing orginal message when throw UserException (issue #109).
+* [Utilities] Fixed Arrays::flattenKeysRecursively (issue #110).
+* [Core] Fixed parsing of Json inputs (#114).
+* [ORM] Fixed zero as primary key.
+* [Utilities] Fixed extractor for 'empty' values like 0 or empty array.
+* [Core] Fixed HTTP request parameters priority.
+* [Core] Fixed parse PUT HTTP request.
+* [Core] Fixed uri ContentType letter case insensitive.
+* [ORM] Fixed not fetching relation joined through hasMany (which resulted in an error).
+* [Core] Fixed generating form name in ModelFormBuilder.
+* [Mock] Fixed DynamicProxy uses uniqid (issue #127).
+* [Core] Fixed invalid formatting of GeneratedUriHelper (issue #131).
+* [Utilities] Fixed Boris (issue #136).
+* [Core] Updated path resolver to return correct view depend on request headers.
+* [ORM] accept single param in Model::findBySql (issue #145).
 
 Release 1.2
 -----------

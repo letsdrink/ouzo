@@ -38,10 +38,9 @@ class Router
      */
     private function _findRouteRule($path)
     {
-        $filtered = Arrays::filter(Route::getRoutes(), function (RouteRule $rule) use ($path) {
+        return Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($path) {
             return $rule->matches($path);
         });
-        return Arrays::firstOrNull($filtered);
     }
 }
 

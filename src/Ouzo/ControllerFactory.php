@@ -7,16 +7,16 @@ use Ouzo\Utilities\ClassName;
 
 class ControllerFactory
 {
-    public function __construct($controllerPath = "\\Controller\\")
+    public function __construct()
     {
-        $this->controllerPath = $controllerPath;
+        $this->controllerNamespace = AutoloadNamespaces::getControllerNamespace();
     }
 
     public function createController(RouteRule $routeRule)
     {
         $controller = $routeRule->getController();
         $controllerName = ClassName::pathToFullyQualifiedName($controller);
-        $controller = $this->controllerPath . $controllerName . "Controller";
+        $controller = $this->controllerNamespace . $controllerName . "Controller";
 
         $this->_validateControllerExists($controller);
 

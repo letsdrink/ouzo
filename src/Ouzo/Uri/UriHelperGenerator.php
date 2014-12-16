@@ -4,18 +4,21 @@ namespace Ouzo\Uri;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 class UriHelperGenerator
 {
+    const INDENT = '    ';
     /**
      * RouteRule[]
      */
     private $_routes;
     private $_generatedFunctions = "<?php
-function checkParameter(\$parameter) {
-\tif (!isset(\$parameter)) {
-\t\tthrow new \\InvalidArgumentException(\"Missing parameters\");
-\t}
+function checkParameter(\$parameter)
+{
+%{INDENT}if (!isset(\$parameter)) {
+%{INDENT}%{INDENT}throw new \\InvalidArgumentException(\"Missing parameters\");
+%{INDENT}}
 }\n\n";
 
     /**
@@ -67,11 +70,11 @@ FUNCTION;
     {
         if ($parameters) {
             $checkFunctionParameters = Arrays::map($parameters, function ($element) {
-                return "\tcheckParameter($element);";
+                return "%{INDENT}checkParameter($element);";
             });
-            return implode("\n", $checkFunctionParameters) . "\n\t";
+            return implode("\n", $checkFunctionParameters) . "\n%{INDENT}";
         }
-        return "\t";
+        return "%{INDENT}";
     }
 
     private function _prepareParameters($uri)
@@ -85,7 +88,7 @@ FUNCTION;
 
     public function getGeneratedFunctions()
     {
-        return trim($this->_generatedFunctions);
+        return trim(Strings::sprintAssoc($this->_generatedFunctions, array('INDENT' => self::INDENT)));
     }
 
     public function saveToFile($file)

@@ -35,7 +35,7 @@ class AuthBasicExtension
         };
     }
 
-    static function _checkCredentials($authUser, $authPassword, $realm)
+    public static function _checkCredentials($authUser, $authPassword, $realm)
     {
         $login = Arrays::getValue($_SERVER, 'PHP_AUTH_USER');
         $pass = Arrays::getValue($_SERVER, 'PHP_AUTH_PW');

@@ -3,6 +3,7 @@ namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\WhereClause;
+use Ouzo\Restriction\Restriction;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Joiner;
 
@@ -44,6 +45,9 @@ class DialectUtil
         if (is_array($value)) {
             $in = implode(', ', array_fill(0, count($value), '?'));
             return $key . ' IN (' . $in . ')';
+        }
+        if ($value instanceof Restriction) {
+            return $value->toSql($key);
         }
         return $key . ' = ?';
     }

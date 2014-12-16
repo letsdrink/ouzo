@@ -12,30 +12,30 @@ class Functions
         };
     }
 
-    public static function extractField($name)
+    public static function extractField($name, $accessPrivate = false)
     {
-        return function ($object) use ($name) {
-            return $object->$name;
+        return function ($object) use ($name, $accessPrivate) {
+            return Objects::getValue($object, $name, null, $accessPrivate);
         };
     }
 
-    public static function extractFieldRecursively($names)
+    public static function extractFieldRecursively($names, $accessPrivate = false)
     {
-        return function ($object) use ($names) {
-            return Objects::getValueRecursively($object, $names);
+        return function ($object) use ($names, $accessPrivate) {
+            return Objects::getValueRecursively($object, $names, $accessPrivate);
         };
     }
 
-    public static function extractExpression($selector)
+    public static function extractExpression($selector, $accessPrivate = false)
     {
         if (is_callable($selector)) {
             return $selector;
-        } else if (!is_string($selector)) {
+        } elseif (!is_string($selector)) {
             throw new Exception('Invalid selector: ' . $selector);
-        } else if (preg_match('/\(\)|->/', $selector)) {
-            return Functions::extractFieldRecursively($selector);
+        } elseif (preg_match('/\(\)|->/', $selector)) {
+            return Functions::extractFieldRecursively($selector, $accessPrivate);
         } else {
-            return Functions::extractField($selector);
+            return Functions::extractField($selector, $accessPrivate);
         }
     }
 
@@ -48,14 +48,14 @@ class Functions
 
     public static function constant($value)
     {
-        return function () use($value) {
+        return function () use ($value) {
             return $value;
         };
     }
 
     public static function throwException(Exception $exception)
     {
-        return function () use($exception) {
+        return function () use ($exception) {
             throw $exception;
         };
     }
@@ -78,6 +78,13 @@ class Functions
     {
         return function ($object) {
             return is_array($object);
+        };
+    }
+
+    public static function isInstanceOf($type)
+    {
+        return function ($object) use ($type) {
+            return $object instanceof $type;
         };
     }
 
@@ -169,6 +176,20 @@ class Functions
     {
         return function ($string) use ($character) {
             return $character . $string . $character;
+        };
+    }
+
+    public static function equals($object)
+    {
+        return function ($value) use ($object) {
+            return $value == $object;
+        };
+    }
+
+    public static function notEquals($object)
+    {
+        return function ($value) use ($object) {
+            return $value != $object;
         };
     }
 }

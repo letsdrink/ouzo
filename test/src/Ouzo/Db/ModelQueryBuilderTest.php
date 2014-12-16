@@ -1,15 +1,16 @@
 <?php
-use Model\Test\Category;
-use Model\Test\Manufacturer;
-use Model\Test\Order;
-use Model\Test\OrderProduct;
-use Model\Test\Product;
+use Application\Model\Test\Category;
+use Application\Model\Test\Manufacturer;
+use Application\Model\Test\Order;
+use Application\Model\Test\OrderProduct;
+use Application\Model\Test\Product;
 use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
 use Ouzo\Db\Stats;
 use Ouzo\DbException;
 use Ouzo\Model;
+use Ouzo\Restrictions;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
@@ -118,6 +119,24 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertCount(1, $loadedProducts);
         $this->assertEquals($product, $loadedProducts[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAcceptRestrictionsMixedWithValuesInWhere()
+    {
+        //given
+        $product = Product::create(array('name' => 'tech', 'description' => 'desc'));
+
+        //when
+        $loadedProduct = Product::where(array(
+            'name' => Restrictions::equalTo('tech'),
+            'description' => 'desc'
+        ))->fetch();
+
+        //then
+        $this->assertEquals($product, $loadedProduct);
     }
 
     /**
@@ -591,6 +610,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldNotFetchRelationJoinedThroughHasMany()
+    {
+        //given
+        $category = Category::create(array('name' => 'phones'));
+        $samsung = Manufacturer::create(array('name' => 'samsung'));
+        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $samsung->getId()));
+        Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+
+        //when
+        $joined = Category::join('products->manufacturer')->where('products.id = ?', $product->getId())->fetch();
+
+        //then
+        $this->assertNull(Arrays::getValue($joined->attributes(), 'products'));
+        $this->assertEquals($category, $joined);
+    }
+
+    /**
+     * @test
+     */
     public function shouldFetchWithRelationWhenObjectHasNoForeignKeyValue()
     {
         //given
@@ -702,6 +740,25 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //then
         $this->assertNull($products[0]->categoryWithNameByDescription);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDistinctResults()
+    {
+        //given
+        Product::create(array('name' => 'a', 'description' => 'bob'));
+        Product::create(array('name' => 'b', 'description' => 'john'));
+        Product::create(array('name' => 'c', 'description' => 'bob'));
+
+        //when
+        $result = Product::selectDistinct('description')->fetchAll();
+
+        //then
+        $this->assertCount(2, $result);
+        $this->assertEquals('bob', $result[0][0]);
+        $this->assertEquals('john', $result[1][0]);
     }
 
     /**
@@ -1217,5 +1274,46 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //then
         Assert::thatArray($names)->containsExactly('category for billy');
+    }
+
+    /**
+     * @test
+     * @group non-sqlite3
+     */
+    public function shouldAliasTableInUpdateQuery()
+    {
+        //given
+        Category::create(array('name' => 'old'));
+
+        //when
+        Category::alias('c')
+            ->where(array(
+                'c.name' => 'old'
+            ))
+            ->update(array(
+                'name' => "new"
+            ));
+
+        //then
+        Assert::thatArray(Category::all())->onProperty('name')->containsExactly('new');
+    }
+
+    /**
+     * @test
+     * @group sqlite3
+     */
+    public function shouldThrowExceptionIfAliasInUpdateQuery()
+    {
+        //when
+        CatchException::when(Category::alias('c')
+            ->where(array(
+                'c.name' => 'old'
+            )))
+            ->update(array(
+            'name' => "new"
+        ));
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\InvalidArgumentException');
     }
 }

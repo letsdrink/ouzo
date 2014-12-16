@@ -6,11 +6,25 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 
+/**
+ * Class DynamicProxy
+ * @package Ouzo\Utilities
+ */
 class DynamicProxy
 {
+    private static $counter;
+
+    /**
+     * Creating proxy for the object.
+     * If is given methodHandler class is passed to the created proxy object and all method calls are go over thought those class.
+     *
+     * @param $className
+     * @param $methodHandler
+     * @return null
+     */
     public static function newInstance($className, $methodHandler)
     {
-        $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid();
+        $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid() . '_' . self::$counter++;
         eval(self::getProxyClassDefinition($name, $className));
         $object = null;
         eval("\$object = new $name(\$methodHandler);");
@@ -35,7 +49,7 @@ class DynamicProxy
     private static function getClassMethods($class)
     {
         $methods = $class->getMethods();
-        return Arrays::filter($methods, function(ReflectionMethod $method) {
+        return Arrays::filter($methods, function (ReflectionMethod $method) {
             return !$method->isConstructor() && !$method->isStatic();
         });
     }
@@ -61,6 +75,12 @@ class DynamicProxy
         }));
     }
 
+    /**
+     * Extract method handler from proxy object.
+     *
+     * @param $proxy
+     * @return mixed
+     */
     public static function extractMethodHandler($proxy)
     {
         return $proxy->_methodHandler;

@@ -679,16 +679,16 @@ class Arrays
      */
     public static function find(array $elements, $function)
     {
-        foreach ($elements as $elements) {
-            if ($function($elements)) {
-                return $elements;
+        foreach ($elements as $element) {
+            if ($function($element)) {
+                return $element;
             }
         }
         return null;
     }
 
     /**
-     * Computes the intersection of arrays
+     * Computes the intersection of arrays.
      *
      * @param array $array1
      * @param array $array2
@@ -699,6 +699,32 @@ class Arrays
         return array_intersect($array1, $array2);
     }
 
+    /**
+     * Setting nested value.
+     *
+     * Example:
+     * <code>
+     * $array = array();
+     * Arrays::setNestedValue($array, array('1', '2', '3'), 'value');
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [1] => Array
+     *          (
+     *              [2] => Array
+     *                  (
+     *                      [3] => value
+     *                  )
+     *          )
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @param array $keys
+     * @param $value
+     */
     public static function setNestedValue(array &$array, array $keys, $value)
     {
         $current = &$array;
@@ -711,6 +737,72 @@ class Arrays
         $current = $value;
     }
 
+    /**
+     * Returns a new array with is sorted using given comparator.
+     * The comparator function must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
+     * To obtain comparator one may use <code>Comparator</code> class (for instance <code>Comparator::natural()</code> which yields ordering using comparison operators).
+     *
+     * Example:
+     * <code>
+     * class Foo
+     * {
+     *      private $value;
+     *      function __construct($value)
+     *      {
+     *          $this->value = $value;
+     *      }
+     *      public function getValue()
+     *      {
+     *          return $this->value;
+     *      }
+     * }
+     * $values = array(new Foo(1), new Foo(3), new Foo(2));
+     * $sorted = Arrays::sort($values, Comparator::compareBy('getValue()'));
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] =>  class Foo (1) {
+     *                  private $value => int(1)
+     *              }
+     *      [1] =>  class Foo (1) {
+     *                  private $value => int(2)
+     *              }
+     *      [2] =>  class Foo (1) {
+     *                  private $value => int(3)
+     *              }
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @param $comparator
+     * @return array sorted according to the comparator
+     * @throws InvalidArgumentException
+     */
+    public static function sort(array $array, $comparator)
+    {
+        usort($array, $comparator);
+        return $array;
+    }
+
+    /**
+     * Return nested value when found, otherwise return <i>null</i> value.
+     *
+     * Example:
+     * <code>
+     * $array = array('1' => array('2' => array('3' => 'value')));
+     * $value = Arrays::getNestedValue($array, array('1', '2', '3'));
+     * </code>
+     * Result:
+     * <code>
+     * value
+     * </code>
+     *
+     * @param array $array
+     * @param array $keys
+     * @return array|mixed|null
+     */
     public static function getNestedValue(array $array, array $keys)
     {
         foreach ($keys as $key) {
@@ -724,6 +816,8 @@ class Arrays
 
     /**
      * @deprecated
+     * @param array $array
+     * @param array $keys
      */
     public static function removeNestedValue(array &$array, array $keys)
     {
@@ -731,6 +825,27 @@ class Arrays
         self::removeNestedKey($array, $keys);
     }
 
+    /**
+     * Returns array with removed keys even are nested.
+     *
+     * Example:
+     * <code>
+     * $array = array('1' => array('2' => array('3' => 'value')));$array = array('1' => array('2' => array('3' => 'value')));
+     * Arrays::removeNestedKey($array, array('1', '2'));
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [1] => Array
+     *          (
+     *          )
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @param array $keys
+     */
     public static function removeNestedKey(array &$array, array $keys)
     {
         $key = array_shift($keys);
@@ -741,6 +856,34 @@ class Arrays
         }
     }
 
+    /**
+     * Check is array has nested keys. Possibly check array with null values using flag <i>Arrays::TREAT_NULL_AS_VALUE</i>.
+     *
+     * Example:
+     * <code>
+     * $array = array('1' => array('2' => array('3' => 'value')));
+     * $value = Arrays::hasNestedKey($array, array('1', '2', '3'));
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     *
+     * Example with null values:
+     * <code>
+     * $array = array('1' => array('2' => array('3' => null)));
+     * $value = Arrays::hasNestedKey($array, array('1', '2', '3'), Arrays::TREAT_NULL_AS_VALUE);
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     *
+     * @param array $array
+     * @param array $keys
+     * @param null $flags
+     * @return bool
+     */
     public static function hasNestedKey(array $array, array $keys, $flags = null)
     {
         foreach ($keys as $key) {
@@ -752,6 +895,45 @@ class Arrays
         return true;
     }
 
+    /**
+     * Returns maps of the flatten keys with corresponding values.
+     *
+     * Example:
+     * <code>
+     * $array = array(
+     *      'customer' => array(
+     *          'name' => 'Name',
+     *          'phone' => '123456789'
+     *      ),
+     *      'other' => array(
+     *          'ids_map' => array(
+     *              '1qaz' => 'qaz',
+     *              '2wsx' => 'wsx'
+     *          ),
+     *          'first' => array(
+     *              'second' => array(
+     *                  'third' => 'some value'
+     *              )
+     *          )
+     *      )
+     * );
+     * $flatten = Arrays::flattenKeysRecursively($array)
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [customer.name] => Name
+     *      [customer.phone] => 123456789
+     *      [other.ids_map.1qaz] => qaz
+     *      [other.ids_map.2wsx] => wsx
+     *      [other.first.second.third] => some value
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @return array
+     */
     public static function flattenKeysRecursively(array $array)
     {
         $result = array();
@@ -769,5 +951,35 @@ class Arrays
                 $result[$itemKey] = $value;
             }
         }
+    }
+
+    /**
+     * Returns the number of elements for which the predicate returns true.
+     *
+     * Example:
+     * <code>
+     * $array = array(1, 2, 3);
+     * $count = Arrays::count($array, function ($element) {
+     *      return $element < 3;
+     * });
+     * </code>
+     * Result:
+     * <code>
+     * 2
+     * </code>
+     *
+     * @param array $elements
+     * @param callable $predicate
+     * @return int
+     */
+    public static function count(array $elements, $predicate)
+    {
+        $count = 0;
+        foreach ($elements as $element) {
+            if (Functions::call($predicate, $element)) {
+                $count++;
+            }
+        }
+        return $count;
     }
 }

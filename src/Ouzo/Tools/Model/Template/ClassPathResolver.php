@@ -29,6 +29,6 @@ class ClassPathResolver
 
     public function getClassFileName()
     {
-        return Path::join(ROOT_PATH, 'application', $this->resolvePathFromNameSpace(), $this->className . ".php");
+        return Path::join(ROOT_PATH, 'Application', $this->resolvePathFromNameSpace(), $this->className . ".php");
     }
 }

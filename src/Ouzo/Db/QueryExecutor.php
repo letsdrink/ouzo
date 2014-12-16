@@ -5,6 +5,7 @@ use InvalidArgumentException;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
+use Ouzo\Restriction\Restriction;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
 use PDO;
@@ -109,7 +110,7 @@ class QueryExecutor
     public function _addBindValue($value)
     {
         if (is_array($value)) {
-            $this->_boundValues = array_merge($this->_boundValues, $value);
+            $this->_addBindArrayValue($value);
         } else {
             $this->_boundValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
         }
@@ -152,6 +153,17 @@ class QueryExecutor
     {
         if (!$whereClause->isEmpty()) {
             $this->_addBindValue($whereClause->values);
+        }
+    }
+
+    private function _addBindArrayValue(array $array)
+    {
+        foreach ($array as $value) {
+            if ($value instanceof Restriction) {
+                $this->_boundValues = array_merge($this->_boundValues, Arrays::toArray($value->getValues()));
+            } else {
+                $this->_boundValues[] = $value;
+            }
         }
     }
 }

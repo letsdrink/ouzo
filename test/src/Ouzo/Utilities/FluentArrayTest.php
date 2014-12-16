@@ -1,6 +1,6 @@
 <?php
-use Model\Test\Category;
-use Model\Test\Product;
+use Application\Model\Test\Category;
+use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
@@ -157,6 +157,36 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('default', $first);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSkipElements()
+    {
+        //given
+        $array = array(1, 2, 3, 4, 5);
+
+        //when
+        $result = FluentArray::from($array)->skip(2)->toArray();
+
+        //then
+        $this->assertEquals(array(3, 4, 5), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLimitElements()
+    {
+        //given
+        $array = array(1, 2, 3, 4, 5);
+
+        //when
+        $result = FluentArray::from($array)->limit(3)->toArray();
+
+        //then
+        $this->assertEquals(array(1, 2, 3), $result);
     }
 
     /**

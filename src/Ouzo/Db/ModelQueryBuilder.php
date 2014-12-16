@@ -3,7 +3,6 @@ namespace Ouzo\Db;
 
 use Ouzo\Db;
 use Ouzo\DbException;
-use Ouzo\ExceptionHandling\OuzoException;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
@@ -44,12 +43,12 @@ class ModelQueryBuilder
 
     private function getModelAliasOrTable()
     {
-        return $this->_query->aliasTable ? : $this->_model->getTableName();
+        return $this->_query->aliasTable ?: $this->_model->getTableName();
     }
 
     private function selectModelColumns(Model $metaInstance, $alias)
     {
-        if($this->_selectModel) {
+        if ($this->_selectModel) {
             $prefix = $this->aliasPrefixForSelect($alias);
             $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases($prefix, $metaInstance->_getFields(), $alias);
         }
@@ -164,8 +163,10 @@ class ModelQueryBuilder
         $aliasToOffset[$this->getModelAliasOrTable()] = 0;
         $offset = count($this->_model->getFields());
         foreach ($this->_joinedModels as $joinedModel) {
-            $aliasToOffset[$joinedModel->alias()] = $offset;
-            $offset += count($joinedModel->getModelObject()->getFields());
+            if ($joinedModel->storeField()) {
+                $aliasToOffset[$joinedModel->alias()] = $offset;
+                $offset += count($joinedModel->getModelObject()->getFields());
+            }
         }
         return $aliasToOffset;
     }
@@ -271,7 +272,9 @@ class ModelQueryBuilder
         if (!$this->isAlreadyJoined($modelJoin)) {
             $this->_query->addJoin($modelJoin->asJoinClause());
             $this->_joinedModels[] = $modelJoin;
-            $this->selectModelColumns($modelJoin->getModelObject(), $modelJoin->alias());
+            if ($modelJoin->storeField()) {
+                $this->selectModelColumns($modelJoin->getModelObject(), $modelJoin->alias());
+            }
         }
     }
 
@@ -320,6 +323,17 @@ class ModelQueryBuilder
         $this->_query->selectColumns = Arrays::toArray($columns);
         $this->_query->selectType = $type;
         return $this;
+    }
+
+    /**
+     * @param $columns
+     * @param int $type
+     * @return ModelQueryBuilder
+     */
+    public function selectDistinct($columns, $type = PDO::FETCH_NUM)
+    {
+        $this->_query->distinct = true;
+        return $this->select($columns, $type);
     }
 
     public function __clone()

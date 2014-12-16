@@ -1,5 +1,5 @@
 <?php
-namespace Model\Test;
+namespace Application\Model\Test;
 
 use Ouzo\Db;
 use Ouzo\Db\WhereClause;

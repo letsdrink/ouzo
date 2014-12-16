@@ -18,6 +18,14 @@ class Sqlite3Dialect extends Dialect
         return Arrays::getValue($errorInfo, 1);
     }
 
+    public function update()
+    {
+        if ($this->_query->aliasTable) {
+            throw new \InvalidArgumentException("Alias in update query is nut supported in sqlite");
+        }
+        return parent::update();
+    }
+
     public function join()
     {
         $any = Arrays::any($this->_query->joinClauses, function (JoinClause $joinClause) {

@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Logger;
 
 use Ouzo\Config;
@@ -15,11 +14,11 @@ class StdOutputLogger implements LoggerInterface
     private $_messageFormatter;
     private $_outputStreamIdentifier;
 
-    public function __construct($name, $outputStreamIdentifier = 'php')
+    public function __construct($name, $configuration, $outputStreamIdentifier = 'php')
     {
         $this->_name = $name;
         $messageFormatterClass = 'Ouzo\Logger\DefaultMessageFormatter';
-        $logger = Config::getValue('logger');
+        $logger = Config::getValue('logger', $configuration);
         if ($logger) {
             $messageFormatterClass = Arrays::getValue($logger, 'formatter', $messageFormatterClass);
         }

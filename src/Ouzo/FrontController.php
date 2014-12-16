@@ -72,7 +72,7 @@ class FrontController
         ob_end_flush();
     }
 
-    function _invokeControllerMethods()
+    public function _invokeControllerMethods()
     {
         $this->_invokeInit();
         if ($this->_invokeBeforeMethods()) {

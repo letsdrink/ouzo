@@ -1,7 +1,8 @@
 <?php
-use Model\Test\Product;
+use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\Functions;
 
 class ArraysTest extends PHPUnit_Framework_TestCase
@@ -299,7 +300,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSortArray()
+    public function shouldSortArrayByField()
     {
         //given
         $product1 = new Product(array('id_category' => '2'));
@@ -312,6 +313,69 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array($product3, $product1, $product2), $sorted);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSortArrayByCompoundComparator()
+    {
+        //given
+        $product1 = new Product(array('name' => 'b', 'description' => '2'));
+        $product2 = new Product(array('name' => 'a', 'description' => '1'));
+        $product3 = new Product(array('name' => 'a', 'description' => '2'));
+
+        $array = array($product3, $product1, $product2);
+
+        $comparator = Comparator::compound(Comparator::reverse(Comparator::compareBy('name')), Comparator::compareBy('description'));
+
+        //when
+        $sorted = Arrays::sort($array, $comparator);
+
+        //then
+        $orderedProperly = array($product1, $product2, $product3);
+        $this->assertEquals($orderedProperly, $sorted);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSortArrayIndependentlyFromInitialOrder()
+    {
+        //given
+        $product1 = new Product(array('name' => 'a'));
+        $product2 = new Product(array('name' => 'b'));
+        $product3 = new Product(array('name' => 'c'));
+
+        $array1 = array($product1, $product2, $product3);
+        $array2 = array($product2, $product1, $product3);
+        $array3 = array($product3, $product1, $product2);
+
+        $comparator = Comparator::compareBy('name');
+
+        //when
+        $sorted1 = Arrays::sort($array1, $comparator);
+        $sorted2 = Arrays::sort($array2, $comparator);
+        $sorted3 = Arrays::sort($array3, $comparator);
+
+        //then
+        $this->assertEquals($sorted1, $sorted2);
+        $this->assertEquals($sorted2, $sorted3);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSortArrayByDefaultExtractor()
+    {
+        //given
+        $array = array(1, 3, 2);
+
+        //when
+        $sorted = Arrays::sort($array, Comparator::natural());
+
+        //then
+        $this->assertEquals(array(1, 2, 3), $sorted);
     }
 
     /**
@@ -820,5 +884,22 @@ class ArraysTest extends PHPUnit_Framework_TestCase
             'other.first.second.third' => 'some value'
         );
         $this->assertEquals($expected, $flatten);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCountElements()
+    {
+        //given
+        $array = array(1, 2, 3);
+
+        //when
+        $count = Arrays::count($array, function ($element) {
+            return $element < 3;
+        });
+
+        //then
+        $this->assertEquals(2, $count);
     }
 }

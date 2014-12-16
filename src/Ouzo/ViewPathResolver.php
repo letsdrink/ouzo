@@ -1,29 +1,29 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Path;
 
 class ViewPathResolver
 {
     public static function resolveViewPath($name, $responseType)
     {
-        return Path::join(ROOT_PATH, 'application', 'view', $name . self::getViewPostfix($responseType));
+        return Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $name . self::getViewPostfix($responseType));
     }
 
     private static function getViewPostfix($responseType)
     {
-        if (Uri::isAjax()) {
-            return '.ajax.phtml';
+        $availableViewsMap = array(
+            'text/xml' => '.xml.phtml',
+            'application/json' => '.json.phtml',
+            'text/json' => '.json.phtml',
+        );
+
+        $viewForType = Arrays::getValue($availableViewsMap, $responseType, false);
+        if ($viewForType) {
+            return $viewForType;
         }
 
-        switch ($responseType) {
-            case 'text/xml':
-                return '.xml.phtml';
-            case 'application/json':
-            case 'text/json':
-                return '.json.phtml';
-            default:
-                return '.phtml';
-        }
+        return Uri::isAjax() ? '.ajax.phtml' : '.phtml';
     }
 }

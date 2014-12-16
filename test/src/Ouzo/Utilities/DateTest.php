@@ -166,10 +166,10 @@ class DateTest extends PHPUnit_Framework_TestCase
         $date = '2013-09-09 13:03:43';
 
         //when
-        $begin = Date::endOfDay($date);
+        $end = Date::endOfDay($date);
 
         //then
-        $this->assertEquals('2013-09-09 23:59:59.9999', $begin);
+        $this->assertEquals('2013-09-09 23:59:59.9999', $end);
     }
 
     /**
@@ -185,5 +185,20 @@ class DateTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('13:03', $timeOnly);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFormatTimestamp()
+    {
+        //given
+        $timestamp = '1417083911';
+
+        //when
+        $date = Date::formatTimestamp($timestamp);
+
+        //then
+        $this->assertEquals('2014-11-27 11:25', $date);
     }
 }

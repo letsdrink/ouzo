@@ -380,6 +380,24 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $sql = $this->dialect->buildQuery($query);
 
         //then
-        $this->assertEquals("UPDATE products set col1 = ?, col2 = ? WHERE col1 = ? AND col2 = ?", $sql);
+        $this->assertEquals("UPDATE products SET col1 = ?, col2 = ? WHERE col1 = ? AND col2 = ?", $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectDistinctFrom()
+    {
+        // given
+        $query = new Query();
+        $query->selectColumns = array('name');
+        $query->table = 'products';
+        $query->distinct = true;
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT DISTINCT name FROM products', $sql);
     }
 }
