@@ -19,8 +19,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Ouzo\\": "src\\Ouzo",
-            "Command\\": "bin"
+            "Ouzo\\": "src/Ouzo/",
+            "Command\\": "bin/"
         }
     },
     "autoload-dev": {
