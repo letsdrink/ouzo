@@ -591,6 +591,38 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldAcceptParamsInFindBySql()
+    {
+        //given
+        Category::create(array('name' => 'phones1'));
+        Category::create(array('name' => 'phones2'));
+
+        //when
+        $found = Category::findBySql("SELECT * FROM categories where name = ?", array('phones1'));
+
+        //then
+        Assert::thatArray($found)->onProperty('name')->containsOnly('phones1');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAcceptSingleParamInFindBySql()
+    {
+        //given
+        Category::create(array('name' => 'phones1'));
+        Category::create(array('name' => 'phones2'));
+
+        //when
+        $found = Category::findBySql("SELECT * FROM categories where name = ?", 'phones1');
+
+        //then
+        Assert::thatArray($found)->onProperty('name')->containsOnly('phones1');
+    }
+
+    /**
+     * @test
+     */
     public function shouldThrowValidationExceptionIfModelInvalid()
     {
         //given
