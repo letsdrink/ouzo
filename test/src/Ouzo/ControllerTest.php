@@ -359,6 +359,6 @@ class ControllerTest extends ControllerTestCase
         $controller->renderAjaxView();
 
         //then
-        $this->assertEquals('Controller', $controller->view->getViewName());
+        $this->assertEquals('Controller/', $controller->view->getViewName());
     }
 }
