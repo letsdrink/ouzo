@@ -14,6 +14,7 @@ class Category extends Model
 }
 ```
 _Model_ constructor accepts the following parameters:
+
 * **'table'** - defaults to pluralized class name. E.g. customer_orders for `CustomerOrder`
 * **'primaryKey'** - defaults to `id`
 * **'sequence'** - defaults to `table_primaryKey_seq`
@@ -139,6 +140,7 @@ Loads object for the given primary key. If object does not exist, null is return
 
 #### findBySql($nativeSql, $params = array())
 Executes a native sql and returns an array of model objects created by passing every result row to the model constructor.
+
 * $nativeSql - database specific sql
 * $params - bind parameters
 
@@ -167,6 +169,7 @@ echo $user->group->name;
 
 
 Ouzo supports 3 types of associations:
+
 * **Belongs to** - expresses 1-1 relationship. It's specified by `belongsTo` parameter.
 Use `belongsTo` in a class that contains the foreign key.
 
@@ -176,6 +179,7 @@ Use `hasOne` in a class that contains the key referenced by the foreign key.
 * **Has many** - expresses One-to-many relationship. It's specified by `hasMany` parameter.
 
 Relations are defined by following parameters:
+
 * **class** - name of the associated class.
 * **foreignKey** - foreign key.
 * **referencedColumn** - column referenced by the foreign key. By default it's the primary key of the referenced class.
@@ -238,7 +242,7 @@ If you want to customize your relation you can use **conditions** mechanism. For
 
 ```php
 'hasOne' => array(
-	'product_named_billy' => array(
+    'product_named_billy' => array(
 		'class' => 'Test\Product',
 		'foreignKey' => 'id_category',
 		'conditions' => "products.name = 'billy'"
@@ -407,6 +411,7 @@ User:all();
 ## Join
 
 Types:
+
 * `Model::join` or `Model::leftJoin` - left join,
 * `Model::innerJoin` - inner join,
 * `Model::rightJoin` - right join.
