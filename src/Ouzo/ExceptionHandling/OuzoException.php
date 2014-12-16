@@ -15,7 +15,9 @@ class OuzoException extends Exception
         $this->_httpCode = $httpCode;
         $this->_errors = Arrays::toArray($errors);
         $this->_headers = $headers;
-        parent::__construct();
+
+        $firstError = Arrays::first($this->_errors)->getMessage();
+        parent::__construct($firstError);
     }
 
     public function getHttpCode()

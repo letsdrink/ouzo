@@ -42,4 +42,9 @@ class Error
         $message = I18n::t($prefix . $code, $params);
         return new Error($code, $message);
     }
+
+    public function getMessage()
+    {
+        return $this->message;
+    }
 }

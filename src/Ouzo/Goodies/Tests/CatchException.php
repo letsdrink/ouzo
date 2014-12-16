@@ -2,7 +2,6 @@
 namespace Ouzo\Tests;
 
 use Exception;
-use Ouzo\ExceptionHandling\OuzoException;
 
 class CatchException
 {
@@ -65,9 +64,7 @@ class CatchExceptionAssert
 
     public function hasMessage($message)
     {
-        if ($this->exception instanceof OuzoException) {
-            Assert::thatArray($this->exception->getErrors())->onProperty('message')->contains($message);
-        } elseif ($this->exception instanceof Exception) {
+        if ($this->exception instanceof Exception) {
             AssertAdapter::assertEquals($message, $this->exception->getMessage());
         } else {
             AssertAdapter::fail('Message not contains in exceptions');
