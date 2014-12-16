@@ -10,6 +10,7 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Utilities\Arrays;
+use Ouzo\View;
 
 class SimpleTestController extends Controller
 {
@@ -326,13 +327,28 @@ class ControllerTest extends ControllerTestCase
         Config::overridePropertyArray(array('global', 'prefix_system'), 'prefix');
         $_SESSION = array();
         $controller = new Controller(new RouteRule('', '', '', false));
-        
+
         //when
         $controller->notice('hello');
-        
+
         //then
         Assert::thatArray(Session::get('messages'))->containsOnly(new Notice('hello', null));
 
         Config::revertPropertyArray(array('global', 'prefix_system'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRenderAjaxViewWithoutViewName()
+    {
+        //given
+        $controller = new Controller(new RouteRule('', '', 'controller', false));
+
+        //when
+        $controller->renderAjaxView();
+
+        //then
+        $this->assertEquals('Controller', $controller->view->getViewName());
     }
 }

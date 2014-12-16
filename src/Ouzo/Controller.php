@@ -33,7 +33,7 @@ class Controller
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
-        $viewName = Path::join(ClassName::pathToFullyQualifiedName($this->currentController), $this->currentAction) ? : '/';
+        $viewName = Path::join(ClassName::pathToFullyQualifiedName($this->currentController), $this->currentAction) ?: '/';
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
@@ -113,9 +113,9 @@ class Controller
         }
     }
 
-    public function renderAjaxView($viewName)
+    public function renderAjaxView($viewName = null)
     {
-        $view = $this->view->render($viewName);
+        $view = $viewName ? $this->view->render($viewName) : $this->currentController . '/' . $this->currentAction;
         $this->layout->renderAjax($view);
     }
 
