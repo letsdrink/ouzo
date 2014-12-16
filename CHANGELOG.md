@@ -42,6 +42,7 @@ Enhancements:
 * [Utilities] Enhanced the Clock class.
 * [Core] Paths to model, controller and widget are configurable from config (issue #147).
 * [Utilities] Added RequestHeaders::ip.
+* [Core] Controller::renderAjaxView use current action as default (issue #104).
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined (issue #121).
@@ -62,7 +63,8 @@ Bug fixes:
 * [Core] Fixed invalid formatting of GeneratedUriHelper (issue #131).
 * [Utilities] Fixed Boris (issue #136).
 * [Core] Updated path resolver to return correct view depend on request headers.
-* [ORM] accept single param in Model::findBySql (issue #145).
+* [ORM] Accept single param in Model::findBySql (issue #145).
+* [ORM] Alias in update queries (issue #142).
 
 Release 1.2
 -----------
