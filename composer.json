@@ -37,6 +37,9 @@
     "phpunit/phpunit": "4.3.3",
     "satooshi/php-coveralls": "dev-master"
   },
+  "replace": {
+    "letsdrink/ouzo-goodies": "self.version"
+  },
   "archive": {
     "exclude": [
       "/test",
