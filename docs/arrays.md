@@ -18,6 +18,7 @@ $all = Arrays::all($array, function ($element) {
 ## toMap
 This method creates associative array using key and value functions on array elements.
 
+
 **Parameters:** `array $elements`, `$keyFunction`, `$valueFunction = null`
 
 **Example:**
@@ -37,6 +38,23 @@ Array
     [10] => 2
     [20] => 3
 )
+```
+
+If $valueFunction is not given Functions::identity() is used.
+
+```php
+$users = array(new User('bob'), new User('john'));
+$usersByName = Arrays::toMap($users, function ($user) {
+	return $user->name;
+}); 
+```
+
+$usersByName will contain associative array with users indexed by their names.
+
+You can Functions::extractField provided by ouzo:
+
+```php
+$usersByName = Arrays::toMap($users, Functions::extractField('name')); 
 ```
 
 ## flatten
