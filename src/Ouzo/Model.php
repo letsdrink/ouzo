@@ -429,7 +429,7 @@ class Model extends Validatable
     public static function findBySql($nativeSql, $params = array())
     {
         $meta = static::metaInstance();
-        $results = $meta->_db->query($nativeSql, $params)->fetchAll();
+        $results = $meta->_db->query($nativeSql, Arrays::toArray($params))->fetchAll();
 
         return Arrays::map($results, function ($row) use ($meta) {
             return $meta->newInstance($row);
