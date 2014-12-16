@@ -1,48 +1,51 @@
 {
-    "name": "letsdrink/ouzo",
-    "description": "Ouzo PHP MVC framework",
-    "homepage": "http://ouzoframework.org/",
-    "minimum-stability": "stable",
-    "license": "MIT",
-    "keywords": [
-        "php",
-        "mvc",
-        "framework",
-        "orm",
-        "tdd"
-    ],
-    "authors": [
-        {
-            "name": "Ouzo developers",
-            "email": "ouzo-framework@googlegroups.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Ouzo\\": "src/Ouzo/",
-            "Command\\": "bin/"
-        }
-    },
-    "autoload-dev": {
-        "classmap": ["test/"]
-    },
-    "require": {
-        "d11wtq/boris": "1.0.8",
-        "symfony/console": "2.5.7"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "4.3.3",
-        "satooshi/php-coveralls": "dev-master"
-    },
-    "archive": {
-        "exclude": [
-            "/test",
-            "/build",
-            "/config",
-            "/vendor",
-            "/*.xml",
-            "/*.sh",
-            "/bootstrap_test.php"
-        ]
+  "name": "letsdrink/ouzo",
+  "description": "Ouzo PHP MVC framework",
+  "homepage": "http://ouzoframework.org/",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "mvc",
+    "framework",
+    "orm",
+    "tdd"
+  ],
+  "authors": [
+    {
+      "name": "Ouzo developers",
+      "email": "ouzo-framework@googlegroups.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ouzo\\": [
+        "src/Ouzo/",
+        "src/Ouzo/Goodies"
+      ],
+      "Command\\": "bin/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": ["test/"]
+  },
+  "require": {
+    "d11wtq/boris": "1.0.8",
+    "symfony/console": "2.5.7"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.3.3",
+    "satooshi/php-coveralls": "dev-master"
+  },
+  "archive": {
+    "exclude": [
+      "/test",
+      "/build",
+      "/config",
+      "/vendor",
+      "/*.xml",
+      "/*.sh",
+      "/bootstrap_test.php"
+    ]
+  }
 }
