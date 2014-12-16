@@ -5,7 +5,6 @@ use Exception;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\ClassName;
-use Ouzo\Utilities\Path;
 use Ouzo\Utilities\Strings;
 
 class Controller
@@ -32,7 +31,7 @@ class Controller
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
-        $viewName = (ClassName::pathToFullyQualifiedName($this->currentController) . '/' . $this->currentAction) ? : '/';
+        $viewName = $this->getViewName();
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
@@ -114,7 +113,7 @@ class Controller
 
     public function renderAjaxView($viewName = null)
     {
-        $view = $viewName ? $this->view->render($viewName) : $this->currentController . '/' . $this->currentAction;
+        $view = $this->view->render($viewName ?: $this->getViewName());
         $this->layout->renderAjax($view);
     }
 
@@ -165,6 +164,11 @@ class Controller
         } else {
             Session::set('messages', $messages);
         }
+    }
+
+    private function getViewName()
+    {
+        return (ClassName::pathToFullyQualifiedName($this->currentController) . '/' . $this->currentAction) ?: '/';
     }
 }
 

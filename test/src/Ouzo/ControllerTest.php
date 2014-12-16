@@ -59,6 +59,11 @@ class SimpleTestController extends Controller
         $this->layout->unsetLayout();
     }
 
+    public function empty_view_name()
+    {
+        $this->renderAjaxView();
+    }
+
     public function check_http_header()
     {
         $this->header('HTTP/1.1 200 OK');
@@ -337,10 +342,10 @@ class ControllerTest extends ControllerTestCase
         Config::overridePropertyArray(array('global', 'prefix_system'), 'prefix');
         $_SESSION = array();
         $controller = new Controller(new RouteRule('', '', '', false));
-        
+
         //when
         $controller->notice('hello');
-        
+
         //then
         Assert::thatArray(Session::get('messages'))->containsOnly(new Notice('hello', null));
 
@@ -353,12 +358,12 @@ class ControllerTest extends ControllerTestCase
     public function shouldRenderAjaxViewWithoutViewName()
     {
         //given
-        $controller = new Controller(new RouteRule('', '', 'controller', false));
+        Route::allowAll('/simple_test', 'simple_test');
 
         //when
-        $controller->renderAjaxView();
+        CatchException::when($this)->get('/simple_test/empty_view_name');
 
         //then
-        $this->assertEquals('Controller/', $controller->view->getViewName());
+        CatchException::assertThat()->hasMessage('No view found [SimpleTest/empty_view_name]');
     }
 }

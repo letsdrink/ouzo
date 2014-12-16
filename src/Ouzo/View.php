@@ -59,7 +59,12 @@ class View
     private function _renderUsingOutputBuffering()
     {
         ob_start();
-        $this->_loadHelperAndView();
+        try {
+            $this->_loadHelperAndView();
+        } catch (Exception $e) {
+            ob_end_flush();
+            throw $e;
+        }
         $view = ob_get_contents();
         ob_end_clean();
         return $view;
