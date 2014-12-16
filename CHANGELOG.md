@@ -35,6 +35,10 @@ Enhancements:
 * [ORM] Extended criteria API in query builder - Restriction (issue #68).
 * [Utilities] Added Arrays::count method.
 * [Mock] Added argument matcher.
+* [Utilities] Added a default value to the StrSubstitutor.
+* [Utilities] Added Functions::isInstanceOf.
+* [Utilities] Added Date::formatTimestamp.
+* [Utilities] Added Comparators.
 
 Bug fixes:
 * [ORM] Added meaningful exception when Model::findById is invoked, but no primary key is defined (issue #121).
@@ -53,6 +57,8 @@ Bug fixes:
 * [Core] Fixed generating form name in ModelFormBuilder.
 * [Mock] Fixed DynamicProxy uses uniqid (issue #127).
 * [Core] Fixed invalid formatting of GeneratedUriHelper (issue #131).
+* [Utilities] Fixed Boris (issue #136).
+* [Core] Updated path resolver to return correct view depend on request headers.
 
 Release 1.2
 -----------
