@@ -11,7 +11,15 @@ class WhereClause
     public function __construct($where, $whereValues = array())
     {
         $this->where = $where;
-        $this->values = is_array($where) ? Arrays::flatten(array_values($where)) : $whereValues;
+        $this->values = $this->prepareValues($where, $whereValues);
+    }
+
+    private function prepareValues($where, $whereValues)
+    {
+        if ($where instanceof Any) {
+            $where = $where->getConditions();
+        }
+        return is_array($where) ? Arrays::flatten(array_values($where)) : $whereValues;
     }
 
     public function isEmpty()

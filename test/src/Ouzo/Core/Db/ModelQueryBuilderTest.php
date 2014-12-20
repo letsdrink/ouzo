@@ -5,6 +5,7 @@ use Application\Model\Test\Order;
 use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
 use Ouzo\Db;
+use Ouzo\Db\Any;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
 use Ouzo\Db\Stats;
@@ -1310,10 +1311,70 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
                 'c.name' => 'old'
             )))
             ->update(array(
-            'name' => "new"
-        ));
+                'name' => "new"
+            ));
 
         //then
         CatchException::assertThat()->isInstanceOf('\InvalidArgumentException');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSearchAnyOf()
+    {
+        //given
+        $category1 = Category::create(array('name' => 'test1'));
+        $category2 = Category::create(array('name' => 'test3'));
+        $category3 = Category::create(array('name' => 'test with parent', 'id_parent' => $category2->getId()));
+
+        //when
+        $categories = Category::where(Any::of(array('name' => array('test1', 'test2'), 'id_parent' => $category2->getId())))
+            ->fetchAll();
+
+        //then
+        Assert::thatArray($categories)->hasSize(2)
+            ->onProperty('name')->containsExactly($category1->name, $category3->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSearchAnyOfWithRestrictions()
+    {
+        //given
+        $category1 = Category::create(array('name' => 'test1'));
+        $category2 = Category::create(array('name' => 'test2'));
+        $category3 = Category::create(array('name' => 'other name'));
+        Category::create(array('name' => 'some other name'));
+
+        //when
+        $categories = Category::where(Any::of(array('name' => Restrictions::like('tes%'), 'id' => $category3->getId())))
+            ->fetchAll();
+
+        //then
+        Assert::thatArray($categories)->hasSize(3)
+            ->onProperty('name')->containsExactly($category1->name, $category2->name, $category3->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSearchAnyOfAndWhereValues()
+    {
+        //given
+        $category = Category::create(array('name' => 'shop'));
+        $product1 = Product::create(array('name' => 'notebook', 'description' => 'notebook desc', 'id_category' => $category->getId()));
+        $product2 = Product::create(array('name' => 'tablet', 'description' => 'tablet desc', 'id_category' => $category->getId()));
+        Product::create(array('name' => 'pc', 'description' => 'pc desc'));
+
+        //when
+        $products = Product::where(Any::of(array('name' => 'tablet', 'description' => Restrictions::like('%desc'))))
+            ->where(array('id_category' => $category->getId()))
+            ->fetchAll();
+
+        //then
+        Assert::thatArray($products)->hasSize(2)
+            ->onProperty('id')->containsExactly($product1->getId(), $product2->getId());
     }
 }

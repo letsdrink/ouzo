@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo\Db\Dialect;
 
+use Ouzo\Db\Any;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\WhereClause;
 use Ouzo\Restriction\Restriction;
@@ -27,6 +28,9 @@ class DialectUtil
 
     public static function buildWhereQueryPart($whereClause)
     {
+        if ($whereClause->where instanceof Any) {
+            return '(' . implode(' OR ', self::_buildWhereKeys($whereClause->where->getConditions())) . ')';
+        }
         $wherePart = is_array($whereClause->where) ? implode(' AND ', self::_buildWhereKeys($whereClause->where)) : $whereClause->where;
         return stripos($wherePart, 'OR') ? '(' . $wherePart . ')' : $wherePart;
     }

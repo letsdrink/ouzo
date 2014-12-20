@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab56288ddcc27a8aa1680760713aa284",
+    "hash": "a87786c85775485c237ae9cdc18d582c",
     "packages": [
         {
             "name": "d11wtq/boris",
@@ -1252,7 +1252,6 @@
         "satooshi/php-coveralls": 20
     },
     "prefer-stable": false,
-    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }
