@@ -1,7 +1,7 @@
-## Controller tests
+# Controller tests
 
-Ouzo comes with Ouzo\Tests\ControllerTestCase class designed to ease controller testing.
-ControllerTestCase allows you to verify that:
+Ouzo provides `ControllerTestCase` which allows you to verify that:
+
 * there's a route for a given url
 * controllers methods work as expected
 * views are rendered without errors
@@ -27,9 +27,11 @@ class UsersControllerTest extends ControllerTestCase
     public function shouldRedirectToIndexOnSuccessInCreate()
     {
         //when
-        $this->post('/users', array('user' => array(
-            'login' => 'login'
-        )));
+        $this->post('/users', [
+            'user' => [
+                'login' => 'login'
+            ]]
+        );
 
         //then
         $this->assertRedirectsTo(usersPath());
@@ -37,9 +39,8 @@ class UsersControllerTest extends ControllerTestCase
 }
 ```
 
+**Controller assertions:**
 
-
-### Assertions
 * `assertRedirectsTo($path)`
 * `assertRenders($viewName)` - asserts that the given view was rendered
 
@@ -48,24 +49,45 @@ class UsersControllerTest extends ControllerTestCase
 
 * `assertRenderedContent()` - returns StringAssert for rendered content.
 
+---
 
-Sample usage:
-```php
-$this->assertRenders('Users/index');
+# Models tests
 
-$this->assertRedirectsTo(usersPath());
-
-$this->assertRenderedContent()->startsWith('<html>')->matches('/bob\w+/');
-```
-
-## Models tests
 Ouzo provides `DbTransactionalTestCase` class that takes care of transactions in tests.
 This class starts a new transaction before each test case and rolls it back afterwards.
 
-`ModelAssert` allows you to check if two model objects are equal.
+```php
+class UserTest extends DbTransactionalTestCase
+{
+    /**
+     * @test
+     */
+    public function shouldPersistUser()
+    {
+        //given
+        $user = new User(['name' => 'bob']);
+
+        //when
+        $user->insert();
+
+        //then
+        $storedUser = User::where(['name' => 'bob'])->fetch();
+        $this->assertEquals('bob', $storedUser->name);
+    }
+}
+```
+
+---
+
+# Models assertions
+
+`Assert::thatModel` allows you to check if two model objects are equal.
+
+**Sample usage:**
 
 ```php
-class UserTest extends DbTransactionalTestCase {
+class UserTest extends DbTransactionalTestCase
+{
     /**
      * @test
      */
@@ -84,14 +106,17 @@ class UserTest extends DbTransactionalTestCase {
 }
 ```
 
-Model assertions: 
-* `Assert::thatModel($storedUser)->isEqualTo($user);` - Compares all attributes. If one model has loaded a relation and other has not, they are considered not equal. Attributes not listed in model's fields are also compared.
+**Model assertions:**
 
-* `Assert::thatModel($storedUser)->hasSameAttributesAs($user);` - Compares only attributes listed in Models fields.
+* `isEqualTo($user);` - Compares all attributes. If one model has loaded a relation and other has not, they are considered not equal. Attributes not listed in model's fields are also compared.
+* `hasSameAttributesAs($user);` - Compares only attributes listed in Models fields.
 
-## String assertions
+---
 
-Sample usage:
+# String assertions
+
+**Sample usage:**
+
 ```php
 Assert::thatString("Frodo")
      ->startsWith("Fro")->endsWith("do")
@@ -104,20 +129,24 @@ Assert::thatString("Frodo")->isEqualTo("Frodo");
 Assert::thatString("Frodo")->isEqualNotTo("asd");
 ```
 
+---
 
-## Array assertions
+# Array assertions
+
 Fluent array assertion to simplify your tests.
 
-Sample usage:
+**Sample usage:**
+
 ```php
-$animals = array('cat', 'dog', 'pig');
+$animals = ['cat', 'dog', 'pig'];
 Assert::thatArray($animals)->hasSize(3)->contains('cat');
 Assert::thatArray($animals)->containsOnly('pig', 'dog', 'cat');
 Assert::thatArray($animals)->containsExactly('cat', 'dog', 'pig');
 ```
 
 Array assertions can also be used to examine array of objects.
-Using onProperty:
+
+Using `onProperty`:
 
 ```php
 $object1 = new stdClass();
@@ -126,16 +155,20 @@ $object1->prop = 1;
 $object2 = new stdClass();
 $object2->prop = 2;
 
-$array = array($object1, $object2);
+$array = [$object1, $object2];
 Assert::thatArray($array)->onProperty('prop')->contains(1, 2);
 ```
 
-Using onMethod:
+Using `onMethod`:
+
 ```php
 Assert::thatArray($users)->onMethod('getAge')->contains(35, 24);
 ```
 
-## Exception assertions
+---
+
+# Exception assertions
+
 CatchException enables you to write a unit test that checks that an exception is thrown.
 
 ```php
@@ -149,14 +182,16 @@ CatchException::when($foo)->method();
 CatchException::assertThat()->isInstanceOf("FooException");
 ```
 
-Available assertions:
+**Exception assertions:**
+
 * isInstanceOf($exception)
 * isEqualTo($exception)
 * notCaught()
 
+---
 
+# Mocking
 
-## Mocking
 Ouzo provides a mockito like mocking library that allows you to write tests in BDD or AAA (arrange act assert) fashion.
 
 You can stub method calls:
@@ -198,7 +233,6 @@ You can stub a method to throw an exception;
 ```php
 Mock::when($mock)->method()->thenThrow(new Exception());
 ```
-
 
 Verification that a method was not called:
 
