@@ -3,14 +3,16 @@ Let's walk through the code and see how it works.
 ---
 
 ## Routes
-File myproject/config/routes.php contains configuration of routing.
-You can run `php shell.php \\Routes` to see all routes exposed by your app.
 
-`Route::get('/', 'users#index');` instructs ouzo that requests to '/' are handled by method **index** in **UsersController**.
+File myproject/config/routes.php contains configuration of routing.
+You can run `./console ouzo:routes` to see all routes exposed by your app.
+
+`Route::get('/', 'users#index');` instructs Ouzo that requests to '/' are handled by method **index** in **UsersController**.
 
 ---
 
 ## Controller
+
 ```php
 class UsersController extends Controller
 {
@@ -26,13 +28,13 @@ class UsersController extends Controller
     }
 ...
 ```
-Function **init** sets layout used by this controller. The default layout adds "Ouzo Framework!" banner and includes bootstrap files.
 
+Function **init** sets layout used by this controller. The default layout adds "Ouzo Framework!" banner and includes bootstrap files.
 
 In the **index** function, we fetch and assign all users to the **users** view variable. 
 You can access this variable in a view as a field ($this->users).
 
-In the next line we render a view. By default view name is derived from controller and method names. In this case it will be `Users/index` which means file `view/Users/index.phtml` will be used.
+In the next line we render a view. By default view name is derived from controller and method names. In this case it will be `Users/index` which means file `View/Users/index.phtml` will be used.
 You can render other views by passing a parameter to the render method.
 
 ```php
@@ -55,9 +57,10 @@ You can render other views by passing a parameter to the render method.
     }
     ...
 ```
-Method *edit* is called when edition page is requested. It assigns `user` variable and renders view.
 
-Method *update* is called when updated user form is submitted. It loads a user by id and then tries to update it. If update succeeds we return redirect to the user page with message "User updated".
+Method **edit** is called when edition page is requested. It assigns `user` variable and renders view.
+
+Method **update** is called when updated user form is submitted. It loads a user by id and then tries to update it. If update succeeds we return redirect to the user page with message *"User updated"*.
 If update fails we use `$user` variable containing new values to render edition page.
 It's important that we use the same `$user` variable on which $user->updateAttributes was called.
 It will contain values submitted by browser and validation errors that prevented successful update.
@@ -65,6 +68,7 @@ It will contain values submitted by browser and validation errors that prevented
 ---
 
 ## Model
+
 ```php
 class User extends Model
 {
@@ -82,24 +86,29 @@ class User extends Model
     }
 }
 ```
+
 User class is mapped to the **users** table, primary key defaults to **id** and sequence to **users_id_seq**.
 Parameter **fields** defines columns that will be exposed as model attributes.
 You can pass additional options to override the default mapping.
+
 ```php
 parent::__construct(array(
     'table' => 'other_name'
     'primaryKey' => 'other_id',
     'sequence' => 'other_sequence'
     'attributes' => $attributes,
-    'fields' => array('login', 'password')));
+    'fields' => array('login', 'password')
+));
 ```
+
 Function **validate** is called by function **isValid** and **updateAttributes**.
 **validateNotBlank** takes a value to validate, error message and a field that is highlighted in red when validation fails.
 
 ---
 
 ## View
-`application/view/Users/edit.phtml` contains users edition page.
+
+`Application/View/Users/edit.phtml` contains users edition page.
 
 ```php
 <?php echo renderPartial('Users/_form', array(
@@ -107,7 +116,7 @@ Function **validate** is called by function **isValid** and **updateAttributes**
     'url' => userPath($this->user->id),
     'method' => 'PUT',
     'title' => 'Edit user'
-));?>
+));
 ```
 
 Function **renderPartial** displays a fragment of php code using variables passed in the second argument.
@@ -155,10 +164,13 @@ By convention partials names start with underscore. We extracted `Users/_form` p
 Function **showErrors** displays validation errors set on our model.
 In the line #6 we create a form for the user model. Method `$form->start` displays form html element for the given url.
 
-Lines
+Lines:
+
 ```php
 $form->label('login', array('class' => 'control-label col-lg-2')); //<label for="user_login" class="control-label col-lg-2">Login</label>
 $form->textField('login'); //  <input type="text" id="user_login" name="user[login]" value="thulium">
 ```
-display label and text input for user's login. 
-Label text is taken from translations (`locales/en.php`) by a key that is a concatenation of the model and field names. In this case it's 'user.login'.
+
+display label and text input for user's login.
+
+Label text is taken from translations (`locales/en.php`) by a key that is a concatenation of the model and field names. In this case it's *'user.login'*.
