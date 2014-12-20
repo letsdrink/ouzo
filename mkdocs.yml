@@ -1,0 +1,33 @@
+site_name: Ouzo Framework documentation
+site_url: http://ouzoframework.org/
+site_description: Ouzo Framework - PHP MVC ORM
+
+repo_url: https://github.com/letsdrink/ouzo
+
+theme: readthedocs
+
+pages:
+- ['index.md', 'Home']
+
+- ['tutorials/skeleton_app_explained.md']
+
+- ['documentation/routes.md', 'Documentation']
+- ['documentation/orm.md', 'Documentation', 'ORM']
+- ['documentation/tests.md', 'Documentation']
+- ['documentation/functional_programming.md', 'Documentation']
+- ['documentation/autoloading_classes.md', 'Documentation']
+
+- ['utils/arrays.md', 'Utilities']
+- ['utils/fluent_array.md', 'Utilities', 'FluentArray']
+- ['utils/strings.md', 'Utilities']
+- ['utils/objects.md', 'Utilities']
+- ['utils/functions.md', 'Utilities']
+- ['utils/fluent_functions.md', 'Utilities', 'FluentFunctions']
+- ['utils/cache.md', 'Utilities']
+- ['utils/path.md', 'Utilities']
+- ['utils/session.md', 'Utilities']
+- ['utils/i18n.md', 'Utilities']
+- ['utils/form_helper.md', 'Utilities', 'FormHelper']
+- ['utils/model_form_builder.md', 'Utilities', 'ModelFormBuilder']
+
+- ['tools/model_generator.md', 'Tools']

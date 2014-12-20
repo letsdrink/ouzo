@@ -20,9 +20,9 @@ $cities = FluentArray::from($users)
              ->toArray();
 ```
 
-[FluentArray](fluent_array.md)
+[FluentArray](../utils/fluent_array.md)
 
-[Functions::extract](functions.md#extract)
+[Functions::extract](../utils/functions.md#extract)
 
 
 ### Composing functions
@@ -50,4 +50,4 @@ Another example:
 $bobs = Arrays::filter($users, FluentFunctions::extractField('name')->equals('Bob'));
 ```
 
-[FluentFunctions](fluent_functions.md)
+[FluentFunctions](../utils/fluent_functions.md)

@@ -1,12 +1,16 @@
 Let's walk through the code and see how it works.
 
-### Routes
+---
+
+## Routes
 File myproject/config/routes.php contains configuration of routing.
 You can run `php shell.php \\Routes` to see all routes exposed by your app.
 
 `Route::get('/', 'users#index');` instructs ouzo that requests to '/' are handled by method **index** in **UsersController**.
 
-### Controller
+---
+
+## Controller
 ```php
 class UsersController extends Controller
 {
@@ -58,9 +62,9 @@ If update fails we use `$user` variable containing new values to render edition 
 It's important that we use the same `$user` variable on which $user->updateAttributes was called.
 It will contain values submitted by browser and validation errors that prevented successful update.
 
-Let's see our model.
+---
 
-### Model
+## Model
 ```php
 class User extends Model
 {
@@ -82,17 +86,19 @@ User class is mapped to the **users** table, primary key defaults to **id** and 
 Parameter **fields** defines columns that will be exposed as model attributes.
 You can pass additional options to override the default mapping.
 ```php
-        parent::__construct(array(
-            'table' => 'other_name'
-            'primaryKey' => 'other_id',
-            'sequence' => 'other_sequence'
-            'attributes' => $attributes,
-            'fields' => array('login', 'password')));
+parent::__construct(array(
+    'table' => 'other_name'
+    'primaryKey' => 'other_id',
+    'sequence' => 'other_sequence'
+    'attributes' => $attributes,
+    'fields' => array('login', 'password')));
 ```
 Function **validate** is called by function **isValid** and **updateAttributes**.
 **validateNotBlank** takes a value to validate, error message and a field that is highlighted in red when validation fails.
 
-### View
+---
+
+## View
 `application/view/Users/edit.phtml` contains users edition page.
 
 ```php
@@ -156,6 +162,3 @@ $form->textField('login'); //  <input type="text" id="user_login" name="user[log
 ```
 display label and text input for user's login. 
 Label text is taken from translations (`locales/en.php`) by a key that is a concatenation of the model and field names. In this case it's 'user.login'.
-
-            
-           

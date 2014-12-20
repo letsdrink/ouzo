@@ -1,63 +1,54 @@
 # Welcome to Ouzo docs
 
-###Tutorials:
+## Tutorials:
 
 * [5 minutes tutorial](https://github.com/letsdrink/ouzo-app)
-* [[Skeleton-app-explained]]
-    * [Model](skeleton_app_explained.md#model)
-    * [View](skeleton_app_explained.md#view)
-    * [Controller](skeleton_app_explained.md#controller)
+* [Skeleton-app-explained](tutorials/skeleton_app_explained.md)
+    * [Routes](tutorials/skeleton_app_explained.md#routes)
+    * [Controller](tutorials/skeleton_app_explained.md#controller)
+    * [Model](tutorials/skeleton_app_explained.md#model)
+    * [View](tutorials/skeleton_app_explained.md#view)
 
-###Documentation:
+## Documentation:
 
-* [Routes](routes.md)
-* [ORM](orm.md)
-    * [Models](orm.md#wiki-model-definition)
-    * [Validation](orm.md#wiki-validation)
-    * [Relations](orm.md#wiki-relations)
-    * [QueryBuilder](orm.md#wiki-query-builder)
-    * [Joins](orm.md#wiki-join)
-    * [Eager Fetching ](orm.md#wiki-with)
-    * [Transactions ](orm.md#wiki-transactions)
-    
-* [Tests](tests.md)
+* [Routes](documentation/routes.md)
+* [ORM](documentation/orm.md)
+    * [Models](documentation/orm.md#wiki-model-definition)
+    * [Validation](documentation/orm.md#wiki-validation)
+    * [Relations](documentation/orm.md#wiki-relations)
+    * [QueryBuilder](documentation/orm.md#wiki-query-builder)
+    * [Joins](documentation/orm.md#wiki-join)
+    * [Eager Fetching](documentation/orm.md#wiki-with)
+    * [Transactions ](documentation/orm.md#wiki-transactions)
+* [Tests](documentation/tests.md)
+    * [Controllers tests](documentation/tests.md#wiki-controller-tests)
+    * [Models tests](documentation/tests.md#wiki-models-tests)
+    * [Assertions for arrays](documentation/tests.md#wiki-array-assertions)
+    * [Assertions for exceptions](documentation/tests.md#wiki-exception-assertions)
+    * [Assertions for strings](documentation/tests.md#wiki-string-assertions)
+    * [Mocking](documentation/tests.md#wiki-mocking)
+* [Functional programming](documentation/functional_programming.md)
+* [Autoloading classes](documentation/autoloading_classes.md)
 
-    * [Controllers tests](tests.md#wiki-controller-tests)
-    * [Models tests](tests.md#wiki-models-tests)
-    * [Assertions for arrays](tests.md#wiki-array-assertions)
-    * [Assertions for exceptions](tests.md#wiki-exception-assertions)
-    * [Assertions for strings](tests.md#wiki-string-assertions)
-    * [Mocking](tests.md#wiki-mocking)
+## Utilities:
 
-Form builders:
+* [Arrays](utils/arrays.md)
+* [FluentArray](utils/fluent_array.md)
+* [Strings](utils/strings.md)
+* [Objects](utils/objects.md)
+* [Functions](utils/functions.md)
+* [FluentFunctions](utils/fluent_functions.md)
+* [Cache](utils/cache.md)
+* [Path](utils/path.md)
+* [Session](utils/session.md)
+* [I18n](utils/i18n.md)
+* [FormHelper](utils/form_helper.md)
+* [ModelFormBuilder](utils/model_form_builder.md)
 
-* [FormHelper](form_helper.md) - view helper methods for generating form markup
-* [ModelFormBuilder](model_form_builder.md) - view helper methods for generating form markup for model objects
+## Tools:
 
+* [Model generator](tools/model_generator.md)
 
-Utilities:
-
-* [Arrays](arrays.md) - Helper functions for arrays.
-* [FluentArray](fluent_array.md) - Interface for manipulating arrays in a chained fashion.
-* [Strings](strings.md) - Helper functions for strings.
-* [Objects](objects.md)- Helper functions that can operate on any PHP object.
-* [Functions](functions.md) - Static utility methods returning closures that can be used with Arrays and FluentArray.
-* [FluentFunctions](fluent_functions.md) - Fluent utility for function composition.
-* [Cache](cache.md) - General-purpose cache.
-* [Path](path.md) - Helper functions for path operations.
-* [Session](session.md) - HTTP session handling.
-* [I18n](i18n.md) - Localizations and translations.
-
-Other topics:
-
-* [Functional programming with ouzo](functional_programming.md)
-* [Autoloading classes](autoloading_classes.md)
-
-Tools:
-
-* [Model Generator](model_generator.md) - console tool for creating Model classes for existing tables. 
-
-
-###PhpStorm plugins:
- * [Ouzo framework plugin](http://plugins.jetbrains.com/plugin/7565?pr=)
- * [DynamicReturnTypePlugin](http://plugins.jetbrains.com/plugin/7251) - for Mock and CatchException. You have to copy [dynamicReturnTypeMeta.json ](https://github.com/letsdrink/ouzo/blob/master/dynamicReturnTypeMeta.json) to your project root.
+## PhpStorm plugins:
+* [Ouzo framework plugin](http://plugins.jetbrains.com/plugin/7565?pr=)
+* [DynamicReturnTypePlugin](http://plugins.jetbrains.com/plugin/7251) - for Mock and CatchException. You have to copy [dynamicReturnTypeMeta.json ](https://github.com/letsdrink/ouzo/blob/master/dynamicReturnTypeMeta.json) to your project root.
