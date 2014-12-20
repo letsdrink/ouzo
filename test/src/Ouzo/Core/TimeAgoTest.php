@@ -1,13 +1,9 @@
 <?php
-
-namespace Ouzo;
-
+use Ouzo\TimeAgo;
 use Ouzo\Utilities\Clock;
-use PHPUnit_Framework_TestCase;
 
 class TimeAgoTest extends PHPUnit_Framework_TestCase
 {
-
     public function dates()
     {
         return array(
@@ -42,4 +38,3 @@ class TimeAgoTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedText, $timeAgo);
     }
 }
- 

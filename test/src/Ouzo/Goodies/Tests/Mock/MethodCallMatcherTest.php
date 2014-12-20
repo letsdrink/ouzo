@@ -1,18 +1,20 @@
 <?php
-
-namespace Ouzo\Tests\Mock;
+use Ouzo\Tests\Mock\AnyArgument;
+use Ouzo\Tests\Mock\AnyArgumentList;
+use Ouzo\Tests\Mock\MethodCall;
+use Ouzo\Tests\Mock\MethodCallMatcher;
 
 class TestClass
 {
     private $value;
 
-    function __construct($value)
+    public function __construct($value)
     {
         $this->value = $value;
     }
 }
 
-class MethodCallMatcherTest extends \PHPUnit_Framework_TestCase
+class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -119,4 +121,3 @@ class MethodCallMatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 }
- 

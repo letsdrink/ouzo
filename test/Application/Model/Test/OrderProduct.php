@@ -20,5 +20,4 @@ class OrderProduct extends Model
             ),
             'fields' => $this->_fields));
     }
-
 }

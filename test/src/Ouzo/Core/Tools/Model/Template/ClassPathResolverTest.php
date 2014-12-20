@@ -1,11 +1,9 @@
 <?php
-
-namespace Ouzo\Tools\Model\Template;
-
 use Ouzo\Tests\Assert;
+use Ouzo\Tools\Model\Template\ClassPathResolver;
 use Ouzo\Utilities\Path;
 
-class ClassPathResolverTest extends \PHPUnit_Framework_TestCase
+class ClassPathResolverTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -22,4 +20,3 @@ class ClassPathResolverTest extends \PHPUnit_Framework_TestCase
         Assert::thatString($classPath)->endsWith(Path::join('Application', 'model', 'my', 'name', 'space', 'UserAcl.php'));
     }
 }
- 

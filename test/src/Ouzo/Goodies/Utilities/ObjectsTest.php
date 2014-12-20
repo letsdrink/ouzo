@@ -1,23 +1,23 @@
 <?php
-
 use Ouzo\Utilities\Objects;
 
 class ClassImplementingToString
 {
     private $string;
 
-    function __construct($string)
+    public function __construct($string)
     {
         $this->string = $string;
     }
 
-    function __toString()
+    public function __toString()
     {
         return $this->string;
     }
 }
 
-class ClassWithProperty {
+class ClassWithProperty
+{
     public $property;
     private $privateProperty = 'private value';
 }

@@ -1,9 +1,6 @@
 <?php
-
-namespace Ouzo\Db;
-
-
 use Ouzo\Db;
+use Ouzo\Db\PreparedStatementEmulator;
 use Ouzo\Tests\Assert;
 
 class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
@@ -93,7 +90,7 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldQuoteParams()
     {
-         //given
+        //given
         $sql = "select * from users where surname = ?";
         $param = "' or '1' = '1";
 
@@ -104,4 +101,3 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
         Assert::thatString($result)->isEqualTo("select * from users where surname = " . Db::getInstance()->_dbHandle->quote($param));
     }
 }
- 

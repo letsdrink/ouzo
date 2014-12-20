@@ -1,11 +1,10 @@
 <?php
-namespace Ouzo;
-
+use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class TestModel extends Model
 {
-    function __construct(array $params)
+    public function __construct(array $params)
     {
         parent::__construct($params);
     }

@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Http\AcceptHeaderParser;
 
 class AcceptHeaderParserTest extends PHPUnit_Framework_TestCase
@@ -55,4 +54,3 @@ class AcceptHeaderParserTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($parsed);
     }
 }
- 

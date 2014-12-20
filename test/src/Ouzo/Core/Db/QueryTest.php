@@ -1,11 +1,10 @@
 <?php
-
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Utilities\Arrays;
 
-class QueryTest extends PHPUnit_Framework_TestCase {
-
+class QueryTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @test
      */
@@ -101,5 +100,4 @@ class QueryTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(QueryType::$SELECT, $query->type);
         $this->assertEquals(array('name', 'id'), $query->selectColumns);
     }
-
 }

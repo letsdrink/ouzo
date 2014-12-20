@@ -196,7 +196,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         $this->assertEquals('billy', $product->name);
     }
 
-    static function getNoLazy(Model $model, $attribute)
+    public static function getNoLazy(Model $model, $attribute)
     {
         return Arrays::getValue($model->attributes(), $attribute);
     }

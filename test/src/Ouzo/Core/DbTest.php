@@ -1,5 +1,4 @@
 <?php
-use Application\Model\Test\Category;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Tests\DbTransactionalTestCase;
@@ -14,7 +13,6 @@ class Sample
 
 class DbTest extends DbTransactionalTestCase
 {
-
     /**
      * @test
      */

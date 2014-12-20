@@ -1,9 +1,8 @@
 <?php
-namespace Ouzo\Tools\Model\Template;
-
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
-use PHPUnit_Framework_TestCase;
+use Ouzo\Tools\Model\Template\ClassStubPlaceholderReplacer;
+use Ouzo\Tools\Model\Template\TableInfo;
 
 class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
 {

@@ -1,9 +1,8 @@
 <?php
-
-namespace Ouzo\Tools\Model\Template;
-
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tools\Model\Template\DatabaseColumn;
+use Ouzo\Tools\Model\Template\TableInfo;
 
 class TableInfoTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,4 +28,3 @@ class TableInfoTest extends \PHPUnit_Framework_TestCase
         Assert::thatArray($columns)->onProperty('name')->containsOnly('sale', 'description');
     }
 }
- 

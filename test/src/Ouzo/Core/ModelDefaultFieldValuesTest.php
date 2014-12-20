@@ -1,10 +1,9 @@
 <?php
-
 use Application\Model\Test\ProductWithDefaults;
 use Ouzo\Tests\DbTransactionalTestCase;
 
-class ModelDefaultFieldValuesTest extends DbTransactionalTestCase {
-
+class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
+{
     /**
      * @test
      */

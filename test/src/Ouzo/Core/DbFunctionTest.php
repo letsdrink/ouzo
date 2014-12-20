@@ -1,13 +1,10 @@
 <?php
-
-namespace Ouzo;
-
 use Application\Model\Test\Category;
+use Ouzo\Config;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class DbFunctionTest extends DbTransactionalTestCase
 {
-
     public function setUp()
     {
         $driver = Config::getValue('db', 'driver');
@@ -32,5 +29,4 @@ class DbFunctionTest extends DbTransactionalTestCase
         //then
         $this->assertEquals('test', $name);
     }
-
 }

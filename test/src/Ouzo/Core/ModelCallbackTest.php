@@ -1,14 +1,12 @@
 <?php
-
-namespace Ouzo;
-
+use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class TestCallback
 {
     public $args;
 
-    function __invoke()
+    public function __invoke()
     {
         $this->args = func_get_args();
     }
@@ -27,7 +25,7 @@ class CallbackTestModel extends Model
             'fields' => array('name')));
     }
 
-    function _callback()
+    public function _callback()
     {
         $this->callbackCalled = true;
     }
@@ -76,7 +74,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
     public function shouldCallBeforeSaveCallbackOnInsert()
     {
         //given
-        $callback = function($model) {
+        $callback = function ($model) {
             $model->name = $model->name . '_updated';
         };
         $model = new CallbackTestModel(array('name' => 'bmw'), $callback, null);
@@ -94,7 +92,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
     public function shouldCallBeforeSaveCallbackOnUpdate()
     {
         //given
-        $callback = function($model) {
+        $callback = function ($model) {
             $model->name = $model->name . '_updated';
         };
         $model = new CallbackTestModel(array('name' => 'bmw'), $callback, null);
@@ -121,4 +119,4 @@ class ModelCallbackTest extends DbTransactionalTestCase
         //then
         $this->assertTrue($model->callbackCalled);
     }
-} 
+}

@@ -7,7 +7,6 @@ class MultipleNsController extends Controller
 {
     public function test_action()
     {
-
     }
 }
 
@@ -19,12 +18,10 @@ use PHPUnit_Framework_TestCase;
 
 class SimpleTestController extends Controller
 {
-
 }
 
 class ControllerFactoryTest extends PHPUnit_Framework_TestCase
 {
-
     public function setUp()
     {
         parent::setUp();

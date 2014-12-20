@@ -11,7 +11,6 @@ use Ouzo\Model;
  */
 class ProductWithDefaults extends Model
 {
-
     public function __construct($attributes = array())
     {
         parent::__construct(array(
@@ -19,7 +18,7 @@ class ProductWithDefaults extends Model
             'attributes' => $attributes,
             'fields' => array(
                 'description' => 'no desc',
-                'name' => function() {
+                'name' => function () {
                     return 'no name';
                 },
                 'id_category',

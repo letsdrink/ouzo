@@ -1,12 +1,10 @@
 <?php
-
 use Ouzo\Routing\Route;
 use Ouzo\Routing\GroupedRoute;
 use Ouzo\Tests\Assert;
 
 class GroupedRouteTest extends PHPUnit_Framework_TestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -109,5 +107,4 @@ class GroupedRouteTest extends PHPUnit_Framework_TestCase
                 '/api/users/:id',
                 '/api/users/:id');
     }
-
-} 
+}

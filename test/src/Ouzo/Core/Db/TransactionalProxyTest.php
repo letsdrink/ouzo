@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Db;
 
 class TransactionalProxyTest extends PHPUnit_Framework_TestCase
@@ -18,7 +17,8 @@ class TransactionalProxyTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->transactionStatus);
     }
 
-    public function method(){
+    public function method()
+    {
         $startedTransaction = Db::getInstance()->_startedTransaction;
         $this->transactionStatus = $startedTransaction;
     }

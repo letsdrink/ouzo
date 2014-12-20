@@ -1,5 +1,4 @@
 <?php
-use Ouzo\Tests\CatchException;
 use Ouzo\Translator;
 
 class TranslatorTest extends PHPUnit_Framework_TestCase

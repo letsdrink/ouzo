@@ -1,10 +1,8 @@
 <?php
-
 use Ouzo\Restrictions;
 
 class BetweenRestrictionTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -21,4 +19,3 @@ class BetweenRestrictionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(1, 3), $restriction->getValues());
     }
 }
- 

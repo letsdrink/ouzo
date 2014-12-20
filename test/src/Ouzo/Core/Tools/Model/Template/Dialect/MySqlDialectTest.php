@@ -1,13 +1,10 @@
 <?php
-
-
-namespace Ouzo\Tools\Model\Template;
-
+namespace Ouzo\Core\Tools\Model\Template;
 
 use Ouzo\Tools\Model\Template\Dialect\MySqlDialect;
+use PHPUnit_Framework_TestCase;
 
-
-class MySqlDialectTest extends \PHPUnit_Framework_TestCase
+class MySqlDialectTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -43,7 +40,5 @@ class MySqlDialectTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('float', $phpFloatType1);
         $this->assertEquals('float', $phpFloatType2);
         $this->assertEquals('float', $phpFloatType3);
-
     }
 }
- 

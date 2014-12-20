@@ -257,8 +257,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals(array(
                 '1' => array($product1),
-                '2' => array($product2, $product3))
-            , $grouped);
+                '2' => array($product2, $product3)), $grouped);
     }
 
     /**
@@ -293,8 +292,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals(array(
                 '1' => array($product1),
-                '2' => array($product3, $product2))
-            , $grouped);
+                '2' => array($product3, $product2)), $grouped);
     }
 
     /**
@@ -391,7 +389,6 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals($array, $result);
-
     }
 
     /**

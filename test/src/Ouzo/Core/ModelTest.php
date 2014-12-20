@@ -276,7 +276,6 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertNull($loadedProduct);
-
     }
 
     /**

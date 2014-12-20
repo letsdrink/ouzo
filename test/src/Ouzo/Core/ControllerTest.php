@@ -72,8 +72,7 @@ class SimpleTestController extends Controller
 
 class ControllerTest extends ControllerTestCase
 {
-
-    function __construct()
+    public function __construct()
     {
         Config::overrideProperty('namespace', 'controller')->with('\\');
         parent::__construct();

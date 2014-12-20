@@ -1,15 +1,14 @@
 <?php
-
 namespace Ouzo\Utilities;
 
 class ProxiedClass
 {
-    function fun1($a, $b)
+    public function fun1($a, $b)
     {
         return "result of fun1" . $a . $b;
     }
 
-    function fun2($p1)
+    public function fun2($p1)
     {
     }
 }
@@ -18,62 +17,63 @@ class ClassWithMethodDefaultParameters
 {
     const C = 1;
 
-    function fun($p1 = 1, $p2 = null, $p3 = 'a', $p4 = array('1' => 2), $p5 = self::C)
+    public function fun($p1 = 1, $p2 = null, $p3 = 'a', $p4 = array('1' => 2), $p5 = self::C)
     {
     }
 }
 
-class TestClass {
+class TestClass
+{
 }
 
 class ClassWithTypedParameters
 {
-    function fun1(TestClass $p1)
+    public function fun1(TestClass $p1)
     {
     }
-    function fun2(array $p1)
+    public function fun2(array $p1)
     {
     }
 }
 
 class ClassWithConstructor
 {
-    function __construct()
+    public function __construct()
     {
     }
 }
 
 class ClassWithConstructorWithParams
 {
-    function __construct(array $a)
+    public function __construct(array $a)
     {
     }
 }
 
 class ClassWithStaticMethod
 {
-    function fun1(TestClass $p1)
+    public function fun1(TestClass $p1)
     {
     }
 
-    static function fun2()
+    public static function fun2()
     {
     }
 }
 
 abstract class ClassWithAbstractMethod
 {
-    function fun1(TestClass $p1)
+    public function fun1(TestClass $p1)
     {
     }
 
-    abstract function fun2();
+    abstract public function fun2();
 }
 
 
 class ClassWithMethodThatTakesParamsByRef
 {
-    function fun1(array &$p1)
+    public function fun1(array &$p1)
     {
     }
 }
@@ -82,17 +82,16 @@ class TestMethodHandler
 {
     public $calls = array();
 
-    function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
         $this->calls[] = array($name, $arguments);
         return "TestMethodHandler " . $name;
     }
-
 }
 
 interface TestInterface
 {
-    function fun1(TestClass $p1);
+    public function fun1(TestClass $p1);
 }
 
 class DynamicProxyTest extends \PHPUnit_Framework_TestCase
@@ -286,6 +285,4 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
     }
-
 }
- 

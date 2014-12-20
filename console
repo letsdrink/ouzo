@@ -12,7 +12,7 @@ define('ROOT_PATH', realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 
 require 'vendor/autoload.php';
 
-Files::loadIfExists(ROOT_PATH . 'test/application/config/routes.php');
+Files::loadIfExists(ROOT_PATH . 'test/Application/config/routes.php');
 
 $app = new Application();
 $app->add(new ConsoleCommand());

@@ -5,7 +5,7 @@ use Ouzo\View;
 
 class FormHelperTest extends DbTransactionalTestCase
 {
-    function setUp()
+    public function setUp()
     {
         parent::setUp();
         new View('test');

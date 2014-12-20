@@ -3,21 +3,22 @@ namespace Application\Model\Test;
 
 use Ouzo\Model;
 
+
 /**
- * @property int id
+ * @property string description
  * @property string name
- * @property Product[] products
+ * @property Category category
  */
-class Manufacturer extends Model
+class ModelWithoutPrimaryKey extends Model
 {
     private $_fields = array('name');
 
     public function __construct($attributes = array())
     {
         parent::__construct(array(
-            'hasMany' => array('products' => array('class' => 'Test\Product', 'foreignKey' => 'id_manufacturer')),
+            'table' => 'products',
+            'primaryKey' => '',
             'attributes' => $attributes,
             'fields' => $this->_fields));
     }
-
-} 
+}

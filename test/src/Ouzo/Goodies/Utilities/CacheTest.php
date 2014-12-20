@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Utilities\Cache;
 
 class CacheTest extends \PHPUnit_Framework_TestCase
@@ -73,7 +72,4 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $result1);
         $this->assertEquals(2, $result2);
     }
-
 }
-
- 

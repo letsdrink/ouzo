@@ -1,10 +1,8 @@
 <?php
-
 use Ouzo\Restrictions;
 
 class NotEqualToRestrictionTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -21,4 +19,3 @@ class NotEqualToRestrictionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('value', $restriction->getValues());
     }
 }
- 

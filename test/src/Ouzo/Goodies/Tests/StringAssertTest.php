@@ -1,7 +1,6 @@
 <?php
-namespace Ouzo\Tests;
-
-use PHPUnit_Framework_TestCase;
+use Ouzo\Tests\Assert;
+use Ouzo\Tests\CatchException;
 
 class StringAssertTest extends PHPUnit_Framework_TestCase
 {

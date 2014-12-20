@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\Extension\AuthBasicExtension;
@@ -26,8 +25,7 @@ class AuthSampleController extends Controller
 
 class AuthBasicControllerTest extends ControllerTestCase
 {
-
-    function __construct()
+    public function __construct()
     {
         Config::overrideProperty('namespace', 'controller')->with('\\');
         parent::__construct();

@@ -1,5 +1,4 @@
 <?php
-
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
@@ -166,10 +165,8 @@ class ExtractorTest extends DbTransactionalTestCase
         try {
             Functions::call($function, new Product());
             $this->fail();
-
         } //then
         catch (InvalidArgumentException $e) {
         }
     }
 }
- 

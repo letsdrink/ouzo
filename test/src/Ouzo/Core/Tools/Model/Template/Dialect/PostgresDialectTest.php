@@ -1,9 +1,11 @@
 <?php
-namespace Ouzo\Tools\Model\Template;
+namespace Ouzo\Core\Tools\Model\Template;
 
+use Ouzo\Tools\Model\Template\DatabaseColumn;
 use Ouzo\Tools\Model\Template\Dialect\PostgresDialect;
+use PHPUnit_Framework_TestCase;
 
-class PostgresDialectTest extends \PHPUnit_Framework_TestCase
+class PostgresDialectTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test

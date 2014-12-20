@@ -1,9 +1,7 @@
 <?php
-
-namespace Ouzo\Utilities;
-
-
 use Application\Model\Test\Product;
+use Ouzo\Utilities\FluentFunctions;
+use Ouzo\Utilities\Functions;
 
 class FluentFunctionTest extends \PHPUnit_Framework_TestCase
 {

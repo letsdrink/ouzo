@@ -1,9 +1,5 @@
 <?php
-
-namespace Ouzo;
-
-
-use InvalidArgumentException;
+use Ouzo\Relations;
 
 class RelationsTest extends \PHPUnit_Framework_TestCase
 {

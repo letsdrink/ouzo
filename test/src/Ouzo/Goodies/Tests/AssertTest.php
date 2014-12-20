@@ -1,15 +1,13 @@
 <?php
-namespace Ouzo\Tests;
-
-use PHPUnit_Framework_TestCase;
-use stdClass;
+use Ouzo\Tests\Assert;
+use Ouzo\Tests\CatchException;
 
 class Photo
 {
     private $_photoName;
     private $_data;
 
-    function __construct($photoName, $data = '')
+    public function __construct($photoName, $data = '')
     {
         $this->_photoName = $photoName;
         $this->_data = $data;
@@ -21,11 +19,11 @@ class Photo
     }
 }
 
-class PhotoFrame {
-
+class PhotoFrame
+{
     private $photo;
 
-    function __construct($photo)
+    public function __construct($photo)
     {
         $this->photo = $photo;
     }
@@ -406,6 +404,4 @@ class AssertTest extends PHPUnit_Framework_TestCase
     {
         call_user_func_array(array($this, '_assertNot'), array_merge(array('containsKeyAndValue'), func_get_args()));
     }
-
-
 }

@@ -1,11 +1,9 @@
 <?php
-
-
-namespace Ouzo\Tools\Model\Template;
+use Ouzo\Tools\Model\Template\ClassStub;
+use Ouzo\Tools\Model\Template\DatabaseColumn;
 
 class ClassStubTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -79,9 +77,7 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase
             ->addColumn(new DatabaseColumn('field8', 'string'))
             ->addColumn(new DatabaseColumn('field9', 'string'));
 
-
         //then
         $this->assertContains("'field7', \n", $classStub->getFieldsAsString());
     }
 }
- 

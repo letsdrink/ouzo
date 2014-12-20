@@ -1,10 +1,8 @@
 <?php
-namespace Ouzo\Utilities;
+use Ouzo\Utilities\Path;
 
-use PHPUnit_Framework_TestCase;
-
-class PathTest extends PHPUnit_Framework_TestCase{
-
+class PathTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @test
      */

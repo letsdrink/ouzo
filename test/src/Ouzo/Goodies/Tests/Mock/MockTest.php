@@ -1,32 +1,28 @@
 <?php
-
-namespace Ouzo\Tests;
-
-use Exception;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
-use PHPUnit_Framework_ExpectationFailedException;
 
 class MockTestClass
 {
-    function method()
+    public function method()
     {
         return null;
     }
 
-    function method2()
+    public function method2()
     {
         return null;
     }
 
-    function method3(array &$a)
+    public function method3(array &$a)
     {
         return null;
     }
 }
 
-class MockTest extends \PHPUnit_Framework_TestCase
+class MockTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -34,7 +30,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnMockObjectOfTheGivenType()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
 
         //when
         $result = $mock instanceof MockTestClass;
@@ -49,7 +45,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldStubMethod()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
         Mock::when($mock)->method()->thenReturn('result');
 
         //when
@@ -65,7 +61,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldVerifyMethodCall()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
 
         //when
         $mock->method("arg");
@@ -81,7 +77,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldFailIfMethodWasNotCalled()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
 
         //when
         CatchException::when(Mock::verify($mock))->method();
@@ -96,7 +92,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldVerifyMethodIsNotCalled()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
 
         //when
         $mock->method("arg");
@@ -112,7 +108,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldFailIfUnwantedMethodWasCalled()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
         $mock->method(1);
 
         //when
@@ -152,7 +148,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldShowActualInteractions()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
         $mock->method(1);
         $mock->method2(1);
 
@@ -182,7 +178,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
             $this->fail();
         } //then
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertEquals('method(1, null, [1, 2], Ouzo\Tests\MockTestClass {})', $e->getComparisonFailure()->getActual());
+            $this->assertEquals('method(1, null, [1, 2], MockTestClass {})', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(1, 2)', $e->getComparisonFailure()->getExpected());
         }
     }
@@ -276,7 +272,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldStubMethodForAnyArgument()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
 
         Mock::when($mock)->method("first", Mock::any())->thenReturn('result');
 
@@ -444,7 +440,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldStubMethodThatTakesParamByRef()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
         $a = array();
         Mock::when($mock)->method3(Mock::anyArgList())->thenReturn('result');
 
@@ -462,7 +458,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldStubWithArgumentMatcher()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
 
         Mock::when($mock)->method(Mock::argThat()->startsWith('matching'))->thenReturn('result');
 
@@ -477,7 +473,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldVerifyWithArgumentMatcher()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
 
         //when
         $mock->method("matching arg");
@@ -492,7 +488,7 @@ class MockTest extends \PHPUnit_Framework_TestCase
     public function shouldFailVerificationWithArgumentMatcher()
     {
         //given
-        $mock = Mock::mock('Ouzo\Tests\MockTestClass');
+        $mock = Mock::mock('MockTestClass');
 
         $mock->method("something else");
 
@@ -506,6 +502,4 @@ class MockTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('method(argThat()->extractField("name")->startsWith("matching"))', $e->getComparisonFailure()->getExpected());
         }
     }
-
 }
- 

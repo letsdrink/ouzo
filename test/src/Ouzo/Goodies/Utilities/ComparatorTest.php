@@ -13,12 +13,12 @@ class CallableWrapper
 {
     private $callable;
 
-    function __construct($callable)
+    public function __construct($callable)
     {
         $this->callable = $callable;
     }
 
-    function call()
+    public function call()
     {
         call_user_func_array($this->callable, func_get_args());
     }

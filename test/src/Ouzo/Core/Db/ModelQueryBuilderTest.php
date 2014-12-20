@@ -238,7 +238,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($cars, self::getNoLazy($fetchedProduct, 'category'));
     }
 
-    static function getNoLazy(Model $model, $attribute)
+    public static function getNoLazy(Model $model, $attribute)
     {
         return Arrays::getValue($model->attributes(), $attribute);
     }

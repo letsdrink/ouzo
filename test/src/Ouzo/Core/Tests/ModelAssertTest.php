@@ -1,9 +1,9 @@
 <?php
-
-namespace Ouzo\Tests;
-
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
+use Ouzo\Tests\Assert;
+use Ouzo\Tests\CatchException;
+use Ouzo\Tests\DbTransactionalTestCase;
 
 class ModelAssertTest extends DbTransactionalTestCase
 {
@@ -54,12 +54,15 @@ class ModelAssertTest extends DbTransactionalTestCase
      */
     public function shouldFailIfModelsAreNotEqual()
     {
+        //given
         $product = new Product(array('name' => 'abc'));
         $otherProduct = new Product(array('name' => 'abc'));
         $otherProduct->non_persistent_field = 'a';
 
+        //when
         CatchException::when(Assert::thatModel($product))->isEqualTo($otherProduct);
 
+        //then
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
@@ -68,10 +71,13 @@ class ModelAssertTest extends DbTransactionalTestCase
      */
     public function shouldPassIfModelsAreEqual()
     {
+        //given
         $product = new Product(array('name' => 'abc'));
+
+        //when
         $otherProduct = new Product(array('name' => 'abc'));
 
+        //then
         Assert::thatModel($product)->isEqualTo($otherProduct);
     }
 }
- 

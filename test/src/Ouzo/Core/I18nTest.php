@@ -1,11 +1,10 @@
 <?php
-namespace Ouzo;
-
+use Ouzo\Config;
+use Ouzo\I18n;
 use Ouzo\Tests\CatchException;
 
 class I18nTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @tearDown
      */
@@ -101,5 +100,4 @@ class I18nTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertGreaterThan(1, sizeof($allLabels));
     }
-
 }

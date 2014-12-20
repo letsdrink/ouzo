@@ -1,14 +1,12 @@
 <?php
-
 use Application\Model\Test\Product;
 use Ouzo\Helper\ModelFormBuilder;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
 
-
 class ModelFormBuilderTest extends DbTransactionalTestCase
 {
-    function setUp()
+    public function setUp()
     {
         parent::setUp();
         new View('test');

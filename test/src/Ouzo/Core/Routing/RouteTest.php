@@ -444,7 +444,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function shouldAddRouteInGroup()
     {
         //given
-        Route::group('api', function() {
+        Route::group('api', function () {
             GroupedRoute::post('/users/:id/archive', 'users#archive');
         });
 

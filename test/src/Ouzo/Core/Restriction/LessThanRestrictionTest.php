@@ -1,10 +1,8 @@
 <?php
-
 use Ouzo\Restrictions;
 
 class LessThanRestrictionTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -21,4 +19,3 @@ class LessThanRestrictionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(5, $restriction->getValues());
     }
 }
- 

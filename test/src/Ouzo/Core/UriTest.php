@@ -262,7 +262,7 @@ class UriTest extends PHPUnit_Framework_TestCase
         StreamStub::unregister();
     }
 
-    function getRequestParameters($stream)
+    public function getRequestParameters($stream)
     {
         return Uri::getRequestParameters($stream);
     }

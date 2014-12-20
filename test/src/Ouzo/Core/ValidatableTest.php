@@ -6,7 +6,7 @@ use Ouzo\Validatable;
 
 class ValidatableChild extends Validatable
 {
-    function __construct($errors = array(), $errorFields = array())
+    public function __construct($errors = array(), $errorFields = array())
     {
         $this->_errors = Arrays::map($errors, function ($error) {
             return new Error(0, $error);
@@ -24,7 +24,7 @@ class ValidatableParent extends Validatable
 {
     private $child;
 
-    function __construct($child, $errors = array(), $errorFields = array())
+    public function __construct($child, $errors = array(), $errorFields = array())
     {
         $this->_errors = Arrays::map($errors, function ($error) {
             return new Error(0, $error);

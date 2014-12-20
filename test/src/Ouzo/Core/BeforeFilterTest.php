@@ -10,11 +10,11 @@ class SampleControllerException extends Exception
 
 class SampleController extends Controller
 {
-    static $beforeActionResult;
-    static $actionCalled;
-    static $beforeCallback;
+    public static $beforeActionResult;
+    public static $actionCalled;
+    public static $beforeCallback;
 
-    function __construct($routeRule)
+    public function __construct($routeRule)
     {
         parent::__construct($routeRule);
     }
@@ -98,7 +98,7 @@ class BeforeFilterTest extends ControllerTestCase
     {
         //given
         SampleController::$beforeActionResult = true;
-        SampleController::$beforeCallback = function($controller) {
+        SampleController::$beforeCallback = function ($controller) {
             $controller->redirect('url');
             return true;
         };

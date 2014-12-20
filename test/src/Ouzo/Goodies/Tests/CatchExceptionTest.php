@@ -1,8 +1,5 @@
 <?php
-namespace Ouzo\Tests;
-
-use Exception;
-use PHPUnit_Framework_TestCase;
+use Ouzo\Tests\CatchException;
 
 class MyClass
 {

@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\ContentType;
 use Ouzo\Response\ResponseTypeResolve;
 

@@ -1,12 +1,11 @@
 <?php
-
 use Ouzo\Validatable;
 
 class UniquenessValidatable extends Validatable
 {
     private $values;
 
-    function __construct($values)
+    public function __construct($values)
     {
         $this->values = $values;
     }

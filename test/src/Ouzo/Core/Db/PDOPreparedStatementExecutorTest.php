@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Db\PDOPreparedStatementExecutor;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
@@ -38,4 +37,3 @@ class PDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCase
         CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
     }
 }
- 

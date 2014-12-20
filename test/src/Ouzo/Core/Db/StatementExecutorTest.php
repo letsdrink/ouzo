@@ -1,11 +1,8 @@
 <?php
-
-namespace Ouzo\Db;
-
 use Ouzo\Config;
+use Ouzo\Db\StatementExecutor;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
-use PDOStatement;
 
 class StatementExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -78,4 +75,3 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
         Config::revertProperty('sql_dialect');
     }
 }
- 

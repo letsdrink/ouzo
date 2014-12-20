@@ -1,12 +1,8 @@
 <?php
-
-namespace Ouzo\Uri;
-
-use PHPUnit_Framework_TestCase;
+use Ouzo\Uri\PathProvider;
 
 class PathProviderTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -55,6 +51,4 @@ class PathProviderTest extends PHPUnit_Framework_TestCase
         // then
         $this->assertEquals('/request/uri', $path);
     }
-
 }
- 

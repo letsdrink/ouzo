@@ -1,10 +1,8 @@
 <?php
-
-namespace Ouzo\Db;
+use Ouzo\Db\QueryHumanizer;
 
 class QueryHumanizerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */

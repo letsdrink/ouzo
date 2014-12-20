@@ -1,11 +1,9 @@
 <?php
-
 use Ouzo\Config;
 use Ouzo\ExceptionHandling\Error;
 
 class ErrorTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */
@@ -21,5 +19,4 @@ class ErrorTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('Winter is coming!', $error->message);
     }
-
 }

@@ -5,6 +5,8 @@ use Ouzo\Config;
 use Ouzo\Db\Dialect\Dialect;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use Ouzo\Tools\Model\Template\Generator;
+use Ouzo\Tools\Model\Template\GeneratorException;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 
@@ -153,7 +155,6 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertContains('class Product extends Model', $template);
         $this->assertContains('string description', $template);
     }
-
 }
 
 /**
@@ -161,13 +162,12 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
  */
 class MyImagineDialect extends Dialect
 {
-
-    function getConnectionErrorCodes()
+    public function getConnectionErrorCodes()
     {
         return array();
     }
 
-    function getErrorCode($errorInfo)
+    public function getErrorCode($errorInfo)
     {
         return 0;
     }

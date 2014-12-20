@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Db\EmptyQueryExecutor;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryExecutor;
@@ -8,7 +7,6 @@ use Ouzo\Tests\DbTransactionalTestCase;
 
 class QueryExecutorTest extends DbTransactionalTestCase
 {
-
     /**
      * @test
      * @expectedException InvalidArgumentException

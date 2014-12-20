@@ -1,5 +1,4 @@
 <?php
-
 use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Options;
@@ -7,9 +6,9 @@ use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Tests\Mock\Mock;
 
-class SimpleModel extends Model {
-
-    function __construct()
+class SimpleModel extends Model
+{
+    public function __construct()
     {
         parent::__construct(array('fields' => array('name')));
     }
@@ -42,4 +41,4 @@ class StatementEmulatorTest extends DbTransactionalTestCase
         //then
         Mock::verify($pdo)->query("SELECT simple_models.name AS _simple_models_name, simple_models.id AS _simple_models_id FROM simple_models WHERE name = 'bob'");
     }
-} 
+}

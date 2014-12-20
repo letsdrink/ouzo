@@ -1,12 +1,10 @@
 <?php
-
 use Application\Model\Test\Product;
 use Ouzo\Restrictions;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class RestrictionsTest extends DbTransactionalTestCase
 {
-
     /**
      * @test
      */
