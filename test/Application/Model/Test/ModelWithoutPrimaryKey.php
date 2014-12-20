@@ -3,7 +3,6 @@ namespace Application\Model\Test;
 
 use Ouzo\Model;
 
-
 /**
  * @property string description
  * @property string name
