@@ -1,18 +1,24 @@
-# Model definition
+ORM
+===
 
-This code will map _Category_ class to a _categories_ table with _id_ as a primary key and one column _name_.
-```php
-class Category extends Model
-{
-    public function __construct($attributes = array())
+Model definition
+~~~~~~~~~~~~~~~~
+
+This code will map *Category* class to a *categories* table with *id* as a primary key and one column *name*.
+
+.. code-block:: php
+
+    <?php
+    class Category extends Model
     {
-        parent::__construct(array(
-            'attributes' => $attributes,
-            'fields' => array('name')
-        ));
+        public function __construct($attributes = array())
+        {
+            parent::__construct(array(
+                'attributes' => $attributes,
+                'fields' => array('name')
+            ));
+        }
     }
-}
-```
 _Model_ constructor accepts the following parameters:
 
 * **'table'** - defaults to pluralized class name. E.g. customer_orders for `CustomerOrder`
