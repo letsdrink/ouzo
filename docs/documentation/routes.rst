@@ -53,6 +53,7 @@ PUT route
 ---------
 
 ::
+
     Route::put('/users/update' 'users#update');
 
 HTTP request method must be ``PUT``, then router finds ``users`` controller and ``edit`` action.
@@ -147,6 +148,29 @@ You can rename generated routes using ``as`` option:
 ::
 
     Route::get('/agents', 'agents#index', ['as' => 'my_name']);
+
+----
+
+Grouping routes
+~~~~~~~~~~~~~~~
+
+Ouzo provides functionality to grouping routes. You can handle that case using:
+
+::
+
+    Route::group("api", function() {
+        GroupedRoute::post('/users/:id/archive', 'users#archive');
+        GroupedRoute::resource('users');
+        GroupedRoute::get('/users/:id/orders', 'users#orders');
+    });
+
+Above example is equivalent for the:
+
+::
+
+    Route::post('/api/users/:id/archive', 'api/users#archive');
+    Route::resource('api/users');
+    Route::get('/api/users/:id/orders', 'api/users#orders');
 
 ----
 
