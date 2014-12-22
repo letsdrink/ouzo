@@ -1,0 +1,113 @@
+I18n
+====
+
+Locales
+~~~~~~~
+
+Locale files are placed under ``locales`` directory. File names are used as locale names, e.g.
+* ``en.php`` - contains English words
+* ``pl.php`` - contains Polish words
+
+Locale files are simple arrays. Each translations has got its corresponding label in array.
+::
+
+    return array(
+        'ouzo' => 'Ouzo',
+        'framework' => 'Framework'
+    );
+
+Translating based on label
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Translations are found by label. So for the previous example, locales can be used such as:
+``echo I18n:t('ouzo');``
+
+It will print ``Ouzo``. When label is not found in array, label itself is returned.
+
+Using ``t`` function in views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``ViewHelper`` defines ``t`` function. It is a convenient alias for ``I18n::t``:
+::
+
+    <?= t('ouzo') ?>
+
+Hierarchical labels
+~~~~~~~~~~~~~~~~~~~
+
+In order to create more complex structures multi-dimensional arrays are supported, e.g.:
+::
+
+    return array(
+        'hello' => array(
+            'world' => 'Hi, world!'
+        )
+    );
+
+Each level of array is combined by dot when using in ``t`` method:
+::
+
+    echo I18n::t('hello.world');
+
+Parametrization
+~~~~~~~~~~~~~~~
+
+Ouzo supports translation parameters. There can be as many parameters given as we need. Parameters are referenced in translations by ``%{name}``. E.g.
+::
+
+    return array(
+        'introduction' => 'My name is %{name}.'
+    );
+
+Usage:
+::
+
+    <?= t('introduction', array('name' => 'John Snow')) ?>
+
+Pluralization
+~~~~~~~~~~~~~
+
+Whenever there is a need to distinguish between singular and plural forms, ``pluralizeBasedOn`` comes in handy.
+
+First, we need to specify all forms (number of forms is determined by locale, e.g. 2 for English):
+::
+
+    return array(
+        'dog' => '%{count} dog|%{count} dogs'
+    );
+
+Usage:
+::
+
+    <?= t('dog', array('count' => $count), pluralizeBasedOn($count)) ?>
+
+It will print:
+* ``1 dog`` for count = 1
+* ``2 dogs`` for count = 2
+* ``3 dogs`` for count = 3
+* etc.
+
+``pluralizeBasedOn`` is a method in ``I18n`` class as well as function available in views (as an alias defined in ``ViewHelper``).
+
+Configuring language
+~~~~~~~~~~~~~~~~~~~~
+
+``I18n`` determines current language by configuration parameter named ``language``. By default ``en`` is used.
+
+Getting labels
+~~~~~~~~~~~~~~
+
+All labels can be retrieved by:
+::
+
+    $labels = I18n::labels();
+
+If we want particular level of translations, we can specify it as a parameter:
+::
+
+    $labels = I18n::labels('hello');
+
+PhpStorm IDE support
+~~~~~~~~~~~~~~~~~~~~
+
+Ouzo PhpStorm plugin is a must-have if you work with multi-language project. Check it out at: https://plugins.jetbrains.com/plugin/7565?pr= (it can be installed directly from PhpStorm's settings). It contains a number of handy functions and refactorings which makes it very easy to create and manage translations in your apps.

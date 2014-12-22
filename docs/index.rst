@@ -29,6 +29,16 @@ Utilities:
 
    utils/arrays
    utils/fluent_array
+   utils/cache
+   utils/fluent_functions
+   utils/form_helper
+   utils/functions
+   utils/i18n
+   utils/model_form_builder
+   utils/objects
+   utils/path
+   utils/session
+   utils/strings
 
 Tools:
 ~~~~~~
