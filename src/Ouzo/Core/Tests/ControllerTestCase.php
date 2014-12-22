@@ -95,9 +95,9 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_initFrontController();
     }
 
-    public function assertRedirectsTo($string)
+    public function assertRedirectsTo($path)
     {
-        $this->assertEquals($this->_removePrefix($string), $this->_removePrefix($this->_redirectHandler->getLocation()));
+        $this->assertEquals($this->_removePrefix($path), $this->_removePrefix($this->_redirectHandler->getLocation()));
     }
 
     private function _removePrefix($string)
@@ -105,14 +105,14 @@ class ControllerTestCase extends DbTransactionalTestCase
         return Strings::removePrefix($string, self::_prefixSystem());
     }
 
-    public function assertRenders($string)
+    public function assertRenders($viewName)
     {
         $statusResponse = RequestContext::getCurrentControllerObject()->getStatusResponse();
         $location = RequestContext::getCurrentControllerObject()->getRedirectLocation();
         if ($statusResponse != 'show') {
-            $this->fail("Expected render $string but was $statusResponse $location");
+            $this->fail("Expected render $viewName but was $statusResponse $location");
         }
-        $this->assertEquals($string, RequestContext::getCurrentControllerObject()->view->getViewName());
+        $this->assertEquals($viewName, RequestContext::getCurrentControllerObject()->view->getViewName());
     }
 
     public function assertAssignsModel($variable, $modelObject)

@@ -1,8 +1,8 @@
 Tests
 =====
 
-Controller tests
-~~~~~~~~~~~~~~~~
+Controller tests case
+~~~~~~~~~~~~~~~~~~~~~
 
 Ouzo provides ``ControllerTestCase`` which allows you to verify that:
 
@@ -44,14 +44,29 @@ Ouzo provides ``ControllerTestCase`` which allows you to verify that:
         }
     }
 
-Controller assertions:
-----------------------
+Methods:
+--------
+
+* ``get($url)`` - mock GET request for given url
+* ``post($url, $data)`` - mock POST request with data for given url
+* ``put($url, $data)`` - mock PUT request with data for given url
+* ``patch($url)`` - mock PATCH request for given url
+* ``delete($url)``- mock DELETE request for given url
+* ``getAssigned($name)`` - get value for the current controller action
+* ``getRenderedJsonAsArray()`` - get returned JSON as array
+* ``getResponseHeaders()`` - get all response header
+
+Assertions:
+-----------
 
 * ``assertRedirectsTo($path)``
 * ``assertRenders($viewName)`` - asserts that the given view was rendered
 * ``assertAssignsModel($variable, $modelObject)`` - asserts that a model object was assigned to a view
+* ``assertDownloadsFile($file)``
 * ``assertAssignsValue($variable, $value)``
 * ``assertRenderedContent()`` - returns StringAssert for rendered content.
+* ``assertRenderedJsonAttributeEquals($attribute, $equals)``
+* ``assertResponseHeader($expected)``
 
 ----
 
@@ -114,7 +129,6 @@ Sample usage:
             Assert::thatModel($storedUser)->isEqualTo($user);
         }
     }
-```
 
 Model assertions:
 -----------------
