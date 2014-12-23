@@ -23,6 +23,8 @@ class ModelAssert
 
     /**
      * Compares all attributes. If one model has loaded a relation and other has not, they are considered not equal.
+     *
+     * @param Model $expected
      */
     public function isEqualTo(Model $expected)
     {
@@ -32,6 +34,8 @@ class ModelAssert
 
     /**
      * Compares only attributes listed in Models fields!
+     *
+     * @param Model $expected
      */
     public function hasSameAttributesAs(Model $expected)
     {

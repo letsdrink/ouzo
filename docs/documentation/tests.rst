@@ -1,8 +1,8 @@
 Tests
 =====
 
-Controller tests case
-~~~~~~~~~~~~~~~~~~~~~
+Controller test case
+~~~~~~~~~~~~~~~~~~~~
 
 Ouzo provides ``ControllerTestCase`` which allows you to verify that:
 
@@ -70,8 +70,8 @@ Assertions:
 
 ----
 
-Models tests
-~~~~~~~~~~~~
+Database test case
+~~~~~~~~~~~~~~~~~~
 
 Ouzo provides ``DbTransactionalTestCase`` class that takes care of transactions in tests.
 This class starts a new transaction before each test case and rolls it back afterwards.
@@ -100,8 +100,8 @@ This class starts a new transaction before each test case and rolls it back afte
 
 ----
 
-Models assertions
-~~~~~~~~~~~~~~~~~
+Model assertions
+~~~~~~~~~~~~~~~~
 
 ``Assert::thatModel`` allows you to check if two model objects are equal.
 
@@ -130,16 +130,18 @@ Sample usage:
         }
     }
 
-Model assertions:
------------------
+Assertions:
+-----------
 
-* ``isEqualTo($user);`` - Compares all attributes. If one model has loaded a relation and other has not, they are considered not equal. Attributes not listed in model's fields are also compared.
-* ``hasSameAttributesAs($user);`` - Compares only attributes listed in Models fields.
+* ``isEqualTo($expected)`` - compares all attributes. If one model has loaded a relation and other has not, they are considered not equal. Attributes not listed in model's fields are also compared
+* ``hasSameAttributesAs($expected)`` - compares only attributes listed in Models fields
 
 ----
 
 String assertions
 ~~~~~~~~~~~~~~~~~
+
+``Assert::thatString`` allows you to check strings as a fluent assertions.
 
 Sample usage:
 -------------
@@ -155,6 +157,23 @@ Sample usage:
     Assert::thatString("Frodo")->isEqualToIgnoringCase("frodo");
     Assert::thatString("Frodo")->isEqualTo("Frodo");
     Assert::thatString("Frodo")->isEqualNotTo("asd");
+
+Assertions:
+-----------
+
+* ``contains($substring)`` - check that string contains substring
+* ``doesNotContain($substring)`` - check that string does not contains substring
+* ``startsWith($prefix)`` - check that string is start with prefix
+* ``endsWith($postfix)`` - check that string is end with postfix
+* ``isEqualTo($string)`` - check that string is equal to expected
+* ``isEqualToIgnoringCase($string)`` - check that string is equal to expected (case insensitive)
+* ``isNotEqualTo($string)`` - check that string not equal to expected
+* ``matches($regex)`` - check that string is fit to regexp
+* ``hasSize($length)`` - check string length
+* ``isNull()`` - check a string is null
+* ``isNotNull()`` - check a string is not null
+* ``isEmpty()`` - check a string is empty
+* ``isNotEmpty()`` - check a string is not empty
 
 ----
 
