@@ -231,6 +231,6 @@ Creates end form tag.
 
 formFor
 ~~~~~~~
-Creates ``ModelFormBuilder`` for specific model object.
+Creates :doc:`./model_form_builder` for specific model object.
 
 **Parameters:** ``$model``
