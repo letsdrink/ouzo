@@ -5,7 +5,6 @@ Helper functions that can operate on arrays.
 
 all
 ~~~
-
 Returns true if every element in array satisfies the predicate.
 
 **Parameters:** ``array $elements``, ``$predicate``
@@ -13,7 +12,7 @@ Returns true if every element in array satisfies the predicate.
 **Example:**
 ::
 
-    $array = array(1, 2);
+    $array = [1, 2];
     $all = Arrays::all($array, function ($element) {
         return $element < 3;
     });
@@ -22,7 +21,6 @@ Returns true if every element in array satisfies the predicate.
 
 toMap
 ~~~~~
-
 This method creates associative array using key and value functions on array elements.
 
 **Parameters:** ``array $elements``, ``$keyFunction``, ``$valueFunction = null``
@@ -46,7 +44,9 @@ This method creates associative array using key and value functions on array ele
         [20] => 3
     )
 
-If $valueFunction is not given Functions::identity() is used.
+.. note::
+
+    If ``$valueFunction`` is not given Functions::identity() is used.
 
 ::
 
@@ -55,15 +55,16 @@ If $valueFunction is not given Functions::identity() is used.
         return $user->name;
     }); 
 
-$usersByName will contain associative array with users indexed by their names.
+``$usersByName`` will contain associative array with users indexed by their names.
 
-You can Functions::extractField provided by ouzo:
+.. note::
 
-``$usersByName = Arrays::toMap($users, Functions::extractField('name'));`` 
+    You can Functions::extractField provided by ouzo:
+
+    ``$usersByName = Arrays::toMap($users, Functions::extractField('name'));``
 
 flatten
 ~~~~~~~
-
 Returns a new array that is a one-dimensional flattening of the given array.
 
 **Parameters:** ``array $elements``
@@ -71,17 +72,17 @@ Returns a new array that is a one-dimensional flattening of the given array.
 **Example:**
 ::
 
-    $array = array(
-        'names' => array(
+    $array = [
+        'names' => [
             'john',
             'peter',
             'bill'
-        ),
-        'products' => array(
+        ],
+        'products' => [
             'cheese',
-            array('milk', 'brie')
-        )
-    );
+            ['milk', 'brie']
+        ]
+    ];
     $flatten = Arrays::flatten($array);
 
 **Result:**
@@ -99,7 +100,6 @@ Returns a new array that is a one-dimensional flattening of the given array.
 
 findKeyByValue
 ~~~~~~~~~~~~~~
-
 This method returns a key for the given value.
 
 **Parameters:** ``array $elements``, ``$value``
@@ -107,19 +107,18 @@ This method returns a key for the given value.
 **Example:**
 ::
 
-    $array = array(
+    $array = [
         'k1' => 4,
         'k2' => 'd',
         'k3' => 0,
         9 => 'p'
-    );
+    ];
     $key = Arrays::findKeyByValue($array, 0);
 
 **Result:** ``k3``
 
 any
 ~~~
-
 Returns true if at least one element in the array satisfies the predicate.
 
 **Parameters:** ``array $elements``, ``$predicate``
@@ -127,7 +126,7 @@ Returns true if at least one element in the array satisfies the predicate.
 **Example:**
 ::
 
-    $array = array('a', true, 'c');
+    $array = ['a', true, 'c'];
     $any = Arrays::any($array, function ($element) {
         return is_bool($element);
     });
@@ -136,7 +135,6 @@ Returns true if at least one element in the array satisfies the predicate.
 
 first
 ~~~~~
-
 This method returns the first value in the given array .
 
 **Parameters:** ``array $elements``
@@ -144,13 +142,13 @@ This method returns the first value in the given array .
 **Example:**
 ::
 
-    $array = array('one', 'two' 'three');
+    $array = ['one', 'two' 'three'];
+    $first = Arrays::first($array);
 
 **Result:** ``one``
 
 last
 ~~~~
-
 This method returns the last value in the given array.
 
 **Parameters:** ``array $elements``
@@ -158,14 +156,13 @@ This method returns the last value in the given array.
 **Example:**
 ::
 
-    $array = array('a', 'b', 'c');
+    $array = ['a', 'b', 'c'];
     $last = Arrays::last($array);
 
 **Result:** ``c``
 
 firstOrNull
 ~~~~~~~~~~~
-
 This method returns the first value or ``null`` if array is empty.
 
 **Parameters:** ``array $elements``
@@ -173,14 +170,13 @@ This method returns the first value or ``null`` if array is empty.
 **Example:**
 ::
 
-    $array = array();
+    $array = [];
     $return = Arrays::firstOrNull($array);
 
 **Result:** ``null``
 
 getValue
 ~~~~~~~~
-
 Returns the element for the given key or a default value otherwise.
 
 **Parameters:** ``array $elements``, ``$key``, ``$default = null``
@@ -188,7 +184,7 @@ Returns the element for the given key or a default value otherwise.
 **Example:**
 ::
 
-    $array = array('id' => 1, 'name' => 'john');
+    $array = ['id' => 1, 'name' => 'john'];
     $value = Arrays::getValue($array, 'name');
 
 **Result:** ``john``
@@ -196,20 +192,20 @@ Returns the element for the given key or a default value otherwise.
 **Example:**
 ::
 
-    $array = array('id' => 1, 'name' => 'john');
+    $array = ['id' => 1, 'name' => 'john'];
     $value = Arrays::getValue($array, 'surname', '--not found--');
 
 **Result:** ``--not found--``
 
 filterByAllowedKeys
 ~~~~~~~~~~~~~~~~~~~
+Returns an array containing only the given keys.
 
-Returns an array containing only the given keys. 
 **Example:**
 ::
 
-    $array = array('a' => 1, 'b' => 2, 'c' => 3);
-    $filtered = Arrays::filterByAllowedKeys($array, array('a', 'b'));
+    $array = ['a' => 1, 'b' => 2, 'c' => 3];
+    $filtered = Arrays::filterByAllowedKeys($array, ['a', 'b']);
 
 **Result:** 
 ::
@@ -222,13 +218,12 @@ Returns an array containing only the given keys.
 
 filterByKeys
 ~~~~~~~~~~~~
-
 Filters array by keys using the predicate.
 
 **Example:**
 ::
 
-    $array = array('a1' => 1, 'a2' => 2, 'c' => 3);
+    $array = ['a1' => 1, 'a2' => 2, 'c' => 3];
     $filtered = Arrays::filterByKeys($array, function ($elem) {
         return $elem[0] == 'a';
     });
@@ -244,7 +239,6 @@ Filters array by keys using the predicate.
 
 groupBy
 ~~~~~~~
-
 Group elements in array using function to grouping elements. If set ``$orderField`` grouped elements will be also sorted.
 
 **Parameters:** ``array $elements``, ``$keyFunction``, ``$orderField = null``
@@ -264,7 +258,7 @@ Group elements in array using function to grouping elements. If set ``$orderFiel
     $obj3->name = 'b';
     $obj3->description = '3';
     
-    $array = array($obj1, $obj2, $obj3);
+    $array = [$obj1, $obj2, $obj3];
     $grouped = Arrays::groupBy($array, Functions::extractField('name'));
 
 **Result:**
@@ -302,7 +296,6 @@ Group elements in array using function to grouping elements. If set ``$orderFiel
 
 orderBy
 ~~~~~~~
-
 This method sorts elements in array using order field.
 
 **Parameters:** ``array $elements``, ``$orderField``
@@ -322,7 +315,7 @@ This method sorts elements in array using order field.
     $obj3->name = 'b';
     $obj3->description = '3';
 
-    $array = array($obj1, $obj2, $obj3);
+    $array = [$obj1, $obj2, $obj3];
     $sorted = Arrays::orderBy($array, 'name');
 
 **Result:**
@@ -350,13 +343,206 @@ This method sorts elements in array using order field.
 
     )
 
+mapKeys
+-------
+This method maps array keys using the function. Invokes the function for each key in the array. Creates a new array containing the keys returned by the function.
+
+**Parameters:** ``array $elements``, ``$function``
+
+**Example:**
+::
+
+    $array = [
+         'k1' => 'v1',
+         'k2' => 'v2',
+         'k3' => 'v3'
+    ];
+    $arrayWithNewKeys = Arrays::mapKeys($array, function ($key) {
+         return 'new_' . $key;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+         [new_k1] => v1
+         [new_k2] => v2
+         [new_k3] => v3
+    )
+
+map
+~~~
+This method maps array values using the function.
+Invokes the function for each value in the array.
+Creates a new array containing the values returned by the function.
+
+**Parameters:** ``array $elements``, ``$function``
+
+**Example:**
+::
+
+    $array = ['k1', 'k2', 'k3'];
+    $result = Arrays::map($array, function ($value) {
+        return 'new_' . $value;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+        [0] => new_k1
+        [1] => new_k2
+        [2] => new_k3
+    )
+
+filter
+~~~~~~
+This method filters array using function. Result contains all elements for which function  returns ``true``
+**Parameters:** ``$elements``, ``$function``
+
+**Example:**
+::
+
+    $array = [1, 2, 3, 4];
+    $result = Arrays::filter($array, function ($value) {
+        return $value > 2;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+        [2] => 3
+        [3] => 4
+    )
+
+filterNotBlank
+~~~~~~~~~~~~~~
+This method filter array will remove all values that are blank.
+
+**Parameters:** ``array $elements``
+
+toArray
+~~~~~~~
+Make array from element. Returns the given argument if it's already an array.
+
+**Parameters:** ``$element``
+
+**Example:**
+::
+
+    $result = Arrays::toArray('test');
+
+**Result:**
+::
+
+    Array
+    (
+        [0] => test
+    )
+
+randElement
+~~~~~~~~~~~
+Returns a random element from the given array.
+
+**Parameters:** ``array $elements``
+
+**Example:**
+::
+
+    $array = ['john', 'city', 'small'[;
+    $rand = Arrays::randElement($array);
+
+**Result:** *rand element from array*
+
+combine
+~~~~~~~
+Returns a new array with ``$keys`` as array keys and ``$values`` as array values.
+
+**Parameters:** ``array $keys``, ``array $values``
+
+**Example:**
+::
+
+    $keys = ['id', 'name', 'surname'];
+    $values = [1, 'john', 'smith'];
+    $combined = Arrays::combine($keys, $values);
+
+**Result:**
+::
+
+    Array
+    (
+        [id] => 1
+        [name] => john
+        [surname] => smith
+    )
+
+keyExists
+~~~~~~~~~
+Checks is key exists in an array.
+
+**Parameters:** ``array $elements``, ``$key``
+
+**Example:**
+::
+
+    $array = ['id' => 1, 'name' => 'john'];
+    $return = Arrays::keyExists($array, 'name');
+
+**Result:** ``true``
+
+reduce
+~~~~~~
+Method to reduce an array elements to a string value.
+
+**Parameters:** ``array $elements``, ``callable $function``
+
+find
+~~~~
+Finds first element in array that is matched by function. Returns null if element was not found.
+
+**Parameters:** ``array $elements``, ``callable $function``
+
+intersect
+~~~~~~~~~
+Computes the intersection of arrays.
+
+**Parameters:** ``array $array1``, ``array $array2``
+
+setNestedValue
+~~~~~~~~~~~~~~
+Setting nested value.
+
+**Parameters:** ``array $array``, ``array $keys``, ``$value``
+
+**Example:**
+::
+
+    $array = array();
+    Arrays::setNestedValue($array, array('1', '2', '3'), 'value');
+
+Result:
+::
+
+    Array
+    (
+         [1] => Array
+             (
+                 [2] => Array
+                     (
+                         [3] => value
+                     )
+             )
+    )
+
 sort
 ~~~~
-
 Returns a new array with is sorted using given comparator.
-
 The comparator function must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
-
 To obtain comparator one may use ``Comparator`` class (for instance ``Comparator::natural()`` which yields ordering using comparison operators).
 
 **Parameters:** ``array $array``, ``$comparator``
@@ -366,17 +552,19 @@ To obtain comparator one may use ``Comparator`` class (for instance ``Comparator
 
     class Foo
     {
-      private $value;
-      function __construct($value)
-      {
+        private $value;
+
+        public function __construct($value)
+        {
           $this->value = $value;
-      }
-      public function getValue()
-      {
+        }
+
+        public function getValue()
+        {
           return $this->value;
-      }
+        }
     }
-    $values = array(new Foo(1), new Foo(3), new Foo(2));
+    $values = [new Foo(1), new Foo(3), new Foo(2)];
     $sorted = Arrays::sort($values, Comparator::compareBy('getValue()'));
 
 **Result:**
@@ -395,165 +583,115 @@ To obtain comparator one may use ``Comparator`` class (for instance ``Comparator
                  }
     )
 
-mapKeys
-~~~~~~~
+getNestedValue
+~~~~~~~~~~~~~~
+Return nested value when found, otherwise return null value.
 
-This method maps array keys using the function.
-
-Invokes the function for each key in the array. 
-Creates a new array containing the keys returned by the function.
-
-**Parameters:** ``array $elements``, ``$function``
+**Parameters:** ``array $array``, ``array $keys``
 
 **Example:**
 ::
 
-    $array = array(
-        'k1' => 'v1',
-        'k2' => 'v2',
-        'k3' => 'v3',
-    );
-    $arrayWithNewKeys = Arrays::mapKeys($array, function ($key) {
-        return 'new_' . $key;
-    });
+    $array = ['1' => ['2' => ['3' => 'value']]];
+    $value = Arrays::getNestedValue($array, ['1', '2', '3']);
 
-**Result:**
+**Result:** ``value``
+
+removeNestedValue
+~~~~~~~~~~~~~~~~~
+.. deprecated:: 1.0
+    Use :func:`removeNestedKey` instead.
+
+removeNestedKey
+~~~~~~~~~~~~~~~
+Returns array with removed keys even are nested.
+
+**Parameters:** ``array $array``, ``array $keys``
+
+**Example:**
+::
+
+    $array = ['1' => ['2' => ['3' => 'value']]];
+    Arrays::removeNestedKey($array, array('1', '2'));
+
+Result:
 ::
 
     Array
     (
-        [new_k1] => v1
-        [new_k2] => v2
-        [new_k3] => v3
+         [1] => Array
+             (
+             )
     )
 
-map
-~~~
+hasNestedKey
+~~~~~~~~~~~~
+Check is array has nested keys.
 
-This method maps array values using the function.
+.. note::
 
-Invokes the function for each value in the array. 
-Creates a new array containing the values returned by the function.
+    Possibly check array with null values using flag ``Arrays::TREAT_NULL_AS_VALUE``.
 
-**Parameters:** ``array $elements``, ``$function``
-
-**Example:**
-::
-
-    $array = array('k1', 'k2', 'k3');
-    $result = Arrays::map($array, function ($value) {
-        return 'new_' . $value;
-    });
-
-**Result:**
-::
-
-    Array
-    (
-        [0] => new_k1
-        [1] => new_k2
-        [2] => new_k3
-    )
-
-filter
-~~~~~~
-
-This method filters array using function. Result contains all elements for which function  returns ``true``
-**Parameters:** ``$elements``, ``$function``
+**Parameters:** ``array $array``, ``array $keys``, ``$flags = null``
 
 **Example:**
 ::
 
-    $array = array(1, 2, 3, 4);
-    $result = Arrays::filter($array, function ($value) {
-        return $value > 2;
-    });
-
-**Result:**
-::
-
-    Array
-    (
-        [2] => 3
-        [3] => 4
-    )
-
-toArray
-~~~~~~~
-
-Make array from element. Returns the given argument if it's already an array.
-
-**Parameters:** ``$element``
-
-**Example:**
-``$result = Arrays::toArray('test');``
-
-**Result:**
-::
-
-    Array
-    (
-        [0] => test
-    )
-
-randElement
-~~~~~~~~~~~
-
-Returns a random element from the given array.
-
-**Parameters:** ``array $elements``
-
-**Example:**
-::
-
-    $array = array('john', 'city', 'small');
-    $rand = Arrays::randElement($array);
-
-**Result:** *rand element from array*
-
-combine
-~~~~~~~
-
-Returns a new array with ``$keys`` as array keys and ``$values`` as array values.
-
-**Parameters:** ``array $keys``, ``array $values``
-
-**Example:**
-::
-
-
-    $keys = array('id', 'name', 'surname');
-    $values = array(1, 'john', 'smith');
-    $combined = Arrays::combine($keys, $values);
-
-**Result:**
-::
-
-    Array
-    (
-        [id] => 1
-        [name] => john
-        [surname] => smith
-    )
-
-keyExists
-~~~~~~~~~
-
-Checks is key exists in an array.
-
-**Parameters:** ``array $elements``, ``$key``
-
-**Example:**
-::
-
-    $array = array('id' => 1, 'name' => 'john');
-    $return = Arrays::keyExists($array, 'name');
+    $array = ['1' => ['2' => ['3' => 'value']]];
+    $value = Arrays::hasNestedKey($array, ['1', '2', '3']);
 
 **Result:** ``true``
 
+**Example with null values:**
+::
+
+    $array = ['1' => ['2' => ['3' => null]]];
+    $value = Arrays::hasNestedKey($array, ['1', '2', '3'], Arrays::TREAT_NULL_AS_VALUE);
+
+**Result:** ``true``
+
+flattenKeysRecursively
+~~~~~~~~~~~~~~~~~~~~~~
+Returns maps of the flatten keys with corresponding values.
+
+**Parameters:** ``array $array``
+
+**Example:**
+::
+
+    $array = [
+         'customer' => [
+             'name' => 'Name',
+             'phone' => '123456789'
+         ],
+         'other' => [
+             'ids_map' => [
+                 '1qaz' => 'qaz',
+                 '2wsx' => 'wsx'
+             ],
+             'first' => [
+                 'second' => [
+                     'third' => 'some value'
+                 ]
+             ]
+         ]
+    ];
+    $flatten = Arrays::flattenKeysRecursively($array)
+
+**Result:**
+::
+
+    Array
+    (
+         [customer.name] => Name
+         [customer.phone] => 123456789
+         [other.ids_map.1qaz] => qaz
+         [other.ids_map.2wsx] => wsx
+         [other.first.second.third] => some value
+    )
+
 count
 ~~~~~
-
 Returns the number of elements for which the predicate returns true.
 
 **Parameters:** ``array $elements``, ``$predicate``
@@ -561,60 +699,9 @@ Returns the number of elements for which the predicate returns true.
 **Example:**
 ::
 
-    $array = array(1, 2, 3);
+    $array = [1, 2, 3];
     $count = Arrays::count($array, function ($element) {
        return $element < 3;
     });
 
-**Result:** 2
-
-Handling nested keys
---------------------
-
-There is a bunch of methods that helps whenever array with nested keys is in place.
-
-getNestedValue
-~~~~~~~~~~~~~~
-
-::
-
-    $array = ['1' => ['2' => ['3' => 'value']]];
-    Arrays::getNestedValue($array, ['1', '2', '3']);
-
-**Result:** ``value``
-
-setNestedValue
-~~~~~~~~~~~~~~
-
-::
-
-    $array = [];
-    Arrays::setNestedValue($array, ['1', '2', '3'], 'value');
-
-hasNestedValue
-~~~~~~~~~~~~~~
-
-Deprecated. Use **hasNestedKey**.
-
-hasNestedKey
-~~~~~~~~~~~~
-
-::
-
-    $array = ['1' => ['2' => ['3' => 'value']]];
-    Arrays::hasNestedKey($array, ['1', '2']);
-
-**Result:** ``true``
-
-removeNestedValue
-~~~~~~~~~~~~~~~~~
-
-Deprecated. Use **removeNestedKey**.
-
-removeNestedKey
-~~~~~~~~~~~~~~~
-
-::
-
-    $array = ['1' => ['2' => ['3' => 'value']]];
-    Arrays::removeNestedKey($array, ['1', '2']);
+**Result:** ``2``
