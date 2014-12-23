@@ -3,12 +3,14 @@ Cache
 
 Simple request scope cache.
 
+----
+
 get
 ~~~
-
 Returns object from cache.
 If there's no object for the given key and $functions is passed, $function result will be stored in cache under the given key.
-**Parameters:** ``$key``, ``$function`` (optional)
+
+**Parameters:** ``$key``, ``$function = null``
 
 **Example:**
 ::
@@ -18,23 +20,26 @@ If there's no object for the given key and $functions is passed, $function resul
         return Country::all();
     })
 
+----
+
 put
 ~~~
-
 Stores the given object in the cache.
 
 **Parameters:** ``$key``, ``$object``
 
+----
+
 contains
 ~~~~~~~~
-
 Returns true if cache contains an object for the given key.
 
 **Parameters:** ``$key``
 
+----
+
 memoize
 ~~~~~~~
-
 Caches the result of the given closure using filename:line as a key.
 
 **Parameters:** ``$function``
@@ -46,3 +51,15 @@ Caches the result of the given closure using filename:line as a key.
         //expensive computation that returns a list of countries
         return Country::all();
     })
+
+----
+
+size
+~~~~
+Returns number of stored objects.
+
+----
+
+clear
+~~~~~
+Clear all items stored in cache.
