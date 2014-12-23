@@ -3,6 +3,8 @@ Arrays
 
 Helper functions that can operate on arrays.
 
+----
+
 all
 ~~~
 Returns true if every element in array satisfies the predicate.
@@ -18,6 +20,8 @@ Returns true if every element in array satisfies the predicate.
     });
 
 **Result:** ``true``
+
+----
 
 toMap
 ~~~~~
@@ -63,6 +67,8 @@ This method creates associative array using key and value functions on array ele
 
     ``$usersByName = Arrays::toMap($users, Functions::extractField('name'));``
 
+----
+
 flatten
 ~~~~~~~
 Returns a new array that is a one-dimensional flattening of the given array.
@@ -98,6 +104,8 @@ Returns a new array that is a one-dimensional flattening of the given array.
         [5] => brie
     )
 
+----
+
 findKeyByValue
 ~~~~~~~~~~~~~~
 This method returns a key for the given value.
@@ -117,6 +125,8 @@ This method returns a key for the given value.
 
 **Result:** ``k3``
 
+----
+
 any
 ~~~
 Returns true if at least one element in the array satisfies the predicate.
@@ -133,6 +143,8 @@ Returns true if at least one element in the array satisfies the predicate.
 
 **Result:** ``true``
 
+----
+
 first
 ~~~~~
 This method returns the first value in the given array .
@@ -146,6 +158,8 @@ This method returns the first value in the given array .
     $first = Arrays::first($array);
 
 **Result:** ``one``
+
+----
 
 last
 ~~~~
@@ -161,6 +175,8 @@ This method returns the last value in the given array.
 
 **Result:** ``c``
 
+----
+
 firstOrNull
 ~~~~~~~~~~~
 This method returns the first value or ``null`` if array is empty.
@@ -174,6 +190,8 @@ This method returns the first value or ``null`` if array is empty.
     $return = Arrays::firstOrNull($array);
 
 **Result:** ``null``
+
+----
 
 getValue
 ~~~~~~~~
@@ -197,6 +215,8 @@ Returns the element for the given key or a default value otherwise.
 
 **Result:** ``--not found--``
 
+----
+
 filterByAllowedKeys
 ~~~~~~~~~~~~~~~~~~~
 Returns an array containing only the given keys.
@@ -215,6 +235,8 @@ Returns an array containing only the given keys.
         [a] => 1
         [b] => 2
     )
+
+----
 
 filterByKeys
 ~~~~~~~~~~~~
@@ -236,6 +258,8 @@ Filters array by keys using the predicate.
         [a1] => 1
         [b2] => 2
     )
+
+----
 
 groupBy
 ~~~~~~~
@@ -294,6 +318,8 @@ Group elements in array using function to grouping elements. If set ``$orderFiel
 
     )
 
+----
+
 orderBy
 ~~~~~~~
 This method sorts elements in array using order field.
@@ -343,6 +369,8 @@ This method sorts elements in array using order field.
 
     )
 
+----
+
 mapKeys
 -------
 This method maps array keys using the function. Invokes the function for each key in the array. Creates a new array containing the keys returned by the function.
@@ -371,6 +399,8 @@ This method maps array keys using the function. Invokes the function for each ke
          [new_k3] => v3
     )
 
+----
+
 map
 ~~~
 This method maps array values using the function.
@@ -397,6 +427,8 @@ Creates a new array containing the values returned by the function.
         [2] => new_k3
     )
 
+----
+
 filter
 ~~~~~~
 This method filters array using function. Result contains all elements for which function  returns ``true``
@@ -419,11 +451,15 @@ This method filters array using function. Result contains all elements for which
         [3] => 4
     )
 
+----
+
 filterNotBlank
 ~~~~~~~~~~~~~~
 This method filter array will remove all values that are blank.
 
 **Parameters:** ``array $elements``
+
+----
 
 toArray
 ~~~~~~~
@@ -444,6 +480,8 @@ Make array from element. Returns the given argument if it's already an array.
         [0] => test
     )
 
+----
+
 randElement
 ~~~~~~~~~~~
 Returns a random element from the given array.
@@ -457,6 +495,8 @@ Returns a random element from the given array.
     $rand = Arrays::randElement($array);
 
 **Result:** *rand element from array*
+
+----
 
 combine
 ~~~~~~~
@@ -481,6 +521,8 @@ Returns a new array with ``$keys`` as array keys and ``$values`` as array values
         [surname] => smith
     )
 
+----
+
 keyExists
 ~~~~~~~~~
 Checks is key exists in an array.
@@ -495,11 +537,15 @@ Checks is key exists in an array.
 
 **Result:** ``true``
 
+----
+
 reduce
 ~~~~~~
 Method to reduce an array elements to a string value.
 
 **Parameters:** ``array $elements``, ``callable $function``
+
+----
 
 find
 ~~~~
@@ -507,11 +553,15 @@ Finds first element in array that is matched by function. Returns null if elemen
 
 **Parameters:** ``array $elements``, ``callable $function``
 
+----
+
 intersect
 ~~~~~~~~~
 Computes the intersection of arrays.
 
 **Parameters:** ``array $array1``, ``array $array2``
+
+----
 
 setNestedValue
 ~~~~~~~~~~~~~~
@@ -538,6 +588,8 @@ Result:
                      )
              )
     )
+
+----
 
 sort
 ~~~~
@@ -583,6 +635,8 @@ To obtain comparator one may use ``Comparator`` class (for instance ``Comparator
                  }
     )
 
+----
+
 getNestedValue
 ~~~~~~~~~~~~~~
 Return nested value when found, otherwise return null value.
@@ -597,10 +651,14 @@ Return nested value when found, otherwise return null value.
 
 **Result:** ``value``
 
+----
+
 removeNestedValue
 ~~~~~~~~~~~~~~~~~
 .. deprecated:: 1.0
     Use :func:`removeNestedKey` instead.
+
+----
 
 removeNestedKey
 ~~~~~~~~~~~~~~~
@@ -623,6 +681,8 @@ Result:
              (
              )
     )
+
+----
 
 hasNestedKey
 ~~~~~~~~~~~~
@@ -649,6 +709,8 @@ Check is array has nested keys.
     $value = Arrays::hasNestedKey($array, ['1', '2', '3'], Arrays::TREAT_NULL_AS_VALUE);
 
 **Result:** ``true``
+
+----
 
 flattenKeysRecursively
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -689,6 +751,8 @@ Returns maps of the flatten keys with corresponding values.
          [other.ids_map.2wsx] => wsx
          [other.first.second.third] => some value
     )
+
+----
 
 count
 ~~~~~
