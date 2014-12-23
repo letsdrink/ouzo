@@ -3,17 +3,23 @@ FormHelper
 
 View helper methods for generating form markup.
 
+----
+
 escapeText
 ~~~~~~~~~~
 Convert special characters to HTML entities
 
 **Parameters:** ``$text``
 
+----
+
 escapeNewLine
 ~~~~~~~~~~~~~
-Changes new lines to &lt;br&gt; and converts special characters to HTML entities.
+Changes new lines to ``&lt;br&gt;`` and converts special characters to HTML entities.
 
 **Parameters:** ``$text``
+
+----
 
 linkTo
 ~~~~~~
@@ -25,7 +31,21 @@ Creates a link tag.
 ::
 
     linkTo("Name", "url", array('class' => 'btn'))
-    //=> <a href="url" class="btn">Name</a>
+
+**Result:**
+::
+
+    <a href="url" class="btn">Name</a>
+
+----
+
+linkButton
+~~~~~~~~~~
+Creates a button tag.
+
+**Parameters:** ``$params``
+
+----
 
 labelTag
 ~~~~~~~~
@@ -37,7 +57,13 @@ Creates a label tag.
 ::
 
     labelTag("name", "A Label", array('class' => 'pretty'))
-    //=> <label for="name" class="pretty">A Label</label>
+
+**Result:**
+::
+
+    <label for="name" class="pretty">A Label</label>
+
+----
 
 hiddenTag
 ~~~~~~~~~
@@ -49,7 +75,13 @@ Creates a hidden input tag.
 ::
 
     hiddenTag("name", "value", array('id' => 'my-id'))
-    //=> <input type="hidden" id="my-id" name="name" value="value">
+
+**Result:**
+::
+
+    <input type="hidden" id="my-id" name="name" value="value">
+
+----
 
 textFieldTag
 ~~~~~~~~~~~~
@@ -61,7 +93,13 @@ Creates a text input tag.
 ::
 
     textFieldTag("name", "value", array('id' => 'my-id'))
-    //=> <input type="text" id="my-id" name="name" value="value">
+
+**Result:**
+::
+
+    <input type="text" id="my-id" name="name" value="value">
+
+----
 
 textAreaTag
 ~~~~~~~~~~~
@@ -73,7 +111,13 @@ Creates a textarea tag.
 ::
 
     textAreaTag("name", "Content", array('id' => 'my-id'))
-    //=> <textarea id="my-id" name="name">Content</textarea>
+
+**Result:**
+::
+
+    <textarea id="my-id" name="name">Content</textarea>
+
+----
 
 checkboxTag
 ~~~~~~~~~~~
@@ -85,9 +129,14 @@ Creates a checkbox input tag.
 ::
 
     checkboxTag("name", "true", true,  array('class' => 'my-class'))
-    //=>
-    //<input name="name" type="hidden" value="0">
-    //<input type="checkbox" value="true" id="name" name="name" class="my-class" checked="">
+
+**Result:**
+::
+
+    <input name="name" type="hidden" value="0">
+    <input type="checkbox" value="true" id="name" name="name" class="my-class" checked="">
+
+----
 
 selectTag
 ~~~~~~~~~
@@ -99,12 +148,16 @@ Creates a select tag.
 ::
 
     selectTag('status', array('bob' => 'Bob', 'fred' => 'Fred'), array('bob'), array('class' => "my-select"))
-    //=>
-    //<select id="status" name="status" class="my-select">
-    //  <option value="bob" selected="">Bob</option>
-    //  <option value="fred">Fred</option>
-    //</select>
 
+**Result:**
+::
+
+    <select id="status" name="status" class="my-select">
+        <option value="bob" selected="">Bob</option>
+        <option value="fred">Fred</option>
+    </select>
+
+----
 
 passwordFieldTag
 ~~~~~~~~~~~~~~~~
@@ -116,18 +169,68 @@ Creates a password input tag.
 ::
 
     passwordFieldTag("name", "value",  array('class' => 'my-class'))
-    //=>
-    //<input type="password" value="value" id="name" name="name" class="my-class" />
+
+**Result:**
+::
+
+    <input type="password" value="value" id="name" name="name" class="my-class" />
+
+----
+
+radioButtonTag
+~~~~~~~~~~~~~~
+Creates radio tag.
+
+**Parameters:** ``$name``, ``$value``, ``$attributes = array()``
+
+**Example:**
+::
+
+    radioButtonTag('age', 33);
+
+**Result:**
+::
+
+    <input type="radio" id="age" name="age" value="33"/>
+
+----
 
 formTag
 ~~~~~~~
 Creates a form tag.
 
-**Parameters:** ``$url``, ``$method``, ``$attributes = array()``
+**Parameters:** ``$url``, ``$method = 'POST'``, ``$attributes = array()``
 
 **Example:**
 ::
 
     formTag('url', 'post', array('class' => "my-select"))
-    //=>
-    //<form class="my-select" action="url" method="POST">
+
+**Result:**
+::
+
+    <form class="my-select" action="url" method="POST">
+
+----
+
+endFormTag
+~~~~~~~~~~
+Creates end form tag.
+
+**Example:**
+::
+
+    endFormTag()
+
+**Result:**
+::
+
+    </form>
+
+----
+
+formFor
+~~~~~~~
+Creates ``ModelFormBuilder`` for specific model object.
+
+**Parameters:** ``$model``
