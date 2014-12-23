@@ -180,7 +180,7 @@ Assertions:
 Array assertions
 ~~~~~~~~~~~~~~~~
 
-Fluent array assertion to simplify your tests.
+``Assert::thatArray`` is a fluent array assertion to simplify your tests.
 
 Sample usage:
 -------------
@@ -193,7 +193,9 @@ Sample usage:
     Assert::thatArray($animals)->containsOnly('pig', 'dog', 'cat');
     Assert::thatArray($animals)->containsExactly('cat', 'dog', 'pig');
 
-Array assertions can also be used to examine array of objects.
+.. note::
+
+    Array assertions can also be used to examine array of objects. Methods to do this is ``onProperty`` and ``onMethod``.
 
 Using ``onProperty``:
 
@@ -215,12 +217,30 @@ Using ``onMethod``:
 
     Assert::thatArray($users)->onMethod('getAge')->contains(35, 24);
 
+Assertions:
+-----------
+
+* ``contains($element ..)`` - vararg elements to examine that array contains them
+* ``containsOnly($element ..)`` - vararg elements to examine that array contains **only** them
+* ``containsExactly($element ..)`` - vararg elements to examine that array contain **exactly** elements in pass order
+* ``hasSize($expectedSize)`` - check size of the array
+* ``isNotNull()`` - check the array is not null
+* ``isEmpty()`` - check the array is empty
+* ``isNotEmpty()`` - check the array is not empty
+* ``containsKeyAndValue($elements)``
+* ``containsSequence($element ..)`` - check that vararg sequence is exists in the array
+* ``exclude($element ..)``
+* ``hasEqualKeysRecursively(array $array)``
+
 ----
 
 Exception assertions
 ~~~~~~~~~~~~~~~~~~~~
 
 CatchException enables you to write a unit test that checks that an exception is thrown.
+
+Sample usage:
+-------------
 
 ::
 
@@ -233,12 +253,13 @@ CatchException enables you to write a unit test that checks that an exception is
     //then
     CatchException::assertThat()->isInstanceOf("FooException");
 
-Exception assertions:
----------------------
+Assertions:
+-----------
 
-* isInstanceOf($exception)
-* isEqualTo($exception)
-* notCaught()
+* ``isInstanceOf($exception)``
+* ``isEqualTo($exception)``
+* ``notCaught()``
+* ``hasMessage($message)``
 
 ----
 
@@ -274,7 +295,7 @@ And then verify interactions:
 Unlike other PHP mocking libraries you can verify interactions ex post facto which is more natural and fits BDD or AAA style.
 
 If you use type hinting and the mock has to be of a type of a Class, you can pass the required type to ``Mock::mock`` method.
- 
+
 ::
 
     $mock = Mock::mock('Foo');
