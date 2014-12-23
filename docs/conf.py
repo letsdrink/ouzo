@@ -3,11 +3,15 @@
 import sys
 import os
 
+sys.path.append(os.path.abspath('_exts'))
+from sphinx.highlighting import lexers
+from pygments.lexers.web import PhpLexer
+
 #sys.path.insert(0, os.path.abspath('.'))
 
 #needs_sphinx = '1.0'
 extensions = [
-    'sphinx_http_domain'
+    'sphinx_http_domain', 'sensio.sphinx.refinclude', 'sensio.sphinx.configurationblock', 'sensio.sphinx.phpcode'
 ]
 templates_path = ['_templates']
 source_suffix = '.rst'
@@ -131,6 +135,9 @@ texinfo_documents = [
 #texinfo_no_detailmenu = False
 
 lexers['php'] = PhpLexer(startinline=True)
+lexers['php-annotations'] = PhpLexer(startinline=True)
+primary_domain = 'php'
+
 highlight_language='php'
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
