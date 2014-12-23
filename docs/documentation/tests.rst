@@ -3,7 +3,6 @@ Tests
 
 Controller test case
 ~~~~~~~~~~~~~~~~~~~~
-
 Ouzo provides ``ControllerTestCase`` which allows you to verify that:
 
 * there's a route for a given url
@@ -72,7 +71,6 @@ Assertions:
 
 Database test case
 ~~~~~~~~~~~~~~~~~~
-
 Ouzo provides ``DbTransactionalTestCase`` class that takes care of transactions in tests.
 This class starts a new transaction before each test case and rolls it back afterwards.
 
@@ -102,7 +100,6 @@ This class starts a new transaction before each test case and rolls it back afte
 
 Model assertions
 ~~~~~~~~~~~~~~~~
-
 ``Assert::thatModel`` allows you to check if two model objects are equal.
 
 Sample usage:
@@ -140,12 +137,10 @@ Assertions:
 
 String assertions
 ~~~~~~~~~~~~~~~~~
-
 ``Assert::thatString`` allows you to check strings as a fluent assertions.
 
 Sample usage:
 -------------
-
 ::
 
     Assert::thatString("Frodo")
@@ -179,12 +174,10 @@ Assertions:
 
 Array assertions
 ~~~~~~~~~~~~~~~~
-
 ``Assert::thatArray`` is a fluent array assertion to simplify your tests.
 
 Sample usage:
 -------------
-
 .. code-block:: php
 
     <?php
@@ -236,12 +229,10 @@ Assertions:
 
 Exception assertions
 ~~~~~~~~~~~~~~~~~~~~
-
 CatchException enables you to write a unit test that checks that an exception is thrown.
 
 Sample usage:
 -------------
-
 ::
 
     //given
@@ -260,6 +251,31 @@ Assertions:
 * ``isEqualTo($exception)``
 * ``notCaught()``
 * ``hasMessage($message)``
+
+----
+
+.. _session-assertions:
+
+Session assertions
+~~~~~~~~~~~~~~~~~~
+``Assert::thatSession`` class comes with a handy method to test your session content.
+
+Sample usage:
+-------------
+::
+
+    // when
+    Session::set('key1', 'value1');
+           ->set('key2', 'value2');
+
+    // then
+    Assert::thatSession()
+          ->hasSize('2')
+          ->contains('key2' => 'value2');
+
+.. note::
+
+    This assert has the same method as ``Assert::thatArray``.
 
 ----
 
