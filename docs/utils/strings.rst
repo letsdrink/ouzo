@@ -15,6 +15,8 @@ Changes underscored string to the camel case.
 
 **Result:** ``LannistersAlwaysPayTheirDebts``
 
+----
+
 camelCaseToUnderscore
 ~~~~~~~~~~~~~~~~~~~~~
 Changes camel case string to underscored.
@@ -28,6 +30,8 @@ Changes camel case string to underscored.
     $underscored = Strings::camelCaseToUnderscore($string);
 
 **Result:** ``lannisters_always_pay_their_debts``
+
+----
 
 removePrefix
 ~~~~~~~~~~~~
@@ -43,6 +47,8 @@ Returns a new string without the given prefix.
 
 **Result:** ``Rest``
 
+----
+
 removePrefixes
 ~~~~~~~~~~~~~~
 Removes prefixes defined in array from string.
@@ -56,6 +62,8 @@ Removes prefixes defined in array from string.
     $withoutPrefix = Strings::removePrefixes($string, array('pre', 'fix'));
 
 **Result:** ``Rest``
+
+----
 
 startsWith
 ~~~~~~~~~~
@@ -71,6 +79,8 @@ Method checks if string starts with ``$prefix``.
 
 **Result:** ``true``
 
+----
+
 endsWith
 ~~~~~~~~
 Method checks if string ends with ``$suffix``.
@@ -85,6 +95,8 @@ Method checks if string ends with ``$suffix``.
 
 **Result:** ``String``
 
+----
+
 equalsIgnoreCase
 ~~~~~~~~~~~~~~~~
 Determines whether two strings contain the same data, ignoring the case of the letters in the strings.
@@ -97,6 +109,8 @@ Determines whether two strings contain the same data, ignoring the case of the l
     $equal = Strings::equalsIgnoreCase('ABC123', 'abc123')
 
 **Result:** ``true``
+
+----
 
 remove
 ~~~~~~
@@ -112,6 +126,8 @@ Removes all occurrences of a substring from string.
 
 **Result:** ``winter is coming!!!``
 
+----
+
 appendSuffix
 ~~~~~~~~~~~~
 Adds suffix to the string.
@@ -125,6 +141,22 @@ Adds suffix to the string.
     $stringWithSuffix = Strings::appendSuffix($string, ' Targaryen');
 
 **Result:** ``Daenerys Targaryen``
+
+appendPrefix
+~~~~~~~~~~~~
+Adds prefix to the string.
+
+**Parameters:** ``$string``, ``$prefix = ''``
+
+**Example:**
+::
+
+    $string = 'Targaryen';
+    $stringWithPrefix = Strings::appendPrefix($string, 'Daenerys ');
+
+**Result:** ``Daenerys Targaryen``
+
+----
 
 tableize
 ~~~~~~~~
@@ -140,6 +172,8 @@ Converts a word into the format for an Ouzo table name. Converts 'ModelName' to 
 
 **Result:** ``BigFeet``
 
+----
+
 escapeNewLines
 ~~~~~~~~~~~~~~
 Changes new lines to ``<br>`` and converts special characters to HTML entities.
@@ -154,6 +188,83 @@ Changes new lines to ``<br>`` and converts special characters to HTML entities.
 
 **Result:** ``My name is &lt;strong&gt;Reek&lt;/strong&gt; <br />\nit rhymes with leek``
 
+----
+
+htmlEntityDecode
+~~~~~~~~~~~~~~~~
+Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT.
+
+**Parameters:** ``$text``
+
+----
+
+htmlEntities
+~~~~~~~~~~~~
+Alias for htmlentities() with UTF-8 and defined flag ENT_COMPAT.
+
+**Parameters:** ``$text``
+
+----
+
+equal
+~~~~~
+Method checks if string representations of two objects are equal.
+
+**Parameters:** ``$object1``, ``$object2``
+
+**Example:**
+::
+
+    $result = Strings::equal('0123', 123);
+
+**Result:** ``false``
+
+----
+
+isBlank
+~~~~~~~
+Method checks if string is blank.
+
+**Parameters:** ``$string``
+
+**Example:**
+::
+
+    $result = Strings::isBlank('0');
+
+**Result:** ``false``
+
+----
+
+isNotBlank
+~~~~~~~~~~
+Method checks if string is not blank.
+
+**Parameters:** ``$string``
+
+**Example:**
+::
+
+    $result = Strings::isNotBlank('0');
+
+**Result:** ``true``
+
+----
+
+abbreviate
+~~~~~~~~~~
+Abbreviates a string using ellipsis.
+
+**Parameters:** ``$string``, ``$maxWidth``
+
+**Example:**
+::
+
+    $result = Strings::abbreviate('ouzo is great', 5);
+
+**Result:** ``ouzo ...``
+
+----
 
 trimToNull
 ~~~~~~~~~~
@@ -167,3 +278,51 @@ Removes control characters from both ends of this string returning null if the s
     $result = Strings::trimToNull('  ');
 
 **Result:** ``null``
+
+----
+
+sprintfAssoc
+~~~~~~~~~~~~
+Replace all occurrences of placeholder in string with values from associative array.
+
+**Parameters:** ``$string``, ``$params``
+
+**Example:**
+::
+
+    $sprintfString = "This is %{what}! %{what}? This is %{place}!";
+    $assocArray = array(
+      'what' => 'madness',
+      'place' => 'Sparta'
+    );
+
+**Result:** ``This is madness! madness? This is Sparta!``
+
+----
+
+sprintAssocDefault
+~~~~~~~~~~~~~~~~~~
+Replace all occurrences of placeholder in string with values from associative array.
+When no value for placeholder is found in array, a default empty value is used if not otherwise specified.
+
+**Parameters:** ``$string``, ``array $params``, ``$default = ''``
+
+**Example:**
+::
+
+    $sprintfString = "This is %{what}! %{what}? This is %{place}!";
+    $assocArray = array(
+      'what' => 'madness',
+      'place' => 'Sparta'
+    );
+
+**Result:** ``This is madness! madness? This is Sparta!``
+
+----
+
+contains
+~~~~~~~~
+
+Check is string contains substring.
+
+**Parameters:** ``$string``, ``$substring``

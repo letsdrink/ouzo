@@ -8,6 +8,8 @@ Generator reads information about database table and transforms it into Ouzo Mod
 
     Support for: MySQL and PostgreSQL.
 
+----
+
 Basic example
 ~~~~~~~~~~~~~
 
@@ -58,6 +60,8 @@ As you can see ``$_fields`` lists all ``users`` table columns (except for id whi
 .. note::
 
     You could save the generated class to a file by specifying ``-f=/path/to/file.php`` option. If not specified namespace and class name is used.
+
+----
 
 Options
 ~~~~~~~
