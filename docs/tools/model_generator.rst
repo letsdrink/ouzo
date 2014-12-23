@@ -4,21 +4,30 @@ Model generator
 Model generator is a console tool for creating Model classes for existing tables.
 Generator reads information about database table and transforms it into Ouzo Model class.
 
-Support for: MySQL and PostgreSQL.
+.. note::
 
-### Basic example
+    Support for: MySQL and PostgreSQL.
+
+Basic example
+~~~~~~~~~~~~~
+
 Change current path to project directory (e.g. myproject):
 
 ``cd myproject``
 
-Generate Model class body for table **users** containing three columns: _id_, _login_, _password_:
+Generate Model class body for table **users** containing three columns: *id*, *login*, *password*:
 
-``php shell.php \\ModelGenerator -t=users``
+``./console ouzo:model_generator -t users``
 
 The command should output a model class **User**:
 
-.. code-block:: php
+::
 
+    ---------------------------------
+    Database name: thulium_1
+    Class name: PhoneParam
+    Class namespace: Model
+    ---------------------------------
     <?php
     namespace Model;
 
@@ -28,36 +37,39 @@ The command should output a model class **User**:
      * @property string login
      * @property string password
     */
-
     class User extends Model
     {
-        private $_fields = array('login', 'password');
+        private $_fields = ['login', 'password';
 
-        public function __construct($attributes = array())
+        public function __construct($attributes = [])
         {
-            parent::__construct(array(
+            parent::__construct([
                 'table' => 'users',
                 'primaryKey' => 'id',
                 'attributes' => $attributes,
-                'fields' => $this->_fields));
+                'fields' => $this->_fields
+            ]);
         }
     }
+    Saving class to file: '/path/to/myproject/Application/Model/User.php'
 
-As you can see $_fields lists all ``users`` table columns (except for id which is specified by ``'primaryKey'`` parameter).
+As you can see ``$_fields`` lists all ``users`` table columns (except for id which is specified by ``primaryKey`` parameter).
 
-You could save the generated class to a file by specifying ``-f=/path/to/file.php`` option.
+.. note::
 
-Model Generator options
-~~~~~~~~~~~~~~~~~~~~~~~
+    You could save the generated class to a file by specifying ``-f=/path/to/file.php`` option. If not specified namespace and class name is used.
 
-``php shell.php \\ModelGenerator OPTIONS``
+Options
+~~~~~~~
 
-OPTIONS are:
+::
 
-* ``-t=table_name`` _[required]_ - table name for a Model that you want generate
-* ``-c=ClassName`` _[optional]_ - specify this option to override Model class name
-* ``-f=/path/to/file.php`` _[optional]_ - specify a destination file for the generated class. **If file already exists, it will not be overwritten**.
-* ``-p=prefix`` _[optional]_ _[default: **t** ]_ - table prefix. Prefix is omitted in class name. E.g. for **t_users** table, **User** Model class will be generated.
+     --table (-t)          Table name
+     --class (-c)          Class name. If not specified class name is generated based on table name
+     --file (-f)           Class file path. If not specified namespace and class name is used
+     --namespace (-s)      Class namespace (e.g 'Model\MyModel'). Hint: Remember to escape backslash (\\)! (default: "Model")
+     --remove_prefix (-p)  Remove prefix from table name when generating class name (default: "t")
 
-If no option is specified application will print the help message
+.. note::
 
+    If no option is specified application will print the help message.
