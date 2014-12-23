@@ -5,7 +5,7 @@ Model definition
 ~~~~~~~~~~~~~~~~
 This code will map ``Category`` class to a ``categories`` table with *id* as a primary key and one column *name*.
 
-.. code-block:: php
+.. code:: php
 
     <?php
     class Category extends Model
@@ -41,7 +41,7 @@ Creating new instances
 ----------------------
 You can create an instance using Model's constructor or ```Model::newInstance`` method. They both take an array of attributes as an optional parameter.
 
-::
+.. code:: php
 
     $user = new User();
     $user = new User(array('name' => 'bob'));
@@ -52,7 +52,7 @@ Instances created using constructor and ``Model::newInstance`` method are not in
 
 If you want to create, validate and save an instance, you can use ``Model::create`` method.
 
-::
+.. code:: php
 
     $user = User::create(array('name' => 'bob'));
 
@@ -64,7 +64,7 @@ You can save a new instance using ``insert`` method. It returns the value of the
 You can update an existing object using ``update`` method.
 If you are not sure if an object was already saved you can call ``insertOrUpdate`` method.
 
-::
+.. code:: php
 
     $product = new Product();
     $product->name = 'Phone';
@@ -81,13 +81,14 @@ Update of multiple records
 --------------------------
 You can update specific columns in records matching given criteria.
 
-::
+.. code:: php
 
     $affectedRows = User::where(array('name' => 'bob'))
                      ->update(array('name' => 'eric'));
 
 Issued sql query:
-::
+
+.. code:: sql
 
     UPDATE users set name = ? WHERE name = ? Params: ['eric', 'bob']
 
@@ -95,7 +96,7 @@ Default field values
 --------------------
 You can define default values for fields in two ways - using **string** or **anonymous function**.
 
-::
+.. code:: php
 
     [
         'description' => 'no desc',
@@ -106,7 +107,7 @@ You can define default values for fields in two ways - using **string** or **ano
 
 Now if you create a new model object these fields will be set to their default values.
 
-::
+.. code:: php
 
     $modelWithDefaults = new ModelWithDefaults();
     echo $modelWithDefaults->description; // no desc
@@ -117,7 +118,7 @@ Validation
 You can validate the state of objects with ``Model::validate`` method.
 Just override it in you model and implement all necessary checks.
 
-::
+.. code:: php
 
     public function validate()
     {
@@ -136,7 +137,7 @@ You can then see what was wrong calling ``getErrors`` (for error messages) or ``
 If your object has relations to other objects and you want to validate them altogether you can call 
 ``validateAssociated`` method passing other objects.
 
-::
+.. code:: php
 
     public function validate()
     {
@@ -166,7 +167,7 @@ Executes a native sql and returns an array of model objects created by passing e
 * ``$nativeSql`` - database specific sql
 * ``$params`` - bind parameters
 
-::
+.. code:: php
 
     User::findBySql('select * from users');
     User::findBySql('select * from users where login like ?', "%cat%");
@@ -182,7 +183,8 @@ You can access relation objects using Model properties (just like other attribut
 Relation object are lazy-loaded when they are accessed for the first time and cached for subsequent use.
 
 For instance, if you have a ``User`` model that belongs to a ``Group``:
-::
+
+.. code:: php
 
     $group = Group::create(['name' => 'Admin']);
     $user = User::create(['login' => 'bob', 'group_id' => $group->id]);
@@ -207,7 +209,7 @@ Let's see an example.
 
 We have products that are assigned to exactly one category, and categories that can have multiple products.
 
-.. code-block:: php
+.. code:: php
 
     <?php
     class Category extends Model
@@ -226,7 +228,7 @@ We have products that are assigned to exactly one category, and categories that 
 ``foreignKey`` in ``Category`` specifies column in ``Product`` that references the ``categories`` table.
 Parameter ``referencedColumn`` was omitted so the Category's primary key will be used by default.
 
-.. code-block:: php
+.. code:: php
 
     <?php
     class Product extends Model
@@ -249,7 +251,7 @@ Inline Relation
 ---------------
 If you want to join your class with another class without specifying the relation in the constructor, you can pass a relation object to the ``join`` method
 
-::
+.. code:: php
 
     User::join(Relation::inline(array(
       'class' => 'Animal',
@@ -266,7 +268,7 @@ Conditions in relations
 -----------------------
 If you want to customize your relation you can use **conditions** mechanism. For example, to add a condition use string or array:
 
-::
+.. code:: php
 
     'hasOne' => array(
         'product_named_billy' => array(
@@ -278,7 +280,7 @@ If you want to customize your relation you can use **conditions** mechanism. For
 
 however you can use closure to:
 
-::
+.. code:: php
 
     'products_ending_with_b_or_y' => array(
         'class' => 'Test\Product',
@@ -296,7 +298,7 @@ It's a fluent interface that allows you to programmatically build queries.
 
 Fully-fledged example:
 
-::
+.. code:: php
 
     $orders = Order::alias('o')
             ->join('product->category', ['p', 'ct'])
@@ -317,34 +319,40 @@ Where
 Single parameter
 ^^^^^^^^^^^^^^^^
 Simplest way to filter records is to use where clause on Model class e.g.
-::
+
+.. code:: php
 
     User::where(array('login' => 'ouzo'))->fetch();
 
 In the above example we are searching for a user, who has login set to ouzo. You can check the log files (or use Stats class in debug mode) to verify that the database query is correct:
-::
+
+.. code:: sql
 
     SELECT users.* FROM users WHERE login = ? Params: ["ouzo"]
 
 Alternative syntax:
-::
+
+.. code:: php
 
     User::where('login = ?', 'ouzo')->fetch();
 
 Multiple parameters
 ^^^^^^^^^^^^^^^^^^^
 You can specify more than one parameter e.g.
-::
+
+.. code:: php
 
     User::where(array('login' => 'ouzo', 'password' => 'abc'))->fetch();
 
 Which leads to:
-::
+
+.. code:: sql
 
     SELECT users.* FROM users WHERE (login = ? AND password = ?) Params: ["ouzo", "abc"]
 
 Alternative syntax:
-::
+
+.. code:: php
 
     User::where('login = ? AND password = ?', array('ouzo', 'abc'))->fetch();
 
@@ -352,7 +360,7 @@ Restrictions
 ------------
 You can specify restriction mechanism to build where conditions. Usage:
 
-::
+.. code:: php
 
     Product::where(array('name' => Restrictions::like('te%')))->fetch()
 
@@ -401,7 +409,8 @@ Supported restrictions:
 Parameters chaining
 -------------------
 Where clauses can be chained e.g.
-::
+
+.. code:: php
 
     User::where(array('login' => 'ouzo'))
         ->where(array('password' => 'abc'))
@@ -412,12 +421,14 @@ SQL query will be exactly the same as in the previous example.
 Multiple values
 ---------------
 If you want to search for any of values equal to given parameter:
-::
+
+.. code:: php
 
     User::where(array('login' => array('ouzo', 'admin')))->fetch();
 
 It results in:
-::
+
+.. code:: php
 
     SELECT users.* FROM users WHERE login IN (?, ?) Params: ["ouzo", "admin"]
 
@@ -427,17 +438,22 @@ It is not possible to use alternative syntax for this type of query.
 .. note::
 
     Please, remember that if you want to retrieve more than one record you need to use fetchAll instead of fetch:
-    ``User::where(array('login' => array('ouzo', 'admin')))->fetchAll();``
+
+    .. code:: php
+
+        User::where(array('login' => array('ouzo', 'admin')))->fetchAll();
 
 Retrieve all records
 --------------------
 All records of given type can be fetched by using empty where clause:
-::
+
+.. code:: php
 
     User::where()->fetchAll();
 
 Or shortened equivalent:
-::
+
+.. code:: php
 
     User:all();
 
@@ -456,7 +472,7 @@ Relation definition
 -------------------
 As a first step relations have to be defined inside a Model class. Let's say there is User, which has one Product. User definition needs ``hasOne`` relation:
 
-.. code-block:: php
+.. code:: php
 
     <?php
     class User extends Model
@@ -477,29 +493,34 @@ The relation name is ``product``, it uses ``Product`` class and is mapped by use
 Single join
 -----------
 Now ``join`` can be used to retrieve User together with Product:
-::
+
+.. code:: php
 
     User::join('product')->fetch();
 
 Query:
-::
+
+.. code:: sql
 
     SELECT users.*, products.* FROM users
     LEFT JOIN products ON products.user_id = users.id
 
 Product can be referred from User object:
-::
+
+.. code:: php
 
     $user = User::join('product')->fetch();
     echo $user->product->name;
 
 Join can be combined with other parts of query builder (where, limit, offset, order etc.) e.g.
-::
+
+.. code:: php
 
     User::join('product')->where(array('products.name' => 'app'))->fetch();
 
 Query:
-::
+
+.. code:: sql
 
     SELECT users.*, products.* FROM users
     LEFT JOIN products ON products.user_id = users.id
@@ -509,7 +530,7 @@ Multiple joins / join chaining
 ------------------------------
 You can chain join clauses:
 
-::
+.. code:: php
 
     User::join('product')
        ->join('group')->fetchAll();
@@ -519,11 +540,12 @@ Nested joins
 You can join models through other models with nested joins.
 
 Let's assume that you have Order that has Product and Product has Category:
-::
+
+.. code:: php
 
     $order = Order::join('product->category')->fetch();
 
-::
+.. code:: sql
 
     SELECT orders.*, products.*, categories.*
     FROM orders
@@ -532,7 +554,8 @@ Let's assume that you have Order that has Product and Product has Category:
 
 Returned order will contain fetched product and that product will contain category.
 The following code will echo category's name without querying db:
-::
+
+.. code:: php
 
     echo $order->product->category->name;
 
@@ -543,14 +566,14 @@ Aliasing
 Normally if you want to reference a table in the query builder you have to use the table name.
 When you join multiple Models it may be cumbersome. That is when aliases come in handy.
 
-::
+.. code:: php
 
     $product = Product::alias('p')
             ->join('category', 'c')
             ->where(['p.name' => 'a', 'c.name' => 'phones'])
             ->fetch();
 
-::
+.. code:: sq;
 
     SELECT p.*, c.*
     FROM products AS p
@@ -558,7 +581,8 @@ When you join multiple Models it may be cumbersome. That is when aliases come in
     WHERE p.name = 'a' and c.name = 'phones'
 
 If you want to alias tables in nested join you can pass array of aliases as a second parameter of ``join`` method.
-::
+
+.. code:: php
 
     $orders = Order::alias('o')
             ->join('product->category', array('p', 'c'))
@@ -575,12 +599,14 @@ With
 ``ModelQueryBuilder::with`` method instructs ouzo to fetch results with their relations.
 
 The following code will return products with their categories.
-::
+
+.. code:: php
 
     $products = Product::where()->with('category')->fetchAll();
 
 Ouzo will query db for products, then load all corresponding categories with one query.
-::
+
+.. code:: sql
 
     SELECT products.* FROM products
     SELECT categories.* FROM categories WHERE id IN (?, ?, ..,) Params: [product1.category_id, product2.category_id, ..., productN.category_id]
@@ -588,14 +614,15 @@ Ouzo will query db for products, then load all corresponding categories with one
 You can chain ``with`` methods.
 You can also use ``with`` to fetch nested relations.
 
-::
+.. code:: php
 
     $orders = Order::where()
        ->with('product->category')
        ->fetchAll();
 
 Ouzo will first load all matching orders, then their products, and then products' categories:
-::
+
+.. code:: sql
 
     SELECT orders.* FROM orders
     SELECT products.* FROM products WHERE id IN (?, ?, ...)
@@ -612,54 +639,74 @@ Count
 Count all records
 -----------------
 Counting all records of given type:
-::
+
+.. code:: php
 
     User::count()
 
 As a result integer with size is returned. Query:
-``SELECT count(*) FROM users``
+
+.. code:: php
+
+    SELECT count(*) FROM users
 
 Count with where
 ----------------
 Count method accepts same arguments as where e.g.
-::
+
+.. code:: php
 
     User::count(array('login' => 'ouzo'));
 
 Query:
-``SELECT count(*) FROM users WHERE login = ? Params: ["ouzo"]``
+
+.. code:: sql
+
+    SELECT count(*) FROM users WHERE login = ? Params: ["ouzo"]
 
 ----
 
 Limit
 ~~~~~
 In order to limit number of records to retrieve use ``limit`` method with integer argument:
-::
+
+.. code:: php
 
     User::where()->limit(10)->fetch();
 
 It returns first 10 records:
-``SELECT users.* FROM users LIMIT ? Params: [10]``
+
+.. code:: sql
+
+    SELECT users.* FROM users LIMIT ? Params: [10]
 
 ----
 
 Offset
 ~~~~~~
 Usually used with ``limit`` method, it sets offset (integer) from which records will be retrieved:
-::
+
+.. code:: php
 
     User::where()->offset(5)->fetch();
 
 Query:
-``SELECT users.* FROM users OFFSET ? Params: [5]``
+
+.. code:: sql
+
+    SELECT users.* FROM users OFFSET ? Params: [5]
 
 Combined with ``limit``:
-::
+
+.. code:: php
 
     User::where()->limit(10)->offset(5)->fetch();
 
 Query:
-``SELECT users.* FROM users LIMIT ? OFFSET ? Params: [10, 5]``
+
+.. code:: sql
+
+    SELECT users.* FROM users LIMIT ? OFFSET ? Params: [10, 5]
 
 ----
 
@@ -669,39 +716,52 @@ Order
 Order by one column
 -------------------
 To sort the result:
-::
+
+.. code:: php
 
     User::where()->order('login')->fetch();
 
 Query:
-``SELECT users.* FROM users ORDER BY login``
+
+.. code:: sql
+
+    SELECT users.* FROM users ORDER BY login
 
 Order by multiple columns
 -------------------------
 If array is given as an argument the method sorts by multiple columns:
-::
+
+.. code:: php
 
     User::where()->order(array('login', 'id'))->fetch();
 
 Query:
-``SELECT users.* FROM users ORDER BY login, id``
+
+.. code:: php
+
+    SELECT users.* FROM users ORDER BY login, id
 
 Sort direction
 --------------
 Ascending or descending:
-::
+
+.. code:: php
 
     User::where()->order(array('login asc', 'id desc'))->fetch();
 
 Query:
-``SELECT users.* FROM users ORDER BY login asc, id desc``
+
+.. code:: php
+
+    SELECT users.* FROM users ORDER BY login asc, id desc
 
 ----
 
 Transactions
 ~~~~~~~~~~~~
 You can control transactions manually:
-::
+
+.. code:: php
 
     Db::getInstance()->beginTransaction();
     try {
@@ -712,7 +772,8 @@ You can control transactions manually:
     }
 
 You can run a callable object in a transaction:
-::
+
+.. code:: php
 
     $result = Db::getInstance()->runInTransaction(function() {
        //do something
@@ -721,7 +782,7 @@ You can run a callable object in a transaction:
 
 You can also proxy an object so that all methods become transactional:
 
-::
+.. code:: php
 
     $user = new User(['name' => 'bob']);
     $transactionalUser = Db::transactional($user);
