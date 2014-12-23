@@ -144,6 +144,8 @@ Composition is defined as the function h such that h(a) == A(B(a)) for each a.
 
 **Parameters:** ``$functionA``, ``$functionB``
 
+.. _functions-extract:
+
 extract
 ~~~~~~~
 Fluent builder for a callable that extracts a value from its argument.

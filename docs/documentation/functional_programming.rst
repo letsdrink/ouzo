@@ -1,7 +1,7 @@
 Functional programming
 ======================
 
-Let's assume that you have a User class that has a list of addresses. Each address has a type (like: home, invoice etc.) and User has getAddress($type) method.
+Let's assume that you have a User class that has a list of addresses. Each address has a type (like: home, invoice etc.) and User has ``getAddress($type)`` method.
 
 Now, let's write a code that given a list of users, returns a lists of unique non-empty cities from users' home addresses.
 
@@ -26,14 +26,18 @@ Ouzo:
              ->unique()
              ->toArray();
 
-FluentArray
+.. seealso::
 
-Functions::extract
+    :doc:`../utils/fluent_array`
+
+    :ref:`Functions::extract <functions-extract>`
+
+
 
 Composing functions
 ~~~~~~~~~~~~~~~~~~~
 
-Class FluentFunctions allows you to easily compose functions from Functions.
+Class ``FluentFunctions`` allows you to easily compose functions from ``Functions``.
 
 ::
 
@@ -50,11 +54,12 @@ is equivalent of:
         return $startsWith($extractField($product));
     });
 
-
 Another example:
 
 ::
 
     $bobs = Arrays::filter($users, FluentFunctions::extractField('name')->equals('Bob'));
 
-FluentFunctions
+.. seealso::
+
+    :doc:`../utils/fluent_functions`
