@@ -1,9 +1,9 @@
 FluentFunctions
 ===============
 
-Methods in FluentFunctions return instance of FluentFunction that contains all functions from [Functions](functions.md).
+Methods in ``FluentFunctions`` return instance of ``FluentFunction`` that contains all functions from :doc:`functions`.
 
-Example:
+----
 
 Create a function that extracts field 'name' form the given argument, then removes prefix 'super', adds ' extra' at the beginning, appends '! ' and surrounds result with ``"***"``.
 ::
