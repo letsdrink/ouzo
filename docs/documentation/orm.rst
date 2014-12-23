@@ -5,7 +5,7 @@ Model definition
 ~~~~~~~~~~~~~~~~
 This code will map ``Category`` class to a ``categories`` table with *id* as a primary key and one column *name*.
 
-.. code:: php
+.. code-block:: php
 
     <?php
     class Category extends Model
@@ -41,7 +41,7 @@ Creating new instances
 ----------------------
 You can create an instance using Model's constructor or ```Model::newInstance`` method. They both take an array of attributes as an optional parameter.
 
-.. code:: php
+.. code-block:: php
 
     $user = new User();
     $user = new User(array('name' => 'bob'));
@@ -52,7 +52,7 @@ Instances created using constructor and ``Model::newInstance`` method are not in
 
 If you want to create, validate and save an instance, you can use ``Model::create`` method.
 
-.. code:: php
+.. code-block:: php
 
     $user = User::create(array('name' => 'bob'));
 
@@ -64,7 +64,7 @@ You can save a new instance using ``insert`` method. It returns the value of the
 You can update an existing object using ``update`` method.
 If you are not sure if an object was already saved you can call ``insertOrUpdate`` method.
 
-.. code:: php
+.. code-block:: php
 
     $product = new Product();
     $product->name = 'Phone';
@@ -81,14 +81,14 @@ Update of multiple records
 --------------------------
 You can update specific columns in records matching given criteria.
 
-.. code:: php
+.. code-block:: php
 
     $affectedRows = User::where(array('name' => 'bob'))
                      ->update(array('name' => 'eric'));
 
 Issued sql query:
 
-.. code:: sql
+.. code-block:: sql
 
     UPDATE users set name = ? WHERE name = ? Params: ['eric', 'bob']
 
