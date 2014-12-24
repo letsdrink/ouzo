@@ -43,6 +43,7 @@ Utilities:
    utils/path
    utils/session
    utils/strings
+   utils/clock
 
 Tools:
 ~~~~~~
