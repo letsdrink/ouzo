@@ -134,7 +134,7 @@ Returns a function object (predicate) that returns true if its argument is an ar
 
 isInstanceOf
 ~~~~~~~~~~~~
-Returns a function object that check instance of its arguments.
+Returns a function object (predicate) that returns true if its argument is an instance of the given type.
 
 **Parameters:** ``$type``
 
