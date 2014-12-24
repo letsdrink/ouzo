@@ -12,18 +12,14 @@ class ContentType
         self::$contentType = $contentType;
     }
 
-    public static function init()
-    {
-        self::$contentType = self::getFromServer();
-    }
-
-    public static function getFromServer()
+    private static function getFromServer()
     {
         return Arrays::first(explode(';', Arrays::getValue($_SERVER, 'CONTENT_TYPE')));
     }
 
     public static function value()
     {
+        self::$contentType = self::$contentType ?: self::getFromServer();
         return self::$contentType;
     }
 }
