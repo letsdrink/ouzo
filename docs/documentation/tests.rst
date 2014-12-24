@@ -279,6 +279,27 @@ Sample usage:
 
 ----
 
+Testing time-dependent code
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We do recommend you to use Clock instead of DateTime.
+Clock provides time travel and time freezing capabilities, making it simple to test time-dependent code.
+
+::
+
+    //given
+    Clock::freeze('2011-01-02 12:34');
+
+    //when
+    $result = Clock::nowAsString('Y-m-d');
+
+    //then
+    $this->assertEquals('2011-01-02', $result);
+
+.. seealso::
+
+    :doc:`../utils/clock`
+
 Mocking
 ~~~~~~~
 
