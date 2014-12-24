@@ -330,7 +330,38 @@ Verification that a method was not called:
 
     Mock::verify($mock)->neverReceived()->method("arg");
 
-Argument matchers:
+
+You can stub multiple calls in one call to thenReturn:
+
+::
+
+    $mock = Mock::mock();
+    Mock::when($mock)->method(1)->thenReturn('result1', 'result2');
+    Mock::when($mock)->method()->thenThrow(new Exception('1'), new Exception('2'));
+
+Both thenReturn and thenThrow accept multiples arguments that will be returned/thrown in subsequent calls to a stubbed method.
+
+::
+
+    $mock = Mock::mock();
+
+    Mock::when($mock)->method()->thenReturn('result1', 'result2');
+
+    $this->assertEquals("result1", $mock->method());
+    $this->assertEquals("result2", $mock->method());
+
+
+You can stub a method to return value calculated by a callback function:
+
+::
+
+    Mock::when($mock)->method(Mock::any())->thenAnswer(function (MethodCall $methodCall) {
+      return $methodCall->name . ' ' . Arrays::first($methodCall->arguments);
+    });
+
+
+Argument matchers
+-----------------
 
 * Mock::any() - matches any value for an argument at the given position
 
@@ -344,18 +375,26 @@ Argument matchers:
 
     Mock::verify($mock)->method(Mock::anyArgList());
 
-You can stub multiple calls in one call to thenReturn:
+* Mock::argThat() - returns an instance of FluentArgumentMatcher that can chain methods from :doc:`../utils/functions`.
+::
+
+    Mock::verify($mock)->method(Mock::argThat()->extractField('name')->equals('Bob'));
 
 ::
 
-    $mock = Mock::mock();
-    Mock::when($mock)->method(1)->thenReturn('result1', 'result2');
-    Mock::when($mock)->method()->thenThrow(new Exception('1'), new Exception('2'));
+    Mock::verify($mock)->method('first arg', Mock::argThat()->isInstanceOf('Foo'));
 
-You can stub a method to return value calculated by a callback function:
+
+In rare cases, you may need to write your own argument matcher:
 
 ::
 
-    Mock::when($mock)->method(Mock::any())->thenAnswer(function (MethodCall $methodCall) {
-      return $methodCall->name . ' ' . Arrays::first($methodCall->arguments);
-    });
+    class MyArgumentMatcher implements Ouzo\Tests\Mock\ArgumentMatcher {
+        public function matches($argument) {
+            return $argument->name == 'Bob' || $argument->surname == 'Smith';
+        }
+    }
+
+    Mock::verify($mock)->method(new MyArgumentMatcher());
+
+
