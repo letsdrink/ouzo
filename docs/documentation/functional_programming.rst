@@ -9,8 +9,58 @@ Ouzo provides many utility classes that facilitates functional programming in ph
 * :doc:`../utils/fluent_array` provides an interface for manipulating arrays in a chained fashion.
 * :doc:`../utils/fluent_functions` provides an interface for composing functions in a chained fashion.
 
-Example
-~~~~~~~
+
+Example 1
+~~~~~~~~~
+Let's assume that you have a User class that has a method isCool. You have an array of users and want to check if any of them is cool.
+
+
+Pure php:
+
+::
+
+    function isAnyCool($users) {
+        foreach($users as $user) {
+            if ($user->isCool()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+Ouzo:
+
+::
+
+    function isAnyCool($users) {
+        return Arrays::any($users, function($user) { return $user->isCool(); });
+    }
+
+or using Functions::extract():
+
+::
+
+    function isAnyCool($users) {
+        return Arrays::any($users, Functions::extract()->isCool());
+    }
+
+
+Similarly, you may want to check if all of them are cool:
+
+::
+
+    $allCool = Arrays::all($users, Functions::extract()->isCool());
+
+
+.. seealso::
+
+    :ref:`Arrays::groupBy <Arrays-groupBy>`
+
+    :ref:`Arrays::toMap <Arrays-toMap>`
+
+Example 2
+~~~~~~~~~
 
 Let's assume that you have a User class that has a list of addresses. Each address has a type (like: home, invoice etc.) and User has ``getAddress($type)`` method.
 

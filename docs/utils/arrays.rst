@@ -23,6 +23,8 @@ Returns true if every element in array satisfies the predicate.
 
 ----
 
+.. _Arrays-toMap:
+
 toMap
 ~~~~~
 This method creates associative array using key and value functions on array elements.
@@ -260,6 +262,8 @@ Filters array by keys using the predicate.
     )
 
 ----
+
+.. _Arrays-groupBy:
 
 groupBy
 ~~~~~~~
