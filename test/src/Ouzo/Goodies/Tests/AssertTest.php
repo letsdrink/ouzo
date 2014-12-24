@@ -328,6 +328,25 @@ class AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function onPropertyFailureShouldShowNiceMessage()
+    {
+        //given
+        $obj[0] = new stdClass();
+        $obj[0]->property1 = 'prop1';
+        $obj[1] = new stdClass();
+        $obj[1]->property1 = 'prop2';
+
+        //when
+        CatchException::when(Assert::thatArray($obj)->onProperty('property1'))->contains('prop3');
+
+        //then
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException')
+            ->hasMessage('Cannot find expected ["prop3"] in actual ["prop1", "prop2"]' . "\n" . 'Failed asserting that true is false.');
+    }
+
+    /**
+     * @test
+     */
     public function shouldCheckKeysRecursivelyAreEqual()
     {
         //given
