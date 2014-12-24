@@ -51,7 +51,7 @@ Methods:
 * ``put($url, $data)`` - mock PUT request with data for given url
 * ``patch($url)`` - mock PATCH request for given url
 * ``delete($url)``- mock DELETE request for given url
-* ``getAssigned($name)`` - get value for the current controller action
+* ``getAssigned($name)`` - get value of $name variable assigned to the rendered view.
 * ``getRenderedJsonAsArray()`` - get returned JSON as array
 * ``getResponseHeaders()`` - get all response header
 
