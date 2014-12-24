@@ -1,6 +1,17 @@
 Functional programming
 ======================
 
+Ouzo provides many utility classes that facilitates functional programming in php.
+
+
+* :doc:`../utils/arrays` contains facade for php arrays functions. You will never wonder if array_filter has array or closure as the first parameter.
+* :doc:`../utils/functions` contains static utility methods returning closures that can be used with Arrays and FluentArray.
+* :doc:`../utils/fluent_array` provides an interface for manipulating arrays in a chained fashion.
+* :doc:`../utils/fluent_functions` provides an interface for composing functions in a chained fashion.
+
+Example
+~~~~~~~
+
 Let's assume that you have a User class that has a list of addresses. Each address has a type (like: home, invoice etc.) and User has ``getAddress($type)`` method.
 
 Now, let's write a code that given a list of users, returns a lists of unique non-empty cities from users' home addresses.
