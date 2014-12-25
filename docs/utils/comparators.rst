@@ -81,7 +81,7 @@ Now, let's analyze it:
     #. reversed (b, a, a)
     #. there is a conflict (a = a)
     #. so a tie breaker goes to work
-    #. ties are sorted by 'description' property (b, a1, a2)
+    #. ties are sorted by ``description`` property (b, a1, a2)
 
 Voila!
 
