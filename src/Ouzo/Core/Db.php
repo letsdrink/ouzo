@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Exception;
 use Ouzo\Db\PDOExceptionExtractor;
 use Ouzo\Db\StatementExecutor;
 use Ouzo\Db\TransactionalProxy;
@@ -79,9 +80,14 @@ class Db
     {
         if (!$this->_startedTransaction) {
             $this->beginTransaction();
-            $result = call_user_func($callable);
-            $this->commitTransaction();
-            return $result;
+            try {
+                $result = call_user_func($callable);
+                $this->commitTransaction();
+                return $result;
+            } catch (Exception $e) {
+                $this->rollbackTransaction();
+                throw $e;
+            }
         }
         return call_user_func($callable);
     }
