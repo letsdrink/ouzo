@@ -13,6 +13,7 @@ Read more:
 * Ouzo documentation: http://ouzo.readthedocs.org
 
 [![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
+[![Documentation Status](https://readthedocs.org/projects/ouzo/badge/?version=latest)](https://readthedocs.org/projects/ouzo/?badge=latest)
 [![Coverage Status](https://coveralls.io/repos/letsdrink/ouzo/badge.png)](https://coveralls.io/r/letsdrink/ouzo)
 [![Dependency Status](https://www.versioneye.com/php/letsdrink:ouzo/dev-master/badge.png)](https://www.versioneye.com/php/letsdrink:ouzo/dev-master)
 [![Latest Stable Version](https://poser.pugx.org/letsdrink/ouzo/v/stable.svg)](https://packagist.org/packages/letsdrink/ouzo)
