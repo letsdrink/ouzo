@@ -415,6 +415,22 @@ Where clauses can be chained e.g.
 
 SQL query will be exactly the same as in the previous example.
 
+OR operator
+-----------
+Where clauses are chained with AND operator. In order to achieve OR operator you need to use
+``Any::of`` function e.g.
+
+::
+
+    User::where(Any::of(array('login' => 'ouzo', 'password' => 'abc))
+        ->fetch();
+
+Query:
+
+.. code-block:: sql
+
+    SELECT users.* FROM users WHERE login = ? OR password = ? Params: ["ouzo", "abc"]
+
 Multiple values
 ---------------
 If you want to search for any of values equal to given parameter:

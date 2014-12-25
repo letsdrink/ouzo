@@ -1,4 +1,5 @@
 <?php
+use Ouzo\Db\Any;
 use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
@@ -236,6 +237,41 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ? AND (a = 1 OR b = 2)', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldUseOrOperator()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->where(Any::of(array('name' => 'bob', 'id' => '1')));
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT * FROM products WHERE (name = ? OR id = ?)', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldUseBothAndOrOperator()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->where(array('a' => '5'));
+        $query->where(Any::of(array('name' => 'bob', 'id' => '1')));
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT * FROM products WHERE a = ? AND (name = ? OR id = ?)', $sql);
     }
 
     /**
