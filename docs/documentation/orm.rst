@@ -7,7 +7,6 @@ This code will map ``Category`` class to a ``categories`` table with *id* as a p
 
 ::
 
-    <?php
     class Category extends Model
     {
         public function __construct($attributes = array())
@@ -211,7 +210,6 @@ We have products that are assigned to exactly one category, and categories that 
 
 ::
 
-    <?php
     class Category extends Model
     {
         public function __construct($attributes = array())
@@ -230,7 +228,6 @@ Parameter ``referencedColumn`` was omitted so the Category's primary key will be
 
 ::
 
-    <?php
     class Product extends Model
     {
         public function __construct($attributes = array())
@@ -326,7 +323,7 @@ Simplest way to filter records is to use where clause on Model class e.g.
 
 In the above example we are searching for a user, who has login set to ouzo. You can check the log files (or use Stats class in debug mode) to verify that the database query is correct:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT users.* FROM users WHERE login = ? Params: ["ouzo"]
 
@@ -346,7 +343,7 @@ You can specify more than one parameter e.g.
 
 Which leads to:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT users.* FROM users WHERE (login = ? AND password = ?) Params: ["ouzo", "abc"]
 
@@ -428,7 +425,7 @@ If you want to search for any of values equal to given parameter:
 
 It results in:
 
-::
+.. code-block:: sql
 
     SELECT users.* FROM users WHERE login IN (?, ?) Params: ["ouzo", "admin"]
 
@@ -474,7 +471,6 @@ As a first step relations have to be defined inside a Model class. Let's say the
 
 ::
 
-    <?php
     class User extends Model
     {
         public function __construct($attributes = array())
@@ -500,7 +496,7 @@ Now ``join`` can be used to retrieve User together with Product:
 
 Query:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT users.*, products.* FROM users
     LEFT JOIN products ON products.user_id = users.id
@@ -520,7 +516,7 @@ Join can be combined with other parts of query builder (where, limit, offset, or
 
 Query:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT users.*, products.* FROM users
     LEFT JOIN products ON products.user_id = users.id
@@ -545,7 +541,7 @@ Let's assume that you have Order that has Product and Product has Category:
 
     $order = Order::join('product->category')->fetch();
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT orders.*, products.*, categories.*
     FROM orders
@@ -573,7 +569,7 @@ When you join multiple Models it may be cumbersome. That is when aliases come in
             ->where(['p.name' => 'a', 'c.name' => 'phones'])
             ->fetch();
 
-.. code:: sq;
+.. code-block:: sql
 
     SELECT p.*, c.*
     FROM products AS p
@@ -606,7 +602,7 @@ The following code will return products with their categories.
 
 Ouzo will query db for products, then load all corresponding categories with one query.
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT products.* FROM products
     SELECT categories.* FROM categories WHERE id IN (?, ?, ..,) Params: [product1.category_id, product2.category_id, ..., productN.category_id]
@@ -622,7 +618,7 @@ You can also use ``with`` to fetch nested relations.
 
 Ouzo will first load all matching orders, then their products, and then products' categories:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT orders.* FROM orders
     SELECT products.* FROM products WHERE id IN (?, ?, ...)
@@ -646,7 +642,7 @@ Counting all records of given type:
 
 As a result integer with size is returned. Query:
 
-::
+.. code-block:: sql
 
     SELECT count(*) FROM users
 
@@ -660,7 +656,7 @@ Count method accepts same arguments as where e.g.
 
 Query:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT count(*) FROM users WHERE login = ? Params: ["ouzo"]
 
@@ -679,7 +675,7 @@ In order to limit number of records to retrieve use ``limit`` method with intege
 
 It returns first 10 records:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT users.* FROM users LIMIT ? Params: [10]
 
@@ -695,7 +691,7 @@ Usually used with ``limit`` method, it sets offset (integer) from which records 
 
 Query:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT users.* FROM users OFFSET ? Params: [5]
 
@@ -707,7 +703,7 @@ Combined with ``limit``:
 
 Query:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT users.* FROM users LIMIT ? OFFSET ? Params: [10, 5]
 
@@ -726,7 +722,7 @@ To sort the result:
 
 Query:
 
-.. code:: sql
+.. code-block:: sql
 
     SELECT users.* FROM users ORDER BY login
 
@@ -740,7 +736,7 @@ If array is given as an argument the method sorts by multiple columns:
 
 Query:
 
-::
+.. code-block:: sql
 
     SELECT users.* FROM users ORDER BY login, id
 
@@ -754,7 +750,7 @@ Ascending or descending:
 
 Query:
 
-::
+.. code-block:: sql
 
     SELECT users.* FROM users ORDER BY login asc, id desc
 

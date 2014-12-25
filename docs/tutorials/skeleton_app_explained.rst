@@ -8,7 +8,7 @@ Let's walk through the code and see how it works.
 Routes
 ~~~~~~
 
-File myproject/config/routes.php contains configuration of routing.
+File ``myproject/config/routes.php`` contains configuration of routing.
 You can run ``./console ouzo:routes`` to see all routes exposed by your app.
 
 ``Route::get('/', 'users#index');`` instructs Ouzo that requests to '/' are handled by method **index** in **UsersController**.
@@ -17,9 +17,8 @@ You can run ``./console ouzo:routes`` to see all routes exposed by your app.
 
 Controller
 ~~~~~~~~~~
-.. code-block:: php
+::
 
-    <?php
     class UsersController extends Controller
     {
         public function init()
@@ -42,9 +41,8 @@ You can access this variable in a view as a field (``$this->users``).
 In the next line we render a view. By default view name is derived from controller and method names. In this case it will be ``Users/index`` which means file ``View/Users/index.phtml`` will be used.
 You can render other views by passing a parameter to the render method.
 
-.. code-block:: php
+::
 
-    <?php
     class UsersController extends Controller
     {
         ...
@@ -78,9 +76,8 @@ It will contain values submitted by browser and validation errors that prevented
 Model
 ~~~~~
 
-.. code-block:: php
+::
 
-    <?php
     class User extends Model
     {
         public function __construct($attributes = [])
@@ -102,7 +99,7 @@ User class is mapped to the **users** table, primary key defaults to **id** and 
 Parameter **fields** defines columns that will be exposed as model attributes.
 You can pass additional options to override the default mapping.
 
-.. code-block:: php
+::
 
     parent::__construct([
         'table' => 'other_name'

@@ -9,7 +9,7 @@ Ouzo provides ``ControllerTestCase`` which allows you to verify that:
 * controllers methods work as expected
 * views are rendered without errors
 
-.. code-block:: php
+::
 
     <?php
     class UsersControllerTest extends ControllerTestCase
@@ -74,7 +74,7 @@ Database test case
 Ouzo provides ``DbTransactionalTestCase`` class that takes care of transactions in tests.
 This class starts a new transaction before each test case and rolls it back afterwards.
 
-.. code-block:: php
+::
 
     <?php
     class UserTest extends DbTransactionalTestCase
@@ -105,7 +105,7 @@ Model assertions
 Sample usage:
 -------------
 
-.. code-block:: php
+::
 
     <?php
     class UserTest extends DbTransactionalTestCase
@@ -178,7 +178,7 @@ Array assertions
 
 Sample usage:
 -------------
-.. code-block:: php
+::
 
     <?php
     $animals = ['cat', 'dog', 'pig'];
@@ -192,7 +192,7 @@ Sample usage:
 
 Using ``onProperty``:
 
-.. code-block:: php
+::
 
     <?php
     $object1 = new stdClass();
@@ -280,7 +280,7 @@ Sample usage:
 ----
 
 Testing time-dependent code
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We do recommend you to use Clock instead of DateTime.
 Clock provides time travel and time freezing capabilities, making it simple to test time-dependent code.

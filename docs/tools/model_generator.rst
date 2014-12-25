@@ -1,12 +1,12 @@
 Model generator
 ===============
 
-Model generator is a console tool for creating Model classes for existing tables.
-Generator reads information about database table and transforms it into Ouzo Model class.
+Model generator is a console tool for creating Model classes for existing database tables.
+Generator reads information about database table and transforms it into Ouzo's Model class.
 
 .. note::
 
-    Support for: MySQL and PostgreSQL.
+    Currently there is a support for MySQL and PostgreSQL.
 
 ----
 
