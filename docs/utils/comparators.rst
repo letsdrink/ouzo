@@ -77,11 +77,11 @@ Example:
     );
 
 Now, let's analyze it:
-#. products are sorted by ``name`` property (a, a, b)
-#. reversed (b, a, a)
-#. there is a conflict (a = a)
-#. so a tie breaker goes to work
-#. ties are sorted by 'description' property (b, a1, a2)
+    #. products are sorted by ``name`` property (a, a, b)
+    #. reversed (b, a, a)
+    #. there is a conflict (a = a)
+    #. so a tie breaker goes to work
+    #. ties are sorted by 'description' property (b, a1, a2)
 
 Voila!
 
