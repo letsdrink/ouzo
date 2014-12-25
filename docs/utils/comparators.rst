@@ -30,7 +30,7 @@ It is a comparator according to which order of elements is reversed. It expects 
 
     Arrays::sort([1, 3, 2], Comparator::reverse(Comparator::natural()));
 
-Result is obviously reversed array of natural order, which is ``3, 2, 1``. Any comparator may be passed as a parameter.
+Result is obviously a reversed array of natural order, which is ``3, 2, 1``. Any comparator may be passed as a parameter.
 Combining comparators? Just imagine the possibilities!
 
 Compare by
