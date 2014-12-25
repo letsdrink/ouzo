@@ -422,7 +422,7 @@ Where clauses are chained with AND operator. In order to have OR operator you ne
 
 ::
 
-    User::where(Any::of(array('login' => 'ouzo', 'password' => 'abc'))
+    User::where(Any::of(array('login' => 'ouzo', 'password' => 'abc')))
         ->fetch();
 
 Query:
