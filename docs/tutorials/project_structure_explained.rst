@@ -1,5 +1,5 @@
-Skeleton app explained
-======================
+Project structure explained
+===========================
 
 Let's walk through the code and see how it works.
 

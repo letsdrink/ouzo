@@ -4,14 +4,14 @@ Welcome to Ouzo docs
 Tutorials:
 ~~~~~~~~~~
 
-Check our `5 minutes tutorial`_.
+Start with `5 minutes tutorial`_, read about project structure and then dive deeper into more advanced Ouzo topics.
 
 .. _`5 minutes tutorial`: https://github.com/letsdrink/ouzo-app
 
 .. toctree::
    :maxdepth: 2
 
-   tutorials/skeleton_app_explained
+   tutorials/project_structure_explained
 
 Documentation:
 ~~~~~~~~~~~~~~
