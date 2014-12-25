@@ -17,7 +17,7 @@ As simple as it gets:
 
 ::
 
-    Arrays::sort([1, 3, 2], Comparator::natural());
+    $result = Arrays::sort([1, 3, 2], Comparator::natural());
 
 It sorts given array in a natural order, so the result would be ``1, 2, 3``.
 
@@ -28,7 +28,7 @@ It is a comparator according to which order of elements is reversed. It expects 
 
 ::
 
-    Arrays::sort([1, 3, 2], Comparator::reverse(Comparator::natural()));
+    $result = Arrays::sort([1, 3, 2], Comparator::reverse(Comparator::natural()));
 
 Result is obviously a reversed array of natural order, which is ``3, 2, 1``. Any comparator may be passed as a parameter.
 Combining comparators? Just imagine the possibilities!
@@ -53,7 +53,7 @@ In case you haven't heard of Ouzo's assertions, here is the simplest way to test
 
 ::
 
-    Assert::thatArray($result)->onProperty('name')->containsExactly('a', 'b', 'c');
+    $result = Assert::thatArray($result)->onProperty('name')->containsExactly('a', 'b', 'c');
 
 Compound
 ~~~~~~~~
@@ -69,7 +69,7 @@ Example:
     $product2 = new Product(['name' => 'b', 'description' => '2']);
     $product3 = new Product(['name' => 'a', 'description' => '1']);
 
-    Arrays::sort([$product1, $product2, $product3],
+    $result = Arrays::sort([$product1, $product2, $product3],
         Comparator::compound(
             Comparator::reverse(Comparator::compareBy('name')),
             Comparator::compareBy('description')
