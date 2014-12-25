@@ -39,7 +39,7 @@ Compare by
 Compares objects by using values computed using given expression. Expression should comply with format accepted by
 ``Functions::extractExpression``.
 
-Imagine you have ``Product`` and you want to sort it by its ``name`` property. No problem:
+Imagine you have ``Product`` and you want to sort it by its ``name`` property. Not a problem:
 
 ::
 
@@ -77,11 +77,11 @@ Example:
     );
 
 Now, let's analyze it:
-# products are sorted by ``name`` property (a, a, b)
-# reversed (b, a, a)
-# there is a conflict (a = a)
-# so a tie breaker goes to work
-# ties are sorted by 'description' property (b, a1, a2)
+#. products are sorted by ``name`` property (a, a, b)
+#. reversed (b, a, a)
+#. there is a conflict (a = a)
+#. so a tie breaker goes to work
+#. ties are sorted by 'description' property (b, a1, a2)
 
 Voila!
 
