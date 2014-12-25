@@ -44,6 +44,7 @@ Utilities:
    utils/session
    utils/strings
    utils/clock
+   utils/comparators
 
 Tools:
 ~~~~~~
