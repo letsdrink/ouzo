@@ -1,10 +1,10 @@
 Comparators
 ===========
 
-Comparators are used for sorting objects in ``Arrays::sort``. It is a flexible mechanism to compare objects. Ouzo
-provides various comparators out of the box and ability to write your custom comparators.
+Comparators are used to determine the order of objects in ``Arrays::sort``. It is a flexible mechanism to compare objects.
+Ouzo provides various comparators out of the box and the ability to write your custom comparators.
 
-``Comparator`` class is a facade with all comparators:
+``Comparator`` class is a facade which contains all comparators:
 * natural
 * reverse
 * compareBy
