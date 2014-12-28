@@ -77,11 +77,7 @@ class Generator
 
     public function getTemplateClassName()
     {
-        if ($this->_className) {
-            return $this->_className;
-        } else {
-            return $this->_classNameFromTableName();
-        }
+        return $this->_className ?: $this->_classNameFromTableName();
     }
 
     public function templateContents()
