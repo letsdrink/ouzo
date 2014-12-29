@@ -660,9 +660,11 @@ Return nested value when found, otherwise return null value.
 removeNestedValue
 ~~~~~~~~~~~~~~~~~
 .. deprecated:: 1.0
-    Use :func:`removeNestedKey` instead.
+Use :ref:`Arrays::removeNestedKey <Arrays-removeNestedKey>` instead.
 
 ----
+
+.. _Arrays-removeNestedKey:
 
 removeNestedKey
 ~~~~~~~~~~~~~~~

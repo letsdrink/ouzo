@@ -275,7 +275,7 @@ If you want to customize your relation you can use **conditions** mechanism. For
         )
     )
 
-however you can use closure to:
+you can use a closure too:
 
 ::
 

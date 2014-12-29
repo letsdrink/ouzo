@@ -14,6 +14,8 @@ Returns a function object that calls ``getId`` method on its argument.
 
 ----
 
+.. _Functions-extractField:
+
 extractField
 ~~~~~~~~~~~~
 Returns a function object that returns a value of the given field of its argument.
@@ -27,6 +29,8 @@ Returns a function object that returns a value of the given field of its argumen
   $names = Arrays::map($users, Functions::extractField('name'));
 
 ----
+
+.. _Functions-extractFieldRecursively:
 
 extractFieldRecursively
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,7 +63,7 @@ Returns a function object that returns a value of the given nested field of its 
 extractExpression
 ~~~~~~~~~~~~~~~~~
 Returns a function object that returns a result of the expression evaluated for its argument.
-It's a more efficient equivalent of :func:`extractField` and :func:`extractFieldRecursively` (it examines the given expression and returns the most suitable function).
+It's a more efficient equivalent of :ref:`Functions::extractField <Functions-extractField>` and :ref:`Functions::extractFieldRecursively <Functions-extractFieldRecursively>` (it examines the given expression and returns the most suitable function).
 
 If ``$expression`` is a function object, it is returned unchanged.
 
