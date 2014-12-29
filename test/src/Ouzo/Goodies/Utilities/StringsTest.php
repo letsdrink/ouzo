@@ -512,4 +512,49 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertTrue($contains);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGetsSubstringBeforeSeparator()
+    {
+        //given
+        $string = 'winter is coming???!!!';
+
+        //when
+        $result = Strings::substringBefore($string, '?');
+
+        //then
+        $this->assertEquals('winter is coming', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnStringIfSeparatorNotFound()
+    {
+        //given
+        $string = 'winter is coming';
+
+        //when
+        $result = Strings::substringBefore($string, ',');
+
+        //then
+        $this->assertEquals('winter is coming', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnNullForNull()
+    {
+        //given
+        $string = null;
+
+        //when
+        $result = Strings::substringBefore(null, ',');
+
+        //then
+        $this->assertNull($result);
+    }
 }
