@@ -217,7 +217,7 @@ extract
 ~~~~~~~
 Fluent builder for a callable that extracts a value from its argument.
 
-The object returned by this method records all actions performed on it.
+The callable object returned by this method records all actions performed on it.
 Then when it is invoked, it replays those actions on the invocation argument.
 
 **Parameters:** ``$type`` - optional type hint for PhpStorm dynamicReturnType plugin.
