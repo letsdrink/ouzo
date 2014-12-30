@@ -258,6 +258,13 @@ Additionally, if you use PhpStorm dynamicReturnType plugin you can pass type as 
   $cities = Arrays::map($users, Functions::extract('User')->...
   //ctrl+space will show you all methods/properties of the User class
 
+
+Extractor can also extract array values:
+
+::
+
+  Arrays::map($users, Functions::extract('User')->addresses['home']);
+
 ----
 
 surroundWith

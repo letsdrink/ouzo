@@ -169,4 +169,22 @@ class ExtractorTest extends DbTransactionalTestCase
         catch (InvalidArgumentException $e) {
         }
     }
+
+    /**
+     * @test
+     */
+    public function shouldExtractArrayValue()
+    {
+        //given
+        $object = new stdClass();
+        $object->field1 = array('key' => 'value');
+
+        $function = Functions::extract()->field1['key'];
+
+        //when
+        $result = Functions::call($function, $object);
+
+        //then
+        Assert::thatString($result)->isEqualTo('value');
+    }
 }
