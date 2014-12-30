@@ -6,13 +6,13 @@ Release 1.4.0
 Enhancements:
 * Extracted Ouzo Goodies, which can be used from now on as a separate project.
 * Versioned documentation available at ouzo.readthedocs.org.
-
-Bug fixes:
 * [ORM] Added Any::of to produce OR operator (issue #141).
 * [Utilities] Added Strings::substringBefore.
+* [Tests] Added CatchException::get.
+
+Bug fixes:
 * [ORM] Fixed transaction rollback on exception (issue #115).
 * [Tests] Better messages when assertThat::onMethod fails (issue #128).
-* [Tests] Added CatchException::get.
 
 Release 1.3
 -----------
