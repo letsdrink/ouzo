@@ -217,7 +217,12 @@ extract
 ~~~~~~~
 Fluent builder for a callable that extracts a value from its argument.
 
+The object returned by this method records all actions performed on it.
+Then when it is invoked, it replays those actions on the invocation argument.
+
 **Parameters:** ``$type`` - optional type hint for PhpStorm dynamicReturnType plugin.
+
+Example:
 
 Let's assume that you have a User class that has a list of addresses. Each address has a type (like: home, invoice etc.) and User has getAddress($type) method.
 
@@ -238,11 +243,15 @@ It gets more complicated when some users don't have home address:
 
 We can write it in one line using Functions::extract:
 
-``$cities=Arrays::map($users, Functions::extract()->getAddress('home')->city);``
+::
+
+  $cities = Arrays::map($users, Functions::extract()->getAddress('home')->city);
 
 Additionally, if you use PhpStorm dynamicReturnType plugin you can pass type as the first argument of Functions::extract.
 
-``Arrays::map($users, Functions::extract('User')->getAddress('home')->city);``
+::
+
+  Arrays::map($users, Functions::extract('User')->getAddress('home')->city);
 
 ::
 
