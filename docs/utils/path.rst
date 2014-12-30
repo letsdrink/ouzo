@@ -1,13 +1,13 @@
 Path
 ====
 
-It is a utility designed to simplify path related operations, such as joining or normalizing path parts.
+It is a utility designed to simplify path related operations, such as joining or normalizing paths.
 
 ----
 
 join
 ~~~~
-Allows to join all given path parts together using system specific directory separator.
+Allows you to join all given path parts together using system specific directory separator.
 It ignores empty arguments and excessive separators.
 
 **Example:**
