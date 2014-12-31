@@ -70,6 +70,23 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldMapEntries()
+    {
+        //given
+        $array = array('a' => 1, 'b' => 2, 'c' => 3);
+
+        //when
+        $result = Arrays::mapEntries($array, function ($key, $value) {
+            return $key . '_' . $value;
+        });
+
+        //then
+        $this->assertEquals(array('a' => 'a_1', 'b' => 'b_2', 'c' => 'c_3'), $result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldFilterValues()
     {
         //given
@@ -256,8 +273,8 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(
-                '1' => array($product1),
-                '2' => array($product2, $product3)), $grouped);
+            '1' => array($product1),
+            '2' => array($product2, $product3)), $grouped);
     }
 
     /**
@@ -291,8 +308,8 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(
-                '1' => array($product1),
-                '2' => array($product3, $product2)), $grouped);
+            '1' => array($product1),
+            '2' => array($product3, $product2)), $grouped);
     }
 
     /**
