@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+INCOMING
+--------
+Bug fixes:
+* [Utilities] Added [Arrays::mapEntries](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
+
 Release 1.4.0
 -------------
 Enhancements:
