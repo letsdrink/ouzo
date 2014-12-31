@@ -258,7 +258,7 @@ Filters array by keys using the predicate.
     Array
     (
         [a1] => 1
-        [b2] => 2
+        [a2] => 2
     )
 
 ----
