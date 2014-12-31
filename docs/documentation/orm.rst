@@ -108,6 +108,20 @@ Now if you create a new model object these fields will be set to their default v
 
 ::
 
+    class ModelWithDefaults extends Model {
+        public function __construct($attributes = []) {
+            parent::__construct([
+                'attributes' => $attributes,
+                'fields' => [
+                    'description' => 'no desc',
+                    'name' => function() {
+                        return 'no name';
+                    }
+                ]
+            ]);
+        }
+    }
+
     $modelWithDefaults = new ModelWithDefaults();
     echo $modelWithDefaults->description; // no desc
     echo $modelWithDefaults->name; // no name
