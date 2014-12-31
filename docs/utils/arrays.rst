@@ -433,6 +433,34 @@ Creates a new array containing the values returned by the function.
 
 ----
 
+mapEntries
+~~~~~~~~~~
+This method maps array values using the function which takes key and value as parameters..
+Invokes the function for each value in the array.
+Creates a new array containing the values returned by the function.
+
+**Parameters:** ``array $elements``, ``$function``
+
+**Example:**
+::
+
+    $array = ['a' => '1', 'b' => '2', 'c' => '3'];
+    $result = Arrays::mapEntries($array, function ($key, $value) {
+        return $key . '_' . $value;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+        [a] => a_1
+        [b] => b_2
+        [c] => c_3
+    )
+
+----
+
 filter
 ~~~~~~
 This method filters array using function. Result contains all elements for which function  returns ``true``
