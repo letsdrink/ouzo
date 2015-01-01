@@ -303,13 +303,13 @@ Clock provides time travel and time freezing capabilities, making it simple to t
 Mocking
 ~~~~~~~
 
-Ouzo provides a mockito like mocking library that allows you to write tests in BDD or AAA (arrange act assert) fashion.
+Ouzo provides a Mockito like mocking library that allows you to write tests in BDD (given when then) or AAA (arrange act assert) fashion.
 
 You can stub method calls:
 
 ::
 
-    $mock = Mock::mock();
+    $mock = Mock::create();
     Mock::when($mock)->method(1)->thenReturn('result');
 
     $result = $mock->method(1);
@@ -321,7 +321,7 @@ And then verify interactions:
 ::
 
     //given
-    $mock = Mock::mock();
+    $mock = Mock::create();
 
     //when
     $mock->method("arg");
@@ -331,11 +331,15 @@ And then verify interactions:
 
 Unlike other PHP mocking libraries you can verify interactions ex post facto which is more natural and fits BDD or AAA style.
 
-If you use type hinting and the mock has to be of a type of a Class, you can pass the required type to ``Mock::mock`` method.
+.. note::
+
+    Mock::mock() is an alias for Mock::create(). You can use those methods interchangeably.
+
+If you use type hinting and the mock has to be of a type of a Class, you can pass the required type to ``Mock::create`` method.
 
 ::
 
-    $mock = Mock::mock('Foo');
+    $mock = Mock::create('Foo');
 
     $this->assertTrue($mock instanceof Foo);
 
@@ -356,7 +360,7 @@ You can stub multiple calls in one call to thenReturn:
 
 ::
 
-    $mock = Mock::mock();
+    $mock = Mock::create();
     Mock::when($mock)->method(1)->thenReturn('result1', 'result2');
     Mock::when($mock)->method()->thenThrow(new Exception('1'), new Exception('2'));
 
@@ -364,7 +368,7 @@ Both thenReturn and thenThrow accept multiples arguments that will be returned/t
 
 ::
 
-    $mock = Mock::mock();
+    $mock = Mock::create();
 
     Mock::when($mock)->method()->thenReturn('result1', 'result2');
 
