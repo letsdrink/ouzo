@@ -20,6 +20,10 @@ We believe in **clean code** and **simplicity**. We value **unit testing** and *
 
 For ideas, questions, discussions write to *ouzo-framework@googlegroups.com*.
 
+# Current release
+
+See the [release notes](https://github.com/letsdrink/ouzo/blob/master/CHANGELOG.md) and [latest documentation](http://ouzo.readthedocs.org).
+
 # Contributing to Ouzo
 
 * Don't hesitate to ask questions on mailing list or submit issues on github.
