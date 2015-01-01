@@ -35,4 +35,5 @@ For ideas, questions, discussions write to *ouzo-framework@googlegroups.com*.
 * Write a test. Or tests. The more the better.
 * Make sure to run a full test suite before you send us a PR.
 * Don't forget to update the docs!
+* And the changelog as well.
 
