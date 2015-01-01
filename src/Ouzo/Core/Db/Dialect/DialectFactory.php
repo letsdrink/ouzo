@@ -14,11 +14,11 @@ class DialectFactory
     {
         $dialectClass = Config::getValue('sql_dialect');
         if (!$dialectClass) {
-            throw new Exception('SQL dialect is not given. Please check config option - sql_dialect.');
+            throw new Exception('SQL dialect was not found in config. Please, check for option - sql_dialect.');
         }
         $dialectClass = new $dialectClass();
         if (!$dialectClass instanceof Dialect) {
-            throw new Exception('Invalid sql dialect. Dialect should extends from Dialect class.');
+            throw new Exception('Invalid sql_dialect. Dialect have to extend Dialect class.');
         }
         return $dialectClass;
     }
