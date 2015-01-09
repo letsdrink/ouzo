@@ -1,4 +1,5 @@
 <?php
+use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
@@ -915,5 +916,58 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(2, $count);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByField()
+    {
+        //given
+        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, 'name');
+
+        //then
+        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByFunctionResults()
+    {
+        //given
+        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, Functions::extract()->name);
+
+        //then
+        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByNestedField()
+    {
+        //given
+        $category = new Category(array('name' => 'cat1'));
+
+        $product1 = new Product(array('name' => 'bob'));
+        $product1->category = $category;
+
+        $product2 = new Product(array('name' => 'john'));
+        $product2->category = $category;
+
+        $array = array($product1, $product2);
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, 'category->name');
+
+        //then
+        Assert::thatArray($uniqueByName)->hasSize(1);
     }
 }

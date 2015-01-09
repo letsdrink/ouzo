@@ -803,3 +803,31 @@ Returns the number of elements for which the predicate returns true.
     });
 
 **Result:** ``2``
+
+----
+
+uniqueBy
+~~~~~~~~
+Removes duplicate values from an array. It uses the given expression to extract value that is compared.
+
+**Parameters:** ``array $elements``, ``$selector``
+
+**Example:**
+::
+
+    $a = new stdClass();
+    $a->name = 'bob';
+
+    $b = new stdClass();
+    $b->name = 'bob';
+
+    $array = [$a, $b];
+    $result = Arrays::uniqueBy($array, 'name');
+
+**Result:**
+::
+
+    Array
+    (
+        [0] => $b
+    )
