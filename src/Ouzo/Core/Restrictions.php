@@ -5,6 +5,7 @@ use Ouzo\Restriction\BetweenRestriction;
 use Ouzo\Restriction\EqualToRestriction;
 use Ouzo\Restriction\GreaterOrEqualToRestriction;
 use Ouzo\Restriction\GreaterThanRestriction;
+use Ouzo\Restriction\IsNotNullRestriction;
 use Ouzo\Restriction\IsNullRestriction;
 use Ouzo\Restriction\LessOrEqualToRestriction;
 use Ouzo\Restriction\LessThanRestriction;
@@ -56,5 +57,10 @@ class Restrictions
     public static function isNull()
     {
         return new IsNullRestriction();
+    }
+
+    public static function isNotNull()
+    {
+        return new IsNotNullRestriction();
     }
 }
