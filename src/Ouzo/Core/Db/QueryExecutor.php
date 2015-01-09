@@ -5,6 +5,7 @@ use InvalidArgumentException;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
+use Ouzo\Restriction\NonValueRestriction;
 use Ouzo\Restriction\Restriction;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
@@ -159,6 +160,9 @@ class QueryExecutor
     private function _addBindArrayValue(array $array)
     {
         foreach ($array as $value) {
+            if ($value instanceof NonValueRestriction) {
+                continue;
+            }
             if ($value instanceof Restriction) {
                 $this->_boundValues = array_merge($this->_boundValues, Arrays::toArray($value->getValues()));
             } elseif (($value !== null) || ($value === null && $this->_query->type != QueryType::$SELECT)) {

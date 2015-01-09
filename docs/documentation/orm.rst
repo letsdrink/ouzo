@@ -417,6 +417,11 @@ Supported restrictions:
 ``['name' => Restrictions::like("some%")]`` produces
 ``SELECT * FROM table WHERE name LIKE ? Params: ["some%"]``
 
+* **isNull**
+
+``['name' => Restrictions::isNull()]`` produces
+``SELECT * FROM table WHERE name IS NULL``
+
 Parameters chaining
 -------------------
 Where clauses can be chained e.g.
