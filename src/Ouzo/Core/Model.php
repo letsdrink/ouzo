@@ -100,7 +100,7 @@ class Model extends Validatable
 
     public function __isset($name)
     {
-        return $this->__get($name) !== NULL;
+        return $this->__get($name) !== null;
     }
 
     public function __unset($name)

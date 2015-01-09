@@ -54,7 +54,7 @@ class ModelGeneratorCommand extends Command
         $className = $this->_input->getOption('class');
         $fileName = $this->_input->getOption('file');
         $nameSpace = $this->_input->getOption('namespace');
-        $tablePrefixToRemove = $this->_input->getOption('remove_prefix') ? : 't';
+        $tablePrefixToRemove = $this->_input->getOption('remove_prefix') ?: 't';
         $shortArrays = $this->_input->getOption('short-arrays');
         if (empty($tableName))
             $this->fail("Specify table name e.g. -t users");

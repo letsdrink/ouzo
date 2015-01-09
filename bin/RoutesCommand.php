@@ -2,7 +2,6 @@
 namespace Command;
 
 use Ouzo\ApplicationPaths;
-use Ouzo\AutoloadNamespaces;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\UriHelperGenerator;

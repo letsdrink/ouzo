@@ -557,4 +557,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertNull($result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveSuffix()
+    {
+        //given
+        $string = 'JohnSnow';
+
+        //when
+        $withoutSuffix = Strings::removeSuffix($string, 'Snow');
+
+        //then
+        $this->assertEquals('John', $withoutSuffix);
+    }
 }

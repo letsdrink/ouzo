@@ -65,6 +65,22 @@ Removes prefixes defined in array from string.
 
 ----
 
+removeSuffix
+~~~~~~~~~~~~
+Returns a new string without the given suffix.
+
+**Parameters:** ``$string``, ``$suffix``
+
+**Example:**
+::
+
+    $string = 'JohnSnow';
+    $withoutSuffix = Strings::removeSuffix($string, 'Snow');
+
+**Result:** ``John``
+
+----
+
 startsWith
 ~~~~~~~~~~
 Method checks if string starts with ``$prefix``.
