@@ -31,7 +31,8 @@ class ModelGeneratorCommand extends Command
             ->addOption('class', 'c', InputOption::VALUE_REQUIRED, 'Class name. If not specified class name is generated based on table name')
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Class file path. If not specified namespace and class name is used')
             ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g \'Model\MyModel\'). Hint: Remember to escape backslash (\\\\)!', $defaultNamespace)
-            ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name', 't');
+            ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name', 't')
+            ->addOption('output-only', 'o', InputOption::VALUE_NONE, 'Option for only displaying generated model class');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -82,7 +83,8 @@ class ModelGeneratorCommand extends Command
      */
     private function _saveClassToFile($modelGenerator, $fileName)
     {
-        if ($fileName) {
+        $outputOnly = $this->_input->getOption('output-only');
+        if ($fileName && !$outputOnly) {
             $this->_output->writeln("Saving class to file: '$fileName'");
             $modelGenerator->saveToFile($fileName);
         }
