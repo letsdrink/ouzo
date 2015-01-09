@@ -2,12 +2,14 @@
 namespace Ouzo\Tools\Model\Template;
 
 use Exception;
+use Ouzo\AutoloadNamespaces;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Inflector;
+use Ouzo\Utilities\Strings;
 use ReflectionClass;
 
 class Generator
@@ -104,8 +106,9 @@ class Generator
     {
         $parts = explode('\\', $this->_nameSpace);
         $parts = Arrays::map($parts, 'ucfirst');
-        if (Arrays::first($parts) != 'Model') {
-            $parts = array_merge(array('Model'), $parts);
+        $modelNamespace = rtrim(AutoloadNamespaces::getModelNamespace(), '\\');
+        if (!Strings::startsWith($this->_nameSpace, $modelNamespace)) {
+            $parts = array_merge(array($modelNamespace), $parts);
         }
         return implode('\\', $parts);
     }

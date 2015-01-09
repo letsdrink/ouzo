@@ -1,6 +1,8 @@
 <?php
 namespace Command;
 
+use Exception;
+use Ouzo\AutoloadNamespaces;
 use Ouzo\Config;
 use Ouzo\Tools\Model\Template\ClassPathResolver;
 use Ouzo\Tools\Model\Template\Generator;
@@ -23,11 +25,12 @@ class ModelGeneratorCommand extends Command
 
     public function configure()
     {
+        $defaultNamespace = rtrim(AutoloadNamespaces::getModelNamespace(), '\\');
         $this->setName('ouzo:model_generator')
             ->addOption('table', 't', InputOption::VALUE_REQUIRED, 'Table name')
             ->addOption('class', 'c', InputOption::VALUE_REQUIRED, 'Class name. If not specified class name is generated based on table name')
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Class file path. If not specified namespace and class name is used')
-            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g \'Model\MyModel\'). Hint: Remember to escape backslash (\\\\)!', 'Model')
+            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g \'Model\MyModel\'). Hint: Remember to escape backslash (\\\\)!', $defaultNamespace)
             ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name', 't');
     }
 
@@ -40,20 +43,7 @@ class ModelGeneratorCommand extends Command
 
     public function fail($message, $exitCode = 1)
     {
-        throw new \Exception($message, $exitCode);
-    }
-
-    /**
-     * @param Generator $modelGenerator
-     * @param $fileName
-     * @throws GeneratorException
-     */
-    private function _saveClassToFile($modelGenerator, $fileName)
-    {
-        if ($fileName) {
-            $this->_output->writeln("Saving class to file: '$fileName'");
-            $modelGenerator->saveToFile($fileName);
-        }
+        throw new Exception($message, $exitCode);
     }
 
     private function _generateModel()
@@ -82,6 +72,19 @@ class ModelGeneratorCommand extends Command
             }
         } catch (GeneratorException $e) {
             $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param Generator $modelGenerator
+     * @param $fileName
+     * @throws GeneratorException
+     */
+    private function _saveClassToFile($modelGenerator, $fileName)
+    {
+        if ($fileName) {
+            $this->_output->writeln("Saving class to file: '$fileName'");
+            $modelGenerator->saveToFile($fileName);
         }
     }
 
