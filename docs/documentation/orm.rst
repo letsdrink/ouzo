@@ -422,6 +422,11 @@ Supported restrictions:
 ``['name' => Restrictions::isNull()]`` produces
 ``SELECT * FROM table WHERE name IS NULL``
 
+* **isNotNull**
+
+``['name' => Restrictions::isNotNull()]`` produces
+``SELECT * FROM table WHERE name IS NOT NULL``
+
 Parameters chaining
 -------------------
 Where clauses can be chained e.g.
