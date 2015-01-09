@@ -1377,4 +1377,20 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($products)->hasSize(2)
             ->onProperty('id')->containsExactly($product1->getId(), $product2->getId());
     }
+
+    /**
+     * @test
+     */
+    public function shouldSearchForNullValue()
+    {
+        //given
+        $category = Category::create(array('name' => 'shop'));
+        $product = Product::create(array('name' => 'notebook', 'id_category' => $category->getId()));
+
+        //when
+        $search = Product::where(array('description' => null))->fetch();
+
+        //then
+        Assert::thatModel($search)->isEqualTo($product);
+    }
 }
