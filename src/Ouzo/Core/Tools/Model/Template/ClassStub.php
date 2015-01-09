@@ -12,16 +12,22 @@ class ClassStub
     private $_stubContent;
     private $_attributes = array();
     private $_placeholderWithReplacements = array();
+    private $shortArrays;
 
-    public function __construct()
+    public function __construct($shortArrays = false)
     {
+        $this->shortArrays = $shortArrays;
         $stubFilePath = $this->_getStubFilePath();
         $this->_stubContent = file_get_contents($stubFilePath);
     }
 
     private function _getStubFilePath()
     {
-        $stubFileName = 'class.stub';
+        if ($this->shortArrays) {
+            $stubFileName = 'class_short_arrays.stub';
+        } else {
+            $stubFileName = 'class.stub';
+        }
         return Path::join(__DIR__, 'stubs', $stubFileName);
     }
 

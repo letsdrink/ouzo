@@ -14,12 +14,12 @@ class ClassStubPlaceholderReplacer
     private $classStub;
     private $classNamespace;
 
-    public function __construct($className, $tableInfo, $classNamespace = '')
+    public function __construct($className, $tableInfo, $classNamespace = '', $shortArrays = false)
     {
         $this->className = $className;
         $this->tableInfo = $tableInfo;
         $this->classNamespace = $classNamespace;
-        $this->classStub = new ClassStub();
+        $this->classStub = new ClassStub($shortArrays);
     }
 
     private function _setupTablePlaceholderReplacements()
