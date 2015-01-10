@@ -31,7 +31,32 @@ class Generator
 
     public function isControllerExists()
     {
-        $classPath = ClassPathResolver::forClassAndNamespace($this->getClassName(), $this->getClassNamespace())->getClassFileName();
-        return Files::exists($classPath);
+        return Files::exists($this->getControllerPath());
+    }
+
+    public function getControllerPath()
+    {
+        return ClassPathResolver::forClassAndNamespace($this->getClassName(), $this->getClassNamespace())->getClassFileName();
+    }
+
+    public function templateContents()
+    {
+        $classStubPlaceholderReplacer = new ControllerClassStubPlaceholderReplacer($this);
+        return $classStubPlaceholderReplacer->content();
+    }
+
+    public function saveController()
+    {
+        $this->preparePaths();
+        file_put_contents($this->getControllerPath(), $this->templateContents());
+    }
+
+    private function preparePaths()
+    {
+        $path = dirname($this->getControllerPath());
+        print_r($path);
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
     }
 }

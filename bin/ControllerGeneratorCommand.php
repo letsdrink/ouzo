@@ -29,10 +29,10 @@ class ControllerGeneratorCommand extends Command
     {
         $this->input = $input;
         $this->output = $output;
-        $this->generateController();
+        $this->generate();
     }
 
-    private function generateController()
+    private function generate()
     {
         $controllerName = $this->input->getArgument('controller');
         $generator = new Generator($controllerName);
@@ -41,7 +41,9 @@ class ControllerGeneratorCommand extends Command
         $this->output->writeln('Class namespace: <info>' . $generator->getClassNamespace() . '</info>');
         $this->output->writeln('---------------------------------');
         if (!$generator->isControllerExists()) {
-
+            $this->output->writeln('Create: <info>' . $generator->getControllerPath() . '</info>');
+            $this->output->writeln($generator->templateContents());
+            $generator->saveController();
         }
     }
 }
