@@ -28,6 +28,8 @@ This code will map ``Category`` class to a ``categories`` table with *id* as a p
 * ``belongsTo`` specification of a belongs-to relation e.g. ``array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))``
 * ``fields`` - mapped column names
 * ``attributes`` -  array of ``column => value``
+* ``beforeSave`` - call function before *insert* or *update*
+* ``afterSave`` - call function after *insert* or *update*
 
 Columns specified by **'fields'** parameter are exposed with magic getter and setter.
 
@@ -75,6 +77,40 @@ If you are not sure if an object was already saved you can call ``insertOrUpdate
 
     $product->name = 'Phone';
     $product->insertOrUpdate();
+
+Before and after save callbacks
+-------------------------------
+You can call defined methods before/after save or update.
+
+::
+
+    class Product
+    {
+        private $_fields = array('description', 'name', 'id_category', 'id_manufacturer', 'sale');
+
+        public function __construct($attributes)
+        {
+            parent::__construct(array(
+                    'attributes' => $attributes,
+                    'fields' => $this->_fields,
+                    'beforeSave' => '_addExclamationToDescription'
+                ));
+        }
+
+        function _addExclamationToDescription()
+        {
+            if ($this->description) {
+                $this->description .= '!!!';
+            }
+        }
+    }
+
+And now all saves or updates will be adding the exclamation mark to description.
+This callback accept following types of callback:
+
+* string e.g. ``'methodName'``
+* array e.g. ``array('methodName1', 'methodName2')``
+* lambda e.g. ``function() { ... }``
 
 Update of multiple records
 --------------------------
