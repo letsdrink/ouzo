@@ -1,5 +1,5 @@
 <?php
-namespace Ouzo\Tools\Model\Template;
+namespace Ouzo\Tools\Utils;
 
 use Ouzo\Utilities\Path;
 

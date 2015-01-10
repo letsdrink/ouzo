@@ -1,6 +1,6 @@
 <?php
 use Ouzo\Tests\Assert;
-use Ouzo\Tools\Model\Template\ClassPathResolver;
+use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Utilities\Path;
 
 class ClassPathResolverTest extends PHPUnit_Framework_TestCase

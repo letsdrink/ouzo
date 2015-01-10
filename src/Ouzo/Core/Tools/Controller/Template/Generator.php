@@ -2,7 +2,7 @@
 namespace Ouzo\Tools\Controller\Template;
 
 use Ouzo\AutoloadNamespaces;
-use Ouzo\Tools\Model\Template\ClassPathResolver;
+use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Strings;
 
