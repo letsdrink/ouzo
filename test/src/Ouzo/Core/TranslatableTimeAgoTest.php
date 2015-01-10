@@ -1,7 +1,7 @@
 <?php
-use Ouzo\TimeAgo;
 use Ouzo\TranslatableTimeAgo;
 use Ouzo\Utilities\Clock;
+use Ouzo\Utilities\TimeAgo;
 
 class TranslatableTimeAgoTest extends PHPUnit_Framework_TestCase
 {

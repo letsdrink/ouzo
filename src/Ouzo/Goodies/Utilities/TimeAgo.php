@@ -1,8 +1,7 @@
 <?php
-namespace Ouzo;
+namespace Ouzo\Utilities;
 
 use DateTime;
-use Ouzo\Utilities\Clock;
 
 class TimeAgo
 {

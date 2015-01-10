@@ -2,6 +2,7 @@
 namespace Ouzo;
 
 use Ouzo\Utilities\Strings;
+use Ouzo\Utilities\TimeAgo;
 
 class TranslatableTimeAgo
 {
