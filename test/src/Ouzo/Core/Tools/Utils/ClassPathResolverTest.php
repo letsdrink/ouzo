@@ -34,4 +34,19 @@ class ClassPathResolverTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatString($classPath)->endsWith(Path::join('Application', 'Model', 'UserAcl.php'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldResolveDirectoryPath()
+    {
+        //given
+        $resolver = ClassPathResolver::forClassAndNamespace('UserAcl', '\\Application\\View');
+
+        //when
+        $directoryPath = $resolver->getClassDirectory();
+
+        //then
+        Assert::thatString($directoryPath)->endsWith(Path::join('Application', 'View', 'UserAcl'));
+    }
 }

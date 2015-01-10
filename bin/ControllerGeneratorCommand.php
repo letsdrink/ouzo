@@ -44,6 +44,8 @@ class ControllerGeneratorCommand extends Command
             $this->output->writeln('Create: <info>' . $generator->getControllerPath() . '</info>');
             $this->output->writeln($generator->templateContents());
             $generator->saveController();
+            $this->output->writeln('Create: <info>' . $generator->getViewPath() . '</info>');
+            $generator->createViewDirectory();
         }
     }
 }

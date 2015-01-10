@@ -47,14 +47,28 @@ class Generator
 
     public function saveController()
     {
-        $this->preparePaths();
-        file_put_contents($this->getControllerPath(), $this->templateContents());
+        $path = $this->getControllerPath();
+        $this->preparePaths(dirname($path));
+        file_put_contents($path, $this->templateContents());
     }
 
-    private function preparePaths()
+    public function createViewDirectory()
     {
-        $path = dirname($this->getControllerPath());
-        print_r($path);
+        $this->preparePaths($this->getViewPath());
+    }
+
+    public function getViewPath()
+    {
+        return ClassPathResolver::forClassAndNamespace($this->getClassName(), $this->getViewNamespace())->getClassDirectory();
+    }
+
+    public function getViewNamespace()
+    {
+        return '\\Application\\View';
+    }
+
+    private function preparePaths($path)
+    {
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
         }

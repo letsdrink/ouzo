@@ -29,4 +29,9 @@ class ClassPathResolver
     {
         return Path::join(ROOT_PATH, $this->resolvePathFromNameSpace(), $this->className . ".php");
     }
+
+    public function getClassDirectory()
+    {
+        return Path::join(ROOT_PATH, $this->resolvePathFromNameSpace(), $this->className);
+    }
 }
