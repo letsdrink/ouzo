@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 use Command\ConsoleCommand;
+use Command\ControllerGeneratorCommand;
 use Command\ModelGeneratorCommand;
 use Command\RoutesCommand;
 use Ouzo\Utilities\Files;
@@ -15,7 +16,7 @@ require 'vendor/autoload.php';
 Files::loadIfExists(ROOT_PATH . 'test/Application/config/routes.php');
 
 $app = new Application();
-$app->add(new ConsoleCommand());
-$app->add(new RoutesCommand());
-$app->add(new ModelGeneratorCommand());
+$app->addCommands(array(
+    new ConsoleCommand(), new RoutesCommand(), new ModelGeneratorCommand(), new ControllerGeneratorCommand()
+));
 $app->run();
