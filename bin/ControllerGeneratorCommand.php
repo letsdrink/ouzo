@@ -1,7 +1,8 @@
 <?php
 namespace Command;
 
-use Ouzo\Tools\Controller\Template\Generator;
+use Ouzo\Tools\Controller\Template\ControllerGenerator;
+use Ouzo\Tools\Controller\Template\ViewGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,18 +35,25 @@ class ControllerGeneratorCommand extends Command
 
     private function generate()
     {
-        $controllerName = $this->input->getArgument('controller');
-        $generator = new Generator($controllerName);
+        $controller = $this->input->getArgument('controller');
+        $action = $this->input->getArgument('action');
+        $controllerGenerator = new ControllerGenerator($controller);
         $this->output->writeln('---------------------------------');
-        $this->output->writeln('Class name: <info>' . $generator->getClassName() . '</info>');
-        $this->output->writeln('Class namespace: <info>' . $generator->getClassNamespace() . '</info>');
+        $this->output->writeln('Class name: <info>' . $controllerGenerator->getClassName() . '</info>');
+        $this->output->writeln('Class namespace: <info>' . $controllerGenerator->getClassNamespace() . '</info>');
         $this->output->writeln('---------------------------------');
-        if (!$generator->isControllerExists()) {
-            $this->output->writeln('Create: <info>' . $generator->getControllerPath() . '</info>');
-            $this->output->writeln($generator->templateContents());
-            $generator->saveController();
-            $this->output->writeln('Create: <info>' . $generator->getViewPath() . '</info>');
-            $generator->createViewDirectory();
+        if (!$controllerGenerator->isControllerExists()) {
+            $this->output->writeln('Create: <info>' . $controllerGenerator->getControllerPath() . '</info>');
+            $this->output->writeln($controllerGenerator->templateContents());
+            $controllerGenerator->saveController();
+        }
+
+        $viewGenerator = new ViewGenerator($controller);
+        if ($viewGenerator->createViewDirectoryIfNotExists()) {
+            $this->output->writeln('Create: <info>' . $viewGenerator->getViewPath() . '</info>');
+        }
+        if ($action) {
+
         }
     }
 }

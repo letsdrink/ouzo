@@ -7,11 +7,11 @@ use Ouzo\Utilities\StrSubstitutor;
 class ControllerClassStubPlaceholderReplacer
 {
     /**
-     * @var Generator
+     * @var ControllerGenerator
      */
     private $generator;
 
-    public function __construct(Generator $generator)
+    public function __construct(ControllerGenerator $generator)
     {
         $this->generator = $generator;
     }

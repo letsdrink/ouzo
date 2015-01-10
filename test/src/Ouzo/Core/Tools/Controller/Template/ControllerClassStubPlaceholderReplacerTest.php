@@ -1,6 +1,6 @@
 <?php
 use Ouzo\Tests\Assert;
-use Ouzo\Tools\Controller\Template\Generator;
+use Ouzo\Tools\Controller\Template\ControllerGenerator;
 
 class ControllerClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
 {
@@ -10,7 +10,7 @@ class ControllerClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestC
     public function shouldReplaceClassNameAndNamespace()
     {
         //given
-        $generator = new Generator('users');
+        $generator = new ControllerGenerator('users');
 
         //when
         $templateContents = $generator->templateContents();

@@ -6,7 +6,7 @@ use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Strings;
 
-class Generator
+class ControllerGenerator
 {
     private $controller;
 
@@ -50,21 +50,6 @@ class Generator
         $path = $this->getControllerPath();
         $this->preparePaths(dirname($path));
         file_put_contents($path, $this->templateContents());
-    }
-
-    public function createViewDirectory()
-    {
-        $this->preparePaths($this->getViewPath());
-    }
-
-    public function getViewPath()
-    {
-        return ClassPathResolver::forClassAndNamespace($this->getClassName(), $this->getViewNamespace())->getClassDirectory();
-    }
-
-    public function getViewNamespace()
-    {
-        return '\\Application\\View';
     }
 
     private function preparePaths($path)

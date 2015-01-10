@@ -1,7 +1,7 @@
 <?php
-use Ouzo\Tools\Controller\Template\Generator;
+use Ouzo\Tools\Controller\Template\ControllerGenerator;
 
-class GeneratorTest extends PHPUnit_Framework_TestCase
+class ControllerGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -9,7 +9,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
     public function shouldReturnControllerClassName()
     {
         //given
-        $generator = new Generator('users');
+        $generator = new ControllerGenerator('users');
 
         //when
         $className = $generator->getClassName();
@@ -24,7 +24,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
     public function shouldReturnControllerClassNameWithControllerStringInName()
     {
         //given
-        $generator = new Generator('users_controller');
+        $generator = new ControllerGenerator('users_controller');
 
         //when
         $className = $generator->getClassName();
@@ -39,7 +39,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
     public function shouldReturnClassNamespace()
     {
         //given
-        $generator = new Generator('users');
+        $generator = new ControllerGenerator('users');
 
         //when
         $classNamespace = $generator->getClassNamespace();
@@ -54,7 +54,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
     public function shouldReturnFalseIfControllerNotExists()
     {
         //given
-        $generator = new Generator('users');
+        $generator = new ControllerGenerator('users');
 
         //when
         $isControllerExists = $generator->isControllerExists();
