@@ -3,8 +3,15 @@ CHANGELOG
 
 INCOMING
 --------
+Enhancements:
+* [ORM] New restrictions: isNull and isNotNull.
+
 Bug fixes:
 * [Utilities] Added [Arrays::mapEntries](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
+* [ORM] Fixed null parameters in where clause (issue #161).
+* [ORM] Fixed model generator namespace and folder name (issue #149).
+* [Utilities] Added [Arrays::uniqueBy](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#uniqueby) (issue #159).
+* [Tests] Changed ArrayAssert::hasSize, so that it shows original array when assertion fails (issue #163).
 
 Release 1.4.0
 -------------
