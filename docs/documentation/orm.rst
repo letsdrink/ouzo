@@ -28,8 +28,8 @@ This code will map ``Category`` class to a ``categories`` table with *id* as a p
 * ``belongsTo`` specification of a belongs-to relation e.g. ``array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))``
 * ``fields`` - mapped column names
 * ``attributes`` -  array of ``column => value``
-* ``beforeSave`` - call function before *insert* or *update*
-* ``afterSave`` - call function after *insert* or *update*
+* ``beforeSave`` - function to invoke before *insert* or *update*
+* ``afterSave`` - function to invoke after *insert* or *update*
 
 Columns specified by **'fields'** parameter are exposed with magic getter and setter.
 
@@ -93,20 +93,20 @@ You can call defined methods before/after save or update.
             parent::__construct(array(
                     'attributes' => $attributes,
                     'fields' => $this->_fields,
-                    'beforeSave' => '_addExclamationToDescription'
+                    'beforeSave' => 'addExclamationMarkToDescription'
                 ));
         }
 
-        function _addExclamationToDescription()
+        function addExclamationMarkToDescription()
         {
             if ($this->description) {
-                $this->description .= '!!!';
+                $this->description .= '!';
             }
         }
     }
 
-And now all saves or updates will be adding the exclamation mark to description.
-This callback accept following types of callback:
+All saves or updates will be adding an exclamation mark to description.
+This callback accepts following types of callback:
 
 * string e.g. ``'methodName'``
 * array e.g. ``array('methodName1', 'methodName2')``
