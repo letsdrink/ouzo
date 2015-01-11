@@ -5,13 +5,15 @@ use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 use Ouzo\Utilities\Strings;
-use RuntimeException;
 
 class ViewGenerator
 {
-    public function __construct($controller)
+    private $viewPath;
+
+    public function __construct($controller, $viewPath = null)
     {
         $this->controller = $controller;
+        $this->viewPath = $viewPath;
     }
 
     public function getViewName()
@@ -30,7 +32,7 @@ class ViewGenerator
 
     public function getViewPath()
     {
-        return ClassPathResolver::forClassAndNamespace($this->getViewName(), $this->getViewNamespace())->getClassDirectory();
+        return $this->viewPath ?: ClassPathResolver::forClassAndNamespace($this->getViewName(), $this->getViewNamespace())->getClassDirectory();
     }
 
     public function getViewNamespace()
@@ -50,7 +52,7 @@ class ViewGenerator
     {
         if ($actionGenerator) {
             if ($this->isActionExists($actionGenerator->getActionViewFile())) {
-                throw new RuntimeException('Action file is already defined');
+                return false;
             }
             $actionAppender = new ActionAppender($actionGenerator);
             return $actionAppender->toView($this)->append();
