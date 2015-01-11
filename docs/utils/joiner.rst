@@ -1,13 +1,13 @@
 Joiner
 ======
 
-Helper to join array elements into string using the previously configured separator.
+Joins array text elements together with a separator. Returns a string.
 
 ----
 
 on
 ~~
-Static method to create a ``Joiner`` object and defining separator.
+Static method to create a ``Joiner`` object and define a separator.
 
 **Parameters:** ``$separator``
 
@@ -15,7 +15,7 @@ Static method to create a ``Joiner`` object and defining separator.
 
 join
 ~~~~
-Returns a string containing array elements joined using the previously configured separator.
+Returns a string containing array elements joined together with a separator.
 
 **Parameters:** ``array $array``
 
