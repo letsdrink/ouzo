@@ -26,7 +26,7 @@ class TimeAgoTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider dates
      */
-    public function shouldReturnYesterdayAt($currentDate, $date, $expectedKey, $expectedParams)
+    public function shouldCreateTimeAgo($currentDate, $date, $expectedKey, $expectedParams)
     {
         //given
         Clock::freeze($currentDate);
@@ -35,7 +35,7 @@ class TimeAgoTest extends PHPUnit_Framework_TestCase
         $timeAgo = TimeAgo::create($date);
 
         //then
-        $this->assertEquals($expectedKey, $timeAgo->key);
-        $this->assertEquals($expectedParams, $timeAgo->params);
+        $this->assertEquals($expectedKey, $timeAgo->getKey());
+        $this->assertEquals($expectedParams, $timeAgo->getParams());
     }
 }

@@ -27,14 +27,13 @@ class TranslatableTimeAgoTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider dates
      */
-    public function shouldReturnYesterdayAt($currentDate, $date, $expectedText)
+    public function shouldCreateTranslatableTimeAgo($currentDate, $date, $expectedText)
     {
         //given
         Clock::freeze($currentDate);
-        $translatableTimeAgo = TimeAgo::create($date);
 
         //when
-        $translatableTimeAgo = TranslatableTimeAgo::create($translatableTimeAgo)->asString();
+        $translatableTimeAgo = TranslatableTimeAgo::create($date)->asString();
 
         //then
         $this->assertEquals($expectedText, $translatableTimeAgo, 'Error in [' . $date . '] with expected [' . $expectedText . ']');

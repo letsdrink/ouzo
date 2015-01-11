@@ -11,23 +11,24 @@ class TranslatableTimeAgo
      */
     private $timeAgo;
 
-    public function __construct(TimeAgo $timeAgo)
+    private function __construct(TimeAgo $timeAgo)
     {
         $this->timeAgo = $timeAgo;
     }
 
     public function asString()
     {
-        $key = $this->timeAgo->key;
-        $params = $this->timeAgo->params;
+        $key = $this->timeAgo->getKey();
+        $params = $this->timeAgo->getParams();
         if (Strings::equal($key, 'timeAgo.thisYear')) {
             $params['month'] = I18n::t($params['month']);
         }
         return I18n::t($key, $params);
     }
 
-    public static function create(TimeAgo $timeAgo)
+    public static function create($date)
     {
-        return new self($timeAgo);
+        $timeAgo = new TimeAgo($date);
+        return new TranslatableTimeAgo($timeAgo);
     }
 }
