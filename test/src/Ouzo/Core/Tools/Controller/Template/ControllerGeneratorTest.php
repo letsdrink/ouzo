@@ -1,8 +1,28 @@
 <?php
+use Ouzo\Tests\Assert;
+use Ouzo\Tools\Controller\Template\ActionGenerator;
 use Ouzo\Tools\Controller\Template\ControllerGenerator;
+use Ouzo\Utilities\Files;
+use Ouzo\Utilities\Path;
 
 class ControllerGeneratorTest extends PHPUnit_Framework_TestCase
 {
+    private $controllerPath;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->controllerPath = Path::joinWithTemp('UsersController.php');
+    }
+
+    protected function tearDown()
+    {
+        if (Files::exists($this->controllerPath)) {
+            Files::delete($this->controllerPath);
+        }
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
@@ -61,5 +81,74 @@ class ControllerGeneratorTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertFalse($isControllerExists);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAppendAction()
+    {
+        //given
+        $controllerGenerator = new ControllerGenerator('users', $this->controllerPath);
+        $controllerGenerator->saveController();
+
+        //when
+        $appendAction = $controllerGenerator->appendAction(new ActionGenerator('index'));
+
+        //then
+        $this->assertTrue($appendAction);
+        Assert::thatString($controllerGenerator->getControllerContents())
+            ->contains('class UsersController extends Controller')
+            ->contains('public function index()');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAppendActionWhenControllerHasActions()
+    {
+        //given
+        $controllerStub = '<?php
+namespace \Application\Controller;
+
+use Ouzo\Controller;
+
+class UsersController extends Controller
+{
+    public function index()
+    {
+        echo "some actions";
+        $this->view->render();
+    }
+}';
+        file_put_contents($this->controllerPath, $controllerStub);
+        $controllerGenerator = new ControllerGenerator('users', $this->controllerPath);
+
+        //when
+        $appendAction = $controllerGenerator->appendAction(new ActionGenerator('save'));
+
+        //then
+        $this->assertTrue($appendAction);
+        Assert::thatString($controllerGenerator->getControllerContents())
+            ->contains('public function index()')
+            ->contains('echo "some actions";')
+            ->contains('public function save()');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotAppendWhenActionIsExists()
+    {
+        //given
+        $controllerGenerator = new ControllerGenerator('users', $this->controllerPath);
+        $controllerGenerator->saveController();
+        $controllerGenerator->appendAction(new ActionGenerator('save'));
+
+        //when
+        $appendAction = $controllerGenerator->appendAction(new ActionGenerator('save'));
+
+        //then
+        $this->assertFalse($appendAction);
     }
 }

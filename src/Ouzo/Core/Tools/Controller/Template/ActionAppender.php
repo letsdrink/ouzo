@@ -41,7 +41,7 @@ class ActionAppender
             $controllerPath = $this->controllerGenerator->getControllerPath();
             $controllerContents = $this->controllerGenerator->getControllerContents();
             $actionContents = $this->actionGenerator->templateContents();
-            $controllerContents = preg_replace('/}\\s$/', $actionContents . PHP_EOL . '}' . PHP_EOL, $controllerContents);
+            $controllerContents = preg_replace('/}\\s*$/', $actionContents . PHP_EOL . '}' . PHP_EOL, $controllerContents);
             file_put_contents($controllerPath, $controllerContents);
         }
         if ($this->viewGenerator) {

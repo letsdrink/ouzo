@@ -5,15 +5,16 @@ use Ouzo\AutoloadNamespaces;
 use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Strings;
-use RuntimeException;
 
 class ControllerGenerator
 {
     private $controller;
+    private $controllerPath;
 
-    public function __construct($controller)
+    public function __construct($controller, $controllerPath = null)
     {
         $this->controller = $controller;
+        $this->controllerPath = $controllerPath;
     }
 
     public function getClassName()
@@ -37,7 +38,7 @@ class ControllerGenerator
 
     public function getControllerPath()
     {
-        return ClassPathResolver::forClassAndNamespace($this->getClassName(), $this->getClassNamespace())->getClassFileName();
+        return $this->controllerPath ?: ClassPathResolver::forClassAndNamespace($this->getClassName(), $this->getClassNamespace())->getClassFileName();
     }
 
     public function templateContents()
@@ -73,7 +74,7 @@ class ControllerGenerator
     {
         if ($actionGenerator) {
             if ($this->isActionExists($actionGenerator->getActionName())) {
-                throw new RuntimeException('Action is already defined');
+                return false;
             }
             $actionAppender = new ActionAppender($actionGenerator);
             return $actionAppender->toController($this)->append();
