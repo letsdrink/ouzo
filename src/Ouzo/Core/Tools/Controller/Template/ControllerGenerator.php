@@ -5,6 +5,7 @@ use Ouzo\AutoloadNamespaces;
 use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Strings;
+use RuntimeException;
 
 class ControllerGenerator
 {
@@ -57,5 +58,31 @@ class ControllerGenerator
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
         }
+    }
+
+    public function getControllerContents()
+    {
+        $controllerPath = $this->getControllerPath();
+        if (Files::exists($controllerPath)) {
+            return file_get_contents($controllerPath);
+        }
+        return '';
+    }
+
+    public function appendAction(ActionGenerator $actionGenerator = null)
+    {
+        if ($actionGenerator) {
+            if ($this->isActionExists($actionGenerator->getActionName())) {
+                throw new RuntimeException('Action is already defined');
+            }
+            $actionAppender = new ActionAppender($actionGenerator);
+            return $actionAppender->toController($this)->append();
+        }
+        return false;
+    }
+
+    public function isActionExists($actionName)
+    {
+        return Strings::contains($this->getControllerContents(), 'function ' . $actionName);
     }
 }

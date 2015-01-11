@@ -1,6 +1,7 @@
 <?php
 namespace Command;
 
+use Ouzo\Tools\Controller\Template\ActionGenerator;
 use Ouzo\Tools\Controller\Template\ControllerGenerator;
 use Ouzo\Tools\Controller\Template\ViewGenerator;
 use Symfony\Component\Console\Command\Command;
@@ -38,22 +39,28 @@ class ControllerGeneratorCommand extends Command
         $controller = $this->input->getArgument('controller');
         $action = $this->input->getArgument('action');
         $controllerGenerator = new ControllerGenerator($controller);
+        $actionGenerator = null;
+        if ($action) {
+            $actionGenerator = new ActionGenerator($action);
+        }
         $this->output->writeln('---------------------------------');
         $this->output->writeln('Class name: <info>' . $controllerGenerator->getClassName() . '</info>');
         $this->output->writeln('Class namespace: <info>' . $controllerGenerator->getClassNamespace() . '</info>');
         $this->output->writeln('---------------------------------');
         if (!$controllerGenerator->isControllerExists()) {
             $this->output->writeln('Create: <info>' . $controllerGenerator->getControllerPath() . '</info>');
-            $this->output->writeln($controllerGenerator->templateContents());
             $controllerGenerator->saveController();
+        }
+        if ($controllerGenerator->appendAction($actionGenerator)) {
+            $this->output->writeln('Appened action: <info>' . $controllerGenerator->getClassName() . '::' . $actionGenerator->getActionName() . '</info>');
         }
 
         $viewGenerator = new ViewGenerator($controller);
         if ($viewGenerator->createViewDirectoryIfNotExists()) {
             $this->output->writeln('Create: <info>' . $viewGenerator->getViewPath() . '</info>');
         }
-        if ($action) {
-
+        if ($viewGenerator->appendAction($actionGenerator)) {
+            $this->output->writeln('Appened view file: <info>' . $actionGenerator->getActionViewFile() . '</info>');
         }
     }
 }
