@@ -1,8 +1,9 @@
 <?php
-use Ouzo\TimeAgo;
+use Ouzo\TranslatableTimeAgo;
 use Ouzo\Utilities\Clock;
+use Ouzo\Utilities\TimeAgo;
 
-class TimeAgoTest extends PHPUnit_Framework_TestCase
+class TranslatableTimeAgoTest extends PHPUnit_Framework_TestCase
 {
     public function dates()
     {
@@ -30,11 +31,12 @@ class TimeAgoTest extends PHPUnit_Framework_TestCase
     {
         //given
         Clock::freeze($currentDate);
+        $translatableTimeAgo = TimeAgo::create($date);
 
         //when
-        $timeAgo = TimeAgo::create($date)->asString();
+        $translatableTimeAgo = TranslatableTimeAgo::create($translatableTimeAgo)->asString();
 
         //then
-        $this->assertEquals($expectedText, $timeAgo);
+        $this->assertEquals($expectedText, $translatableTimeAgo, 'Error in [' . $date . '] with expected [' . $expectedText . ']');
     }
 }

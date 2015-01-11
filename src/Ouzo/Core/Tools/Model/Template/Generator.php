@@ -2,12 +2,14 @@
 namespace Ouzo\Tools\Model\Template;
 
 use Exception;
+use Ouzo\AutoloadNamespaces;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Inflector;
+use Ouzo\Utilities\Strings;
 use ReflectionClass;
 
 class Generator
@@ -18,8 +20,9 @@ class Generator
     private $_dialectShortName;
     private $_tablePrefix;
     private $_nameSpace;
+    private $_shortArrays;
 
-    public function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't')
+    public function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't', $shortArrays = false)
     {
         $this->_tableName = $tableName;
         $this->_className = $className;
@@ -27,6 +30,7 @@ class Generator
         $this->_tablePrefix = $tablePrefix;
         $this->_adapter = $this->dialectAdapter();
         $this->_dialectShortName = $this->_getDialectShortName($this->_adapter);
+        $this->_shortArrays = $shortArrays;
     }
 
     private function _normalizeNameSpace($nameSpace)
@@ -83,7 +87,7 @@ class Generator
     public function templateContents()
     {
         $tableInfo = new TableInfo($this->_adapter);
-        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo, $this->getClassNamespace());
+        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo, $this->getClassNamespace(), $this->_shortArrays);
         return $stubReplacer->contents();
     }
 
@@ -100,8 +104,9 @@ class Generator
     {
         $parts = explode('\\', $this->_nameSpace);
         $parts = Arrays::map($parts, 'ucfirst');
-        if (Arrays::first($parts) != 'Model') {
-            $parts = array_merge(array('Model'), $parts);
+        $modelNamespace = rtrim(AutoloadNamespaces::getModelNamespace(), '\\');
+        if (!Strings::startsWith($this->_nameSpace, $modelNamespace)) {
+            $parts = array_merge(array($modelNamespace), $parts);
         }
         return implode('\\', $parts);
     }

@@ -258,7 +258,7 @@ Filters array by keys using the predicate.
     Array
     (
         [a1] => 1
-        [b2] => 2
+        [a2] => 2
     )
 
 ----
@@ -429,6 +429,34 @@ Creates a new array containing the values returned by the function.
         [0] => new_k1
         [1] => new_k2
         [2] => new_k3
+    )
+
+----
+
+mapEntries
+~~~~~~~~~~
+This method maps array values using the function which takes key and value as parameters..
+Invokes the function for each value in the array.
+Creates a new array containing the values returned by the function.
+
+**Parameters:** ``array $elements``, ``$function``
+
+**Example:**
+::
+
+    $array = ['a' => '1', 'b' => '2', 'c' => '3'];
+    $result = Arrays::mapEntries($array, function ($key, $value) {
+        return $key . '_' . $value;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+        [a] => a_1
+        [b] => b_2
+        [c] => c_3
     )
 
 ----
@@ -660,9 +688,11 @@ Return nested value when found, otherwise return null value.
 removeNestedValue
 ~~~~~~~~~~~~~~~~~
 .. deprecated:: 1.0
-    Use :func:`removeNestedKey` instead.
+Use :ref:`Arrays::removeNestedKey <Arrays-removeNestedKey>` instead.
 
 ----
+
+.. _Arrays-removeNestedKey:
 
 removeNestedKey
 ~~~~~~~~~~~~~~~
@@ -773,3 +803,31 @@ Returns the number of elements for which the predicate returns true.
     });
 
 **Result:** ``2``
+
+----
+
+uniqueBy
+~~~~~~~~
+Removes duplicate values from an array. It uses the given expression to extract value that is compared.
+
+**Parameters:** ``array $elements``, ``$selector``
+
+**Example:**
+::
+
+    $a = new stdClass();
+    $a->name = 'bob';
+
+    $b = new stdClass();
+    $b->name = 'bob';
+
+    $array = [$a, $b];
+    $result = Arrays::uniqueBy($array, 'name');
+
+**Result:**
+::
+
+    Array
+    (
+        [0] => $b
+    )

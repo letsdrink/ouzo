@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo\Utilities;
 
+use Exception;
 use InvalidArgumentException;
 
 /**
@@ -155,7 +156,7 @@ class Arrays
                 return $key;
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -981,5 +982,69 @@ class Arrays
             }
         }
         return $count;
+    }
+
+    /**
+     * This method maps array values using the function which takes key and value as parameters.
+     * Invokes the function for each value in the array. Creates a new array containing the values returned by the function.
+     *
+     * Example:
+     * <code>
+     * $array = array('a' => '1', 'b' => '2', 'c' => '3');
+     * $result = Arrays::mapEntries($array, function ($key, $value) {
+     *      return $key . '_' . $value;
+     * });
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [a] => a_1
+     *      [b] => b_2
+     *      [c] => c_3
+     * )
+     * </code>
+     *
+     * @param array $elements
+     * @param callable $function
+     * @return array
+     */
+    public static function mapEntries(array $elements, $function)
+    {
+        $keys = array_keys($elements);
+        $values = array_values($elements);
+        return array_combine($keys, array_map($function, $keys, $values));
+    }
+
+    /**
+     * Removes duplicate values from an array. It uses the given expression to extract value that is compared.
+     *
+     * Example:
+     * <code>
+     * $a = new stdClass();
+     * $a->name = 'bob';
+     *
+     * $b = new stdClass();
+     * $b->name = 'bob';
+     *
+     * $array = [$a, $b];
+     * $result = Arrays::uniqueBy($array, 'name');
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] => $b
+     * )
+     * </code>
+     *
+     * @param array $elements
+     * @param $selector
+     * @return array
+     * @throws Exception
+     */
+    public static function uniqueBy(array $elements, $selector)
+    {
+        return array_values(self::toMap($elements, Functions::extractExpression($selector)));
     }
 }

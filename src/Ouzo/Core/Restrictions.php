@@ -5,6 +5,8 @@ use Ouzo\Restriction\BetweenRestriction;
 use Ouzo\Restriction\EqualToRestriction;
 use Ouzo\Restriction\GreaterOrEqualToRestriction;
 use Ouzo\Restriction\GreaterThanRestriction;
+use Ouzo\Restriction\IsNotNullRestriction;
+use Ouzo\Restriction\IsNullRestriction;
 use Ouzo\Restriction\LessOrEqualToRestriction;
 use Ouzo\Restriction\LessThanRestriction;
 use Ouzo\Restriction\LikeRestriction;
@@ -50,5 +52,15 @@ class Restrictions
     public static function between($value1, $value2)
     {
         return new BetweenRestriction($value1, $value2);
+    }
+
+    public static function isNull()
+    {
+        return new IsNullRestriction();
+    }
+
+    public static function isNotNull()
+    {
+        return new IsNotNullRestriction();
     }
 }

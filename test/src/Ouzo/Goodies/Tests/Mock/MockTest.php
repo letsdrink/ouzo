@@ -42,6 +42,21 @@ class MockTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnMockObjectOfTheGivenTypeWithCreateMethod()
+    {
+        //given
+        $mock = Mock::create('MockTestClass');
+
+        //when
+        $result = $mock instanceof MockTestClass;
+
+        //then
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldStubMethod()
     {
         //given

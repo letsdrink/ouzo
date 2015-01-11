@@ -1,39 +1,49 @@
 <?php
-namespace Ouzo;
+namespace Ouzo\Utilities;
 
 use DateTime;
-use Ouzo\Utilities\Clock;
 
 class TimeAgo
 {
     private $_date;
 
+    public $key = null;
+    public $params = array();
+
     public function __construct($date)
     {
         $this->_date = $date;
+        $this->prepare();
     }
 
-    public function asString()
+    private function prepare()
     {
         $date = new DateTime($this->_date);
         if ($this->_showJustNow()) {
-            return I18n::t('timeAgo.justNow');
+            $this->key = 'timeAgo.justNow';
+            return;
         }
         if ($minutesAgo = $this->_showMinutesAgo()) {
-            return I18n::t('timeAgo.minAgo', array('label' => $minutesAgo));
+            $this->key = 'timeAgo.minAgo';
+            $this->params = array('label' => $minutesAgo);
+            return;
         }
         if ($this->_showTodayAt()) {
-            return I18n::t('timeAgo.todayAt', array('label' => $date->format('H:i')));
+            $this->key = 'timeAgo.todayAt';
+            $this->params = array('label' => $date->format('H:i'));
+            return;
         }
         if ($this->_showYesterdayAt()) {
-            return I18n::t('timeAgo.yesterdayAt', array('label' => $date->format('H:i')));
+            $this->key = 'timeAgo.yesterdayAt';
+            $this->params = array('label' => $date->format('H:i'));
+            return;
         }
         if ($this->_showThisYear()) {
-            $month = I18n::t('timeAgo.month.' . $date->format('n'));
-            return I18n::t('timeAgo.thisYear', array('day' => $date->format('j'), 'month' => $month));
+            $this->key = 'timeAgo.thisYear';
+            $this->params = array('day' => $date->format('j'), 'month' => 'timeAgo.month.' . $date->format('n'));
+            return;
         }
-
-        return $date->format('Y-m-d');
+        $this->key = $date->format('Y-m-d');
     }
 
     private function _showJustNow()

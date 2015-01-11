@@ -1,4 +1,5 @@
 <?php
+use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
@@ -65,6 +66,23 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array('new_k1', 'new_k2', 'new_k3'), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMapEntries()
+    {
+        //given
+        $array = array('a' => 1, 'b' => 2, 'c' => 3);
+
+        //when
+        $result = Arrays::mapEntries($array, function ($key, $value) {
+            return $key . '_' . $value;
+        });
+
+        //then
+        $this->assertEquals(array('a' => 'a_1', 'b' => 'b_2', 'c' => 'c_3'), $result);
     }
 
     /**
@@ -256,8 +274,8 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(
-                '1' => array($product1),
-                '2' => array($product2, $product3)), $grouped);
+            '1' => array($product1),
+            '2' => array($product2, $product3)), $grouped);
     }
 
     /**
@@ -291,8 +309,8 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(
-                '1' => array($product1),
-                '2' => array($product3, $product2)), $grouped);
+            '1' => array($product1),
+            '2' => array($product3, $product2)), $grouped);
     }
 
     /**
@@ -898,5 +916,58 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(2, $count);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByField()
+    {
+        //given
+        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, 'name');
+
+        //then
+        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByFunctionResults()
+    {
+        //given
+        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, Functions::extract()->name);
+
+        //then
+        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByNestedField()
+    {
+        //given
+        $category = new Category(array('name' => 'cat1'));
+
+        $product1 = new Product(array('name' => 'bob'));
+        $product1->category = $category;
+
+        $product2 = new Product(array('name' => 'john'));
+        $product2->category = $category;
+
+        $array = array($product1, $product2);
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, 'category->name');
+
+        //then
+        Assert::thatArray($uniqueByName)->hasSize(1);
     }
 }

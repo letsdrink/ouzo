@@ -50,6 +50,9 @@ class DialectUtil
             $in = implode(', ', array_fill(0, count($value), '?'));
             return $key . ' IN (' . $in . ')';
         }
+        if ($value === null) {
+            return $key . ' IS NULL';
+        }
         if ($value instanceof Restriction) {
             return $value->toSql($key);
         }

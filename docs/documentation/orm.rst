@@ -28,6 +28,8 @@ This code will map ``Category`` class to a ``categories`` table with *id* as a p
 * ``belongsTo`` specification of a belongs-to relation e.g. ``array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))``
 * ``fields`` - mapped column names
 * ``attributes`` -  array of ``column => value``
+* ``beforeSave`` - call function before *insert* or *update*
+* ``afterSave`` - call function after *insert* or *update*
 
 Columns specified by **'fields'** parameter are exposed with magic getter and setter.
 
@@ -76,6 +78,40 @@ If you are not sure if an object was already saved you can call ``insertOrUpdate
     $product->name = 'Phone';
     $product->insertOrUpdate();
 
+Before and after save callbacks
+-------------------------------
+You can call defined methods before/after save or update.
+
+::
+
+    class Product
+    {
+        private $_fields = array('description', 'name', 'id_category', 'id_manufacturer', 'sale');
+
+        public function __construct($attributes)
+        {
+            parent::__construct(array(
+                    'attributes' => $attributes,
+                    'fields' => $this->_fields,
+                    'beforeSave' => '_addExclamationToDescription'
+                ));
+        }
+
+        function _addExclamationToDescription()
+        {
+            if ($this->description) {
+                $this->description .= '!!!';
+            }
+        }
+    }
+
+And now all saves or updates will be adding the exclamation mark to description.
+This callback accept following types of callback:
+
+* string e.g. ``'methodName'``
+* array e.g. ``array('methodName1', 'methodName2')``
+* lambda e.g. ``function() { ... }``
+
 Update of multiple records
 --------------------------
 You can update specific columns in records matching given criteria.
@@ -107,6 +143,20 @@ You can define default values for fields in two ways - using **string** or **ano
 Now if you create a new model object these fields will be set to their default values.
 
 ::
+
+    class ModelWithDefaults extends Model {
+        public function __construct($attributes = []) {
+            parent::__construct([
+                'attributes' => $attributes,
+                'fields' => [
+                    'description' => 'no desc',
+                    'name' => function() {
+                        return 'no name';
+                    }
+                ]
+            ]);
+        }
+    }
 
     $modelWithDefaults = new ModelWithDefaults();
     echo $modelWithDefaults->description; // no desc
@@ -275,7 +325,7 @@ If you want to customize your relation you can use **conditions** mechanism. For
         )
     )
 
-however you can use closure to:
+you can use a closure too:
 
 ::
 
@@ -402,6 +452,16 @@ Supported restrictions:
 
 ``['name' => Restrictions::like("some%")]`` produces
 ``SELECT * FROM table WHERE name LIKE ? Params: ["some%"]``
+
+* **isNull**
+
+``['name' => Restrictions::isNull()]`` produces
+``SELECT * FROM table WHERE name IS NULL``
+
+* **isNotNull**
+
+``['name' => Restrictions::isNotNull()]`` produces
+``SELECT * FROM table WHERE name IS NOT NULL``
 
 Parameters chaining
 -------------------

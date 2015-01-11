@@ -1,0 +1,9 @@
+<?php
+namespace {{namespace}};
+
+use Ouzo\Controller;
+
+class {{class}} extends Controller
+{
+
+}

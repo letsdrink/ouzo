@@ -1,4 +1,5 @@
 <?php
+use Ouzo\Tests\Assert;
 use Ouzo\Tools\Model\Template\ClassStub;
 use Ouzo\Tools\Model\Template\DatabaseColumn;
 
@@ -79,5 +80,26 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertContains("'field7', \n", $classStub->getFieldsAsString());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateClassWithShortArrays()
+    {
+        //given
+        $classStub = new ClassStub(true);
+
+        //when
+        $classStub
+            ->addColumn(new DatabaseColumn('field1', 'string'))
+            ->addColumn(new DatabaseColumn('field2', 'string'));
+
+        //then
+        Assert::thatString($classStub->contents())
+            ->contains("['field1', 'field2']")
+            ->contains('$attributes = []')
+            ->contains('parent::__construct([
+            {table_table}');
     }
 }

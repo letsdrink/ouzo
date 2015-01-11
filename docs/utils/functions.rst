@@ -14,6 +14,8 @@ Returns a function object that calls ``getId`` method on its argument.
 
 ----
 
+.. _Functions-extractField:
+
 extractField
 ~~~~~~~~~~~~
 Returns a function object that returns a value of the given field of its argument.
@@ -27,6 +29,8 @@ Returns a function object that returns a value of the given field of its argumen
   $names = Arrays::map($users, Functions::extractField('name'));
 
 ----
+
+.. _Functions-extractFieldRecursively:
 
 extractFieldRecursively
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,7 +63,7 @@ Returns a function object that returns a value of the given nested field of its 
 extractExpression
 ~~~~~~~~~~~~~~~~~
 Returns a function object that returns a result of the expression evaluated for its argument.
-It's a more efficient equivalent of :func:`extractField` and :func:`extractFieldRecursively` (it examines the given expression and returns the most suitable function).
+It's a more efficient equivalent of :ref:`Functions::extractField <Functions-extractField>` and :ref:`Functions::extractFieldRecursively <Functions-extractFieldRecursively>` (it examines the given expression and returns the most suitable function).
 
 If ``$expression`` is a function object, it is returned unchanged.
 
@@ -213,7 +217,12 @@ extract
 ~~~~~~~
 Fluent builder for a callable that extracts a value from its argument.
 
+The callable object returned by this method records all actions performed on it.
+Then when it is invoked, it replays those actions on the invocation argument.
+
 **Parameters:** ``$type`` - optional type hint for PhpStorm dynamicReturnType plugin.
+
+Example:
 
 Let's assume that you have a User class that has a list of addresses. Each address has a type (like: home, invoice etc.) and User has getAddress($type) method.
 
@@ -234,16 +243,27 @@ It gets more complicated when some users don't have home address:
 
 We can write it in one line using Functions::extract:
 
-``$cities=Arrays::map($users, Functions::extract()->getAddress('home')->city);``
+::
+
+  $cities = Arrays::map($users, Functions::extract()->getAddress('home')->city);
 
 Additionally, if you use PhpStorm dynamicReturnType plugin you can pass type as the first argument of Functions::extract.
 
-``Arrays::map($users, Functions::extract('User')->getAddress('home')->city);``
+::
+
+  Arrays::map($users, Functions::extract('User')->getAddress('home')->city);
 
 ::
 
   $cities = Arrays::map($users, Functions::extract('User')->...
   //ctrl+space will show you all methods/properties of the User class
+
+
+Extractor can also extract array values:
+
+::
+
+  Arrays::map($users, Functions::extract('User')->addresses['home']);
 
 ----
 

@@ -169,4 +169,40 @@ class ExtractorTest extends DbTransactionalTestCase
         catch (InvalidArgumentException $e) {
         }
     }
+
+    /**
+     * @test
+     */
+    public function shouldExtractArrayValueFromField()
+    {
+        //given
+        $object = new stdClass();
+        $object->field1 = array('key' => 'value');
+
+        $function = Functions::extract()->field1['key'];
+
+        //when
+        $result = Functions::call($function, $object);
+
+        //then
+        Assert::thatString($result)->isEqualTo('value');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldExtractArrayValue()
+    {
+        //given
+        $object = array('key' => 'value');
+
+        //$function = Functions::extract()['key']; only i php 5.4
+        $function = Functions::extract()->offsetGet('key');
+
+        //when
+        $result = Functions::call($function, $object);
+
+        //then
+        Assert::thatString($result)->isEqualTo('value');
+    }
 }

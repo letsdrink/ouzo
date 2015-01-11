@@ -65,6 +65,22 @@ Removes prefixes defined in array from string.
 
 ----
 
+removeSuffix
+~~~~~~~~~~~~
+Returns a new string without the given suffix.
+
+**Parameters:** ``$string``, ``$suffix``
+
+**Example:**
+::
+
+    $string = 'JohnSnow';
+    $withoutSuffix = Strings::removeSuffix($string, 'Snow');
+
+**Result:** ``John``
+
+----
+
 startsWith
 ~~~~~~~~~~
 Method checks if string starts with ``$prefix``.
@@ -326,3 +342,22 @@ contains
 Check is string contains substring.
 
 **Parameters:** ``$string``, ``$substring``
+
+----
+
+substringBefore
+~~~~~~~~~~~~~~~
+Gets the substring before the first occurrence of a separator. The separator is not returned.
+
+If the separator is not found, the string input is returned.
+
+**Parameters:** ``$string``, ``$separator``
+
+**Example:**
+::
+
+    $string = 'winter is coming???!!!';
+    $result = Strings::substringBefore($string, '?');
+
+**Result:** ``winter is coming``
+

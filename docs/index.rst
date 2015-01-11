@@ -45,6 +45,8 @@ Utilities:
    utils/strings
    utils/clock
    utils/comparators
+   utils/joiner
+   utils/time_ago
 
 Tools:
 ~~~~~~

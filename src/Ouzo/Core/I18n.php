@@ -33,12 +33,12 @@ class I18n
 
     public static function labels($key = '')
     {
-        $labels = self::_loadLabels();
+        $labels = self::loadLabels();
         $explodedKey = explode('.', $key);
         return $key ? Arrays::getNestedValue($labels, $explodedKey) : $labels;
     }
 
-    private static function _loadLabels()
+    public static function loadLabels()
     {
         $language = self::getLanguage();
         $path = Path::join(ROOT_PATH, 'locales', $language . '.php');
@@ -51,7 +51,7 @@ class I18n
 
     private static function _getTranslator()
     {
-        $_labels = self::_loadLabels();
+        $_labels = self::loadLabels();
         return new Translator(self::getLanguage(), $_labels);
     }
 

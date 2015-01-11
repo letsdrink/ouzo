@@ -29,7 +29,7 @@ class PhotoFrame
     }
 }
 
-class AssertTest extends PHPUnit_Framework_TestCase
+class ArrayAssertTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test

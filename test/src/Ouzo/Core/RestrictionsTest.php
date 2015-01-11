@@ -1,6 +1,7 @@
 <?php
 use Application\Model\Test\Product;
 use Ouzo\Restrictions;
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class RestrictionsTest extends DbTransactionalTestCase
@@ -63,5 +64,37 @@ class RestrictionsTest extends DbTransactionalTestCase
 
         //then
         $this->assertNull($loadedProduct);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnModelUsingIsNullRestriction()
+    {
+        //given
+        Product::create(array('name' => 'tech', 'description' => 'some desc'));
+        $product = Product::create(array('name' => 'tech'));
+
+        //when
+        $loadedProduct = Product::where(array('description' => Restrictions::isNull()))->fetch();
+
+        //then
+        Assert::thatModel($loadedProduct)->isEqualTo($product);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnModelUsingIsNotNullRestriction()
+    {
+        //given
+        $product = Product::create(array('name' => 'tech', 'description' => 'some desc'));
+        Product::create(array('name' => 'tech'));
+
+        //when
+        $loadedProduct = Product::where(array('description' => Restrictions::isNotNull()))->fetch();
+
+        //then
+        Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
 }
