@@ -31,6 +31,6 @@ class IsNullRestrictionTest extends PHPUnit_Framework_TestCase
         CatchException::when($restriction)->getValues();
 
         //then
-        CatchException::assertThat()->hasMessage('This type of restriction has not value');
+        CatchException::assertThat()->hasMessage('This type of restriction has no value');
     }
 }

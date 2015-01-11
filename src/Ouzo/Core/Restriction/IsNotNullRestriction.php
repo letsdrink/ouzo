@@ -1,7 +1,7 @@
 <?php
 namespace Ouzo\Restriction;
 
-class IsNotNullRestriction extends NonValueRestriction
+class IsNotNullRestriction extends NoValueRestriction
 {
     public function toSql($fieldName)
     {
