@@ -235,6 +235,48 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function updateShouldOnlyUpdateChangedFieldsForCreatedModel()
+    {
+        //given
+        $product = Product::create(array('name' => 'Tech', 'description' => 'Desc'));
+        $product->name = 'new name';
+
+        Product::where()->update(array('description' => 'Something else'));
+
+        //when
+        $product->update();
+
+        //then
+        $updatedProduct = Product::findById($product->getId());
+        $this->assertEquals('new name', $updatedProduct->name);
+        $this->assertEquals('Something else', $updatedProduct->description);
+    }
+
+    /**
+     * @test
+     */
+    public function updateShouldOnlyUpdateChangedFieldsForFetchedModel()
+    {
+        //given
+        Product::create(array('name' => 'Tech', 'description' => 'Desc'));
+        $product = Product::where()->fetch();
+
+        $product->name = 'new name';
+
+        Product::where()->update(array('description' => 'Something else'));
+
+        //when
+        $product->update();
+
+        //then
+        $updatedProduct = Product::findById($product->getId());
+        $this->assertEquals('new name', $updatedProduct->name);
+        $this->assertEquals('Something else', $updatedProduct->description);
+    }
+
+    /**
+     * @test
+     */
     public function shouldFilterOutNullAttributesSoThatInsertedAndLoadedObjectsAreEqual()
     {
         //given

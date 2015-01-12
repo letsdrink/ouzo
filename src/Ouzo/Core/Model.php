@@ -29,6 +29,8 @@ class Model extends Validatable
     private $_relations;
     private $_afterSaveCallbacks = array();
     private $_beforeSaveCallbacks = array();
+    private $_updatedAttributes = array();
+    private $_trackUpdates;
 
     /**
      * Creates a new model object.
@@ -80,6 +82,9 @@ class Model extends Validatable
 
     public function __set($name, $value)
     {
+        if ($this->_trackUpdates) {
+            $this->_updatedAttributes[] = $name;
+        }
         $this->_attributes[$name] = $value;
     }
 
@@ -163,18 +168,25 @@ class Model extends Validatable
 
         $this->_callAfterSaveCallbacks();
 
+        $this->_trackUpdates = true;
+        $this->_updatedAttributes = array();
+
         return $value;
     }
 
     public function update()
     {
         $this->_callBeforeSaveCallbacks();
-        $attributes = $this->filterAttributesPreserveNull($this->_attributes);
-        $query = Query::update($attributes)
-            ->table($this->_tableName)
-            ->where(array($this->_primaryKeyName => $this->getId()));
 
-        QueryExecutor::prepare($this->_db, $query)->execute();
+        $attributes = $this->getAttributesForUpdate();
+        if ($attributes) {
+            $query = Query::update($attributes)
+                ->table($this->_tableName)
+                ->where(array($this->_primaryKeyName => $this->getId()));
+
+            QueryExecutor::prepare($this->_db, $query)->execute();
+        }
+
         $this->_callAfterSaveCallbacks();
     }
 
@@ -210,6 +222,9 @@ class Model extends Validatable
 
     public function updateAttributes($attributes)
     {
+        if ($this->_trackUpdates) {
+            $this->_updatedAttributes = array_merge($this->_updatedAttributes, array_keys($attributes));
+        }
         $this->assignAttributes($attributes);
         if ($this->isValid()) {
             $this->update();
@@ -305,7 +320,9 @@ class Model extends Validatable
     public static function newInstance(array $attributes)
     {
         $className = get_called_class();
-        return new $className($attributes);
+        $object = new $className($attributes);
+        $object->trackUpdates();
+        return $object;
     }
 
     /**
@@ -545,5 +562,19 @@ class Model extends Validatable
         list($fields, $defaults) = $this->_extractFieldsAndDefaults($fields);
         $attributes = array_merge($defaults, $attributes);
         return array($attributes, $fields);
+    }
+
+    public function trackUpdates()
+    {
+        $this->_trackUpdates = true;
+    }
+
+    private function getAttributesForUpdate()
+    {
+        $attributes = $this->filterAttributesPreserveNull($this->_attributes);
+        if ($this->_trackUpdates) {
+            return array_intersect_key($attributes, array_flip($this->_updatedAttributes));
+        }
+        return $attributes;
     }
 }
