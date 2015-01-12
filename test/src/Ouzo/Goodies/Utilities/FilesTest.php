@@ -128,7 +128,6 @@ class FilesTest extends PHPUnit_Framework_TestCase
     {
         //given
         $dirPath = Path::joinWithTemp('test', 'tests_find_files', 'new_dir', 'second_new_dir');
-        print_r($dirPath);
         mkdir($dirPath, 0777, true);
         $file1 = Path::joinWithTemp('test', 'tests_find_files', 'file1a.phtml');
         touch($file1);
