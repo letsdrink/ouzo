@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Application\Model\Test\Category;
 use Application\Model\Test\Manufacturer;
 use Application\Model\Test\Order;

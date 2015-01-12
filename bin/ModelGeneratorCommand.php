@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Command;
 
 use Exception;
@@ -56,8 +60,9 @@ class ModelGeneratorCommand extends Command
         $nameSpace = $this->_input->getOption('namespace');
         $tablePrefixToRemove = $this->_input->getOption('remove_prefix') ?: 't';
         $shortArrays = $this->_input->getOption('short-arrays');
-        if (empty($tableName))
+        if (empty($tableName)) {
             $this->fail("Specify table name e.g. -t users");
+        }
         try {
             $modelGenerator = new Generator($tableName, $className, $nameSpace, $tablePrefixToRemove, $shortArrays);
             $this->_output->writeln('---------------------------------');

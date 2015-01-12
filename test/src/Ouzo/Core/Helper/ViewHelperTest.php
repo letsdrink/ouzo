@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Config;
 
 require_once ROOT_PATH . 'src/Ouzo/Core/Helper/ViewHelper.php';
