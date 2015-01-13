@@ -9,8 +9,10 @@ use Ouzo\Db\Any;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\WhereClause;
 use Ouzo\Restriction\Restriction;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Joiner;
+use Ouzo\Utilities\Strings;
 
 class DialectUtil
 {
@@ -35,7 +37,7 @@ class DialectUtil
         if ($whereClause->where instanceof Any) {
             return '(' . implode(' OR ', self::_buildWhereKeys($whereClause->where->getConditions())) . ')';
         }
-        $wherePart = is_array($whereClause->where) ? implode(' AND ', self::_buildWhereKeys($whereClause->where)) : $whereClause->where;
+        $wherePart = is_array($whereClause->where) ? implode(' AND ', self::_buildWhereKeys($whereClause->where)) : self::_buildWhereKeyFromString($whereClause);
         return stripos($wherePart, 'OR') ? '(' . $wherePart . ')' : $wherePart;
     }
 
@@ -61,6 +63,20 @@ class DialectUtil
             return $value->toSql($key);
         }
         return $key . ' = ?';
+    }
+
+    private static function _buildWhereKeyFromString($whereClause)
+    {
+        $wherePart = $whereClause->where;
+        $values = Arrays::toArray($whereClause->values);
+        $any = Arrays::any($values, function ($value) {
+            return $value === null;
+        });
+        if ($any) {
+            $keyWithNull = array_search(null, $values);
+            $wherePart = Strings::replaceNth($wherePart, '\\=\\s*\\?', 'IS NULL', $keyWithNull);
+        }
+        return $wherePart;
     }
 
     public static function buildJoinQuery($joinClauses)
