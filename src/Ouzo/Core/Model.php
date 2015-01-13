@@ -79,6 +79,7 @@ class Model extends Validatable
             $this->_fields[] = $primaryKeyName;
         }
         $this->_attributes = $this->filterAttributes($attributes);
+        $this->_updatedAttributes = array_keys($this->_attributes);
         $this->_afterSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'afterSave'));
         $this->_beforeSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'beforeSave'));
     }
@@ -116,6 +117,7 @@ class Model extends Validatable
 
     public function assignAttributes($attributes)
     {
+        $this->_updatedAttributes = array_merge($this->_updatedAttributes, array_keys($attributes));
         $this->_attributes = array_merge($this->_attributes, $this->filterAttributesPreserveNull($attributes));
     }
 
