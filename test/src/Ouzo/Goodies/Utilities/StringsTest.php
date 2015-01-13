@@ -576,4 +576,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('John', $withoutSuffix);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReplaceNthString()
+    {
+        //given
+        $subject = 'name = ? AND description =    ?';
+
+        //when
+        $replaceNth = Strings::replaceNth($subject, '\\=\\s*\\?', 'IS NULL', 1);
+
+        //then
+        $this->assertEquals('name = ? AND description IS NULL', $replaceNth);
+    }
 }
