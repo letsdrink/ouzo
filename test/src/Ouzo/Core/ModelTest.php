@@ -775,4 +775,40 @@ class ModelTest extends DbTransactionalTestCase
             ->isInstanceOf('\Ouzo\DbException')
             ->hasMessage('Primary key is not defined for table products');
     }
+
+    /**
+     * @test
+     */
+    public function updateShouldUpdateOnlyChangedFieldsWhenAssignAttributesIsUsed()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport', 'price' => '123'));
+        $product->assignAttributes(array('description' => 'Desc'));
+
+        // when
+        $product->update();
+
+        // then
+        $actual = Product::findById($product->getId());
+        $this->assertEquals('Desc', $actual->description);
+    }
+
+    /**
+     * @test
+     */
+    public function updateShouldUpdateOnlyChangedFieldsWhenObjectWasCreatedByHandAndIdWasSet()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport', 'price' => '123'));
+        $id = $product->getId();
+
+        $product = new Product(array('name' => 'Water', 'price' => '123', 'id' => $id));
+
+        // when
+        $product->update();
+
+        // then
+        $actual = Product::findById($product->getId());
+        $this->assertEquals('Water', $actual->name);
+    }
 }
