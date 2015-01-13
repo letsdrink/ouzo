@@ -34,7 +34,6 @@ class Model extends Validatable
     private $_afterSaveCallbacks = array();
     private $_beforeSaveCallbacks = array();
     private $_updatedAttributes = array();
-    private $_trackUpdates;
 
     /**
      * Creates a new model object.
@@ -86,9 +85,7 @@ class Model extends Validatable
 
     public function __set($name, $value)
     {
-        if ($this->_trackUpdates) {
-            $this->_updatedAttributes[] = $name;
-        }
+        $this->_updatedAttributes[] = $name;
         $this->_attributes[$name] = $value;
     }
 
@@ -172,8 +169,7 @@ class Model extends Validatable
 
         $this->_callAfterSaveCallbacks();
 
-        $this->_trackUpdates = true;
-        $this->_updatedAttributes = array();
+        $this->resetUpdates();
 
         return $value;
     }
@@ -226,9 +222,7 @@ class Model extends Validatable
 
     public function updateAttributes($attributes)
     {
-        if ($this->_trackUpdates) {
-            $this->_updatedAttributes = array_merge($this->_updatedAttributes, array_keys($attributes));
-        }
+        $this->_updatedAttributes = array_merge($this->_updatedAttributes, array_keys($attributes));
         $this->assignAttributes($attributes);
         if ($this->isValid()) {
             $this->update();
@@ -325,7 +319,7 @@ class Model extends Validatable
     {
         $className = get_called_class();
         $object = new $className($attributes);
-        $object->trackUpdates();
+        $object->resetUpdates();
         return $object;
     }
 
@@ -568,17 +562,14 @@ class Model extends Validatable
         return array($attributes, $fields);
     }
 
-    public function trackUpdates()
+    public function resetUpdates()
     {
-        $this->_trackUpdates = true;
+        $this->_updatedAttributes = array();
     }
 
     private function getAttributesForUpdate()
     {
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
-        if ($this->_trackUpdates) {
-            return array_intersect_key($attributes, array_flip($this->_updatedAttributes));
-        }
-        return $attributes;
+        return array_intersect_key($attributes, array_flip($this->_updatedAttributes));
     }
 }

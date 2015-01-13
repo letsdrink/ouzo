@@ -220,6 +220,26 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldUpdateModelMultipleTimes()
+    {
+        //given
+        $product = Product::create(array('name' => 'Tech'));
+        $product->name = 'new name';
+        $product->update();
+
+        $product->name = 'another name';
+
+        //when
+        $product->update();
+
+        //then
+        $updatedProduct = Product::findById($product->getId());
+        $this->assertEquals('another name', $updatedProduct->name);
+    }
+
+    /**
+     * @test
+     */
     public function shouldUpdateModelAttributes()
     {
         //given
