@@ -3,12 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-namespace Ouzo\Restriction;
+namespace Ouzo\Db;
 
-abstract class NoValueRestriction extends Restriction
+class OrJoinedWhereClause extends WhereClause
 {
-    public function getValues()
+    public function methodJoined()
     {
-        return array();
+        return ' OR ';
     }
 }

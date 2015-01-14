@@ -110,14 +110,14 @@ class Query
 
     public function where($where = '', $whereValues = null)
     {
-        $this->whereClauses[] = new WhereClause($where, $whereValues);
+        $this->whereClauses[] = WhereClauseFactory::create($where, $whereValues);
         return $this;
     }
 
     public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = array())
     {
         $onClauses = array(new WhereClause($on, array()));
-        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ? : $this->table, $alias, $type, $onClauses);
+        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ?: $this->table, $alias, $type, $onClauses);
         return $this;
     }
 

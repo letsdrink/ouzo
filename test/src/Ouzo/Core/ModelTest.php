@@ -811,20 +811,4 @@ class ModelTest extends DbTransactionalTestCase
         $actual = Product::findById($product->getId());
         $this->assertEquals('Water', $actual->name);
     }
-
-    /**
-     * @test
-     */
-    public function shouldSearchModelWhenPassNullInStringWhere()
-    {
-        //given
-        $category = Category::create(array('name' => 'shop'));
-        $product = Product::create(array('name' => 'notebook', 'id_category' => $category->getId()));
-
-        //when
-        $search = Product::where('name = ? AND description = ?', array('notebook', null))->fetch();
-
-        //then
-        Assert::thatModel($search)->isEqualTo($product);
-    }
 }

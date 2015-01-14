@@ -5,6 +5,7 @@
  */
 namespace Ouzo\Db;
 
+use Ouzo\Restrictions;
 use Ouzo\Utilities\Arrays;
 
 class WhereClause
@@ -15,15 +16,20 @@ class WhereClause
     public function __construct($where, $whereValues = array())
     {
         $this->where = $where;
-        $this->values = $this->prepareValues($where, $whereValues);
+        $this->values = $this->prepare($where, $whereValues);
     }
 
-    private function prepareValues($where, $whereValues)
+    private function prepare($where, $whereValues)
     {
-        if ($where instanceof Any) {
-            $where = $where->getConditions();
+        if (is_array($where)) {
+            foreach ($where as $column => $value) {
+                if ($value === null) {
+                    $this->where[$column] = Restrictions::isNull();
+                }
+            }
+            return Arrays::flatten(array_values($this->where));
         }
-        return is_array($where) ? Arrays::flatten(array_values($where)) : $whereValues;
+        return $whereValues;
     }
 
     public function isEmpty()
@@ -48,5 +54,10 @@ class WhereClause
         return function ($whereClause) {
             return !$whereClause->isEmpty();
         };
+    }
+
+    public function methodJoined()
+    {
+        return ' AND ';
     }
 }
