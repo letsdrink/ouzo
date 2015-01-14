@@ -333,7 +333,7 @@ you can use a closure too:
         'class' => 'Test\Product',
         'foreignKey' => 'id_category',
         'conditions' => function () {
-            return new WhereClause("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
+            return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
         }
     )
 

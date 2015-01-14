@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Restriction\Restriction;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
@@ -156,7 +157,7 @@ class QueryExecutor
     private function _addBindValuesFromWhereClause($whereClause)
     {
         if (!$whereClause->isEmpty()) {
-            $this->_addBindValue($whereClause->values);
+            $this->_addBindValue($whereClause->getParameters());
         }
     }
 

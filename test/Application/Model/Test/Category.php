@@ -6,7 +6,7 @@
 namespace Application\Model\Test;
 
 use Ouzo\Db;
-use Ouzo\Db\WhereClause;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Model;
 
 /**
@@ -33,7 +33,7 @@ class Category extends Model
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
                     'conditions' => function () {
-                        return new WhereClause("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
+                        return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
                     },
                 ),
                 'products_name_bob' => array(

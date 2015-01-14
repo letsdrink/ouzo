@@ -6,6 +6,7 @@
 namespace Ouzo\Db;
 
 use Ouzo\AutoloadNamespaces;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\DbException;
 use Ouzo\MetaModelCache;
 use Ouzo\Model;
@@ -60,7 +61,7 @@ class Relation
         if (is_callable($this->condition)) {
             return call_user_func($this->condition);
         }
-        return new WhereClause($this->condition);
+        return WhereClause::create($this->condition);
     }
 
     /**
