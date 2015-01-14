@@ -17,7 +17,7 @@ class ModelAttributesMatcher implements ArgumentMatcher
      */
     private $expected;
 
-    function __construct(Model $expected)
+    public function __construct(Model $expected)
     {
         $this->expected = $expected;
         $this->expectedAttributes = $expectedAttributes = Arrays::filterByAllowedKeys($this->expected->attributes(), $this->expected->getFields());
@@ -32,10 +32,9 @@ class ModelAttributesMatcher implements ArgumentMatcher
         return $this->expectedAttributes == $actualAttributes;
     }
 
-    function __toString()
+    public function __toString()
     {
         $attributes = print_r($this->expectedAttributes, true);
         return get_class($this->expected) . " with attributes($attributes)";
     }
-
 }

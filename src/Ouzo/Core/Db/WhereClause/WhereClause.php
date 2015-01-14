@@ -10,11 +10,11 @@ use Ouzo\Db\Any;
 
 abstract class WhereClause
 {
-    public abstract function isEmpty();
+    abstract public function isEmpty();
 
-    public abstract function toSql();
+    abstract public function toSql();
 
-    public abstract function getParameters();
+    abstract public function getParameters();
 
     public function isNeverSatisfied()
     {
