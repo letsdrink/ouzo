@@ -70,7 +70,7 @@ class ModelQueryBuilder
      */
     public function where($where = '', $values = array())
     {
-        $this->_query->whereClauses[] = WhereClauseFactory::create($where, $values);
+        $this->_query->where($where, $values);
         return $this;
     }
 
