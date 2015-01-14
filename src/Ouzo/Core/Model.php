@@ -415,7 +415,7 @@ class Model extends Validatable
         return new ModelQueryBuilder($obj, $obj->_db, $alias);
     }
 
-    public static function count($where = null, $bindValues = null)
+    public static function count($where = '', $bindValues = null)
     {
         return static::metaInstance()->where($where, $bindValues)->count();
     }
