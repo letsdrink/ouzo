@@ -811,4 +811,19 @@ class ModelTest extends DbTransactionalTestCase
         $actual = Product::findById($product->getId());
         $this->assertEquals('Water', $actual->name);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCountValuesWithoutWhere()
+    {
+        //given
+        Product::create(array('name' => 'Sport', 'price' => '123'));
+
+        //when
+        $count = Product::count();
+
+        //then
+        $this->assertEquals(1, $count);
+    }
 }
