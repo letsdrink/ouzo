@@ -8,7 +8,7 @@ namespace Command;
 use Exception;
 use Ouzo\AutoloadNamespaces;
 use Ouzo\Config;
-use Ouzo\Tools\Model\Template\ClassPathResolver;
+use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Tools\Model\Template\Generator;
 use Ouzo\Tools\Model\Template\GeneratorException;
 use Symfony\Component\Console\Command\Command;
