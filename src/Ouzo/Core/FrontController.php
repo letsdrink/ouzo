@@ -69,7 +69,7 @@ class FrontController
             ob_start();
             $this->_invokeControllerMethods();
         } catch (Exception $e) {
-            ob_end_flush();
+            ob_end_clean();
             throw $e;
         }
         ob_end_flush();
