@@ -16,6 +16,6 @@ abstract class SingleValueRestriction extends Restriction
 
     public function getValues()
     {
-        return $this->value;
+        return array($this->value);
     }
 }

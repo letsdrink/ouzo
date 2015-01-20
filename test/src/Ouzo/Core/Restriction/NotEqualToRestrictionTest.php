@@ -20,6 +20,22 @@ class NotEqualToRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key <> ?', $sql);
-        $this->assertEquals('value', $restriction->getValues());
+        $this->assertEquals(array('value'), $restriction->getValues());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateProperSqlForEmptyString()
+    {
+        //given
+        $restriction = Restrictions::notEqualTo('');
+
+        //when
+        $sql = $restriction->toSql('key');
+
+        //then
+        $this->assertEquals('key <> ?', $sql);
+        $this->assertEquals(array(''), $restriction->getValues());
     }
 }

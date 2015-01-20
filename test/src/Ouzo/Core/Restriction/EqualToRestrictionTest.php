@@ -20,6 +20,6 @@ class EqualToRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key = ?', $sql);
-        $this->assertEquals('value', $restriction->getValues());
+        $this->assertEquals(array('value'), $restriction->getValues());
     }
 }

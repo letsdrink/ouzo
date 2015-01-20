@@ -20,6 +20,6 @@ class LikeRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key LIKE ?', $sql);
-        $this->assertEquals('value', $restriction->getValues());
+        $this->assertEquals(array('value'), $restriction->getValues());
     }
 }

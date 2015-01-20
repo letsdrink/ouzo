@@ -165,7 +165,7 @@ class QueryExecutor
     {
         foreach ($array as $value) {
             if ($value instanceof Restriction) {
-                $this->_boundValues = array_merge($this->_boundValues, Arrays::toArray($value->getValues()));
+                $this->_boundValues = array_merge($this->_boundValues, $value->getValues());
             } else {
                 $this->_boundValues[] = $value;
             }

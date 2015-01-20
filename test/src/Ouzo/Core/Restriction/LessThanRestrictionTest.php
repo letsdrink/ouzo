@@ -20,6 +20,6 @@ class LessThanRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key < ?', $sql);
-        $this->assertEquals(5, $restriction->getValues());
+        $this->assertEquals(array(5), $restriction->getValues());
     }
 }
