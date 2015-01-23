@@ -30,6 +30,9 @@ abstract class WhereClause
 
     public static function create($where, $parameters = array())
     {
+//        if ($where === null) {
+//            return new EmptyWhereClause();
+//        }
         if ($where instanceof WhereClause) {
             return $where;
         }
