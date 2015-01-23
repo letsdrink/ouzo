@@ -5,6 +5,7 @@ INCOMING
 --------
 Enhancements:
 * [ORM] New restrictions: isNull and isNotNull.
+* [ORM] Added EmptyWhereClause class.
 
 Bug fixes:
 * [Utilities] Added [Arrays::mapEntries](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
