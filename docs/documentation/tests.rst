@@ -425,10 +425,9 @@ In rare cases, you may need to write your own argument matcher:
 Stream stubbing
 ~~~~~~~~~~~~~~~
 
-In some cases you want to stub stream wrappers e.g. ``php://input``. Ouzo provides special class for these things ``StreamStub``.
-It's simply to use in your tests:
+In some cases you may need to to stub stream wrappers e.g. ``php://input``. Ouzo provides a special class for this ``StreamStub``.
 
-* First thing is register your wrapper:
+* First, you have to register your wrapper:
 
 ::
 
@@ -440,7 +439,7 @@ It's simply to use in your tests:
 
     StreamStub::$body = 'some content';
 
-* When you finished using stream you must unregistered them:
+* When you're finished using stream you must unregistered it:
 
 ::
 
@@ -453,7 +452,7 @@ Comprehensive example:
     StreamStub::register('some_name');
     StreamStub::$body = '{"name":"jonh","id":123,"ip":"127.0.0.1"}';
 
-    $object = YourClass::readTranslatedJsonFromWrapper('some_name://input');
+    $object = YourClass::readJsonFromWrapper('some_name://input');
 
     $this->assertEquals('john', $object->name);
     StreamStub::unregister();
