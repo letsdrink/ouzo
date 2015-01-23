@@ -83,7 +83,7 @@ Returns a new string without the given suffix.
 
 startsWith
 ~~~~~~~~~~
-Method checks if string starts with ``$prefix``.
+Checks if string starts with ``$prefix``.
 
 **Parameters:** ``$string``, ``$prefix``
 
@@ -99,7 +99,7 @@ Method checks if string starts with ``$prefix``.
 
 endsWith
 ~~~~~~~~
-Method checks if string ends with ``$suffix``.
+Checks if string ends with ``$suffix``.
 
 **Parameters:** ``$string``, ``$suffix``
 
@@ -224,7 +224,7 @@ Alias for htmlentities() with UTF-8 and defined flag ENT_COMPAT.
 
 equal
 ~~~~~
-Method checks if string representations of two objects are equal.
+Checks if string representations of two objects are equal.
 
 **Parameters:** ``$object1``, ``$object2``
 
@@ -239,7 +239,7 @@ Method checks if string representations of two objects are equal.
 
 isBlank
 ~~~~~~~
-Method checks if string is blank.
+Checks if string is blank.
 
 **Parameters:** ``$string``
 
@@ -254,7 +254,7 @@ Method checks if string is blank.
 
 isNotBlank
 ~~~~~~~~~~
-Method checks if string is not blank.
+Checks if string is not blank.
 
 **Parameters:** ``$string``
 
@@ -299,7 +299,7 @@ Removes control characters from both ends of this string returning null if the s
 
 sprintfAssoc
 ~~~~~~~~~~~~
-Replace all occurrences of placeholder in string with values from associative array.
+Replaces all occurrences of placeholder in string with values from associative array.
 
 **Parameters:** ``$string``, ``$params``
 
@@ -318,7 +318,7 @@ Replace all occurrences of placeholder in string with values from associative ar
 
 sprintAssocDefault
 ~~~~~~~~~~~~~~~~~~
-Replace all occurrences of placeholder in string with values from associative array.
+Replaces all occurrences of placeholder in string with values from associative array.
 When no value for placeholder is found in array, a default empty value is used if not otherwise specified.
 
 **Parameters:** ``$string``, ``array $params``, ``$default = ''``
@@ -339,7 +339,7 @@ When no value for placeholder is found in array, a default empty value is used i
 contains
 ~~~~~~~~
 
-Check is string contains substring.
+Checks if string contains substring.
 
 **Parameters:** ``$string``, ``$substring``
 
