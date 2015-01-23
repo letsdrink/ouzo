@@ -267,7 +267,7 @@ Filters array by keys using the predicate.
 
 groupBy
 ~~~~~~~
-Group elements in array using function to grouping elements. If set ``$orderField`` grouped elements will be also sorted.
+Groups elements in array using given function. If ``$orderField`` is set, grouped elements will be also sorted.
 
 **Parameters:** ``array $elements``, ``$keyFunction``, ``$orderField = null``
 
@@ -377,7 +377,7 @@ This method sorts elements in array using order field.
 
 mapKeys
 -------
-This method maps array keys using the function. Invokes the function for each key in the array. Creates a new array containing the keys returned by the function.
+This method maps array keys using the function. It invokes the function for each key in the array and creates a new array containing the keys returned by the function.
 
 **Parameters:** ``array $elements``, ``$function``
 
@@ -408,8 +408,7 @@ This method maps array keys using the function. Invokes the function for each ke
 map
 ~~~
 This method maps array values using the function.
-Invokes the function for each value in the array.
-Creates a new array containing the values returned by the function.
+It invokes the function for each value in the array and creates a new array containing the values returned by the function.
 
 **Parameters:** ``array $elements``, ``$function``
 
@@ -487,7 +486,7 @@ This method filters array using function. Result contains all elements for which
 
 filterNotBlank
 ~~~~~~~~~~~~~~
-This method filter array will remove all values that are blank.
+Returns a new array without blank elements.
 
 **Parameters:** ``array $elements``
 
@@ -495,7 +494,7 @@ This method filter array will remove all values that are blank.
 
 toArray
 ~~~~~~~
-Make array from element. Returns the given argument if it's already an array.
+Makes an array from element. Returns the given argument if it's already an array.
 
 **Parameters:** ``$element``
 
@@ -597,7 +596,7 @@ Computes the intersection of arrays.
 
 setNestedValue
 ~~~~~~~~~~~~~~
-Setting nested value.
+Sets nested value.
 
 **Parameters:** ``array $array``, ``array $keys``, ``$value``
 
@@ -625,7 +624,7 @@ Result:
 
 sort
 ~~~~
-Returns a new array with is sorted using given comparator.
+Returns a new array sorted using given comparator.
 The comparator function must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
 To obtain comparator one may use ``Comparator`` class (for instance ``Comparator::natural()`` which yields ordering using comparison operators).
 
@@ -671,7 +670,7 @@ To obtain comparator one may use ``Comparator`` class (for instance ``Comparator
 
 getNestedValue
 ~~~~~~~~~~~~~~
-Return nested value when found, otherwise return null value.
+Returns nested value when found, otherwise returns null.
 
 **Parameters:** ``array $array``, ``array $keys``
 
@@ -720,11 +719,11 @@ Result:
 
 hasNestedKey
 ~~~~~~~~~~~~
-Check is array has nested keys.
+Checks if array has a nested key.
 
 .. note::
 
-    Possibly check array with null values using flag ``Arrays::TREAT_NULL_AS_VALUE``.
+    It's possible to check array with null values using flag ``Arrays::TREAT_NULL_AS_VALUE``.
 
 **Parameters:** ``array $array``, ``array $keys``, ``$flags = null``
 
@@ -748,7 +747,7 @@ Check is array has nested keys.
 
 flattenKeysRecursively
 ~~~~~~~~~~~~~~~~~~~~~~
-Returns maps of the flatten keys with corresponding values.
+Returns a flattened array of keys with corresponding values.
 
 **Parameters:** ``array $array``
 
