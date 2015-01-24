@@ -974,4 +974,23 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($uniqueByName)->hasSize(1);
     }
+
+    /**
+     * @test
+     */
+    public function shouldExtractRecursivelyArrayColumn()
+    {
+        //given
+        $array = array(
+            array('id' => 123, 'name' => 'value1', 'test' => array('number' => 90)),
+            array('id' => 123, 'name' => 'value1', 'test' => array('number' => 100))
+        );
+
+        //when
+        $numbers = Arrays::map($array, Functions::extract()->test->number);
+
+        //then
+        Assert::thatArray($numbers)->hasSize(2)
+            ->containsOnly(90, 100);
+    }
 }

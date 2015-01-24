@@ -349,4 +349,43 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertSame('1', $string);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnValueFormArray()
+    {
+        //given
+        $array = array('id' => 123, 'name' => 'John');
+
+        //when
+        $value = Objects::getValue($array, 'name');
+
+        //then
+        $this->assertEquals('John', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnValueFormMultidimensionalArray()
+    {
+        //given
+        $array = array(
+            'id' => 123,
+            'name' => 'John',
+            'info' => array(
+                'account' => array(
+                    'number' => '2343-de',
+                    'info' => 'some info about account'
+                )
+            )
+        );
+
+        //when
+        $value = Objects::getValueRecursively($array, 'info->account->number');
+
+        //then
+        $this->assertEquals('2343-de', $value);
+    }
 }
