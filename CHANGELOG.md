@@ -9,6 +9,7 @@ Enhancements:
 * [Utilities] Objects::getValue supports arrays now. It means that all functions depending on it (e.g. Functions::extract) supports arrays as well.
 * [ORM] Added switch for model generator to utilize shorthand array syntax (issue #160).
 * [ORM] Added switch for model generator to display output instead of saving file (issue #158).
+* [ORM] Added support for [sorting hasMany relations](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#sorted-hasmany-relation) (issue #171).
 
 Bug fixes:
 * [Utilities] Added [Arrays::mapEntries](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
