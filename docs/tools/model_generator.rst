@@ -66,11 +66,15 @@ As you can see ``$_fields`` lists all ``users`` table columns (except for id whi
 Options
 ~~~~~~~
 
---table (-t)          Table name
---class (-c)          Class name. If not specified class name is generated based on table name
---file (-f)           Class file path. If not specified namespace and class name is used
---namespace (-s)      Class namespace (e.g 'Model\MyModel'). Hint: Remember to escape backslash (\\)! (default: "Model")
---remove_prefix (-p)  Remove prefix from table name when generating class name (default: "t")
+||
+
+    --table (-t)          Table name.
+    --class (-c)          Class name. If not specified class name is generated based on table name.
+    --file (-f)           Class file path. If not specified namespace and class name is used.
+    --namespace (-s)      Class namespace (e.g 'Model\MyModel'). Hint: Remember to escape backslash (\\)! (default: "Model").
+    --remove_prefix (-p)  Remove prefix from table name when generating class name (default: "t").
+    --output-only (-o)    Do not save file on disk, only display output.
+    --short-arrays (-a)   Use shorthand array syntax (PHP 5.4).
 
 .. note::
 
