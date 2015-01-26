@@ -13,6 +13,7 @@ use Ouzo\Model;
  * @property int id
  * @property string name
  * @property Category parent
+ * @property Product[] products_ordered_by_name
  */
 class Category extends Model
 {
@@ -40,6 +41,11 @@ class Category extends Model
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
                     'conditions' => array("products.name" => "bob")
+                ),
+                'products_ordered_by_name' => array(
+                    'class' => 'Test\Product',
+                    'foreignKey' => 'id_category',
+                    'order' => array("products.name ASC")
                 )
             ),
             'hasOne' => array(

@@ -339,6 +339,33 @@ you can use a closure too:
 
 ----
 
+Sorted hasMany relation
+-----------------------
+
+You specify order of elements in hasMany relation:
+
+::
+
+    'hasOne' => array(
+        'product_ordered_by_name' => array(
+            'class' => 'Test\Product',
+            'foreignKey' => 'id_category',
+            'order' => "products.name ASC"
+        )
+    )
+
+You can also order relation by multiple columns:
+
+::
+
+    'product_ordered_by_name' => array(
+        'class' => 'Test\Product',
+        'foreignKey' => 'id_category',
+        'order' => array("products.name ASC", "products.description DESC")
+    )
+
+----
+
 Query builder
 ~~~~~~~~~~~~~
 It's a fluent interface that allows you to programmatically build queries.

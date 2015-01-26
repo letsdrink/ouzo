@@ -20,8 +20,9 @@ class Relation
     private $foreignKey;
     private $collection;
     private $condition;
+    private $order;
 
-    public function __construct($name, $class, $localKey, $foreignKey, $collection, $condition = '')
+    public function __construct($name, $class, $localKey, $foreignKey, $collection, $condition = '', $order = null)
     {
         $this->name = $name;
         $this->class = $class;
@@ -29,6 +30,7 @@ class Relation
         $this->foreignKey = $foreignKey;
         $this->collection = $collection;
         $this->condition = $condition;
+        $this->order = $order;
     }
 
     public static function inline($params)
@@ -62,6 +64,11 @@ class Relation
             return call_user_func($this->condition);
         }
         return WhereClause::create($this->condition);
+    }
+
+    public function getOrder()
+    {
+        return $this->order;
     }
 
     /**

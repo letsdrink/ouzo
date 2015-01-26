@@ -85,6 +85,7 @@ class RelationFactory
     {
         $class = $params['class'];
         $condition = Arrays::getValue($params, 'conditions', '');
-        return new Relation($name, $class, $localKey, $foreignKey, $collection, $condition);
+        $order = Arrays::getValue($params, 'order', '');
+        return new Relation($name, $class, $localKey, $foreignKey, $collection, $condition, $order);
     }
 }

@@ -41,6 +41,7 @@ class RelationFetcher
         $relationObject = $this->_relation->getRelationModelObject();
         $relationObjects = $relationObject::where(array($this->_relation->getForeignKey() => $localKeys))
             ->where($this->_relation->getCondition())
+            ->order($this->_relation->getOrder())
             ->fetchAll();
         return Arrays::groupBy($relationObjects, Functions::extractField($this->_relation->getForeignKey()));
     }
