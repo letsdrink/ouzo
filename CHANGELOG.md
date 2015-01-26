@@ -6,6 +6,8 @@ INCOMING
 Enhancements:
 * [ORM] New restrictions: isNull and isNotNull.
 * [ORM] Added EmptyWhereClause class.
+* [Utilities] Objects::getValue supports arrays now. It means that all functions depending on it (e.g. Functions::extract) supports arrays as well.
+* [ORM] Added switch for model generator to utilize shorthand array syntax.
 
 Bug fixes:
 * [Utilities] Added [Arrays::mapEntries](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
