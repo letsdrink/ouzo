@@ -346,8 +346,8 @@ You specify order of elements in hasMany relation:
 
 ::
 
-    'hasOne' => array(
-        'product_ordered_by_name' => array(
+    'hasMany' => array(
+        'products_ordered_by_name' => array(
             'class' => 'Test\Product',
             'foreignKey' => 'id_category',
             'order' => "products.name ASC"
