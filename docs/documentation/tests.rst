@@ -224,6 +224,7 @@ Assertions:
 * ``containsSequence($element ..)`` - check that vararg sequence is exists in the array
 * ``excludes($element ..)``
 * ``hasEqualKeysRecursively(array $array)``
+* ``isEqualTo($array)``
 
 ----
 

@@ -249,6 +249,25 @@ class ArrayAssertTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function isEqualToShouldPassForEqualArrays()
+    {
+        $array = array('ccc', 'aaa');
+        Assert::thatArray($array)->isEqualTo(array('ccc', 'aaa'));
+    }
+
+    /**
+     * @test
+     */
+    public function isEqualToShouldThrowExceptionForDifferentArrays()
+    {
+        $array = array('ccc', 'aaa');
+        CatchException::when(Assert::thatArray($array))->isEqualTo('ddd', 'ccc');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    /**
+     * @test
+     */
     public function containsShouldThrowExceptionWhenOrderIsIncorrect()
     {
         $array = array('ccc', 'aaa', 'bbb', 'ccc', 'ddd');
