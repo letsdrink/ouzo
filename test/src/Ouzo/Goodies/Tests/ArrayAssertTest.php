@@ -279,9 +279,9 @@ class ArrayAssertTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function excludeShouldThrowExceptionWhenFoundInArray()
+    public function excludesShouldThrowExceptionWhenFoundInArray()
     {
-        CatchException::when(Assert::thatArray(array('1', '2', '3', '4')))->exclude(7, 8, 4);
+        CatchException::when(Assert::thatArray(array('1', '2', '3', '4')))->excludes(7, 8, 4);
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
@@ -290,8 +290,8 @@ class ArrayAssertTest extends PHPUnit_Framework_TestCase
      */
     public function excludeShouldCheckExclude()
     {
-        Assert::thatArray(array('1', '2', '3', '4'))->exclude(7, 8, 9);
-        Assert::thatArray(array('one', 'two', 'three', 'four'))->exclude('eleven');
+        Assert::thatArray(array('1', '2', '3', '4'))->excludes(7, 8, 9);
+        Assert::thatArray(array('one', 'two', 'three', 'four'))->excludes('eleven');
     }
 
     /**

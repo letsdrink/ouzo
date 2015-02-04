@@ -222,7 +222,7 @@ Assertions:
 * ``isNotEmpty()`` - check the array is not empty
 * ``containsKeyAndValue($elements)``
 * ``containsSequence($element ..)`` - check that vararg sequence is exists in the array
-* ``exclude($element ..)``
+* ``excludes($element ..)``
 * ``hasEqualKeysRecursively(array $array)``
 
 ----
