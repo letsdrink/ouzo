@@ -163,17 +163,17 @@ class Model extends Validatable
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
 
         $query = Query::insert($attributes)->into($this->_tableName);
-        $value = QueryExecutor::prepare($this->_db, $query)->insert($this->_sequenceName);
+        $lastInsertedId = QueryExecutor::prepare($this->_db, $query)->insert($this->_sequenceName);
 
-        if ($primaryKey) {
-            $this->$primaryKey = $value;
+        if ($primaryKey && $this->_sequenceName) {
+            $this->$primaryKey = $lastInsertedId;
         }
 
         $this->_callAfterSaveCallbacks();
 
         $this->resetUpdates();
 
-        return $value;
+        return $lastInsertedId;
     }
 
     public function update()

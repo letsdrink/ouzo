@@ -5,6 +5,7 @@
  */
 use Application\Model\Test\Category;
 use Application\Model\Test\ModelWithoutPrimaryKey;
+use Application\Model\Test\ModelWithoutSequence;
 use Application\Model\Test\Order;
 use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
@@ -825,5 +826,23 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals(1, $count);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldUpdateModelWithoutSequence()
+    {
+        //given
+        $model = ModelWithoutSequence::create(array(
+            'name' => 'name',
+            'id' => 1
+        ));
+
+        //when
+        $model->updateAttributes(array('name' => 'new name'));
+
+        //then
+        $this->assertEquals('new name', $model->reload()->name);
     }
 }
