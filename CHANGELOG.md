@@ -10,6 +10,7 @@ Enhancements:
 * [ORM] Added switch for model generator to utilize shorthand array syntax (issue #160).
 * [ORM] Added switch for model generator to display output instead of saving file (issue #158).
 * [ORM] Added support for [sorted hasMany relations](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#sorted-hasmany-relation) (issue #171).
+* [Tests]  Added ArrayAssert::isEqualTo method.
 
 Bug fixes:
 * [Utilities] Added [Arrays::mapEntries](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
@@ -17,6 +18,7 @@ Bug fixes:
 * [ORM] Fixed model generator namespace and folder name (issue #149).
 * [Utilities] Added [Arrays::uniqueBy](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#uniqueby) (issue #159).
 * [Tests] Changed ArrayAssert::hasSize, so that it shows original array when assertion fails (issue #163).
+* [ORM] Fixed insert primaryKey when sequence is empty (issue #174).
 
 Release 1.4.0
 -------------
