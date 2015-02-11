@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-INCOMING
---------
+Release 1.4.1
+-------------
 Enhancements:
 * [ORM] New restrictions: isNull and isNotNull.
 * [ORM] Added EmptyWhereClause class.
