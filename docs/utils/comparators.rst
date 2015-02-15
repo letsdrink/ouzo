@@ -36,7 +36,7 @@ Combining comparators? Just imagine the possibilities!
 Compare by
 ~~~~~~~~~~
 
-Compares objects by using values computed using given expression. Expression should comply with format accepted by
+Compares objects by using values computed using given expressions. Expressions should comply with format accepted by
 ``Functions::extractExpression``.
 
 Imagine you have ``Product`` and you want to sort it by its ``name`` property. Not a problem:
@@ -54,6 +54,12 @@ In case you haven't heard of Ouzo's assertions, here is the simplest way to test
 ::
 
     $result = Assert::thatArray($result)->onProperty('name')->containsExactly('a', 'b', 'c');
+
+You can specify as many expressions as you need, e.g.
+
+::
+
+    Comparator::compareBy('name', 'description', 'price');
 
 Compound
 ~~~~~~~~

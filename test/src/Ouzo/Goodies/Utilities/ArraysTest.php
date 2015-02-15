@@ -353,8 +353,28 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $sorted = Arrays::sort($array, $comparator);
 
         //then
-        $orderedProperly = array($product1, $product2, $product3);
-        $this->assertEquals($orderedProperly, $sorted);
+        Assert::thatArray($sorted)->containsExactly($product1, $product2, $product3);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSortArrayByCompareByWithMultipleExpressions()
+    {
+        //given
+        $product1 = new Product(array('name' => 'a', 'description' => '2'));
+        $product2 = new Product(array('name' => 'b', 'description' => '2'));
+        $product3 = new Product(array('name' => 'a', 'description' => '1'));
+
+        $array = array($product1, $product2, $product3);
+
+        $comparator = Comparator::compareBy('name', 'description');
+
+        //when
+        $sorted = Arrays::sort($array, $comparator);
+
+        //then
+        Assert::thatArray($sorted)->containsExactly($product3, $product1, $product2);
     }
 
     /**
