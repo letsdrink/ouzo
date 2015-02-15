@@ -15,6 +15,7 @@ class I18n
     const DEFAULT_LANGUAGE = 'en';
 
     private static $_translator;
+    private static $_labels;
 
     public static function t($key, $params = array(), PluralizeOption $pluralize = null)
     {
@@ -33,6 +34,7 @@ class I18n
     public static function reset($translator = null)
     {
         self::$_translator = $translator;
+        self::$_labels = null;
     }
 
     public static function labels($key = '')
@@ -44,13 +46,16 @@ class I18n
 
     public static function loadLabels()
     {
-        $language = self::getLanguage();
-        $path = Path::join(ROOT_PATH, 'locales', $language . '.php');
-        if (!Files::exists($path)) {
-            throw new Exception('Cannot find declared language file: ' . $language);
+        if (!self::$_labels) {
+            $language = self::getLanguage();
+            $path = Path::join(ROOT_PATH, 'locales', $language . '.php');
+            if (!Files::exists($path)) {
+                throw new Exception('Cannot find declared language file: ' . $language);
+            }
+            /** @noinspection PhpIncludeInspection */
+            self::$_labels = require($path);
         }
-        /** @noinspection PhpIncludeInspection */
-        return require($path);
+        return self::$_labels;
     }
 
     private static function _getTranslator()

@@ -6,6 +6,9 @@ INCOMING
 Enhancements:
 * [Utilities] Extended Comparator::compareBy to support multiple expressions (issue #169).
 
+Bug fixes:
+* [Localization] Fixed I18n::loadLabels not to load translation file if it was already loaded (issue #173).
+
 Release 1.4.1
 -------------
 Enhancements:
@@ -15,7 +18,7 @@ Enhancements:
 * [ORM] Added switch for model generator to utilize shorthand array syntax (issue #160).
 * [ORM] Added switch for model generator to display output instead of saving file (issue #158).
 * [ORM] Added support for [sorted hasMany relations](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#sorted-hasmany-relation) (issue #171).
-* [Tests]  Added ArrayAssert::isEqualTo method.
+* [Tests] Added ArrayAssert::isEqualTo method.
 
 Bug fixes:
 * [Utilities] Added [Arrays::mapEntries](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
