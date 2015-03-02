@@ -8,6 +8,8 @@ namespace Ouzo\Db\WhereClause;
 use Ouzo\Restriction\Restriction;
 use Ouzo\Restrictions;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Functions;
+use Ouzo\Utilities\Joiner;
 
 class ArrayWhereClause extends WhereClause
 {
@@ -64,12 +66,26 @@ class ArrayWhereClause extends WhereClause
     private static function _buildWhereKey($column, $value)
     {
         if (is_array($value)) {
-            $in = implode(', ', array_fill(0, count($value), '?'));
-            return $column . ' IN (' . $in . ')';
+            return self::_buildWhereKeyIn($column, $value);
         }
         if ($value instanceof Restriction) {
             return $value->toSql($column);
         }
         return $column . ' = ?';
     }
+
+    private static function _buildWhereKeyIn($column, array $array)
+    {
+        $useRestrictions = Arrays::any($array, Functions::isInstanceOf('\Ouzo\Restriction\Restriction'));
+
+        if ($useRestrictions) {
+            return Joiner::on(' OR ')->mapValues(function ($restriction) use ($column) {
+                return $restriction->toSql($column);
+            })->join($array);
+        }
+
+        $in = implode(', ', array_fill(0, count($array), '?'));
+        return $column . ' IN (' . $in . ')';
+    }
+
 }

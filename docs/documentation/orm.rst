@@ -520,6 +520,15 @@ Query:
 
 You can use parameters chaining as described in previous section and combine ``Any:of`` with standard ``where``.
 
+If you wish to use multiple values for the same key, you can use Restrictions:
+
+::
+
+    User::where(Any::of(array('login' => array(Restrictions::equalTo('ouzo'), Restrictions::equalTo('rules')))
+        ->fetch();
+
+
+
 Multiple values
 ---------------
 If you want to search for any of values equal to given parameter:

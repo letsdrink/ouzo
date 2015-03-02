@@ -7,6 +7,7 @@ namespace Ouzo\Db\WhereClause;
 
 
 use Ouzo\Db\Any;
+use Ouzo\Restrictions;
 
 class WhereClauseTest extends \PHPUnit_Framework_TestCase {
 
@@ -74,6 +75,34 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
         $this->assertEquals(array('0' => 'b', '1' => 'd'), $result->getParameters());
         $this->assertEquals('a = ? OR c = ?', $result->toSql());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnArrayWhereClauseForAnyWithInAndRestriction()
+    {
+        // when
+        $result = WhereClause::create(Any::of(array('a' => array(Restrictions::equalTo('b'), Restrictions::lessThan('c')))));
+
+        // then
+        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertEquals(array('0' => Restrictions::equalTo('b'), '1' => Restrictions::lessThan('c')), $result->getParameters());
+        $this->assertEquals('a = ? OR a < ?', $result->toSql());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnArrayWhereClauseForAnyWithInAndWithoutRestriction()
+    {
+        // when
+        $result = WhereClause::create(Any::of(array('a' => array('b', 'c'))));
+
+        // then
+        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertEquals(array('0' => 'b', '1' => 'c'), $result->getParameters());
+        $this->assertEquals('a IN (?, ?)', $result->toSql());
     }
 
     /**
