@@ -6,6 +6,7 @@ INCOMING
 Enhancements:
 * [Utilities] Extended Comparator::compareBy to support multiple expressions (issue #169).
 * [ORM] Added possibility of using multiple Restrictions in Any::of for the same key.
+* [Utilities] Added Suppliers::memoizeWithExpiration that returns supplier which caches the result of function. 
 
 Bug fixes:
 * [Localization] Fixed I18n::loadLabels not to load translation file if it was already loaded (issue #173).
