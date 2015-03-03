@@ -4,7 +4,7 @@ Ouzo is a PHP MVC framework with built-in ORM and util libraries. PHP 5.3 or lat
 
 [![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
 [![Documentation Status](https://readthedocs.org/projects/ouzo/badge/?version=latest)](https://readthedocs.org/projects/ouzo/?badge=latest)
-[![Coverage Status](https://coveralls.io/repos/letsdrink/ouzo/badge.png)](https://coveralls.io/r/letsdrink/ouzo)
+[![Coverage Status](https://coveralls.io/repos/letsdrink/ouzo/badge.svg?branch=master)](https://coveralls.io/r/letsdrink/ouzo?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/letsdrink/ouzo/v/stable.svg)](https://packagist.org/packages/letsdrink/ouzo)
 [![Total Downloads](https://poser.pugx.org/letsdrink/ouzo/downloads.svg)](https://packagist.org/packages/letsdrink/ouzo)
 [![License](https://poser.pugx.org/letsdrink/ouzo/license.svg)](https://packagist.org/packages/letsdrink/ouzo)
