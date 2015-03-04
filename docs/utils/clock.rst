@@ -52,3 +52,10 @@ You can convert Clock to a string using the specified format:
 
     $result = Clock::now()->format('Y-m-d H:i:s');
 
+
+You can check if time represented by one Clock instance if before or after another Clock instance time.
+
+::
+
+    $result1 = Clock::now()->isBefore(Clock::at('2011-01-02 12:34'));
+    $result2 = Clock::now()->isAfter(Clock::at('2011-01-02 12:34'));
