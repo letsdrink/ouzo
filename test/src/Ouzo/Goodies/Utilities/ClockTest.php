@@ -123,4 +123,22 @@ class ClockTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('2011-01-02 12:34:13', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldChangeIfDateIsAfterAnotherDate()
+    {
+        $this->assertTrue(Clock::at('2011-01-02 12:34:13')->isAfter(Clock::at('2011-01-01 12:34:13')));
+        $this->assertFalse(Clock::at('2011-01-01 12:34:13')->isAfter(Clock::at('2011-01-02 12:34:13')));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldChangeIfDateIsBeforeAnotherDate()
+    {
+        $this->assertTrue(Clock::at('2011-01-01 12:34:13')->isBefore(Clock::at('2011-01-02 12:34:13')));
+        $this->assertFalse(Clock::at('2011-01-02 12:34:13')->isBefore(Clock::at('2011-01-01 12:34:13')));
+    }
 }
