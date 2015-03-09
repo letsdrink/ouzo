@@ -34,6 +34,6 @@ class Notice
     private function getCurrentPath()
     {
         $uri = new Uri();
-        return $uri->getPath();
+        return $uri->getFullUrlWithPrefix();
     }
 }

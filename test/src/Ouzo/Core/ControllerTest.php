@@ -72,6 +72,11 @@ class SimpleTestController extends Controller
     {
         $this->header('HTTP/1.1 200 OK');
     }
+
+    public function notice_with_query()
+    {
+        $this->notice(array('notice'), false, '/simple_test/notice_with_query?data=some-data');
+    }
 }
 
 class ControllerTest extends ControllerTestCase
@@ -368,5 +373,21 @@ class ControllerTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->hasMessage('No view found [SimpleTest/empty_view_name]');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNoticeIfUrlIsWithQueryPath()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/notice_with_query?data=some-data');
+
+        //when
+        $this->get('/simple_test/other_action');
+
+        //then
+        $this->assertEmpty(Session::get('messages'));
     }
 }

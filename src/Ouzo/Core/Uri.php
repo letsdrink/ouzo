@@ -114,6 +114,11 @@ class Uri
         return array();
     }
 
+    public function getFullUrlWithPrefix()
+    {
+        return $this->_pathProvider->getPath();
+    }
+
     public static function isAjax()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
