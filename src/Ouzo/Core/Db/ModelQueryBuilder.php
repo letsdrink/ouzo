@@ -366,4 +366,9 @@ class ModelQueryBuilder
         $this->_query->groupBy = $groupBy;
         return $this;
     }
+
+    public function getQuery()
+    {
+        return $this->_query;
+    }
 }
