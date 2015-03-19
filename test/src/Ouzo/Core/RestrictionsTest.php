@@ -101,4 +101,20 @@ class RestrictionsTest extends DbTransactionalTestCase
         //then
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnModelUsingIsNotInRestriction()
+    {
+        //given
+        $product = Product::create(array('name' => 'name1'));
+        Product::create(array('name' => 'name2'));
+
+        //when
+        $loadedProduct = Product::where(array('name' => Restrictions::isNotIn(['name3', 'name2'])))->fetch();
+
+        //then
+        Assert::thatModel($loadedProduct)->isEqualTo($product);
+    }
 }

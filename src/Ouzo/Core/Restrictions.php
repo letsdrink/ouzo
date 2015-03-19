@@ -9,6 +9,7 @@ use Ouzo\Restriction\BetweenRestriction;
 use Ouzo\Restriction\EqualToRestriction;
 use Ouzo\Restriction\GreaterOrEqualToRestriction;
 use Ouzo\Restriction\GreaterThanRestriction;
+use Ouzo\Restriction\IsNotInRestriction;
 use Ouzo\Restriction\IsNotNullRestriction;
 use Ouzo\Restriction\IsNullRestriction;
 use Ouzo\Restriction\LessOrEqualToRestriction;
@@ -66,5 +67,10 @@ class Restrictions
     public static function isNotNull()
     {
         return new IsNotNullRestriction();
+    }
+
+    public static function isNotIn(array $values)
+    {
+        return new IsNotInRestriction($values);
     }
 }
