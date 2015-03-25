@@ -77,6 +77,12 @@ class SimpleTestController extends Controller
     {
         $this->notice(array('notice'), false, '/simple_test/notice_with_query?data=some-data');
     }
+
+    public function string_output()
+    {
+        $this->layout->renderAjax('ONLY OUTPUT');
+        $this->layout->unsetLayout();
+    }
 }
 
 class ControllerTest extends ControllerTestCase
@@ -389,5 +395,20 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertEmpty(Session::get('messages'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetStringOutput()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        $this->get('/simple_test/string_output');
+
+        //then
+        $this->assertEquals('ONLY OUTPUT', $this->getActualContent());
     }
 }
