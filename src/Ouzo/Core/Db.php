@@ -72,7 +72,7 @@ class Db
     }
 
     /**
-     * Returns a new transactional proxy for given target object.
+     * Returns a new transactional proxy for given target object/function.
      * All methods called on proxy are run in a transaction.
      */
     public static function transactional($object)

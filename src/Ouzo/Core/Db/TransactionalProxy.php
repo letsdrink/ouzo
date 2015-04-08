@@ -28,4 +28,13 @@ class TransactionalProxy
             return call_user_func_array(array($object, $name), $arguments);
         });
     }
+
+    public function __invoke()
+    {
+        $function = $this->_object;
+        $arguments = func_get_args();
+        return Db::getInstance()->runInTransaction(function () use ($function, $arguments) {
+            return call_user_func_array($function, $arguments);
+        });
+    }
 }
