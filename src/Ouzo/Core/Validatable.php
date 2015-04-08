@@ -108,6 +108,14 @@ class Validatable
         }
     }
 
+    public function validateEmpty($value, $errorMessage, $errorField = null)
+    {
+        if (!empty($value)) {
+            $this->error($errorMessage);
+            $this->_errorFields[] = $errorField;
+        }
+    }
+
     protected function error($error, $code = 0)
     {
         $this->_errors[] = $error instanceof Error ? $error : new Error($code, $error);

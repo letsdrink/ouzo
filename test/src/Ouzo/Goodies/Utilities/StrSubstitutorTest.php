@@ -81,4 +81,34 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('Czesc ', $substituted);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReplaceUnicodeChar()
+    {
+        //given
+        $strSubstitutor = new StrSubstitutor(array('ODDZIAŁ' => 'krakowski'));
+
+        //when
+        $substituted = $strSubstitutor->replace('Oddział: {{ODDZIAŁ}}');
+
+        //then
+        $this->assertEquals('Oddział: krakowski', $substituted);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReplaceWithSpaceInPlaceholderName()
+    {
+        //given
+        $strSubstitutor = new StrSubstitutor(array('SOME PLACEHOLDER' => 'new value'));
+
+        //when
+        $substituted = $strSubstitutor->replace('Value: {{SOME PLACEHOLDER}}');
+
+        //then
+        $this->assertEquals('Value: new value', $substituted);
+    }
 }

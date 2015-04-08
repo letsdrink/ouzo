@@ -139,7 +139,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRenderedContent()
     {
-        return Assert::thatString(RequestContext::getCurrentControllerObject()->layout->layoutContent());
+        return Assert::thatString($this->getActualContent());
     }
 
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
@@ -155,7 +155,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function getRenderedJsonAsArray()
     {
-        return json_decode(RequestContext::getCurrentControllerObject()->layout->layoutContent(), true);
+        return json_decode($this->getActualContent(), true);
     }
 
     public function assertResponseHeader($expected)
@@ -167,5 +167,10 @@ class ControllerTestCase extends DbTransactionalTestCase
     public function getResponseHeaders()
     {
         return $this->_frontController->headerSender->getHeaders();
+    }
+
+    public function getActualContent()
+    {
+        return RequestContext::getCurrentControllerObject()->layout->layoutContent();
     }
 }
