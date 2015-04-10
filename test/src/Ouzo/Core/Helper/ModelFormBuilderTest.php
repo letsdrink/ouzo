@@ -65,4 +65,20 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertNotContains('class="', $html);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateNameForField()
+    {
+        //given
+        $product = new Product();
+        $formBuilder = new ModelFormBuilder($product);
+
+        //when
+        $name = $formBuilder->generateName('input');
+
+        //then
+        $this->assertEquals('product[input]', $name);
+    }
 }
