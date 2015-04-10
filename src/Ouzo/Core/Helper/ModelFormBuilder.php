@@ -28,7 +28,7 @@ class ModelFormBuilder
         return $this->_objectName() . '_' . $name;
     }
 
-    private function _generateName($name)
+    public function generateName($name)
     {
         return $this->_objectName() . '[' . $name . ']';
     }
@@ -58,35 +58,35 @@ class ModelFormBuilder
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
-        return textFieldTag($this->_generateName($field), $this->_object->$field, $attributes);
+        return textFieldTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
     public function textArea($field, array $options = array())
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
-        return textAreaTag($this->_generateName($field), $this->_object->$field, $attributes);
+        return textAreaTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
     public function selectField($field, array $items, $options = array(), $promptOption = null)
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
-        return selectTag($this->_generateName($field), $items, array($this->_object->$field), $attributes, $promptOption);
+        return selectTag($this->generateName($field), $items, array($this->_object->$field), $attributes, $promptOption);
     }
 
     public function hiddenField($field, $options = array())
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
-        return hiddenTag($this->_generateName($field), $this->_object->$field, $attributes);
+        return hiddenTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
     public function passwordField($field, array $options = array())
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
-        return passwordFieldTag($this->_generateName($field), $this->_object->$field, $attributes);
+        return passwordFieldTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
     public function checkboxField($field, array $options = array())
@@ -95,14 +95,14 @@ class ModelFormBuilder
         $attributes = $this->_mergeAttributes($attributes, $options);
         $value = $this->_object->$field;
         $checked = !empty($value);
-        return checkboxTag($this->_generateName($field), '1', $checked, $attributes);
+        return checkboxTag($this->generateName($field), '1', $checked, $attributes);
     }
 
     public function radioField($field, array $options = array())
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
-        return radioButtonTag($this->_generateName($field), $this->_object->$field, $attributes);
+        return radioButtonTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
     public function start($url, $method = 'post', $attributes = array())
