@@ -25,6 +25,7 @@ class Controller
     private $_redirectLocation = '';
     private $_fileData = array();
     private $_headers = array();
+    private $_cookies = array();
     private $_routeRule = null;
     private $_keepMessage = false;
 
@@ -49,9 +50,19 @@ class Controller
         $this->_headers[] = $header;
     }
 
+    public function setCookie($params)
+    {
+        $this->_cookies[] = $params;
+    }
+
     public function getHeaders()
     {
         return $this->_headers;
+    }
+
+    public function getNewCookies()
+    {
+        return $this->_cookies;
     }
 
     public function redirect($url, $messages = array())

@@ -27,6 +27,7 @@ class FrontController
     public $outputDisplayer;
     public $httpAuthBasicHandler;
     public $headerSender;
+    public $cookiesSetter;
 
     public function __construct()
     {
@@ -40,6 +41,7 @@ class FrontController
         $this->controllerFactory = new ControllerFactory();
         $this->outputDisplayer = new OutputDisplayer();
         $this->headerSender = new HeaderSender();
+        $this->cookiesSetter = new CookiesSetter();
     }
 
     public function init()
@@ -130,6 +132,7 @@ class FrontController
     {
         $controller = $this->_currentControllerObject;
         $this->_sendHeaders($controller->getHeaders());
+        $this->_setCookies($controller->getNewCookies());
         switch ($controller->getStatusResponse()) {
             case 'show':
                 $this->renderOutput();
@@ -179,5 +182,9 @@ class FrontController
         $page = ob_get_contents();
         ob_end_clean();
         $this->outputDisplayer->display($page);
+    }
+
+    private function _setCookies($getNewCookies)
+    {
     }
 }

@@ -33,6 +33,7 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_frontController->downloadHandler = $this->_downloadHandler;
         $this->_frontController->outputDisplayer = new MockOutputDisplayer();
         $this->_frontController->headerSender = new MockHeaderSender();
+        $this->_frontController->cookiesSetter = new MockCookiesSetter();
     }
 
     private static function _prefixSystem()
@@ -162,6 +163,12 @@ class ControllerTestCase extends DbTransactionalTestCase
     {
         $actual = $this->getResponseHeaders();
         Assert::thatArray($actual)->contains($expected);
+    }
+
+    public function assertHasCookie($cookieAttributes)
+    {
+        $actual =$this->_frontController->cookiesSetter->getCookies();
+        Assert::thatArray($actual)->contains($cookieAttributes);
     }
 
     public function getResponseHeaders()
