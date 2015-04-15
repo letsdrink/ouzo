@@ -120,7 +120,7 @@ class XcrfProtectorTest extends ControllerTestCase
         //given
         $_SESSION = array();
         $_COOKIE['csrftoken'] = XcrfProtector::getCsrfToken();
-        $_SERVER['HTTP_X-Csrftoken'] = 'invalid';
+        $_SERVER['HTTP_X_CSRFTOKEN'] = 'invalid';
 
         //when
         CatchException::when($this)->post('/xcrf_sample/modify', array());
