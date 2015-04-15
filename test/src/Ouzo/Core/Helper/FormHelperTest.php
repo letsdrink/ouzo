@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Application\Model\Test\Product;
+use Ouzo\Csrf\XcrfProtector;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
 
@@ -221,7 +222,7 @@ class FormHelperTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldCreateFormStartTagInFormForModelClass()
+    public function shouldCreateFormStartTagWithCsrfTokenInFormForModelClass()
     {
         //given
         $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
@@ -231,7 +232,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $startTag = $form->start('/sample/url', 'GET', array('class' => 'form-horizontal'));
 
         //then
-        $this->assertEquals('<form class="form-horizontal" action="/sample/url" method="GET">', $startTag);
+        $this->assertEquals('<form class="form-horizontal" action="/sample/url" method="GET"><input type="hidden" id="csrftoken" name="csrftoken" value="' . XcrfProtector::getCsrfToken() . '"/>', $startTag);
     }
 
     /**

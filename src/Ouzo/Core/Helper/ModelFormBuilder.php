@@ -5,6 +5,7 @@
  */
 namespace Ouzo\Helper;
 
+use Ouzo\Csrf\XcrfProtector;
 use Ouzo\I18n;
 use Ouzo\Utilities\Joiner;
 use Ouzo\Utilities\Strings;
@@ -107,7 +108,7 @@ class ModelFormBuilder
 
     public function start($url, $method = 'post', $attributes = array())
     {
-        return formTag($url, $method, $attributes);
+        return formTag($url, $method, $attributes) . hiddenTag('csrftoken', XcrfProtector::getCsrfToken());
     }
 
     public function end()
