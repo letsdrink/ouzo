@@ -167,7 +167,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertHasCookie($cookieAttributes)
     {
-        $actual =$this->_frontController->cookiesSetter->getCookies();
+        $actual = $this->_frontController->cookiesSetter->getCookies();
         Assert::thatArray($actual)->contains($cookieAttributes);
     }
 

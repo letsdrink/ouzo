@@ -8,7 +8,7 @@ namespace Ouzo\Tests;
 
 class MockCookiesSetter
 {
-    private $_cookies;
+    private $_cookies = array();
 
     public function setCookies($cookies)
     {

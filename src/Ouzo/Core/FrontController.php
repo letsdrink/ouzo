@@ -132,7 +132,7 @@ class FrontController
     {
         $controller = $this->_currentControllerObject;
         $this->_sendHeaders($controller->getHeaders());
-        $this->_setCookies($controller->getNewCookies());
+        $this->cookiesSetter->setCookies($controller->getNewCookies());
         switch ($controller->getStatusResponse()) {
             case 'show':
                 $this->renderOutput();
@@ -182,9 +182,5 @@ class FrontController
         $page = ob_get_contents();
         ob_end_clean();
         $this->outputDisplayer->display($page);
-    }
-
-    private function _setCookies($getNewCookies)
-    {
     }
 }
