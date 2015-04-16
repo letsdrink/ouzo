@@ -358,6 +358,27 @@ class MockTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldStubMultipleMethodsWithMultipleResults()
+    {
+        //given
+        $mock = Mock::mock();
+        Mock::when($mock)->method1()->thenReturn('method1 result1');
+        Mock::when($mock)->method2()->thenReturn('method2 result1', 'method2 result2');
+
+        //when
+        $result1 = $mock->method1();
+        $result2 = $mock->method2();
+        $result3 = $mock->method2();
+
+        //then
+        $this->assertEquals("method1 result1", $result1);
+        $this->assertEquals("method2 result1", $result2);
+        $this->assertEquals("method2 result2", $result3);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnLastResultForMultipleCalls()
     {
         //given
