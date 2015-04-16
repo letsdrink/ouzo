@@ -98,6 +98,11 @@ interface TestInterface
     public function fun1(TestClass $p1);
 }
 
+interface StaticTestInterface
+{
+    public static function fun1(TestClass $p1);
+}
+
 class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -236,6 +241,21 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 
         //when
         $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithStaticMethod', $testMethodHandler);
+
+        //then
+        $this->assertNotNull($proxy);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldWorkForAbstractStaticMethod()
+    {
+        //given
+        $testMethodHandler = new TestMethodHandler();
+
+        //when
+        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\StaticTestInterface', $testMethodHandler);
 
         //then
         $this->assertNotNull($proxy);
