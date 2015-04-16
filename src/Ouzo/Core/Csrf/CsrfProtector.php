@@ -12,20 +12,20 @@ use Ouzo\Session;
 use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
 
-class XcrfProtector
+class CsrfProtector
 {
     public static function protect(Controller $controller)
     {
         $controller->before[] = function () {
-            if (XcrfProtector::isMethodProtected(Uri::getRequestType())) {
-                XcrfProtector::validate();
+            if (CsrfProtector::isMethodProtected(Uri::getRequestType())) {
+                CsrfProtector::validate();
             }
             return true;
         };
         $controller->after[] = function () use ($controller) {
             $controller->setCookie(array(
                 'name' => 'csrftoken',
-                'value' => XcrfProtector::getCsrfToken(),
+                'value' => CsrfProtector::getCsrfToken(),
                 'expire' => 0,
                 'path' => '/'
             ));

@@ -5,16 +5,16 @@
  */
 use Ouzo\Config;
 use Ouzo\Controller;
-use Ouzo\Csrf\XcrfProtector;
+use Ouzo\Csrf\CsrfProtector;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 
-class XcrfSampleController extends Controller
+class CsrfSampleController extends Controller
 {
     public function init()
     {
-        XcrfProtector::protect($this);
+        CsrfProtector::protect($this);
     }
 
     public function index()
@@ -30,7 +30,7 @@ class XcrfSampleController extends Controller
     }
 }
 
-class XcrfProtectorTest extends ControllerTestCase
+class CsrfProtectorTest extends ControllerTestCase
 {
     public function __construct()
     {
@@ -42,7 +42,7 @@ class XcrfProtectorTest extends ControllerTestCase
     {
         parent::setUp();
         Route::$validate = false;
-        Route::allowAll('/xcrf_sample', 'xcrf_sample');
+        Route::allowAll('/csrf_sample', 'csrf_sample');
     }
 
     public function tearDown()
@@ -58,7 +58,7 @@ class XcrfProtectorTest extends ControllerTestCase
     public function shouldFailIfNoCsrfCookie()
     {
         //when
-        CatchException::when($this)->post('/xcrf_sample/modify', array());
+        CatchException::when($this)->post('/csrf_sample/modify', array());
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
@@ -74,7 +74,7 @@ class XcrfProtectorTest extends ControllerTestCase
         $_COOKIE['csrftoken'] = 'invalid';
 
         //when
-        CatchException::when($this)->post('/xcrf_sample/modify', array('csrftoken' => XcrfProtector::getCsrfToken()));
+        CatchException::when($this)->post('/csrf_sample/modify', array('csrftoken' => CsrfProtector::getCsrfToken()));
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
@@ -87,10 +87,10 @@ class XcrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = array();
-        $_COOKIE['csrftoken'] = XcrfProtector::getCsrfToken();
+        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
 
         //when
-        CatchException::when($this)->post('/xcrf_sample/modify', array());
+        CatchException::when($this)->post('/csrf_sample/modify', array());
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
@@ -103,10 +103,10 @@ class XcrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = array();
-        $_COOKIE['csrftoken'] = XcrfProtector::getCsrfToken();
+        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
 
         //when
-        CatchException::when($this)->post('/xcrf_sample/modify', array('csrftoken' => 'invalid'));
+        CatchException::when($this)->post('/csrf_sample/modify', array('csrftoken' => 'invalid'));
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
@@ -119,11 +119,11 @@ class XcrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = array();
-        $_COOKIE['csrftoken'] = XcrfProtector::getCsrfToken();
+        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
         $_SERVER['HTTP_X_CSRFTOKEN'] = 'invalid';
 
         //when
-        CatchException::when($this)->post('/xcrf_sample/modify', array());
+        CatchException::when($this)->post('/csrf_sample/modify', array());
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
@@ -136,11 +136,11 @@ class XcrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = array();
-        $_COOKIE['csrftoken'] = XcrfProtector::getCsrfToken();
-        $_SERVER['HTTP_X_CSRFTOKEN'] = XcrfProtector::getCsrfToken();
+        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
+        $_SERVER['HTTP_X_CSRFTOKEN'] = CsrfProtector::getCsrfToken();
 
         //when
-        CatchException::when($this)->post('/xcrf_sample/modify', array());
+        CatchException::when($this)->post('/csrf_sample/modify', array());
 
         //then
         CatchException::assertThat()->notCaught();
@@ -153,10 +153,10 @@ class XcrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = array();
-        $_COOKIE['csrftoken'] = XcrfProtector::getCsrfToken();
+        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
 
         //when
-        CatchException::when($this)->post('/xcrf_sample/modify', array('csrftoken' => XcrfProtector::getCsrfToken()));
+        CatchException::when($this)->post('/csrf_sample/modify', array('csrftoken' => CsrfProtector::getCsrfToken()));
 
         //then
         CatchException::assertThat()->notCaught();
@@ -168,7 +168,7 @@ class XcrfProtectorTest extends ControllerTestCase
     public function shouldNotValidateGetMethod()
     {
         //when
-        CatchException::when($this)->get('/xcrf_sample/index');
+        CatchException::when($this)->get('/csrf_sample/index');
 
         //then
         CatchException::assertThat()->notCaught();
@@ -180,12 +180,12 @@ class XcrfProtectorTest extends ControllerTestCase
     public function shouldSetCookie()
     {
         //when
-        $this->get('/xcrf_sample/index');
+        $this->get('/csrf_sample/index');
 
         //then
         $this->assertHasCookie(array(
             'name' => 'csrftoken',
-            'value' => XcrfProtector::getCsrfToken(),
+            'value' => CsrfProtector::getCsrfToken(),
             'expire' => 0,
             'path' => '/'
         ));
