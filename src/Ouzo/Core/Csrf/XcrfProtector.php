@@ -25,7 +25,7 @@ class XcrfProtector
         $controller->after[] = function () use ($controller) {
             $controller->setCookie(array(
                 'name' => 'csrftoken',
-                'value' => self::getCsrfToken(),
+                'value' => XcrfProtector::getCsrfToken(),
                 'expire' => 0,
                 'path' => '/'
             ));
