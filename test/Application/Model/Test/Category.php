@@ -1,14 +1,19 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Application\Model\Test;
 
 use Ouzo\Db;
-use Ouzo\Db\WhereClause;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Model;
 
 /**
  * @property int id
  * @property string name
  * @property Category parent
+ * @property Product[] products_ordered_by_name
  */
 class Category extends Model
 {
@@ -29,13 +34,18 @@ class Category extends Model
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
                     'conditions' => function () {
-                        return new WhereClause("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
+                        return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
                     },
                 ),
                 'products_name_bob' => array(
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
                     'conditions' => array("products.name" => "bob")
+                ),
+                'products_ordered_by_name' => array(
+                    'class' => 'Test\Product',
+                    'foreignKey' => 'id_category',
+                    'order' => array("products.name ASC")
                 )
             ),
             'hasOne' => array(

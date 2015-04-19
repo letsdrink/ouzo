@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities;
 
 /**
@@ -51,7 +55,7 @@ class StrSubstitutor
      */
     public function replace($string)
     {
-        return preg_replace_callback('/\{\{(\w+)}}/', array($this, '_replace_vars'), $string);
+        return preg_replace_callback('/\{\{(.+?)}}/u', array($this, '_replace_vars'), $string);
     }
 
     /**

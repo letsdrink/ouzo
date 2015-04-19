@@ -1,6 +1,11 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
+use Ouzo\Db\WhereClause\ArrayWhereClause;
 use Ouzo\Utilities\Arrays;
 
 class QueryTest extends PHPUnit_Framework_TestCase
@@ -65,7 +70,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals('table', $query->table);
-        $this->assertEquals(array('name' => 'bob'), $query->whereClauses[0]->where);
+        $this->assertEquals(new ArrayWhereClause(array('name' => 'bob')), $query->whereClauses[0]);
         $this->assertEquals(5, $query->limit);
         $this->assertEquals(10, $query->offset);
         $this->assertEquals('group', $query->groupBy);

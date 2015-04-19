@@ -1,8 +1,11 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Command;
 
 use Ouzo\ApplicationPaths;
-use Ouzo\AutoloadNamespaces;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\UriHelperGenerator;

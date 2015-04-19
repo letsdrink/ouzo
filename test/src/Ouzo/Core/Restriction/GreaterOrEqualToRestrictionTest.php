@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Restrictions;
 
 class GreaterOrEqualToRestrictionTest extends PHPUnit_Framework_TestCase
@@ -16,6 +20,6 @@ class GreaterOrEqualToRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key >= ?', $sql);
-        $this->assertEquals(5, $restriction->getValues());
+        $this->assertEquals(array(5), $restriction->getValues());
     }
 }

@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities;
 
 use DateTime;
@@ -67,11 +71,24 @@ class Clock
 
     /**
      * Obtains a Clock set to to a specific point.
+     * @param $date
      * @return Clock
      */
     public static function at($date)
     {
         return new Clock(new DateTime($date));
+    }
+
+    /**
+     * Obtains a Clock set to to a specific point using Unix timestamp.
+     * @param $timestamp
+     * @return Clock
+     */
+    public static function fromTimestamp($timestamp)
+    {
+        $dateTime = new DateTime();
+        $dateTime->setTimestamp($timestamp);
+        return new Clock($dateTime);
     }
 
     public function getTimestamp()
@@ -158,5 +175,15 @@ class Clock
     public function plusYears($years)
     {
         return $this->_modify("+$years years");
+    }
+
+    public function isAfter($other)
+    {
+        return $this->getTimestamp() > $other->getTimestamp();
+    }
+
+    public function isBefore($other)
+    {
+        return $this->getTimestamp() < $other->getTimestamp();
     }
 }

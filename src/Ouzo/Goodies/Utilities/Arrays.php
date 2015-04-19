@@ -1,6 +1,11 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities;
 
+use Exception;
 use InvalidArgumentException;
 
 /**
@@ -155,7 +160,7 @@ class Arrays
                 return $key;
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -826,7 +831,7 @@ class Arrays
     }
 
     /**
-     * Returns array with removed keys even are nested.
+     * Removes nested keys in array.
      *
      * Example:
      * <code>
@@ -857,7 +862,7 @@ class Arrays
     }
 
     /**
-     * Check is array has nested keys. Possibly check array with null values using flag <i>Arrays::TREAT_NULL_AS_VALUE</i>.
+     * Checks if array has nested key. It's possible to check array with null values using flag <i>Arrays::TREAT_NULL_AS_VALUE</i>.
      *
      * Example:
      * <code>
@@ -1013,5 +1018,37 @@ class Arrays
         $keys = array_keys($elements);
         $values = array_values($elements);
         return array_combine($keys, array_map($function, $keys, $values));
+    }
+
+    /**
+     * Removes duplicate values from an array. It uses the given expression to extract value that is compared.
+     *
+     * Example:
+     * <code>
+     * $a = new stdClass();
+     * $a->name = 'bob';
+     *
+     * $b = new stdClass();
+     * $b->name = 'bob';
+     *
+     * $array = [$a, $b];
+     * $result = Arrays::uniqueBy($array, 'name');
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] => $b
+     * )
+     * </code>
+     *
+     * @param array $elements
+     * @param $selector
+     * @return array
+     * @throws Exception
+     */
+    public static function uniqueBy(array $elements, $selector)
+    {
+        return array_values(self::toMap($elements, Functions::extractExpression($selector)));
     }
 }

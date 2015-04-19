@@ -1,5 +1,10 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Config;
+use Ouzo\Logger\Logger;
 use Ouzo\Logger\LoggerInterface;
 use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
@@ -23,6 +28,7 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
+        Config::clearProperty('logger', 'default', 'minimal_levels');
         StreamStub::unregister();
         parent::tearDown();
     }
@@ -32,7 +38,6 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function shouldWriteErrorMessage()
     {
-        //given
         //when
         $this->logger->error('My error log line with param %s and %s.', array(42, 'Zaphod'));
 
@@ -52,6 +57,40 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
         //then
         $logContent = $this->_readStreamContent('test://stdout');
         Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST Info: [ID: ] My info log line with param 42 and Zaphod.');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotWriteInfoMessageIfMinimalLevelIsSetToWarning()
+    {
+        //given
+        Config::overrideProperty('logger', 'default', 'minimal_levels')->with(array('TEST' => LOG_WARNING));
+        $this->logger = new StdOutputLogger('TEST', 'default', 'test');
+
+        //when
+        $this->logger->info('My info log line with param %s and %s.', array(42, 'Zaphod'));
+
+        //then
+        $logContent = $this->_readStreamContent('test://stdout');
+        Assert::thatString($logContent)->isEmpty();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldWriteInfoMessageIfMinimalLevelIsSetToInfo()
+    {
+        //given
+        Config::overrideProperty('logger', 'default', 'minimal_levels')->with(array('TEST' => LOG_INFO));
+        $this->logger = new StdOutputLogger('TEST', 'default', 'test');
+
+        //when
+        $this->logger->info('My info log line with param %s and %s.', array(42, 'Zaphod'));
+
+        //then
+        $logContent = $this->_readStreamContent('test://stdout');
+        Assert::thatString($logContent)->isNotEmpty();
     }
 
     /**

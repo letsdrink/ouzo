@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
@@ -81,6 +85,7 @@ class RelationFactory
     {
         $class = $params['class'];
         $condition = Arrays::getValue($params, 'conditions', '');
-        return new Relation($name, $class, $localKey, $foreignKey, $collection, $condition);
+        $order = Arrays::getValue($params, 'order', '');
+        return new Relation($name, $class, $localKey, $foreignKey, $collection, $condition, $order);
     }
 }

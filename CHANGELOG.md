@@ -3,8 +3,34 @@ CHANGELOG
 
 INCOMING
 --------
+Enhancements:
+* [Utilities] Extended Comparator::compareBy to support multiple expressions (issue #169).
+* [ORM] Added possibility of using multiple Restrictions in Any::of for the same key.
+* [Utilities] Added Suppliers::memoizeWithExpiration that returns supplier which caches the result of function.
+* [Core] Minimal log level can be assigned to a particular class/name in logger configuration.
+* [Core] Added Validatable::validateEmpty method.
+
+Bug fixes:
+* [Localization] Fixed I18n::loadLabels not to load translation file if it was already loaded (issue #173).
+
+Release 1.4.1
+-------------
+Enhancements:
+* [ORM] New restrictions: isNull and isNotNull.
+* [ORM] Added EmptyWhereClause class.
+* [Utilities] Objects::getValue supports arrays now. It means that all functions depending on it (e.g. Functions::extract) supports arrays as well.
+* [ORM] Added switch for model generator to utilize shorthand array syntax (issue #160).
+* [ORM] Added switch for model generator to display output instead of saving file (issue #158).
+* [ORM] Added support for [sorted hasMany relations](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#sorted-hasmany-relation) (issue #171).
+* [Tests] Added ArrayAssert::isEqualTo method.
+
 Bug fixes:
 * [Utilities] Added [Arrays::mapEntries](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
+* [ORM] Fixed null parameters in where clause (issue #161).
+* [ORM] Fixed model generator namespace and folder name (issue #149).
+* [Utilities] Added [Arrays::uniqueBy](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#uniqueby) (issue #159).
+* [Tests] Changed ArrayAssert::hasSize, so that it shows original array when assertion fails (issue #163).
+* [ORM] Fixed insert primaryKey when sequence is empty (issue #174).
 
 Release 1.4.0
 -------------

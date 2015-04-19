@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Tests\Mock\AnyArgument;
 use Ouzo\Tests\Mock\AnyArgumentList;
 use Ouzo\Tests\Mock\MethodCall;

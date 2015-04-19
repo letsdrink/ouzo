@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
@@ -259,7 +263,7 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldValidateIsEmptyObject()
+    public function notEmptyShouldReturnErrorForEmpty()
     {
         //given
         $object = '';
@@ -275,7 +279,7 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldNotValidateWhenPassObject()
+    public function notEmptyShouldNotReturnErrorForNotEmpty()
     {
         //given
         $object = new stdClass();
@@ -283,6 +287,38 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
 
         //when
         $validatable->validateNotEmpty($object, 'error1');
+
+        //then
+        $this->assertEmpty($validatable->getErrors());
+    }
+
+    /**
+     * @test
+     */
+    public function emptyShouldReturnErrorForNonEmpty()
+    {
+        //given
+        $object = new stdClass();
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateEmpty($object, 'error1');
+
+        //then
+        Assert::thatArray($validatable->getErrors())->containsOnly('error1');
+    }
+
+    /**
+     * @test
+     */
+    public function emptyShouldNotReturnErrorForEmpty()
+    {
+        //given
+        $object = '';
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateEmpty($object, 'error1');
 
         //then
         $this->assertEmpty($validatable->getErrors());

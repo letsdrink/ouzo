@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo;
 
 use Ouzo\ExceptionHandling\Error;
@@ -99,6 +103,14 @@ class Validatable
     public function validateNotEmpty($value, $errorMessage, $errorField = null)
     {
         if (empty($value)) {
+            $this->error($errorMessage);
+            $this->_errorFields[] = $errorField;
+        }
+    }
+
+    public function validateEmpty($value, $errorMessage, $errorField = null)
+    {
+        if (!empty($value)) {
             $this->error($errorMessage);
             $this->_errorFields[] = $errorField;
         }

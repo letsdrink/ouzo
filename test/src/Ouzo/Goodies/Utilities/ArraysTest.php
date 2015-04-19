@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
@@ -348,8 +353,28 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $sorted = Arrays::sort($array, $comparator);
 
         //then
-        $orderedProperly = array($product1, $product2, $product3);
-        $this->assertEquals($orderedProperly, $sorted);
+        Assert::thatArray($sorted)->containsExactly($product1, $product2, $product3);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSortArrayByCompareByWithMultipleExpressions()
+    {
+        //given
+        $product1 = new Product(array('name' => 'a', 'description' => '2'));
+        $product2 = new Product(array('name' => 'b', 'description' => '2'));
+        $product3 = new Product(array('name' => 'a', 'description' => '1'));
+
+        $array = array($product1, $product2, $product3);
+
+        $comparator = Comparator::compareBy('name', 'description');
+
+        //when
+        $sorted = Arrays::sort($array, $comparator);
+
+        //then
+        Assert::thatArray($sorted)->containsExactly($product3, $product1, $product2);
     }
 
     /**
@@ -915,5 +940,77 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(2, $count);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByField()
+    {
+        //given
+        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, 'name');
+
+        //then
+        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByFunctionResults()
+    {
+        //given
+        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, Functions::extract()->name);
+
+        //then
+        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsUniqueByNestedField()
+    {
+        //given
+        $category = new Category(array('name' => 'cat1'));
+
+        $product1 = new Product(array('name' => 'bob'));
+        $product1->category = $category;
+
+        $product2 = new Product(array('name' => 'john'));
+        $product2->category = $category;
+
+        $array = array($product1, $product2);
+
+        //when
+        $uniqueByName = Arrays::uniqueBy($array, 'category->name');
+
+        //then
+        Assert::thatArray($uniqueByName)->hasSize(1);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldExtractRecursivelyArrayColumn()
+    {
+        //given
+        $array = array(
+            array('id' => 123, 'name' => 'value1', 'test' => array('number' => 90)),
+            array('id' => 123, 'name' => 'value1', 'test' => array('number' => 100))
+        );
+
+        //when
+        $numbers = Arrays::map($array, Functions::extract()->test->number);
+
+        //then
+        Assert::thatArray($numbers)->hasSize(2)
+            ->containsOnly(90, 100);
     }
 }

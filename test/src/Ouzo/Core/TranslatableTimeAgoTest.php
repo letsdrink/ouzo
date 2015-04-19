@@ -1,8 +1,13 @@
 <?php
-use Ouzo\TimeAgo;
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+use Ouzo\TranslatableTimeAgo;
 use Ouzo\Utilities\Clock;
+use Ouzo\Utilities\TimeAgo;
 
-class TimeAgoTest extends PHPUnit_Framework_TestCase
+class TranslatableTimeAgoTest extends PHPUnit_Framework_TestCase
 {
     public function dates()
     {
@@ -26,15 +31,15 @@ class TimeAgoTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider dates
      */
-    public function shouldReturnYesterdayAt($currentDate, $date, $expectedText)
+    public function shouldCreateTranslatableTimeAgo($currentDate, $date, $expectedText)
     {
         //given
         Clock::freeze($currentDate);
 
         //when
-        $timeAgo = TimeAgo::create($date)->asString();
+        $translatableTimeAgo = TranslatableTimeAgo::create($date)->asString();
 
         //then
-        $this->assertEquals($expectedText, $timeAgo);
+        $this->assertEquals($expectedText, $translatableTimeAgo, 'Error in [' . $date . '] with expected [' . $expectedText . ']');
     }
 }

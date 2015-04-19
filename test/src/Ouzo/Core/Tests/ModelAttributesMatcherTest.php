@@ -1,0 +1,65 @@
+<?php
+
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+
+use Application\Model\Test\Product;
+use Ouzo\Tests\ModelAttributesMatcher;
+
+class ModelAttributesMatcherTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @test
+     */
+    public function shouldMatchOnlyModelFields()
+    {
+        //given
+        $model1 = new Product(array('name' => 'product', 'other' => 'other1'));
+        $model2 = new Product(array('name' => 'product', 'other' => 'other2'));
+
+        $matcher = new ModelAttributesMatcher($model1);
+
+        //when
+        $result = $matcher->matches($model2);
+
+        //then
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFalseIfDifferentAttributes()
+    {
+        //given
+        $model1 = new Product(array('name' => 'product1'));
+        $model2 = new Product(array('name' => 'product2'));
+
+        $matcher = new ModelAttributesMatcher($model1);
+
+        //when
+        $result = $matcher->matches($model2);
+
+        //then
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDescription()
+    {
+        //given
+        $model = new Product(array('name' => 'product1'));
+        $matcher = new ModelAttributesMatcher($model);
+
+        //when
+        $description = $matcher->__toString();
+
+        //then
+        $attributes = print_r($model->attributes(), true);
+        $this->assertEquals("Application\\Model\\Test\\Product with attributes($attributes)", $description);
+    }
+}

@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Tests;
 
 use Ouzo\Utilities\Arrays;
@@ -86,7 +90,7 @@ class ArrayAssert
     {
         $this->isNotNull();
         $actualSize = sizeof($this->_actual);
-        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize");
+        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize.\nActual: " . $this->_actualString);
         return $this;
     }
 
@@ -124,9 +128,9 @@ class ArrayAssert
 
     public function containsKeyAndValue($elements)
     {
-        $contains = array_intersect_assoc($elements, $this->_actual);
+        $contains = array_intersect_key($this->_actual, $elements);
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertEquals(count($elements), count($contains), "Cannot find key value pairs {$elementsString} in actual {$this->_actualString}");
+        AssertAdapter::assertEquals($elements, $contains, "Cannot find key value pairs {$elementsString} in actual {$this->_actualString}");
         return $this;
     }
 
@@ -144,7 +148,7 @@ class ArrayAssert
         return $this;
     }
 
-    public function exclude()
+    public function excludes()
     {
         $elements = func_get_args();
         $currentArray = $this->_actual;
@@ -166,5 +170,10 @@ class ArrayAssert
         $arrayFlatten = array_keys(Arrays::flattenKeysRecursively($array));
         AssertAdapter::assertSame(array_diff($currentArrayFlatten, $arrayFlatten), array_diff($arrayFlatten, $currentArrayFlatten));
         return $this;
+    }
+
+    public function isEqualTo($array)
+    {
+        AssertAdapter::assertEquals($array, $this->_actual);
     }
 }

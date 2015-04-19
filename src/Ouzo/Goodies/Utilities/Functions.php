@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities;
 
 use Exception;
@@ -22,7 +26,7 @@ class Functions
     public static function extractFieldRecursively($names, $accessPrivate = false)
     {
         return function ($object) use ($names, $accessPrivate) {
-            return Objects::getValueRecursively($object, $names, $accessPrivate);
+            return Objects::getValueRecursively($object, $names, null, $accessPrivate);
         };
     }
 

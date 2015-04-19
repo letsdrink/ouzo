@@ -1,10 +1,15 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
 use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Restriction\Restriction;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
@@ -152,7 +157,7 @@ class QueryExecutor
     private function _addBindValuesFromWhereClause($whereClause)
     {
         if (!$whereClause->isEmpty()) {
-            $this->_addBindValue($whereClause->values);
+            $this->_addBindValue($whereClause->getParameters());
         }
     }
 
@@ -160,7 +165,7 @@ class QueryExecutor
     {
         foreach ($array as $value) {
             if ($value instanceof Restriction) {
-                $this->_boundValues = array_merge($this->_boundValues, Arrays::toArray($value->getValues()));
+                $this->_boundValues = array_merge($this->_boundValues, $value->getValues());
             } else {
                 $this->_boundValues[] = $value;
             }

@@ -1,10 +1,12 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db\Dialect;
 
-use Ouzo\Db\Any;
 use Ouzo\Db\JoinClause;
-use Ouzo\Db\WhereClause;
-use Ouzo\Restriction\Restriction;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Joiner;
 
@@ -26,34 +28,10 @@ class DialectUtil
         return implode(' AND ', $parts);
     }
 
-    public static function buildWhereQueryPart($whereClause)
+    public static function buildWhereQueryPart(WhereClause $whereClause)
     {
-        if ($whereClause->where instanceof Any) {
-            return '(' . implode(' OR ', self::_buildWhereKeys($whereClause->where->getConditions())) . ')';
-        }
-        $wherePart = is_array($whereClause->where) ? implode(' AND ', self::_buildWhereKeys($whereClause->where)) : $whereClause->where;
+        $wherePart = $whereClause->toSql();
         return stripos($wherePart, 'OR') ? '(' . $wherePart . ')' : $wherePart;
-    }
-
-    private static function _buildWhereKeys($params)
-    {
-        $keys = array();
-        foreach ($params as $key => $value) {
-            $keys[] = self::_buildWhereKey($value, $key);
-        }
-        return $keys;
-    }
-
-    private static function _buildWhereKey($value, $key)
-    {
-        if (is_array($value)) {
-            $in = implode(', ', array_fill(0, count($value), '?'));
-            return $key . ' IN (' . $in . ')';
-        }
-        if ($value instanceof Restriction) {
-            return $value->toSql($key);
-        }
-        return $key . ' = ?';
     }
 
     public static function buildJoinQuery($joinClauses)

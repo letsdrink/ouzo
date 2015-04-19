@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
@@ -173,13 +177,31 @@ class ExtractorTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldExtractArrayValue()
+    public function shouldExtractArrayValueFromField()
     {
         //given
         $object = new stdClass();
         $object->field1 = array('key' => 'value');
 
         $function = Functions::extract()->field1['key'];
+
+        //when
+        $result = Functions::call($function, $object);
+
+        //then
+        Assert::thatString($result)->isEqualTo('value');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldExtractArrayValue()
+    {
+        //given
+        $object = array('key' => 'value');
+
+        //$function = Functions::extract()['key']; only i php 5.4
+        $function = Functions::extract()->offsetGet('key');
 
         //when
         $result = Functions::call($function, $object);

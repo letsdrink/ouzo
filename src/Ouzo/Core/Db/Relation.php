@@ -1,7 +1,12 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
 
 use Ouzo\AutoloadNamespaces;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\DbException;
 use Ouzo\MetaModelCache;
 use Ouzo\Model;
@@ -15,8 +20,9 @@ class Relation
     private $foreignKey;
     private $collection;
     private $condition;
+    private $order;
 
-    public function __construct($name, $class, $localKey, $foreignKey, $collection, $condition = '')
+    public function __construct($name, $class, $localKey, $foreignKey, $collection, $condition = '', $order = null)
     {
         $this->name = $name;
         $this->class = $class;
@@ -24,6 +30,7 @@ class Relation
         $this->foreignKey = $foreignKey;
         $this->collection = $collection;
         $this->condition = $condition;
+        $this->order = $order;
     }
 
     public static function inline($params)
@@ -56,7 +63,12 @@ class Relation
         if (is_callable($this->condition)) {
             return call_user_func($this->condition);
         }
-        return new WhereClause($this->condition);
+        return WhereClause::create($this->condition);
+    }
+
+    public function getOrder()
+    {
+        return $this->order;
     }
 
     /**

@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 
@@ -29,7 +33,7 @@ class PhotoFrame
     }
 }
 
-class AssertTest extends PHPUnit_Framework_TestCase
+class ArrayAssertTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -245,6 +249,25 @@ class AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function isEqualToShouldPassForEqualArrays()
+    {
+        $array = array('ccc', 'aaa');
+        Assert::thatArray($array)->isEqualTo(array('ccc', 'aaa'));
+    }
+
+    /**
+     * @test
+     */
+    public function isEqualToShouldThrowExceptionForDifferentArrays()
+    {
+        $array = array('ccc', 'aaa');
+        CatchException::when(Assert::thatArray($array))->isEqualTo('ddd', 'ccc');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    /**
+     * @test
+     */
     public function containsShouldThrowExceptionWhenOrderIsIncorrect()
     {
         $array = array('ccc', 'aaa', 'bbb', 'ccc', 'ddd');
@@ -275,9 +298,9 @@ class AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function excludeShouldThrowExceptionWhenFoundInArray()
+    public function excludesShouldThrowExceptionWhenFoundInArray()
     {
-        CatchException::when(Assert::thatArray(array('1', '2', '3', '4')))->exclude(7, 8, 4);
+        CatchException::when(Assert::thatArray(array('1', '2', '3', '4')))->excludes(7, 8, 4);
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
@@ -286,8 +309,8 @@ class AssertTest extends PHPUnit_Framework_TestCase
      */
     public function excludeShouldCheckExclude()
     {
-        Assert::thatArray(array('1', '2', '3', '4'))->exclude(7, 8, 9);
-        Assert::thatArray(array('one', 'two', 'three', 'four'))->exclude('eleven');
+        Assert::thatArray(array('1', '2', '3', '4'))->excludes(7, 8, 9);
+        Assert::thatArray(array('one', 'two', 'three', 'four'))->excludes('eleven');
     }
 
     /**

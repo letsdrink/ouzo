@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\Notice;
@@ -67,6 +71,17 @@ class SimpleTestController extends Controller
     public function check_http_header()
     {
         $this->header('HTTP/1.1 200 OK');
+    }
+
+    public function notice_with_query()
+    {
+        $this->notice(array('notice'), false, '/simple_test/notice_with_query?data=some-data');
+    }
+
+    public function string_output()
+    {
+        $this->layout->renderAjax('ONLY OUTPUT');
+        $this->layout->unsetLayout();
     }
 }
 
@@ -364,5 +379,36 @@ class ControllerTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->hasMessage('No view found [SimpleTest/empty_view_name]');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNoticeIfUrlIsWithQueryPath()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $this->get('/simple_test/notice_with_query?data=some-data');
+
+        //when
+        $this->get('/simple_test/other_action');
+
+        //then
+        $this->assertEmpty(Session::get('messages'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetStringOutput()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        $this->get('/simple_test/string_output');
+
+        //then
+        $this->assertEquals('ONLY OUTPUT', $this->getActualContent());
     }
 }

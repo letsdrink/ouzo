@@ -1,5 +1,8 @@
 <?php
-use Ouzo\Restriction\Between;
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Restrictions;
 
 class BetweenRestrictionTest extends PHPUnit_Framework_TestCase

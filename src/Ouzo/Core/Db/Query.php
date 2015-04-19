@@ -1,6 +1,11 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
 
+use Ouzo\Db\WhereClause\WhereClause;
 use PDO;
 
 class Query
@@ -106,14 +111,14 @@ class Query
 
     public function where($where = '', $whereValues = null)
     {
-        $this->whereClauses[] = new WhereClause($where, $whereValues);
+        $this->whereClauses[] = WhereClause::create($where, $whereValues);
         return $this;
     }
 
     public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = array())
     {
-        $onClauses = array(new WhereClause($on, array()));
-        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ? : $this->table, $alias, $type, $onClauses);
+        $onClauses = array(WhereClause::create($on));
+        $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ?: $this->table, $alias, $type, $onClauses);
         return $this;
     }
 

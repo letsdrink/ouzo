@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Utilities\Strings;
 
 class StringsTest extends PHPUnit_Framework_TestCase
@@ -556,5 +560,35 @@ class StringsTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveSuffix()
+    {
+        //given
+        $string = 'JohnSnow';
+
+        //when
+        $withoutSuffix = Strings::removeSuffix($string, 'Snow');
+
+        //then
+        $this->assertEquals('John', $withoutSuffix);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReplaceNthString()
+    {
+        //given
+        $subject = 'name = ? AND description =    ?';
+
+        //when
+        $replaceNth = Strings::replaceNth($subject, '\\=\\s*\\?', 'IS NULL', 1);
+
+        //then
+        $this->assertEquals('name = ? AND description IS NULL', $replaceNth);
     }
 }

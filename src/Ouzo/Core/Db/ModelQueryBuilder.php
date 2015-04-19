@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
 
 use Ouzo\Db;
@@ -66,7 +70,7 @@ class ModelQueryBuilder
      */
     public function where($where = '', $values = array())
     {
-        $this->_query->whereClauses[] = $where instanceof WhereClause ? $where : new WhereClause($where, $values);
+        $this->_query->where($where, $values);
         return $this;
     }
 
@@ -361,5 +365,10 @@ class ModelQueryBuilder
 
         $this->_query->groupBy = $groupBy;
         return $this;
+    }
+
+    public function getQuery()
+    {
+        return $this->_query;
     }
 }

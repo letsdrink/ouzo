@@ -1,8 +1,14 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Command;
 
+use Exception;
+use Ouzo\AutoloadNamespaces;
 use Ouzo\Config;
-use Ouzo\Tools\Model\Template\ClassPathResolver;
+use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Tools\Model\Template\Generator;
 use Ouzo\Tools\Model\Template\GeneratorException;
 use Symfony\Component\Console\Command\Command;
@@ -23,12 +29,15 @@ class ModelGeneratorCommand extends Command
 
     public function configure()
     {
+        $defaultNamespace = rtrim(AutoloadNamespaces::getModelNamespace(), '\\');
         $this->setName('ouzo:model_generator')
             ->addOption('table', 't', InputOption::VALUE_REQUIRED, 'Table name')
             ->addOption('class', 'c', InputOption::VALUE_REQUIRED, 'Class name. If not specified class name is generated based on table name')
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Class file path. If not specified namespace and class name is used')
-            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g \'Model\MyModel\'). Hint: Remember to escape backslash (\\\\)!', 'Model')
-            ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name', 't');
+            ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g \'Model\MyModel\'). Hint: Remember to escape backslash (\\\\)!', $defaultNamespace)
+            ->addOption('remove_prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name', 't')
+            ->addOption('output-only', 'o', InputOption::VALUE_NONE, 'Option for only displaying generated model class')
+            ->addOption('short-arrays', 'a', InputOption::VALUE_NONE, 'Generate model class with short arrays');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -40,20 +49,7 @@ class ModelGeneratorCommand extends Command
 
     public function fail($message, $exitCode = 1)
     {
-        throw new \Exception($message, $exitCode);
-    }
-
-    /**
-     * @param Generator $modelGenerator
-     * @param $fileName
-     * @throws GeneratorException
-     */
-    private function _saveClassToFile($modelGenerator, $fileName)
-    {
-        if ($fileName) {
-            $this->_output->writeln("Saving class to file: '$fileName'");
-            $modelGenerator->saveToFile($fileName);
-        }
+        throw new Exception($message, $exitCode);
     }
 
     private function _generateModel()
@@ -62,11 +58,13 @@ class ModelGeneratorCommand extends Command
         $className = $this->_input->getOption('class');
         $fileName = $this->_input->getOption('file');
         $nameSpace = $this->_input->getOption('namespace');
-        $tablePrefixToRemove = $this->_input->getOption('remove_prefix') ? : 't';
-        if (empty($tableName))
+        $tablePrefixToRemove = $this->_input->getOption('remove_prefix') ?: 't';
+        $shortArrays = $this->_input->getOption('short-arrays');
+        if (empty($tableName)) {
             $this->fail("Specify table name e.g. -t users");
+        }
         try {
-            $modelGenerator = new Generator($tableName, $className, $nameSpace, $tablePrefixToRemove);
+            $modelGenerator = new Generator($tableName, $className, $nameSpace, $tablePrefixToRemove, $shortArrays);
             $this->_output->writeln('---------------------------------');
             $this->_writeInfo('Database name: <info>%s</info>', Config::getValue('db', 'dbname'));
             $this->_writeInfo('Class name: <info>%s</info>', $modelGenerator->getTemplateClassName());
@@ -82,6 +80,20 @@ class ModelGeneratorCommand extends Command
             }
         } catch (GeneratorException $e) {
             $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param Generator $modelGenerator
+     * @param $fileName
+     * @throws GeneratorException
+     */
+    private function _saveClassToFile($modelGenerator, $fileName)
+    {
+        $outputOnly = $this->_input->getOption('output-only');
+        if ($fileName && !$outputOnly) {
+            $this->_output->writeln("Saving class to file: '$fileName'");
+            $modelGenerator->saveToFile($fileName);
         }
     }
 

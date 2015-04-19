@@ -1,7 +1,10 @@
 <?php
-namespace Ouzo\Tools\Model\Template;
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+namespace Ouzo\Tools\Utils;
 
-use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Path;
 
 class ClassPathResolver
@@ -23,12 +26,16 @@ class ClassPathResolver
     private function resolvePathFromNameSpace()
     {
         $parts = explode('\\', $this->nameSpace);
-        $parts = Arrays::map($parts, 'Ouzo\Utilities\Strings::camelCaseToUnderscore');
         return implode(DIRECTORY_SEPARATOR, $parts);
     }
 
     public function getClassFileName()
     {
-        return Path::join(ROOT_PATH, 'Application', $this->resolvePathFromNameSpace(), $this->className . ".php");
+        return Path::join(ROOT_PATH, $this->resolvePathFromNameSpace(), $this->className . ".php");
+    }
+
+    public function getClassDirectory()
+    {
+        return Path::join(ROOT_PATH, $this->resolvePathFromNameSpace(), $this->className);
     }
 }

@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo;
 
 use Exception;
@@ -23,6 +27,7 @@ class FrontController
     public $outputDisplayer;
     public $httpAuthBasicHandler;
     public $headerSender;
+    public $cookiesSetter;
 
     public function __construct()
     {
@@ -36,6 +41,7 @@ class FrontController
         $this->controllerFactory = new ControllerFactory();
         $this->outputDisplayer = new OutputDisplayer();
         $this->headerSender = new HeaderSender();
+        $this->cookiesSetter = new CookiesSetter();
     }
 
     public function init()
@@ -65,7 +71,7 @@ class FrontController
             ob_start();
             $this->_invokeControllerMethods();
         } catch (Exception $e) {
-            ob_end_flush();
+            ob_end_clean();
             throw $e;
         }
         ob_end_flush();
@@ -126,6 +132,7 @@ class FrontController
     {
         $controller = $this->_currentControllerObject;
         $this->_sendHeaders($controller->getHeaders());
+        $this->cookiesSetter->setCookies($controller->getNewCookies());
         switch ($controller->getStatusResponse()) {
             case 'show':
                 $this->renderOutput();

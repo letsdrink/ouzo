@@ -1,6 +1,11 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Application\Model\Test\Category;
 use Application\Model\Test\ModelWithoutPrimaryKey;
+use Application\Model\Test\ModelWithoutSequence;
 use Application\Model\Test\Order;
 use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
@@ -216,6 +221,26 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldUpdateModelMultipleTimes()
+    {
+        //given
+        $product = Product::create(array('name' => 'Tech'));
+        $product->name = 'new name';
+        $product->update();
+
+        $product->name = 'another name';
+
+        //when
+        $product->update();
+
+        //then
+        $updatedProduct = Product::findById($product->getId());
+        $this->assertEquals('another name', $updatedProduct->name);
+    }
+
+    /**
+     * @test
+     */
     public function shouldUpdateModelAttributes()
     {
         //given
@@ -230,6 +255,48 @@ class ModelTest extends DbTransactionalTestCase
         $updatedProduct = Product::findById($product->getId());
         $this->assertEquals('new name', $updatedProduct->name);
         $this->assertEquals('desc1', $updatedProduct->description);
+    }
+
+    /**
+     * @test
+     */
+    public function updateShouldOnlyUpdateChangedFieldsForCreatedModel()
+    {
+        //given
+        $product = Product::create(array('name' => 'Tech', 'description' => 'Desc'));
+        $product->name = 'new name';
+
+        Product::where()->update(array('description' => 'Something else'));
+
+        //when
+        $product->update();
+
+        //then
+        $updatedProduct = Product::findById($product->getId());
+        $this->assertEquals('new name', $updatedProduct->name);
+        $this->assertEquals('Something else', $updatedProduct->description);
+    }
+
+    /**
+     * @test
+     */
+    public function updateShouldOnlyUpdateChangedFieldsForFetchedModel()
+    {
+        //given
+        Product::create(array('name' => 'Tech', 'description' => 'Desc'));
+        $product = Product::where()->fetch();
+
+        $product->name = 'new name';
+
+        Product::where()->update(array('description' => 'Something else'));
+
+        //when
+        $product->update();
+
+        //then
+        $updatedProduct = Product::findById($product->getId());
+        $this->assertEquals('new name', $updatedProduct->name);
+        $this->assertEquals('Something else', $updatedProduct->description);
     }
 
     /**
@@ -708,5 +775,74 @@ class ModelTest extends DbTransactionalTestCase
         CatchException::assertThat()
             ->isInstanceOf('\Ouzo\DbException')
             ->hasMessage('Primary key is not defined for table products');
+    }
+
+    /**
+     * @test
+     */
+    public function updateShouldUpdateOnlyChangedFieldsWhenAssignAttributesIsUsed()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport', 'price' => '123'));
+        $product->assignAttributes(array('description' => 'Desc'));
+
+        // when
+        $product->update();
+
+        // then
+        $actual = Product::findById($product->getId());
+        $this->assertEquals('Desc', $actual->description);
+    }
+
+    /**
+     * @test
+     */
+    public function updateShouldUpdateOnlyChangedFieldsWhenObjectWasCreatedByHandAndIdWasSet()
+    {
+        //given
+        $product = Product::create(array('name' => 'Sport', 'price' => '123'));
+        $id = $product->getId();
+
+        $product = new Product(array('name' => 'Water', 'price' => '123', 'id' => $id));
+
+        // when
+        $product->update();
+
+        // then
+        $actual = Product::findById($product->getId());
+        $this->assertEquals('Water', $actual->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCountValuesWithoutWhere()
+    {
+        //given
+        Product::create(array('name' => 'Sport', 'price' => '123'));
+
+        //when
+        $count = Product::count();
+
+        //then
+        $this->assertEquals(1, $count);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldUpdateModelWithoutSequence()
+    {
+        //given
+        $model = ModelWithoutSequence::create(array(
+            'name' => 'name',
+            'id' => 1
+        ));
+
+        //when
+        $model->updateAttributes(array('name' => 'new name'));
+
+        //then
+        $this->assertEquals('new name', $model->reload()->name);
     }
 }

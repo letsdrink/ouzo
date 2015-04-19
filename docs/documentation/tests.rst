@@ -222,8 +222,9 @@ Assertions:
 * ``isNotEmpty()`` - check the array is not empty
 * ``containsKeyAndValue($elements)``
 * ``containsSequence($element ..)`` - check that vararg sequence is exists in the array
-* ``exclude($element ..)``
+* ``excludes($element ..)``
 * ``hasEqualKeysRecursively(array $array)``
+* ``isEqualTo($array)``
 
 ----
 
@@ -422,4 +423,37 @@ In rare cases, you may need to write your own argument matcher:
 
     Mock::verify($mock)->method(new MyArgumentMatcher());
 
+Stream stubbing
+~~~~~~~~~~~~~~~
 
+In some cases you may need to to stub stream wrappers e.g. ``php://input``. Ouzo provides a special class for this ``StreamStub``.
+
+* First, you have to register your wrapper:
+
+::
+
+    StreamStub::register('you_wrapper_name');
+
+* Then write something to the wrapper:
+
+::
+
+    StreamStub::$body = 'some content';
+
+* When you're finished using stream you must unregistered it:
+
+::
+
+    StreamStub::unregister();
+
+Comprehensive example:
+
+::
+
+    StreamStub::register('some_name');
+    StreamStub::$body = '{"name":"jonh","id":123,"ip":"127.0.0.1"}';
+
+    $object = YourClass::readJsonFromWrapper('some_name://input');
+
+    $this->assertEquals('john', $object->name);
+    StreamStub::unregister();

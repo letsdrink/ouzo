@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\StreamStub;
@@ -123,22 +127,22 @@ class FilesTest extends PHPUnit_Framework_TestCase
     public function shouldGetFilesRecursivelyByExtension()
     {
         //given
-        mkdir('/tmp/tests_find_files/new_dir/second_new_dir', 0777, true);
-        touch('/tmp/tests_find_files/file1a.phtml');
-        touch('/tmp/tests_find_files/new_dir/file2a.phtml');
-        touch('/tmp/tests_find_files/new_dir/second_new_dir/file3a.phtml');
+        $dirPath = Path::joinWithTemp('test', 'tests_find_files', 'new_dir', 'second_new_dir');
+        mkdir($dirPath, 0777, true);
+        $file1 = Path::joinWithTemp('test', 'tests_find_files', 'file1a.phtml');
+        touch($file1);
+        $file2 = Path::joinWithTemp('test', 'tests_find_files', 'new_dir', 'file2a.phtml');
+        touch($file2);
+        $file3 = Path::joinWithTemp('test', 'tests_find_files', 'new_dir', 'second_new_dir', 'file3a.phtml');
+        touch($file3);
 
         //when
-        $files = Files::getFilesRecursivelyWithSpecifiedExtension('/tmp/tests_find_files', 'phtml');
+        $files = Files::getFilesRecursivelyWithSpecifiedExtension(Path::joinWithTemp('test', 'tests_find_files'), 'phtml');
 
         //then
         Assert::thatArray($files)->hasSize(3)
-            ->contains(
-                '/tmp/tests_find_files/new_dir/second_new_dir/file3a.phtml',
-                '/tmp/tests_find_files/new_dir/file2a.phtml',
-                '/tmp/tests_find_files/file1a.phtml'
-            );
-        DeleteDirectory::recursive('/tmp/tests_find_files');
+            ->contains($file1, $file2, $file3);
+        DeleteDirectory::recursive($dirPath);
     }
 
     public function units()
@@ -163,7 +167,7 @@ class FilesTest extends PHPUnit_Framework_TestCase
         //given
         StreamStub::register('logfile');
         StreamStub::$body = 'content';
-        $tmpFileName = Path::joinWithTemp('test' . Clock::nowAsString());
+        $tmpFileName = Path::joinWithTemp('test' . Clock::nowAsString('Y_m_d_H_i_s') . '.txt');
 
         //when
         Files::copyContent('logfile://input', $tmpFileName);

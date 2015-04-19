@@ -1,6 +1,11 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Config;
 use Ouzo\ExceptionHandling\Error;
+use Ouzo\UserException;
 
 class ErrorTest extends PHPUnit_Framework_TestCase
 {
@@ -11,7 +16,7 @@ class ErrorTest extends PHPUnit_Framework_TestCase
     {
         //given
         Config::overrideProperty('debug')->with(false);
-        $userException = new \Ouzo\UserException('Winter is coming!');
+        $userException = new UserException('Winter is coming!');
 
         //when
         $error = Error::forException($userException);

@@ -84,7 +84,7 @@ Removes duplicate values from an array. It uses the given expression to extract 
     $b = new stdClass();
     $b->name = 'bob';
 
-    $array = [$a, $b;
+    $array = [$a, $b];
     $result = FluentArray::from($array)->uniqueBy('name')->toArray();
 
 **Result:**

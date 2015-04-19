@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
@@ -349,6 +353,27 @@ class MockTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals("result1", $result1);
         $this->assertEquals("result2", $result2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStubMultipleMethodsWithMultipleResults()
+    {
+        //given
+        $mock = Mock::mock();
+        Mock::when($mock)->method1()->thenReturn('method1 result1');
+        Mock::when($mock)->method2()->thenReturn('method2 result1', 'method2 result2');
+
+        //when
+        $result1 = $mock->method1();
+        $result2 = $mock->method2();
+        $result3 = $mock->method2();
+
+        //then
+        $this->assertEquals("method1 result1", $result1);
+        $this->assertEquals("method2 result1", $result2);
+        $this->assertEquals("method2 result2", $result3);
     }
 
     /**

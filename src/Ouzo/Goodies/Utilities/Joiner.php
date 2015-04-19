@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities;
 
 /**
@@ -51,7 +55,7 @@ class Joiner
     }
 
     /**
-     * Returns a joiner that skips null elements.
+     * Returns a Joiner that skips null elements.
      * @return Joiner
      */
     public function skipNulls()
@@ -61,7 +65,7 @@ class Joiner
     }
 
     /**
-     * Returns a joiner that transforms array elements before joining.
+     * Returns a Joiner that transforms array elements before joining.
      * $function is called with two parameters: key and value.
      *
      * @param callable $function
@@ -74,7 +78,7 @@ class Joiner
     }
 
     /**
-     * Returns a joiner that transforms array values before joining.
+     * Returns a Joiner that transforms array values before joining.
      * $function is called with one parameter: value.
      *
      * @param callable $function

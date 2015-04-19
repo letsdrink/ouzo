@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities;
 
 use ReflectionObject;
@@ -132,6 +136,9 @@ class Objects
      */
     public static function getValue($object, $field, $default = null, $accessPrivate = false)
     {
+        if (is_array($object)) {
+            return Arrays::getValue($object, $field, $default);
+        }
         if (isset($object->$field)) {
             return $object->$field;
         }
@@ -155,7 +162,7 @@ class Objects
     public static function callMethod($object, $methodName, $default)
     {
         $name = rtrim($methodName, '()');
-        if (Strings::endsWith($methodName, '()') && method_exists($object, $name)) {
+        if (method_exists($object, $name)) {
             $result = $object->$name();
             return $result === null ? $default : $result;
         }

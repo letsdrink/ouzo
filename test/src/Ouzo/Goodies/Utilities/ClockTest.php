@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Ouzo\Utilities\Clock;
 
 class ClockTest extends PHPUnit_Framework_TestCase
@@ -118,5 +122,38 @@ class ClockTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('2011-01-02 12:34:13', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldChangeIfDateIsAfterAnotherDate()
+    {
+        $this->assertTrue(Clock::at('2011-01-02 12:34:13')->isAfter(Clock::at('2011-01-01 12:34:13')));
+        $this->assertFalse(Clock::at('2011-01-01 12:34:13')->isAfter(Clock::at('2011-01-02 12:34:13')));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldChangeIfDateIsBeforeAnotherDate()
+    {
+        $this->assertTrue(Clock::at('2011-01-01 12:34:13')->isBefore(Clock::at('2011-01-02 12:34:13')));
+        $this->assertFalse(Clock::at('2011-01-02 12:34:13')->isBefore(Clock::at('2011-01-01 12:34:13')));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateClockForGivenTimestamp()
+    {
+        //given
+        $clock = Clock::fromTimestamp(1427207001);
+
+        //when
+        $result = $clock->format();
+
+        //then
+        $this->assertEquals('2015-03-24 15:23:21', $result);
     }
 }

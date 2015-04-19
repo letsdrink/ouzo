@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo;
 
 use Ouzo\Api\InternalException;
@@ -108,6 +112,11 @@ class Uri
             return preg_split('#/|\?#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);
         }
         return array();
+    }
+
+    public function getFullUrlWithPrefix()
+    {
+        return $this->_pathProvider->getPath();
     }
 
     public static function isAjax()

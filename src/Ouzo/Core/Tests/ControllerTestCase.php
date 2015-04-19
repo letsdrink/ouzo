@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Tests;
 
 use Ouzo\Config;
@@ -29,6 +33,7 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->_frontController->downloadHandler = $this->_downloadHandler;
         $this->_frontController->outputDisplayer = new MockOutputDisplayer();
         $this->_frontController->headerSender = new MockHeaderSender();
+        $this->_frontController->cookiesSetter = new MockCookiesSetter();
     }
 
     private static function _prefixSystem()
@@ -135,7 +140,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRenderedContent()
     {
-        return Assert::thatString(RequestContext::getCurrentControllerObject()->layout->layoutContent());
+        return Assert::thatString($this->getActualContent());
     }
 
     public function assertRenderedJsonAttributeEquals($attribute, $equals)
@@ -151,7 +156,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function getRenderedJsonAsArray()
     {
-        return json_decode(RequestContext::getCurrentControllerObject()->layout->layoutContent(), true);
+        return json_decode($this->getActualContent(), true);
     }
 
     public function assertResponseHeader($expected)
@@ -160,8 +165,19 @@ class ControllerTestCase extends DbTransactionalTestCase
         Assert::thatArray($actual)->contains($expected);
     }
 
+    public function assertHasCookie($cookieAttributes)
+    {
+        $actual = $this->_frontController->cookiesSetter->getCookies();
+        Assert::thatArray($actual)->contains($cookieAttributes);
+    }
+
     public function getResponseHeaders()
     {
         return $this->_frontController->headerSender->getHeaders();
+    }
+
+    public function getActualContent()
+    {
+        return RequestContext::getCurrentControllerObject()->layout->layoutContent();
     }
 }

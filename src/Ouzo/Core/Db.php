@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo;
 
 use Exception;
@@ -68,7 +72,7 @@ class Db
     }
 
     /**
-     * Returns a new transactional proxy for given target object.
+     * Returns a new transactional proxy for given target object/function.
      * All methods called on proxy are run in a transaction.
      */
     public static function transactional($object)

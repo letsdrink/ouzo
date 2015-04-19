@@ -1,7 +1,12 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities;
 
 use Application\Model\Test\Product;
+use stdClass;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
@@ -136,5 +141,20 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue(Functions::call(Functions::isInstanceOf('stdClass'), new \stdClass()));
         $this->assertFalse(Functions::call(Functions::isInstanceOf('stdClass'), 'value'));
+    }
+
+    /**
+     * @test
+     */
+    public function extractFieldRecursivelyShouldReturnNullWhenFieldNotFoundAndNoDefaultValueWasSpecified()
+    {
+        //given
+        $object = new stdClass();
+
+        //when
+        $result = Functions::call(Functions::extractFieldRecursively('field1->field2'), $object);
+
+        //then
+        $this->assertNull($result);
     }
 }

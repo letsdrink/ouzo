@@ -1,6 +1,11 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
 
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Model;
 
 class ModelJoin
@@ -56,7 +61,7 @@ class ModelJoin
         $joinTable = $joinedModel->getTableName();
         $joinKey = $this->relation->getForeignKey();
         $idName = $this->relation->getLocalKey();
-        $onClauses = array(new WhereClause($this->on, array()), $this->relation->getCondition());
+        $onClauses = array(WhereClause::create($this->on), $this->relation->getCondition());
         return new JoinClause($joinTable, $joinKey, $idName, $this->fromTable, $this->alias, $this->type, $onClauses);
     }
 

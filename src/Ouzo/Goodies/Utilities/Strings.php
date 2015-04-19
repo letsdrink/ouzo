@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities;
 
 /**
@@ -101,6 +105,31 @@ class Strings
         return array_reduce($prefixes, function ($string, $prefix) {
             return Strings::removePrefix($string, $prefix);
         }, $string);
+    }
+
+    /**
+     * Returns a new string without the given suffix.
+     *
+     * Example:
+     * <code>
+     * $string = 'JohnSnow';
+     * $withoutSuffix = Strings::removeSuffix($string, 'Snow');
+     * </code>
+     * Result:
+     * <code>
+     * John
+     * </code>
+     *
+     * @param string $string
+     * @param string $suffix
+     * @return string
+     */
+    public static function removeSuffix($string, $suffix)
+    {
+        if (self::endsWith($string, $suffix)) {
+            return substr($string, 0, -strlen($suffix));
+        }
+        return $string;
     }
 
     /**
@@ -475,7 +504,7 @@ class Strings
     }
 
     /**
-     * Check is string contains substring.
+     * Checks if string contains the substring.
      *
      * @param string $string
      * @param string $substring
@@ -496,6 +525,22 @@ class Strings
     public static function substringBefore($string, $separator)
     {
         $pos = mb_strpos($string, $separator);
-        return $pos !== FALSE ? mb_substr($string, 0, $pos) : $string;
+        return $pos !== false ? mb_substr($string, 0, $pos) : $string;
+    }
+
+    /**
+     * @param string $subject
+     * @param string $search
+     * @param string $replace
+     * @param int $nth
+     * @return string
+     */
+    public static function replaceNth($subject, $search, $replace, $nth)
+    {
+        $found = preg_match_all('/' . $search . '/', $subject, $matches, PREG_OFFSET_CAPTURE);
+        if (false !== $found && $found > $nth) {
+            return substr_replace($subject, $replace, $matches[0][$nth][1], strlen($search));
+        }
+        return $subject;
     }
 }

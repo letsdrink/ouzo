@@ -28,6 +28,8 @@ This code will map ``Category`` class to a ``categories`` table with *id* as a p
 * ``belongsTo`` specification of a belongs-to relation e.g. ``array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))``
 * ``fields`` - mapped column names
 * ``attributes`` -  array of ``column => value``
+* ``beforeSave`` - function to invoke before *insert* or *update*
+* ``afterSave`` - function to invoke after *insert* or *update*
 
 Columns specified by **'fields'** parameter are exposed with magic getter and setter.
 
@@ -75,6 +77,40 @@ If you are not sure if an object was already saved you can call ``insertOrUpdate
 
     $product->name = 'Phone';
     $product->insertOrUpdate();
+
+Before and after save callbacks
+-------------------------------
+You can call defined methods before/after save or update.
+
+::
+
+    class Product
+    {
+        private $_fields = array('description', 'name', 'id_category', 'id_manufacturer', 'sale');
+
+        public function __construct($attributes)
+        {
+            parent::__construct(array(
+                    'attributes' => $attributes,
+                    'fields' => $this->_fields,
+                    'beforeSave' => 'addExclamationMarkToDescription'
+                ));
+        }
+
+        function addExclamationMarkToDescription()
+        {
+            if ($this->description) {
+                $this->description .= '!';
+            }
+        }
+    }
+
+All saves or updates will be adding an exclamation mark to description.
+This callback accepts following types of callback:
+
+* string e.g. ``'methodName'``
+* array e.g. ``array('methodName1', 'methodName2')``
+* lambda e.g. ``function() { ... }``
 
 Update of multiple records
 --------------------------
@@ -297,8 +333,35 @@ you can use a closure too:
         'class' => 'Test\Product',
         'foreignKey' => 'id_category',
         'conditions' => function () {
-            return new WhereClause("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
+            return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
         }
+    )
+
+----
+
+Sorted hasMany relation
+-----------------------
+
+You specify order of elements in hasMany relation:
+
+::
+
+    'hasMany' => array(
+        'products_ordered_by_name' => array(
+            'class' => 'Test\Product',
+            'foreignKey' => 'id_category',
+            'order' => "products.name ASC"
+        )
+    )
+
+You can also order relation by multiple columns:
+
+::
+
+    'product_ordered_by_name' => array(
+        'class' => 'Test\Product',
+        'foreignKey' => 'id_category',
+        'order' => array("products.name ASC", "products.description DESC")
     )
 
 ----
@@ -417,6 +480,16 @@ Supported restrictions:
 ``['name' => Restrictions::like("some%")]`` produces
 ``SELECT * FROM table WHERE name LIKE ? Params: ["some%"]``
 
+* **isNull**
+
+``['name' => Restrictions::isNull()]`` produces
+``SELECT * FROM table WHERE name IS NULL``
+
+* **isNotNull**
+
+``['name' => Restrictions::isNotNull()]`` produces
+``SELECT * FROM table WHERE name IS NOT NULL``
+
 Parameters chaining
 -------------------
 Where clauses can be chained e.g.
@@ -446,6 +519,15 @@ Query:
     SELECT users.* FROM users WHERE login = ? OR password = ? Params: ["ouzo", "abc"]
 
 You can use parameters chaining as described in previous section and combine ``Any:of`` with standard ``where``.
+
+If you wish to use multiple values for the same key, you can use Restrictions:
+
+::
+
+    User::where(Any::of(array('login' => array(Restrictions::equalTo('ouzo'), Restrictions::equalTo('rules')))
+        ->fetch();
+
+
 
 Multiple values
 ---------------

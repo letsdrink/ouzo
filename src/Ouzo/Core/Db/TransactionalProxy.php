@@ -1,5 +1,8 @@
 <?php
-
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
 
 use Ouzo\Db;
@@ -23,6 +26,15 @@ class TransactionalProxy
         $object = $this->_object;
         return Db::getInstance()->runInTransaction(function () use ($object, $name, $arguments) {
             return call_user_func_array(array($object, $name), $arguments);
+        });
+    }
+
+    public function __invoke()
+    {
+        $function = $this->_object;
+        $arguments = func_get_args();
+        return Db::getInstance()->runInTransaction(function () use ($function, $arguments) {
+            return call_user_func_array($function, $arguments);
         });
     }
 }

@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo;
 
 use Exception;
@@ -29,6 +33,7 @@ class Model extends Validatable
     private $_relations;
     private $_afterSaveCallbacks = array();
     private $_beforeSaveCallbacks = array();
+    private $_updatedAttributes = array();
 
     /**
      * Creates a new model object.
@@ -74,12 +79,14 @@ class Model extends Validatable
             $this->_fields[] = $primaryKeyName;
         }
         $this->_attributes = $this->filterAttributes($attributes);
+        $this->_updatedAttributes = array_keys($this->_attributes);
         $this->_afterSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'afterSave'));
         $this->_beforeSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'beforeSave'));
     }
 
     public function __set($name, $value)
     {
+        $this->_updatedAttributes[] = $name;
         $this->_attributes[$name] = $value;
     }
 
@@ -100,7 +107,7 @@ class Model extends Validatable
 
     public function __isset($name)
     {
-        return $this->__get($name) !== NULL;
+        return $this->__get($name) !== null;
     }
 
     public function __unset($name)
@@ -110,6 +117,7 @@ class Model extends Validatable
 
     public function assignAttributes($attributes)
     {
+        $this->_updatedAttributes = array_merge($this->_updatedAttributes, array_keys($attributes));
         $this->_attributes = array_merge($this->_attributes, $this->filterAttributesPreserveNull($attributes));
     }
 
@@ -155,26 +163,32 @@ class Model extends Validatable
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
 
         $query = Query::insert($attributes)->into($this->_tableName);
-        $value = QueryExecutor::prepare($this->_db, $query)->insert($this->_sequenceName);
+        $lastInsertedId = QueryExecutor::prepare($this->_db, $query)->insert($this->_sequenceName);
 
-        if ($primaryKey) {
-            $this->$primaryKey = $value;
+        if ($primaryKey && $this->_sequenceName) {
+            $this->$primaryKey = $lastInsertedId;
         }
 
         $this->_callAfterSaveCallbacks();
 
-        return $value;
+        $this->resetUpdates();
+
+        return $lastInsertedId;
     }
 
     public function update()
     {
         $this->_callBeforeSaveCallbacks();
-        $attributes = $this->filterAttributesPreserveNull($this->_attributes);
-        $query = Query::update($attributes)
-            ->table($this->_tableName)
-            ->where(array($this->_primaryKeyName => $this->getId()));
 
-        QueryExecutor::prepare($this->_db, $query)->execute();
+        $attributes = $this->getAttributesForUpdate();
+        if ($attributes) {
+            $query = Query::update($attributes)
+                ->table($this->_tableName)
+                ->where(array($this->_primaryKeyName => $this->getId()));
+
+            QueryExecutor::prepare($this->_db, $query)->execute();
+        }
+
         $this->_callAfterSaveCallbacks();
     }
 
@@ -210,6 +224,7 @@ class Model extends Validatable
 
     public function updateAttributes($attributes)
     {
+        $this->_updatedAttributes = array_merge($this->_updatedAttributes, array_keys($attributes));
         $this->assignAttributes($attributes);
         if ($this->isValid()) {
             $this->update();
@@ -305,7 +320,9 @@ class Model extends Validatable
     public static function newInstance(array $attributes)
     {
         $className = get_called_class();
-        return new $className($attributes);
+        $object = new $className($attributes);
+        $object->resetUpdates();
+        return $object;
     }
 
     /**
@@ -398,7 +415,7 @@ class Model extends Validatable
         return new ModelQueryBuilder($obj, $obj->_db, $alias);
     }
 
-    public static function count($where = null, $bindValues = null)
+    public static function count($where = '', $bindValues = null)
     {
         return static::metaInstance()->where($where, $bindValues)->count();
     }
@@ -493,8 +510,11 @@ class Model extends Validatable
 
     public function nullifyIfEmpty(&$attributes, $field)
     {
-        if (isset($attributes[$field]) && !$attributes[$field]) {
-            $attributes[$field] = null;
+        $fields = Arrays::toArray($field);
+        foreach ($fields as $field) {
+            if (isset($attributes[$field]) && !$attributes[$field]) {
+                $attributes[$field] = null;
+            }
         }
     }
 
@@ -545,5 +565,16 @@ class Model extends Validatable
         list($fields, $defaults) = $this->_extractFieldsAndDefaults($fields);
         $attributes = array_merge($defaults, $attributes);
         return array($attributes, $fields);
+    }
+
+    public function resetUpdates()
+    {
+        $this->_updatedAttributes = array();
+    }
+
+    private function getAttributesForUpdate()
+    {
+        $attributes = $this->filterAttributesPreserveNull($this->_attributes);
+        return array_intersect_key($attributes, array_flip($this->_updatedAttributes));
     }
 }

@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 use Application\Model\Test\Product;
 use Ouzo\Helper\ModelFormBuilder;
 use Ouzo\Tests\DbTransactionalTestCase;
@@ -60,5 +64,21 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
 
         //then
         $this->assertNotContains('class="', $html);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateNameForField()
+    {
+        //given
+        $product = new Product();
+        $formBuilder = new ModelFormBuilder($product);
+
+        //when
+        $name = $formBuilder->generateName('input');
+
+        //then
+        $this->assertEquals('product[input]', $name);
     }
 }
