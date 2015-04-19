@@ -10,6 +10,7 @@ Enhancements:
 * [Core] Minimal log level can be assigned to a particular class/name in logger configuration.
 * [Core] Added Validatable::validateEmpty method.
 * [ORM] Extended Restrictions::between with modes: inclusive, exclusive etc. (issue #176).
+* [ORM] When using DbTransactionTestCase transactions are disabled (issue #178).
 
 Bug fixes:
 * [Localization] Fixed I18n::loadLabels not to load translation file if it was already loaded (issue #173).
