@@ -11,16 +11,16 @@ use Ouzo\Config;
 class ViewRendererFactory
 {
 
-    public static function create($viewName)
+    public static function create($viewName, $attributes)
     {
         $rendererClass = Config::getValue('renderer', $viewName);
         if ($rendererClass) {
-            return new $rendererClass();
+            return new $rendererClass($viewName, $attributes);
         }
         $rendererClass = Config::getValue('renderer', 'default');
         if ($rendererClass) {
-            return new $rendererClass();
+            return new $rendererClass($viewName, $attributes);
         }
-        return new PhtmlRenderer($viewName);
+        return new PhtmlRenderer($viewName, $attributes);
     }
 }

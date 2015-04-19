@@ -23,7 +23,7 @@ class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase {
     public function shouldCreatePhtmlRendererWhenRendererWasNotConfigured()
     {
         //when
-        $renderer = ViewRendererFactory::create('my_view');
+        $renderer = ViewRendererFactory::create('my_view', array());
 
         //then
         $this->assertInstanceOf('\Ouzo\View\PhtmlRenderer', $renderer);
@@ -38,7 +38,7 @@ class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase {
         Config::overrideProperty('renderer', 'default')->with('DummyRenderer');
 
         //when
-        $renderer = ViewRendererFactory::create('my_view');
+        $renderer = ViewRendererFactory::create('my_view', array());
 
         //then
         $this->assertInstanceOf('DummyRenderer', $renderer);
@@ -53,7 +53,7 @@ class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase {
         Config::overrideProperty('renderer', 'my_view')->with('DummyRenderer');
 
         //when
-        $renderer = ViewRendererFactory::create('my_view');
+        $renderer = ViewRendererFactory::create('my_view', array());
 
         //then
         $this->assertInstanceOf('DummyRenderer', $renderer);
@@ -69,7 +69,7 @@ class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase {
         Config::overrideProperty('renderer', 'my_view')->with('DummyRenderer');
 
         //when
-        $renderer = ViewRendererFactory::create('my_view');
+        $renderer = ViewRendererFactory::create('my_view', array());
 
         //then
         $this->assertInstanceOf('DummyRenderer', $renderer);

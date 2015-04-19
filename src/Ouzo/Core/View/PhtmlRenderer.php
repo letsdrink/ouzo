@@ -14,14 +14,17 @@ class PhtmlRenderer implements ViewRenderer
 {
 
     private $_viewName;
+    private $_attributes;
 
-    function __construct($viewName)
+    function __construct($viewName, array $attributes)
     {
         $this->_viewName = $viewName;
+        $this->_attributes = $attributes;
     }
 
     public function render()
     {
+        $this->_saveAttributes();
         ob_start();
         try {
             $this->_loadHelperAndView();
@@ -59,5 +62,12 @@ class PhtmlRenderer implements ViewRenderer
     {
         /** @noinspection PhpIncludeInspection */
         require($path);
+    }
+
+    private function _saveAttributes()
+    {
+        foreach ($this->_attributes as $name => $value) {
+            $this->$name = $value;
+        }
     }
 }

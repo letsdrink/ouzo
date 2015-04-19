@@ -19,6 +19,7 @@ class View
     private $_renderer;
     private $_renderedView;
     private $_viewName;
+    private $_attributes;
 
     public function __construct($viewName, array $attributes = array())
     {
@@ -26,10 +27,7 @@ class View
             throw new ViewException('View name is empty');
         }
         $this->_viewName = $viewName;
-
-        foreach ($attributes as $name => $value) {
-            $this->$name = $value;
-        }
+        $this->_attributes = $attributes;
 
         $this->_loadHelpers();
     }
@@ -40,7 +38,7 @@ class View
             $this->_viewName = $viewName;
         }
         if (!$this->_renderer) {
-            $this->_renderer = ViewRendererFactory::create($viewName);
+            $this->_renderer = ViewRendererFactory::create($viewName, $this->_attributes);
         }
         $this->_renderedView = $this->_renderer->render();
         return $this->_renderedView;
