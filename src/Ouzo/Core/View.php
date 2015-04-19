@@ -5,15 +5,20 @@
  */
 namespace Ouzo;
 
-use Exception;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
+use Ouzo\View\ViewException;
+use Ouzo\View\ViewRenderer;
+use Ouzo\View\ViewRendererFactory;
 
 class View
 {
-    private $_viewName = '';
-
-    protected $_renderedView = null;
+    /**
+     * @var ViewRenderer
+     */
+    private $_renderer;
+    private $_renderedView;
+    private $_viewName;
 
     public function __construct($viewName, array $attributes = array())
     {
@@ -34,7 +39,10 @@ class View
         if (!empty($viewName)) {
             $this->_viewName = $viewName;
         }
-        $this->_renderedView = $this->_renderUsingOutputBuffering();
+        if (!$this->_renderer) {
+            $this->_renderer = ViewRendererFactory::create($viewName);
+        }
+        $this->_renderedView = $this->_renderer->render();
         return $this->_renderedView;
     }
 
@@ -46,32 +54,6 @@ class View
     public function getViewName()
     {
         return $this->_viewName;
-    }
-
-    private function _loadHelperAndView()
-    {
-        $helperPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . '.helper.php');
-        Files::loadIfExists($helperPath);
-
-        $viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . '.phtml');
-        $viewLoaded = $this->_requireIfExists($viewPath);
-        if (!$viewLoaded) {
-            throw new ViewException('No view found [' . $this->_viewName . ']');
-        }
-    }
-
-    private function _renderUsingOutputBuffering()
-    {
-        ob_start();
-        try {
-            $this->_loadHelperAndView();
-        } catch (Exception $e) {
-            ob_end_flush();
-            throw $e;
-        }
-        $view = ob_get_contents();
-        ob_end_clean();
-        return $view;
     }
 
     private function _loadHelpers()
@@ -87,28 +69,17 @@ class View
         Files::loadIfExists($urlHelperPath);
     }
 
-    private function _requireIfExists($path)
-    {
-        if (Files::exists($path)) {
-            $this->_require($path);
-            return true;
-        }
-        return false;
-    }
-
     private function _requireOnce($path)
     {
         /** @noinspection PhpIncludeInspection */
         require_once($path);
     }
 
-    private function _require($path)
+    /**
+     * @return ViewRenderer
+     */
+    public function getRenderer()
     {
-        /** @noinspection PhpIncludeInspection */
-        require($path);
+        return $this->_renderer;
     }
-}
-
-class ViewException extends Exception
-{
 }
