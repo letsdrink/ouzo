@@ -8,4 +8,6 @@ namespace Ouzo\View;
 interface ViewRenderer
 {
     public function render();
+
+    public function getViewPath();
 }

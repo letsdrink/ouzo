@@ -12,14 +12,17 @@ use Ouzo\Utilities\Path;
 
 class PhtmlRenderer implements ViewRenderer
 {
+    const EXTENSION = '.phtml';
 
     private $_viewName;
     private $_attributes;
+    private $_viewPath;
 
     function __construct($viewName, array $attributes)
     {
         $this->_viewName = $viewName;
         $this->_attributes = $attributes;
+        $this->_viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . self::EXTENSION);
     }
 
     public function render()
@@ -27,7 +30,8 @@ class PhtmlRenderer implements ViewRenderer
         $this->_saveAttributes();
         ob_start();
         try {
-            $this->_loadHelperAndView();
+            $this->_loadViewHelper();
+            $this->_loadView();
         } catch (Exception $e) {
             ob_end_flush();
             throw $e;
@@ -37,31 +41,16 @@ class PhtmlRenderer implements ViewRenderer
         return $view;
     }
 
-    private function _loadHelperAndView()
+    private function _loadViewHelper()
     {
         $helperPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . '.helper.php');
         Files::loadIfExists($helperPath);
-
-        $viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . '.phtml');
-        $viewLoaded = $this->_requireIfExists($viewPath);
-        if (!$viewLoaded) {
-            throw new ViewException('No view found [' . $this->_viewName . ']');
-        }
     }
 
-    private function _requireIfExists($path)
-    {
-        if (Files::exists($path)) {
-            $this->_require($path);
-            return true;
-        }
-        return false;
-    }
-
-    private function _require($path)
+    private function _loadView()
     {
         /** @noinspection PhpIncludeInspection */
-        require($path);
+        require($this->_viewPath);
     }
 
     private function _saveAttributes()
@@ -69,5 +58,10 @@ class PhtmlRenderer implements ViewRenderer
         foreach ($this->_attributes as $name => $value) {
             $this->$name = $value;
         }
+    }
+
+    public function getViewPath()
+    {
+        return $this->_viewPath;
     }
 }

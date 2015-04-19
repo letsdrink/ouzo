@@ -40,8 +40,16 @@ class View
         if (!$this->_renderer) {
             $this->_renderer = ViewRendererFactory::create($viewName, $this->_attributes);
         }
+        $this->verifyExists($this->_renderer->getViewPath(), $viewName);
         $this->_renderedView = $this->_renderer->render();
         return $this->_renderedView;
+    }
+
+    private function verifyExists($viewPath, $viewName)
+    {
+        if (!Files::exists($viewPath)) {
+            throw new ViewException('No view found [' . $viewName . ']');
+        }
     }
 
     public function getRenderedView()

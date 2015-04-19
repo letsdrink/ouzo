@@ -13,6 +13,10 @@ class DummyRenderer implements ViewRenderer {
     public function render()
     {
     }
+
+    public function getViewPath()
+    {
+    }
 }
 
 class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase {
