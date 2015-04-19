@@ -445,6 +445,8 @@ Supported restrictions:
 ``['count' => Restrictions::between(1, 3)]`` produces
 ``SELECT * FROM table WHERE (count >= ? AND count <= ?) Params: [1, 3]``
 
+Between restriction handles four modes: INCLUSIVE (default), EXCLUSIVE, RIGHT_EXCLUSIVE, LEFT_EXCLUSIVE. Just pass it as a third parameter e.g. ``Restrictions::between(1, 3, Between::EXCLUSIVE)``.
+
 * **equalTo**
 
 ``['name' => Restrictions::equalTo('some name')]`` produces
