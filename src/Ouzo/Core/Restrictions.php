@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo;
 
+use Ouzo\Restriction\Between;
 use Ouzo\Restriction\BetweenRestriction;
 use Ouzo\Restriction\EqualToRestriction;
 use Ouzo\Restriction\GreaterOrEqualToRestriction;
@@ -47,8 +48,8 @@ class Restrictions
         return new LessOrEqualToRestriction($value);
     }
 
-    public static function between($value1, $value2)
+    public static function between($value1, $value2, $betweenMode = Between::INCLUSIVE)
     {
-        return new BetweenRestriction($value1, $value2);
+        return new BetweenRestriction($value1, $value2, $betweenMode);
     }
 }

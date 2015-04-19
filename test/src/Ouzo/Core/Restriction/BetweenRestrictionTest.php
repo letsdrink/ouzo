@@ -1,4 +1,5 @@
 <?php
+use Ouzo\Restriction\Between;
 use Ouzo\Restrictions;
 
 class BetweenRestrictionTest extends PHPUnit_Framework_TestCase
@@ -17,5 +18,50 @@ class BetweenRestrictionTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('(key >= ? AND key <= ?)', $sql);
         $this->assertEquals(array(1, 3), $restriction->getValues());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleExclusiveMode()
+    {
+        //given
+        $restriction = Restrictions::between(1, 3, Between::EXCLUSIVE);
+
+        //when
+        $sql = $restriction->toSql('key');
+
+        //then
+        $this->assertEquals('(key > ? AND key < ?)', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleLeftExclusiveMode()
+    {
+        //given
+        $restriction = Restrictions::between(1, 3, Between::LEFT_EXCLUSIVE);
+
+        //when
+        $sql = $restriction->toSql('key');
+
+        //then
+        $this->assertEquals('(key > ? AND key <= ?)', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleRightExclusiveMode()
+    {
+        //given
+        $restriction = Restrictions::between(1, 3, Between::RIGHT_EXCLUSIVE);
+
+        //when
+        $sql = $restriction->toSql('key');
+
+        //then
+        $this->assertEquals('(key >= ? AND key < ?)', $sql);
     }
 }
