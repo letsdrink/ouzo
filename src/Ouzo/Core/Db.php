@@ -21,6 +21,7 @@ class Db
     public $_startedTransaction = false;
 
     private static $_instance;
+    private static $_transactionsEnabled = true;
 
     public function __construct($loadDefault = true)
     {
@@ -98,20 +99,26 @@ class Db
 
     public function beginTransaction()
     {
-        $this->_startedTransaction = true;
-        $this->_dbHandle->beginTransaction();
+        if (self::$_transactionsEnabled) {
+            $this->_startedTransaction = true;
+            $this->_dbHandle->beginTransaction();
+        }
     }
 
     public function commitTransaction()
     {
-        $this->_dbHandle->commit();
-        $this->_startedTransaction = false;
+        if (self::$_transactionsEnabled) {
+            $this->_dbHandle->commit();
+            $this->_startedTransaction = false;
+        }
     }
 
     public function rollbackTransaction()
     {
-        $this->_dbHandle->rollBack();
-        $this->_startedTransaction = false;
+        if (self::$_transactionsEnabled) {
+            $this->_dbHandle->rollBack();
+            $this->_startedTransaction = false;
+        }
     }
 
     public function lastErrorMessage()
@@ -144,5 +151,15 @@ class Db
             throw PDOExceptionExtractor::getException($this->_dbHandle->errorInfo(), "Cannot get sequence value: $sequence");
         }
         return $lastInsertId;
+    }
+
+    public function disableTransactions()
+    {
+        self::$_transactionsEnabled = false;
+    }
+
+    public function enableTransactions()
+    {
+        self::$_transactionsEnabled = true;
     }
 }

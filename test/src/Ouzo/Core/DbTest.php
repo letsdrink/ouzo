@@ -42,6 +42,7 @@ class DbTest extends DbTransactionalTestCase
     public function runInTransactionShouldInvokeBeginAndCommitOnSuccess()
     {
         // given
+        Db::getInstance()->enableTransactions();
         $dbHandle = Mock::mock();
 
         $db = new Db(false);
@@ -63,6 +64,7 @@ class DbTest extends DbTransactionalTestCase
     public function runInTransactionShouldInvokeRollbackOnFailure()
     {
         // given
+        Db::getInstance()->enableTransactions();
         $dbHandle = Mock::mock();
 
         $db = new Db(false);
