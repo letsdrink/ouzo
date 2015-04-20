@@ -12,7 +12,7 @@ use Twig_Loader_Filesystem;
 
 class TwigRenderer implements ViewRenderer
 {
-    const EXTENSION = '.html';
+    const EXTENSION = '.html.twig';
 
     private $_viewName;
     private $_attributes;
