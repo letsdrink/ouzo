@@ -48,7 +48,7 @@ class View
     private function verifyExists($viewPath, $viewName)
     {
         if (!Files::exists($viewPath)) {
-            throw new ViewException('No view found [' . $viewName . ']');
+            throw new ViewException('No view found [' . $viewName . '] at: ' . $viewPath);
         }
     }
 
