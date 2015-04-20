@@ -6,6 +6,7 @@
 namespace Ouzo\View;
 
 use Ouzo\ApplicationPaths;
+use Ouzo\Config;
 use Ouzo\Utilities\Path;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -31,8 +32,9 @@ class TwigRenderer implements ViewRenderer
 
     public function render()
     {
+        $options = Config::getValue('renderer', 'twig');
         $loader = new Twig_Loader_Filesystem($this->_loaderPath);
-        $twig = new Twig_Environment($loader);
+        $twig = new Twig_Environment($loader, $options);
         $template = $twig->loadTemplate($this->_viewFilename);
         return $template->render($this->_attributes);
     }
