@@ -9,7 +9,7 @@ class MyClass
 {
     public function someMethodThatThrowsException()
     {
-        throw new Exception('Fatal error');
+        throw new Exception('Fatal error', 555);
     }
 
     public function someMethod()
@@ -78,5 +78,20 @@ class CatchExceptionTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertInstanceOf('Exception', $exception);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsCodeEquals()
+    {
+        //given
+        $object = new MyClass();
+
+        //when
+        CatchException::when($object)->someMethodThatThrowsException();
+
+        //then
+        CatchException::assertThat()->hasCode(555);
     }
 }
