@@ -378,7 +378,7 @@ class ControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/simple_test/empty_view_name');
 
         //then
-        CatchException::assertThat()->hasMessage('No view found [SimpleTest/empty_view_name]');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\View\ViewException');
     }
 
     /**
