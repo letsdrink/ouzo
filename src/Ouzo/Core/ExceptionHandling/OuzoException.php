@@ -20,8 +20,8 @@ class OuzoException extends Exception
         $this->_errors = Arrays::toArray($errors);
         $this->_headers = $headers;
 
-        $firstError = Arrays::first($this->_errors)->getMessage();
-        parent::__construct($firstError);
+        $firstError = Arrays::first($this->_errors);
+        parent::__construct($firstError->getMessage(), $firstError->getCode());
     }
 
     public function getHttpCode()

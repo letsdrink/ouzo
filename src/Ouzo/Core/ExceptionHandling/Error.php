@@ -51,4 +51,9 @@ class Error
     {
         return $this->message;
     }
+
+    public function getCode()
+    {
+        return $this->code;
+    }
 }
