@@ -32,7 +32,7 @@ class TwigRenderer implements ViewRenderer
 
     public function render()
     {
-        $options = Config::getValue('renderer', 'twig');
+        $options = Config::getValue('renderer', 'twig') ?: array();
         $loader = new Twig_Loader_Filesystem($this->_loaderPath);
         $twig = new Twig_Environment($loader, $options);
         $template = $twig->loadTemplate($this->_viewFilename);
