@@ -35,6 +35,7 @@ class TwigRenderer implements ViewRenderer
         $options = Config::getValue('renderer', 'twig') ?: array();
         $loader = new Twig_Loader_Filesystem($this->_loaderPath);
         $twig = new Twig_Environment($loader, $options);
+        $twig->addExtension(new OuzoTwigExtension());
         $template = $twig->loadTemplate($this->_viewFilename);
         return $template->render($this->_attributes);
     }
