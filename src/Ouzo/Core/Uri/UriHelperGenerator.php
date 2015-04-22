@@ -8,6 +8,7 @@ namespace Ouzo\Uri;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Joiner;
 use Ouzo\Utilities\Strings;
 
 class UriHelperGenerator
@@ -48,6 +49,15 @@ function checkParameter(\$parameter)
             }
             $namesAlreadyGenerated[] = $route->getName();
         }
+
+        $names = Joiner::on(", ")->mapValues(function ($value) {
+            return "'$value'";
+        })->join($namesAlreadyGenerated);
+
+        $this->_generatedFunctions .= "function allGeneratedUriNames()
+{
+%{INDENT}return array(" . $names . ");
+}\n\n";
     }
 
     private function _createFunction(RouteRule $routeRule)

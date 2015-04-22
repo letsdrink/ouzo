@@ -40,6 +40,11 @@ function showItemUsersPath()
 {
     return url("/users/show_item");
 }
+
+function allGeneratedUriNames()
+{
+    return array('showItemUsersPath');
+}
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -69,6 +74,11 @@ function saveUsersPath()
 {
     return url("/users/save");
 }
+
+function allGeneratedUriNames()
+{
+    return array('saveUsersPath');
+}
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -97,6 +107,11 @@ function checkParameter(\$parameter)
 function getDuplicatedUsersPath()
 {
     return url("/users/get_duplicated");
+}
+
+function allGeneratedUriNames()
+{
+    return array('getDuplicatedUsersPath');
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -129,6 +144,11 @@ function showUsersPath(\$id, \$call_id)
     checkParameter(\$call_id);
     return url("/users/show/id/\$id/call_id/\$call_id");
 }
+
+function allGeneratedUriNames()
+{
+    return array('showUsersPath');
+}
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -157,6 +177,11 @@ function checkParameter(\$parameter)
 function userItemPath()
 {
     return url("/users/show_item");
+}
+
+function allGeneratedUriNames()
+{
+    return array('userItemPath');
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -203,6 +228,11 @@ function userPath(\$id)
 {
     checkParameter(\$id);
     return url("/users/\$id");
+}
+
+function allGeneratedUriNames()
+{
+    return array('usersPath', 'freshUserPath', 'editUserPath', 'userPath', 'usersPath', 'userPath', 'userPath', 'userPath');
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -253,6 +283,11 @@ function ordersUsersApiPath(\$id)
 {
     checkParameter(\$id);
     return url("/api/users/\$id/orders");
+}
+
+function allGeneratedUriNames()
+{
+    return array('ordersUsersApiPath');
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
