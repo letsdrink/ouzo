@@ -12,7 +12,7 @@ class AutoloadNamespaces
     public static function getControllerNamespace()
     {
         $controllerPath = Config::getValue('namespace', 'controller');
-        return $controllerPath ? Arrays::toArray($controllerPath) : ["\\Application\\Controller\\"];
+        return $controllerPath ? Arrays::toArray($controllerPath) : array("\\Application\\Controller\\");
     }
 
     public static function getModelNamespace()
