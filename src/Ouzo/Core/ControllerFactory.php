@@ -11,27 +11,23 @@ use Ouzo\Utilities\ClassName;
 
 class ControllerFactory
 {
+    private $controllerNamespaces;
+
     public function __construct()
     {
-        $this->controllerNamespace = AutoloadNamespaces::getControllerNamespace();
+        $this->controllerNamespaces = AutoloadNamespaces::getControllerNamespace();
     }
 
     public function createController(RouteRule $routeRule)
     {
-        $controller = $routeRule->getController();
-        $controllerName = ClassName::pathToFullyQualifiedName($controller);
-        $controller = $this->controllerNamespace . $controllerName . "Controller";
-
-        $this->_validateControllerExists($controller);
-
-        return new $controller($routeRule);
-    }
-
-    private function _validateControllerExists($controller)
-    {
-        if (!class_exists($controller)) {
-            throw new ControllerNotFoundException('Controller does not exist: ' . $controller);
+        $controllerName = ClassName::pathToFullyQualifiedName($routeRule->getController());
+        foreach ($this->controllerNamespaces as $controllerNamespace) {
+            $controller = $controllerNamespace . $controllerName . "Controller";
+            if (class_exists($controller)) {
+                return new $controller($routeRule);
+            }
         }
+        throw new ControllerNotFoundException('Controller does not exist');
     }
 }
 

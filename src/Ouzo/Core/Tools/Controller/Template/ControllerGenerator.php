@@ -32,7 +32,8 @@ class ControllerGenerator
 
     public function getClassNamespace()
     {
-        return rtrim(AutoloadNamespaces::getControllerNamespace(), '\\');
+        $controllerNamespaces = AutoloadNamespaces::getControllerNamespace();
+        return rtrim($controllerNamespaces[0], '\\');
     }
 
     public function isControllerExists()
