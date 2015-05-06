@@ -179,6 +179,38 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldValidateStringMaxLengthWhenLengthEqualsMax()
+    {
+        //given
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateStringMaxLength('123', 3, 'Too long string');
+
+        //then
+        $errors = $validatable->getErrors();
+        $this->assertCount(0, $errors);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldValidateStringMaxLengthWhenLengthEqualsMaxPlusOne()
+    {
+        //given
+        $validatable = new Validatable();
+
+        //when
+        $validatable->validateStringMaxLength('1234', 3, 'Too long string');
+
+        //then
+        $errors = $validatable->getErrors();
+        $this->assertEquals('Too long string', $errors[0]);
+    }
+
+    /**
+     * @test
+     */
     public function shouldNotBeValidStringMaxLength()
     {
         //given
