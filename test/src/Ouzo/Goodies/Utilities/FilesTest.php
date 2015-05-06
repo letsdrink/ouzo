@@ -180,4 +180,51 @@ class FilesTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('content', $content);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnMimeType()
+    {
+        //given
+        $path = Path::join(ROOT_PATH, 'test', 'resources', 'logo.png');
+
+        //when
+        $mimeType = Files::mimeType($path);
+
+        //then
+        $this->assertEquals('image/png', $mimeType);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDeleteFileIfExists()
+    {
+        //given
+        $filePath = Path::joinWithTemp('files_test');
+        file_put_contents($filePath, 'test');
+
+        //when
+        $isDeleted = Files::deleteIfExists($filePath);
+
+        //then
+        $this->assertTrue($isDeleted);
+        $this->assertFileNotExists($filePath);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExeptionIfNotExistsAnTryToDelete()
+    {
+        //given
+        $files = new Files();
+
+        //when
+        CatchException::when($files)->deleteIfExists('/broken/path/file');
+
+        //then
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\FileNotFoundException');
+    }
 }
