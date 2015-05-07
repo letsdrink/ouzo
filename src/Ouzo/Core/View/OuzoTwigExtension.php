@@ -10,14 +10,14 @@ use Twig_SimpleFunction;
 
 class OuzoTwigExtension extends Twig_Extension
 {
-
     public function getFunctions()
     {
         $uriHelperFunctions = allGeneratedUriNames();
 
         $helperFunctions = array('t', 'linkTo', 'linkButton', 'formButton', 'translatableOptions', 'labelTag',
             'hiddenTag', 'textFieldTag', 'textAreaTag', 'checkboxTag', 'selectTag', 'optionTag', 'passwordFieldTag',
-            'radioButtonTag', 'endFormTag', 'formTag', 'formFor');
+            'radioButtonTag', 'endFormTag', 'formTag', 'formFor', 'showErrors', 'showNotices', 'showSuccess',
+            'showWarnings');
 
         return array_merge(
             $this->toSimpleFunctions($helperFunctions, array('is_safe' => array('html'))),
