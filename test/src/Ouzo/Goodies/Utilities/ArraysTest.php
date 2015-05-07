@@ -749,6 +749,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function shouldNotRemoveNestedKeyWhenKeyNotFoundAndValueIsNull()
+    {
+        //given
+        $array = array('1' => null);
+
+        //when
+        Arrays::removeNestedKey($array, array('1', '2'));
+
+        //then
+        $this->assertEquals(array('1' => null), $array);
+    }
+
+    /**
+     * @test
      * @expectedException PHPUnit_Framework_Error_Deprecated
      * @expectedExceptionMessage Use Arrays::removeNestedKey instead
      */
