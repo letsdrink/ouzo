@@ -35,6 +35,7 @@ Bug fixes:
 * [Utilities] Added [Arrays::uniqueBy](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#uniqueby) (issue #159).
 * [Tests] Changed ArrayAssert::hasSize, so that it shows original array when assertion fails (issue #163).
 * [ORM] Fixed insert primaryKey when sequence is empty (issue #174).
+* [Utilities] Fixed Arrays::removeNestedKeys, so that it can handle null values.
 
 Release 1.4.0
 -------------
