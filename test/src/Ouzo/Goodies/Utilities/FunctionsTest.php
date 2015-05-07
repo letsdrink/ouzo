@@ -157,4 +157,20 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertNull($result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldExtractFieldIfPhpFunctionWithTheSameNameExists()
+    {
+        //given
+        $object = new stdClass();
+        $object->date = '2012-05-12';
+
+        //when
+        $result = Functions::call(Functions::extractExpression('date'), $object);
+
+        //then
+        $this->assertEquals($object->date, $result);
+    }
 }
