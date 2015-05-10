@@ -13,6 +13,7 @@ Enhancements:
 * [ORM] When using DbTransactionTestCase transactions are disabled (issue #178).
 * [Core] Added support for CSRF token in forms.
 * [Tools] Added method that lists all generated URI helper methods (GeneratedUriHelper::allGeneratedUriNames). 
+* [Utilities] Implemented Optional class (issue #72).
 
 Bug fixes:
 * [Localization] Fixed I18n::loadLabels not to load translation file if it was already loaded (issue #173).
