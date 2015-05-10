@@ -6,7 +6,7 @@
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Optional;
 
-class MyClass
+class MyOptionalClass
 {
     public $myField = 'abc';
 
@@ -55,7 +55,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     public function invokingMethodShouldReturnOptional()
     {
         //given
-        $optional = Optional::fromNullable(new MyClass());
+        $optional = Optional::fromNullable(new MyOptionalClass());
 
         //when
         $result = $optional->myMethod();
@@ -70,7 +70,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     public function getShouldReturnValue()
     {
         //given
-        $optional = Optional::fromNullable(new MyClass());
+        $optional = Optional::fromNullable(new MyOptionalClass());
 
         //when
         $result = $optional->myMethod()->get();
@@ -100,7 +100,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     public function invokingNonExistentMethodShouldReturnOptionalWithNull()
     {
         //given
-        $optional = Optional::fromNullable(new MyClass());
+        $optional = Optional::fromNullable(new MyOptionalClass());
 
         //when
         $result = $optional->unknownMethod();
@@ -116,7 +116,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     public function orShouldReturnValueWhenNotNull()
     {
         //given
-        $optional = Optional::fromNullable(new MyClass());
+        $optional = Optional::fromNullable(new MyOptionalClass());
 
         //when
         $result = $optional->myMethod()->or('456');
@@ -146,7 +146,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     public function orNullShouldReturnValueWhenNotNull()
     {
         //given
-        $optional = Optional::fromNullable(new MyClass());
+        $optional = Optional::fromNullable(new MyOptionalClass());
 
         //when
         $result = $optional->myMethod()->orNull();
@@ -197,7 +197,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     public function fieldAccessShouldReturnOptional()
     {
         //given
-        $optional = Optional::fromNullable(new MyClass());
+        $optional = Optional::fromNullable(new MyOptionalClass());
 
         //when
         $result = $optional->myField;
@@ -212,7 +212,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     public function fieldAccessOnNonExistentFieldShouldReturnOptional()
     {
         //given
-        $optional = Optional::fromNullable(new MyClass());
+        $optional = Optional::fromNullable(new MyOptionalClass());
 
         //when
         $result = $optional->unknownField;
@@ -227,7 +227,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     public function getOnFieldShouldReturnValue()
     {
         //given
-        $optional = Optional::fromNullable(new MyClass());
+        $optional = Optional::fromNullable(new MyOptionalClass());
 
         //when
         $result = $optional->myField->get();
