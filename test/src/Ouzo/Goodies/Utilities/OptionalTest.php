@@ -97,6 +97,22 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function invokingNonExistentMethodShouldReturnOptionalWithNull()
+    {
+        //given
+        $optional = Optional::fromNullable(new MyClass());
+
+        //when
+        $result = $optional->unknownMethod();
+
+        //then
+        $this->assertInstanceOf('\Ouzo\Utilities\Optional', $result);
+        $this->assertNull($result->orNull());
+    }
+
+    /**
+     * @test
+     */
     public function orShouldReturnValueWhenNotNull()
     {
         //given
@@ -185,6 +201,21 @@ class OptionalTest extends PHPUnit_Framework_TestCase
 
         //when
         $result = $optional->myField;
+
+        //then
+        $this->assertInstanceOf('\Ouzo\Utilities\Optional', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function fieldAccessOnNonExistentFieldShouldReturnOptional()
+    {
+        //given
+        $optional = Optional::fromNullable(new MyClass());
+
+        //when
+        $result = $optional->unknownField;
 
         //then
         $this->assertInstanceOf('\Ouzo\Utilities\Optional', $result);
