@@ -908,7 +908,7 @@ You can also proxy an object so that all methods become transactional:
 
 Locking
 ~~~~~~~
-If you want to lock a particular rows in a table with SELECT ... FOR UPDATE:
+If you want to lock a particular rows in a table with SELECT ... FOR UPDATE use lockForUpdate:
 
 ::
 
