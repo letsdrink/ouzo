@@ -317,4 +317,21 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $expected = 'SELECT * FROM products LEFT JOIN categories AS c ON c.id_category = products.id_category LEFT JOIN orders AS o ON o.id = products.id_product WHERE id = ?';
         $this->assertEquals($expected, $sql);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectForUpdate()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->lockForUpdate = true;
+
+        // when
+        $sql = $this->_dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT * FROM products FOR UPDATE', $sql);
+    }
 }

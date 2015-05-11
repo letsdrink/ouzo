@@ -903,3 +903,14 @@ You can also proxy an object so that all methods become transactional:
     $transactionalUser = Db::transactional($user);
 
     $transactionalUser->save(); //runs in a transaction
+
+----
+
+Locking
+~~~~~~~
+If you want to lock a particular rows in a table with SELECT ... FOR UPDATE:
+
+::
+
+    User::where(['name' => 'bob'])->lockForUpdate()->fetch();
+

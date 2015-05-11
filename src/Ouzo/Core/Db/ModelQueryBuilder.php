@@ -104,6 +104,15 @@ class ModelQueryBuilder
         return $this;
     }
 
+    /**
+    * @return ModelQueryBuilder
+    */
+    public function lockForUpdate()
+    {
+        $this->_query->lockForUpdate = true;
+        return $this;
+    }
+
     public function count()
     {
         $this->_query->type = QueryType::$COUNT;

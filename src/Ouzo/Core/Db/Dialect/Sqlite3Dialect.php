@@ -7,6 +7,7 @@ namespace Ouzo\Db\Dialect;
 
 use BadMethodCallException;
 use Ouzo\Db\JoinClause;
+use Ouzo\ExceptionHandling\OuzoException;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
@@ -25,7 +26,7 @@ class Sqlite3Dialect extends Dialect
     public function update()
     {
         if ($this->_query->aliasTable) {
-            throw new \InvalidArgumentException("Alias in update query is nut supported in sqlite");
+            throw new \InvalidArgumentException("Alias in update query is nut supported in sqlite3");
         }
         return parent::update();
     }
@@ -39,5 +40,10 @@ class Sqlite3Dialect extends Dialect
             throw new BadMethodCallException('RIGHT JOIN is not supported in sqlite3.');
         }
         return parent::join();
+    }
+
+    public function lockForUpdate()
+    {
+        throw new BadMethodCallException('SELECT ... FOR UPDATE is not supported in sqlite3');
     }
 }

@@ -440,4 +440,22 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // then
         $this->assertEquals('SELECT DISTINCT name FROM products', $sql);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectForUpdate()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->lockForUpdate = true;
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT * FROM products FOR UPDATE', $sql);
+    }
+
 }

@@ -117,6 +117,11 @@ abstract class Dialect
         return ' FROM ' . $this->table();
     }
 
+    public function lockForUpdate()
+    {
+        return $this->_query->lockForUpdate ? ' FOR UPDATE' : '';
+    }
+
     public function buildQuery(Query $query)
     {
         $this->_query = $query;
@@ -146,6 +151,7 @@ abstract class Dialect
             $sql .= $this->order();
             $sql .= $this->limit();
             $sql .= $this->offset();
+            $sql .= $this->lockForUpdate();
         }
         return rtrim($sql);
     }
