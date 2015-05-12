@@ -510,6 +510,39 @@ class MockTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldFailIfExpectedZeroInteractions()
+    {
+        //given
+        $mock = Mock::mock();
+        $mock->method1(2);
+
+        //when
+        try {
+            Mock::verifyZeroInteractions($mock);
+            $this->fail();
+        } //then
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            $this->assertEquals('Expected zero interactions but got method1(2)', $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldVerifyZeroInteractions()
+    {
+        //given
+        $mock = Mock::mock();
+
+        //when
+        Mock::verifyZeroInteractions($mock);
+
+        //then no exceptions
+    }
+
+    /**
+     * @test
+     */
     public function shouldVerifyWithArgumentMatcher()
     {
         //given
