@@ -44,6 +44,8 @@ class Sqlite3Dialect extends Dialect
 
     public function lockForUpdate()
     {
-        throw new BadMethodCallException('SELECT ... FOR UPDATE is not supported in sqlite3');
+        if ($this->_query->lockForUpdate) {
+            throw new BadMethodCallException('SELECT ... FOR UPDATE is not supported in sqlite3');
+        }
     }
 }

@@ -847,6 +847,7 @@ class ModelTest extends DbTransactionalTestCase
     }
 
     /**
+     * @group non-sqlite3
      * @test
      */
     public function shouldSelectForUpdate()

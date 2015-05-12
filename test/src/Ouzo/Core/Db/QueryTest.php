@@ -107,6 +107,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group non-sqlite3
      * @test
      */
     public function shouldLockForUpdate()
@@ -119,6 +120,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group non-sqlite3
      * @test
      */
     public function selectShouldNotLockForUpdateByDefault()
@@ -132,6 +134,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
+     * @group non-sqlite3
      * @test
      */
     public function shouldNotAllowToUseLockForUpdateInNonSelectQueries()
