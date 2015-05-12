@@ -356,6 +356,11 @@ Verification that a method was not called:
 
     Mock::verify($mock)->neverReceived()->method("arg");
 
+Making sure that there were no interactions:
+
+::
+
+    Mock::verifyZeroInteractions($mock);
 
 You can stub multiple calls in one call to thenReturn:
 
