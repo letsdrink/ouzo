@@ -5,6 +5,7 @@
  */
 namespace Ouzo\Db;
 
+use InvalidArgumentException;
 use Ouzo\Db\WhereClause\WhereClause;
 use PDO;
 
@@ -24,6 +25,7 @@ class Query
     public $type;
     public $options = array();
     public $groupBy;
+    public $lockForUpdate = false;
 
     public function __construct($type = null)
     {
@@ -131,6 +133,15 @@ class Query
     public function groupBy($groupBy)
     {
         $this->groupBy = $groupBy;
+        return $this;
+    }
+
+    public function lockForUpdate()
+    {
+        if ($this->type != QueryType::$SELECT) {
+            throw new InvalidArgumentException("Lock for update can be used only in select queries");
+        }
+        $this->lockForUpdate = true;
         return $this;
     }
 }

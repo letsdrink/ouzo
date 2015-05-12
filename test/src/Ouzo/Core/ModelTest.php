@@ -845,4 +845,21 @@ class ModelTest extends DbTransactionalTestCase
         //then
         $this->assertEquals('new name', $model->reload()->name);
     }
+
+    /**
+     * @group non-sqlite3
+     * @test
+     */
+    public function shouldSelectForUpdate()
+    {
+        // given
+        Product::create(array('name' => 'Sport', 'price' => '123'));
+
+        // when
+        $products = Product::where()->lockForUpdate()->fetchAll();
+
+        // then
+        $this->assertCount(1, $products);
+    }
+
 }

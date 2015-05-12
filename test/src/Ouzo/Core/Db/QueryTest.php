@@ -105,4 +105,40 @@ class QueryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(QueryType::$SELECT, $query->type);
         $this->assertEquals(array('name', 'id'), $query->selectColumns);
     }
+
+    /**
+     * @group non-sqlite3
+     * @test
+     */
+    public function shouldLockForUpdate()
+    {
+        // when
+        $query = Query::select()->lockForUpdate();
+
+        // then
+        $this->assertTrue($query->lockForUpdate);
+    }
+
+    /**
+     * @group non-sqlite3
+     * @test
+     */
+    public function selectShouldNotLockForUpdateByDefault()
+    {
+        // when
+        $query = Query::select();
+
+        // then
+        $this->assertFalse($query->lockForUpdate);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @group non-sqlite3
+     * @test
+     */
+    public function shouldNotAllowToUseLockForUpdateInNonSelectQueries()
+    {
+        Query::delete()->lockForUpdate();
+    }
 }
