@@ -60,7 +60,7 @@ class ArrayWhereClause extends WhereClause
         foreach ($params as $column => $value) {
             $keys[] = self::_buildWhereKey($column, $value);
         }
-        return $keys;
+        return array_filter($keys);
     }
 
     private static function _buildWhereKey($column, $value)
