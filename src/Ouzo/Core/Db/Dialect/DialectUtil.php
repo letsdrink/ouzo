@@ -25,7 +25,7 @@ class DialectUtil
             ->filter(WhereClause::isNotEmptyFunction())
             ->map('\Ouzo\Db\Dialect\DialectUtil::buildWhereQueryPart')
             ->toArray();
-        return implode(' AND ', $parts);
+        return implode(' AND ', array_filter($parts));
     }
 
     public static function buildWhereQueryPart(WhereClause $whereClause)

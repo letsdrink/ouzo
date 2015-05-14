@@ -46,7 +46,8 @@ class ArrayWhereClause extends WhereClause
 
     public function toSql()
     {
-        return implode(" {$this->operator} ", self::_buildWhereKeys($this->where));
+        $whereKeys = self::_buildWhereKeys($this->where);
+        return empty($whereKeys) ? null : implode(" {$this->operator} ", $whereKeys);
     }
 
     public function getParameters()
