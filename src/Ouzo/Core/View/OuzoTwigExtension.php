@@ -17,7 +17,7 @@ class OuzoTwigExtension extends Twig_Extension
         $helperFunctions = array('t', 'linkTo', 'linkButton', 'formButton', 'translatableOptions', 'labelTag',
             'hiddenTag', 'textFieldTag', 'textAreaTag', 'checkboxTag', 'selectTag', 'optionTag', 'passwordFieldTag',
             'radioButtonTag', 'endFormTag', 'formTag', 'formFor', 'showErrors', 'showNotices', 'showSuccess',
-            'showWarnings');
+            'showWarnings', 'renderPartial');
 
         return array_merge(
             $this->toSimpleFunctions($helperFunctions, array('is_safe' => array('html'))),
