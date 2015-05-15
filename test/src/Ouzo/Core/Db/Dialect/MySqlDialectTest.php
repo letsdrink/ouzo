@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Db\Dialect\MySqlDialect;
+use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 
@@ -51,6 +52,24 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals('DELETE FROM products', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDeleteFromWithJoin()
+    {
+        // given
+        $query = new Query();
+        $query->type = QueryType::$DELETE;
+        $query->table = 'products';
+        $query->addUsing(new JoinClause('categories', 'id_category', 'id', 'products', 'c', 'USING', array()));
+
+        // when
+        $sql = $this->_dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('DELETE FROM products USING products INNER JOIN categories AS c WHERE (c.id_category = products.id)', $sql);
     }
 
     /**

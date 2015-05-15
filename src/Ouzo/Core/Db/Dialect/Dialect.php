@@ -81,13 +81,9 @@ abstract class Dialect
         return $this->_where(array_merge($whereClauses, $this->_query->whereClauses));
     }
 
-    private function using()
+    public function using()
     {
-        $using = DialectUtil::buildUsingQuery($this->_query->usingClauses);
-        if ($using) {
-            return ' USING ' . $using;
-        }
-        return '';
+        return $this->_using($this->_query->usingClauses);
     }
 
     public function groupBy()
@@ -191,11 +187,20 @@ abstract class Dialect
 
     abstract public function getErrorCode($errorInfo);
 
-    private function _where($whereClauses)
+    protected function _where($whereClauses)
     {
         $where = DialectUtil::buildWhereQuery($whereClauses);
         if ($where) {
             return ' WHERE ' . $where;
+        }
+        return '';
+    }
+
+    protected function _using($usingClauses, $glue = ', ', $table = null, $alias = null)
+    {
+        $using = DialectUtil::buildUsingQuery($usingClauses, $glue, $table, $alias);
+        if ($using) {
+            return ' USING ' . $using;
         }
         return '';
     }

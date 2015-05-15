@@ -62,12 +62,16 @@ class DialectUtil
             })->toArray());
     }
 
-    public static function buildUsingQuery($usingClauses)
+    public static function buildUsingQuery($usingClauses, $glue, $table, $alias)
     {
         $elements = FluentArray::from($usingClauses)
             ->map('\Ouzo\Db\Dialect\DialectUtil::buildUsingQueryPart')
             ->toArray();
-        return implode(", ", $elements);
+        if ($usingClauses && $table) {
+            $tableElement = $table . ($alias ? " AS {$alias}" : "");
+            $elements = array_merge(array($tableElement), $elements);
+        }
+        return implode($glue, $elements);
     }
 
     public static function buildUsingQueryPart(JoinClause $usingClause)
