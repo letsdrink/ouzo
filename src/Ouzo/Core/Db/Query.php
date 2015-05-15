@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Db;
 
-use InvalidArgumentException;
 use Ouzo\Db\WhereClause\WhereClause;
 use PDO;
 
@@ -22,6 +21,7 @@ class Query
     public $updateAttributes = array();
     public $whereClauses = array();
     public $joinClauses = array();
+    public $usingClauses = array();
     public $type;
     public $options = array();
     public $groupBy;
@@ -117,6 +117,12 @@ class Query
         return $this;
     }
 
+    public function addUsing(JoinClause $usingClause)
+    {
+        $this->usingClauses[] = $usingClause;
+        return $this;
+    }
+
     public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = array())
     {
         $onClauses = array(WhereClause::create($on));
@@ -138,9 +144,6 @@ class Query
 
     public function lockForUpdate()
     {
-        if ($this->type != QueryType::$SELECT) {
-            throw new InvalidArgumentException("Lock for update can be used only in select queries");
-        }
         $this->lockForUpdate = true;
         return $this;
     }

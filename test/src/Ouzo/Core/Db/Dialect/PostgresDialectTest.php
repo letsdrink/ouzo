@@ -5,6 +5,7 @@
  */
 use Ouzo\Db\Any;
 use Ouzo\Db\Dialect\PostgresDialect;
+use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 
@@ -51,6 +52,24 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals('DELETE FROM products', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnDeleteFromWithJoin()
+    {
+        // given
+        $query = new Query();
+        $query->type = QueryType::$DELETE;
+        $query->table = 'products';
+        $query->addUsing(new JoinClause('categories', 'id_category', 'id', 'products', 'c', 'USING', array()));
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('DELETE FROM products USING categories AS c WHERE (c.id_category = products.id)', $sql);
     }
 
     /**

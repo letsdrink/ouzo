@@ -5,8 +5,12 @@
  */
 namespace Ouzo\Db\Dialect;
 
+use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
+use Ouzo\Db\UsingClause;
+use Ouzo\Db\WhereClause\WhereClause;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
 
 abstract class Dialect
@@ -65,9 +69,23 @@ abstract class Dialect
 
     public function where()
     {
-        $where = DialectUtil::buildWhereQuery($this->_query->whereClauses);
-        if ($where) {
-            return ' WHERE ' . $where;
+        return $this->_where($this->_query->whereClauses);
+    }
+
+    private function whereWithUsing()
+    {
+        $usingClauses = $this->_query->usingClauses;
+        $whereClauses = Arrays::map($usingClauses, function(JoinClause $usingClause) {
+            return WhereClause::create($usingClause->getJoinColumnWithTable() . ' = ' . $usingClause->getJoinedColumnWithTable());
+        });
+        return $this->_where(array_merge($whereClauses, $this->_query->whereClauses));
+    }
+
+    private function using()
+    {
+        $using = DialectUtil::buildUsingQuery($this->_query->usingClauses);
+        if ($using) {
+            return ' USING ' . $using;
         }
         return '';
     }
@@ -135,8 +153,8 @@ abstract class Dialect
         } elseif ($query->type == QueryType::$DELETE) {
             $sql .= $this->delete();
             $sql .= $this->from();
-            $sql .= $this->join();
-            $sql .= $this->where();
+            $sql .= $this->using();
+            $sql .= $this->whereWithUsing();
         } elseif ($query->type == QueryType::$COUNT) {
             $sql .= $this->select();
             $sql .= $this->from();
@@ -172,4 +190,13 @@ abstract class Dialect
     abstract public function getConnectionErrorCodes();
 
     abstract public function getErrorCode($errorInfo);
+
+    private function _where($whereClauses)
+    {
+        $where = DialectUtil::buildWhereQuery($whereClauses);
+        if ($where) {
+            return ' WHERE ' . $where;
+        }
+        return '';
+    }
 }

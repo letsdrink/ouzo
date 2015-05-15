@@ -238,9 +238,7 @@ class ModelQueryBuilder
      */
     public function join($relationSelector, $aliases = null, $type = 'LEFT', $on = array())
     {
-        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
-        $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
-        $modelJoins = ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases, $type, $on);
+        $modelJoins = $this->createModelJoins($relationSelector, $aliases, $type, $on);
         foreach ($modelJoins as $modelJoin) {
             $this->addJoin($modelJoin);
         }
@@ -278,6 +276,20 @@ class ModelQueryBuilder
     public function leftJoin($relationSelector, $aliases = null, $on = array())
     {
         return $this->join($relationSelector, $aliases, 'LEFT', $on);
+    }
+
+    /**
+     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @return ModelQueryBuilder
+     */
+    public function using($relationSelector, $aliases)
+    {
+        $modelJoins = $this->createModelJoins($relationSelector, $aliases, 'USING', array());
+        foreach ($modelJoins as $modelJoin) {
+            $this->_query->addUsing($modelJoin->asJoinClause());
+        }
+        return $this;
     }
 
     private function addJoin(ModelJoin $modelJoin)
@@ -379,5 +391,12 @@ class ModelQueryBuilder
     public function getQuery()
     {
         return $this->_query;
+    }
+
+    private function createModelJoins($relationSelector, $aliases, $type, $on)
+    {
+        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
+        $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
+        return ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases, $type, $on);
     }
 }

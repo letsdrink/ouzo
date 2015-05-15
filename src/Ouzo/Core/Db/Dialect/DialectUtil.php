@@ -6,6 +6,7 @@
 namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\JoinClause;
+use Ouzo\Db\UsingClause;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Joiner;
@@ -59,5 +60,19 @@ class DialectUtil
             ->map(function ($column) {
                 return "$column = ?";
             })->toArray());
+    }
+
+    public static function buildUsingQuery($usingClauses)
+    {
+        $elements = FluentArray::from($usingClauses)
+            ->map('\Ouzo\Db\Dialect\DialectUtil::buildUsingQueryPart')
+            ->toArray();
+        return implode(", ", $elements);
+    }
+
+    public static function buildUsingQueryPart(JoinClause $usingClause)
+    {
+        $alias = $usingClause->alias ? " AS {$usingClause->alias}" : "";
+        return $usingClause->joinTable . $alias;
     }
 }

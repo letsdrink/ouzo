@@ -48,4 +48,11 @@ class Sqlite3Dialect extends Dialect
             throw new BadMethodCallException('SELECT ... FOR UPDATE is not supported in sqlite3');
         }
     }
+
+    public function using()
+    {
+        if ($this->_query->usingClauses) {
+            throw new BadMethodCallException('USING clause is not supported in sqlite3');
+        }
+    }
 }
