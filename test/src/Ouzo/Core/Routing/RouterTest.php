@@ -499,6 +499,25 @@ class RouterTest extends PHPUnit_Framework_TestCase
         Assert::thatArray($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('id' => 12));
     }
 
+    /**
+     * @test
+     */
+    public function shouldFindRouteRuleUtf8()
+    {
+        //given
+        Route::post('/api/agents/:login/free', 'api/agents#free');
+        $router = $this->_createRouter('POST', '/api/agents/userπ/free');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('/api/agents/:login/free', $rule->getUri());
+        $this->assertEquals('POST', $rule->getMethod());
+        $this->assertEquals('api/agents', $rule->getController());
+        $this->assertEquals('free', $rule->getAction());
+    }
+
     public function requestMethods()
     {
         return array(
