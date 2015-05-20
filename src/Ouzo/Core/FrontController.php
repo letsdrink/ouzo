@@ -144,9 +144,11 @@ class FrontController
                 $this->redirectHandler->redirect($controller->getRedirectLocation());
                 break;
             case 'file':
+                session_write_close();
                 $this->downloadHandler->downloadFile($controller->getFileData());
                 break;
             case 'stream':
+                session_write_close();
                 $this->downloadHandler->streamMediaFile($controller->getFileData());
                 break;
         }
