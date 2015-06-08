@@ -29,4 +29,10 @@ class MySqlDialect extends Dialect
     {
         return Arrays::getValue($errorInfo, 1);
     }
+
+    public function using()
+    {
+        return $this->_using($this->_query->usingClauses, ' INNER JOIN ', $this->_query->table, $this->_query->aliasTable);
+    }
+
 }

@@ -878,6 +878,28 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     }
 
     /**
+     * @group non-sqlite3
+     * @test
+     */
+    public function shouldDeleteRecordsWithUsingClause()
+    {
+        //given
+        $category1 = Category::create(array('name' => 'cat1'));
+        $category2 = Category::create(array('name' => 'cat2'));
+        Product::create(array('name' => 'pro1', 'id_category' => $category1->getId()));
+        $product = Product::create(array('name' => 'pro2', 'id_category' => $category2->getId()));
+
+        //when
+        $deleted = Product::using('category', 'c')
+            ->where(array('c.name' => 'cat1'))
+            ->deleteAll();
+
+        //then
+        $this->assertEquals(1, $deleted);
+        Assert::thatArray(Product::all())->containsExactly($product);
+    }
+
+    /**
      * @test
      * @expectedException \Ouzo\DbException
      */

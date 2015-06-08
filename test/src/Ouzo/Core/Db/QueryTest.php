@@ -131,14 +131,4 @@ class QueryTest extends PHPUnit_Framework_TestCase
         // then
         $this->assertFalse($query->lockForUpdate);
     }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @group non-sqlite3
-     * @test
-     */
-    public function shouldNotAllowToUseLockForUpdateInNonSelectQueries()
-    {
-        Query::delete()->lockForUpdate();
-    }
 }

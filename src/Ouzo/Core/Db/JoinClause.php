@@ -34,7 +34,7 @@ class JoinClause
 
     public function getJoinColumnWithTable()
     {
-        $table = $this->alias? : $this->joinTable;
+        $table = $this->alias ?: $this->joinTable;
         return $table . '.' . $this->joinColumn;
     }
 }

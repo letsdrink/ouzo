@@ -117,4 +117,51 @@ class RestrictionsTest extends DbTransactionalTestCase
         //then
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnModelUsingIsNotInRestrictionWithEmptyArray()
+    {
+        //given
+        $product = Product::create(array('name' => 'name1'));
+
+        //when
+        $loadedProduct = Product::where(array('name' => Restrictions::isNotIn(array())))->fetch();
+
+        //then
+        Assert::thatModel($loadedProduct)->isEqualTo($product);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnModelUsingIsNotInRestrictionWithEmptyArrayAndMultipleItemsInWhereClause()
+    {
+        //given
+        $product = Product::create(array('name' => 'name1', 'description' => 'desc'));
+
+        //when
+        $loadedProduct = Product::where(array('description' => 'desc', 'name' => Restrictions::isNotIn(array())))->fetch();
+
+        //then
+        Assert::thatModel($loadedProduct)->isEqualTo($product);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnModelUsingIsNotInRestrictionWithEmptyArrayAndMultipleItemsInWhereClauseWithSeveralWhere()
+    {
+        //given
+        $product = Product::create(array('name' => 'name1', 'description' => 'desc'));
+
+        //when
+        $loadedProduct = Product::where(array('description' => 'desc'))
+            ->where(array('name' => Restrictions::isNotIn(array())))
+            ->fetch();
+
+        //then
+        Assert::thatModel($loadedProduct)->isEqualTo($product);
+    }
 }

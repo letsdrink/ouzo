@@ -396,6 +396,17 @@ class Model extends Validatable
     }
 
     /**
+     * @param $relation
+     * @param null $alias
+     * @return ModelQueryBuilder
+     */
+    public static function using($relation, $alias = null)
+    {
+        return static::queryBuilder()->using($relation, $alias);
+    }
+
+
+    /**
      * @param string $params
      * @param array $values
      * @return ModelQueryBuilder

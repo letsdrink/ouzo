@@ -17,6 +17,9 @@ class IsNotInRestriction extends Restriction
 
     public function toSql($fieldName)
     {
+        if (!count($this->values) > 0) {
+            return null;
+        }
         $placeholders = implode(', ', array_fill(0, count($this->values), '?'));
         return $fieldName . ' NOT IN(' . $placeholders . ')';
     }

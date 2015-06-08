@@ -6,6 +6,7 @@
 namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\JoinClause;
+use Ouzo\Db\UsingClause;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Joiner;
@@ -25,7 +26,7 @@ class DialectUtil
             ->filter(WhereClause::isNotEmptyFunction())
             ->map('\Ouzo\Db\Dialect\DialectUtil::buildWhereQueryPart')
             ->toArray();
-        return implode(' AND ', $parts);
+        return implode(' AND ', array_filter($parts));
     }
 
     public static function buildWhereQueryPart(WhereClause $whereClause)
@@ -59,5 +60,23 @@ class DialectUtil
             ->map(function ($column) {
                 return "$column = ?";
             })->toArray());
+    }
+
+    public static function buildUsingQuery($usingClauses, $glue, $table, $alias)
+    {
+        $elements = FluentArray::from($usingClauses)
+            ->map('\Ouzo\Db\Dialect\DialectUtil::buildUsingQueryPart')
+            ->toArray();
+        if ($usingClauses && $table) {
+            $tableElement = $table . ($alias ? " AS {$alias}" : "");
+            $elements = array_merge(array($tableElement), $elements);
+        }
+        return implode($glue, $elements);
+    }
+
+    public static function buildUsingQueryPart(JoinClause $usingClause)
+    {
+        $alias = $usingClause->alias ? " AS {$usingClause->alias}" : "";
+        return $usingClause->joinTable . $alias;
     }
 }
