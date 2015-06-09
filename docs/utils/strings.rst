@@ -216,7 +216,7 @@ Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT.
 
 htmlEntities
 ~~~~~~~~~~~~
-Alias for htmlentities() with UTF-8 and defined flag ENT_COMPAT.
+Alias for htmlentities() with UTF-8 and flags ENT_COMPAT and ENT_SUBSTITUTE (ENT_IGNORE for php <= 5.3).
 
 **Parameters:** ``$text``
 

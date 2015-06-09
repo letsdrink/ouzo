@@ -407,6 +407,21 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldConvertEntitiesWithInvalidChars()
+    {
+        //given
+        $string = quoted_printable_decode('po=B3=B9czenie');
+
+        //when
+        $entities = Strings::htmlEntities($string);
+
+        //then
+        $this->assertNotEmpty($entities);
+    }
+
+    /**
+     * @test
+     */
     public function shouldTrimString()
     {
         //given
