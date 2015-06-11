@@ -98,12 +98,12 @@ class RouteRule
         if ($this->getUri() == $uri) {
             return true;
         }
-        if (preg_match('#:\w*#', $this->getUri())) {
-            $replacedUri = preg_replace('#:\w*#', '[A-Za-z0-9.\-~_]+', $this->getUri());
-            return preg_match('#^' . $replacedUri . '$#', $uri);
+        if (preg_match('#:\w*#u', $this->getUri())) {
+            $replacedUri = preg_replace('#:\w*#u', '[\w.\-~_]+', $this->getUri());
+            return preg_match('#^' . $replacedUri . '$#u', $uri);
         }
         if (!$this->getAction()) {
-            return preg_match('#' . $this->getUri() . '/#', $uri);
+            return preg_match('#' . $this->getUri() . '/#u', $uri);
         }
         return false;
     }

@@ -216,15 +216,12 @@ class FilesTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldThrowExeptionIfNotExistsAnTryToDelete()
+    public function shouldReturnFalseIfNotExistsAnTryToDelete()
     {
-        //given
-        $files = new Files();
-
         //when
-        CatchException::when($files)->deleteIfExists('/broken/path/file');
+        $deleteIfExists = Files::deleteIfExists('/broken/path/file');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\FileNotFoundException');
+        $this->assertFalse($deleteIfExists);
     }
 }
