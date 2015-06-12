@@ -173,34 +173,4 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals($object->date, $result);
     }
-
-    /**
-     * @test
-     */
-    public function shouldPrependAndAppendToArgument()
-    {
-        //given
-        $string = "snow";
-
-        //when
-        $prefixedAndSuffixed = Functions::call(Functions::prependAndAppend('white ', ' falling'), $string);
-
-        //then
-        $this->assertEquals('white snow falling', $prefixedAndSuffixed);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldPrependAndAppendPrefixIfSuffixNotPassToArgument()
-    {
-        //given
-        $string = "is ";
-
-        //when
-        $prefixedAndSuffixed = Functions::call(Functions::prependAndAppend('life '), $string);
-
-        //then
-        $this->assertEquals('life is life ', $prefixedAndSuffixed);
-    }
 }
