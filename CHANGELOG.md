@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-INCOMING
+Release 1.5.0
 --------
 Enhancements:
 * [Utilities] Extended Comparator::compareBy to support multiple expressions (issue #169).
