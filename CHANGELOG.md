@@ -17,6 +17,7 @@ Enhancements:
 * [ORM] Added support for [SELECT ... FOR UPDATE - with ModelQueryBuilder's lockForUpdate method](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#locking).
 * [ORM] Added support for DELETE USING.
 * [MVC] Session is being closed when downloading or streaming file. 
+* [MVC] Added support for UTF-8 characters in routes.
 
 Bug fixes:
 * [Localization] Fixed I18n::loadLabels not to load translation file if it was already loaded (issue #173).
