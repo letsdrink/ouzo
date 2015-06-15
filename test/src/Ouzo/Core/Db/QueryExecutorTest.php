@@ -60,4 +60,24 @@ class QueryExecutorTest extends DbTransactionalTestCase
         // then
         $this->assertTrue($executor instanceof EmptyQueryExecutor);
     }
+
+    /**
+     * @test
+     */
+    public function shouldHandleSubQueries()
+    {
+        //given
+        $query = Query::select(array('count(*)'))
+            ->from(
+                Query::select(array('a', 'count(*) c'))->from('table')->groupBy('a')->where(array('col' => 12))
+            )->where(array('c' => 123));
+        $executor = QueryExecutor::prepare(Db::getInstance(), $query);
+
+        //when
+        $executor->_buildQuery();
+
+        //then
+        $this->assertEquals('SELECT count(*) FROM (SELECT a, count(*) c FROM table WHERE col = ? GROUP BY a) WHERE c = ?', $executor->getSql());
+        $this->assertEquals(array(12, 123), $executor->getBoundValues());
+    }
 }

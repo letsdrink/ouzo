@@ -123,7 +123,12 @@ abstract class Dialect
     public function table()
     {
         $alias = $this->_query->aliasTable ? ' AS ' . $this->_query->aliasTable : '';
-        return $this->_query->table . $alias;
+        if ($this->_query->table instanceof Query) {
+            $table = '(' . DialectFactory::create()->buildQuery($this->_query->table) . ')';
+        } else {
+            $table = $this->_query->table;
+        }
+        return $table . $alias;
     }
 
     public function from()

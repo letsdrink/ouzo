@@ -105,10 +105,10 @@ class QueryExecutor
         return $this->_db->lastErrorMessage();
     }
 
-    private function _buildQuery()
+    function _buildQuery()
     {
         $this->_fetchStyle = $this->_query->selectType;
-        $this->_addBindValues();
+        $this->_addBindValues($this->_query);
         $this->_sql = $this->_adapter->buildQuery($this->_query);
     }
 
@@ -128,20 +128,23 @@ class QueryExecutor
         });
     }
 
-    private function _addBindValues()
+    private function _addBindValues($query)
     {
-        $this->_addBindValue(array_values($this->_query->updateAttributes));
+        if ($query->table instanceof Query) {
+            $this->_addBindValues($query->table);
+        }
+        $this->_addBindValue(array_values($query->updateAttributes));
 
-        $this->_addBindValuesFromJoinClauses($this->_query->joinClauses);
+        $this->_addBindValuesFromJoinClauses($query->joinClauses);
 
-        foreach ($this->_query->whereClauses as $whereClause) {
+        foreach ($query->whereClauses as $whereClause) {
             $this->_addBindValuesFromWhereClause($whereClause);
         }
-        if ($this->_query->limit) {
-            $this->_addBindValue($this->_query->limit);
+        if ($query->limit) {
+            $this->_addBindValue($query->limit);
         }
-        if ($this->_query->offset) {
-            $this->_addBindValue($this->_query->offset);
+        if ($query->offset) {
+            $this->_addBindValue($query->offset);
         }
     }
 
