@@ -92,7 +92,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         Product::create(array('name' => 'prod1', 'description' => 'd'));
         Product::create(array('name' => 'prod2', 'description' => 'd'));
 
-        $query = Query::select(array('count(*)'))
+        $query = Query::select(array('count(*) AS c'))
             ->from(
                 Query::select(array('name', 'count(*) c'))->from('products')->groupBy('name')->where(array('description' => 'd')), 'sub'
             )->where(array('c' => 2));
@@ -102,6 +102,6 @@ class QueryExecutorTest extends DbTransactionalTestCase
         $result = $executor->fetch();
 
         //then
-        $this->assertEquals(array('count' => 1), $result);
+        $this->assertEquals(array('c' => 1), $result);
     }
 }
