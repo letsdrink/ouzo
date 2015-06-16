@@ -13,11 +13,12 @@ class MySqlDialect extends Dialect
     public function table()
     {
         $alias = $this->_query->aliasTable;
+        $table = $this->tableOrSubQuery();
         if ($alias) {
             $aliasOperator = $this->_query->type == QueryType::$DELETE ? '' : ' AS ';
-            return $this->_query->table . $aliasOperator . $alias;
+            return $table . $aliasOperator . $alias;
         }
-        return $this->_query->table;
+        return $table;
     }
 
     public function getConnectionErrorCodes()
@@ -34,5 +35,4 @@ class MySqlDialect extends Dialect
     {
         return $this->_using($this->_query->usingClauses, ' INNER JOIN ', $this->_query->table, $this->_query->aliasTable);
     }
-
 }

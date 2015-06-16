@@ -88,8 +88,9 @@ class Query
         return $this->table($table);
     }
 
-    public function from($table)
+    public function from($table, $alias = null)
     {
+        $this->aliasTable = $alias;
         return $this->table($table);
     }
 

@@ -8,7 +8,6 @@ namespace Ouzo\Db\Dialect;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
-use Ouzo\Db\UsingClause;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
@@ -123,12 +122,15 @@ abstract class Dialect
     public function table()
     {
         $alias = $this->_query->aliasTable ? ' AS ' . $this->_query->aliasTable : '';
+        return $this->tableOrSubQuery() . $alias;
+    }
+
+    public function tableOrSubQuery()
+    {
         if ($this->_query->table instanceof Query) {
-            $table = '(' . DialectFactory::create()->buildQuery($this->_query->table) . ')';
-        } else {
-            $table = $this->_query->table;
+            return '(' . DialectFactory::create()->buildQuery($this->_query->table) . ')';
         }
-        return $table . $alias;
+        return $this->_query->table;
     }
 
     public function from()

@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+use Application\Model\Test\Product;
 use Ouzo\Db\EmptyQueryExecutor;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryExecutor;
@@ -64,12 +65,12 @@ class QueryExecutorTest extends DbTransactionalTestCase
     /**
      * @test
      */
-    public function shouldHandleSubQueries()
+    public function shouldGenerateSqlForSubQueries()
     {
         //given
         $query = Query::select(array('count(*)'))
             ->from(
-                Query::select(array('a', 'count(*) c'))->from('table')->groupBy('a')->where(array('col' => 12))
+                Query::select(array('a', 'count(*) c'))->from('table')->groupBy('a')->where(array('col' => 12)), 'sub'
             )->where(array('c' => 123));
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
 
@@ -77,7 +78,30 @@ class QueryExecutorTest extends DbTransactionalTestCase
         $executor->_buildQuery();
 
         //then
-        $this->assertEquals('SELECT count(*) FROM (SELECT a, count(*) c FROM table WHERE col = ? GROUP BY a) WHERE c = ?', $executor->getSql());
+        $this->assertEquals('SELECT count(*) FROM (SELECT a, count(*) c FROM table WHERE col = ? GROUP BY a) AS sub WHERE c = ?', $executor->getSql());
         $this->assertEquals(array(12, 123), $executor->getBoundValues());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleSubQueries()
+    {
+        //given
+        Product::create(array('name' => 'prod1', 'description' => 'd'));
+        Product::create(array('name' => 'prod1', 'description' => 'd'));
+        Product::create(array('name' => 'prod2', 'description' => 'd'));
+
+        $query = Query::select(array('count(*)'))
+            ->from(
+                Query::select(array('name', 'count(*) c'))->from('products')->groupBy('name')->where(array('description' => 'd')), 'sub'
+            )->where(array('c' => 2));
+        $executor = QueryExecutor::prepare(Db::getInstance(), $query);
+
+        //when
+        $result = $executor->fetch();
+
+        //then
+        $this->assertEquals(array('count' => 1), $result);
     }
 }
