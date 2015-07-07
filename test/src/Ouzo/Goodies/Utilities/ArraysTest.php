@@ -1028,4 +1028,20 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         Assert::thatArray($numbers)->hasSize(2)
             ->containsOnly(90, 100);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAdditionalValueInRecursiveDiff()
+    {
+        //given
+        $array1 = array('a' => array('b' => 'c', 'd' => 'e'), 'f' => array('b' => 'c'), 'z');
+        $array2 = array('a' => array('b' => 'c'));
+
+        //when
+        $recursiveDiff = Arrays::recursiveDiff($array1, $array2);
+
+        //then
+        $this->assertEquals(array('a' => array('d' => 'e'), 'f' => array('b' => 'c'), 'z'), $recursiveDiff);
+    }
 }
