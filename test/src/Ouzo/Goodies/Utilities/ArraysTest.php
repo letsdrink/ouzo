@@ -735,7 +735,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldRemoveNestedKey()
+    public function shouldRemoveNestedKeyWithoutEmptyParent()
     {
         //given
         $array = array('1' => array('2' => array('3' => 'value')));
@@ -745,6 +745,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array('1' => array()), $array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNestedKeyWithEmptyParent()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        Arrays::removeNestedKey($array, array('1', '2'), Arrays::REMOVE_EMPTY_PARENTS);
+
+        //then
+        $this->assertEquals(array(), $array);
     }
 
     /**
