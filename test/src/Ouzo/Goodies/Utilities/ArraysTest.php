@@ -809,6 +809,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldNotRemoveKeyWhenKeyNotFoundInTheFirstLevel()
+    {
+        //given
+        $array = array('1' => array('2' => 'value'));
+
+        //when
+        Arrays::removeNestedKey($array, array('2', '4'));
+
+        //then
+        $this->assertEquals(array('1' => array('2' => 'value')), $array);
+    }
+
+    /**
+     * @test
+     */
     public function shouldCheckIfArrayHasNestedKey()
     {
         //given
