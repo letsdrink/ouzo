@@ -111,6 +111,7 @@ class RestfulController extends Controller
 
 class FrontControllerTest extends ControllerTestCase
 {
+
     public function __construct()
     {
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
@@ -127,6 +128,8 @@ class FrontControllerTest extends ControllerTestCase
     {
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');
+        Config::clearProperty('debug');
+        Config::clearProperty('callback', 'afterControllerInit');
     }
 
     /**
@@ -509,6 +512,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldTraceRequestInfo()
     {
         //given
+        Config::overrideProperty('debug')->with(true);
         Route::resource('restful');
         $this->get('/restful?param=1');
 
