@@ -125,7 +125,14 @@ class FrontController
     {
         $currentAction = $this->_currentControllerObject->currentAction;
         $this->_currentControllerObject->$currentAction();
-        Stats::traceHttpRequest($this->_currentControllerObject->params);
+        $this->_logRequestIfDebugEnabled();
+    }
+
+    private function _logRequestIfDebugEnabled()
+    {
+        if (Config::getValue('debug')) {
+            Stats::traceHttpRequest($this->_currentControllerObject->params);
+        }
     }
 
     private function _doActionOnResponse()

@@ -551,6 +551,40 @@ class FrontControllerTest extends ControllerTestCase
         CatchException::assertThat()->hasMessage("afterInitCallback");
     }
 
+    /**
+     * @test
+     */
+    public function shouldNotSaveStatsIfDebugDisabled()
+    {
+        //given
+        Config::overrideProperty('debug')->with(false);
+        Session::remove('stats_queries');
+        Route::get('/sample/save', 'sample#save');
+
+        //when
+        $this->get('/sample/save');
+
+        //then
+        $this->assertEmpty(Session::get('stats_queries'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSaveStatsIfDebugIsOn()
+    {
+        //given
+        Config::overrideProperty('debug')->with(true);
+        Session::remove('stats_queries');
+        Route::get('/sample/save', 'sample#save');
+
+        //when
+        $this->get('/sample/save');
+
+        //then
+        $this->assertNotEmpty(Session::get('stats_queries'));
+    }
+
     public function _afterInitCallback()
     {
         throw new Exception("afterInitCallback");
