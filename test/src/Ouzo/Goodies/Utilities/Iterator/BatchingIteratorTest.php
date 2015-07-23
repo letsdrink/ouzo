@@ -12,9 +12,9 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
     public function shouldChunkElementsWhenLengthDivisibleByChunk()
     {
         //given
-        $array = [1, 2, 3, 4];
+        $array = array(1, 2, 3, 4);
         $batchIterator = new BatchingIterator(new ArrayIterator($array), 2);
-        $result = [];
+        $result = array();
 
         //when
         foreach ($batchIterator as $key => $value) {
@@ -22,7 +22,7 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
         }
 
         //then
-        $this->assertEquals([[1, 2], [3, 4]], $result);
+        $this->assertEquals(array(array(1, 2), array(3, 4)), $result);
     }
 
     /**
@@ -31,9 +31,9 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
     public function shouldChunkElementsWhenLengthNotDivisibleByChunk()
     {
         //given
-        $array = [1, 2, 3];
+        $array = array(1, 2, 3);
         $batchIterator = new BatchingIterator(new ArrayIterator($array), 2);
-        $result = [];
+        $result = array();
 
         //when
         foreach ($batchIterator as $key => $value) {
@@ -41,7 +41,7 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
         }
 
         //then
-        $this->assertEquals([[1, 2], [3]], $result);
+        $this->assertEquals(array(array(1, 2), array(3)), $result);
     }
 
     /**
@@ -73,6 +73,6 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
         $batchIterator->rewind();
 
         //then
-        $this->assertEquals([['a', 'b'], ['c', 'd']], iterator_to_array($batchIterator));
+        $this->assertEquals(array(array('a', 'b'), array('c', 'd')), iterator_to_array($batchIterator));
     }
 }
