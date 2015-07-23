@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+CURRENT
+--------
+Enhancements:
+* [ORM] Added support for subqueries in Query.
+
+Bug fixes:
+* [MVC] Request stats are now logged only when debug is enabled. 
+* [MVC] Added more verbose logging when controller was not found (issue #187).
+* [Utilities] Fixed Arrays::removeNestedKeys.
+
 Release 1.5.0
 --------
 Enhancements:

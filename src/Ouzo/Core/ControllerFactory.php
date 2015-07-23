@@ -27,7 +27,7 @@ class ControllerFactory
                 return new $controller($routeRule);
             }
         }
-        throw new ControllerNotFoundException('Controller does not exist');
+        throw new ControllerNotFoundException('Controller [' . $controllerName . '] for URI [' . $routeRule->getUri() . '] does not exist!');
     }
 }
 
