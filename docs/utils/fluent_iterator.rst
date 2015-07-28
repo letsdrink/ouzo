@@ -35,13 +35,26 @@ FluentIterator works great with php 5.5 generators:
         }
     }
 
-    //10th Fibonacci number
-    $result = FluentIterator::from(fibonacci())->skip(9)->firstOr(null);
+Get 10th Fibonacci number:
 
-    //first Fibonacci number greater than 100
-    $result = FluentIterator::from(fibonacci())->filter(function($number) {
-        return $number > 100;
-    })->firstOr(null);
+::
+
+    $number = FluentIterator::from(fibonacci())->skip(9)->first();
+
+Display first ten fibonacci numbers that are greater than 100:
+::
+
+    $iterator = FluentIterator::from(fibonacci())
+        ->filter(function($number) {
+            return $number > 100;
+        })
+        ->limit(10);
+
+    foreach($iterator as $number) {
+        echo $number, ", ";
+    }
+
+----
 
 from
 ~~~~
@@ -103,6 +116,12 @@ firstOr
 Returns the first element or defaultValue if the iterator is empty.
 
 **Parameters:** ``$default``
+
+----
+
+first
+~~~~~
+Returns the first element in iterator or throws an Exception if iterator is empty
 
 ----
 

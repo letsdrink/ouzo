@@ -56,6 +56,10 @@ Returns the first element or defaultValue if the iterator is empty.
 
 **Parameters:** ``Iterator $iterator``,``$default``
 
+first
+~~~~~
+Returns the first element in iterator or throws an Exception if iterator is empty
+
 ----
 
 limit
