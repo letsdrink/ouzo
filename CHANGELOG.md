@@ -5,6 +5,8 @@ CURRENT
 --------
 Enhancements:
 * [ORM] Added support for subqueries in Query.
+* [Utilities] Added Functions::random.
+* [Utilities] Added [Iterators](http://ouzo.readthedocs.org/en/latest/utils/iterators.html) (issue #189). 
 
 Bug fixes:
 * [MVC] Request stats are now logged only when debug is enabled. 
