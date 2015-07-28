@@ -3,6 +3,7 @@
 namespace Ouzo\Utilities\Iterator;
 
 
+use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\FluentFunctions;
 
 class FluentIteratorTest extends \PHPUnit_Framework_TestCase
@@ -107,5 +108,35 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('a', FluentIterator::fromArray(array('a'))->firstOr('default'));
         $this->assertEquals('default', FluentIterator::fromArray(array())->firstOr('default'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionIfFirstCalledForEmptyIterator()
+    {
+        //given
+        $iterator = FluentIterator::fromArray(array());
+
+        // when
+        CatchException::when($iterator)->first();
+
+        // then
+        CatchException::assertThat()->isInstanceOf('\InvalidArgumentException');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFirstElementInIterator()
+    {
+        //given
+        $iterator = FluentIterator::fromArray(array('a', 'b'));
+
+        // when
+        $first = $iterator->first();
+
+        // then
+        $this->assertEquals('a', $first);
     }
 }
