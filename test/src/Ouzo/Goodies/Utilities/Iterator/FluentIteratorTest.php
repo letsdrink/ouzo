@@ -79,7 +79,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
             return 1;
         };
 
-        $result = FluentIterator::fromGenerator($generator)->limit(3);
+        $result = FluentIterator::fromFunction($generator)->limit(3);
 
         //then
         $this->assertEquals(array(1, 1, 1), $result->toArray());
@@ -103,9 +103,9 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReturnCurrentElementOrDefault()
+    public function shouldReturnFirstElementOrDefault()
     {
-        $this->assertEquals('a', FluentIterator::fromArray(array('a'))->currentOr('default'));
-        $this->assertEquals('default', FluentIterator::fromArray(array())->currentOr('default'));
+        $this->assertEquals('a', FluentIterator::fromArray(array('a'))->firstOr('default'));
+        $this->assertEquals('default', FluentIterator::fromArray(array())->firstOr('default'));
     }
 }

@@ -292,10 +292,12 @@ random
 Returns a function that generates random numbers.
 Optional parameters ``$min`` and ``$max`` specify range (inclusive).
 
+**Parameters:** ``$min``, ``$max``
+
+Example:
 ::
 
   Functions::random();
   Functions::random(10, 20);
 
-~~~~~~
-**Parameters:** ``$min``, ``$max``
+

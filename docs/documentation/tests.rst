@@ -407,6 +407,7 @@ Argument matchers
     Mock::verify($mock)->method(Mock::anyArgList());
 
 * Mock::argThat() - returns an instance of FluentArgumentMatcher that can chain methods from :doc:`../utils/functions`.
+
 ::
 
     Mock::verify($mock)->method(Mock::argThat()->extractField('name')->equals('Bob'));

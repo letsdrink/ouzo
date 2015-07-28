@@ -50,9 +50,9 @@ Returns an iterator that applies function to each element of ``$iterator``.
 
 ----
 
-currentOr
-~~~~~~~~~
-Returns the current element in iterator or defaultValue if the current position is not valid.
+firstOr
+~~~~~~~
+Returns the first element or defaultValue if the iterator is empty.
 
 **Parameters:** ``Iterator $iterator``,``$default``
 

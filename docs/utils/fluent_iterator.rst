@@ -14,11 +14,34 @@ It's inspired by FluentIterable from guava library.
 
 ::
 
-    $result = FluentIterator::fromGenerator(Functions::random(0, 10))
+    $result = FluentIterator::fromFunction(Functions::random(0, 10))
              ->limit(10)
              ->toArray(); // returns array of 10 random numbers between 0 and 10 (inclusive)
 
 All methods are applied lazily during iteration or call to ``toArray``.
+
+
+FluentIterator works great with php 5.5 generators:
+
+::
+
+    function fibonacci() {
+        $i = 0;
+        $k = 1;
+        while(true) {
+            yield $k;
+            $k = $i + $k;
+            $i = $k - $i;
+        }
+    }
+
+    //10th Fibonacci number
+    $result = FluentIterator::from(fibonacci())->skip(9)->firstOr(null);
+
+    //first Fibonacci number greater than 100
+    $result = FluentIterator::from(fibonacci())->filter(function($number) {
+        return $number > 100;
+    })->firstOr(null);
 
 from
 ~~~~
@@ -36,8 +59,8 @@ Returns a fluent iterator for ``$array``.
 
 ----
 
-fromGenerator
-~~~~~~~~~~~~~
+fromFunction
+~~~~~~~~~~~~
 Returns a fluent iterator that uses $function to generate elements.
 ``$function`` takes one argument which is the current position of the iterator.
 
@@ -75,9 +98,9 @@ Returns a fluent iterator that applies function to each element of this fluent i
 
 ----
 
-currentOr
-~~~~~~~~~
-Returns the current element or defaultValue if the current position is not valid.
+firstOr
+~~~~~~~
+Returns the first element or defaultValue if the iterator is empty.
 
 **Parameters:** ``$default``
 
