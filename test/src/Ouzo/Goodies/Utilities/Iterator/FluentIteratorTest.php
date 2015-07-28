@@ -103,9 +103,9 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReturnFirstElementOrDefault()
+    public function shouldReturnCurrentElementOrDefault()
     {
-        $this->assertEquals('a', FluentIterator::fromArray(array('a'))->firstOr('default'));
-        $this->assertEquals('default', FluentIterator::fromArray(array())->firstOr('default'));
+        $this->assertEquals('a', FluentIterator::fromArray(array('a'))->currentOr('default'));
+        $this->assertEquals('default', FluentIterator::fromArray(array())->currentOr('default'));
     }
 }
