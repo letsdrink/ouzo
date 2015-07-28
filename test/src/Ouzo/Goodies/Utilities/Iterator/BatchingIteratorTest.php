@@ -50,7 +50,7 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
     public function shouldNotBeValidForEmptyArray()
     {
         //given
-        $batchIterator = new BatchingIterator(new ArrayIterator([]), 2);
+        $batchIterator = new BatchingIterator(new ArrayIterator(array()), 2);
 
         //when
         $valid = $batchIterator->valid();
