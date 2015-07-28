@@ -1,6 +1,24 @@
 FluentIterator
 ==============
 
+Interface for manipulating iterators in a chained fashion.
+It's inspired by FluentIterable from guava library.
+
+::
+
+    $result = FluentIterator::fromArray(array(1, 2, 3))
+             ->cycle()
+             ->limit(10)
+             ->reindex()
+             ->toArray(); // array(1, 2, 3, 1, 2, 3, 1, 2, 3, 1)
+
+::
+
+    $result = FluentIterator::fromGenerator(Functions::random(0, 10))
+             ->limit(10)
+             ->toArray(); // returns array of 10 random numbers between 0 and 10 (inclusive)
+
+All methods are applied lazily during iteration or call to ``toArray``.
 
 from
 ~~~~
