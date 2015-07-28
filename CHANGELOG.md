@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-CURRENT
+Release 1.5.1
 --------
 Enhancements:
 * [ORM] Added support for subqueries in Query.
