@@ -7,6 +7,7 @@ Ouzo provides many utility classes that facilitates functional programming in ph
 * :doc:`../utils/arrays` contains facade for php arrays functions. You will never wonder if array_filter has array or closure as the first parameter.
 * :doc:`../utils/functions` contains static utility methods returning closures that can be used with Arrays and FluentArray.
 * :doc:`../utils/fluent_array` provides an interface for manipulating arrays in a chained fashion.
+* :doc:`../utils/fluent_iterator` provides an interface for manipulating iterators in a chained fashion.
 * :doc:`../utils/fluent_functions` provides an interface for composing functions in a chained fashion.
 
 
@@ -92,6 +93,25 @@ Ouzo:
     :doc:`../utils/fluent_array`
 
     :ref:`Functions::extract <functions-extract>`
+
+
+Example 3
+~~~~~~~~~
+
+If the array/iterator is very long and you are interested only in a small subset or processing is time consuming, you may want to use FluentIterator so that all operations are performed lazily (and only if necessary).
+::
+
+    $activityReports = FluentIterator::from($users)
+             ->filter(activeInLastMonth())
+             ->map(createActivityReport())
+             ->limit(10)
+             ->toArray();
+
+.. seealso::
+
+    :doc:`../utils/fluent_iterator`
+
+
 
 
 
