@@ -5,6 +5,8 @@ CURRENT
 --------
 Enhancements:
 * [ORM] Added support for subqueries in Query.
+* [Utilities] Added Functions::random.
+* [Utilities] Added [Iterators](http://ouzo.readthedocs.org/en/latest/utils/iterators.html) (issue #189). 
 
 Bug fixes:
 * [MVC] Request stats are now logged only when debug is enabled. 
@@ -113,7 +115,7 @@ Bug fixes:
 * [Utilities] Fixed generating model fields in correct order (issue #102).
 * [Utilities] Fixed generating empty primary key when not in table (issue #98).
 * [Utilities] Fixed Functions::notBlank (issue #106).
-* [Core] Fixed throwing orginal message when throw UserException (issue #109).
+* [Core] Fixed throwing original message when throw UserException (issue #109).
 * [Utilities] Fixed Arrays::flattenKeysRecursively (issue #110).
 * [Core] Fixed parsing of Json inputs (#114).
 * [ORM] Fixed zero as primary key.
