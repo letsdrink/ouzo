@@ -735,7 +735,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldRemoveNestedKey()
+    public function shouldRemoveNestedKeyWithoutEmptyParent()
     {
         //given
         $array = array('1' => array('2' => array('3' => 'value')));
@@ -745,6 +745,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array('1' => array()), $array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveNestedKeyWithEmptyParent()
+    {
+        //given
+        $array = array('1' => array('2' => array('3' => 'value')));
+
+        //when
+        Arrays::removeNestedKey($array, array('1', '2'), Arrays::REMOVE_EMPTY_PARENTS);
+
+        //then
+        $this->assertEquals(array(), $array);
     }
 
     /**
@@ -789,6 +804,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array('1' => array('2' => array('3' => 'value'))), $array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotRemoveKeyWhenKeyNotFoundInTheFirstLevel()
+    {
+        //given
+        $array = array('1' => array('2' => 'value'));
+
+        //when
+        Arrays::removeNestedKey($array, array('2', '4'));
+
+        //then
+        $this->assertEquals(array('1' => array('2' => 'value')), $array);
     }
 
     /**
@@ -1027,5 +1057,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($numbers)->hasSize(2)
             ->containsOnly(90, 100);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAdditionalValueInRecursiveDiff()
+    {
+        //given
+        $array1 = array('a' => array('b' => 'c', 'd' => 'e'), 'f' => array('b' => 'c'), 'z');
+        $array2 = array('a' => array('b' => 'c'));
+
+        //when
+        $recursiveDiff = Arrays::recursiveDiff($array1, $array2);
+
+        //then
+        $this->assertEquals(array('a' => array('d' => 'e'), 'f' => array('b' => 'c'), 'z'), $recursiveDiff);
     }
 }

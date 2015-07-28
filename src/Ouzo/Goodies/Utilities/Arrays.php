@@ -15,6 +15,7 @@ use InvalidArgumentException;
 class Arrays
 {
     const TREAT_NULL_AS_VALUE = 1;
+    const REMOVE_EMPTY_PARENTS = true;
 
     /**
      * Returns true if every element in array satisfies the predicate.
@@ -850,14 +851,18 @@ class Arrays
      *
      * @param array $array
      * @param array $keys
+     * @param bool $removeEmptyParents
      */
-    public static function removeNestedKey(array &$array, array $keys)
+    public static function removeNestedKey(array &$array, array $keys, $removeEmptyParents = false)
     {
         $key = array_shift($keys);
         if (count($keys) == 0) {
             unset($array[$key]);
-        } else if ($array[$key] !== null) {
-            self::removeNestedKey($array[$key], $keys);
+        } else if (isset($array[$key])) {
+            self::removeNestedKey($array[$key], $keys, $removeEmptyParents);
+            if ($removeEmptyParents && empty($array[$key])) {
+                unset($array[$key]);
+            }
         }
     }
 
@@ -1050,5 +1055,52 @@ class Arrays
     public static function uniqueBy(array $elements, $selector)
     {
         return array_values(self::toMap($elements, Functions::extractExpression($selector)));
+    }
+
+    /**
+     * Returns a recursive diff of two arrays
+
+     * Example:
+     * <code>
+     * $array1 = array('a' => array('b' => 'c', 'd' => 'e'), 'f');
+     * $array2 = array('a' => array('b' => 'c'));
+     * $result = Arrays::recursiveDiff($array1, $array2);
+     * </code>
+     * Result:
+     * <code>
+     * array('a' => array('d' => 'e'), 'f')
+     *
+     * Array
+     * (
+     *  [a] => Array
+     *        (
+     *          [d] => e
+     *        )
+     *  [0] => f
+     * )
+     * </code>
+     *
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    public static function recursiveDiff($array1, $array2)
+    {
+        $result = array();
+        foreach ($array1 as $key => $value) {
+            if (array_key_exists($key, $array2)) {
+                if (is_array($value)) {
+                    $nestedDiff = self::recursiveDiff($value, $array2[$key]);
+                    if (!empty($nestedDiff)) {
+                        $result[$key] = $nestedDiff;
+                    }
+                } else if ($value != $array2[$key]) {
+                    $result[$key] = $value;
+                }
+            } else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
     }
 }

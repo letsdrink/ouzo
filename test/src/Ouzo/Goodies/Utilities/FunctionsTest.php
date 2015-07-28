@@ -173,4 +173,38 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertEquals($object->date, $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateRandomNumber()
+    {
+        //given
+        $function = Functions::random();
+
+        //when
+        $result = $function();
+
+        //then
+        $this->assertGreaterThanOrEqual(0, $result);
+        $this->assertLessThanOrEqual(getrandmax(), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateRandomNumberInRange()
+    {
+        for ($i = 0; $i < 100; ++$i) {
+            //given
+            $function = Functions::random(3, 7);
+
+            //when
+            $result = $function();
+
+            //then
+            $this->assertGreaterThanOrEqual(3, $result);
+            $this->assertLessThanOrEqual(7, $result);
+        }
+    }
 }

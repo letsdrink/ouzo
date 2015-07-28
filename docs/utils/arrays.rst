@@ -830,3 +830,30 @@ Removes duplicate values from an array. It uses the given expression to extract 
     (
         [0] => $b
     )
+
+----
+
+recursiveDiff
+~~~~~~~~~~~~~
+Returns a recursive diff of two arrays
+
+**Parameters:** ``array $array1``, ``array $array2``
+
+**Example:**
+::
+
+    $array1 = array('a' => array('b' => 'c', 'd' => 'e'), 'f');
+    $array2 = array('a' => array('b' => 'c'));
+    $result = Arrays::recursiveDiff($array1, $array2);
+
+**Result:**
+::
+
+  Array
+  (
+   [a] => Array
+         (
+           [d] => e
+         )
+   [0] => f
+  )

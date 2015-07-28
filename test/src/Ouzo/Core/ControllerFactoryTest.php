@@ -71,6 +71,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\ControllerNotFoundException');
+        CatchException::assertThat()->hasMessage('Controller [NotExists] for URI [/simple_test/action] does not exist!');
     }
 
     /**

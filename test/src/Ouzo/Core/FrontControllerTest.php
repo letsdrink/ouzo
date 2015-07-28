@@ -111,6 +111,7 @@ class RestfulController extends Controller
 
 class FrontControllerTest extends ControllerTestCase
 {
+
     public function __construct()
     {
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
@@ -127,6 +128,8 @@ class FrontControllerTest extends ControllerTestCase
     {
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');
+        Config::clearProperty('debug');
+        Config::clearProperty('callback', 'afterControllerInit');
     }
 
     /**
@@ -509,6 +512,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldTraceRequestInfo()
     {
         //given
+        Config::overrideProperty('debug')->with(true);
         Route::resource('restful');
         $this->get('/restful?param=1');
 
@@ -549,6 +553,40 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->hasMessage("afterInitCallback");
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotSaveStatsIfDebugDisabled()
+    {
+        //given
+        Config::overrideProperty('debug')->with(false);
+        Session::remove('stats_queries');
+        Route::get('/sample/save', 'sample#save');
+
+        //when
+        $this->get('/sample/save');
+
+        //then
+        $this->assertEmpty(Session::get('stats_queries'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSaveStatsIfDebugIsOn()
+    {
+        //given
+        Config::overrideProperty('debug')->with(true);
+        Session::remove('stats_queries');
+        Route::get('/sample/save', 'sample#save');
+
+        //when
+        $this->get('/sample/save');
+
+        //then
+        $this->assertNotEmpty(Session::get('stats_queries'));
     }
 
     public function _afterInitCallback()

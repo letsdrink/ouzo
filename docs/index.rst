@@ -33,6 +33,8 @@ Utilities:
 
    utils/arrays
    utils/fluent_array
+   utils/iterators
+   utils/fluent_iterator
    utils/cache
    utils/fluent_functions
    utils/form_helper
