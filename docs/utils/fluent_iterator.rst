@@ -111,20 +111,6 @@ Returns a fluent iterator that applies function to each element of this fluent i
 
 ----
 
-firstOr
-~~~~~~~
-Returns the first element or defaultValue if the iterator is empty.
-
-**Parameters:** ``$default``
-
-----
-
-first
-~~~~~
-Returns the first element in iterator or throws an Exception if iterator is empty
-
-----
-
 limit
 ~~~~~
 Returns a fluent iterator returning the first ``$number`` elements of of this fluent iterator.
@@ -144,6 +130,20 @@ Returns a fluent iterator returning all but first ``$number`` elements of this f
 reindex
 ~~~~~~~
 Returns an iterator that indexes elements numerically starting from 0
+
+----
+
+firstOr
+~~~~~~~
+Returns the first element or defaultValue if the iterator is empty.
+
+**Parameters:** ``$default``
+
+----
+
+first
+~~~~~
+Returns the first element in iterator or throws an Exception if iterator is empty
 
 ----
 
