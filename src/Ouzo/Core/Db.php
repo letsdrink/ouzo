@@ -162,4 +162,9 @@ class Db
     {
         self::$_transactionsEnabled = true;
     }
+
+    public function isConnected()
+    {
+        return $this->_dbHandle != null;
+    }
 }

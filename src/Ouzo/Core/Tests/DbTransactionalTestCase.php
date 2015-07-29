@@ -14,14 +14,18 @@ class DbTransactionalTestCase extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         Cache::clear();
-        Db::getInstance()->beginTransaction();
-        Db::getInstance()->disableTransactions();
+        if (Db::getInstance()->isConnected()) {
+            Db::getInstance()->beginTransaction();
+            Db::getInstance()->disableTransactions();
+        }
     }
 
     public function tearDown()
     {
         Cache::clear();
-        Db::getInstance()->enableTransactions();
-        Db::getInstance()->rollbackTransaction();
+        if (Db::getInstance()->isConnected()) {
+            Db::getInstance()->enableTransactions();
+            Db::getInstance()->rollbackTransaction();
+        }
     }
 }
