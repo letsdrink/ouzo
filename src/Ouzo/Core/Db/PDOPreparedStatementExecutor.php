@@ -27,7 +27,8 @@ class PDOPreparedStatementExecutor extends PDOExecutor
                 throw PDOExceptionExtractor::getException($pdoStatement->errorInfo(), $queryString);
             }
         } catch (PDOException $exception) {
-            throw PDOExceptionExtractor::getException($exception->getCode(), $queryString);
+            $errorInfo = array($exception->getCode(), $exception->getCode(), $exception->getMessage());
+            throw PDOExceptionExtractor::getException($errorInfo, $queryString);
         }
         return $pdoStatement;
     }
