@@ -70,4 +70,12 @@ class JsonTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('{"key1":"value1","key2":"value2","key3":"value3"}', $encoded);
     }
+
+    /**
+     * @test
+     */
+    public function decodeShouldReturnNullForEmptyString()
+    {
+        $this->assertNull(Json::decode(''));
+    }
 }
