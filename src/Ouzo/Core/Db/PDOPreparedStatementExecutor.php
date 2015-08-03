@@ -5,6 +5,8 @@
  */
 namespace Ouzo\Db;
 
+use PDOException;
+
 class PDOPreparedStatementExecutor extends PDOExecutor
 {
     public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString)
@@ -20,7 +22,12 @@ class PDOPreparedStatementExecutor extends PDOExecutor
             $pdoStatement->bindValue($key + 1, $valueBind, $type);
         }
 
-        if (!$pdoStatement->execute()) {
+        try {
+            $result = $pdoStatement->execute();
+        } catch (PDOException $exception) {
+            throw PDOExceptionExtractor::getException($exception->getCode(), $queryString);
+        }
+        if (!$result) {
             throw PDOExceptionExtractor::getException($pdoStatement->errorInfo(), $queryString);
         }
         return $pdoStatement;
