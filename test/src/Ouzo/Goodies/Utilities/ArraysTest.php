@@ -1074,4 +1074,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals(array('a' => array('d' => 'e'), 'f' => array('b' => 'c'), 'z'), $recursiveDiff);
     }
+
+    /**
+     * @test
+     */
+    public function containsShouldWorkForDifferentTypes()
+    {
+        $this->assertTrue(Arrays::contains(array(1, 2, 3), 1));
+    }
+
 }
