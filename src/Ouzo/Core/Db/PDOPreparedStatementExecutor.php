@@ -23,12 +23,11 @@ class PDOPreparedStatementExecutor extends PDOExecutor
         }
 
         try {
-            $result = $pdoStatement->execute();
+            if (!$pdoStatement->execute()) {
+                throw PDOExceptionExtractor::getException($pdoStatement->errorInfo(), $queryString);
+            }
         } catch (PDOException $exception) {
             throw PDOExceptionExtractor::getException($exception->getCode(), $queryString);
-        }
-        if (!$result) {
-            throw PDOExceptionExtractor::getException($pdoStatement->errorInfo(), $queryString);
         }
         return $pdoStatement;
     }
