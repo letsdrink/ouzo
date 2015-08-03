@@ -203,6 +203,6 @@ class DateTest extends PHPUnit_Framework_TestCase
         $date = Date::formatTimestamp($timestamp);
 
         //then
-        $this->assertEquals('2014-11-27 11:25', $date);
+        $this->assertEquals('2014-11-27 10:25', $date);
     }
 }

@@ -148,12 +148,12 @@ class ClockTest extends PHPUnit_Framework_TestCase
     public function shouldCreateClockForGivenTimestamp()
     {
         //given
-        $clock = Clock::fromTimestamp(1427207001);
+        $clock = Clock::fromTimestamp(1427207001)->setTimezone('UTC');
 
         //when
         $result = $clock->format();
 
         //then
-        $this->assertEquals('2015-03-24 15:23:21', $result);
+        $this->assertEquals('2015-03-24 14:23:21', $result);
     }
 }
