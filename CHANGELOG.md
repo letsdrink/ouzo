@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+INCOMING
+--------
+Enhancements:
+* [Utilities] Implemented Arrays::contains method (issue #103).
+
+Bug fixes:
+* [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).
+
 Release 1.5.1
 --------
 Enhancements:

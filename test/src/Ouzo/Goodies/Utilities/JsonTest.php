@@ -53,7 +53,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
         $decoded = Json::decode($json, true);
 
         //then
-        ArrayAssert::that($decoded)->hasSize(3)->contains('john', '123', '127.0.0.1');
+        ArrayAssert::that($decoded)->hasSize(3)->contains('john', 123, '127.0.0.1');
     }
 
     /**
