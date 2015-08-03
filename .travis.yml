@@ -8,16 +8,19 @@ php:
     - hhvm
     - nightly
 
+env:
+    - db=postgres
+    - db=mysql
+    - db=sqlite3
+
 matrix:
     fast_finish: true
     allow_failures:
         - php: hhvm
         - php: nightly
-   
-env:
-    - db=postgres
-    - db=mysql
-    - db=sqlite3
+    exclude:
+      - php: hhvm
+        env: db=postgres
 
 addons:
     postgresql: "9.3"
@@ -39,8 +42,8 @@ before_script:
     - cat test/test-db/recreate_schema_sqlite3.sql | sqlite3 ouzo_test
     
 script:
-    - if [[ "$db" == "sqlite3" ]]; then phpunit --configuration phpunit.xml --exclude-group non-sqlite3 test; fi
-    - if [[ "$db" != "sqlite3" ]]; then phpunit --configuration phpunit.xml --exclude-group sqlite3 test; fi
+    - if [[ "$db" == "sqlite3" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group non-sqlite3 test; fi
+    - if [[ "$db" != "sqlite3" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group sqlite3 test; fi
 
 after_script:
   - php vendor/bin/coveralls -v
