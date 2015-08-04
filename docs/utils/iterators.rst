@@ -46,7 +46,7 @@ map
 ~~~
 Returns an iterator that applies function to each element of ``$iterator``.
 
-**Parameters:** ``Iterator $iterator``,``callable $function``
+**Parameters:** ``Iterator $iterator``, ``callable $function``
 
 ----
 
@@ -54,7 +54,7 @@ firstOr
 ~~~~~~~
 Returns the first element or defaultValue if the iterator is empty.
 
-**Parameters:** ``Iterator $iterator``,``$default``
+**Parameters:** ``Iterator $iterator``, ``$default``
 
 first
 ~~~~~
@@ -66,7 +66,7 @@ limit
 ~~~~~
 Creates an iterator returning the first ``$number`` elements of the given iterator.
 
-**Parameters:** ``Iterator $iterator``,``$number``
+**Parameters:** ``Iterator $iterator``, ``$number``
 
 ----
 
@@ -74,7 +74,7 @@ skip
 ~~~~
 Creates an iterator returning all but first ``$number`` elements of the given iterator.
 
-**Parameters:** ``Iterator $iterator``,``$number``
+**Parameters:** ``Iterator $iterator``, ``$number``
 
 ----
 
