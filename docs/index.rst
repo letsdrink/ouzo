@@ -18,6 +18,7 @@ Documentation:
 
 .. toctree::
    :maxdepth: 2
+   :caption: Documentation
 
    documentation/routes
    documentation/orm
