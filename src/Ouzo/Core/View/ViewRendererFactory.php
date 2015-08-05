@@ -5,12 +5,10 @@
  */
 namespace Ouzo\View;
 
-
 use Ouzo\Config;
 
 class ViewRendererFactory
 {
-
     public static function create($viewName, $attributes)
     {
         $rendererClass = Config::getValue('renderer', $viewName);

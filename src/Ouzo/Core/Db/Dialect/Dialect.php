@@ -74,7 +74,7 @@ abstract class Dialect
     private function whereWithUsing()
     {
         $usingClauses = $this->_query->usingClauses;
-        $whereClauses = Arrays::map($usingClauses, function(JoinClause $usingClause) {
+        $whereClauses = Arrays::map($usingClauses, function (JoinClause $usingClause) {
             return WhereClause::create($usingClause->getJoinColumnWithTable() . ' = ' . $usingClause->getJoinedColumnWithTable());
         });
         return $this->_where(array_merge($whereClauses, $this->_query->whereClauses));

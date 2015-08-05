@@ -48,7 +48,7 @@ class CsrfProtector
         }
     }
 
-    static function isMethodProtected($method)
+    public static function isMethodProtected($method)
     {
         return !in_array($method, array('GET', 'HEAD', 'OPTIONS', 'TRACE'));
     }

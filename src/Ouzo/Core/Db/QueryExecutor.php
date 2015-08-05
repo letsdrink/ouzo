@@ -105,7 +105,7 @@ class QueryExecutor
         return $this->_db->lastErrorMessage();
     }
 
-    function _buildQuery()
+    public function _buildQuery()
     {
         $this->_fetchStyle = $this->_query->selectType;
         $this->_addBindValues($this->_query);

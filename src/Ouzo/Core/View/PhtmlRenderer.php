@@ -18,7 +18,7 @@ class PhtmlRenderer implements ViewRenderer
     private $_attributes;
     private $_viewPath;
 
-    function __construct($viewName, array $attributes)
+    public function __construct($viewName, array $attributes)
     {
         $this->_viewName = $viewName;
         $this->_attributes = $attributes;

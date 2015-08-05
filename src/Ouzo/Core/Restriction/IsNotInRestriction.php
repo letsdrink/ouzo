@@ -5,12 +5,11 @@
  */
 namespace Ouzo\Restriction;
 
-
 class IsNotInRestriction extends Restriction
 {
     private $values;
 
-    function __construct($values)
+    public function __construct($values)
     {
         $this->values = $values;
     }

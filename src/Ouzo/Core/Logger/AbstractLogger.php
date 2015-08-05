@@ -8,7 +8,8 @@ namespace Ouzo\Logger;
 use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
 
-abstract class AbstractLogger implements LoggerInterface {
+abstract class AbstractLogger implements LoggerInterface
+{
     private $_name;
     /**
      * @var MessageFormatter

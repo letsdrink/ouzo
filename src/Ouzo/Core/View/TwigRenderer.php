@@ -21,7 +21,7 @@ class TwigRenderer implements ViewRenderer
     private $_viewPath;
     private $_viewFilename;
 
-    function __construct($viewName, array $attributes)
+    public function __construct($viewName, array $attributes)
     {
         $this->_viewName = $viewName;
         $this->_attributes = $attributes;

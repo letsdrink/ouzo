@@ -5,7 +5,8 @@
  */
 namespace Ouzo\Restriction;
 
-class Between {
+class Between
+{
     const INCLUSIVE = 1;
     const EXCLUSIVE = 2;
     const LEFT_EXCLUSIVE = 3;

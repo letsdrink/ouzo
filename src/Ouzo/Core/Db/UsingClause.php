@@ -5,8 +5,8 @@
  */
 namespace Ouzo\Db;
 
-class UsingClause {
-
+class UsingClause
+{
     public $table;
     public $alias;
 

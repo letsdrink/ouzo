@@ -88,5 +88,4 @@ class ArrayWhereClause extends WhereClause
         $in = implode(', ', array_fill(0, count($array), '?'));
         return $column . ' IN (' . $in . ')';
     }
-
 }

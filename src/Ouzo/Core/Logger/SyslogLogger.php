@@ -9,7 +9,6 @@ use Ouzo\Config;
 
 class SyslogLogger extends AbstractLogger
 {
-
     public function __construct($name, $configuration)
     {
         parent::__construct($name, $configuration);

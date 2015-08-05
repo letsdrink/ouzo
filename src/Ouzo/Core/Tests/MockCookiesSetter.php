@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Tests;
 
-
 class MockCookiesSetter
 {
     private $_cookies = array();

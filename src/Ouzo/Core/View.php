@@ -89,12 +89,12 @@ class View
         return $this->_renderer;
     }
 
-    function __set($name, $value)
+    public function __set($name, $value)
     {
         $this->_attributes[$name] = $value;
     }
 
-    function __get($name)
+    public function __get($name)
     {
         return $this->_attributes[$name];
     }

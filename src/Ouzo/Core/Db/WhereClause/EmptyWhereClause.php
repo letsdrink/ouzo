@@ -7,7 +7,6 @@ namespace Ouzo\Db\WhereClause;
 
 class EmptyWhereClause extends WhereClause
 {
-
     public function isEmpty()
     {
         return true;
