@@ -1,8 +1,8 @@
 Welcome to Ouzo docs
 ====================
 
-Tutorials:
-~~~~~~~~~~
+Tutorials
+~~~~~~~~~
 
 Start with `5 minutes tutorial`_, read about project structure and then dive deeper into more advanced Ouzo topics.
 
@@ -12,9 +12,6 @@ Start with `5 minutes tutorial`_, read about project structure and then dive dee
    :maxdepth: 2
 
    tutorials/project_structure_explained
-
-Documentation:
-~~~~~~~~~~~~~~
 
 .. toctree::
    :maxdepth: 2
@@ -26,11 +23,9 @@ Documentation:
    documentation/functional_programming
    documentation/autoloading_classes
 
-Utilities:
-~~~~~~~~~~
-
 .. toctree::
    :maxdepth: 1
+   :caption: Utilities
 
    utils/arrays
    utils/fluent_array
@@ -52,16 +47,14 @@ Utilities:
    utils/time_ago
    utils/suppliers
 
-Tools:
-~~~~~~
-
 .. toctree::
    :maxdepth: 2
+   :caption: Tools
 
    tools/model_generator
 
-PhpStorm plugins:
-~~~~~~~~~~~~~~~~~
+PhpStorm plugins
+~~~~~~~~~~~~~~~~
 
 * `Ouzo framework plugin`_
 * `DynamicReturnTypePlugin`_ - for Mock and CatchException. You have to copy `dynamicReturnTypeMeta.json`_ to your project root.
