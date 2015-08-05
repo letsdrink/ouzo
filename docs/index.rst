@@ -49,6 +49,7 @@ Utilities:
    utils/comparators
    utils/joiner
    utils/time_ago
+   utils/suppliers
 
 Tools:
 ~~~~~~

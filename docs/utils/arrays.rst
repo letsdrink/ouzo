@@ -434,7 +434,7 @@ It invokes the function for each value in the array and creates a new array cont
 
 mapEntries
 ~~~~~~~~~~
-This method maps array values using the function which takes key and value as parameters..
+This method maps array values using the function which takes key and value as parameters.
 Invokes the function for each value in the array.
 Creates a new array containing the values returned by the function.
 
