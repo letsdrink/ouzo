@@ -703,9 +703,9 @@ Returns array with removed keys even are nested.
 ::
 
     $array = ['1' => ['2' => ['3' => 'value']]];
-    Arrays::removeNestedKey($array, array('1', '2'));
+    Arrays::removeNestedKey($array, ['1', '2']);
 
-Result:
+**Result:**
 ::
 
     Array
@@ -714,6 +714,23 @@ Result:
              (
              )
     )
+
+.. note::
+
+    It's possible to remove keys when they don't have any children using flag ``Arrays::REMOVE_EMPTY_PARENTS``.
+
+    **Example:**
+    ::
+
+        $array = ['1' => ['2' => ['3' => 'value']]];
+        Arrays::removeNestedKey($array, ['1', '2'], Arrays::REMOVE_EMPTY_PARENTS);
+
+    **Result:**
+    ::
+
+        Array
+        (
+        )
 
 ----
 
