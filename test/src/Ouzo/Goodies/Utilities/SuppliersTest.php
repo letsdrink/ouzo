@@ -9,7 +9,6 @@ use Ouzo\Utilities\Suppliers;
 
 class SuppliersTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */

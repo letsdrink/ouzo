@@ -3,12 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-
 use Ouzo\Utilities\ArrayContainFunctions;
 
 class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @test
      */

@@ -476,5 +476,4 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // then
         $this->assertEquals('SELECT * FROM products FOR UPDATE', $sql);
     }
-
 }

@@ -5,14 +5,12 @@
  */
 namespace Ouzo\Db\WhereClause;
 
-
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class EmptyWhereClauseTest extends DbTransactionalTestCase
 {
-
     /**
      * @test
      */

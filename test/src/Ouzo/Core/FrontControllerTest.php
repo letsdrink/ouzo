@@ -111,7 +111,6 @@ class RestfulController extends Controller
 
 class FrontControllerTest extends ControllerTestCase
 {
-
     public function __construct()
     {
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');

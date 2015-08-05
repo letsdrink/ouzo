@@ -5,13 +5,11 @@
  */
 namespace Ouzo\Db\WhereClause;
 
-
 use Ouzo\Db\Any;
 use Ouzo\Restrictions;
 
-class WhereClauseTest extends \PHPUnit_Framework_TestCase {
-
-
+class WhereClauseTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @test
      */

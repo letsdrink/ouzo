@@ -861,5 +861,4 @@ class ModelTest extends DbTransactionalTestCase
         // then
         $this->assertCount(1, $products);
     }
-
 }

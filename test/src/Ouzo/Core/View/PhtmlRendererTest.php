@@ -3,12 +3,11 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-
 use Ouzo\Config;
 use Ouzo\View\PhtmlRenderer;
 
-class PhtmlRendererTest extends PHPUnit_Framework_TestCase {
-
+class PhtmlRendererTest extends PHPUnit_Framework_TestCase
+{
     public function setUp()
     {
         parent::setUp();
@@ -51,4 +50,3 @@ class PhtmlRendererTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('Hello Jack!', $result);
     }
 }
- 

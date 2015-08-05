@@ -3,7 +3,6 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Application\Model\Test\Product;
 use Ouzo\Restrictions;
 
 class IsNotInRestrictionTest extends PHPUnit_Framework_TestCase
@@ -37,5 +36,4 @@ class IsNotInRestrictionTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertNull($sql);
     }
-
 }

@@ -3,13 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-
 use Ouzo\Config;
 use Ouzo\View\ViewRenderer;
 use Ouzo\View\ViewRendererFactory;
 
-class DummyRenderer implements ViewRenderer {
-
+class DummyRenderer implements ViewRenderer
+{
     public function render()
     {
     }
@@ -19,8 +18,8 @@ class DummyRenderer implements ViewRenderer {
     }
 }
 
-class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase {
-
+class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @test
      */
@@ -79,4 +78,3 @@ class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('DummyRenderer', $renderer);
     }
 }
- 

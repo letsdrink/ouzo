@@ -1082,5 +1082,4 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue(Arrays::contains(array(1, 2, 3), 1));
     }
-
 }
