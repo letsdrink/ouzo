@@ -43,8 +43,8 @@ Ouzo provides ``ControllerTestCase`` which allows you to verify that:
         }
     }
 
-Methods:
---------
+Methods
+-------
 
 * ``get($url)`` - mock GET request for given url
 * ``post($url, $data)`` - mock POST request with data for given url
@@ -55,8 +55,8 @@ Methods:
 * ``getRenderedJsonAsArray()`` - get returned JSON as array
 * ``getResponseHeaders()`` - get all response header
 
-Assertions:
------------
+Assertions
+----------
 
 * ``assertRedirectsTo($path)``
 * ``assertRenders($viewName)`` - asserts that the given view was rendered
@@ -102,8 +102,8 @@ Model assertions
 ~~~~~~~~~~~~~~~~
 ``Assert::thatModel`` allows you to check if two model objects are equal.
 
-Sample usage:
--------------
+Sample usage
+------------
 
 ::
 
@@ -127,8 +127,8 @@ Sample usage:
         }
     }
 
-Assertions:
------------
+Assertions
+----------
 
 * ``isEqualTo($expected)`` - compares all attributes. If one model has loaded a relation and other has not, they are considered not equal. Attributes not listed in model's fields are also compared
 * ``hasSameAttributesAs($expected)`` - compares only attributes listed in Models fields
@@ -139,8 +139,8 @@ String assertions
 ~~~~~~~~~~~~~~~~~
 ``Assert::thatString`` allows you to check strings as a fluent assertions.
 
-Sample usage:
--------------
+Sample usage
+------------
 ::
 
     Assert::thatString("Frodo")
@@ -153,8 +153,8 @@ Sample usage:
     Assert::thatString("Frodo")->isEqualTo("Frodo");
     Assert::thatString("Frodo")->isEqualNotTo("asd");
 
-Assertions:
------------
+Assertions
+----------
 
 * ``contains($substring)`` - check that string contains substring
 * ``doesNotContain($substring)`` - check that string does not contains substring
@@ -176,8 +176,8 @@ Array assertions
 ~~~~~~~~~~~~~~~~
 ``Assert::thatArray`` is a fluent array assertion to simplify your tests.
 
-Sample usage:
--------------
+Sample usage
+------------
 ::
 
     <?php
@@ -210,8 +210,8 @@ Using ``onMethod``:
 
     Assert::thatArray($users)->onMethod('getAge')->contains(35, 24);
 
-Assertions:
------------
+Assertions
+----------
 
 * ``contains($element ..)`` - vararg elements to examine that array contains them
 * ``containsOnly($element ..)`` - vararg elements to examine that array contains **only** them
@@ -232,8 +232,8 @@ Exception assertions
 ~~~~~~~~~~~~~~~~~~~~
 CatchException enables you to write a unit test that checks that an exception is thrown.
 
-Sample usage:
--------------
+Sample usage
+------------
 ::
 
     //given
@@ -245,8 +245,8 @@ Sample usage:
     //then
     CatchException::assertThat()->isInstanceOf("FooException");
 
-Assertions:
------------
+Assertions
+----------
 
 * ``isInstanceOf($exception)``
 * ``isEqualTo($exception)``
@@ -261,8 +261,8 @@ Session assertions
 ~~~~~~~~~~~~~~~~~~
 ``Assert::thatSession`` class comes with a handy method to test your session content.
 
-Sample usage:
--------------
+Sample usage
+------------
 ::
 
     // when

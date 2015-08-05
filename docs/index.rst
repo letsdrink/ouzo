@@ -22,6 +22,7 @@ Start with `5 minutes tutorial`_, read about project structure and then dive dee
    documentation/tests
    documentation/functional_programming
    documentation/autoloading_classes
+   documentation/config
 
 .. toctree::
    :maxdepth: 1
