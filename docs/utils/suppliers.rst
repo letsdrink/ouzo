@@ -1,7 +1,7 @@
 Suppliers
 =========
 
-This class can be used as the assignment target for a lambda expression.
+Static utility methods returning suppliers.
 
 ----
 
