@@ -6,6 +6,86 @@ environments.
 
 ----
 
+Custom config in Bootstrap
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Ouzo has options to add custom config class, which can override default defined config values.
+
+.. note::
+
+    **TODO:** Extract interface for custom configs.
+
+::
+
+    $bootstrap = new Bootstrap();
+    $bootstrap->addConfig(new MyNewConfig());
+    $bootstrap->runApplication();
+
+----
+
+Config in session
+~~~~~~~~~~~~~~~~~
+Ouzo can handle config per user (using session mechanism). To override or set config value you must add value to ``$_SESSION['config']`` e.g.:
+
+::
+
+    Session::set('config', 'db', 'host', '127.0.0.1');
+
+----
+
+Override rules
+~~~~~~~~~~~~~~
+Thus config may be loaded form multiple locations there are rules for overriding:
+
+Default config is override by the custom config.
+
+**Example:**
+::
+
+    $default['db']['host'] = 'localhost';
+    $default['db']['port'] = '5432';
+
+    $custom['db']['port'] = '1122';
+
+**Result (after override):**
+::
+
+    Array
+    (
+        [db] => Array
+            (
+                [host] => localhost
+                [port] => 1122
+            )
+
+    )
+
+Override default config by the custom can be also override by the session values.
+
+**Example:**
+::
+
+    $default['db']['host'] = 'localhost';
+    $default['db']['port'] = '5432';
+
+    $custom['db']['port'] = '1122';
+
+    Session::set('config', 'db', 'host', '127.0.0.1');
+
+**Result (after override):**
+::
+
+    Array
+    (
+        [db] => Array
+            (
+                [host] => 127.0.0.1
+                [port] => 1122
+            )
+
+    )
+
+----
+
 Methods
 ~~~~~~~
 
@@ -102,25 +182,3 @@ Revert config last override value.
     Config::revertProperty('key1', 'sub_key');
 
 **Result:** ``first``
-
-----
-
-Adding config in Bootstrap
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-    $bootstrap = new Bootstrap();
-    $bootstrap->addConfig(new PrimaryConfig());
-    $bootstrap->addConfig(new RuntimeConfig());
-    $bootstrap->runApplication();
-
-----
-
-Config stored in session
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-----
-
-Requirement config parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
