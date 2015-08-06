@@ -523,7 +523,7 @@ class Model extends Validatable
     {
         $fields = Arrays::toArray($field);
         foreach ($fields as $field) {
-            if (isset($attributes[$field]) && !$attributes[$field]) {
+            if (isset($attributes[$field]) && !is_bool($attributes[$field]) && !$attributes[$field]) {
                 $attributes[$field] = null;
             }
         }
