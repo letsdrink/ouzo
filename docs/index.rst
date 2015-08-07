@@ -10,43 +10,39 @@ Start with `5 minutes tutorial`_, read about project structure and then dive dee
 
 .. toctree::
    :maxdepth: 2
+   :caption: Framework
 
    tutorials/project_structure_explained
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Documentation
-
    documentation/routes
    documentation/orm
    documentation/tests
    documentation/functional_programming
    documentation/autoloading_classes
    documentation/config
+   utils/form_helper
+   utils/i18n
+   utils/session
+   utils/model_form_builder
 
 .. toctree::
    :maxdepth: 1
-   :caption: Utilities
+   :caption: Goodies
 
    utils/arrays
-   utils/fluent_array
-   utils/iterators
-   utils/fluent_iterator
-   utils/cache
-   utils/fluent_functions
-   utils/form_helper
-   utils/functions
-   utils/i18n
-   utils/model_form_builder
-   utils/objects
-   utils/path
-   utils/session
    utils/strings
-   utils/clock
+   utils/objects
+   utils/functions
+   utils/fluent_array
+   utils/fluent_iterator
+   utils/fluent_functions
    utils/comparators
+   utils/iterators
+   utils/cache
+   utils/suppliers
+   utils/path
+   utils/clock
    utils/joiner
    utils/time_ago
-   utils/suppliers
 
 .. toctree::
    :maxdepth: 2
