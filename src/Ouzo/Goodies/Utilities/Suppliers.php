@@ -11,6 +11,7 @@ use Ouzo\Utilities\Supplier\Supplier;
 
 /**
  * Static utility methods returning suppliers.
+ * @package Ouzo\Utilities
  */
 class Suppliers
 {

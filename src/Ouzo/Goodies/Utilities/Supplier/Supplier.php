@@ -5,7 +5,16 @@
  */
 namespace Ouzo\Utilities\Supplier;
 
+/**
+ * Represents a supplier of results.
+ * @package Ouzo\Utilities\Supplier
+ */
 interface Supplier
 {
+    /**
+     * Gets a result.
+     *
+     * @return mixed
+     */
     public function get();
 }
