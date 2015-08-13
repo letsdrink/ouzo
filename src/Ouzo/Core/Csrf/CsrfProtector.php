@@ -7,6 +7,8 @@ namespace Ouzo\Csrf;
 
 use Ouzo\Api\ForbiddenException;
 use Ouzo\Controller;
+use Ouzo\ExceptionHandling\Error;
+use Ouzo\I18n;
 use Ouzo\Request\RequestHeaders;
 use Ouzo\Session;
 use Ouzo\Uri;
@@ -37,14 +39,14 @@ class CsrfProtector
     {
         $csrfToken = self::getCsrfToken();
         if (!isset($_COOKIE['csrftoken']) || $_COOKIE['csrftoken'] != $csrfToken) {
-            throw new ForbiddenException();
+            self::_throwException();
         }
 
         $headerToken = Arrays::getValue(RequestHeaders::all(), 'X-Csrftoken');
         $postToken = Arrays::getValue($_POST, 'csrftoken');
 
         if ($headerToken != $csrfToken && $postToken != $csrfToken) {
-            throw new ForbiddenException();
+            self::_throwException();
         }
     }
 
@@ -69,5 +71,10 @@ class CsrfProtector
         $bytes = openssl_random_pseudo_bytes(($length + 1) / 2);
         $hex = bin2hex($bytes);
         return substr(base64_encode($hex), 0, $length);
+    }
+
+    private static function _throwException()
+    {
+        throw new ForbiddenException(new Error(defined('UNAUTHORIZED') ? UNAUTHORIZED : 0, I18n::t('exception.forbidden')));
     }
 }
