@@ -14,6 +14,8 @@ We believe in **clean code** and **simplicity**. We value **unit testing** and *
 
 # Want to know more?
 
+[![Join the chat at https://gitter.im/letsdrink/ouzo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/letsdrink/ouzo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 * [Offical website](http://ouzoframework.org)
 * [Getting started (5 minutes tutorial)](https://github.com/letsdrink/ouzo-app)
 * [Documentation](http://ouzo.readthedocs.org)
