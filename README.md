@@ -10,11 +10,11 @@ Ouzo is a PHP MVC framework with built-in ORM and util libraries. PHP 5.3 or lat
 [![License](https://poser.pugx.org/letsdrink/ouzo/license.svg)](https://packagist.org/packages/letsdrink/ouzo)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/letsdrink/ouzo.svg)](http://isitmaintained.com/project/letsdrink/ouzo "Average time to resolve an issue")
 
+[![Join the chat at https://gitter.im/letsdrink/ouzo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/letsdrink/ouzo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 We believe in **clean code** and **simplicity**. We value **unit testing** and **beautiful design**.
 
 # Want to know more?
-
-[![Join the chat at https://gitter.im/letsdrink/ouzo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/letsdrink/ouzo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 * [Offical website](http://ouzoframework.org)
 * [Getting started (5 minutes tutorial)](https://github.com/letsdrink/ouzo-app)
