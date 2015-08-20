@@ -13,10 +13,8 @@ class ForbiddenException extends OuzoException
 {
     const HTTP_CODE = 403;
 
-    public function __construct()
+    public function __construct($errors)
     {
-        $code = defined('UNAUTHORIZED') ? UNAUTHORIZED : 0;
-        $error = new Error($code, I18n::t('exception.forbidden'));
-        parent::__construct(self::HTTP_CODE, $error);
+        parent::__construct(self::HTTP_CODE, $errors);
     }
 }
