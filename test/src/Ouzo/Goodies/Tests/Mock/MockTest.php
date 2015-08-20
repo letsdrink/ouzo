@@ -503,7 +503,7 @@ class MockTest extends PHPUnit_Framework_TestCase
         Mock::when($mock)->method(Mock::argThat()->startsWith('matching'))->thenReturn('result');
 
         //when then
-        $this->assertEquals("result",  $mock->method("matching arg"));
+        $this->assertEquals("result", $mock->method("matching arg"));
         $this->assertNull($mock->method("something else"));
     }
 
@@ -574,5 +574,39 @@ class MockTest extends PHPUnit_Framework_TestCase
             $this->assertEquals('method("something else")', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(argThat()->extractField("name")->startsWith("matching"))', $e->getComparisonFailure()->getExpected());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldVerifyMethodIsCalledNTimes()
+    {
+        //given
+        $mock = Mock::mock('MockTestClass');
+
+        //when
+        $mock->method("something else");
+        $mock->method("something else");
+        $mock->method("something else");
+
+        //then
+        Mock::verify($mock)->receivedTimes(3)->method("something else");
+    }
+
+    /**
+     * @test
+     */
+    public function shouldVerifyMethodIsCalledNTimesForAnyArgs()
+    {
+        //given
+        $mock = Mock::mock('MockTestClass');
+
+        //when
+        $mock->method("something else 1");
+        $mock->method("something else 2");
+        $mock->method("something else 3");
+
+        //then
+        Mock::verify($mock)->receivedTimes(3)->method(Mock::any());
     }
 }
