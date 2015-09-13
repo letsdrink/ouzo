@@ -606,4 +606,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('name = ? AND description IS NULL', $replaceNth);
     }
+
+    /**
+     * @test
+     */
+    public function shouldRemoveAccents()
+    {
+        //given
+        $string = 'String with śżźćółŹĘ ÀÁÂ';
+
+        //when
+        $removeAccent = Strings::removeAccent($string);
+
+        //then
+        $this->assertEquals('String with szzcolZE AAA', $removeAccent);
+    }
 }
