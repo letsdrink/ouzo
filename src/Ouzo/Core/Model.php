@@ -519,12 +519,12 @@ class Model extends Validatable
         return $this;
     }
 
-    public function nullifyIfEmpty(&$attributes, $field)
+    public function nullifyIfEmpty()
     {
-        $fields = Arrays::toArray($field);
+        $fields = func_get_args();
         foreach ($fields as $field) {
-            if (isset($attributes[$field]) && !is_bool($attributes[$field]) && !$attributes[$field]) {
-                $attributes[$field] = null;
+            if (isset($this->$field) && Strings::isBlank($this->$field)) {
+                $this->$field = null;
             }
         }
     }
