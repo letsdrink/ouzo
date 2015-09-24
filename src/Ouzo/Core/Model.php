@@ -523,7 +523,7 @@ class Model extends Validatable
     {
         $fields = func_get_args();
         foreach ($fields as $field) {
-            if (isset($this->$field) && Strings::isBlank($this->$field) && !$this->$field) {
+            if (isset($this->$field) && Strings::isBlank($this->$field)) {
                 $this->$field = null;
             }
         }
