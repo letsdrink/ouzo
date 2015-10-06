@@ -73,7 +73,7 @@ class ControllerParameters implements ArrayAccess
 
     public function offsetUnset($offset)
     {
-        throw new BadMethodCallException('Cannot unset value. Parameters are read only!');
+        unset($this->parameters[$offset]);
     }
 
     public function __get($name)
