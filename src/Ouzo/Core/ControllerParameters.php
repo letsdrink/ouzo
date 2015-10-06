@@ -8,6 +8,7 @@ namespace Ouzo;
 use ArrayAccess;
 use BadMethodCallException;
 use InvalidArgumentException;
+use Ouzo\Utilities\Arrays;
 
 /**
  * @property array get
@@ -84,6 +85,11 @@ class ControllerParameters implements ArrayAccess
                 return $this->routeParameters;
         }
         throw new InvalidArgumentException('Invalid field name: ' . $name);
+    }
+
+    public function getValue($key, $default = null)
+    {
+        return Arrays::getValue($this->parameters, $key, $default);
     }
 
     public function toArray()

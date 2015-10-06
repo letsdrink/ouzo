@@ -67,6 +67,21 @@ class ControllerParametersTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldGetParameterByKey()
+    {
+        // given
+        $params = new ControllerParameters(array('a' => 'A'), array(), array('b' => 'B'), array('b' => '!', 'c' => 'C'));
+
+        // when
+        $result = $params->getValue('c');
+
+        // then
+        $this->assertEquals('C', $result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnArraysByMagicGetters()
     {
         $params = new ControllerParameters(array('a' => 'A'), array('b' => 'B'), array('c' => 'C'), array('d' => 'D'));
