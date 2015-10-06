@@ -64,7 +64,11 @@ class ControllerParameters implements ArrayAccess
 
     public function offsetSet($offset, $value)
     {
-        throw new BadMethodCallException('Cannot set value. Parameters are read only!');
+        if (is_null($offset)) {
+            $this->parameters[] = $value;
+        } else {
+            $this->parameters[$offset] = $value;
+        }
     }
 
     public function offsetUnset($offset)

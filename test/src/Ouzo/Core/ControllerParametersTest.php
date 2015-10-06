@@ -39,14 +39,16 @@ class ControllerParametersTest extends PHPUnit_Framework_TestCase
         unset($params['a']);
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     * @test
-     */
-    public function setShouldThrowExceptionAsItIsUnsupported()
+    public function shouldSetValueAsArray()
     {
+        // given
         $params = new ControllerParameters();
+
+        // when
         $params['a'] = 'A';
+
+        // then
+        $this->assertEquals('A', $params['a']);
     }
 
     /**
