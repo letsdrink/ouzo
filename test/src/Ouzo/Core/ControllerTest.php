@@ -160,7 +160,7 @@ class ControllerTest extends ControllerTestCase
         $this->get('/simple_test/params?p1=v1&p2=v2');
 
         //then
-        $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2'), $this->getAssigned('params')->toArray());
+        $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2'), $this->getAssigned('params'));
     }
 
     /**
@@ -175,7 +175,7 @@ class ControllerTest extends ControllerTestCase
         $this->get('/simple_test/params?p1=v1&id[]=1&id[]=2&id[]=3');
 
         //then
-        $actual = $this->getAssigned('params')->toArray();
+        $actual = $this->getAssigned('params');
         Assert::thatArray($actual)
             ->hasSize(2)
             ->containsKeyAndValue(array('p1' => 'v1'));
@@ -194,7 +194,7 @@ class ControllerTest extends ControllerTestCase
         $this->get('/simple_test/params?p1');
 
         //then
-        $this->assertEquals(array('p1' => null), $this->getAssigned('params')->toArray());
+        $this->assertEquals(array('p1' => null), $this->getAssigned('params'));
     }
 
     /**
@@ -209,7 +209,7 @@ class ControllerTest extends ControllerTestCase
         $this->get('/simple_test/params');
 
         //then
-        $this->assertEmpty($this->getAssigned('params')->toArray());
+        $this->assertEmpty($this->getAssigned('params'));
     }
 
     /**

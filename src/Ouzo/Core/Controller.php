@@ -19,9 +19,6 @@ class Controller
     public $after = array();
     public $currentController = '';
     public $currentAction = '';
-    /**
-     * @var ControllerParameters
-     */
     public $params;
 
     private $_statusResponse = 'show';
@@ -187,11 +184,11 @@ class Controller
         return (ClassName::pathToFullyQualifiedName($this->currentController) . '/' . $this->currentAction) ?: '/';
     }
 
-    private function createParameters(RouteRule $routeRule, $uri)
+    private function createParameters(RouteRule $routeRule, Uri $uri)
     {
         $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
         $requestParameters = Uri::getRequestParameters();
-        return new ControllerParameters($parameters, $_POST, $_GET, $requestParameters);
+        return array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
 }
 
