@@ -19,6 +19,9 @@ class Controller
     public $after = array();
     public $currentController = '';
     public $currentAction = '';
+    /**
+     * @var ControllerParameters
+     */
     public $params;
 
     private $_statusResponse = 'show';
@@ -40,9 +43,7 @@ class Controller
 
         $this->view = new View($viewName);
         $this->layout = new Layout();
-        $requestParameters = Uri::getRequestParameters();
-        $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
-        $this->params = array_merge($parameters, $_POST, $_GET, $requestParameters);
+        $this->params = $this->createParameters($routeRule, $uri);
     }
 
     public function header($header)
@@ -184,6 +185,13 @@ class Controller
     private function getViewName()
     {
         return (ClassName::pathToFullyQualifiedName($this->currentController) . '/' . $this->currentAction) ?: '/';
+    }
+
+    private function createParameters(RouteRule $routeRule, $uri)
+    {
+        $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
+        $requestParameters = Uri::getRequestParameters();
+        return new ControllerParameters($parameters, $_POST, $_GET, $requestParameters);
     }
 }
 

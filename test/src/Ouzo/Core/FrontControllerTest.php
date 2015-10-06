@@ -519,7 +519,7 @@ class FrontControllerTest extends ControllerTestCase
         $queries = Arrays::first(Stats::queries());
 
         //then
-        ArrayAssert::that($queries['request_params'][0])->hasSize(1)->containsKeyAndValue(array('param' => 1));
+        ArrayAssert::that($queries['request_params'][0]->toArray())->hasSize(1)->containsKeyAndValue(array('param' => 1));
     }
 
     /**

@@ -5,6 +5,7 @@ INCOMING
 --------
 Enhancements:
 * [Utilities] Implemented Arrays::contains method (issue #103).
+* [MVC] Added methods to Controller to retrieve POST/GET/Route/Request parameters separately if needed.
 
 Bug fixes:
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).
