@@ -41,13 +41,28 @@ class ControllerTestCase extends DbTransactionalTestCase
         return Config::getValue('global', 'prefix_system');
     }
 
-    public function get($url)
+    public function get($url, $data = null)
     {
+        $url = $this->_appendParamsToUrl($url, $data);
         $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
 
         $this->_initFrontController();
+    }
+
+    private function _appendParamsToUrl($url, $data)
+    {
+        if ($data) {
+            $conjunction = $this->_urlHasParams($url) ? "&" : "?";
+            return $url . $conjunction . http_build_query($data);
+        }
+        return $url;
+    }
+
+    private function _urlHasParams($url) {
+
+        return count($this->_parseUrlParams($url)) > 0;
     }
 
     private function _parseUrlParams($url)

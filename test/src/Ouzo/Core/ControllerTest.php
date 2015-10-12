@@ -166,6 +166,45 @@ class ControllerTest extends ControllerTestCase
     /**
      * @test
      */
+    public function shouldAppendParamsToUrlWithoutParams()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $data = array(
+            'p1' => 'v1',
+            'p2' => 'v2'
+        );
+
+        //when
+        $this->get('/simple_test/params', $data);
+
+        //then
+        $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2'), $this->getAssigned('params'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAppendParamsToUrlWithParams()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        $data = array(
+            'p2' => 'v2',
+            'p3' => 'v3'
+        );
+
+        //when
+        $this->get('/simple_test/params?p1=v1', $data);
+
+        //then
+        $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2', 'p3' => 'v3'), $this->getAssigned('params'));
+    }
+
+
+    /**
+     * @test
+     */
     public function shouldParseQueryStringWithNestedParams()
     {
         //given
