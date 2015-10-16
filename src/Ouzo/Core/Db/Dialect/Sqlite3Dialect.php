@@ -55,4 +55,9 @@ class Sqlite3Dialect extends Dialect
             throw new BadMethodCallException('USING clause is not supported in sqlite3');
         }
     }
+
+    function batchInsert($table, $primaryKey, $columns, $batchSize)
+    {
+        throw new \InvalidArgumentException("Alias in update query is nut supported in sqlite3");
+    }
 }

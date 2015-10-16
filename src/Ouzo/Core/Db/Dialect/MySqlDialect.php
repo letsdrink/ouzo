@@ -35,4 +35,9 @@ class MySqlDialect extends Dialect
     {
         return $this->_using($this->_query->usingClauses, ' INNER JOIN ', $this->_query->table, $this->_query->aliasTable);
     }
+
+    function batchInsert($table, $primaryKey, $columns, $batchSize)
+    {
+        throw new \InvalidArgumentException("Alias in update query is nut supported in mysql");
+    }
 }

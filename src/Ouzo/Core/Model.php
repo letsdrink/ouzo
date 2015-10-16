@@ -171,7 +171,7 @@ class Model extends Validatable
 
         $this->_callAfterSaveCallbacks();
 
-        $this->resetUpdates();
+        $this->_resetUpdates();
 
         return $lastInsertedId;
     }
@@ -192,12 +192,12 @@ class Model extends Validatable
         $this->_callAfterSaveCallbacks();
     }
 
-    private function _callAfterSaveCallbacks()
+    function _callAfterSaveCallbacks()
     {
         $this->_callCallbacks($this->_afterSaveCallbacks);
     }
 
-    private function _callBeforeSaveCallbacks()
+    function _callBeforeSaveCallbacks()
     {
         $this->_callCallbacks($this->_beforeSaveCallbacks);
     }
@@ -321,7 +321,7 @@ class Model extends Validatable
     {
         $className = get_called_class();
         $object = new $className($attributes);
-        $object->resetUpdates();
+        $object->_resetUpdates();
         return $object;
     }
 
@@ -578,7 +578,7 @@ class Model extends Validatable
         return array($attributes, $fields);
     }
 
-    public function resetUpdates()
+    function _resetUpdates()
     {
         $this->_updatedAttributes = array();
     }

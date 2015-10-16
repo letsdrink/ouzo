@@ -44,6 +44,7 @@ before_script:
 script:
     - if [[ "$db" == "sqlite3" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group non-sqlite3 test; fi
     - if [[ "$db" != "sqlite3" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group sqlite3 test; fi
+    - if [[ "$db" != "postgres" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group postgres test; fi
 
 after_script:
   - php vendor/bin/coveralls -v

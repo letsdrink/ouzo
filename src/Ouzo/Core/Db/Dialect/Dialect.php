@@ -194,6 +194,8 @@ abstract class Dialect
 
     abstract public function getErrorCode($errorInfo);
 
+    abstract function batchInsert($table, $primaryKey, $columns, $batchSize);
+
     protected function _where($whereClauses)
     {
         $where = DialectUtil::buildWhereQuery($whereClauses);

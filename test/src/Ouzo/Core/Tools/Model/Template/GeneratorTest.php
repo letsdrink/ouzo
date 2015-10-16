@@ -175,4 +175,9 @@ class MyImagineDialect extends Dialect
     {
         return 0;
     }
+
+    function batchInsert($table, $primaryKey, $columns, $batchSize)
+    {
+        // TODO: Implement batchInsert() method.
+    }
 }
