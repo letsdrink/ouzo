@@ -38,6 +38,6 @@ class MySqlDialect extends Dialect
 
     function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
-        throw new \InvalidArgumentException("Alias in update query is nut supported in mysql");
+        throw new \InvalidArgumentException("Batch insert not supported in mysql");
     }
 }

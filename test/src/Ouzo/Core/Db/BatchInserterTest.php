@@ -4,13 +4,10 @@ use Ouzo\Db\BatchInserter;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 
-/**
- * Class BatchInserterTest
- * @group postgres
- */
 class BatchInserterTest extends DbTransactionalTestCase
 {
     /**
+     * @group postgres
      * @test
      */
     public function shouldBuildBatchInsertSql()

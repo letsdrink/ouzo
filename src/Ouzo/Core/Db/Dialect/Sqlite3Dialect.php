@@ -26,7 +26,7 @@ class Sqlite3Dialect extends Dialect
     public function update()
     {
         if ($this->_query->aliasTable) {
-            throw new \InvalidArgumentException("Alias in update query is nut supported in sqlite3");
+            throw new \InvalidArgumentException("Alias in update query is not supported in sqlite3");
         }
         return parent::update();
     }
@@ -58,6 +58,6 @@ class Sqlite3Dialect extends Dialect
 
     function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
-        throw new \InvalidArgumentException("Alias in update query is nut supported in sqlite3");
+        throw new \InvalidArgumentException("Batch insert not supported in sqlite3");
     }
 }
