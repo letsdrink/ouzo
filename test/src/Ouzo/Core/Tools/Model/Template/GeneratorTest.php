@@ -178,6 +178,5 @@ class MyImagineDialect extends Dialect
 
     function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
-        // TODO: Implement batchInsert() method.
     }
 }
