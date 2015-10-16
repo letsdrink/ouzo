@@ -42,9 +42,9 @@ before_script:
     - cat test/test-db/recreate_schema_sqlite3.sql | sqlite3 ouzo_test
     
 script:
-    - if [[ "$db" == "sqlite3" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group non-sqlite3 --exclude-group postgres test; fi
+    - if [[ "$db" == "sqlite3" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group non-sqlite3,postgres test; fi
     - if [[ "$db" == "postgres" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group sqlite3 test; fi
-    - if [[ "$db" == "mysql" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group sqlite3 --exclude-group postgres test; fi
+    - if [[ "$db" == "mysql" ]]; then phpunit -d zend.enable_gc=0 --configuration phpunit.xml --exclude-group sqlite3,postgres test; fi
 
 after_script:
   - php vendor/bin/coveralls -v
