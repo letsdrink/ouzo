@@ -18,16 +18,16 @@ class BatchInserterTest extends DbTransactionalTestCase
         //given
         $inserter = new BatchInserter();
 
-        $inserter->add(new Product(['name' => 'a', 'position' => 1]));
-        $inserter->add(new Product(['name' => 'b', 'position' => 2]));
-        $inserter->add(new Product(['name' => 'c', 'position' => 3]));
+        $inserter->add(new Product(array('name' => 'a', 'position' => 1)));
+        $inserter->add(new Product(array('name' => 'b', 'position' => 2)));
+        $inserter->add(new Product(array('name' => 'c', 'position' => 3)));
 
         //when
         $inserter->execute();
 
         //then
-        $this->assertNotNull(Product::where(['name' =>'a'])->fetch());
-        $this->assertNotNull(Product::where(['name' =>'b'])->fetch());
-        $this->assertNotNull(Product::where(['name' =>'c'])->fetch());
+        $this->assertNotNull(Product::where(array('name' =>'a'))->fetch());
+        $this->assertNotNull(Product::where(array('name' =>'b'))->fetch());
+        $this->assertNotNull(Product::where(array('name' =>'c'))->fetch());
     }
 }

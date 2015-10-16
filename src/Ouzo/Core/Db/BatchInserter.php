@@ -14,7 +14,7 @@ class BatchInserter
     /**
      * @var Model[]
      */
-    private $_models = [];
+    private $_models = array();
 
     public function add(Model $model)
     {
@@ -67,7 +67,7 @@ class BatchInserter
 
     function _prepareParams($primaryKey)
     {
-        $allValues = [];
+        $allValues = array();
         foreach ($this->_models as $model) {
             $attributes = $model->attributes();
             unset($attributes[$primaryKey]);
