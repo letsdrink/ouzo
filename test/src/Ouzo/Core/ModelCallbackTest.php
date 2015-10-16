@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+use Ouzo\Db\ModelDefinition;
 use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
 
@@ -37,6 +38,12 @@ class CallbackTestModel extends Model
 
 class ModelCallbackTest extends DbTransactionalTestCase
 {
+    public  function setUp()
+    {
+        parent::setUp();
+        ModelDefinition::resetCache();
+    }
+
     /**
      * @test
      */

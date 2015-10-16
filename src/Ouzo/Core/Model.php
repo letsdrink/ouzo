@@ -8,6 +8,7 @@ namespace Ouzo;
 use Exception;
 use InvalidArgumentException;
 use Ouzo\Db;
+use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryExecutor;
@@ -21,18 +22,8 @@ use ReflectionClass;
 
 class Model extends Validatable
 {
-    /**
-     * @var Db
-     */
-    private $_db;
+    private $_modelDefinition;
     private $_attributes;
-    private $_tableName;
-    private $_sequenceName;
-    private $_primaryKeyName;
-    private $_fields;
-    private $_relations;
-    private $_afterSaveCallbacks = array();
-    private $_beforeSaveCallbacks = array();
     private $_updatedAttributes = array();
 
     /**
@@ -58,30 +49,15 @@ class Model extends Validatable
     {
         $this->_prepareParameters($params);
 
-        $tableName = Arrays::getValue($params, 'table') ?: Strings::tableize($this->getModelName());
-        $primaryKeyName = Arrays::getValue($params, 'primaryKey', 'id');
-        $sequenceName = Arrays::getValue($params, 'sequence', "{$tableName}_{$primaryKeyName}_seq");
-
-        list($attributes, $fields) = $this->_extractFieldsAndAttributes($params);
-
-        $this->_relations = RelationsCache::getRelations(get_called_class(), $params, $primaryKeyName);
+        $this->_modelDefinition = ModelDefinition::get(get_called_class(), $params);
+        $primaryKeyName = $this->_modelDefinition->_primaryKeyName;
+        $attributes = array_merge($this->_modelDefinition->_defaults, $params['attributes']);
 
         if (isset($attributes[$primaryKeyName]) && Strings::isBlank($attributes[$primaryKeyName])) {
             unset($attributes[$primaryKeyName]);
         }
-
-        $this->_tableName = $tableName;
-        $this->_sequenceName = $sequenceName;
-        $this->_primaryKeyName = $primaryKeyName;
-        $this->_db = empty($params['db']) ? Db::getInstance() : $params['db'];
-        $this->_fields = $fields;
-        if ($primaryKeyName && !in_array($primaryKeyName, $this->_fields)) {
-            $this->_fields[] = $primaryKeyName;
-        }
         $this->_attributes = $this->filterAttributes($attributes);
         $this->_updatedAttributes = array_keys($this->_attributes);
-        $this->_afterSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'afterSave'));
-        $this->_beforeSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'beforeSave'));
     }
 
     public function __set($name, $value)
@@ -98,7 +74,8 @@ class Model extends Validatable
         if (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[$name];
         }
-        if ($this->_relations->hasRelation($name)) {
+
+        if ($this->_modelDefinition->_relations->hasRelation($name)) {
             $this->_fetchRelation($name);
             return $this->_attributes[$name];
         }
@@ -123,7 +100,7 @@ class Model extends Validatable
 
     private function filterAttributesPreserveNull($data)
     {
-        return array_intersect_key($data, array_flip($this->_fields));
+        return array_intersect_key($data, array_flip($this->_modelDefinition->_fields));
     }
 
     private function filterAttributes($data)
@@ -137,7 +114,7 @@ class Model extends Validatable
     {
         return array_replace(array_map(function () {
             return null;
-        }, array_flip($this->_fields)), $this->_attributes);
+        }, array_flip($this->_modelDefinition->_fields)), $this->_attributes);
     }
 
     private function _prepareParameters(array &$params)
@@ -152,20 +129,20 @@ class Model extends Validatable
 
     public function getTableName()
     {
-        return $this->_tableName;
+        return $this->_modelDefinition->_tableName;
     }
 
     public function insert()
     {
         $this->_callBeforeSaveCallbacks();
 
-        $primaryKey = $this->_primaryKeyName;
+        $primaryKey = $this->_modelDefinition->_primaryKeyName;
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
 
-        $query = Query::insert($attributes)->into($this->_tableName);
-        $lastInsertedId = QueryExecutor::prepare($this->_db, $query)->insert($this->_sequenceName);
+        $query = Query::insert($attributes)->into($this->_modelDefinition->_tableName);
+        $lastInsertedId = QueryExecutor::prepare($this->_modelDefinition->_db, $query)->insert($this->_modelDefinition->_sequenceName);
 
-        if ($primaryKey && $this->_sequenceName) {
+        if ($primaryKey && $this->_modelDefinition->_sequenceName) {
             $this->$primaryKey = $lastInsertedId;
         }
 
@@ -183,10 +160,10 @@ class Model extends Validatable
         $attributes = $this->getAttributesForUpdate();
         if ($attributes) {
             $query = Query::update($attributes)
-                ->table($this->_tableName)
-                ->where(array($this->_primaryKeyName => $this->getId()));
+                ->table($this->_modelDefinition->_tableName)
+                ->where(array($this->_modelDefinition->_primaryKeyName => $this->getId()));
 
-            QueryExecutor::prepare($this->_db, $query)->execute();
+            QueryExecutor::prepare($this->_modelDefinition->_db, $query)->execute();
         }
 
         $this->_callAfterSaveCallbacks();
@@ -194,12 +171,12 @@ class Model extends Validatable
 
     function _callAfterSaveCallbacks()
     {
-        $this->_callCallbacks($this->_afterSaveCallbacks);
+        $this->_callCallbacks($this->_modelDefinition->_afterSaveCallbacks);
     }
 
     function _callBeforeSaveCallbacks()
     {
-        $this->_callCallbacks($this->_beforeSaveCallbacks);
+        $this->_callCallbacks($this->_modelDefinition->_beforeSaveCallbacks);
     }
 
     private function _callCallbacks($callbacks)
@@ -235,38 +212,38 @@ class Model extends Validatable
 
     public function delete()
     {
-        return (bool)$this->where(array($this->_primaryKeyName => $this->getId()))->deleteAll();
+        return (bool)$this->where(array($this->_modelDefinition->_primaryKeyName => $this->getId()))->deleteAll();
     }
 
     public function getId()
     {
-        $primaryKeyName = $this->_primaryKeyName;
+        $primaryKeyName = $this->_modelDefinition->_primaryKeyName;
         return $this->$primaryKeyName;
     }
 
     public function getIdName()
     {
-        return $this->_primaryKeyName;
+        return $this->_modelDefinition->_primaryKeyName;
     }
 
     public function getSequenceName()
     {
-        return $this->_sequenceName;
+        return $this->_modelDefinition->_sequenceName;
     }
 
     private function _findByIdOrNull($value)
     {
-        return $this->where(array($this->_primaryKeyName => $value))->fetch();
+        return $this->where(array($this->_modelDefinition->_primaryKeyName => $value))->fetch();
     }
 
     private function _findById($value)
     {
-        if (!$this->_primaryKeyName) {
-            throw new DbException('Primary key is not defined for table ' . $this->_tableName);
+        if (!$this->_modelDefinition->_primaryKeyName) {
+            throw new DbException('Primary key is not defined for table ' . $this->_modelDefinition->_tableName);
         }
         $result = $this->_findByIdOrNull($value);
         if (!$result) {
-            throw new DbException($this->_tableName . " with " . $this->_primaryKeyName . "=" . $value . " not found");
+            throw new DbException($this->_modelDefinition->_tableName . " with " . $this->_modelDefinition->_primaryKeyName . "=" . $value . " not found");
         }
         return $result;
     }
@@ -287,7 +264,7 @@ class Model extends Validatable
 
     public function _getFields()
     {
-        return $this->_fields;
+        return $this->_modelDefinition->_fields;
     }
 
     public static function getFields()
@@ -297,7 +274,7 @@ class Model extends Validatable
 
     private function _getFieldsWithoutPrimaryKey()
     {
-        return array_diff($this->_fields, array($this->_primaryKeyName));
+        return array_diff($this->_modelDefinition->_fields, array($this->_modelDefinition->_primaryKeyName));
     }
 
     public static function getFieldsWithoutPrimaryKey()
@@ -423,7 +400,7 @@ class Model extends Validatable
     public static function queryBuilder($alias = null)
     {
         $obj = static::metaInstance();
-        return new ModelQueryBuilder($obj, $obj->_db, $alias);
+        return new ModelQueryBuilder($obj, $obj->_modelDefinition->_db, $alias);
     }
 
     public static function count($where = '', $bindValues = null)
@@ -457,7 +434,7 @@ class Model extends Validatable
     public static function findBySql($nativeSql, $params = array())
     {
         $meta = static::metaInstance();
-        $results = $meta->_db->query($nativeSql, Arrays::toArray($params))->fetchAll();
+        $results = $meta->_modelDefinition->_db->query($nativeSql, Arrays::toArray($params))->fetchAll();
 
         return Arrays::map($results, function ($row) use ($meta) {
             return $meta->newInstance($row);
@@ -540,42 +517,12 @@ class Model extends Validatable
      */
     public function getRelation($name)
     {
-        return $this->_relations->getRelation($name);
+        return $this->_modelDefinition->_relations->getRelation($name);
     }
 
     public function __toString()
     {
         return $this->inspect();
-    }
-
-    private function _extractFieldsAndDefaults($fields)
-    {
-        $newFields = array();
-        $defaults = array();
-        $fieldKeys = array_keys($fields);
-        foreach ($fieldKeys as $fieldKey) {
-            if (is_numeric($fieldKey)) {
-                $newFields[] = $fields[$fieldKey];
-            } else {
-                $newFields[] = $fieldKey;
-                $value = $fields[$fieldKey];
-                if (is_callable($value)) {
-                    $value = $value();
-                }
-                $defaults[$fieldKey] = $value;
-            }
-        }
-        return array($newFields, $defaults);
-    }
-
-    private function _extractFieldsAndAttributes(array $params)
-    {
-        $attributes = $params['attributes'];
-        $fields = $params['fields'];
-
-        list($fields, $defaults) = $this->_extractFieldsAndDefaults($fields);
-        $attributes = array_merge($defaults, $attributes);
-        return array($attributes, $fields);
     }
 
     function _resetUpdates()
