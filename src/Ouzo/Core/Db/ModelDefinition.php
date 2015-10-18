@@ -71,13 +71,22 @@ class ModelDefinition
             } else {
                 $newFields[] = $fieldKey;
                 $value = $fields[$fieldKey];
-                if (is_callable($value)) {
-                    $value = $value();
-                }
                 $defaults[$fieldKey] = $value;
             }
         }
         return array($newFields, $defaults);
+    }
+
+    public function mergeWithDefaults($attributes)
+    {
+        $defaults = $this->_defaults;
+        foreach ($this->_defaults as $field => $value) {
+            if (is_callable($value)) {
+                $defaults[$field] = $value();
+            }
+        }
+        return array_replace($defaults, $attributes);
+        //return array_merge($defaults, $attributes);
     }
 
     private static function defaultTable($class)
