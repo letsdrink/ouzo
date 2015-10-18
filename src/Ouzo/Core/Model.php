@@ -32,22 +32,18 @@ class Model extends Validatable
     /**
      * Creates a new model object.
      * Accepted parameters:
-     * <code>
-     * 'table' - defaults to pluralized class name. E.g. customer_orders for CustomerOrder
-     * 'primaryKey' - defaults to 'id'
-     * 'sequence' - defaults to 'table_primaryKey_seq'
-     *
-     * 'hasOne' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
-     * 'hasMany' => array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
-     * 'belongsTo' => array('name' => array('class' => 'Class'))
-     *
-     * 'beforeSave' => array('_beforeSave', function ($attributes) { ... })
-     * 'afterSave' => array('_afterSave', function ($attributes) { ... })
-     *
-     * 'fields' - mapped column names
-     * 'attributes' -  array of column => value
-     * </code>
-     * @param array $params
+     * @param array $params {
+     *     @var string $table      defaults to pluralized class name. E.g. customer_orders for CustomerOrder
+     *     @var string $primaryKey defaults to id
+     *     @var string $sequence   defaults to table_primaryKey_seq
+     *     @var string $hasMany    specification of a has-many relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+     *     @var string $hasOne     specification of a has-one relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+     *     @var string $belongsTo  specification of a belongs-to relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+     *     @var string $fields     mapped column names
+     *     @var string $attributes array of column => value
+     *     @var string $beforeSave function to invoke before insert or update
+     *     @var string $afterSave  function to invoke after insert or update
+     * }
      */
     public function __construct(array $params)
     {
