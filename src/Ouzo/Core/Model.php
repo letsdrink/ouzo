@@ -27,7 +27,7 @@ class Model extends Validatable
      */
     private $_modelDefinition;
     private $_attributes;
-    private $_updatedAttributes = array();
+    private $_modifiedFields = array();
 
     /**
      * Creates a new model object.
@@ -61,12 +61,12 @@ class Model extends Validatable
             unset($attributes[$primaryKeyName]);
         }
         $this->_attributes = $this->filterAttributes($attributes);
-        $this->_updatedAttributes = array_keys($this->_attributes);
+        $this->_modifiedFields = array_keys($this->_attributes);
     }
 
     public function __set($name, $value)
     {
-        $this->_updatedAttributes[] = $name;
+        $this->_modifiedFields[] = $name;
         $this->_attributes[$name] = $value;
     }
 
@@ -98,7 +98,7 @@ class Model extends Validatable
 
     public function assignAttributes($attributes)
     {
-        $this->_updatedAttributes = array_merge($this->_updatedAttributes, array_keys($attributes));
+        $this->_modifiedFields = array_merge($this->_modifiedFields, array_keys($attributes));
         $this->_attributes = array_merge($this->_attributes, $this->filterAttributesPreserveNull($attributes));
     }
 
@@ -152,7 +152,7 @@ class Model extends Validatable
 
         $this->_callAfterSaveCallbacks();
 
-        $this->_resetUpdates();
+        $this->_resetModifiedFields();
 
         return $lastInsertedId;
     }
@@ -205,7 +205,7 @@ class Model extends Validatable
 
     public function updateAttributes($attributes)
     {
-        $this->_updatedAttributes = array_merge($this->_updatedAttributes, array_keys($attributes));
+        $this->_modifiedFields = array_merge($this->_modifiedFields, array_keys($attributes));
         $this->assignAttributes($attributes);
         if ($this->isValid()) {
             $this->update();
@@ -302,7 +302,7 @@ class Model extends Validatable
     {
         $className = get_called_class();
         $object = new $className($attributes);
-        $object->_resetUpdates();
+        $object->_resetModifiedFields();
         return $object;
     }
 
@@ -529,14 +529,14 @@ class Model extends Validatable
         return $this->inspect();
     }
 
-    function _resetUpdates()
+    function _resetModifiedFields()
     {
-        $this->_updatedAttributes = array();
+        $this->_modifiedFields = array();
     }
 
     private function getAttributesForUpdate()
     {
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
-        return array_intersect_key($attributes, array_flip($this->_updatedAttributes));
+        return array_intersect_key($attributes, array_flip($this->_modifiedFields));
     }
 }

@@ -61,7 +61,7 @@ class BatchInserter
     {
         foreach ($this->_models as $model) {
             $model->_callAfterSaveCallbacks();
-            $model->_resetUpdates();
+            $model->_resetModifiedFields();
         }
     }
 
