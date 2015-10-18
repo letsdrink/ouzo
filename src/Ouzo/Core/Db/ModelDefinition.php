@@ -73,7 +73,7 @@ class ModelDefinition
 
     private static function defaultTable($class)
     {
-        $reflectionClass = (new ReflectionClass($class));
+        $reflectionClass = new ReflectionClass($class);
         return Strings::tableize($reflectionClass->getShortName());
     }
 
@@ -106,14 +106,12 @@ class ModelDefinition
     {
         $newFields = array();
         $defaults = array();
-        $fieldKeys = array_keys($fields);
-        foreach ($fieldKeys as $fieldKey) {
-            if (is_numeric($fieldKey)) {
-                $newFields[] = $fields[$fieldKey];
+        foreach ($fields as $key => $value) {
+            if (is_numeric($key)) {
+                $newFields[] = $value;
             } else {
-                $newFields[] = $fieldKey;
-                $value = $fields[$fieldKey];
-                $defaults[$fieldKey] = $value;
+                $newFields[] = $key;
+                $defaults[$key] = $value;
             }
         }
         return array($newFields, $defaults);
