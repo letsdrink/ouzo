@@ -22,6 +22,9 @@ use ReflectionClass;
 
 class Model extends Validatable
 {
+    /**
+     * @var ModelDefinition
+     */
     private $_modelDefinition;
     private $_attributes;
     private $_updatedAttributes = array();
@@ -44,6 +47,7 @@ class Model extends Validatable
      * 'fields' - mapped column names
      * 'attributes' -  array of column => value
      * </code>
+     * @param array $params
      */
     public function __construct(array $params)
     {
