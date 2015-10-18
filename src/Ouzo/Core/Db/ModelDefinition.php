@@ -14,32 +14,32 @@ class ModelDefinition
     /**
      * @var Db
      */
-    public $_db;
-    public $_tableName;
-    public $_sequenceName;
-    public $_primaryKeyName;
-    public $_fields;
+    public $db;
+    public $table;
+    public $sequence;
+    public $primaryKey;
+    public $fields;
     /**
      * @var Relations
      */
-    public $_relations;
-    public $_afterSaveCallbacks = array();
-    public $_beforeSaveCallbacks = array();
-    public $_defaults = array();
+    public $relations;
+    public $afterSaveCallbacks = array();
+    public $beforeSaveCallbacks = array();
+    public $defaults = array();
 
     private static $cache = array();
 
-    public function __construct(Db $_db, $_tableName, $_sequenceName, $_primaryKeyName, $_fields, $_relations, array $_afterSaveCallbacks, array $_beforeSaveCallbacks, $_defaults)
+    public function __construct(Db $db, $table, $sequence, $primaryKey, $fields, $relations, array $afterSaveCallbacks, array $beforeSaveCallbacks, $defaults)
     {
-        $this->_db = $_db;
-        $this->_tableName = $_tableName;
-        $this->_sequenceName = $_sequenceName;
-        $this->_primaryKeyName = $_primaryKeyName;
-        $this->_fields = $_fields;
-        $this->_relations = $_relations;
-        $this->_afterSaveCallbacks = $_afterSaveCallbacks;
-        $this->_beforeSaveCallbacks = $_beforeSaveCallbacks;
-        $this->_defaults = $_defaults;
+        $this->db = $db;
+        $this->table = $table;
+        $this->sequence = $sequence;
+        $this->primaryKey = $primaryKey;
+        $this->fields = $fields;
+        $this->relations = $relations;
+        $this->afterSaveCallbacks = $afterSaveCallbacks;
+        $this->beforeSaveCallbacks = $beforeSaveCallbacks;
+        $this->defaults = $defaults;
     }
 
     public static function resetCache()
@@ -60,33 +60,15 @@ class ModelDefinition
         return self::$cache[$class];
     }
 
-    private static function _extractFieldsAndDefaults($fields)
-    {
-        $newFields = array();
-        $defaults = array();
-        $fieldKeys = array_keys($fields);
-        foreach ($fieldKeys as $fieldKey) {
-            if (is_numeric($fieldKey)) {
-                $newFields[] = $fields[$fieldKey];
-            } else {
-                $newFields[] = $fieldKey;
-                $value = $fields[$fieldKey];
-                $defaults[$fieldKey] = $value;
-            }
-        }
-        return array($newFields, $defaults);
-    }
-
     public function mergeWithDefaults($attributes)
     {
-        $defaults = $this->_defaults;
-        foreach ($this->_defaults as $field => $value) {
+        $defaults = $this->defaults;
+        foreach ($this->defaults as $field => $value) {
             if (is_callable($value)) {
                 $defaults[$field] = $value();
             }
         }
         return array_replace($defaults, $attributes);
-        //return array_merge($defaults, $attributes);
     }
 
     private static function defaultTable($class)
@@ -102,22 +84,38 @@ class ModelDefinition
      */
     private static function _createDefinition($class, $params)
     {
-        $tableName = Arrays::getValue($params, 'table') ?: self::defaultTable($class);
-        $primaryKeyName = Arrays::getValue($params, 'primaryKey', 'id');
-        $sequenceName = Arrays::getValue($params, 'sequence', "{$tableName}_{$primaryKeyName}_seq");
+        $table = Arrays::getValue($params, 'table') ?: self::defaultTable($class);
+        $primaryKey = Arrays::getValue($params, 'primaryKey', 'id');
+        $sequence = Arrays::getValue($params, 'sequence', "{$table}_{$primaryKey}_seq");
 
         list($fields, $defaults) = self::_extractFieldsAndDefaults($params['fields']);
 
-        $_relations = new Relations($class, $params, $primaryKeyName);
+        $relations = new Relations($class, $params, $primaryKey);
 
-        $_db = empty($params['db']) ? Db::getInstance() : $params['db'];
-        if ($primaryKeyName && !in_array($primaryKeyName, $fields)) {
-            $fields[] = $primaryKeyName;
+        $db = empty($params['db']) ? Db::getInstance() : $params['db'];
+        if ($primaryKey && !in_array($primaryKey, $fields)) {
+            $fields[] = $primaryKey;
         }
-        $_afterSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'afterSave'));
-        $_beforeSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'beforeSave'));
+        $afterSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'afterSave'));
+        $beforeSaveCallbacks = Arrays::toArray(Arrays::getValue($params, 'beforeSave'));
 
-        $modelDefinition = new ModelDefinition($_db, $tableName, $sequenceName, $primaryKeyName, $fields, $_relations, $_afterSaveCallbacks, $_beforeSaveCallbacks, $defaults);
-        return $modelDefinition;
+        return new ModelDefinition($db, $table, $sequence, $primaryKey, $fields, $relations, $afterSaveCallbacks, $beforeSaveCallbacks, $defaults);
+    }
+
+    private static function _extractFieldsAndDefaults($fields)
+    {
+        $newFields = array();
+        $defaults = array();
+        $fieldKeys = array_keys($fields);
+        foreach ($fieldKeys as $fieldKey) {
+            if (is_numeric($fieldKey)) {
+                $newFields[] = $fields[$fieldKey];
+            } else {
+                $newFields[] = $fieldKey;
+                $value = $fields[$fieldKey];
+                $defaults[$fieldKey] = $value;
+            }
+        }
+        return array($newFields, $defaults);
     }
 }

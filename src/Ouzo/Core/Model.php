@@ -54,7 +54,7 @@ class Model extends Validatable
         $this->_prepareParameters($params);
 
         $this->_modelDefinition = ModelDefinition::get(get_called_class(), $params);
-        $primaryKeyName = $this->_modelDefinition->_primaryKeyName;
+        $primaryKeyName = $this->_modelDefinition->primaryKey;
         $attributes = $this->_modelDefinition->mergeWithDefaults($params['attributes']);
 
         if (isset($attributes[$primaryKeyName]) && Strings::isBlank($attributes[$primaryKeyName])) {
@@ -79,7 +79,7 @@ class Model extends Validatable
             return $this->_attributes[$name];
         }
 
-        if ($this->_modelDefinition->_relations->hasRelation($name)) {
+        if ($this->_modelDefinition->relations->hasRelation($name)) {
             $this->_fetchRelation($name);
             return $this->_attributes[$name];
         }
@@ -104,7 +104,7 @@ class Model extends Validatable
 
     private function filterAttributesPreserveNull($data)
     {
-        return array_intersect_key($data, array_flip($this->_modelDefinition->_fields));
+        return array_intersect_key($data, array_flip($this->_modelDefinition->fields));
     }
 
     private function filterAttributes($data)
@@ -118,7 +118,7 @@ class Model extends Validatable
     {
         return array_replace(array_map(function () {
             return null;
-        }, array_flip($this->_modelDefinition->_fields)), $this->_attributes);
+        }, array_flip($this->_modelDefinition->fields)), $this->_attributes);
     }
 
     private function _prepareParameters(array &$params)
@@ -133,20 +133,20 @@ class Model extends Validatable
 
     public function getTableName()
     {
-        return $this->_modelDefinition->_tableName;
+        return $this->_modelDefinition->table;
     }
 
     public function insert()
     {
         $this->_callBeforeSaveCallbacks();
 
-        $primaryKey = $this->_modelDefinition->_primaryKeyName;
+        $primaryKey = $this->_modelDefinition->primaryKey;
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
 
-        $query = Query::insert($attributes)->into($this->_modelDefinition->_tableName);
-        $lastInsertedId = QueryExecutor::prepare($this->_modelDefinition->_db, $query)->insert($this->_modelDefinition->_sequenceName);
+        $query = Query::insert($attributes)->into($this->_modelDefinition->table);
+        $lastInsertedId = QueryExecutor::prepare($this->_modelDefinition->db, $query)->insert($this->_modelDefinition->sequence);
 
-        if ($primaryKey && $this->_modelDefinition->_sequenceName) {
+        if ($primaryKey && $this->_modelDefinition->sequence) {
             $this->$primaryKey = $lastInsertedId;
         }
 
@@ -164,10 +164,10 @@ class Model extends Validatable
         $attributes = $this->getAttributesForUpdate();
         if ($attributes) {
             $query = Query::update($attributes)
-                ->table($this->_modelDefinition->_tableName)
-                ->where(array($this->_modelDefinition->_primaryKeyName => $this->getId()));
+                ->table($this->_modelDefinition->table)
+                ->where(array($this->_modelDefinition->primaryKey => $this->getId()));
 
-            QueryExecutor::prepare($this->_modelDefinition->_db, $query)->execute();
+            QueryExecutor::prepare($this->_modelDefinition->db, $query)->execute();
         }
 
         $this->_callAfterSaveCallbacks();
@@ -175,12 +175,12 @@ class Model extends Validatable
 
     function _callAfterSaveCallbacks()
     {
-        $this->_callCallbacks($this->_modelDefinition->_afterSaveCallbacks);
+        $this->_callCallbacks($this->_modelDefinition->afterSaveCallbacks);
     }
 
     function _callBeforeSaveCallbacks()
     {
-        $this->_callCallbacks($this->_modelDefinition->_beforeSaveCallbacks);
+        $this->_callCallbacks($this->_modelDefinition->beforeSaveCallbacks);
     }
 
     private function _callCallbacks($callbacks)
@@ -216,38 +216,38 @@ class Model extends Validatable
 
     public function delete()
     {
-        return (bool)$this->where(array($this->_modelDefinition->_primaryKeyName => $this->getId()))->deleteAll();
+        return (bool)$this->where(array($this->_modelDefinition->primaryKey => $this->getId()))->deleteAll();
     }
 
     public function getId()
     {
-        $primaryKeyName = $this->_modelDefinition->_primaryKeyName;
+        $primaryKeyName = $this->_modelDefinition->primaryKey;
         return $this->$primaryKeyName;
     }
 
     public function getIdName()
     {
-        return $this->_modelDefinition->_primaryKeyName;
+        return $this->_modelDefinition->primaryKey;
     }
 
     public function getSequenceName()
     {
-        return $this->_modelDefinition->_sequenceName;
+        return $this->_modelDefinition->sequence;
     }
 
     private function _findByIdOrNull($value)
     {
-        return $this->where(array($this->_modelDefinition->_primaryKeyName => $value))->fetch();
+        return $this->where(array($this->_modelDefinition->primaryKey => $value))->fetch();
     }
 
     private function _findById($value)
     {
-        if (!$this->_modelDefinition->_primaryKeyName) {
-            throw new DbException('Primary key is not defined for table ' . $this->_modelDefinition->_tableName);
+        if (!$this->_modelDefinition->primaryKey) {
+            throw new DbException('Primary key is not defined for table ' . $this->_modelDefinition->table);
         }
         $result = $this->_findByIdOrNull($value);
         if (!$result) {
-            throw new DbException($this->_modelDefinition->_tableName . " with " . $this->_modelDefinition->_primaryKeyName . "=" . $value . " not found");
+            throw new DbException($this->_modelDefinition->table . " with " . $this->_modelDefinition->primaryKey . "=" . $value . " not found");
         }
         return $result;
     }
@@ -268,7 +268,7 @@ class Model extends Validatable
 
     public function _getFields()
     {
-        return $this->_modelDefinition->_fields;
+        return $this->_modelDefinition->fields;
     }
 
     public static function getFields()
@@ -278,7 +278,7 @@ class Model extends Validatable
 
     private function _getFieldsWithoutPrimaryKey()
     {
-        return array_diff($this->_modelDefinition->_fields, array($this->_modelDefinition->_primaryKeyName));
+        return array_diff($this->_modelDefinition->fields, array($this->_modelDefinition->primaryKey));
     }
 
     public static function getFieldsWithoutPrimaryKey()
@@ -404,7 +404,7 @@ class Model extends Validatable
     public static function queryBuilder($alias = null)
     {
         $obj = static::metaInstance();
-        return new ModelQueryBuilder($obj, $obj->_modelDefinition->_db, $alias);
+        return new ModelQueryBuilder($obj, $obj->_modelDefinition->db, $alias);
     }
 
     public static function count($where = '', $bindValues = null)
@@ -438,7 +438,7 @@ class Model extends Validatable
     public static function findBySql($nativeSql, $params = array())
     {
         $meta = static::metaInstance();
-        $results = $meta->_modelDefinition->_db->query($nativeSql, Arrays::toArray($params))->fetchAll();
+        $results = $meta->_modelDefinition->db->query($nativeSql, Arrays::toArray($params))->fetchAll();
 
         return Arrays::map($results, function ($row) use ($meta) {
             return $meta->newInstance($row);
@@ -521,7 +521,7 @@ class Model extends Validatable
      */
     public function getRelation($name)
     {
-        return $this->_modelDefinition->_relations->getRelation($name);
+        return $this->_modelDefinition->relations->getRelation($name);
     }
 
     public function __toString()
