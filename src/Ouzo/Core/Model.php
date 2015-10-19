@@ -51,7 +51,7 @@ class Model extends Validatable
 
         $this->_modelDefinition = ModelDefinition::get(get_called_class(), $params);
         $primaryKeyName = $this->_modelDefinition->primaryKey;
-        $attributes = $this->_modelDefinition->mergeWithDefaults($params['attributes']);
+        $attributes = $this->_modelDefinition->mergeWithDefaults($params['attributes'], $params['fields']);
 
         if (isset($attributes[$primaryKeyName]) && Strings::isBlank($attributes[$primaryKeyName])) {
             unset($attributes[$primaryKeyName]);

@@ -92,4 +92,21 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
         $this->assertEquals('no name', $product1->name);
         $this->assertEquals('new default', $product2->name);
     }
+
+    /**
+     * @test
+     */
+    public function shouldEvaluateDefaultsEveryTime()
+    {
+        // given
+        $product1 = new ProductWithDefaults(array());
+
+        //when
+        ProductWithDefaults::$defaultDescription = 'desc';
+        $product2 = new ProductWithDefaults(array());
+
+        //then
+        $this->assertEquals('no desc', $product1->description);
+        $this->assertEquals('desc', $product2->description);
+    }
 }

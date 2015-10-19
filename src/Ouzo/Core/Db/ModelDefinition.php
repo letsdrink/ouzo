@@ -60,15 +60,20 @@ class ModelDefinition
         return self::$cache[$class];
     }
 
-    public function mergeWithDefaults($attributes)
+    public function mergeWithDefaults($attributes, $fields)
     {
-        $defaults = $this->defaults;
-        foreach ($this->defaults as $field => $value) {
+        if (empty($this->defaults)) {
+            return $attributes;
+        }
+        $defaultsToUse = array_diff_key(array_intersect_key($fields, $this->defaults), $attributes);
+        foreach ($defaultsToUse as $field => $value) {
             if (is_callable($value)) {
-                $defaults[$field] = $value();
+                $attributes[$field] = $value();
+            } else {
+                $attributes[$field] = $value;
             }
         }
-        return array_replace($defaults, $attributes);
+        return $attributes;
     }
 
     private static function defaultTable($class)

@@ -15,6 +15,7 @@ use Ouzo\Model;
 class ProductWithDefaults extends Model
 {
     public static $defaultName = 'no name';
+    public static $defaultDescription = 'no desc';
 
     public function __construct($attributes = array())
     {
@@ -22,7 +23,7 @@ class ProductWithDefaults extends Model
             'table' => 'products',
             'attributes' => $attributes,
             'fields' => array(
-                'description' => 'no desc',
+                'description' => self::$defaultDescription,
                 'name' => function () {
                     return ProductWithDefaults::$defaultName;
                 },
