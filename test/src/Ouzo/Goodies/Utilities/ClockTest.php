@@ -131,6 +131,10 @@ class ClockTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue(Clock::at('2011-01-02 12:34:13')->isAfter(Clock::at('2011-01-01 12:34:13')));
         $this->assertFalse(Clock::at('2011-01-01 12:34:13')->isAfter(Clock::at('2011-01-02 12:34:13')));
+
+        $this->assertTrue(Clock::at('2011-01-02 12:34:13')->isAfterOrEqualTo(Clock::at('2011-01-01 12:34:13')));
+        $this->assertFalse(Clock::at('2011-01-01 12:34:13')->isAfterOrEqualTo(Clock::at('2011-01-02 12:34:13')));
+        $this->assertTrue(Clock::at('2011-01-02 12:34:13')->isAfterOrEqualTo(Clock::at('2011-01-02 12:34:13')));
     }
 
     /**
@@ -140,6 +144,10 @@ class ClockTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue(Clock::at('2011-01-01 12:34:13')->isBefore(Clock::at('2011-01-02 12:34:13')));
         $this->assertFalse(Clock::at('2011-01-02 12:34:13')->isBefore(Clock::at('2011-01-01 12:34:13')));
+
+        $this->assertTrue(Clock::at('2011-01-01 12:34:13')->isBeforeOrEqualTo(Clock::at('2011-01-02 12:34:13')));
+        $this->assertFalse(Clock::at('2011-01-02 12:34:13')->isBeforeOrEqualTo(Clock::at('2011-01-01 12:34:13')));
+        $this->assertTrue(Clock::at('2011-01-01 12:34:13')->isBeforeOrEqualTo(Clock::at('2011-01-01 12:34:13')));
     }
 
     /**

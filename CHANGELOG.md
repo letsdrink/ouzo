@@ -5,6 +5,7 @@ INCOMING
 --------
 Enhancements:
 * [Utilities] Implemented Arrays::contains method (issue #103).
+* [Utilities] Added Clock::isAfterOrEqualTo and Clock::isBeforeOrEqualTo.
 
 Bug fixes:
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).
