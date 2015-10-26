@@ -621,4 +621,19 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('String with szzcolZE AAA', $removeAccent);
     }
+
+    /**
+     * @test
+     */
+    public function shouldUpperCaseFirstLetter()
+    {
+        //given
+        $string = "łukasz";
+
+        //when
+        $uppercaseFirst = Strings::uppercaseFirst($string);
+
+        //then
+        $this->assertEquals('Łukasz', $uppercaseFirst);
+    }
 }
