@@ -96,7 +96,7 @@ class ControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        Route::$routes = array();
+        Route::clear();
     }
 
     public function tearDown()

@@ -10,6 +10,7 @@ Enhancements:
 
 Bug fixes:
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).
+* [MVC] Fixed major performance issue with routes validation.
 
 Release 1.5.1
 --------

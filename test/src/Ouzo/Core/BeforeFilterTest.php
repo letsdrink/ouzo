@@ -57,7 +57,7 @@ class BeforeFilterTest extends ControllerTestCase
     {
         parent::setUp();
         $this->_frontController->controllerFactory = new MockControllerFactory();
-        Route::$routes = array();
+        Route::clear();
         SampleController::$beforeCallback = null;
     }
 
