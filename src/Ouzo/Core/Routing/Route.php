@@ -96,7 +96,7 @@ class Route implements RouteInterface
         $action = self::_clean($action);
 
         $methods = Arrays::toArray($method);
-        if (self::$validate && self::_existRouteRule($methods, $uri)) {
+        if ($requireAction && self::$validate && self::_existRouteRule($methods, $uri)) {
             $methods = implode(', ', $methods);
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
@@ -113,8 +113,9 @@ class Route implements RouteInterface
 
     private static function _existRouteRule($methods, $uri)
     {
-        return Arrays::any($methods, function ($method) use ($uri) {
-            return Arrays::keyExists(Route::$routeKeys, $method . $uri);
+        $routeKeys = Route::$routeKeys;
+        return Arrays::any($methods, function ($method) use ($routeKeys, $uri) {
+            return Arrays::keyExists($routeKeys, $method . $uri);
         });
     }
 
