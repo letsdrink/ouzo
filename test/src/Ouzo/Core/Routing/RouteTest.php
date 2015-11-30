@@ -13,7 +13,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        Route::$routes = array();
+        Route::clear();
     }
 
     /**
@@ -461,5 +461,21 @@ class RouteTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('archive', $routes[0]->getAction());
         $this->assertEquals('api/users', $routes[0]->getController());
         $this->assertEquals('POST', $routes[0]->getMethod());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddAllowAll()
+    {
+        //given
+        Route::get('/user', 'User#index');
+        Route::allowAll('/user', 'User');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertCount(2, $routes);
     }
 }

@@ -29,13 +29,14 @@ use Ouzo\Utilities\Strings;
  */
 class Route implements RouteInterface
 {
-    /**
-     * @var RouteRule[]
-     */
-    public static $routes = array();
     public static $methods = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE');
     public static $validate = true;
 
+    /**
+     * @var RouteRule[]
+     */
+    private static $routes = array();
+    private static $routeKeys = array();
 
     public static function get($uri, $action, array $options = array())
     {
@@ -94,8 +95,9 @@ class Route implements RouteInterface
         $uri = self::_clean($uri);
         $action = self::_clean($action);
 
-        if (self::$validate && self::_existRouteRule($method, $uri)) {
-            $methods = is_array($method) ? implode(', ', $method) : $method;
+        $methods = Arrays::toArray($method);
+        if ($requireAction && self::$validate && self::_existRouteRule($methods, $uri)) {
+            $methods = implode(', ', $methods);
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
 
@@ -104,12 +106,16 @@ class Route implements RouteInterface
             throw new InvalidArgumentException('Route rule ' . $uri . ' required action');
         }
         self::$routes[] = $routeRule;
+        foreach ($methods as $method) {
+            self::$routeKeys[$method . $uri] = true;
+        }
     }
 
-    private static function _existRouteRule($method, $uri)
+    private static function _existRouteRule($methods, $uri)
     {
-        return Arrays::any(self::getRoutes(), function (RouteRule $routeRule) use ($method, $uri) {
-            return $routeRule->getMethod() == $method && $routeRule->getUri() == $uri;
+        $routeKeys = Route::$routeKeys;
+        return Arrays::any($methods, function ($method) use ($routeKeys, $uri) {
+            return Arrays::keyExists($routeKeys, $method . $uri);
         });
     }
 
@@ -146,5 +152,11 @@ class Route implements RouteInterface
     private static function _clean($string)
     {
         return preg_replace('/\/+/', '/', $string);
+    }
+
+    public static function clear()
+    {
+        self::$routes = array();
+        self::$routeKeys = array();
     }
 }
