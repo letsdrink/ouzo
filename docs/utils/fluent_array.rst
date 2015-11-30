@@ -219,3 +219,26 @@ Returns a FluentArray that skips its first ``$number`` elements.
     (
         [0] => 3
     )
+
+sort
+~~~~
+Returns a FluentArray with its elements sorted using the given comparator
+
+**Parameters:** ``$comparator``
+
+**Example:**
+::
+
+    $array = [3, 1, 2];
+    $result = FluentArray::from($array)->sort(Comparator::natural())->toArray();
+
+**Result:**
+::
+
+    Array
+    (
+        [0] => 1,
+        [1] => 2,
+        [2] => 3
+    )
+

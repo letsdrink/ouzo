@@ -6,6 +6,7 @@
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
+use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
@@ -244,5 +245,20 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
 
         //then
         Assert::thatArray($uniqueByName)->hasSize(1);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSortElements()
+    {
+        //given
+        $array = array(4, 1, 3, 2);
+
+        //when
+        $result = FluentArray::from($array)->sort(Comparator::natural())->toArray();
+
+        //then
+        $this->assertEquals(array(1, 2, 3, 4), $result);
     }
 }
