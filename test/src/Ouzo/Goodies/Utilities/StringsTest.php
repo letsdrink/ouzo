@@ -535,7 +535,7 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldGetsSubstringBeforeSeparator()
+    public function shouldGetSubstringBeforeSeparator()
     {
         //given
         $string = 'winter is coming???!!!';
@@ -560,6 +560,51 @@ class StringsTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('winter is coming', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetSubstringAfterSeparator()
+    {
+        //given
+        $string = 'abc+efg+hij';
+
+        //when
+        $result = Strings::substringAfter($string, '+');
+
+        //then
+        $this->assertEquals('efg+hij', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnEmptyStringInSubstringAfterSeparatorWhenSeparatorIsAtTheEnd()
+    {
+        //given
+        $string = 'abc+';
+
+        //when
+        $result = Strings::substringAfter($string, '+');
+
+        //then
+        $this->assertEquals('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnStringInSubstringAfterSeparatorWhenSeparatorIsNotFound()
+    {
+        //given
+        $string = 'abc';
+
+        //when
+        $result = Strings::substringAfter($string, '-');
+
+        //then
+        $this->assertEquals('abc', $result);
     }
 
     /**

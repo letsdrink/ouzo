@@ -361,3 +361,21 @@ If the separator is not found, the string input is returned.
 
 **Result:** ``winter is coming``
 
+----
+
+substringAfter
+~~~~~~~~~~~~~~
+Gets the substring after the first occurrence of a separator. The separator is not returned.
+
+If the separator is not found, the string input is returned.
+
+**Parameters:** ``$string``, ``$separator``
+
+**Example:**
+::
+
+    $string = 'abc+efg+hij';
+    $result = Strings::substringAfter($string, '+');
+
+**Result:** ``efg+hij``
+
