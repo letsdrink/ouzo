@@ -57,9 +57,17 @@ Return a FluentArray that applies function Arrays::filterNotBlank on each of ele
 
 filterByKeys
 ~~~~~~~~~~~~
-Returns a FluentArray that contains only elements which keys that satisfy a predicate.
+Returns a FluentArray that contains only elements with keys that satisfy a predicate.
 
 **Parameters:** ``$function``
+
+----
+
+filterByAllowedKeys
+~~~~~~~~~~~~~~~~~~~
+Returns a FluentArray containing only the given keys.
+
+**Parameters:** ``$allowedKeys``
 
 ----
 
