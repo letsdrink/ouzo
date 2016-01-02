@@ -11,6 +11,7 @@ class Binder
     private $className;
     private $boundClassName;
     private $scope = Scope::PROTOTYPE;
+    private $instance;
 
     function __construct($className)
     {
@@ -42,5 +43,16 @@ class Binder
     public function getScope()
     {
         return $this->scope;
+    }
+
+    public function toInstance($instance)
+    {
+        $this->instance = $instance;
+        return $this;
+    }
+
+    public function getInstance()
+    {
+        return $this->instance;
     }
 }

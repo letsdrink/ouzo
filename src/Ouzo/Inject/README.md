@@ -27,6 +27,13 @@ $config = new InjectorConfig();
 $config->bind('\MyClass')->to('\MySubClass');
 ```
 
+Instance binding:
+
+```php
+$config = new InjectorConfig();
+$config->bind('\MyClass')->toInstance(new MyClass());
+```
+
 Auto-wiring dependencies (with @Inject):
 
 ```php

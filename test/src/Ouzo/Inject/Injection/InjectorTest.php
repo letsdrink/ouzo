@@ -154,6 +154,25 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnBoundInstance()
+    {
+        // given
+        $object = new ClassWithNoDep();
+
+        $config = new InjectorConfig();
+        $config->bind('\ClassWithNoDep')->toInstance($object);
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance('\ClassWithNoDep');
+
+        //then
+        $this->assertSame($object, $instance);
+    }
+
+    /**
+     * @test
+     */
     public function shouldThrowExceptionWhenVarNotDefinedForInject()
     {
         //when
