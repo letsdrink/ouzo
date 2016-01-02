@@ -21,7 +21,8 @@
     "psr-4": {
       "Ouzo\\": [
         "src/Ouzo/Core",
-        "src/Ouzo/Goodies"
+        "src/Ouzo/Goodies",
+        "src/Ouzo/Inject"
       ],
       "Command\\": "bin/"
     }
@@ -38,7 +39,8 @@
     "satooshi/php-coveralls": "dev-master"
   },
   "replace": {
-    "letsdrink/ouzo-goodies": "self.version"
+    "letsdrink/ouzo-goodies": "self.version",
+    "letsdrink/ouzo-inject": "self.version"
   },
   "archive": {
     "exclude": [

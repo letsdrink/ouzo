@@ -1,0 +1,23 @@
+{
+  "name": "letsdrink/ouzo-inject",
+  "description": "Dependency Injection framework.",
+  "homepage": "http://ouzoframework.org/",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "di",
+    "injection"
+  ],
+  "authors": [
+    {
+      "name": "Ouzo developers",
+      "email": "ouzo-framework@googlegroups.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ouzo\\": ""
+    }
+  }
+}
