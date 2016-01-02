@@ -17,16 +17,21 @@ class InstanceRepository
         $className = $binder->getBoundClassName() ?: $binder->getClassName();
         $scope = $binder->getScope();
         if ($scope == Scope::SINGLETON) {
-            if (isset($this->instances[$className])) {
-                return $this->instances[$className];
-            }
-            $instance = $factory->createInstance($this, $className);
-            $this->instances[$className] = $instance;
-            return $instance;
+            return $this->singletonInstance($factory, $className);
         }
         if ($scope == Scope::PROTOTYPE) {
             return $factory->createInstance($this, $className);
         }
         throw new BadMethodCallException("Unknown scope: $scope");
+    }
+
+    public function singletonInstance(InstanceFactory $factory, $className)
+    {
+        if (isset($this->instances[$className])) {
+            return $this->instances[$className];
+        }
+        $instance = $factory->createInstance($this, $className);
+        $this->instances[$className] = $instance;
+        return $instance;
     }
 }

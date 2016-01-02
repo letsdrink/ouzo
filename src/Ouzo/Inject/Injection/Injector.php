@@ -16,6 +16,10 @@ class Injector
      * @var InstanceRepository
      */
     private $repository;
+    /**
+     * @var InstanceFactory
+     */
+    private $factory;
 
     function __construct(InjectorConfig $config = null)
     {
