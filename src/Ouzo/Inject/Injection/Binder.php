@@ -9,6 +9,7 @@ namespace Ouzo\Injection;
 class Binder
 {
     private $className;
+    private $boundClassName;
     private $scope = Scope::PROTOTYPE;
 
     function __construct($className)
@@ -22,9 +23,20 @@ class Binder
         return $this;
     }
 
+    public function to($boundClassName)
+    {
+        $this->boundClassName = $boundClassName;
+        return $this;
+    }
+
     public function getClassName()
     {
         return $this->className;
+    }
+
+    public function getBoundClassName()
+    {
+        return $this->boundClassName;
     }
 
     public function getScope()

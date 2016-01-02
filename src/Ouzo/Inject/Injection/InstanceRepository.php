@@ -14,7 +14,7 @@ class InstanceRepository
 
     public function getInstance(InstanceFactory $factory, Binder $binder)
     {
-        $className = $binder->getClassName();
+        $className = $binder->getBoundClassName() ?: $binder->getClassName();
         $scope = $binder->getScope();
         if ($scope == Scope::SINGLETON) {
             if (isset($this->instances[$className])) {

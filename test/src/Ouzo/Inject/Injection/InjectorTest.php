@@ -119,6 +119,41 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldInjectSubClassDependency()
+    {
+        // given
+        $config = new InjectorConfig();
+        $config->bind('\ClassWithNoDep')->to('\SubClassWithNoDep');
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance('\ClassWithDep');
+
+        //then
+        $this->assertInstanceOf('\ClassWithDep', $instance);
+        $this->assertDependencyInjected('\SubClassWithNoDep', $instance->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateSubClass()
+    {
+        // given
+        $config = new InjectorConfig();
+        $config->bind('\ClassWithNoDep')->to('\SubClassWithNoDep');
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance('\ClassWithNoDep');
+
+        //then
+        $this->assertInstanceOf('\SubClassWithNoDep', $instance);
+    }
+
+    /**
+     * @test
+     */
     public function shouldThrowExceptionWhenVarNotDefinedForInject()
     {
         //when

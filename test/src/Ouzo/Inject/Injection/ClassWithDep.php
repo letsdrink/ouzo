@@ -8,7 +8,7 @@ class ClassWithDep
 {
     /**
      * @Inject
-     * @var ClassWithNoDep
+     * @var \ClassWithNoDep
      */
     public $myClass;
 }

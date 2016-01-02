@@ -8,12 +8,12 @@ class ClassWithPrivateDep
 {
     /**
      * @Inject
-     * @var ClassWithNoDep
+     * @var \ClassWithNoDep
      */
     private $myClass;
 
     /**
-     * @return ClassWithNoDep
+     * @return \ClassWithNoDep
      */
     public function getMyClass()
     {

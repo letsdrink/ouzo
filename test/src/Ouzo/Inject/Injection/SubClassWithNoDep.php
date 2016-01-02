@@ -4,11 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-class ClassWithDeepDep
+class SubClassWithNoDep extends ClassWithNoDep
 {
-    /**
-     * @Inject
-     * @var \ClassWithDep
-     */
-    public $classWithDep;
+
 }

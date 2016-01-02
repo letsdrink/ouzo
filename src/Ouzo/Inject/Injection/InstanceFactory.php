@@ -36,7 +36,7 @@ class InstanceFactory
         foreach ($properties as $property) {
             $doc = $property->getDocComment();
             if (Strings::contains($doc, '@Inject')) {
-                if (preg_match("#@var ([\\A-Za-z0-9]*)#s", $doc, $matched)) {
+                if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {
                     $dependency = $matched[1];
                     $binder = $this->config->getBinder($dependency);
                     $dependencyInstance = $repository->getInstance($this, $binder);
