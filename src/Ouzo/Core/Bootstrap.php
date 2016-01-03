@@ -6,11 +6,21 @@
 namespace Ouzo;
 
 use Ouzo\Injection\Injector;
+use Ouzo\Injection\InjectorConfig;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
 class Bootstrap
 {
+    /**
+     * @var Injector
+     */
+    private $injector;
+    /**
+     * @var InjectorConfig
+     */
+    private $injectorConfig;
+
     public function __construct()
     {
         error_reporting(E_ALL);
@@ -23,22 +33,40 @@ class Bootstrap
         return $this;
     }
 
+    public function withInjector(Injector $injector)
+    {
+        $this->injector = $injector;
+        return $this;
+    }
+
+    public function withInjectorConfig(InjectorConfig $config)
+    {
+        $this->injectorConfig = $config;
+        return $this;
+    }
+
     public function runApplication()
     {
         set_exception_handler('\Ouzo\ExceptionHandling\ErrorHandler::exceptionHandler');
         set_error_handler('\Ouzo\ExceptionHandling\ErrorHandler::errorHandler');
         register_shutdown_function('\Ouzo\ExceptionHandling\ErrorHandler::shutdownHandler');
 
-        $this->_includeRoutes();
-
-        $injector = new Injector();
-        $controller = $injector->getInstance('\Ouzo\FrontController');
-        $controller->init();
+        $this->includeRoutes();
+        $this->createFrontController()->init();
     }
 
-    private function _includeRoutes()
+    private function includeRoutes()
     {
         $routesPath = Path::join(ROOT_PATH, 'config', 'routes.php');
         Files::loadIfExists($routesPath);
+    }
+
+    /**
+     * @return FrontController
+     */
+    private function createFrontController()
+    {
+        $injector = $this->injector ?: new Injector($this->injectorConfig);
+        return $injector->getInstance('\Ouzo\FrontController');
     }
 }
