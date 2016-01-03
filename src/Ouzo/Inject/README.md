@@ -20,6 +20,8 @@ $injector = new Injector($config);
 $injector->getInstance('\MyClass');
 ```
 
+Default scope is Scope::PROTOTYPE.
+
 Linked binding:
 
 ```php
@@ -41,6 +43,26 @@ class MyClass
 {
   /**
    * @Inject
+   * @var \OtherClass
+   */
+  private $otherClass;
+}
+```
+
+Named binding:
+
+```php
+$config = new InjectorConfig();
+$config->bind('\MyClass', 'some_name')->in(Scope:SINGLETON);
+```
+
+Auto-wiring for named binding:
+
+```php
+class MyClass
+{
+  /**
+   * @Inject @Named("some_name")
    * @var \OtherClass
    */
   private $otherClass;

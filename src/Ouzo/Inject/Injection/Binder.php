@@ -12,10 +12,12 @@ class Binder
     private $boundClassName;
     private $scope = Scope::PROTOTYPE;
     private $instance;
+    private $name;
 
-    function __construct($className)
+    function __construct($className, $name = '')
     {
         $this->className = $className;
+        $this->name = $name;
     }
 
     public function in($scope)
@@ -54,5 +56,10 @@ class Binder
     public function getInstance()
     {
         return $this->instance;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 }

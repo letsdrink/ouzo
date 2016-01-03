@@ -182,6 +182,68 @@ class InjectorTest extends PHPUnit_Framework_TestCase
         CatchException::assertThat()->isInstanceOf('\Ouzo\Injection\InjectorException');
     }
 
+    /**
+     * @test
+     */
+    public function shouldInjectNamedDependencyWhenNameWasNotBound()
+    {
+        //when
+        $instance = $this->injector->getInstance('\ClassWithNamedDep');
+
+        //then
+        $this->assertInstanceOf('\ClassWithNamedDep', $instance);
+        $this->assertDependencyInjected('\ClassWithNoDep', $instance->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectNamedDependency()
+    {
+        // given
+        $config = new InjectorConfig();
+        $config->bind('\ClassWithNoDep', 'my_dep');
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance('\ClassWithNamedDep');
+
+        //then
+        $this->assertInstanceOf('\ClassWithNamedDep', $instance);
+        $this->assertDependencyInjected('\ClassWithNoDep', $instance->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectProperNamedDependency()
+    {
+        // given
+        $config = new InjectorConfig();
+        $config->bind('\ClassWithNoDep', 'my_dep')->to('\SubClassWithNoDep');
+        $config->bind('\ClassWithNoDep', 'other_dep');
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance('\ClassWithNamedDep');
+
+        //then
+        $this->assertInstanceOf('\ClassWithNamedDep', $instance);
+        $this->assertDependencyInjected('\SubClassWithNoDep', $instance->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnInstanceByNameEvenWhenNameWasNotBound()
+    {
+        //when
+        $instance = $this->injector->getInstance('\ClassWithNoDep', 'some_name');
+
+        //then
+        $this->assertInstanceOf('\ClassWithNoDep', $instance);
+    }
+
     private function assertDependencyInjected($className, $instance)
     {
         $this->assertNotNull($instance, 'Dependency was not injected.');

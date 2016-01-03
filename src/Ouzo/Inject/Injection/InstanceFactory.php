@@ -38,7 +38,8 @@ class InstanceFactory
             if (Strings::contains($doc, '@Inject')) {
                 if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {
                     $dependency = $matched[1];
-                    $binder = $this->config->getBinder($dependency);
+                    $name = $this->extractName($doc);
+                    $binder = $this->config->getBinder($dependency, $name);
                     $dependencyInstance = $repository->getInstance($this, $binder);
                     $property->setAccessible(true);
                     $property->setValue($instance, $dependencyInstance);
@@ -47,5 +48,13 @@ class InstanceFactory
                 }
             }
         }
+    }
+
+    private function extractName($doc)
+    {
+        if (preg_match("#@Named\\(\"([A-Za-z0-9_]*)\"\\)#s", $doc, $matched)) {
+            return $matched[1];
+        }
+        return '';
     }
 }

@@ -28,9 +28,9 @@ class Injector
         $this->repository = new InstanceRepository();
     }
 
-    public function getInstance($className)
+    public function getInstance($className, $name = '')
     {
-        $binder = $this->config->getBinder($className);
+        $binder = $this->config->getBinder($className, $name);
         return $this->repository->getInstance($this->factory, $binder);
     }
 }

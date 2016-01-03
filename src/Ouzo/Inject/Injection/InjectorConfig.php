@@ -12,16 +12,16 @@ class InjectorConfig
 {
     private $binders = array();
 
-    public function bind($className)
+    public function bind($className, $name = '')
     {
-        $binder = new Binder($className);
-        $this->binders[$className] = $binder;
+        $binder = new Binder($className, $name);
+        $this->binders[$className . '_' . $name] = $binder;
         return $binder;
     }
 
-    public function getBinder($className)
+    public function getBinder($className, $name)
     {
-        $binder = Arrays::getValue($this->binders, $className);
-        return $binder ?: new Binder($className);
+        $binder = Arrays::getValue($this->binders, $className . '_' . $name);
+        return $binder ?: new Binder($className, $name);
     }
 }
