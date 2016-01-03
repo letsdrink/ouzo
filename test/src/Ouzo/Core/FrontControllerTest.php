@@ -3,111 +3,17 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-namespace Ouzo\Api;
 
-use Ouzo\Controller;
-
-class SomeController extends Controller
-{
-    public function action()
-    {
-        $this->layout->renderAjax('some controller - action');
-        $this->layout->unsetLayout();
-    }
-}
-
-namespace Ouzo;
-
-use Exception;
+use Ouzo\Config;
 use Ouzo\Db\Stats;
 use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Route;
+use Ouzo\Routing\RouterException;
+use Ouzo\Session;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
-use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
-
-class SampleControllerException extends Exception
-{
-}
-
-class SampleController extends Controller
-{
-    public function action()
-    {
-        echo "OUTPUT";
-        $this->header('Location : http://foo.com');
-    }
-
-    public function redirect_to()
-    {
-        $this->redirect('/sample/add');
-    }
-
-    public function index()
-    {
-        $this->layout->renderAjax('index');
-        $this->layout->unsetLayout();
-    }
-
-    public function save()
-    {
-        $this->layout->renderAjax('save');
-        $this->layout->unsetLayout();
-    }
-
-    public function except()
-    {
-        $this->layout->renderAjax('except');
-        $this->layout->unsetLayout();
-    }
-}
-
-class RestfulController extends Controller
-{
-    public function index()
-    {
-        $this->layout->renderAjax('index');
-        $this->layout->unsetLayout();
-    }
-
-    public function fresh()
-    {
-        $this->layout->renderAjax('fresh');
-        $this->layout->unsetLayout();
-    }
-
-    public function create()
-    {
-        $this->layout->renderAjax('create');
-        $this->layout->unsetLayout();
-    }
-
-    public function show()
-    {
-        $this->layout->renderAjax('show=' . $this->params['id']);
-        $this->layout->unsetLayout();
-    }
-
-    public function edit()
-    {
-        $this->layout->renderAjax('edit=' . $this->params['id']);
-        $this->layout->unsetLayout();
-    }
-
-    public function update()
-    {
-        $this->layout->renderAjax('update=' . $this->params['id']);
-        $this->layout->unsetLayout();
-    }
-
-    public function destroy()
-    {
-        $this->layout->renderAjax('destroy=' . $this->params['id']);
-        $this->layout->unsetLayout();
-    }
-}
 
 class FrontControllerTest extends ControllerTestCase
 {
@@ -129,30 +35,6 @@ class FrontControllerTest extends ControllerTestCase
         Config::clearProperty('namespace', 'controller');
         Config::clearProperty('debug');
         Config::clearProperty('callback', 'afterControllerInit');
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotDisplayOutputBeforeHeadersAreSent()
-    {
-        //given
-        $self = $this;
-        $this->_frontController->headerSender = Mock::mock();
-
-        $obLevel = ob_get_level();
-        Mock::when($this->_frontController->headerSender)->send(Mock::any())->thenAnswer(function () use ($self, $obLevel) {
-            //if there's a nested buffer, nothing was sent to output
-            $self->assertTrue(ob_get_level() > $obLevel);
-            $self->assertEquals('OUTPUT', ob_get_contents());
-        });
-
-        Route::allowAll('/sample', 'sample');
-
-        //when
-        $this->get('/sample/action');
-
-        //then no exceptions
     }
 
     /**
@@ -182,7 +64,7 @@ class FrontControllerTest extends ControllerTestCase
         try {
             $this->get('/sample/save');
             $this->fail();
-        } catch (Routing\RouterException $e) {
+        } catch (RouterException $e) {
         }
     }
 
@@ -198,7 +80,7 @@ class FrontControllerTest extends ControllerTestCase
         try {
             $this->get('/sample/except');
             $this->fail();
-        } catch (Routing\RouterException $e) {
+        } catch (RouterException $e) {
         }
 
         //then
@@ -499,7 +381,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/restful');
 
         //when
-        $currentController = RequestContext::getCurrentController();
+        $currentController = $this->requestContext()->getCurrentController();
 
         //then
         $this->assertEquals('restful', $currentController);

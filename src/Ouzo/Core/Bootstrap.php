@@ -5,6 +5,7 @@
  */
 namespace Ouzo;
 
+use Ouzo\Injection\Injector;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
@@ -30,7 +31,8 @@ class Bootstrap
 
         $this->_includeRoutes();
 
-        $controller = new FrontController();
+        $injector = new Injector();
+        $controller = $injector->getInstance('\Ouzo\FrontController');
         $controller->init();
     }
 

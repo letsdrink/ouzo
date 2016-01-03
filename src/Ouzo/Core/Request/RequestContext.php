@@ -7,26 +7,26 @@ namespace Ouzo\Request;
 
 class RequestContext
 {
-    private static $_currentController;
-    private static $_currentControllerObject;
+    private $currentController;
+    private $currentControllerObject;
 
-    public static function getCurrentController()
+    public function getCurrentController()
     {
-        return self::$_currentController;
+        return $this->currentController;
     }
 
-    public static function setCurrentController($currentController)
+    public function setCurrentController($currentController)
     {
-        self::$_currentController = $currentController;
+        $this->currentController = $currentController;
     }
 
-    public static function getCurrentControllerObject()
+    public function getCurrentControllerObject()
     {
-        return self::$_currentControllerObject;
+        return $this->currentControllerObject;
     }
 
-    public static function setCurrentControllerObject($currentControllerObject)
+    public function setCurrentControllerObject($currentControllerObject)
     {
-        self::$_currentControllerObject = $currentControllerObject;
+        $this->currentControllerObject = $currentControllerObject;
     }
 }

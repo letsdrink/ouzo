@@ -7,33 +7,26 @@ namespace Ouzo\Tests;
 
 use Ouzo\Config;
 use Ouzo\FrontController;
-use Ouzo\Request\RequestContext;
+use Ouzo\Injection\Injector;
+use Ouzo\Injection\InjectorConfig;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
 class ControllerTestCase extends DbTransactionalTestCase
 {
-    protected $_frontController;
-
-    private $_redirectHandler;
-    private $_sessionInitializer;
-    private $_downloadHandler;
+    /**
+     * @var FrontController
+     */
+    protected $frontController;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->_redirectHandler = new MockRedirectHandler();
-        $this->_sessionInitializer = new MockSessionInitializer();
-        $this->_downloadHandler = new MockDownloadHandler();
-
-        $this->_frontController = new FrontController();
-        $this->_frontController->redirectHandler = $this->_redirectHandler;
-        $this->_frontController->sessionInitializer = $this->_sessionInitializer;
-        $this->_frontController->downloadHandler = $this->_downloadHandler;
-        $this->_frontController->outputDisplayer = new MockOutputDisplayer();
-        $this->_frontController->headerSender = new MockHeaderSender();
-        $this->_frontController->cookiesSetter = new MockCookiesSetter();
+        $config = new InjectorConfig();
+        $this->frontControllerBindings($config);
+        $injector = new Injector($config);
+        $this->frontController = $injector->getInstance('\Ouzo\FrontController');
     }
 
     private static function _prefixSystem()
@@ -75,7 +68,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     private function _initFrontController()
     {
-        $this->_frontController->init();
+        $this->frontController->init();
     }
 
     public function post($url, $data)
@@ -117,7 +110,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRedirectsTo($path)
     {
-        $this->assertEquals($this->_removePrefix($path), $this->_removePrefix($this->_redirectHandler->getLocation()));
+        $this->assertEquals($this->_removePrefix($path), $this->_removePrefix($this->frontController->getRedirectHandler()->getLocation()));
     }
 
     private function _removePrefix($string)
@@ -127,30 +120,30 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRenders($viewName)
     {
-        $statusResponse = RequestContext::getCurrentControllerObject()->getStatusResponse();
-        $location = RequestContext::getCurrentControllerObject()->getRedirectLocation();
+        $statusResponse = $this->requestContext()->getCurrentControllerObject()->getStatusResponse();
+        $location = $this->requestContext()->getCurrentControllerObject()->getRedirectLocation();
         if ($statusResponse != 'show') {
             $this->fail("Expected render $viewName but was $statusResponse $location");
         }
-        $this->assertEquals($viewName, RequestContext::getCurrentControllerObject()->view->getViewName());
+        $this->assertEquals($viewName, $this->requestContext()->getCurrentControllerObject()->view->getViewName());
     }
 
     public function assertAssignsModel($variable, $modelObject)
     {
-        $modelVariable = RequestContext::getCurrentControllerObject()->view->$variable;
+        $modelVariable = $this->requestContext()->getCurrentControllerObject()->view->$variable;
         $this->assertNotNull($modelVariable);
         Assert::thatModel($modelVariable)->hasSameAttributesAs($modelObject);
     }
 
     public function assertDownloadsFile($file)
     {
-        $this->assertEquals($file, $this->_downloadHandler->getFileName());
+        $this->assertEquals($file, $this->frontController->getDownloadHandler()->getFileName());
     }
 
     public function assertAssignsValue($variable, $value)
     {
-        $this->assertNotNull(RequestContext::getCurrentControllerObject()->view->$variable);
-        $this->assertEquals($value, RequestContext::getCurrentControllerObject()->view->$variable);
+        $this->assertNotNull($this->requestContext()->getCurrentControllerObject()->view->$variable);
+        $this->assertEquals($value, $this->requestContext()->getCurrentControllerObject()->view->$variable);
     }
 
     public function assertRenderedContent()
@@ -166,7 +159,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function getAssigned($name)
     {
-        return RequestContext::getCurrentControllerObject()->view->$name;
+        return $this->requestContext()->getCurrentControllerObject()->view->$name;
     }
 
     public function getRenderedJsonAsArray()
@@ -182,17 +175,32 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertHasCookie($cookieAttributes)
     {
-        $actual = $this->_frontController->cookiesSetter->getCookies();
+        $actual = $this->frontController->getCookiesSetter()->getCookies();
         Assert::thatArray($actual)->contains($cookieAttributes);
     }
 
     public function getResponseHeaders()
     {
-        return $this->_frontController->headerSender->getHeaders();
+        return $this->frontController->getHeaderSender()->getHeaders();
     }
 
     public function getActualContent()
     {
-        return RequestContext::getCurrentControllerObject()->layout->layoutContent();
+        return $this->frontController->getRequestContext()->getCurrentControllerObject()->layout->layoutContent();
+    }
+
+    protected function frontControllerBindings(InjectorConfig $config)
+    {
+        $config->bind('\Ouzo\OutputDisplayer')->toInstance(new MockOutputDisplayer());
+        $config->bind('\Ouzo\HeaderSender')->toInstance(new MockHeaderSender());
+        $config->bind('\Ouzo\CookiesSetter')->toInstance(new MockCookiesSetter());
+        $config->bind('\Ouzo\RedirectHandler')->toInstance(new MockRedirectHandler());
+        $config->bind('\Ouzo\SessionInitializer')->toInstance(new MockSessionInitializer());
+        $config->bind('\Ouzo\DownloadHandler')->toInstance(new MockDownloadHandler());
+    }
+
+    protected function requestContext()
+    {
+        return $this->frontController->getRequestContext();
     }
 }

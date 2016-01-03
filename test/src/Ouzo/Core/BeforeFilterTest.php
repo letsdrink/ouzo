@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Controller;
+use Ouzo\Injection\InjectorConfig;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Utilities\Arrays;
@@ -56,9 +57,14 @@ class BeforeFilterTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->_frontController->controllerFactory = new MockControllerFactory();
         Route::clear();
         SampleController::$beforeCallback = null;
+    }
+
+    protected function frontControllerBindings(InjectorConfig $config)
+    {
+        parent::frontControllerBindings($config);
+        $config->bind('\Ouzo\ControllerFactory')->toInstance(new MockControllerFactory());
     }
 
     /**

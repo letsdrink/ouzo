@@ -16,32 +16,57 @@ class FrontController
 {
     public static $requestId;
 
-    private $_defaults;
-    private $_currentAction;
-    private $_currentController;
-    private $_currentControllerObject;
+    private $defaults;
+    private $currentAction;
+    private $currentController;
+    private $currentControllerObject;
 
-    public $redirectHandler;
-    public $sessionInitializer;
-    public $downloadHandler;
-    public $outputDisplayer;
-    public $httpAuthBasicHandler;
-    public $headerSender;
-    public $cookiesSetter;
+    /**
+     * @Inject
+     * @var \Ouzo\RedirectHandler
+     */
+    private $redirectHandler;
+    /**
+     * @Inject
+     * @var \Ouzo\SessionInitializer
+     */
+    private $sessionInitializer;
+    /**
+     * @Inject
+     * @var \Ouzo\DownloadHandler
+     */
+    private $downloadHandler;
+    /**
+     * @Inject
+     * @var \Ouzo\OutputDisplayer
+     */
+    private $outputDisplayer;
+    /**
+     * @Inject
+     * @var \Ouzo\HeaderSender
+     */
+    private $headerSender;
+    /**
+     * @Inject
+     * @var \Ouzo\CookiesSetter
+     */
+    private $cookiesSetter;
+    /**
+     * @Inject
+     * @var \Ouzo\ControllerFactory
+     */
+    private $controllerFactory;
+    /**
+     * @Inject
+     * @var \Ouzo\Request\RequestContext
+     */
+    private $requestContext;
 
     public function __construct()
     {
         self::$requestId = uniqid();
 
-        $this->_defaults = Config::getValue('global');
-
-        $this->redirectHandler = new RedirectHandler();
-        $this->sessionInitializer = new SessionInitializer();
-        $this->downloadHandler = new DownloadHandler();
-        $this->controllerFactory = new ControllerFactory();
-        $this->outputDisplayer = new OutputDisplayer();
-        $this->headerSender = new HeaderSender();
-        $this->cookiesSetter = new CookiesSetter();
+        $this->defaults = Config::getValue('global');
     }
 
     public function init()
@@ -50,15 +75,14 @@ class FrontController
         $router = new Router($uri);
         $routeRule = $router->findRoute();
 
-        $this->_currentController = $routeRule->getController();
-        $this->_currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
-
-        RequestContext::setCurrentController($this->_currentController);
+        $this->currentController = $routeRule->getController();
+        $this->requestContext->setCurrentController($this->currentController);
+        $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
 
         $this->sessionInitializer->startSession();
 
-        $this->_currentControllerObject = $this->controllerFactory->createController($routeRule);
-        RequestContext::setCurrentControllerObject($this->_currentControllerObject);
+        $this->currentControllerObject = $this->controllerFactory->createController($routeRule);
+        $this->requestContext->setCurrentControllerObject($this->currentControllerObject);
 
         $this->_logRequest();
 
@@ -96,14 +120,14 @@ class FrontController
 
     private function _invokeInit()
     {
-        if (method_exists($this->_currentControllerObject, 'init')) {
-            $this->_currentControllerObject->init();
+        if (method_exists($this->currentControllerObject, 'init')) {
+            $this->currentControllerObject->init();
         }
     }
 
     private function _invokeBeforeMethods()
     {
-        foreach ($this->_currentControllerObject->before as $callback) {
+        foreach ($this->currentControllerObject->before as $callback) {
             if (!($this->callCallback($callback))) {
                 return false;
             }
@@ -116,28 +140,28 @@ class FrontController
 
     private function _invokeAfterMethods()
     {
-        foreach ($this->_currentControllerObject->after as $callback) {
+        foreach ($this->currentControllerObject->after as $callback) {
             $this->callCallback($callback);
         }
     }
 
     private function _invokeAction()
     {
-        $currentAction = $this->_currentControllerObject->currentAction;
-        $this->_currentControllerObject->$currentAction();
+        $currentAction = $this->currentControllerObject->currentAction;
+        $this->currentControllerObject->$currentAction();
         $this->_logRequestIfDebugEnabled();
     }
 
     private function _logRequestIfDebugEnabled()
     {
         if (Config::getValue('debug')) {
-            Stats::traceHttpRequest($this->_currentControllerObject->params);
+            Stats::traceHttpRequest($this->currentControllerObject->params);
         }
     }
 
     private function _doActionOnResponse()
     {
-        $controller = $this->_currentControllerObject;
+        $controller = $this->currentControllerObject;
         $this->_sendHeaders($controller->getHeaders());
         $this->cookiesSetter->setCookies($controller->getNewCookies());
         switch ($controller->getStatusResponse()) {
@@ -168,28 +192,92 @@ class FrontController
 
     private function _logRequest()
     {
-        Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', array($this->_currentController, $this->_currentAction));
+        Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', array($this->currentController, $this->currentAction));
     }
 
     private function _isRedirect()
     {
-        return in_array($this->_currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
+        return in_array($this->currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
     }
 
     private function callCallback($callback)
     {
         if (is_string($callback)) {
-            $callback = array($this->_currentControllerObject, $callback);
+            $callback = array($this->currentControllerObject, $callback);
         }
-        return call_user_func($callback, $this->_currentControllerObject);
+        return call_user_func($callback, $this->currentControllerObject);
     }
 
     private function renderOutput()
     {
         ob_start();
-        $this->_currentControllerObject->display();
+        $this->currentControllerObject->display();
         $page = ob_get_contents();
         ob_end_clean();
         $this->outputDisplayer->display($page);
+    }
+
+    /**
+     * @return RedirectHandler
+     */
+    public function getRedirectHandler()
+    {
+        return $this->redirectHandler;
+    }
+
+    /**
+     * @return SessionInitializer
+     */
+    public function getSessionInitializer()
+    {
+        return $this->sessionInitializer;
+    }
+
+    /**
+     * @return DownloadHandler
+     */
+    public function getDownloadHandler()
+    {
+        return $this->downloadHandler;
+    }
+
+    /**
+     * @return OutputDisplayer
+     */
+    public function getOutputDisplayer()
+    {
+        return $this->outputDisplayer;
+    }
+
+    /**
+     * @return HeaderSender
+     */
+    public function getHeaderSender()
+    {
+        return $this->headerSender;
+    }
+
+    /**
+     * @return CookiesSetter
+     */
+    public function getCookiesSetter()
+    {
+        return $this->cookiesSetter;
+    }
+
+    /**
+     * @return ControllerFactory
+     */
+    public function getControllerFactory()
+    {
+        return $this->controllerFactory;
+    }
+
+    /**
+     * @return RequestContext
+     */
+    public function getRequestContext()
+    {
+        return $this->requestContext;
     }
 }
