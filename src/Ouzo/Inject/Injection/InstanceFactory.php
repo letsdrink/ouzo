@@ -6,7 +6,8 @@
 namespace Ouzo\Injection;
 
 
-use Ouzo\Utilities\Strings;
+use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
+use Ouzo\Utilities\Arrays;
 use ReflectionClass;
 
 class InstanceFactory
@@ -16,10 +17,15 @@ class InstanceFactory
      * @var InjectorConfig
      */
     private $config;
+    /**
+     * @var AnnotationMetadataProvider
+     */
+    private $provider;
 
-    function __construct(InjectorConfig $config)
+    function __construct(InjectorConfig $config, AnnotationMetadataProvider $provider)
     {
         $this->config = $config;
+        $this->provider = $provider;
     }
 
     public function createInstance(InstanceRepository $repository, $className)
@@ -31,30 +37,17 @@ class InstanceFactory
 
     private function injectDependencies(InstanceRepository $repository, $instance)
     {
+        $annotations = $this->provider->getMetadata($instance);
         $class = new ReflectionClass($instance);
         $properties = $class->getProperties();
         foreach ($properties as $property) {
-            $doc = $property->getDocComment();
-            if (Strings::contains($doc, '@Inject')) {
-                if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {
-                    $dependency = $matched[1];
-                    $name = $this->extractName($doc);
-                    $binder = $this->config->getBinder($dependency, $name);
-                    $dependencyInstance = $repository->getInstance($this, $binder);
-                    $property->setAccessible(true);
-                    $property->setValue($instance, $dependencyInstance);
-                } else {
-                    throw new InjectorException('Cannot @Inject dependency. @var is not defined for property $' . $property->getName() . ' in class ' . $class->getName() . '.');
-                }
+            $annotation = Arrays::getValue($annotations, $property->getName());
+            if ($annotation) {
+                $binder = $this->config->getBinder($annotation['className'], $annotation['name']);
+                $dependencyInstance = $repository->getInstance($this, $binder);
+                $property->setAccessible(true);
+                $property->setValue($instance, $dependencyInstance);
             }
         }
-    }
-
-    private function extractName($doc)
-    {
-        if (preg_match("#@Named\\(\"([A-Za-z0-9_]*)\"\\)#s", $doc, $matched)) {
-            return $matched[1];
-        }
-        return '';
     }
 }

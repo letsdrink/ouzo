@@ -5,6 +5,9 @@
  */
 namespace Ouzo\Injection;
 
+use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
+use Ouzo\Injection\Annotation\DocCommentExtractor;
+
 class Injector
 {
 
@@ -21,10 +24,10 @@ class Injector
      */
     private $factory;
 
-    function __construct(InjectorConfig $config = null)
+    function __construct(InjectorConfig $config = null, AnnotationMetadataProvider $provider = null)
     {
         $this->config = $config ?: new InjectorConfig();
-        $this->factory = new InstanceFactory($this->config);
+        $this->factory = new InstanceFactory($this->config, $provider ?: new DocCommentExtractor());
         $this->repository = new InstanceRepository();
     }
 
