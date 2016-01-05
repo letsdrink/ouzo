@@ -1,8 +1,8 @@
 <?php
-$db = 'mysql';//getenv('db');
+$db = getenv('db');
 if ($db == 'mysql') {
     $config['sql_dialect'] = '\\Ouzo\\Db\\Dialect\\MySqlDialect';
-    $config['db']['user'] = 'root';
+    $config['db']['user'] = 'travis';
     $config['db']['pass'] = '';
     $config['db']['driver'] = 'mysql';
     $config['db']['host'] = '127.0.0.1';
@@ -19,7 +19,7 @@ if ($db == 'mysql') {
     $config['db']['host'] = '127.0.0.1';
     $config['db']['port'] = '5432';
 }
-$config['db']['dbname'] = 'ouzo';
+$config['db']['dbname'] = 'ouzo_test';
 
 $config['global']['prefix_system'] = '';
 $config['global']['suffix_cache'] = '1234';
