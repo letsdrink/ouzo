@@ -17,7 +17,7 @@ class DocCommentExtractor implements AnnotationMetadataProvider
     {
         $class = new ReflectionClass($instance);
         $properties = $class->getProperties();
-        $annotations = [];
+        $annotations = array();
         foreach ($properties as $property) {
             $doc = $property->getDocComment();
             if (Strings::contains($doc, '@Inject')) {
