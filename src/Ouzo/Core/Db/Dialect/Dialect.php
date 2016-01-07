@@ -46,10 +46,13 @@ abstract class Dialect
         $columns = array_keys($data);
         $values = array_values($data);
 
-        $joinedColumns = implode(', ', $columns);
-        $joinedValues = $values ? implode(', ', array_fill(0, count($values), '?')) : '';
-
-        return "INSERT INTO {$this->_query->table} ($joinedColumns) VALUES ($joinedValues)";
+        if ($values) {
+            $joinedColumns = implode(', ', $columns);
+            $joinedValues = implode(', ', array_fill(0, count($values), '?'));
+            return "INSERT INTO {$this->_query->table} ($joinedColumns) VALUES ($joinedValues)";
+        } else {
+            return "INSERT INTO {$this->_query->table} VALUES ()";
+        }
     }
 
     public function delete()
