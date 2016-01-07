@@ -11,6 +11,7 @@ Enhancements:
 Bug fixes:
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).
 * [MVC] Fixed major performance issue with routes validation.
+* [ORM] Fixed inserting records with no values (issue #216).
 
 Release 1.5.1
 --------

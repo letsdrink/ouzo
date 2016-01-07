@@ -47,7 +47,7 @@ abstract class Dialect
         $values = array_values($data);
 
         $joinedColumns = implode(', ', $columns);
-        $joinedValues = implode(', ', array_fill(0, count($values), '?'));
+        $joinedValues = $values ? implode(', ', array_fill(0, count($values), '?')) : '';
 
         return "INSERT INTO {$this->_query->table} ($joinedColumns) VALUES ($joinedValues)";
     }

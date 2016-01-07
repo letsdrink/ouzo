@@ -39,7 +39,7 @@ class ModelTest extends DbTransactionalTestCase
      * @test
      * @expectedException \InvalidArgumentException
      */
-    public function shouldThrowExceptionWhenFieldsEmptInPrepareParameters()
+    public function shouldThrowExceptionWhenFieldsEmptyInPrepareParameters()
     {
         new Model(array('table' => 't_example', 'fields' => ''));
     }
@@ -867,5 +867,19 @@ class ModelTest extends DbTransactionalTestCase
 
         // then
         $this->assertCount(1, $products);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInsertRecordWithoutValues()
+    {
+        // when
+        $order = Order::create(array());
+
+        // then
+        $this->assertNotNull($order);
+        $this->assertNotNull($order->getId());
+        $this->assertNull($order->name);
     }
 }
