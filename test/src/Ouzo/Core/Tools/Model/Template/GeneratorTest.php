@@ -179,4 +179,9 @@ class MyImagineDialect extends Dialect
     function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
     }
+
+    protected function insertEmptyRow()
+    {
+        return '';
+    }
 }
