@@ -27,4 +27,9 @@ class PostgresDialect extends Dialect
         $sql = "INSERT INTO {$table} ($joinedColumns) VALUES $valueClauses RETURNING $primaryKey";
         return $sql;
     }
+
+    protected function insertEmptyRow()
+    {
+        return "INSERT INTO {$this->_query->table} DEFAULT VALUES";
+    }
 }

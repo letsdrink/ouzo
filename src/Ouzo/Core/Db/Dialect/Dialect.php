@@ -51,7 +51,7 @@ abstract class Dialect
             $joinedValues = implode(', ', array_fill(0, count($values), '?'));
             return "INSERT INTO {$this->_query->table} ($joinedColumns) VALUES ($joinedValues)";
         } else {
-            return "INSERT INTO {$this->_query->table} VALUES ()";
+            $this->insertEmptyRow();
         }
     }
 
@@ -216,4 +216,6 @@ abstract class Dialect
         }
         return '';
     }
+
+    protected abstract function insertEmptyRow();
 }

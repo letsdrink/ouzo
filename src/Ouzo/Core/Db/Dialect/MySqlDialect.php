@@ -40,4 +40,9 @@ class MySqlDialect extends Dialect
     {
         throw new \InvalidArgumentException("Batch insert not supported in mysql");
     }
+
+    protected function insertEmptyRow()
+    {
+        return "INSERT INTO {$this->_query->table} VALUES ()";
+    }
 }

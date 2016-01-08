@@ -60,4 +60,10 @@ class Sqlite3Dialect extends Dialect
     {
         throw new \InvalidArgumentException("Batch insert not supported in sqlite3");
     }
+
+
+    protected function insertEmptyRow()
+    {
+        return "INSERT INTO {$this->_query->table} DEFAULT VALUES";
+    }
 }
