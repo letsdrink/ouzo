@@ -14,11 +14,11 @@ class Router
     /**
      * @var Uri
      */
-    private $_uri;
+    private $uri;
 
     public function __construct(Uri $uri)
     {
-        $this->_uri = $uri;
+        $this->uri = $uri;
     }
 
     /**
@@ -27,10 +27,11 @@ class Router
      */
     public function findRoute()
     {
-        $path = $this->_uri->getPathWithoutPrefix();
-        $rule = $this->_findRouteRule($path);
+        $path = $this->uri->getPathWithoutPrefix();
+        $requestType = Uri::getRequestType();
+        $rule = $this->findRouteRule($path, $requestType);
         if (!$rule) {
-            throw new RouterException('No route rule found for HTTP method [' . Uri::getRequestType() . '] and URI [' . $path . ']');
+            throw new RouterException('No route rule found for HTTP method [' . $requestType . '] and URI [' . $path . ']');
         }
         $rule->setParameters($path);
         return $rule;
@@ -38,12 +39,13 @@ class Router
 
     /**
      * @param $path
+     * @param $requestType
      * @return RouteRule
      */
-    private function _findRouteRule($path)
+    private function findRouteRule($path, $requestType)
     {
-        return Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($path) {
-            return $rule->matches($path);
+        return Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($path, $requestType) {
+            return $rule->matches($path, $requestType);
         });
     }
 }

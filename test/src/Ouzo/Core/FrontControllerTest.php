@@ -80,10 +80,9 @@ class FrontControllerTest extends ControllerTestCase
         try {
             $this->get('/sample/except');
             $this->fail();
-        } catch (RouterException $e) {
+        } catch (RouterException $e) {//then
+            $this->assertEquals('No route rule found for HTTP method [GET] and URI [/sample/except]', $e->getMessage());
         }
-
-        //then
     }
 
     /**

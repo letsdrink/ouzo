@@ -13,70 +13,70 @@ use Ouzo\Utilities\Strings;
 
 class RouteRule
 {
-    private $_method;
-    private $_uri;
-    private $_action;
-    private $_actionRequired;
-    private $_options;
-    private $_parameters = array();
-    private $_isResource;
+    private $method;
+    private $uri;
+    private $action;
+    private $actionRequired;
+    private $options;
+    private $parameters = array();
+    private $isResource;
 
     public function __construct($method, $uri, $action, $requireAction, $options = array(), $isResource = false)
     {
-        $this->_method = $method;
-        $this->_uri = $uri;
-        $this->_action = $action;
-        $this->_actionRequired = $requireAction;
-        $this->_options = $options;
-        $this->_isResource = $isResource;
+        $this->method = $method;
+        $this->uri = $uri;
+        $this->action = $action;
+        $this->actionRequired = $requireAction;
+        $this->options = $options;
+        $this->isResource = $isResource;
     }
 
     public function getMethod()
     {
-        return $this->_method;
+        return $this->method;
     }
 
     public function getUri()
     {
-        return $this->_uri;
+        return $this->uri;
     }
 
     public function getController()
     {
-        $elements = explode('#', $this->_action);
+        $elements = explode('#', $this->action);
         return Arrays::first($elements);
     }
 
     public function getAction()
     {
-        $elements = explode('#', $this->_action);
+        $elements = explode('#', $this->action);
         return Arrays::getValue($elements, 1);
     }
 
-    public function matches($uri)
+    public function matches($uri, $requestType)
     {
-        if ($this->_isEqualOrAnyMethod()) {
-            return $this->_matches($uri);
+        if ($this->isEqualOrAnyMethod($requestType)) {
+            return $this->match($uri);
         }
         return false;
     }
 
     public function hasRequiredAction()
     {
-        if ($this->_actionRequired) {
-            return (in_array($this->_method, array('GET', 'POST')) || is_array($this->_method)) && !$this->getAction();
+        if ($this->actionRequired) {
+            return (in_array($this->method, array('GET', 'POST')) || is_array($this->method)) && !$this->getAction();
         }
-        return $this->_actionRequired;
+        return $this->actionRequired;
     }
 
     public function isActionRequired()
     {
-        return $this->_actionRequired;
+        return $this->actionRequired;
     }
 
     public function getExcept()
     {
-        return Arrays::getValue($this->_options, 'except', array());
+        return Arrays::getValue($this->options, 'except', array());
     }
 
     public function isInExceptActions($action)
@@ -84,26 +84,27 @@ class RouteRule
         return in_array($action, $this->getExcept());
     }
 
-    private function _isEqualOrAnyMethod()
+    private function isEqualOrAnyMethod($requestType)
     {
-        return is_array($this->_method) ? in_array(Uri::getRequestType(), $this->_method) : Uri::getRequestType() == $this->_method;
+        return is_array($this->method) ? in_array($requestType, $this->method) : $requestType == $this->method;
     }
 
-    private function _matches($uri)
+    private function match($uri)
     {
         preg_match('#/.+?/(.+?)(/|$)#', $uri, $matches);
         if ($this->isInExceptActions(Arrays::getValue($matches, 1, ''))) {
             return false;
         }
-        if ($this->getUri() == $uri) {
+        $definedUri = $this->getUri();
+        if ($definedUri == $uri) {
             return true;
         }
-        if (preg_match('#:\w*#u', $this->getUri())) {
-            $replacedUri = preg_replace('#:\w*#u', '[\w.\-~_]+', $this->getUri());
+        if (strstr($definedUri, ':') !== false) {
+            $replacedUri = preg_replace('#:\w*#u', '[\w.\-~_]+', $definedUri);
             return preg_match('#^' . $replacedUri . '$#u', $uri);
         }
         if (!$this->getAction()) {
-            return preg_match('#' . $this->getUri() . '/#u', $uri);
+            return preg_match('#' . $definedUri . '/#u', $uri);
         }
         return false;
     }
@@ -124,33 +125,33 @@ class RouteRule
 
         $filterValues = array_intersect_key($requestUri, $filterParameters);
 
-        $this->_parameters = Arrays::combine($filterParameters, $filterValues);
+        $this->parameters = Arrays::combine($filterParameters, $filterValues);
     }
 
     public function getParameters()
     {
-        return $this->_parameters;
+        return $this->parameters;
     }
 
     public function getName()
     {
-        $name = Arrays::getValue($this->_options, 'as', $this->_prepareRuleName());
+        $name = Arrays::getValue($this->options, 'as', $this->prepareRuleName());
         $nameWithPath = Strings::appendSuffix($name, '_path');
         $name = lcfirst(Strings::underscoreToCamelCase($nameWithPath));
-        return $this->_actionRequired ? $name : '';
+        return $this->actionRequired ? $name : '';
     }
 
-    private function _prepareRuleName()
+    private function prepareRuleName()
     {
-        return $this->_isResource ? $this->_getNameToRest() : $this->_getNameToNonRest();
+        return $this->isResource ? $this->getNameToRest() : $this->getNameToNonRest();
     }
 
-    private function _getNameToRest()
+    private function getNameToRest()
     {
-        return $this->_prepareResourceActionName() . $this->_prepareResourceControllerName();
+        return $this->prepareResourceActionName() . $this->prepareResourceControllerName();
     }
 
-    private function _prepareResourceActionName()
+    private function prepareResourceActionName()
     {
         if (in_array($this->getAction(), array('fresh', 'edit'))) {
             return $this->getAction() . '_';
@@ -158,7 +159,7 @@ class RouteRule
         return '';
     }
 
-    private function _prepareResourceControllerName()
+    private function prepareResourceControllerName()
     {
         $parts = explode('_', $this->getController());
         if (in_array($this->getAction(), array('index', 'create'))) {
@@ -170,12 +171,12 @@ class RouteRule
         return implode('_', $parts);
     }
 
-    private function _getNameToNonRest()
+    private function getNameToNonRest()
     {
-        return $this->getAction() . '_' . $this->_handleNestedResource();
+        return $this->getAction() . '_' . $this->handleNestedResource();
     }
 
-    private function _handleNestedResource()
+    private function handleNestedResource()
     {
         $controller = $this->getController();
         $parts = explode('/', $controller);

@@ -6,6 +6,7 @@
 namespace Ouzo\Routing;
 
 use InvalidArgumentException;
+use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
@@ -31,6 +32,7 @@ class Route implements RouteInterface
 {
     public static $methods = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE');
     public static $validate = true;
+    public static $isDebug;
 
     /**
      * @var RouteRule[]
@@ -40,63 +42,63 @@ class Route implements RouteInterface
 
     public static function get($uri, $action, array $options = array())
     {
-        self::_addRoute('GET', $uri, $action, true, $options);
+        self::addRoute('GET', $uri, $action, true, $options);
     }
 
     public static function post($uri, $action, array $options = array())
     {
-        self::_addRoute('POST', $uri, $action, true, $options);
+        self::addRoute('POST', $uri, $action, true, $options);
     }
 
     public static function put($uri, $action, array $options = array())
     {
-        self::_addRoute('PUT', $uri, $action, true, $options);
+        self::addRoute('PUT', $uri, $action, true, $options);
     }
 
     public static function delete($uri, $action, array $options = array())
     {
-        self::_addRoute('DELETE', $uri, $action, true, $options);
+        self::addRoute('DELETE', $uri, $action, true, $options);
     }
 
     public static function any($uri, $action, array $options = array())
     {
-        self::_addRoute(self::$methods, $uri, $action, true, $options);
+        self::addRoute(self::$methods, $uri, $action, true, $options);
     }
 
     public static function resource($controller)
     {
-        self::_addResourceRoute($controller, 'GET', '', 'index');
-        self::_addResourceRoute($controller, 'GET', '/fresh', 'fresh');
-        self::_addResourceRoute($controller, 'GET', '/:id/edit', 'edit');
-        self::_addResourceRoute($controller, 'GET', '/:id', 'show');
-        self::_addResourceRoute($controller, 'POST', '', 'create');
-        self::_addResourceRoute($controller, 'PUT', '/:id', 'update');
-        self::_addResourceRoute($controller, 'PATCH', '/:id', 'update');
-        self::_addResourceRoute($controller, 'DELETE', '/:id', 'destroy');
+        self::addResourceRoute($controller, 'GET', '', 'index');
+        self::addResourceRoute($controller, 'GET', '/fresh', 'fresh');
+        self::addResourceRoute($controller, 'GET', '/:id/edit', 'edit');
+        self::addResourceRoute($controller, 'GET', '/:id', 'show');
+        self::addResourceRoute($controller, 'POST', '', 'create');
+        self::addResourceRoute($controller, 'PUT', '/:id', 'update');
+        self::addResourceRoute($controller, 'PATCH', '/:id', 'update');
+        self::addResourceRoute($controller, 'DELETE', '/:id', 'destroy');
     }
 
     public static function allowAll($uri, $controller, $options = array())
     {
-        self::_addRoute(self::$methods, $uri, $controller, false, $options);
+        self::addRoute(self::$methods, $uri, $controller, false, $options);
     }
 
-    private static function _createRouteUri($action, $suffix = '')
+    private static function createRouteUri($action, $suffix = '')
     {
         return '/' . $action . $suffix;
     }
 
-    private static function _createRouteAction($controller, $action)
+    private static function createRouteAction($controller, $action)
     {
         return $controller . '#' . $action;
     }
 
-    private static function _addRoute($method, $uri, $action, $requireAction = true, $options = array(), $isResource = false)
+    private static function addRoute($method, $uri, $action, $requireAction = true, $options = array(), $isResource = false)
     {
-        $uri = self::_clean($uri);
-        $action = self::_clean($action);
+        $uri = self::clean($uri);
+        $action = self::clean($action);
 
         $methods = Arrays::toArray($method);
-        if ($requireAction && self::$validate && self::_existRouteRule($methods, $uri)) {
+        if (self::$isDebug && $requireAction && self::$validate && self::existRouteRule($methods, $uri)) {
             $methods = implode(', ', $methods);
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
@@ -111,7 +113,7 @@ class Route implements RouteInterface
         }
     }
 
-    private static function _existRouteRule($methods, $uri)
+    private static function existRouteRule($methods, $uri)
     {
         $routeKeys = Route::$routeKeys;
         return Arrays::any($methods, function ($method) use ($routeKeys, $uri) {
@@ -134,11 +136,11 @@ class Route implements RouteInterface
         });
     }
 
-    private static function _addResourceRoute($controller, $method, $uriSuffix, $action)
+    private static function addResourceRoute($controller, $method, $uriSuffix, $action)
     {
-        self::_addRoute($method,
-            self::_createRouteUri($controller, $uriSuffix),
-            self::_createRouteAction($controller, $action),
+        self::addRoute($method,
+            self::createRouteUri($controller, $uriSuffix),
+            self::createRouteAction($controller, $action),
             true, array(), true
         );
     }
@@ -149,7 +151,7 @@ class Route implements RouteInterface
         $routeFunction();
     }
 
-    private static function _clean($string)
+    private static function clean($string)
     {
         return preg_replace('/\/+/', '/', $string);
     }
@@ -160,3 +162,5 @@ class Route implements RouteInterface
         self::$routeKeys = array();
     }
 }
+
+Route::$isDebug = Config::getValue('debug');
