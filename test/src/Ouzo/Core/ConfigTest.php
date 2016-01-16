@@ -55,7 +55,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     public function shouldReadSampleConfig()
     {
         //given
-        Config::registerConfig(new SampleConfig);
+        $configRepository = Config::registerConfig(new SampleConfig);
+        $configRepository->reload();
 
         //when
         $value = Config::getValue('default');
@@ -102,7 +103,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         //given
         $this->_createSampleConfigFile();
         include_once '/tmp/SampleConfigFile.php';
-        Config::registerConfig(new SampleConfigFile);
+        $configRepository = Config::registerConfig(new SampleConfigFile);
+        $configRepository->reload();
 
         //when
         $value = Config::getValue('default');
