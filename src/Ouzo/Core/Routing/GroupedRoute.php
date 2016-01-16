@@ -41,12 +41,12 @@ class GroupedRoute implements RouteInterface
 
     public static function resource($controller)
     {
-        Route::resource(self::uri($controller), self::$name);
+        Route::resource(self::uri($controller));
     }
 
     private static function uri($uri)
     {
-        return '/' . self::$name . '/' . $uri;
+        return '/' . self::$name . '/' . ltrim($uri, '/');
     }
 
     private static function action($action)

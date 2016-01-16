@@ -15,16 +15,18 @@ class RouteRule
 {
     private $method;
     private $uri;
+    private $controller;
     private $action;
     private $actionRequired;
     private $options;
     private $parameters = array();
     private $isResource;
 
-    public function __construct($method, $uri, $action, $requireAction, $options = array(), $isResource = false)
+    public function __construct($method, $uri, $controller, $action, $requireAction, $options = array(), $isResource = false)
     {
         $this->method = $method;
         $this->uri = $uri;
+        $this->controller = $controller;
         $this->action = $action;
         $this->actionRequired = $requireAction;
         $this->options = $options;
@@ -48,20 +50,18 @@ class RouteRule
 
     public function getController()
     {
-        $elements = explode('#', $this->action);
-        return Arrays::first($elements);
+        return $this->controller;
     }
 
     public function getAction()
     {
-        $elements = explode('#', $this->action);
-        return Arrays::getValue($elements, 1);
+        return $this->action;
     }
 
     public function hasRequiredAction()
     {
         if ($this->actionRequired) {
-            return (in_array($this->method, array('GET', 'POST')) || is_array($this->method)) && !$this->getAction();
+            return (in_array($this->method, array('GET', 'POST')) || is_array($this->method)) && !$this->action;
         }
         return $this->actionRequired;
     }
@@ -93,7 +93,7 @@ class RouteRule
             $replacedUri = preg_replace('#:\w*#u', '[\w.\-~_]+', $definedUri);
             return preg_match('#^' . $replacedUri . '$#u', $uri);
         }
-        if (!$this->getAction()) {
+        if (!$this->action) {
             return preg_match('#' . $definedUri . '/#u', $uri);
         }
         return false;
@@ -153,7 +153,7 @@ class RouteRule
 
     private function prepareResourceActionName()
     {
-        $action = $this->getAction();
+        $action = $this->action;
         if (in_array($action, array('fresh', 'edit'))) {
             return $action . '_';
         }
@@ -162,8 +162,8 @@ class RouteRule
 
     private function prepareResourceControllerName()
     {
-        $parts = explode('_', $this->getController());
-        if (in_array($this->getAction(), array('index', 'create'))) {
+        $parts = explode('_', $this->controller);
+        if (in_array($this->action, array('index', 'create'))) {
             $suffix = array_pop($parts);
         } else {
             $suffix = Inflector::singularize(array_pop($parts));
@@ -174,12 +174,12 @@ class RouteRule
 
     private function getNameToNonRest()
     {
-        return $this->getAction() . '_' . $this->handleNestedResource();
+        return $this->action . '_' . $this->handleNestedResource();
     }
 
     private function handleNestedResource()
     {
-        $controller = $this->getController();
+        $controller = $this->controller;
         $parts = explode('/', $controller);
         rsort($parts);
         return implode('_', $parts);

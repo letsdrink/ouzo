@@ -84,16 +84,17 @@ class Route implements RouteInterface
 
     private static function addRoute($method, $uri, $action, $requireAction = true, $options = array(), $isResource = false)
     {
-        $uri = self::clean($uri);
-        $action = self::clean($action);
-
         $methods = Arrays::toArray($method);
         if (self::$isDebug && $requireAction && self::$validate && self::existRouteRule($methods, $uri)) {
             $methods = implode(', ', $methods);
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
 
-        $routeRule = new RouteRule($method, $uri, $action, $requireAction, $options, $isResource);
+        $elements = explode('#', $action);
+        $controller = Arrays::first($elements);
+        $actionToRule = Arrays::getValue($elements, 1);
+
+        $routeRule = new RouteRule($method, $uri, $controller, $actionToRule, $requireAction, $options, $isResource);
         if ($routeRule->hasRequiredAction()) {
             throw new InvalidArgumentException('Route rule ' . $uri . ' required action');
         }
@@ -101,11 +102,6 @@ class Route implements RouteInterface
         foreach ($methods as $method) {
             self::$routeKeys[$method . $uri] = true;
         }
-    }
-
-    private static function clean($string)
-    {
-        return preg_replace('/\/+/', '/', $string);
     }
 
     private static function existRouteRule($methods, $uri)
@@ -125,7 +121,7 @@ class Route implements RouteInterface
 
     private static function createRouteUri($action, $suffix = '')
     {
-        return '/' . $action . $suffix;
+        return '/' . ltrim($action, '/') . $suffix;
     }
 
     private static function createRouteAction($controller, $action)

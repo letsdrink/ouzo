@@ -44,7 +44,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     public function shouldResolveAction()
     {
         //given
-        $routeRule = new RouteRule('GET', '/simple_test/action1', 'simple_test#action1', false);
+        $routeRule = new RouteRule('GET', '/simple_test/action1', 'simple_test', 'action1', false);
         $factory = new ControllerFactory();
 
         $config = Config::getValue('global');
@@ -63,7 +63,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     public function shouldThrowExceptionWhenControllerNotFound()
     {
         //given
-        $routeRule = new RouteRule('GET', '/simple_test/action', 'not_exists#action', false);
+        $routeRule = new RouteRule('GET', '/simple_test/action', 'not_exists', 'action', false);
         $factory = new ControllerFactory();
 
         //when
@@ -80,7 +80,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     public function shouldResolveControllerWithNamespace()
     {
         //given
-        $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', 'api/multiple_ns#test_action', true);
+        $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', 'api/multiple_ns', 'test_action', true);
         $factory = new ControllerFactory();
 
         //when
