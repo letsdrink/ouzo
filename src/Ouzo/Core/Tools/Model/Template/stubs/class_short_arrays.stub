@@ -8,8 +8,6 @@ use Ouzo\Model;
  */
 class {class} extends Model
 {
-    private $_fields = [{fields}];
-
     public function __construct($attributes = [])
     {
         parent::__construct([
@@ -17,7 +15,7 @@ class {class} extends Model
             {table_primaryKey}
             {table_sequence}
             'attributes' => $attributes,
-            'fields' => $this->_fields
+            'fields' => [{fields}]
         ]);
     }
 }

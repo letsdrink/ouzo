@@ -29,8 +29,12 @@ class TableInfo
     private function _getColumnsWithoutPrimary(Dialect $dialect)
     {
         $primaryKeyName = $this->primaryKeyName;
-        return Arrays::filter($dialect->columns(), function (DatabaseColumn $column) use ($primaryKeyName) {
-            return ($column->name != $primaryKeyName);
-        });
+        $columns = $dialect->columns();
+        if ($primaryKeyName != 'id') {
+            return Arrays::filter($columns, function (DatabaseColumn $column) use ($primaryKeyName) {
+                return ($column->name != $primaryKeyName);
+            });
+        }
+        return $columns;
     }
 }
