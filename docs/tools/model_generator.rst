@@ -19,7 +19,7 @@ Change current path to project directory (e.g. myproject):
 
 Generate Model class body for table **users** containing three columns: *id*, *login*, *password*:
 
-``./console ouzo:model_generator -t users``
+``./console ouzo:model_generator users``
 
 The command should output a model class **User**:
 
@@ -28,10 +28,10 @@ The command should output a model class **User**:
     ---------------------------------
     Database name: thulium_1
     Class name: PhoneParam
-    Class namespace: Model
+    Class namespace: Application\Model
     ---------------------------------
     <?php
-    namespace Model;
+    namespace Application\Model;
 
     use Ouzo\Model;
 
@@ -41,16 +41,16 @@ The command should output a model class **User**:
     */
     class User extends Model
     {
-        private $_fields = ['login', 'password';
+        private $_fields = array('login', 'password');
 
-        public function __construct($attributes = [])
+        public function __construct($attributes = array())
         {
-            parent::__construct([
+            parent::__construct(array(
                 'table' => 'users',
                 'primaryKey' => 'id',
                 'attributes' => $attributes,
                 'fields' => $this->_fields
-            ]);
+            ));
         }
     }
     Saving class to file: '/path/to/myproject/Application/Model/User.php'
@@ -63,16 +63,23 @@ As you can see ``$_fields`` lists all ``users`` table columns (except for id whi
 
 ----
 
+Arguments
+~~~~~~~~~
+
+::
+
+    table                     Table name.
+
+
 Options
 ~~~~~~~
 
-||
+::
 
-    --table (-t)          Table name.
     --class (-c)          Class name. If not specified class name is generated based on table name.
     --file (-f)           Class file path. If not specified namespace and class name is used.
     --namespace (-s)      Class namespace (e.g 'Model\MyModel'). Hint: Remember to escape backslash (\\)! (default: "Model").
-    --remove_prefix (-p)  Remove prefix from table name when generating class name (default: "t").
+    --remove-prefix (-p)  Remove prefix from table name when generating class name (default: "t").
     --output-only (-o)    Do not save file on disk, only display output.
     --short-arrays (-a)   Use shorthand array syntax (PHP 5.4).
 

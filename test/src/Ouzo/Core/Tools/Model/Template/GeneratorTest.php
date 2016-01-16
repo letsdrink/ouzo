@@ -159,6 +159,21 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertContains('class Product extends Model', $template);
         $this->assertContains('string description', $template);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGetCorrectNamespace()
+    {
+        //given
+        $generator = new Generator('products');
+
+        //when
+        $namespace = $generator->getClassNamespace();
+
+        //then
+        $this->assertEquals('Application\Model', $namespace);
+    }
 }
 
 /**

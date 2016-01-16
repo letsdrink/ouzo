@@ -18,42 +18,42 @@ use ReflectionClass;
 
 class Generator
 {
-    private $_tableName;
-    private $_className;
-    private $_adapter;
-    private $_dialectShortName;
-    private $_tablePrefix;
-    private $_nameSpace;
-    private $_shortArrays;
+    private $tableName;
+    private $className;
+    private $adapter;
+    private $dialectShortName;
+    private $tablePrefix;
+    private $namespace;
+    private $shortArrays;
 
     public function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't', $shortArrays = false)
     {
-        $this->_tableName = $tableName;
-        $this->_className = $className;
-        $this->_nameSpace = $this->_normalizeNameSpace($nameSpace);
-        $this->_tablePrefix = $tablePrefix;
-        $this->_adapter = $this->dialectAdapter();
-        $this->_dialectShortName = $this->_getDialectShortName($this->_adapter);
-        $this->_shortArrays = $shortArrays;
+        $this->tableName = $tableName;
+        $this->className = $className;
+        $this->namespace = $this->normalizeNameSpace($nameSpace);
+        $this->tablePrefix = $tablePrefix;
+        $this->adapter = $this->dialectAdapter();
+        $this->dialectShortName = $this->getDialectShortName($this->adapter);
+        $this->shortArrays = $shortArrays;
     }
 
-    private function _normalizeNameSpace($nameSpace)
+    private function normalizeNameSpace($nameSpace)
     {
         return str_replace('/', '\\', $nameSpace);
     }
 
-    private function _getDialectShortName($adapterObject)
+    private function getDialectShortName($adapterObject)
     {
-        return mb_strtolower(str_replace('Dialect', '', $this->_objectShortClassName($adapterObject)));
+        return mb_strtolower(str_replace('Dialect', '', $this->objectShortClassName($adapterObject)));
     }
 
-    private function _thisNamespace()
+    private function thisNamespace()
     {
         $thisReflection = new ReflectionClass($this);
         return $thisReflection->getNamespaceName();
     }
 
-    private function _objectShortClassName($object)
+    private function objectShortClassName($object)
     {
         $objectReflection = new ReflectionClass($object);
         return $objectReflection->getShortName();
@@ -66,18 +66,18 @@ class Generator
     public function dialectAdapter()
     {
         $dialect = DialectFactory::create();
-        $dialectShortName = $this->_objectShortClassName($dialect);
-        $selfClassPath = $this->_thisNamespace($this);
+        $dialectShortName = $this->objectShortClassName($dialect);
+        $selfClassPath = $this->thisNamespace($this);
         $generatorDialect = "$selfClassPath\\Dialect\\$dialectShortName";
         if (!class_exists($generatorDialect)) {
             throw new GeneratorException("Model generator for '$dialectShortName' does not exists.");
         }
-        return new $generatorDialect($this->_tableName);
+        return new $generatorDialect($this->tableName);
     }
 
-    private function _removeTablePrefix($tableNameParts)
+    private function removeTablePrefix($tableNameParts)
     {
-        if (Arrays::first($tableNameParts) == $this->_tablePrefix) {
+        if (Arrays::first($tableNameParts) == $this->tablePrefix) {
             array_shift($tableNameParts);
         }
         return $tableNameParts;
@@ -85,13 +85,13 @@ class Generator
 
     public function getTemplateClassName()
     {
-        return $this->_className ?: $this->_classNameFromTableName();
+        return $this->className ?: $this->classNameFromTableName();
     }
 
     public function templateContents()
     {
-        $tableInfo = new TableInfo($this->_adapter);
-        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo, $this->getClassNamespace(), $this->_shortArrays);
+        $tableInfo = new TableInfo($this->adapter);
+        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo, $this->getClassNamespace(), $this->shortArrays);
         return $stubReplacer->contents();
     }
 
@@ -100,31 +100,32 @@ class Generator
         if (is_file($fileName)) {
             throw new GeneratorException("File already exists '$fileName'.");
         }
-        $this->_preparePaths(dirname($fileName));
+        $this->preparePaths(dirname($fileName));
         file_put_contents($fileName, $this->templateContents());
     }
 
     public function getClassNamespace()
     {
-        $parts = explode('\\', $this->_nameSpace);
+        $parts = explode('\\', $this->namespace);
         $parts = Arrays::map($parts, 'ucfirst');
-        $modelNamespace = rtrim(AutoloadNamespaces::getModelNamespace(), '\\');
-        if (!Strings::startsWith($this->_nameSpace, $modelNamespace)) {
+        $modelNamespace = trim(AutoloadNamespaces::getModelNamespace(), '\\');
+        if (!Strings::startsWith($this->namespace, $modelNamespace)) {
             $parts = array_merge(array($modelNamespace), $parts);
         }
+        $parts = Arrays::filterNotBlank($parts);
         return implode('\\', $parts);
     }
 
-    private function _classNameFromTableName()
+    private function classNameFromTableName()
     {
-        $parts = explode('_', $this->_tableName);
-        $parts = $this->_removeTablePrefix($parts);
+        $parts = explode('_', $this->tableName);
+        $parts = $this->removeTablePrefix($parts);
         $parts[] = Inflector::singularize(array_pop($parts));
         $parts = Arrays::map($parts, 'ucfirst');
         return implode('', $parts);
     }
 
-    private function _preparePaths($basename)
+    private function preparePaths($basename)
     {
         if (!is_dir($basename)) {
             mkdir($basename, 0777, true);
