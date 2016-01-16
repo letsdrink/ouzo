@@ -118,11 +118,9 @@ class Route implements RouteInterface
 
     private static function addResourceRoute($controller, $method, $uriSuffix, $action)
     {
-        self::addRoute($method,
-            self::createRouteUri($controller, $uriSuffix),
-            self::createRouteAction($controller, $action),
-            true, array(), true
-        );
+        $uri = self::createRouteUri($controller, $uriSuffix);
+        $routeAction = self::createRouteAction($controller, $action);
+        self::addRoute($method, $uri, $routeAction, true, array(), true);
     }
 
     private static function createRouteUri($action, $suffix = '')
