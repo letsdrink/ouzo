@@ -5,10 +5,8 @@
  */
 namespace Ouzo\Injection;
 
-
 use Exception;
 
 class InjectorException extends Exception
 {
-
 }

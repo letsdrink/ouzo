@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Injection;
 
-
 class Binder
 {
     private $className;
@@ -14,7 +13,7 @@ class Binder
     private $instance;
     private $name;
 
-    function __construct($className, $name = '')
+    public function __construct($className, $name = '')
     {
         $this->className = $className;
         $this->name = $name;

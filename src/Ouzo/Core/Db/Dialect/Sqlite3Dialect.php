@@ -6,8 +6,8 @@
 namespace Ouzo\Db\Dialect;
 
 use BadMethodCallException;
+use InvalidArgumentException;
 use Ouzo\Db\JoinClause;
-use Ouzo\ExceptionHandling\OuzoException;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
@@ -26,7 +26,7 @@ class Sqlite3Dialect extends Dialect
     public function update()
     {
         if ($this->_query->aliasTable) {
-            throw new \InvalidArgumentException("Alias in update query is not supported in sqlite3");
+            throw new InvalidArgumentException("Alias in update query is not supported in sqlite3");
         }
         return parent::update();
     }
@@ -56,11 +56,10 @@ class Sqlite3Dialect extends Dialect
         }
     }
 
-    function batchInsert($table, $primaryKey, $columns, $batchSize)
+    public function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
-        throw new \InvalidArgumentException("Batch insert not supported in sqlite3");
+        throw new InvalidArgumentException("Batch insert not supported in sqlite3");
     }
-
 
     protected function insertEmptyRow()
     {

@@ -197,7 +197,7 @@ abstract class Dialect
 
     abstract public function getErrorCode($errorInfo);
 
-    abstract function batchInsert($table, $primaryKey, $columns, $batchSize);
+    abstract public function batchInsert($table, $primaryKey, $columns, $batchSize);
 
     protected function _where($whereClauses)
     {
@@ -217,5 +217,5 @@ abstract class Dialect
         return '';
     }
 
-    protected abstract function insertEmptyRow();
+    abstract protected function insertEmptyRow();
 }

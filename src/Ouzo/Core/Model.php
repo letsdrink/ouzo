@@ -169,12 +169,12 @@ class Model extends Validatable
         $this->_callAfterSaveCallbacks();
     }
 
-    function _callAfterSaveCallbacks()
+    public function _callAfterSaveCallbacks()
     {
         $this->_callCallbacks($this->_modelDefinition->afterSaveCallbacks);
     }
 
-    function _callBeforeSaveCallbacks()
+    public function _callBeforeSaveCallbacks()
     {
         $this->_callCallbacks($this->_modelDefinition->beforeSaveCallbacks);
     }
@@ -525,7 +525,7 @@ class Model extends Validatable
         return $this->inspect();
     }
 
-    function _resetModifiedFields()
+    public function _resetModifiedFields()
     {
         $this->_modifiedFields = array();
     }

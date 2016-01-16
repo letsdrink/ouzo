@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Injection\Annotation;
 
-
 interface AnnotationMetadataProvider
 {
     /**

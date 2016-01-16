@@ -5,14 +5,12 @@
  */
 namespace Ouzo\Injection\Annotation;
 
-
 use Ouzo\Injection\InjectorException;
 use Ouzo\Utilities\Strings;
 use ReflectionClass;
 
 class DocCommentExtractor implements AnnotationMetadataProvider
 {
-
     public function getMetadata($instance)
     {
         $class = new ReflectionClass($instance);

@@ -5,14 +5,12 @@
  */
 namespace Ouzo\Injection;
 
-
 use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
 use Ouzo\Utilities\Arrays;
 use ReflectionClass;
 
 class InstanceFactory
 {
-
     /**
      * @var InjectorConfig
      */
@@ -22,7 +20,7 @@ class InstanceFactory
      */
     private $provider;
 
-    function __construct(InjectorConfig $config, AnnotationMetadataProvider $provider)
+    public function __construct(InjectorConfig $config, AnnotationMetadataProvider $provider)
     {
         $this->config = $config;
         $this->provider = $provider;

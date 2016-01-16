@@ -53,8 +53,8 @@ class ControllerTestCase extends DbTransactionalTestCase
         return $url;
     }
 
-    private function _urlHasParams($url) {
-
+    private function _urlHasParams($url)
+    {
         return count($this->_parseUrlParams($url)) > 0;
     }
 

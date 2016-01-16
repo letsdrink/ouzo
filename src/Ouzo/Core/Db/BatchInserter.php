@@ -1,5 +1,8 @@
 <?php
-
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
 
 use ArrayIterator;
@@ -50,14 +53,14 @@ class BatchInserter
         }
     }
 
-    function _callBeforeSaveCallbacks()
+    public function _callBeforeSaveCallbacks()
     {
         foreach ($this->_models as $model) {
             $model->_callBeforeSaveCallbacks();
         }
     }
 
-    function _callAfterSaveCallbacks()
+    public function _callAfterSaveCallbacks()
     {
         foreach ($this->_models as $model) {
             $model->_callAfterSaveCallbacks();
@@ -65,7 +68,7 @@ class BatchInserter
         }
     }
 
-    function _prepareParams($primaryKey)
+    public function _prepareParams($primaryKey)
     {
         $allValues = array();
         foreach ($this->_models as $model) {

@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Injection;
 
-
 class Scope
 {
     const SINGLETON = 'singleton';

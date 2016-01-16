@@ -5,6 +5,7 @@
  */
 namespace Ouzo\Db\Dialect;
 
+use InvalidArgumentException;
 use Ouzo\Db\QueryType;
 use Ouzo\Utilities\Arrays;
 
@@ -36,9 +37,9 @@ class MySqlDialect extends Dialect
         return $this->_using($this->_query->usingClauses, ' INNER JOIN ', $this->_query->table, $this->_query->aliasTable);
     }
 
-    function batchInsert($table, $primaryKey, $columns, $batchSize)
+    public function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
-        throw new \InvalidArgumentException("Batch insert not supported in mysql");
+        throw new InvalidArgumentException("Batch insert not supported in mysql");
     }
 
     protected function insertEmptyRow()

@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Injection;
 
-
 use Ouzo\Utilities\Arrays;
 
 class InjectorConfig

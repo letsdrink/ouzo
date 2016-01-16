@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Injection;
 
-
 use BadMethodCallException;
 
 class InstanceRepository

@@ -19,7 +19,7 @@ class PostgresDialect extends Dialect
         return Arrays::getValue($errorInfo, 0);
     }
 
-    function batchInsert($table, $primaryKey, $columns, $batchSize)
+    public function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
         $valueClause = '(' . implode(', ', array_fill(0, count($columns), '?')) . ')';
         $valueClauses = implode(', ', array_fill(0, $batchSize, $valueClause));
