@@ -25,7 +25,7 @@ class PrivateGetConfigMethod
 {
     private function getConfig()
     {
-        return [];
+        return array();
     }
 }
 
