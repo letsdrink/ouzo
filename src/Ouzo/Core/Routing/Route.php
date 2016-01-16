@@ -82,16 +82,6 @@ class Route implements RouteInterface
         self::addRoute(self::$methods, $uri, $controller, false, $options);
     }
 
-    private static function createRouteUri($action, $suffix = '')
-    {
-        return '/' . $action . $suffix;
-    }
-
-    private static function createRouteAction($controller, $action)
-    {
-        return $controller . '#' . $action;
-    }
-
     private static function addRoute($method, $uri, $action, $requireAction = true, $options = array(), $isResource = false)
     {
         $uri = self::clean($uri);
@@ -113,12 +103,36 @@ class Route implements RouteInterface
         }
     }
 
+    private static function clean($string)
+    {
+        return preg_replace('/\/+/', '/', $string);
+    }
+
     private static function existRouteRule($methods, $uri)
     {
         $routeKeys = Route::$routeKeys;
         return Arrays::any($methods, function ($method) use ($routeKeys, $uri) {
             return Arrays::keyExists($routeKeys, $method . $uri);
         });
+    }
+
+    private static function addResourceRoute($controller, $method, $uriSuffix, $action)
+    {
+        self::addRoute($method,
+            self::createRouteUri($controller, $uriSuffix),
+            self::createRouteAction($controller, $action),
+            true, array(), true
+        );
+    }
+
+    private static function createRouteUri($action, $suffix = '')
+    {
+        return '/' . $action . $suffix;
+    }
+
+    private static function createRouteAction($controller, $action)
+    {
+        return $controller . '#' . $action;
     }
 
     /**
@@ -136,24 +150,10 @@ class Route implements RouteInterface
         });
     }
 
-    private static function addResourceRoute($controller, $method, $uriSuffix, $action)
-    {
-        self::addRoute($method,
-            self::createRouteUri($controller, $uriSuffix),
-            self::createRouteAction($controller, $action),
-            true, array(), true
-        );
-    }
-
     public static function group($name, $routeFunction)
     {
         GroupedRoute::setGroupName($name);
         $routeFunction();
-    }
-
-    private static function clean($string)
-    {
-        return preg_replace('/\/+/', '/', $string);
     }
 
     public static function clear()
