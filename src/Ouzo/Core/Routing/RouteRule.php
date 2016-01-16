@@ -41,6 +41,11 @@ class RouteRule
         return $this->uri;
     }
 
+    public function isActionRequired()
+    {
+        return $this->actionRequired;
+    }
+
     public function getController()
     {
         $elements = explode('#', $this->action);
@@ -53,14 +58,6 @@ class RouteRule
         return Arrays::getValue($elements, 1);
     }
 
-    public function matches($uri, $requestType)
-    {
-        if ($this->isEqualOrAnyMethod($requestType)) {
-            return $this->match($uri);
-        }
-        return false;
-    }
-
     public function hasRequiredAction()
     {
         if ($this->actionRequired) {
@@ -69,19 +66,12 @@ class RouteRule
         return $this->actionRequired;
     }
 
-    public function isActionRequired()
+    public function matches($uri, $requestType)
     {
-        return $this->actionRequired;
-    }
-
-    public function getExcept()
-    {
-        return Arrays::getValue($this->options, 'except', array());
-    }
-
-    public function isInExceptActions($action)
-    {
-        return in_array($action, $this->getExcept());
+        if ($this->isEqualOrAnyMethod($requestType)) {
+            return $this->match($uri);
+        }
+        return false;
     }
 
     private function isEqualOrAnyMethod($requestType)
@@ -107,6 +97,16 @@ class RouteRule
             return preg_match('#' . $definedUri . '/#u', $uri);
         }
         return false;
+    }
+
+    public function isInExceptActions($action)
+    {
+        return in_array($action, $this->getExcept());
+    }
+
+    public function getExcept()
+    {
+        return Arrays::getValue($this->options, 'except', array());
     }
 
     public function setParameters($uri)
@@ -153,8 +153,9 @@ class RouteRule
 
     private function prepareResourceActionName()
     {
-        if (in_array($this->getAction(), array('fresh', 'edit'))) {
-            return $this->getAction() . '_';
+        $action = $this->getAction();
+        if (in_array($action, array('fresh', 'edit'))) {
+            return $action . '_';
         }
         return '';
     }
