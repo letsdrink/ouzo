@@ -5,8 +5,10 @@
  */
 namespace Ouzo;
 
+use InvalidArgumentException;
 use Ouzo\Config\ConfigOverrideProperty;
 use Ouzo\Config\ConfigRepository;
+use ReflectionMethod;
 
 class Config
 {
@@ -78,10 +80,21 @@ class Config
 
     /**
      * @param $customConfig
+     * @throws InvalidArgumentException
      * @return ConfigRepository
      */
     public static function registerConfig($customConfig)
     {
+        if (!is_object($customConfig)) {
+            throw new InvalidArgumentException('Custom config must be a object');
+        }
+        if (!method_exists($customConfig, 'getConfig')) {
+            throw new InvalidArgumentException('Custom config object must have getConfig method');
+        }
+        $reflection = new ReflectionMethod($customConfig, 'getConfig');
+        if (!$reflection->isPublic()) {
+            throw new InvalidArgumentException('Custom config method getConfig must be public');
+        }
         $config = self::getInstanceNoReload();
         $config->addCustomConfig($customConfig);
         return self::$configInstance;

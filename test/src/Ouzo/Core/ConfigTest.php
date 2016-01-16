@@ -17,6 +17,18 @@ class SampleConfig
     }
 }
 
+class NoGetConfigMethod
+{
+}
+
+class PrivateGetConfigMethod
+{
+    private function getConfig()
+    {
+        return [];
+    }
+}
+
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
     public static function setUpBeforeClass()
@@ -273,5 +285,38 @@ TEMPLATE;
         //then
         Assert::thatArray($values)->containsKeyAndValue(array('debug' => false, 'language' => 'pl', 'custom' => 'value'));
         Assert::thatArray($values['global'])->contains('/sample');
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Custom config must be a object
+     */
+    public function shouldThrowExceptionWhenConfigMethodIsNotAnObject()
+    {
+        //when
+        Config::registerConfig('config');
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Custom config object must have getConfig method
+     */
+    public function shouldThrowExceptionWhenTryToAddCustomConfigWithoutGetConfigMethod()
+    {
+        //when
+        Config::registerConfig(new NoGetConfigMethod());
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Custom config method getConfig must be public
+     */
+    public function shouldThrowExceptionWhenTryToAddCustomConfigWhenGetConfigMethodIsNotPublic()
+    {
+        //when
+        Config::registerConfig(new PrivateGetConfigMethod());
     }
 }
