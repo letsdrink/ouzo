@@ -8,12 +8,34 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tools\Model\Template\DatabaseColumn;
 use Ouzo\Tools\Model\Template\TableInfo;
 
-class TableInfoTest extends \PHPUnit_Framework_TestCase
+class TableInfoTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
-    public function shouldReturnFieldsWithoutPrimaryKey()
+    public function shouldReturnFieldsWithoutPrimaryKeyWhenIsNotDefault()
+    {
+        //given
+        $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
+        Mock::when($dialect)->primaryKey()->thenReturn('id_name');
+        Mock::when($dialect)->columns()->thenReturn(array(
+            new DatabaseColumn('sale', 'text'),
+            new DatabaseColumn('description', 'text'),
+            new DatabaseColumn('id_name', 'int'),
+        ));
+        $tableInfo = new TableInfo($dialect);
+
+        //when
+        $columns = $tableInfo->tableColumns;
+
+        //then
+        Assert::thatArray($columns)->onProperty('name')->containsOnly('sale', 'description');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnFieldsWithPrimaryKeyWhenIsDefault()
     {
         //given
         $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
@@ -29,6 +51,6 @@ class TableInfoTest extends \PHPUnit_Framework_TestCase
         $columns = $tableInfo->tableColumns;
 
         //then
-        Assert::thatArray($columns)->onProperty('name')->containsOnly('sale', 'description');
+        Assert::thatArray($columns)->onProperty('name')->containsOnly('sale', 'description', 'id');
     }
 }
