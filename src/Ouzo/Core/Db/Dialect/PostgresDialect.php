@@ -32,4 +32,9 @@ class PostgresDialect extends Dialect
     {
         return "INSERT INTO {$this->_query->table} DEFAULT VALUES";
     }
+
+    public function regexpMatcher()
+    {
+        return '~';
+    }
 }

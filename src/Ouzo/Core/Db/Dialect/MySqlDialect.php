@@ -46,4 +46,9 @@ class MySqlDialect extends Dialect
     {
         return "INSERT INTO {$this->_query->table} VALUES ()";
     }
+
+    public function regexpMatcher()
+    {
+        return 'REGEXP';
+    }
 }

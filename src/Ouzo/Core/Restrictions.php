@@ -17,6 +17,7 @@ use Ouzo\Restriction\LessOrEqualToRestriction;
 use Ouzo\Restriction\LessThanRestriction;
 use Ouzo\Restriction\LikeRestriction;
 use Ouzo\Restriction\NotEqualToRestriction;
+use Ouzo\Restriction\RegexpRestriction;
 
 class Restrictions
 {
@@ -73,5 +74,10 @@ class Restrictions
     public static function isNotIn(array $values)
     {
         return new IsNotInRestriction($values);
+    }
+
+    public static function regexp($value)
+    {
+        return new RegexpRestriction($value);
     }
 }

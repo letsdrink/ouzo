@@ -164,4 +164,20 @@ class RestrictionsTest extends DbTransactionalTestCase
         //then
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnModelUsingRegexpRestriction()
+    {
+        //given
+        $product = Product::create(array('name' => 'name1', 'description' => 'desc'));
+        Product::create(array('name' => 'other product', 'description' => 'desc'));
+
+        //when
+        $loadedProduct = Product::where(array('name' => Restrictions::regexp('ame')))->fetch();
+
+        //then
+        Assert::thatModel($loadedProduct)->isEqualTo($product);
+    }
 }

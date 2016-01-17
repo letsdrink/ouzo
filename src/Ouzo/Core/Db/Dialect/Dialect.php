@@ -199,6 +199,8 @@ abstract class Dialect
 
     abstract public function batchInsert($table, $primaryKey, $columns, $batchSize);
 
+    abstract public function regexpMatcher();
+
     protected function _where($whereClauses)
     {
         $where = DialectUtil::buildWhereQuery($whereClauses);

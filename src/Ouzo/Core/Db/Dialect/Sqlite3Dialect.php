@@ -65,4 +65,9 @@ class Sqlite3Dialect extends Dialect
     {
         return "INSERT INTO {$this->_query->table} DEFAULT VALUES";
     }
+
+    public function regexpMatcher()
+    {
+        return 'REGEXP';
+    }
 }
