@@ -68,6 +68,7 @@ class Sqlite3Dialect extends Dialect
 
     public function regexpMatcher()
     {
+        //needs package sqlite3-pcre to correct working
         return 'REGEXP';
     }
 }
