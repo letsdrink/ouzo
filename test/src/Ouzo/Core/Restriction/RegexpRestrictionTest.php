@@ -50,7 +50,6 @@ class RegexpRestrictionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @group non-sqlite3
      */
     public function shouldCreateProperSqlForSqlite()
     {

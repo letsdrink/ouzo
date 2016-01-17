@@ -166,6 +166,7 @@ class RestrictionsTest extends DbTransactionalTestCase
     }
 
     /**
+     * @group non-sqlite3
      * @test
      */
     public function shouldReturnModelUsingRegexpRestriction()
