@@ -433,7 +433,7 @@ class MockTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function should()
+    public function shouldStubMultipleCallsForDifferentMethods()
     {
         //given
         $exception = new Exception("msg");
