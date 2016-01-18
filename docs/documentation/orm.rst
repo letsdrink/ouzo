@@ -492,6 +492,26 @@ Between restriction handles four modes: INCLUSIVE (default), EXCLUSIVE, RIGHT_EX
 ``['name' => Restrictions::isNotNull()]`` produces
 ``SELECT * FROM table WHERE name IS NOT NULL``
 
+* **regexp**
+
+``['name' => Restrictions::regexp('so.*')]``
+
+for Postgres driver produces
+
+``SELECT * FROM table WHERE name ~ ? Params: ["so.*"]``
+
+for MySql driver produces
+
+``SELECT * FROM table WHERE name REGEXP ? Params: ["so.*"]``
+
+for Sqlite driver produces
+
+``SELECT * FROM table WHERE name REGEXP ? Params: ["so.*"]``
+
+.. note::
+
+    For Sqlite driver must be installed ``sqlite3-pcre`` package to correct working.
+
 Parameters chaining
 -------------------
 Where clauses can be chained e.g.
