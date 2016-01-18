@@ -433,6 +433,30 @@ class MockTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function should()
+    {
+        //given
+        $exception = new Exception("msg");
+        $mock = Mock::mock();
+        Mock::when($mock)->method()
+            ->thenReturn('result1')
+            ->thenThrow($exception)
+            ->thenAnswer(function (MethodCall $methodCall) {
+                return $methodCall->name;
+            })
+            ->thenReturn('result2');
+
+        //when then
+        $this->assertEquals('result1', $mock->method());
+        CatchException::when($mock)->method();
+        CatchException::assertThat()->hasMessage('msg');
+        $this->assertEquals("method", $mock->method());
+        $this->assertEquals('result2', $mock->method());
+    }
+
+    /**
+     * @test
+     */
     public function shouldStubMultipleExceptions()
     {
         //given
