@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Tests\CatchException;
+use Ouzo\Tests\Mock\InOrderVerifier;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
@@ -649,5 +650,70 @@ class MockTest extends PHPUnit_Framework_TestCase
 
         //then
         Mock::verify($mock)->receivedTimes(3)->method(Mock::any());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldVerifyMethodsAreNotInvokeInOrder()
+    {
+        //given
+        $mock = Mock::mock();
+
+        //when
+        try {
+            $mock->method2();
+            $mock->method1();
+            Mock::verifyInOrder(function (InOrderVerifier $inOrder) use ($mock) {
+                $inOrder->verify($mock)->method1();
+                $inOrder->verify($mock)->method2();
+            });
+            $this->fail();
+        } //then
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals('method2()', $e->getComparisonFailure()->getActual());
+            $this->assertEquals('method1()', $e->getComparisonFailure()->getExpected());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldVerifyInOrderWhenNoInteractions()
+    {
+        //given
+        $mock = Mock::mock();
+
+        //when
+        try {
+            Mock::verifyInOrder(function (InOrderVerifier $inOrder) use ($mock) {
+                $inOrder->verify($mock)->method1();
+                $inOrder->verify($mock)->method2();
+            });
+            $this->fail();
+        } //then
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals('no interactions', $e->getComparisonFailure()->getActual());
+            $this->assertEquals('method1()', $e->getComparisonFailure()->getExpected());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldVerifyInOrder()
+    {
+        //given
+        $mock = Mock::mock();
+
+        //when
+        $mock->method2();
+        $mock->method1();
+
+        //then
+        Mock::verifyInOrder(function (InOrderVerifier $inOrder) use ($mock) {
+            $inOrder->verify($mock)->method2();
+            $inOrder->verify($mock)->method1();
+        });
     }
 }
