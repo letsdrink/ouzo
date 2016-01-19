@@ -18,11 +18,11 @@ class Config
     private static $configInstance = null;
 
     /**
-     * @return null|ConfigRepository
+     * @return boolean
      */
     public static function isLoaded()
     {
-        return self::$configInstance;
+        return self::$configInstance ? true : false;
     }
 
     /**
