@@ -15,6 +15,10 @@ use Ouzo\Utilities\Strings;
 class ControllerTestCase extends DbTransactionalTestCase
 {
     /**
+     * @var InjectorConfig
+     */
+    protected $injectorConfig;
+    /**
      * @var FrontController
      */
     protected $frontController;
@@ -23,9 +27,9 @@ class ControllerTestCase extends DbTransactionalTestCase
     {
         parent::__construct();
 
-        $config = new InjectorConfig();
-        $this->frontControllerBindings($config);
-        $injector = new Injector($config);
+        $this->injectorConfig = new InjectorConfig();
+        $this->frontControllerBindings($this->injectorConfig);
+        $injector = new Injector($this->injectorConfig);
         $this->frontController = $injector->getInstance('\Ouzo\FrontController');
     }
 
