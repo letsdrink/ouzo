@@ -13,6 +13,12 @@ class ControllerFactory
 {
     private $controllerNamespaces;
 
+    /**
+     * @Inject
+     * @var \Ouzo\Injection\Injector
+     */
+    private $injector;
+
     public function __construct()
     {
         $this->controllerNamespaces = AutoloadNamespaces::getControllerNamespace();
@@ -24,10 +30,17 @@ class ControllerFactory
         foreach ($this->controllerNamespaces as $controllerNamespace) {
             $controller = $controllerNamespace . $controllerName . "Controller";
             if (class_exists($controller)) {
-                return new $controller($routeRule);
+                return $this->getInstance($routeRule, $controller);
             }
         }
         throw new ControllerNotFoundException('Controller [' . $controllerName . '] for URI [' . $routeRule->getUri() . '] does not exist!');
+    }
+
+    private function getInstance(RouteRule $routeRule, $controller)
+    {
+        $controllerInstance = $this->injector->getInstance($controller);
+        $controllerInstance->initialize($routeRule);
+        return $controllerInstance;
     }
 }
 

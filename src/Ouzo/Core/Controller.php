@@ -29,7 +29,16 @@ class Controller
     private $_routeRule = null;
     private $_keepMessage = false;
 
-    public function __construct(RouteRule $routeRule)
+    public static function createInstance(RouteRule $routeRule)
+    {
+        $className = get_called_class();
+        /** @var $controller Controller */
+        $controller = new $className();
+        $controller->initialize($routeRule);
+        return $controller;
+    }
+
+    public function initialize(RouteRule $routeRule)
     {
         $this->_routeRule = $routeRule;
         $uri = new Uri();

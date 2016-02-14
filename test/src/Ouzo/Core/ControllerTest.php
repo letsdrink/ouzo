@@ -394,7 +394,7 @@ class ControllerTest extends ControllerTestCase
         //given
         Config::overridePropertyArray(array('global', 'prefix_system'), 'prefix');
         $_SESSION = array();
-        $controller = new Controller(new RouteRule('', '', '', '', false));
+        $controller = Controller::createInstance(new RouteRule('', '', '', '', false));
 
         //when
         $controller->notice('hello');

@@ -16,6 +16,7 @@ class MultipleNsController extends Controller
 
 namespace Ouzo;
 
+use Ouzo\Injection\Injector;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Tests\CatchException;
 use PHPUnit_Framework_TestCase;
@@ -26,10 +27,13 @@ class SimpleTestController extends Controller
 
 class ControllerFactoryTest extends PHPUnit_Framework_TestCase
 {
+    private $injector;
+
     public function setUp()
     {
         parent::setUp();
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
+        $this->injector = new Injector();
     }
 
     public function tearDown()
@@ -45,7 +49,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     {
         //given
         $routeRule = new RouteRule('GET', '/simple_test/action1', 'simple_test', 'action1', false);
-        $factory = new ControllerFactory();
+        $factory = $this->injector->getInstance('\Ouzo\ControllerFactory');
 
         $config = Config::getValue('global');
         $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/simple_test/action1";
@@ -64,7 +68,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     {
         //given
         $routeRule = new RouteRule('GET', '/simple_test/action', 'not_exists', 'action', false);
-        $factory = new ControllerFactory();
+        $factory = $this->injector->getInstance('\Ouzo\ControllerFactory');
 
         //when
         CatchException::when($factory)->createController($routeRule);
@@ -81,7 +85,7 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
     {
         //given
         $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', 'api/multiple_ns', 'test_action', true);
-        $factory = new ControllerFactory();
+        $factory = $this->injector->getInstance('\Ouzo\ControllerFactory');
 
         //when
         $currentController = $factory->createController($routeRule);

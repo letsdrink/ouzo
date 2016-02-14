@@ -19,11 +19,6 @@ class SampleController extends Controller
     public static $actionCalled;
     public static $beforeCallback;
 
-    public function __construct($routeRule)
-    {
-        parent::__construct($routeRule);
-    }
-
     public function init()
     {
         $this->before[] = 'beforeAction';
@@ -48,7 +43,7 @@ class MockControllerFactory
     public function createController()
     {
         $routeRule = Arrays::first(Route::getRoutes());
-        return new SampleController($routeRule);
+        return SampleController::createInstance($routeRule);
     }
 }
 
