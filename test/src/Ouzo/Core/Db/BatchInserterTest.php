@@ -30,6 +30,7 @@ class BatchInserterTest extends DbTransactionalTestCase
     }
 
     /**
+     * @group postgres
      * @test
      */
     public function shouldBatchInsertWithoutReturning()
