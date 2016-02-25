@@ -24,7 +24,10 @@ class PostgresDialect extends Dialect
         $valueClause = '(' . implode(', ', array_fill(0, count($columns), '?')) . ')';
         $valueClauses = implode(', ', array_fill(0, $batchSize, $valueClause));
         $joinedColumns = implode(', ', $columns);
-        $sql = "INSERT INTO {$table} ($joinedColumns) VALUES $valueClauses RETURNING $primaryKey";
+        $sql = "INSERT INTO {$table} ($joinedColumns) VALUES $valueClauses";
+        if ($primaryKey) {
+            $sql .= ' RETURNING ' . $primaryKey;
+        }
         return $sql;
     }
 

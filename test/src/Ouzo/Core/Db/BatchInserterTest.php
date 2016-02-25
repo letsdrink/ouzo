@@ -1,8 +1,9 @@
 <?php
+use Application\Model\Test\Order;
+use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
 use Ouzo\Db\BatchInserter;
 use Ouzo\Tests\DbTransactionalTestCase;
-
 
 class BatchInserterTest extends DbTransactionalTestCase
 {
@@ -23,8 +24,30 @@ class BatchInserterTest extends DbTransactionalTestCase
         $inserter->execute();
 
         //then
-        $this->assertNotNull(Product::where(array('name' =>'a'))->fetch());
-        $this->assertNotNull(Product::where(array('name' =>'b'))->fetch());
-        $this->assertNotNull(Product::where(array('name' =>'c'))->fetch());
+        $this->assertNotNull(Product::where(array('name' => 'a'))->fetch());
+        $this->assertNotNull(Product::where(array('name' => 'b'))->fetch());
+        $this->assertNotNull(Product::where(array('name' => 'c'))->fetch());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBatchInsertWithoutReturning()
+    {
+        //given
+        $product1 = Product::create(array('name' => 'product1'));
+        $order1 = Order::create(array('name' => 'order1'));
+        $product2 = Product::create(array('name' => 'product2'));
+        $order2 = Order::create(array('name' => 'order2'));
+        $inserter = new BatchInserter();
+        $inserter->add(new OrderProduct(array('id_order' => $order1->getId(), 'id_product' => $product1->getId())));
+        $inserter->add(new OrderProduct(array('id_order' => $order2->getId(), 'id_product' => $product2->getId())));
+
+        //when
+        $inserter->execute();
+
+        //then
+        $this->assertNotNull(OrderProduct::where(array('id_order' => $order1->getId()))->fetch());
+        $this->assertNotNull(OrderProduct::where(array('id_order' => $order2->getId()))->fetch());
     }
 }

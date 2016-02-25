@@ -46,10 +46,12 @@ class BatchInserter
 
     private function _assignPrimaryKeys($primaryKey, $ids)
     {
-        $primaryKeysIterator = new ArrayIterator($ids);
-        foreach ($this->_models as $model) {
-            $model->$primaryKey = $primaryKeysIterator->current();
-            $primaryKeysIterator->next();
+        if ($primaryKey) {
+            $primaryKeysIterator = new ArrayIterator($ids);
+            foreach ($this->_models as $model) {
+                $model->$primaryKey = $primaryKeysIterator->current();
+                $primaryKeysIterator->next();
+            }
         }
     }
 
