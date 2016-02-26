@@ -50,7 +50,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
         $transformed = FluentArray::from($array)->keys()->toArray();
 
         //then
-        $this->assertEquals(array_keys($array), $transformed);
+        $this->assertEquals(array(1, 2, 3), $transformed);
     }
 
     /**
@@ -222,6 +222,28 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
 
         //then
         Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnObjectsGroupedByFunctionResults()
+    {
+        //given
+        $array = array(
+            $product1 = new Product(array('name' => 'bob')),
+            $product2 = new Product(array('name' => 'john')),
+            $product3 = new Product(array('name' => 'bob'))
+        );
+
+        //when
+        $groupedByName = FluentArray::from($array)->groupBy(Functions::extract()->name)->toArray();
+
+        //then
+        $this->assertSame(array(
+            'bob' => array($product1, $product3),
+            'john' => array($product2)
+        ), $groupedByName);
     }
 
     /**
