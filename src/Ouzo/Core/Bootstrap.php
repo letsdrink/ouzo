@@ -71,7 +71,9 @@ class Bootstrap
         set_error_handler('\Ouzo\ExceptionHandling\ErrorHandler::errorHandler');
         register_shutdown_function('\Ouzo\ExceptionHandling\ErrorHandler::shutdownHandler');
 
-        $this->configRepository->reload();
+        if ($this->configRepository) {
+            $this->configRepository->reload();
+        }
         $this->includeRoutes();
         $this->createFrontController()->init();
     }
