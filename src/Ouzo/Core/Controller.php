@@ -13,8 +13,12 @@ use Ouzo\Utilities\Strings;
 
 class Controller
 {
+    /** @var View */
     public $view;
+
+    /** @var Layout */
     public $layout;
+
     public $before = array();
     public $after = array();
     public $currentController = '';
