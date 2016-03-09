@@ -101,6 +101,6 @@ class View
 
     public function __isset($name)
     {
-        return $this->__get($name) !== null;
+        return isset($this->_attributes[$name]);
     }
 }
