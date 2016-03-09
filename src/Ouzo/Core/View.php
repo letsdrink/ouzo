@@ -98,4 +98,9 @@ class View
     {
         return $this->_attributes[$name];
     }
+
+    public function __isset($name)
+    {
+        return $this->__get($name) !== null;
+    }
 }
