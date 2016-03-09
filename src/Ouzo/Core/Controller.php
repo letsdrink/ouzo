@@ -52,7 +52,7 @@ class Controller
         $viewName = $this->getViewName();
 
         $this->view = new View($viewName);
-        $this->layout = new Layout();
+        $this->layout = new Layout($this->view);
         $this->params = $this->createParameters($routeRule, $uri);
     }
 

@@ -11,6 +11,12 @@ class Layout
 {
     private $_renderContent;
     private $_layout;
+    private $_view;
+
+    public function __construct(View $view)
+    {
+        $this->_view = $view;
+    }
 
     public function setLayout($layout)
     {
@@ -50,5 +56,10 @@ class Layout
             $this->setRenderContent($content);
         }
         $this->setLayout('ajax_layout');
+    }
+
+    public function __get($name)
+    {
+        return $this->_view->$name;
     }
 }
