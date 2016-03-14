@@ -6,6 +6,9 @@
 namespace Ouzo\Utilities\Iterator;
 
 use Ouzo\Tests\CatchException;
+use Ouzo\Tests\Mock\MethodCall;
+use Ouzo\Tests\Mock\Mock;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentFunctions;
 
 class FluentIteratorTest extends \PHPUnit_Framework_TestCase
@@ -140,5 +143,31 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals('a', $first);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotCallMapFunctionOnSkippedElements()
+    {
+        //given
+        $iterator = new \ArrayIterator(array(1, 2, 3));
+        $mapper = Mock::create();
+        Mock::when($mapper)->map(Mock::anyArgList())->thenAnswer(function (MethodCall $methodCall) {
+            return Arrays::first($methodCall->arguments);
+        });
+
+        //when
+        $result = FluentIterator::from($iterator)
+            ->map(function ($elem) use ($mapper) {
+                return $mapper->map($elem);
+            })
+            ->skip(1)
+            ->limit(1);
+
+        //then
+        $this->assertEquals(array(2), array_values($result->toArray()));
+        Mock::verify($mapper)->neverReceived()->map(1);
+        Mock::verify($mapper)->neverReceived()->map(3);
     }
 }
