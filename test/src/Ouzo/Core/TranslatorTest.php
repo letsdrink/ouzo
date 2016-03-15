@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+use Ouzo\Config;
 use Ouzo\Translator;
 
 class TranslatorTest extends PHPUnit_Framework_TestCase
@@ -123,5 +124,46 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('prefix1.prefix2.key', $translation);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTranslateWithPseudoLocalization()
+    {
+        //given
+        Config::overrideProperty('pseudo_localization')->with(true);
+
+        $labels = array('key' => 'translation');
+        $translator = new Translator('en', $labels);
+
+        //when
+        $translation = $translator->translate('key');
+
+        //then
+        $this->assertEquals('ŧřȧƞşŀȧŧīǿƞ', $translation);
+
+        Config::clearProperty('pseudo_localization');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTranslateArrayWithPseudoLocalization()
+    {
+        //given
+        Config::overrideProperty('pseudo_localization')->with(true);
+
+        $labels = array('key' => array('k1' => 'value', 'k2' => 'other'));
+        $translator = new Translator('en', $labels);
+
+        //when
+        $translation = $translator->translate('key');
+
+        //then
+        var_dump($translation);
+        $this->assertEquals(array('k1' => 'ṽȧŀŭḗ', 'k2' => 'ǿŧħḗř'), $translation);
+
+        Config::clearProperty('pseudo_localization');
     }
 }

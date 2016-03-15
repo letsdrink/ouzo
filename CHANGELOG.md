@@ -7,6 +7,7 @@ Enhancements:
 * [Utilities] Implemented Arrays::contains method (issue #103).
 * [Utilities] Added Clock::isAfterOrEqualTo and Clock::isBeforeOrEqualTo.
 * [Utilities] Added multi-byte safe Strings::uppercaseFirst.
+* [Utilities] Added pseudo localization support.
 * [MVC] Layout has now access to view variables.
 
 Bug fixes:
