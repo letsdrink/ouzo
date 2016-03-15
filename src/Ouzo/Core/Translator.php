@@ -12,18 +12,20 @@ class Translator
 {
     private $_labels;
     private $language;
+    private $pseudoLocalizationEnabled;
 
     public function __construct($language, $labels)
     {
         $this->_labels = $labels;
         $this->language = $language;
+        $this->pseudoLocalizationEnabled = Config::getValue('pseudo_localization') ? true : false;
     }
 
     public function translate($key, $params = array())
     {
         $explodedKey = explode('.', $key);
         $translation = Arrays::getNestedValue($this->_labels, $explodedKey) ?: $key;
-        return Strings::sprintAssoc($translation, $params);
+        return $this->localize(Strings::sprintAssoc($translation, $params));
     }
 
     public function translateWithChoice($key, $choice, $params = array())
@@ -35,7 +37,28 @@ class Translator
         if ($index >= sizeof($split)) {
             $index = sizeof($split) - 1;
         }
-        return $split[$index];
+        return $this->localize($split[$index]);
+    }
+
+    private function localize($text)
+    {
+        return $this->pseudoLocalizationEnabled ? $this->pseudoLocalize($text) : $text;
+    }
+
+    private function pseudoLocalize($text)
+    {
+        function strtr_utf8($text, $from, $to)
+        {
+            $keys = array();
+            $values = array();
+            preg_match_all('/./u', $from, $keys);
+            preg_match_all('/./u', $to, $values);
+            $mapping = array_combine($keys[0], $values[0]);
+            return strtr($text, $mapping);
+        }
+
+        return strtr_utf8($text, "abcdefghijklmnoprstuvwyzABCDEFGHIJKLMNOPRSTUVWYZ",
+            "ȧƀƈḓḗƒɠħīĵķŀḿƞǿƥřşŧŭṽẇẏzȦƁƇḒḖƑƓĦĪĴĶĿḾȠǾƤŘŞŦŬṼẆẎẐ");
     }
 
     /*
