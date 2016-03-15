@@ -39,10 +39,6 @@ class ClassWithTypedParameters
     public function fun2(array $p1)
     {
     }
-
-    public function fun3(callable $p1)
-    {
-    }
 }
 
 class ClassWithConstructor
@@ -313,23 +309,5 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldCreateProxyForMethodWithCallableTypeHint()
-    {
-        //given
-        $testMethodHandler = new TestMethodHandler();
-        $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithTypedParameters', $testMethodHandler);
-        $param = function () {
-        };
-
-        //when
-        $proxy->fun3($param);
-
-        //then
-        $this->assertEquals(array(array('fun3', array($param))), $testMethodHandler->calls);
     }
 }
