@@ -12,17 +12,17 @@ use ReflectionClass;
 class InstanceFactory
 {
     /**
-     * @var InjectorConfig
+     * @var Bindings
      */
-    private $config;
+    private $bindings;
     /**
      * @var AnnotationMetadataProvider
      */
     private $provider;
 
-    public function __construct(InjectorConfig $config, AnnotationMetadataProvider $provider)
+    public function __construct(Bindings $bindings, AnnotationMetadataProvider $provider)
     {
-        $this->config = $config;
+        $this->bindings = $bindings;
         $this->provider = $provider;
     }
 
@@ -41,7 +41,7 @@ class InstanceFactory
         foreach ($properties as $property) {
             $annotation = Arrays::getValue($annotations, $property->getName());
             if ($annotation) {
-                $binder = $this->config->getBinder($annotation['className'], $annotation['name']);
+                $binder = $this->bindings->getBinder($annotation['className'], $annotation['name']);
                 $dependencyInstance = $repository->getInstance($this, $binder);
                 $property->setAccessible(true);
                 $property->setValue($instance, $dependencyInstance);

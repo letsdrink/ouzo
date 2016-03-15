@@ -254,10 +254,10 @@ class InjectorTest extends PHPUnit_Framework_TestCase
         $injector = new Injector($config);
 
         //when
-        $instance = $injector->getInstance('\Ouzo\Injection\Injector');
+        $instance = $injector->getInstance('\ClassWithInjectorDep');
 
         //then
-        $this->assertSame($injector, $instance);
+        $this->assertSame($injector, $instance->injector);
     }
 
     private function assertDependencyInjected($className, $instance)

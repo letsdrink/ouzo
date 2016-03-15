@@ -11,10 +11,6 @@ use Ouzo\Injection\Annotation\DocCommentExtractor;
 class Injector
 {
     /**
-     * @var InjectorConfig
-     */
-    private $config;
-    /**
      * @var InstanceRepository
      */
     private $repository;
@@ -25,17 +21,15 @@ class Injector
 
     public function __construct(InjectorConfig $config = null, AnnotationMetadataProvider $provider = null)
     {
-        $this->config = $config ?: new InjectorConfig();
-        $this->factory = new InstanceFactory($this->config, $provider ?: new DocCommentExtractor());
+        $config = $config ?: new InjectorConfig();
+        $this->bindings = new Bindings($config->getBinders(), $this) ;
+        $this->factory = new InstanceFactory($this->bindings, $provider ?: new DocCommentExtractor());
         $this->repository = new InstanceRepository();
     }
 
     public function getInstance($className, $name = '')
     {
-        if ($className == '\Ouzo\Injection\Injector') {
-            return $this;
-        }
-        $binder = $this->config->getBinder($className, $name);
+        $binder = $this->bindings->getBinder($className, $name);
         return $this->repository->getInstance($this->factory, $binder);
     }
 }
