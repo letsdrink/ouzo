@@ -47,8 +47,22 @@ class Translator
 
     private function pseudoLocalize($text)
     {
-        return $this->strtr_utf8($text, "abcdefghijklmnoprstuvwyzABCDEFGHIJKLMNOPRSTUVWYZ",
-            "ȧƀƈḓḗƒɠħīĵķŀḿƞǿƥřşŧŭṽẇẏzȦƁƇḒḖƑƓĦĪĴĶĿḾȠǾƤŘŞŦŬṼẆẎẐ");
+        if (is_array($text)) {
+            $array = $text;
+            foreach ($array as $key => $value) {
+                $array[$key] = is_array($value) ? $this->pseudoLocalize($value) : $this->pseudoLocalizeText($value);
+            }
+            return $array;
+        }
+        return $this->pseudoLocalizeText($text);
+    }
+
+    private function pseudoLocalizeText($text)
+    {
+        return $this->strtr_utf8($text,
+            "abcdefghijklmnoprstuvwyzABCDEFGHIJKLMNOPRSTUVWYZ",
+            "ȧƀƈḓḗƒɠħīĵķŀḿƞǿƥřşŧŭṽẇẏzȦƁƇḒḖƑƓĦĪĴĶĿḾȠǾƤŘŞŦŬṼẆẎẐ"
+        );
     }
 
     private function strtr_utf8($text, $from, $to)

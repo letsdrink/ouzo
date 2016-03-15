@@ -145,4 +145,25 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
 
         Config::clearProperty('pseudo_localization');
     }
+
+    /**
+     * @test
+     */
+    public function shouldTranslateArrayWithPseudoLocalization()
+    {
+        //given
+        Config::overrideProperty('pseudo_localization')->with(true);
+
+        $labels = array('key' => array('k1' => 'value', 'k2' => 'other'));
+        $translator = new Translator('en', $labels);
+
+        //when
+        $translation = $translator->translate('key');
+
+        //then
+        var_dump($translation);
+        $this->assertEquals(array('k1' => 'ṽȧŀŭḗ', 'k2' => 'ǿŧħḗř'), $translation);
+
+        Config::clearProperty('pseudo_localization');
+    }
 }
