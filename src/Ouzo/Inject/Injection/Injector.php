@@ -32,6 +32,9 @@ class Injector
 
     public function getInstance($className, $name = '')
     {
+        if ($className == '\Ouzo\Injection\Injector') {
+            return $this;
+        }
         $binder = $this->config->getBinder($className, $name);
         return $this->repository->getInstance($this->factory, $binder);
     }

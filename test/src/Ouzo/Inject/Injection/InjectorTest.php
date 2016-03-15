@@ -244,6 +244,22 @@ class InjectorTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\ClassWithNoDep', $instance);
     }
 
+    /**
+     * @test
+     */
+    public function shouldInjectItself()
+    {
+        // given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance('\Ouzo\Injection\Injector');
+
+        //then
+        $this->assertSame($injector, $instance);
+    }
+
     private function assertDependencyInjected($className, $instance)
     {
         $this->assertNotNull($instance, 'Dependency was not injected.');
