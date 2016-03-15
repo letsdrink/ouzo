@@ -47,18 +47,18 @@ class Translator
 
     private function pseudoLocalize($text)
     {
-        function strtr_utf8($text, $from, $to)
-        {
-            $keys = array();
-            $values = array();
-            preg_match_all('/./u', $from, $keys);
-            preg_match_all('/./u', $to, $values);
-            $mapping = array_combine($keys[0], $values[0]);
-            return strtr($text, $mapping);
-        }
-
-        return strtr_utf8($text, "abcdefghijklmnoprstuvwyzABCDEFGHIJKLMNOPRSTUVWYZ",
+        return $this->strtr_utf8($text, "abcdefghijklmnoprstuvwyzABCDEFGHIJKLMNOPRSTUVWYZ",
             "ȧƀƈḓḗƒɠħīĵķŀḿƞǿƥřşŧŭṽẇẏzȦƁƇḒḖƑƓĦĪĴĶĿḾȠǾƤŘŞŦŬṼẆẎẐ");
+    }
+
+    private function strtr_utf8($text, $from, $to)
+    {
+        $keys = array();
+        $values = array();
+        preg_match_all('/./u', $from, $keys);
+        preg_match_all('/./u', $to, $values);
+        $mapping = array_combine($keys[0], $values[0]);
+        return strtr($text, $mapping);
     }
 
     /*
