@@ -6,22 +6,27 @@
 namespace Ouzo\Injection;
 
 
-use Ouzo\Utilities\Arrays;
-
 class Bindings
 {
-    private $binders;
+    private $config;
+    private $injectorBinder;
 
-    public function __construct($binders, $injector)
+    public function __construct(InjectorConfig $config, $injector)
     {
-        $this->binders = $binders;
-        $injectorClass = '\Ouzo\Injection\Injector';
-        $this->binders[$injectorClass . '_'] = (new Binder($injectorClass))->toInstance($injector);
+        $this->config = $config;
+        $this->injectorBinder = (new Binder('\Ouzo\Injection\Injector'))->toInstance($injector);
     }
 
+    /**
+     * @param $className
+     * @param $name
+     * @return Binder
+     */
     public function getBinder($className, $name)
     {
-        $binder = Arrays::getValue($this->binders, $className . '_' . $name);
-        return $binder ?: new Binder($className, $name);
+        if ($className == '\Ouzo\Injection\Injector') {
+            return $this->injectorBinder;
+        }
+        return $this->config->getBinder($className, $name);
     }
 }

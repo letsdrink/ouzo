@@ -5,6 +5,8 @@
  */
 namespace Ouzo\Injection;
 
+use Ouzo\Utilities\Arrays;
+
 class InjectorConfig
 {
     private $binders = array();
@@ -16,8 +18,9 @@ class InjectorConfig
         return $binder;
     }
 
-    public function getBinders()
+    public function getBinder($className, $name)
     {
-        return $this->binders;
+        $binder = Arrays::getValue($this->binders, $className . '_' . $name);
+        return $binder ?: new Binder($className, $name);
     }
 }

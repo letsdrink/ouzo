@@ -260,6 +260,26 @@ class InjectorTest extends PHPUnit_Framework_TestCase
         $this->assertSame($injector, $instance->injector);
     }
 
+    /**
+     * @test
+     */
+    public function shouldModifyConfigAfterCreation()
+    {
+        //given
+        $object = new ClassWithNoDep();
+
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind('\ClassWithNoDep')->toInstance($object);
+        //ControllerTestCase exposes injectorConfig and allows users to add their bindings after injector is created
+
+        //when
+        $instance = $injector->getInstance('\ClassWithNoDep');
+
+        //then
+        $this->assertSame($object, $instance);
+    }
+
     private function assertDependencyInjected($className, $instance)
     {
         $this->assertNotNull($instance, 'Dependency was not injected.');

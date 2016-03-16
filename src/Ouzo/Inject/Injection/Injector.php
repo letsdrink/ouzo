@@ -22,7 +22,7 @@ class Injector
     public function __construct(InjectorConfig $config = null, AnnotationMetadataProvider $provider = null)
     {
         $config = $config ?: new InjectorConfig();
-        $this->bindings = new Bindings($config->getBinders(), $this) ;
+        $this->bindings = new Bindings($config, $this) ;
         $this->factory = new InstanceFactory($this->bindings, $provider ?: new DocCommentExtractor());
         $this->repository = new InstanceRepository();
     }
