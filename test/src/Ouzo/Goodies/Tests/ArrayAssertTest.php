@@ -410,7 +410,7 @@ class ArrayAssertTest extends PHPUnit_Framework_TestCase
         $photos[] = new Photo('photo1', 'd1');
         $photos[] = new Photo('photo2', 'd2');
 
-        Assert::thatArray($photos)->extracting('getPhotoName()', '_data')->contains(['photo1', 'photo2'], ['d1', 'd2']);
+        Assert::thatArray($photos)->extracting('getPhotoName()', '_data')->contains(array('photo1', 'photo2'), array('d1', 'd2'));
     }
 
     /**
