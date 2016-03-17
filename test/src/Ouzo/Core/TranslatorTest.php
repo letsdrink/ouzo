@@ -161,9 +161,7 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
         $translation = $translator->translate('key');
 
         //then
-        var_dump($translation);
         $this->assertEquals(array('k1' => 'ṽȧŀŭḗ', 'k2' => 'ǿŧħḗř'), $translation);
-
         Config::clearProperty('pseudo_localization');
     }
 }

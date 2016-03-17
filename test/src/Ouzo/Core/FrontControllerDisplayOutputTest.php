@@ -50,7 +50,7 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
         Mock::when($this->frontController->getHeaderSender())->send(Mock::any())->thenAnswer(function () use ($self, $obLevel) {
             //if there's a nested buffer, nothing was sent to output
             $self->assertTrue(ob_get_level() > $obLevel);
-            $self->assertEquals('OUTPUT', ob_get_contents());
+            $self->expectOutputString('OUTPUT');
         });
 
         Route::allowAll('/sample', 'sample');
