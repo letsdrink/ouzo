@@ -112,9 +112,7 @@ class Model extends Validatable
 
     public function attributes()
     {
-        return array_replace(array_map(function () {
-            return null;
-        }, array_flip($this->_modelDefinition->fields)), $this->_attributes);
+        return array_replace(array_fill_keys($this->_modelDefinition->fields, null), $this->_attributes);
     }
 
     private function _prepareParameters(array &$params)
