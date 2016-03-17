@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Injection;
 
-
 class Bindings
 {
     private $config;
@@ -14,7 +13,8 @@ class Bindings
     public function __construct(InjectorConfig $config, $injector)
     {
         $this->config = $config;
-        $this->injectorBinder = (new Binder('\Ouzo\Injection\Injector'))->toInstance($injector);
+        $binder = new Binder('\Ouzo\Injection\Injector');
+        $this->injectorBinder = $binder->toInstance($injector);
     }
 
     /**
