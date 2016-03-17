@@ -402,6 +402,28 @@ class ArrayAssertTest extends PHPUnit_Framework_TestCase
         Assert::thatArray($array)->hasEqualKeysRecursively($expected);
     }
 
+    /**
+     * @test
+     */
+    public function shouldAssertUsingExtractingForMultipleSelectors()
+    {
+        $photos[] = new Photo('photo1', 'd1');
+        $photos[] = new Photo('photo2', 'd2');
+
+        Assert::thatArray($photos)->extracting('getPhotoName()', '_data')->contains(['photo1', 'photo2'], ['d1', 'd2']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAssertUsingExtractingForSingleSelector()
+    {
+        $photos[] = new Photo('photo1', 'd1');
+        $photos[] = new Photo('photo2', 'd2');
+
+        Assert::thatArray($photos)->extracting('_data')->contains('d1', 'd2');
+    }
+
     private function _assertNot()
     {
         $args = func_get_args();
