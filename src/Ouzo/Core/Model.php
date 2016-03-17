@@ -115,6 +115,11 @@ class Model extends Validatable
         return array_replace(array_fill_keys($this->_modelDefinition->fields, null), $this->_attributes);
     }
 
+    public function definedAttributes()
+    {
+        return $this->filterAttributesPreserveNull($this->attributes());
+    }
+
     private function _prepareParameters(array &$params)
     {
         if (empty($params['attributes'])) {

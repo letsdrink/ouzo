@@ -51,4 +51,26 @@ class BatchInserterTest extends DbTransactionalTestCase
         $this->assertNotNull(OrderProduct::where(array('id_order' => $order1->getId()))->fetch());
         $this->assertNotNull(OrderProduct::where(array('id_order' => $order2->getId()))->fetch());
     }
+
+    /**
+     * @test
+     * @group postgres
+     */
+    public function shouldBatchInsertWhenModelHasFetchedRelation()
+    {
+        //given
+        $product1 = new Product(array('name' => 'product1'));
+        $product2 = new Product(array('name' => 'product2'));
+        $product1->category;
+        $inserter = new BatchInserter();
+        $inserter->add($product1);
+        $inserter->add($product2);
+
+        //when
+        $inserter->execute();
+
+        //then
+        $this->assertNotNull(Product::where(array('name' => 'product1'))->fetch());
+        $this->assertNotNull(Product::where(array('name' => 'product2'))->fetch());
+    }
 }

@@ -74,7 +74,7 @@ class BatchInserter
     {
         $allValues = array();
         foreach ($this->_models as $model) {
-            $attributes = $model->attributes();
+            $attributes = $model->definedAttributes();
             unset($attributes[$primaryKey]);
             $values = array_values($attributes);
             $allValues = array_merge($allValues, $values);
