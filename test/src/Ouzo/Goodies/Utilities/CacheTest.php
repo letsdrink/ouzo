@@ -76,4 +76,25 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $result1);
         $this->assertEquals(2, $result2);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCacheNullValues()
+    {
+        //given
+        $function = function () {
+            ++CacheTest::$call_count;
+            return null;
+        };
+
+        //when
+        $result1 = Cache::get("id", $function);
+        $result2 = Cache::get("id", $function);
+
+        //then
+        $this->assertEquals(1, CacheTest::$call_count);
+        $this->assertNull($result1);
+        $this->assertNull($result2);
+    }
 }
