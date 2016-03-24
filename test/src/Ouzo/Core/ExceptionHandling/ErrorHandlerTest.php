@@ -3,6 +3,7 @@ namespace Ouzo\ExceptionHandling;
 
 use Ouzo\PageNotFoundException;
 use Ouzo\Tests\Assert;
+use Ouzo\Tests\Mock\Mock;
 
 class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,12 +14,12 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $pageNotFoundException = new PageNotFoundException();
+        ExceptionHandler::$errorRenderer = Mock::mock('Ouzo\ExceptionHandling\ErrorRenderer');
 
         //when
         ErrorHandler::exceptionHandler($pageNotFoundException);
 
         //then
-        Assert::thatArray(get_included_files())
-            ->contains("404.phtml");
+        Mock::verify(ExceptionHandler::$errorRenderer)->render(Mock::any(), "404");
     }
 }
