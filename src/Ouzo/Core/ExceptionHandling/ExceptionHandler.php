@@ -46,7 +46,7 @@ class ExceptionHandler
 
     private function renderNotFoundError($exception)
     {
-        $this->renderError($exception);
+        $this->renderError($exception, "404");
     }
 
     private function renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
