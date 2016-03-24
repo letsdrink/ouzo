@@ -6,7 +6,6 @@
 
 use Ouzo\Config;
 use Ouzo\Db\Stats;
-use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouterException;
 use Ouzo\Session;

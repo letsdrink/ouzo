@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Routing;
 
-use Exception;
 use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
 
@@ -48,8 +47,4 @@ class Router
             return $rule->matches($path, $requestType);
         });
     }
-}
-
-class RouterException extends Exception
-{
 }

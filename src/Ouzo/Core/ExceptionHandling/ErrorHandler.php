@@ -20,15 +20,39 @@ class ErrorHandler
 
     public static function exceptionHandler(Exception $exception)
     {
-        if ($exception instanceof UserException) {
-            self::_renderUserError(OuzoExceptionData::forException(500, $exception));
-        } elseif ($exception instanceof RouterException) {
-            self::_renderNotFoundError(OuzoExceptionData::forException(404, $exception));
-        } elseif ($exception instanceof OuzoException) {
-            self::_handleError($exception->asExceptionData());
+        ErrorHandler::instance()->handleException($exception);
+    }
+
+    public static function errorHandler($errno, $errstr, $errfile, $errline)
+    {
+        if (self::stopsExecution($errno)) {
+            self::exceptionHandler(new ErrorException($errstr, $errno, 0, $errfile, $errline));
         } else {
-            self::_handleError(OuzoExceptionData::forException(500, $exception));
+            throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
         }
+    }
+
+    public function handleException($exception)
+    {
+        if ($exception instanceof UserException) {
+            $this->renderUserError(OuzoExceptionData::forException(500, $exception));
+        } elseif ($exception instanceof RouterException) {
+            $this->renderNotFoundError(OuzoExceptionData::forException(404, $exception));
+        } elseif ($exception instanceof OuzoException) {
+            $this->handleError($exception->asExceptionData());
+        } else {
+            $this->handleError(OuzoExceptionData::forException(500, $exception));
+        }
+    }
+
+    public function handleExceptionData(OuzoExceptionData $exceptionData)
+    {
+        $this->handleError($exceptionData);
+    }
+
+    private static function instance()
+    {
+        return new self();
     }
 
     public static function stopsExecution($errno)
@@ -43,16 +67,7 @@ class ErrorHandler
         return false;
     }
 
-    public static function errorHandler($errno, $errstr, $errfile, $errline)
-    {
-        if (self::stopsExecution($errno)) {
-            self::exceptionHandler(new ErrorException($errstr, $errno, 0, $errfile, $errline));
-        } else {
-            throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
-        }
-    }
-
-    private static function _clearOutputBuffers()
+    private function clearOutputBuffers()
     {
         while (ob_get_level()) {
             if (!ob_end_clean()) {
@@ -61,23 +76,23 @@ class ErrorHandler
         }
     }
 
-    private static function _handleError($exception)
+    private function handleError($exception)
     {
-        self::_renderError($exception);
+        $this->renderError($exception);
     }
 
-    private static function _renderUserError($exception)
+    private function renderUserError($exception)
     {
         header("Contains-Error-Message: User");
-        self::_renderError($exception, 'user_exception');
+        $this->renderError($exception, 'user_exception');
     }
 
-    private static function _renderNotFoundError($exception)
+    private function renderNotFoundError($exception)
     {
-        self::_renderError($exception, "404");
+        $this->renderError($exception);
     }
 
-    private static function _renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
+    private function renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
     {
         try {
             /** @noinspection PhpUnusedLocalVariableInspection */
@@ -86,7 +101,7 @@ class ErrorHandler
             self::$errorHandled = true;
             Logger::getLogger(__CLASS__)->error($exceptionData->getOriginalMessage());
             Logger::getLogger(__CLASS__)->error(Objects::toString($errorTrace));
-            self::_clearOutputBuffers();
+            $this->clearOutputBuffers();
             header($exceptionData->getHeader());
             $responseType = ResponseTypeResolve::resolve();
             header('Content-type: ' . $responseType);
@@ -111,7 +126,7 @@ class ErrorHandler
         $error = error_get_last();
 
         if (!self::$errorHandled && $error && $error['type'] & (E_ERROR | E_USER_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR)) {
-            self::_handleError(new OuzoExceptionData(500, array(new Error(0, $error['message'])), self::trace($error['file'], $error['line'])));
+            ErrorHandler::instance()->handleExceptionData(new OuzoExceptionData(500, array(new Error(0, $error['message'])), self::trace($error['file'], $error['line'])));
         }
     }
 
