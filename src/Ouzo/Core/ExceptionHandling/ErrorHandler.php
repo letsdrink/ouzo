@@ -74,7 +74,7 @@ class ErrorHandler
 
     private static function _renderNotFoundError($exception)
     {
-        self::_renderError($exception);
+        self::_renderError($exception, "404");
     }
 
     private static function _renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
