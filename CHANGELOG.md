@@ -9,11 +9,41 @@ Enhancements:
 * [Utilities] Added multi-byte safe Strings::uppercaseFirst.
 * [Utilities] Added pseudo localization support.
 * [MVC] Layout has now access to view variables.
+* [ORM] Added exception handling for invalid query.
+* [Utilities] Added Functions::endsWith method.
+* [Tests] Added verifier - Mock::receivedTimes (issue #153).
+* [Utilities] Added method Strings::removeAccent.
+* [Tests] Handle parameters in ControllerTestCase::get.
+* [ORM] Added BatchInserter.
+* [Utilities] Added Strings::substringAfter method.
+* [Utilities] Added FluentArray::sort method.
+* [Utilities] Added FluentArray::filterByAllowedKeys method.
+* [DI] Added dependency injection support (IoC container).
+* [Tests] Added chain to Mock::when (issue #209).
+* [ORM] Added Restrictions:regex method (issue #213).
+* [Core] ControllerFactory use Injector (issue #223).
+* [Utilities] Added FluentArray::groupBy method.
+* [DI] Injector can inject itself.
+* [DI] Injector config can be modified after injector initialization.
+* [Utilities] Added support for ArrayAssert::extract method (issue #231).
 
 Bug fixes:
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).
 * [MVC] Fixed major performance issue with routes validation.
 * [ORM] Fixed inserting records with no values (issue #216).
+* [Tests] Support for controller tests without configured database.
+* [Core] Fixed json decode to make it compatible with PHP7 (issue #191).
+* [ORM] Fixed method Model::nullifyIfEmpty.
+* [Core] Fixed ForbiddenException - takes errors.
+* [Tools] Fixed generating models (issue #214).
+* [Core] Bootstrap::addConfig loads everything multiple times on consecutive executions (issue #218).
+* [Tools] Fixed generating `@property` (issue #168).
+* [ORM] Handle in batch inserter tables without primary key.
+* [Core] Fixed exception when config was not added to Bootstrap.
+* [Utilities] Fixed SkippingIterator so that map function is not applied on skipped elements.
+* [ORM] Fixed BatchInsert with fetched relations (issue #230).
+* [Utilities] Fixed cache for nulls.
+* [Core] Fixed render 404 on RouterException.
 
 Release 1.5.1
 --------
