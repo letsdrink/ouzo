@@ -18,6 +18,12 @@ class InjectorConfig
         return $binder;
     }
 
+    public function bindInstance($instance, $name = '')
+    {
+        $className = '\\' . get_class($instance);
+        return $this->bind($className, $name)->toInstance($instance);
+    }
+
     public function getBinder($className, $name)
     {
         $binder = Arrays::getValue($this->binders, $className . '_' . $name);
