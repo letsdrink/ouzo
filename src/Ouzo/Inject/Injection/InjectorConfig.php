@@ -22,8 +22,7 @@ class InjectorConfig
 
     public function bindInstance($instance, $name = '')
     {
-        $className = '\\' . get_class($instance);
-        return $this->bind($className, $name)->toInstance($instance);
+        return $this->bind(get_class($instance), $name)->toInstance($instance);
     }
 
     public function getBinder($className, $name)
