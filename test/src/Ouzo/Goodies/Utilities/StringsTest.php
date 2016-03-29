@@ -316,6 +316,35 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldAppendSuffixIfNecessary()
+    {
+        // when
+        $modified = Strings::appendMissingSuffix('You know nothing, Jon Snow', ', Jon Snow');
+        $original = Strings::appendMissingSuffix('You know nothing', ', Jon Snow');
+
+        // then
+        $this->assertEquals($original, 'You know nothing, Jon Snow');
+        $this->assertEquals($modified, 'You know nothing, Jon Snow');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAppendPrefixIfNecessary()
+    {
+        // when
+        $original = Strings::appendMissingPrefix('Khal Drogo', 'Khal ');
+        $modified = Strings::appendMissingPrefix('Drogo', 'Khal ');
+
+        // then
+        $this->assertEquals($original, 'Khal Drogo');
+        $this->assertEquals($modified, 'Khal Drogo');
+    }
+
+
+    /**
+     * @test
+     */
     public function shouldEscapeNewLines()
     {
         //given
