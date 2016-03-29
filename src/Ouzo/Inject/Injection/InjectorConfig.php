@@ -6,6 +6,7 @@
 namespace Ouzo\Injection;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 class InjectorConfig
 {
@@ -13,6 +14,7 @@ class InjectorConfig
 
     public function bind($className, $name = '')
     {
+        $className = Strings::appendMissingPrefix($className, '\\');
         $binder = new Binder($className, $name);
         $this->binders[$className . '_' . $name] = $binder;
         return $binder;
