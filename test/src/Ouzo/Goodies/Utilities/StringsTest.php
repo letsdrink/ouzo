@@ -319,8 +319,8 @@ class StringsTest extends PHPUnit_Framework_TestCase
     public function shouldAppendSuffixIfNecessary()
     {
         // when
-        $modified = Strings::appendMissingSuffix('You know nothing, Jon Snow', ', Jon Snow');
-        $original = Strings::appendMissingSuffix('You know nothing', ', Jon Snow');
+        $modified = Strings::appendIfMissing('You know nothing, Jon Snow', ', Jon Snow');
+        $original = Strings::appendIfMissing('You know nothing', ', Jon Snow');
 
         // then
         $this->assertEquals($original, 'You know nothing, Jon Snow');
@@ -333,8 +333,8 @@ class StringsTest extends PHPUnit_Framework_TestCase
     public function shouldAppendPrefixIfNecessary()
     {
         // when
-        $original = Strings::appendMissingPrefix('Khal Drogo', 'Khal ');
-        $modified = Strings::appendMissingPrefix('Drogo', 'Khal ');
+        $original = Strings::prependIfMissing('Khal Drogo', 'Khal ');
+        $modified = Strings::prependIfMissing('Drogo', 'Khal ');
 
         // then
         $this->assertEquals($original, 'Khal Drogo');

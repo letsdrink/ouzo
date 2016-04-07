@@ -14,7 +14,7 @@ class InjectorConfig
 
     public function bind($className, $name = '')
     {
-        $className = Strings::appendMissingPrefix($className, '\\');
+        $className = Strings::prependIfMissing($className, '\\');
         $binder = new Binder($className, $name);
         $this->binders[$className . '_' . $name] = $binder;
         return $binder;

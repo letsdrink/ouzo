@@ -158,8 +158,8 @@ Adds suffix to the string.
 
 **Result:** ``Daenerys Targaryen``
 
-appendMissingSuffix
-~~~~~~~~~~~~~~~~~~~
+appendIfMissing
+~~~~~~~~~~~~~~~
 Adds suffix to the string, if string does not end with the suffix already.
 
 **Parameters:** ``$string``, ``$suffix = ''``
@@ -168,7 +168,7 @@ Adds suffix to the string, if string does not end with the suffix already.
 ::
 
     $string = 'Daenerys  Targaryen';
-    $unmodified = Strings::appendSuffix($string, ' Targaryen');
+    $unmodified = Strings::appendIfMissing($string, ' Targaryen');
 
 **Result:** ``Daenerys Targaryen``
 
@@ -186,8 +186,8 @@ Adds prefix to the string.
 
 **Result:** ``Daenerys Targaryen``
 
-appendMissingPrefix
-~~~~~~~~~~~~~~~~~~~
+prependIfMissing
+~~~~~~~~~~~~~~~~
 Adds prefix to the string, if string does not start with the prefix already.
 
 **Parameters:** ``$string``, ``$prefix = ''``
@@ -196,7 +196,7 @@ Adds prefix to the string, if string does not start with the prefix already.
 ::
 
     $string = 'Queen Daenerys Targaryen';
-    $unmodified = Strings::appendPrefix($string, 'Queen ');
+    $unmodified = Strings::prependIfMissing($string, 'Queen ');
 
 **Result:** ``Queen Daenerys Targaryen``
 
