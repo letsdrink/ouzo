@@ -142,6 +142,21 @@ class OptionalTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function orShouldReturnValueOnNullWhenGettingFieldValue()
+    {
+        //given
+        $optional = Optional::fromNullable(null);
+
+        //when
+        $result = $optional->field->or('456');
+
+        //then
+        $this->assertEquals('456', $result);
+    }
+
+    /**
+     * @test
+     */
     public function orNullShouldReturnValueWhenNotNull()
     {
         //given

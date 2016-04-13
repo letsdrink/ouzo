@@ -44,6 +44,7 @@ Bug fixes:
 * [ORM] Fixed BatchInsert with fetched relations (issue #230).
 * [Utilities] Fixed cache for nulls.
 * [Core] Fixed render 404 on RouterException.
+* [Core] Fixed null handling for Optional.
 
 Release 1.5.1
 --------
