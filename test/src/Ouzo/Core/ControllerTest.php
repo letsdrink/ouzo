@@ -110,8 +110,11 @@ class ControllerTest extends ControllerTestCase
      */
     public function shouldReturnClassNameInUnderscoreAsDefaultTab()
     {
+        // given
+        $controller = new SimpleTestController();
+        
         //when
-        $tab = SimpleTestController::getTab();
+        $tab = $controller->getTab();
 
         //then
         $this->assertEquals('simple_test', $tab);

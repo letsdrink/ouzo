@@ -153,7 +153,7 @@ class Controller
         }
     }
 
-    public static function getTab()
+    public function getTab()
     {
         $noController = str_replace('Controller', '', get_called_class());
         $noSlashes = str_replace('\\', '', $noController);
