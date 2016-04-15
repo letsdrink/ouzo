@@ -26,6 +26,8 @@ Enhancements:
 * [DI] Injector can inject itself.
 * [DI] Injector config can be modified after injector initialization.
 * [Utilities] Added support for ArrayAssert::extract method (issue #231).
+* [Utilities] Added methods Functions::inArray and Functions::notInArray.
+* [Utilities] Refactored Booleans.
 
 Bug fixes:
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).
@@ -44,7 +46,7 @@ Bug fixes:
 * [ORM] Fixed BatchInsert with fetched relations (issue #230).
 * [Utilities] Fixed cache for nulls.
 * [Core] Fixed render 404 on RouterException.
-* [Core] Fixed null handling for Optional.
+* [Utilities] Fixed null handling for Optional.
 
 Release 1.5.1
 --------
