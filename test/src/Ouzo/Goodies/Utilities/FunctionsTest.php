@@ -207,4 +207,34 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
             $this->assertLessThanOrEqual(7, $result);
         }
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsInArray()
+    {
+        //given
+        $array = array('white', 'snow');
+
+        //when
+        $result = Functions::call(Functions::inArray($array), 'snow');
+
+        //then
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIsNotInArray()
+    {
+        //given
+        $array = array('white', 'snow');
+
+        //when
+        $result = Functions::call(Functions::notInArray($array), 'missing');
+
+        //then
+        $this->assertTrue($result);
+    }
 }
