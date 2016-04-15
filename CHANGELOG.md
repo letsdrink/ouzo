@@ -47,6 +47,7 @@ Bug fixes:
 * [Utilities] Fixed cache for nulls.
 * [Core] Fixed render 404 on RouterException.
 * [Utilities] Fixed null handling for Optional.
+* [Utilities] Fixed String::contains for multi-byte.
 
 Release 1.5.1
 --------
