@@ -203,6 +203,16 @@ class Controller
         $requestParameters = Uri::getRequestParameters();
         return array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
+
+    public function getRequestHeaders()
+    {
+        $headers = Arrays::filterByKeys($_SERVER, function ($key) {
+            return substr($key, 0, 5) == 'HTTP_';
+        });
+        return Arrays::mapKeys($headers, function ($key) {
+            return str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+        });
+    }
 }
 
 class NoControllerActionException extends Exception
