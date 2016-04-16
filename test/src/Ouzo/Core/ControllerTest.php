@@ -112,12 +112,45 @@ class ControllerTest extends ControllerTestCase
     {
         // given
         $controller = new SimpleTestController();
-        
+
         //when
         $tab = $controller->getTab();
 
         //then
         $this->assertEquals('simple_test', $tab);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnRequestHeaders()
+    {
+        //given
+        $_SERVER["HTTP_HOST"] = "localhost";
+        $_SERVER["HTTP_USER_AGENT"] = "Mozilla/5.0";
+        $_SERVER["HTTP_ACCEPT"] = "text/html";
+        $_SERVER["HTTP_ACCEPT_LANGUAGE"] = "en-US,en;q=0.5";
+        $_SERVER["HTTP_ACCEPT_ENCODING"] = "gzip, deflate";
+        $_SERVER["HTTP_REFERER"] = "http://localhost/index";
+        $_SERVER["HTTP_COOKIE"] = "PHPSESSID=6j8kkq2r62n32rtf4tmlnbspn1";
+        $_SERVER["HTTP_CONNECTION"] = "keep-alive";
+
+        $controller = new SimpleTestController();
+
+        //when
+        $requestHeaders = $controller->getRequestHeaders();
+
+        //then
+        $this->assertEquals([
+            'Host' => 'localhost',
+            'User-Agent' => 'Mozilla/5.0',
+            'Accept' => 'text/html',
+            'Accept-Language' => 'en-US,en;q=0.5',
+            'Accept-Encoding' => 'gzip, deflate',
+            'Referer' => 'http://localhost/index',
+            'Cookie' => 'PHPSESSID=6j8kkq2r62n32rtf4tmlnbspn1',
+            'Connection' => 'keep-alive',
+        ], $requestHeaders);
     }
 
     /**
