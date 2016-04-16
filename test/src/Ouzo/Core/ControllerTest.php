@@ -141,7 +141,7 @@ class ControllerTest extends ControllerTestCase
         $requestHeaders = $controller->getRequestHeaders();
 
         //then
-        $this->assertEquals([
+        $this->assertEquals(array(
             'Host' => 'localhost',
             'User-Agent' => 'Mozilla/5.0',
             'Accept' => 'text/html',
@@ -150,7 +150,7 @@ class ControllerTest extends ControllerTestCase
             'Referer' => 'http://localhost/index',
             'Cookie' => 'PHPSESSID=6j8kkq2r62n32rtf4tmlnbspn1',
             'Connection' => 'keep-alive',
-        ], $requestHeaders);
+        ), $requestHeaders);
     }
 
     /**
