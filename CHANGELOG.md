@@ -26,6 +26,7 @@ Enhancements:
 * [DI] Injector can inject itself.
 * [DI] Injector config can be modified after injector initialization.
 * [Utilities] Added support for ArrayAssert::extract method (issue #231).
+* [Utilities] Added Arrays::shuffle.
 
 Bug fixes:
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).

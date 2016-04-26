@@ -1082,4 +1082,30 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue(Arrays::contains(array(1, 2, 3), 1));
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnShuffledArrayWithKeyAssociation()
+    {
+        //given
+        $array = array(1 => 'a', 2 => 'b', 3 => 'c');
+
+        //when
+        $result = Arrays::shuffle($array);
+
+        //then
+        Assert::thatArray($result)
+            ->containsKeyAndValue(array(1 => 'a'))
+            ->containsKeyAndValue(array(2 => 'b'))
+            ->containsKeyAndValue(array(3 => 'c'));
+    }
+    
+    /**
+     * @test
+     */
+    public function shuffleShouldReturnEmptyArrayForEmptyArray()
+    {
+        $this->assertEmpty(Arrays::shuffle(array()));
+    }
 }
