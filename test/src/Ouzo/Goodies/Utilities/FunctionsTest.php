@@ -237,4 +237,22 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertTrue($result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldNotEqualUseTypeCheck()
+    {
+        //then
+        $this->assertTrue(Functions::call(Functions::notEquals('value'), 0));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldEqualUseTypeCheck()
+    {
+        //then
+        $this->assertFalse(Functions::call(Functions::equals('value'), 0));
+    }
 }
