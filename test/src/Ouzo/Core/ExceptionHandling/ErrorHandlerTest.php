@@ -2,7 +2,6 @@
 namespace Ouzo\ExceptionHandling;
 
 use Ouzo\PageNotFoundException;
-use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
 
 class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
