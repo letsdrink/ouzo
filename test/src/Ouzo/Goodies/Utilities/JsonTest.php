@@ -78,4 +78,20 @@ class JsonTest extends PHPUnit_Framework_TestCase
     {
         $this->assertNull(Json::decode(''));
     }
+
+    /**
+     * @test
+     */
+    public function shouldResetJsonError()
+    {
+        //given
+        Json::decode("error");
+        Json::decode("");
+
+        //when
+        $error = Json::lastError();
+
+        //then
+        $this->assertEquals(JSON_ERROR_NONE, $error);
+    }
 }
