@@ -137,11 +137,12 @@ class Db
     private function _createPdo($params)
     {
         $dsn = Arrays::getValue($params, 'dsn');
+        $options = Arrays::getValue($params, 'options', array());
         if ($dsn) {
-            return new PDO($dsn);
+            return new PDO($dsn, '', '', $options);
         }
         $dsn = $this->_buildDsn($params);
-        return new PDO($dsn, $params['user'], $params['pass']);
+        return new PDO($dsn, $params['user'], $params['pass'], $options);
     }
 
     public function lastInsertId($sequence)
