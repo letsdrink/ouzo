@@ -49,7 +49,7 @@ Bug fixes:
 * [Core] Fixed render 404 on RouterException.
 * [Utilities] Fixed null handling for Optional.
 * [Utilities] Fixed String::contains for multi-byte.
-* [Utilities] Added limit (10) to number of requests being kept in Stats. 
+* [Utilities] Added limit (10) to number of requests being kept in Stats (issue #217). 
 
 Release 1.5.1
 --------
