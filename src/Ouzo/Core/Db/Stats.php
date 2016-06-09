@@ -12,6 +12,8 @@ use Ouzo\Uri;
 
 class Stats
 {
+    const NUMBER_OF_REQUESTS_TO_KEEP = 10;
+
     public static function queries()
     {
         return Session::get('stats_queries') ? : array();
@@ -45,6 +47,8 @@ class Stats
         $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
         $value = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
         Session::push('stats_queries', $requestDetails, 'queries', $value);
+
+        self::removeExcessiveRequests();
 
         return $result;
     }
@@ -120,5 +124,16 @@ class Stats
         $uri = new Uri();
         $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
         Session::push('stats_queries', $requestDetails, 'request_params', $params);
+    }
+
+    private static function removeExcessiveRequests()
+    {
+        $all = Session::get('stats_queries');
+        if (sizeof($all) > self::NUMBER_OF_REQUESTS_TO_KEEP) {
+            while (sizeof($all) > self::NUMBER_OF_REQUESTS_TO_KEEP) {
+                array_shift($all);
+            }
+            Session::set('stats_queries', $all);
+        }
     }
 }
