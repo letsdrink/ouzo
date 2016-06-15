@@ -29,6 +29,8 @@ Enhancements:
 * [Utilities] Added methods Functions::inArray and Functions::notInArray.
 * [Utilities] Refactored Booleans.
 * [Utilities] Added Arrays::shuffle.
+* [Core] Added Controller::getRequestHeaders.
+* [Core] Added options to PDO.
 
 Bug fixes:
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains behavior (issue #192).
@@ -50,6 +52,8 @@ Bug fixes:
 * [Utilities] Fixed null handling for Optional.
 * [Utilities] Fixed String::contains for multi-byte.
 * [Utilities] Added limit (10) to number of requests being kept in Stats (issue #217). 
+* [Utilities] Fixed comparing in Functions::notEqual and Functions::equal with type check.
+* [Utilities] Fixed reset JSON on error.
 
 Release 1.5.1
 --------
