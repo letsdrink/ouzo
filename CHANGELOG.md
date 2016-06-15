@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-INCOMING
+Release 1.6.0
 --------
 Enhancements:
 * [Utilities] Implemented Arrays::contains method (issue #103).
