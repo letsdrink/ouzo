@@ -518,6 +518,23 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('free', $rule->getAction());
     }
 
+    /**
+     * @test
+     */
+    public function shouldParseParameterWithAtChar()
+    {
+        //given
+        Route::get('/api/agents/:email', 'api/agents#show');
+        $router = $this->_createRouter('GET', '/api/agents/john.doe@foo.bar');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $parameters = $rule->getParameters();
+        $this->assertEquals('john.doe@foo.bar', $parameters['email']);
+    }
+
     public function requestMethods()
     {
         return array(
