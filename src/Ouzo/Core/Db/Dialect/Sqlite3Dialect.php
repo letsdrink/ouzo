@@ -37,7 +37,7 @@ class Sqlite3Dialect extends Dialect
             return Strings::equalsIgnoreCase($joinClause->type, 'RIGHT');
         });
         if ($any) {
-            throw new BadMethodCallException('RIGHT JOIN is not supported in sqlite3.');
+            throw new BadMethodCallException('RIGHT JOIN is not supported in sqlite3');
         }
         return parent::join();
     }
@@ -68,7 +68,7 @@ class Sqlite3Dialect extends Dialect
 
     public function regexpMatcher()
     {
-        //needs package sqlite3-pcre to correct working
+        //needs package sqlite3-pcre to work correctly
         return 'REGEXP';
     }
 }
