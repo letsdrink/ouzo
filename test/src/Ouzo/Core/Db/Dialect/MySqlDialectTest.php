@@ -381,6 +381,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
     public function shouldThrowOnBatchInsert()
     {
         //given
+        $previous = Config::getValue('sql_dialect');
         Config::overrideProperty('sql_dialect')->with('Ouzo\Db\Dialect\MySqlDialect');
         $inserter = new BatchInserter();
         $inserter->add(new Product(array('name' => 'product1')));
@@ -392,5 +393,6 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         CatchException::assertThat()
             ->hasMessage("Batch insert not supported in mysql")
             ->isInstanceOf('InvalidArgumentException');
+        Config::overrideProperty('sql_dialect')->with($previous);
     }
 }
