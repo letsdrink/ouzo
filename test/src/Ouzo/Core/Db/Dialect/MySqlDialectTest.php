@@ -3,10 +3,14 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+use Application\Model\Test\Product;
+use Ouzo\Config;
+use Ouzo\Db\BatchInserter;
 use Ouzo\Db\Dialect\MySqlDialect;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
+use Ouzo\Tests\CatchException;
 
 class MySqlDialectTest extends PHPUnit_Framework_TestCase
 {
@@ -35,6 +39,23 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals('SELECT * FROM products', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectFromWithAlias()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->aliasTable = 'p';
+
+        // when
+        $sql = $this->_dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT * FROM products AS p', $sql);
     }
 
     /**
@@ -352,5 +373,24 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
 
         // then
         $this->assertEquals('SELECT * FROM products FOR UPDATE', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowOnBatchInsert()
+    {
+        //given
+        Config::overrideProperty('sql_dialect')->with('Ouzo\Db\Dialect\MySqlDialect');
+        $inserter = new BatchInserter();
+        $inserter->add(new Product(array('name' => 'product1')));
+
+        //when
+        CatchException::when($inserter)->execute();
+
+        //then
+        CatchException::assertThat()
+            ->hasMessage("Batch insert not supported in mysql")
+            ->isInstanceOf('InvalidArgumentException');
     }
 }
