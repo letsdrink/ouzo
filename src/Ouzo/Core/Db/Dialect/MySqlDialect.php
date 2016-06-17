@@ -51,4 +51,9 @@ class MySqlDialect extends Dialect
     {
         return 'REGEXP';
     }
+
+    protected function quote($word)
+    {
+        return '`' . $word . '`';
+    }
 }

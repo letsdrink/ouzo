@@ -204,4 +204,9 @@ class MyImagineDialect extends Dialect
     {
         return '~';
     }
+
+    protected function quote($word)
+    {
+        return $word;
+    }
 }

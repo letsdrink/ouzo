@@ -40,4 +40,9 @@ class PostgresDialect extends Dialect
     {
         return '~';
     }
+
+    protected function quote($word)
+    {
+        return '"' . $word . '"';
+    }
 }

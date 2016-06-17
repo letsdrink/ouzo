@@ -71,4 +71,9 @@ class Sqlite3Dialect extends Dialect
         //needs package sqlite3-pcre to work correctly
         return 'REGEXP';
     }
+
+    protected function quote($word)
+    {
+        return '"' . $word . '"';
+    }
 }

@@ -220,4 +220,6 @@ abstract class Dialect
     }
 
     abstract protected function insertEmptyRow();
+
+    abstract protected function quote($word);
 }
