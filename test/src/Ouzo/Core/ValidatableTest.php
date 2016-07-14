@@ -3,18 +3,14 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\ExceptionHandling\Error;
 use Ouzo\Tests\Assert;
-use Ouzo\Utilities\Arrays;
 use Ouzo\Validatable;
 
 class ValidatableChild extends Validatable
 {
     public function __construct($errors = array(), $errorFields = array())
     {
-        $this->_errors = Arrays::map($errors, function ($error) {
-            return new Error(0, $error);
-        });
+        $this->errors($errors);
         $this->_errorFields = $errorFields;
     }
 
@@ -30,9 +26,7 @@ class ValidatableParent extends Validatable
 
     public function __construct($child, $errors = array(), $errorFields = array())
     {
-        $this->_errors = Arrays::map($errors, function ($error) {
-            return new Error(0, $error);
-        });
+        $this->errors($errors);
         $this->_errorFields = $errorFields;
         $this->child = $child;
     }
@@ -42,7 +36,6 @@ class ValidatableParent extends Validatable
         $this->validateAssociated($this->child);
     }
 }
-
 
 class ValidatableTest extends PHPUnit_Framework_TestCase
 {

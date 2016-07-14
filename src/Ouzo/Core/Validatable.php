@@ -120,4 +120,11 @@ class Validatable
     {
         $this->_errors[] = $error instanceof Error ? $error : new Error($code, $error);
     }
+
+    protected function errors(array $errors, $code = 0)
+    {
+        foreach ($errors as $error) {
+            $this->error($error, $code);
+        }
+    }
 }
