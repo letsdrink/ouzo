@@ -36,4 +36,17 @@ class SqlWhereClauseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('bob', 'john'), $result->getParameters());
         $this->assertEquals('(name = ? OR name = ?)', $result->toSql());
     }
+
+    /**
+     * @test
+     */
+    public function shouldAcceptSingleNullValueAsParam()
+    {
+        // when
+        $result = WhereClause::create('name = ?', null);
+
+        // then
+        $this->assertEquals(array(null), $result->getParameters());
+        $this->assertEquals('name = ?', $result->toSql());
+    }
 }
