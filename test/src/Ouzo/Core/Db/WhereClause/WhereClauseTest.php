@@ -122,6 +122,31 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function shouldJoinConditionsWithOrForAnyOfAndAssociativeArray()
+    {
+        // when
+        $result = Any::of(['name' => 'bob', 'age' => 12]);
+
+        // then
+        $this->assertEquals('name = ? OR age = ?', $result->toSql());
+        $this->assertEquals(array('0' => 'bob', '1' => 12), $result->getParameters());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldJoinConditionsWithOrForAnyOfAndWhereClauses()
+    {
+        // when
+        $result = Any::of([WhereClause::create('a = 1'), WhereClause::create('a = 2')]);
+
+        // then
+        $this->assertEquals('a = 1 OR a = 2', $result->toSql());
+    }
+
+    /**
+     * @test
      * @expectedException \InvalidArgumentException
      */
     public function shouldFailForNotSupportedParameter()

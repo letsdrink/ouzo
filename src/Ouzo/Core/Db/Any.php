@@ -5,22 +5,17 @@
  */
 namespace Ouzo\Db;
 
+use Ouzo\Db\WhereClause\ArrayWhereClause;
+use Ouzo\Db\WhereClause\OrClause;
+use Ouzo\Utilities\Arrays;
+
 class Any
 {
-    private $conditions;
-
-    public function __construct(array $conditions)
-    {
-        $this->conditions = $conditions;
-    }
-
-    public function getConditions()
-    {
-        return $this->conditions;
-    }
-
     public static function of(array $conditions)
     {
-        return new self($conditions);
+        if (Arrays::isAssociative($conditions)) {
+            return new ArrayWhereClause($conditions, 'OR');
+        }
+        return new OrClause($conditions);
     }
 }

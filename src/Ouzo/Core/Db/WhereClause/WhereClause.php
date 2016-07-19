@@ -6,7 +6,6 @@
 namespace Ouzo\Db\WhereClause;
 
 use InvalidArgumentException;
-use Ouzo\Db\Any;
 
 abstract class WhereClause
 {
@@ -41,9 +40,6 @@ abstract class WhereClause
         }
         if (is_string($where)) {
             return new SqlWhereClause($where, $parameters);
-        }
-        if ($where instanceof Any) {
-            return new ArrayWhereClause($where->getConditions(), 'OR');
         }
         throw new InvalidArgumentException("Cannot create a WhereClause for given arguments");
     }
