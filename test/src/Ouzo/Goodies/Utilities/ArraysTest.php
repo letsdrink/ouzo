@@ -460,6 +460,42 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function toArrayShouldReturnArrayWithOneElementForFalse()
+    {
+        // when
+        $result = Arrays::toArray(false);
+
+        // then
+        $this->assertEquals(array(false), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toArrayShouldReturnArrayWithOneElementForZero()
+    {
+        // when
+        $result = Arrays::toArray(0);
+
+        // then
+        $this->assertEquals(array(0), $result);
+    }
+
+    /**
+     * @test
+     */
+    public function toArrayShouldReturnArrayWithOneElementForEmptyString()
+    {
+        // when
+        $result = Arrays::toArray('');
+
+        // then
+        $this->assertEquals(array(''), $result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldGetRandomElement()
     {
         //given
