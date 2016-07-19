@@ -1078,6 +1078,31 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldCheckIfArrayIsAssociative()
+    {
+        $this->assertTrue(Arrays::isAssociative(array('a' => 1, 2, 'c')));
+        $this->assertFalse(Arrays::isAssociative(array(1 => 1, 2, 'c')));
+        $this->assertFalse(Arrays::isAssociative(array('a', 'b', 'c')));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConcatArrays()
+    {
+        //given
+        $arrays = array(array(1, 2), array(3, 4));
+
+        //when
+        $flattened = Arrays::concat($arrays);
+
+        //then
+        $this->assertEquals(array(1, 2, 3, 4), $flattened);
+    }
+
+    /**
+     * @test
+     */
     public function containsShouldWorkForDifferentTypes()
     {
         $this->assertTrue(Arrays::contains(array(1, 2, 3), 1));
@@ -1100,7 +1125,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
             ->containsKeyAndValue(array(2 => 'b'))
             ->containsKeyAndValue(array(3 => 'c'));
     }
-    
+
     /**
      * @test
      */

@@ -874,3 +874,38 @@ Returns a recursive diff of two arrays
          )
    [0] => f
   )
+
+
+concat
+~~~~~~
+Merges array of arrays into one array.
+Unlike flatten, concat does not merge arrays that are nested more that once.
+
+**Parameters:** ``array $arrays``
+
+**Example:**
+::
+
+    $result = Arrays::concat(array(array(1, 2), array(3, 4)));
+
+**Result:**
+::
+
+Array (
+  [0] => 1
+  [1] => 2
+  [2] => 3
+  [3] => 4
+)
+
+isAssociative
+~~~~~~~~~~~~~
+Checks if the given array is associative. An array is considered associative when it has at least one string key.
+**Parameters:** ``array $array``
+
+**Example:**
+::
+
+    $result = Arrays::isAssociative(array(1 => 'b', 'a' => 2, 'abc'))
+
+**Result:** ``true``
