@@ -20,7 +20,7 @@ class SqlWhereClause extends WhereClause
 
     public function toSql()
     {
-        return $this->sql;
+        return stripos($this->sql, 'OR') ? '(' . $this->sql . ')' : $this->sql;
     }
 
     public function getParameters()

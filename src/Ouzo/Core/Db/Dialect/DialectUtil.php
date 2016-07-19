@@ -6,8 +6,8 @@
 namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\JoinClause;
-use Ouzo\Db\UsingClause;
 use Ouzo\Db\WhereClause\WhereClause;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Joiner;
 
@@ -31,8 +31,7 @@ class DialectUtil
 
     public static function buildWhereQueryPart(WhereClause $whereClause)
     {
-        $wherePart = $whereClause->toSql();
-        return stripos($wherePart, 'OR') ? '(' . $wherePart . ')' : $wherePart;
+        return $whereClause->toSql();
     }
 
     public static function buildJoinQuery($joinClauses)
@@ -78,5 +77,12 @@ class DialectUtil
     {
         $alias = $usingClause->alias ? " AS {$usingClause->alias}" : "";
         return $usingClause->joinTable . $alias;
+    }
+
+    public static function joinClauses($parts, $operator, $extractFunction = null)
+    {
+        $mappedParts = $extractFunction ? Arrays::map($parts, $extractFunction) : $parts;
+        $sql = implode(" $operator ", $mappedParts);
+        return $operator == 'OR' && count($parts) > 1 ? "($sql)" : $sql;
     }
 }

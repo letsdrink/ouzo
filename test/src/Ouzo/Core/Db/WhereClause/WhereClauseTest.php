@@ -72,7 +72,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         // then
         $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
         $this->assertEquals(array('0' => 'b', '1' => 'd'), $result->getParameters());
-        $this->assertEquals('a = ? OR c = ?', $result->toSql());
+        $this->assertEquals('(a = ? OR c = ?)', $result->toSql());
     }
 
     /**
@@ -144,7 +144,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = Any::of(['name' => 'bob', 'age' => 12]);
 
         // then
-        $this->assertEquals('name = ? OR age = ?', $result->toSql());
+        $this->assertEquals('(name = ? OR age = ?)', $result->toSql());
         $this->assertEquals(array('0' => 'bob', '1' => 12), $result->getParameters());
     }
 
@@ -157,7 +157,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = Any::of([WhereClause::create('a = 1'), WhereClause::create('a = 2')]);
 
         // then
-        $this->assertEquals('a = 1 OR a = 2', $result->toSql());
+        $this->assertEquals('(a = 1 OR a = 2)', $result->toSql());
     }
 
     /**

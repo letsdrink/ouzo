@@ -5,11 +5,11 @@
  */
 namespace Ouzo\Db\WhereClause;
 
+use Ouzo\Db\Dialect\DialectUtil;
 use Ouzo\Restriction\Restriction;
 use Ouzo\Restrictions;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
-use Ouzo\Utilities\Joiner;
 
 class ArrayWhereClause extends WhereClause
 {
@@ -47,7 +47,7 @@ class ArrayWhereClause extends WhereClause
     public function toSql()
     {
         $whereKeys = self::_buildWhereKeys($this->where);
-        return empty($whereKeys) ? null : implode(" {$this->operator} ", $whereKeys);
+        return DialectUtil::joinClauses($whereKeys, $this->operator);
     }
 
     public function getParameters()
@@ -80,10 +80,9 @@ class ArrayWhereClause extends WhereClause
         $useRestrictions = Arrays::any($array, Functions::isInstanceOf('\Ouzo\Restriction\Restriction'));
 
         if ($useRestrictions) {
-            $joined = Joiner::on(' OR ')->mapValues(function ($restriction) use ($column) {
+            return DialectUtil::joinClauses($array, 'OR', function ($restriction) use ($column) {
                 return $restriction->toSql($column);
-            })->join($array);
-            return count($array) > 1 ? '(' . $joined . ')' : $joined;
+            });
         }
 
         $in = implode(', ', array_fill(0, count($array), '?'));

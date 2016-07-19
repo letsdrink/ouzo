@@ -6,8 +6,8 @@
 namespace Ouzo\Db\WhereClause;
 
 
+use Ouzo\Db\Dialect\DialectUtil;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Joiner;
 
 class OrClause extends WhereClause
 {
@@ -37,9 +37,9 @@ class OrClause extends WhereClause
 
     public function toSql()
     {
-        return Joiner::on(' OR ')->mapValues(function ($where) {
+        return DialectUtil::joinClauses($this->conditions, 'OR', function ($where) {
             return $where->toSql();
-        })->join($this->conditions);
+        });
     }
 
     public function getParameters()
