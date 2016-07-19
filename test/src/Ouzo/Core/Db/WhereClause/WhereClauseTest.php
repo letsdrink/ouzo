@@ -123,6 +123,21 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldNotAddParenthesisToSingleOfRestriction()
+    {
+        // when
+        $result = WhereClause::create(array(
+            'a' => Restrictions::equalTo('b')
+        ));
+
+        // then
+        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertEquals('a = ?', $result->toSql());
+    }
+
+    /**
+     * @test
+     */
     public function shouldJoinConditionsWithOrForAnyOfAndAssociativeArray()
     {
         // when
