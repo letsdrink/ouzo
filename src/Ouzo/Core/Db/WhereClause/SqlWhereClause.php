@@ -5,6 +5,7 @@
  */
 namespace Ouzo\Db\WhereClause;
 
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
 class SqlWhereClause extends WhereClause
@@ -15,7 +16,7 @@ class SqlWhereClause extends WhereClause
     public function __construct($sql, $parameters = array())
     {
         $this->sql = $sql;
-        $this->values = $parameters;
+        $this->values = Arrays::toArray($parameters);
     }
 
     public function toSql()
