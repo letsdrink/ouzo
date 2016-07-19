@@ -78,15 +78,15 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldReturnArrayWhereClauseForAnyWithInAndRestriction()
+    public function shouldReturnArrayWhereClauseForListOfRestrictions()
     {
         // when
-        $result = WhereClause::create(Any::of(array('a' => array(Restrictions::equalTo('b'), Restrictions::lessThan('c')))));
+        $result = WhereClause::create(array('a' => array(Restrictions::equalTo('b'), Restrictions::lessThan('c'))));
 
         // then
         $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
         $this->assertEquals(array('0' => Restrictions::equalTo('b'), '1' => Restrictions::lessThan('c')), $result->getParameters());
-        $this->assertEquals('a = ? OR a < ?', $result->toSql());
+        $this->assertEquals('(a = ? OR a < ?)', $result->toSql());
     }
 
     /**
@@ -101,6 +101,23 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
         $this->assertEquals(array('0' => 'b', '1' => 'c'), $result->getParameters());
         $this->assertEquals('a IN (?, ?)', $result->toSql());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddParenthesisToListOfRestrictions()
+    {
+
+        // when
+        $result = WhereClause::create(array(
+            'a' => array(Restrictions::equalTo('b'), Restrictions::lessThan('c')),
+            'b' => 'd'
+        ));
+
+        // then
+        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertEquals('(a = ? OR a < ?) AND b = ?', $result->toSql());
     }
 
     /**

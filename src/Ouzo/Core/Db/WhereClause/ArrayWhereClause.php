@@ -80,9 +80,9 @@ class ArrayWhereClause extends WhereClause
         $useRestrictions = Arrays::any($array, Functions::isInstanceOf('\Ouzo\Restriction\Restriction'));
 
         if ($useRestrictions) {
-            return Joiner::on(' OR ')->mapValues(function ($restriction) use ($column) {
+            return '(' . Joiner::on(' OR ')->mapValues(function ($restriction) use ($column) {
                 return $restriction->toSql($column);
-            })->join($array);
+            })->join($array) . ')';
         }
 
         $in = implode(', ', array_fill(0, count($array), '?'));
