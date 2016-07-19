@@ -141,7 +141,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
     public function shouldJoinConditionsWithOrForAnyOfAndAssociativeArray()
     {
         // when
-        $result = Any::of(['name' => 'bob', 'age' => 12]);
+        $result = Any::of(array('name' => 'bob', 'age' => 12));
 
         // then
         $this->assertEquals('(name = ? OR age = ?)', $result->toSql());
@@ -154,7 +154,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
     public function shouldJoinConditionsWithOrForAnyOfAndWhereClauses()
     {
         // when
-        $result = Any::of([WhereClause::create('a = 1'), WhereClause::create('a = 2')]);
+        $result = Any::of(array(WhereClause::create('a = 1'), WhereClause::create('a = 2')));
 
         // then
         $this->assertEquals('(a = 1 OR a = 2)', $result->toSql());
