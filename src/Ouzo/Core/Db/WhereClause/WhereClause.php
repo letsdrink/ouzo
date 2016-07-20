@@ -6,6 +6,7 @@
 namespace Ouzo\Db\WhereClause;
 
 use InvalidArgumentException;
+use Ouzo\Db\ModelQueryBuilder;
 
 abstract class WhereClause
 {
@@ -42,5 +43,15 @@ abstract class WhereClause
             return new SqlWhereClause($where, $parameters);
         }
         throw new InvalidArgumentException("Cannot create a WhereClause for given arguments");
+    }
+
+    public static function exists(ModelQueryBuilder $queryBuilder)
+    {
+        return new ExistsClause($queryBuilder->getQuery());
+    }
+
+    public static function notExists(ModelQueryBuilder $queryBuilder)
+    {
+        return new ExistsClause($queryBuilder->getQuery(), true);
     }
 }

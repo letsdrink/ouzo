@@ -1,11 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marcin
- * Date: 7/19/16
- * Time: 2:59 PM
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-
 namespace Ouzo\Db\WhereClause;
 
 

@@ -108,17 +108,9 @@ class QueryExecutor
     public function _buildQuery()
     {
         $this->_fetchStyle = $this->_query->selectType;
-        $this->_addBindValues($this->_query);
+        $queryBindValuesExtractor = new QueryBoundValuesExtractor($this->_query);
+        $this->_boundValues = $queryBindValuesExtractor->extract();
         $this->_sql = $this->_adapter->buildQuery($this->_query);
-    }
-
-    public function _addBindValue($value)
-    {
-        if (is_array($value)) {
-            $this->_addBindArrayValue($value);
-        } else {
-            $this->_boundValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
-        }
     }
 
     private static function isEmptyResult($whereClauses)
@@ -126,52 +118,5 @@ class QueryExecutor
         return Arrays::any($whereClauses, function (WhereClause $whereClause) {
             return $whereClause->isNeverSatisfied();
         });
-    }
-
-    private function _addBindValues($query)
-    {
-        if ($query->table instanceof Query) {
-            $this->_addBindValues($query->table);
-        }
-        $this->_addBindValue(array_values($query->updateAttributes));
-
-        $this->_addBindValuesFromJoinClauses($query->joinClauses);
-
-        foreach ($query->whereClauses as $whereClause) {
-            $this->_addBindValuesFromWhereClause($whereClause);
-        }
-        if ($query->limit) {
-            $this->_addBindValue($query->limit);
-        }
-        if ($query->offset) {
-            $this->_addBindValue($query->offset);
-        }
-    }
-
-    private function _addBindValuesFromJoinClauses($joinClauses)
-    {
-        foreach ($joinClauses as $joinClause) {
-            foreach ($joinClause->onClauses as $onClause) {
-                $this->_addBindValuesFromWhereClause($onClause);
-            }
-        }
-    }
-
-    private function _addBindValuesFromWhereClause($whereClause)
-    {
-        if (!$whereClause->isEmpty()) {
-            $this->_addBindValue($whereClause->getParameters());
-        }
-    }
-
-    private function _addBindArrayValue(array $array)
-    {
-        foreach ($array as $value) {
-            if ($value instanceof Restriction) {
-                $this->_boundValues = array_merge($this->_boundValues, $value->getValues());
-            } else {
-                $this->_boundValues[] = $value;
-            }
-        }
     }
 }

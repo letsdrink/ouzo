@@ -8,11 +8,11 @@ use Application\Model\Test\Manufacturer;
 use Application\Model\Test\Order;
 use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
-use Ouzo\Db;
 use Ouzo\Db\Any;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
 use Ouzo\Db\Stats;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Restrictions;
@@ -216,6 +216,27 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //when
         $products = Product::join('orderProduct')->where('id_order IS NOT NULL')->fetchAll();
+
+        //then
+        $this->assertCount(1, $products);
+        $this->assertEquals($product->getId(), $products[0]->getId());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindWhereExists()
+    {
+        //given
+        Product::create(array('name' => 'other'));
+        $product = Product::create(array('name' => 'phones'));
+
+        $order = Order::create(array('name' => 'a'));
+
+        OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
+
+        //when
+        $products = Product::where(WhereClause::exists(OrderProduct::where('id_product = products.id')))->fetchAll();
 
         //then
         $this->assertCount(1, $products);
