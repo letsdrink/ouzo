@@ -39,7 +39,7 @@ class StatementExecutor
 
     public function _internalExecute($afterCallback)
     {
-        $pdoStatement = $this->createPdoStatement();
+        $pdoStatement = $this->_createPdoStatement();
         $result = call_user_func($afterCallback, $pdoStatement);
         $pdoStatement->closeCursor();
         return $result;
