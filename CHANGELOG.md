@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+INCOMING
+--------
+Enhancements:
+* [ORM] Added Db::query()->fetchIterator() method (issue #241).
+
 Release 1.6.0
 --------
 Enhancements:

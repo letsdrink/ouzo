@@ -39,10 +39,7 @@ class StatementExecutor
 
     public function _internalExecute($afterCallback)
     {
-        $sqlString = $this->_humanizedSql . ' with params: '. Objects::toString($this->_boundValues);
-        Logger::getLogger(__CLASS__)->info("Query: %s", array($sqlString));
-
-        $pdoStatement = $this->_pdoExecutor->createPDOStatement($this->_dbHandle, $this->_sql, $this->_boundValues, $sqlString);
+        $pdoStatement = $this->createPdoStatement();
         $result = call_user_func($afterCallback, $pdoStatement);
         $pdoStatement->closeCursor();
         return $result;
@@ -79,5 +76,22 @@ class StatementExecutor
     {
         $pdoExecutor = PDOExecutor::newInstance($options);
         return new StatementExecutor($dbHandle, $sql, $boundValues, $pdoExecutor);
+    }
+
+    public function fetchIterator()
+    {
+        $obj = $this;
+        return Stats::trace($this->_humanizedSql, $this->_boundValues, function () use ($obj) {
+            $pdoStatement = $obj->createPdoStatement();
+            return new StatementIterator($pdoStatement);
+        });
+    }
+
+    private function createPdoStatement()
+    {
+        $sqlString = $this->_humanizedSql . ' with params: ' . Objects::toString($this->_boundValues);
+        Logger::getLogger(__CLASS__)->info("Query: %s", array($sqlString));
+
+        return $this->_pdoExecutor->createPDOStatement($this->_dbHandle, $this->_sql, $this->_boundValues, $sqlString);
     }
 }
