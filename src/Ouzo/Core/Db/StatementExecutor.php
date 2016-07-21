@@ -82,12 +82,12 @@ class StatementExecutor
     {
         $obj = $this;
         return Stats::trace($this->_humanizedSql, $this->_boundValues, function () use ($obj) {
-            $pdoStatement = $obj->createPdoStatement();
+            $pdoStatement = $obj->_createPdoStatement();
             return new StatementIterator($pdoStatement);
         });
     }
 
-    private function createPdoStatement()
+    public function _createPdoStatement()
     {
         $sqlString = $this->_humanizedSql . ' with params: ' . Objects::toString($this->_boundValues);
         Logger::getLogger(__CLASS__)->info("Query: %s", array($sqlString));
