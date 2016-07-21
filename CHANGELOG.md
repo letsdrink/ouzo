@@ -6,6 +6,9 @@ INCOMING
 Enhancements:
 * [ORM] Added Db::query()->fetchIterator() method (issue #241).
 
+Bug fixes:
+* [Tests] More verbose message when null is passed to Mock::verify (issue #236).
+
 Release 1.6.0
 --------
 Enhancements:
