@@ -7,15 +7,18 @@ namespace Ouzo\Db;
 
 use Iterator;
 use IteratorIterator;
+use Ouzo\Logger\Logger;
 use PDOStatement;
 
 class StatementIterator implements Iterator
 {
 
+    private $statement;
     private $iterator;
 
     public function __construct(PDOStatement $statement)
     {
+        $this->statement = $statement;
         $this->iterator = new IteratorIterator($statement);
     }
 
@@ -36,11 +39,21 @@ class StatementIterator implements Iterator
 
     public function valid()
     {
-        return $this->iterator->valid();
+        $valid = $this->iterator->valid();
+        if (!$valid) {
+            $this->closeCursor();
+        }
+        return $valid;
     }
 
     public function rewind()
     {
         $this->iterator->rewind();
+    }
+
+    public function closeCursor()
+    {
+        Logger::getLogger(__CLASS__)->info("Closing cursor");
+        $this->statement->closeCursor();
     }
 }
