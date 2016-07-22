@@ -5,10 +5,14 @@
  */
 namespace Ouzo\Db;
 
+use Iterator;
 use Ouzo\Db;
 use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Iterator\BatchingIterator;
+use Ouzo\Utilities\Iterator\TransformingIterator;
+use Ouzo\Utilities\Iterator\UnbatchingIterator;
 use PDO;
 
 class ModelQueryBuilder
@@ -102,8 +106,8 @@ class ModelQueryBuilder
     }
 
     /**
-    * @return ModelQueryBuilder
-    */
+     * @return ModelQueryBuilder
+     */
     public function lockForUpdate()
     {
         $this->_query->lockForUpdate = true;
@@ -138,7 +142,18 @@ class ModelQueryBuilder
         return !$this->_selectModel ? $result : $this->_processResults($result);
     }
 
-    private function _processResults($results)
+    /**
+     * @param int $batchSize
+     * @return Iterator
+     */
+    public function fetchIterator($batchSize = 500)
+    {
+        $iterator = QueryExecutor::prepare($this->_db, $this->_query)->fetchIterator();
+        $iterator->rewind();
+        return !$this->_selectModel ? $iterator : new UnbatchingIterator(new TransformingIterator(new BatchingIterator($iterator, $batchSize), array($this, '_processResults')));
+    }
+
+    function _processResults($results)
     {
         $resultSetConverter = new ModelResultSetConverter($this->_model, $this->getModelAliasOrTable(), $this->_joinedModels, $this->_relationsToFetch);
         return $resultSetConverter->convert($results);

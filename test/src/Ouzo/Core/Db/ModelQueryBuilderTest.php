@@ -1440,4 +1440,23 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         Assert::thatModel($search)->isEqualTo($product);
     }
+
+    /**
+     * @test
+     */
+    public function shouldFetchIteratorAndFetchRelationsInBatches()
+    {
+        //given
+        Product::create(array('name' => '1', 'id_category' => Category::create(array('name' => 'cat1'))->getId()));
+        Product::create(array('name' => '2', 'id_category' => Category::create(array('name' => 'cat2'))->getId()));
+        Product::create(array('name' => '3', 'id_category' => Category::create(array('name' => 'cat3'))->getId()));
+        Stats::reset();
+
+        //when
+        $results = Product::where()->with('category')->fetchIterator(2);
+
+        //then
+        Assert::thatArray(iterator_to_array($results))->extracting('name')->containsExactly('1', '2', '3');
+        $this->assertEquals(3, Stats::getNumberOfQueries());
+    }
 }

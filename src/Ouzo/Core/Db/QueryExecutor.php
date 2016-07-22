@@ -72,6 +72,14 @@ class QueryExecutor
         return $this->_fetch('fetchAll');
     }
 
+    public function fetchIterator()
+    {
+        $this->_buildQuery();
+        $statement = StatementExecutor::prepare($this->_db->_dbHandle, $this->_sql, $this->_boundValues, $this->_query->options);
+        return $statement->fetchIterator();
+
+    }
+
     public function execute()
     {
         $this->_buildQuery();
