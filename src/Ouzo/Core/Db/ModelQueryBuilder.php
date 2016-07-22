@@ -9,9 +9,6 @@ use Ouzo\Db;
 use Ouzo\DbException;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\FluentArray;
-use Ouzo\Utilities\Functions;
-use Ouzo\Utilities\Objects;
 use PDO;
 
 class ModelQueryBuilder
@@ -141,60 +138,10 @@ class ModelQueryBuilder
         return !$this->_selectModel ? $result : $this->_processResults($result);
     }
 
-    private function _fetchRelations($results, $joinsToStore)
-    {
-        $joinedRelations = Arrays::map($joinsToStore, Functions::extract()->destinationField());
-        foreach ($this->_relationsToFetch as $relationToFetch) {
-            if (!in_array($relationToFetch->destinationField, $joinedRelations)) {
-                $relationFetcher = new RelationFetcher($relationToFetch->relation);
-                $fieldTransformer = new FieldTransformer($relationToFetch->field, $relationFetcher);
-                $fieldTransformer->transform($results);
-            }
-        }
-        return $results;
-    }
-
     private function _processResults($results)
     {
-        $aliasToOffset = $this->_createAliasToOffsetMap();
-        $joinsToStore = FluentArray::from($this->_joinedModels)
-            ->filter(Functions::extract()->storeField())
-            ->uniqueBy(Functions::extract()->destinationField())
-            ->toArray();
-
-        $models = array();
-        foreach ($results as $row) {
-            $models[] = $this->convertRowToModel($row, $aliasToOffset, $joinsToStore);
-        }
-        return $this->_fetchRelations($models, $joinsToStore);
-    }
-
-    private function _createAliasToOffsetMap()
-    {
-        $aliasToOffset = array();
-
-        $aliasToOffset[$this->getModelAliasOrTable()] = 0;
-        $offset = count($this->_model->getFields());
-        foreach ($this->_joinedModels as $joinedModel) {
-            if ($joinedModel->storeField()) {
-                $aliasToOffset[$joinedModel->alias()] = $offset;
-                $offset += count($joinedModel->getModelObject()->getFields());
-            }
-        }
-        return $aliasToOffset;
-    }
-
-    private function convertRowToModel($row, $aliasToOffset, $joinsToStore)
-    {
-        $model = ModelQueryBuilderHelper::extractModelFromResult($this->_model, $row, $aliasToOffset[$this->getModelAliasOrTable()]);
-
-        foreach ($joinsToStore as $joinedModel) {
-            if ($joinedModel->storeField()) {
-                $instance = ModelQueryBuilderHelper::extractModelFromResult($joinedModel->getModelObject(), $row, $aliasToOffset[$joinedModel->alias()]);
-                Objects::setValueRecursively($model, $joinedModel->destinationField(), $instance);
-            }
-        }
-        return $model;
+        $resultSetConverter = new ModelResultSetConverter($this->_model, $this->getModelAliasOrTable(), $this->_joinedModels, $this->_relationsToFetch);
+        return $resultSetConverter->convert($results);
     }
 
     /**

@@ -62,16 +62,5 @@ class ModelQueryBuilderHelper
         return $result;
     }
 
-    public static function extractModelFromResult(Model $metaInstance, array $result, $offsetInResultSet)
-    {
-        $attributes = array();
-        $offset = $offsetInResultSet;
-        $hasAnyNonEmptyAttribute = false;
-        foreach ($metaInstance->_getFields() as $field) {
-            $attributes[$field] = $result[$offset];
-            $hasAnyNonEmptyAttribute = $hasAnyNonEmptyAttribute || $result[$offset];
-            $offset++;
-        }
-        return $hasAnyNonEmptyAttribute ? $metaInstance->newInstance($attributes) : null;
-    }
+
 }
