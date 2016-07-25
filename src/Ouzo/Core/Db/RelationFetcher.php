@@ -27,7 +27,7 @@ class RelationFetcher
             ->unique()
             ->toArray();
 
-        $relationObjectsById = $this->_loadRelationObjectsIndexedById($localKeys);
+        $relationObjectsById = $localKeys? $this->_loadRelationObjectsIndexedById($localKeys) : array();
 
         foreach ($results as $result) {
             $values = $this->_findRelationObject($relationObjectsById, $result->$localKeyName);
