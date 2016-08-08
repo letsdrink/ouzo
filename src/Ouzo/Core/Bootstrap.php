@@ -69,6 +69,21 @@ class Bootstrap
      */
     public function runApplication()
     {
+        if ($this->configRepository) {
+            $this->configRepository->reload();
+        }
+
+        $this->registerErrorHandlers();
+
+        $this->includeRoutes();
+        $this->createFrontController()->init();
+    }
+
+    /**
+     * @return void
+     */
+    private function registerErrorHandlers()
+    {
         if (Config::getValue('debug')) {
             $whoops = new Run();
             $whoops->pushHandler(new PrettyPageHandler());
@@ -78,12 +93,6 @@ class Bootstrap
             set_error_handler('\Ouzo\ExceptionHandling\ErrorHandler::errorHandler');
             register_shutdown_function('\Ouzo\ExceptionHandling\ErrorHandler::shutdownHandler');
         }
-
-        if ($this->configRepository) {
-            $this->configRepository->reload();
-        }
-        $this->includeRoutes();
-        $this->createFrontController()->init();
     }
 
     /**
