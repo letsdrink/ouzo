@@ -65,25 +65,25 @@ function labelTag($name, $content, array $attributes = array())
 {
     $attr = _prepareAttributes($attributes);
     $attr = $attr ? ' ' . $attr : '';
-    return '<label for="' . $name . '"' . $attr . '>' . $content . '</label>';
+    return '<label for="' . $name . '"' . $attr . '>' . escapeText($content) . '</label>';
 }
 
 function hiddenTag($name, $value, array $attributes = array())
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => $value));
+    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => escapeText($value)));
     return '<input type="hidden" ' . $attr . '/>';
 }
 
 function textFieldTag($name, $value, array $attributes = array())
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => $value));
+    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => escapeText($value)));
     return '<input type="text" ' . $attr . '/>';
 }
 
 function textAreaTag($name, $content, array $attributes = array())
 {
     $attr = _prepareAttributes($attributes, array('name' => $name));
-    return '<textarea ' . $attr . '>' . $content . '</textarea>';
+    return '<textarea ' . $attr . '>' . escapeText($content) . '</textarea>';
 }
 
 function checkboxTag($name, $value, $checked, array $attributes = array())
@@ -116,7 +116,7 @@ function optionTag($value, $name, $current)
 
 function passwordFieldTag($name, $value, array $attributes = array())
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => $value));
+    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => escapeText($value)));
     return '<input type="password" ' . $attr . '/>';
 }
 
