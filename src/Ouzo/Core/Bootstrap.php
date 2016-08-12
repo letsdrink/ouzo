@@ -6,12 +6,12 @@
 namespace Ouzo;
 
 use Ouzo\Config\ConfigRepository;
+use Ouzo\ExceptionHandling\DebugErrorHandler;
+use Ouzo\ExceptionHandling\ErrorHandler;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
-use Whoops\Handler\PrettyPageHandler;
-use Whoops\Run;
 
 class Bootstrap
 {
@@ -85,14 +85,11 @@ class Bootstrap
     private function registerErrorHandlers()
     {
         if (Config::getValue('debug')) {
-            $whoops = new Run();
-            $whoops->pushHandler(new PrettyPageHandler());
-            $whoops->register();
+            $handler = new DebugErrorHandler();
         } else {
-            set_exception_handler('\Ouzo\ExceptionHandling\ErrorHandler::exceptionHandler');
-            set_error_handler('\Ouzo\ExceptionHandling\ErrorHandler::errorHandler');
-            register_shutdown_function('\Ouzo\ExceptionHandling\ErrorHandler::shutdownHandler');
+            $handler = new ErrorHandler();
         }
+        $handler->register();
     }
 
     /**

@@ -12,15 +12,29 @@ class ExceptionHandler
 
     public function handleException($exception)
     {
+        if (!$this->runOuzoExceptionHandler($exception)) {
+            $this->runDefaultHandler($exception);
+        }
+    }
+
+    protected function runOuzoExceptionHandler($exception)
+    {
         if ($exception instanceof UserException) {
             $this->renderUserError(OuzoExceptionData::forException(500, $exception));
+            return true;
         } elseif ($exception instanceof RouterException) {
             $this->renderNotFoundError(OuzoExceptionData::forException(404, $exception));
+            return true;
         } elseif ($exception instanceof OuzoException) {
             $this->handleError($exception->asExceptionData());
-        } else {
-            $this->handleError(OuzoExceptionData::forException(500, $exception));
+            return true;
         }
+        return false;
+    }
+
+    protected function runDefaultHandler($exception)
+    {
+        $this->handleError(OuzoExceptionData::forException(500, $exception));
     }
 
     public function handleExceptionData(OuzoExceptionData $exceptionData)
@@ -33,7 +47,7 @@ class ExceptionHandler
         return self::$errorHandled;
     }
 
-    private function handleError($exception)
+    protected function handleError($exception)
     {
         $this->renderError($exception);
     }
@@ -49,7 +63,7 @@ class ExceptionHandler
         $this->renderError($exception, "404");
     }
 
-    private function renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
+    protected function renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
     {
         try {
             $renderer = self::$errorRenderer ?: new ErrorRenderer();

@@ -10,9 +10,16 @@ use Exception;
 
 class ErrorHandler
 {
+    public function register()
+    {
+        set_exception_handler(array(__CLASS__, 'exceptionHandler'));
+        set_error_handler(array(__CLASS__, 'errorHandler'));
+        register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
+    }
+
     public static function exceptionHandler(Exception $exception)
     {
-        self::getExceptionHandler()->handleException($exception);
+        static::getExceptionHandler()->handleException($exception);
     }
 
     public static function errorHandler($errno, $errstr, $errfile, $errline)
@@ -39,7 +46,7 @@ class ErrorHandler
     /**
      * @return ExceptionHandler
      */
-    private static function getExceptionHandler()
+    protected static function getExceptionHandler()
     {
         return new ExceptionHandler();
     }
@@ -49,7 +56,7 @@ class ErrorHandler
         $error = error_get_last();
 
         if (!ExceptionHandler::lastErrorHandled() && $error && $error['type'] & (E_ERROR | E_USER_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR)) {
-            self::getExceptionHandler()->handleExceptionData(new OuzoExceptionData(500, array(new Error(0, $error['message'])), self::trace($error['file'], $error['line'])));
+            static::getExceptionHandler()->handleExceptionData(new OuzoExceptionData(500, array(new Error(0, $error['message'])), self::trace($error['file'], $error['line'])));
         }
     }
 
