@@ -6,13 +6,10 @@
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
-use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Db\WhereClause\WhereClause;
-use Ouzo\Restriction\Restriction;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Objects;
 use PDO;
 
 class QueryExecutor
@@ -89,7 +86,7 @@ class QueryExecutor
     public function insert($sequence = '')
     {
         $this->execute();
-        return $sequence ? $this->_db->lastInsertId($sequence) : null;
+        return $sequence ? (int)$this->_db->lastInsertId($sequence) : null;
     }
 
     private function _fetch($function)

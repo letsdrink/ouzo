@@ -37,7 +37,8 @@
   },
   "require": {
     "d11wtq/boris": "1.0.8",
-    "symfony/console": "v2.7.2"
+    "symfony/console": "v2.7.2",
+    "filp/whoops": "1.1.*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.3.3",

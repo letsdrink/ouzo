@@ -232,7 +232,14 @@ function userPath(\$id)
 
 function allGeneratedUriNames()
 {
-    return array('usersPath', 'freshUserPath', 'editUserPath', 'userPath', 'usersPath', 'userPath', 'userPath', 'userPath');
+    return array('usersPath',
+        'freshUserPath',
+        'editUserPath',
+        'userPath',
+        'usersPath',
+        'userPath',
+        'userPath',
+        'userPath');
 }
 FUNCT;
         $this->assertEquals($expected, $generated);

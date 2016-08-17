@@ -56,7 +56,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateTextFieldInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $product = new Product(array('description' => 'desc', 'name' => 'name "<&', 'id_category' => 1));
         $form = formFor($product);
 
         //when
@@ -65,7 +65,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $textField3 = $form->textField('name', array('style' => 'color: red;'));
 
         //then
-        $this->assertEquals('<input type="text" id="product_name" name="product[name]" value="name"/>', $textField1);
+        $this->assertEquals('<input type="text" id="product_name" name="product[name]" value="name &quot;&lt;&amp;"/>', $textField1);
         $this->assertContains('id="id_new"', $textField2);
         $this->assertContains('style="color: red;"', $textField3);
     }
@@ -118,14 +118,14 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateHiddenFieldInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $product = new Product(array('description' => 'desc', 'name' => 'name "<&', 'id_category' => 1));
         $form = formFor($product);
 
         //when
         $html = $form->hiddenField('name');
 
         //then
-        $this->assertEquals('<input type="hidden" id="product_name" name="product[name]" value="name"/>', $html);
+        $this->assertEquals('<input type="hidden" id="product_name" name="product[name]" value="name &quot;&lt;&amp;"/>', $html);
     }
 
     /**
@@ -140,10 +140,12 @@ class FormHelperTest extends DbTransactionalTestCase
         //when
         $result1 = $form->label('name');
         $result2 = $form->label('description');
+        $result3 = $form->label('id_category');
 
         //then
         $this->assertEquals('<label for="product_name">product.name</label>', $result1);
         $this->assertEquals('<label for="product_description">Product description</label>', $result2);
+        $this->assertEquals('<label for="product_id_category">Category&gt;&quot;ID&quot;</label>', $result3);
     }
 
     /**
@@ -152,13 +154,13 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreatePasswordFieldInFormModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $product = new Product(array('description' => 'desc', 'name' => 'name "<&', 'id_category' => 1));
 
         //when
         $result = formFor($product)->passwordField('name');
 
         //then
-        $this->assertEquals('<input type="password" id="product_name" name="product[name]" value="name"/>', $result);
+        $this->assertEquals('<input type="password" id="product_name" name="product[name]" value="name &quot;&lt;&amp;"/>', $result);
     }
 
     /**

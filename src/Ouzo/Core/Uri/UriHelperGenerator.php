@@ -50,7 +50,7 @@ function checkParameter(\$parameter)
             $namesAlreadyGenerated[] = $route->getName();
         }
 
-        $names = Joiner::on(", ")->mapValues(function ($value) {
+        $names = Joiner::on(",\n%{INDENT}%{INDENT}")->skipNulls()->mapValues(function ($value) {
             return "'$value'";
         })->join($namesAlreadyGenerated);
 

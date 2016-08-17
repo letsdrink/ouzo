@@ -3,6 +3,7 @@
 return array(
     'product' => array(
         'description' => 'Product description',
+        'id_category' => 'Category>"ID"',
         'quantity' => '%{count} product|%{count} products'
     ),
     'timeAgo' => array(

@@ -6,6 +6,8 @@
 namespace Ouzo;
 
 use Ouzo\Config\ConfigRepository;
+use Ouzo\ExceptionHandling\DebugErrorHandler;
+use Ouzo\ExceptionHandling\ErrorHandler;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Utilities\Files;
@@ -67,15 +69,27 @@ class Bootstrap
      */
     public function runApplication()
     {
-        set_exception_handler('\Ouzo\ExceptionHandling\ErrorHandler::exceptionHandler');
-        set_error_handler('\Ouzo\ExceptionHandling\ErrorHandler::errorHandler');
-        register_shutdown_function('\Ouzo\ExceptionHandling\ErrorHandler::shutdownHandler');
-
         if ($this->configRepository) {
             $this->configRepository->reload();
         }
+
+        $this->registerErrorHandlers();
+
         $this->includeRoutes();
         $this->createFrontController()->init();
+    }
+
+    /**
+     * @return void
+     */
+    private function registerErrorHandlers()
+    {
+        if (Config::getValue('debug')) {
+            $handler = new DebugErrorHandler();
+        } else {
+            $handler = new ErrorHandler();
+        }
+        $handler->register();
     }
 
     /**
