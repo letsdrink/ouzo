@@ -33,6 +33,16 @@ class Relation
         $this->order = $order;
     }
 
+    /**
+     * @param array $params {
+     *    @var string $class
+     *    @var string $localKey
+     *    @var string $foreignKey
+     *    @var bool $collection
+     *    @var string $destinationField
+     * }
+     * @return Relation
+     */
     public static function inline($params)
     {
         return RelationFactory::inline($params);
