@@ -3,14 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-namespace Ouzo\Goodies\Tests;
-
 
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\GeneralAssert;
 use Ouzo\Tests\Mock\Mock;
-use PHPUnit_Framework_TestCase;
-use stdClass;
 
 class GeneralAssertTest extends PHPUnit_Framework_TestCase
 {
@@ -43,7 +39,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
             array(4, 'stdClass'),
             array(true, 'stdClass'),
             array(new Example(), 'stdClass'),
-            array(new stdClass(), '\Ouzo\Goodies\Tests\Example')
+            array(new stdClass(), 'Example')
         );
     }
 
