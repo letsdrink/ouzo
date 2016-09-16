@@ -56,7 +56,6 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
-
     /**
      * @test
      */
@@ -92,6 +91,21 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    function notEqualToNull()
+    {
+        return array(
+            array(1),
+            array('1'),
+            array('0'),
+            array(5.4),
+            array('word'),
+            array(true),
+            array('true'),
+            array('false'),
+            array(array())
+        );
+    }
+
     /**
      * @test
      * @dataProvider notNull
@@ -110,6 +124,28 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     public function shouldNotBeNotNull()
     {
         CatchException::when(GeneralAssert::that(null))->isNotNull();
+
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+    }
+
+    /**
+     * @test
+     * @dataProvider notNull
+     * @param $notNull
+     */
+    public function shouldBeEqual($notNull)
+    {
+        GeneralAssert::that($notNull)->isEqualTo($notNull);
+    }
+
+    /**
+     * @test
+     * @dataProvider notEqualToNull
+     * @param $notNull
+     */
+    public function shouldNotBeEqual($notNull)
+    {
+        CatchException::when(GeneralAssert::that(null))->isEqualTo($notNull);
 
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
