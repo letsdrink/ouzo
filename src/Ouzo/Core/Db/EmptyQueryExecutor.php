@@ -5,6 +5,8 @@
  */
 namespace Ouzo\Db;
 
+use ArrayIterator;
+
 class EmptyQueryExecutor
 {
     public function fetch()
@@ -15,6 +17,11 @@ class EmptyQueryExecutor
     public function fetchAll()
     {
         return array();
+    }
+
+    public function fetchIterator()
+    {
+        return new ArrayIterator(array());
     }
 
     public function execute()
