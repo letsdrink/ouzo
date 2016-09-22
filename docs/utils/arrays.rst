@@ -376,7 +376,7 @@ This method sorts elements in array using order field.
 ----
 
 mapKeys
--------
+~~~~~~~
 This method maps array keys using the function. It invokes the function for each key in the array and creates a new array containing the keys returned by the function.
 
 **Parameters:** ``array $elements``, ``$function``
