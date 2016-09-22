@@ -236,6 +236,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $startTag = $form->start('/sample/url', 'GET', array('class' => 'form-horizontal'));
 
         //then
+        /** @noinspection HtmlUnknownTarget */
         $this->assertEquals('<form class="form-horizontal" action="/sample/url" method="GET"><input type="hidden" id="csrftoken" name="csrftoken" value="' . CsrfProtector::getCsrfToken() . '"/>', $startTag);
     }
 
@@ -297,6 +298,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $linkTo = linkTo('About', '/albums/about');
 
         //then
+        /** @noinspection HtmlUnknownTarget */
         $this->assertEquals('<a href="/albums/about" >About</a>', $linkTo);
     }
 
@@ -312,6 +314,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $linkTo = linkTo('About', '/albums/about', $attributes);
 
         //then
+        /** @noinspection HtmlUnknownTarget */
         $this->assertEquals('<a href="/albums/about" class="link" id="about">About</a>', $linkTo);
     }
 
@@ -324,6 +327,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $linkTo = linkTo('<script>alert(\'hello\')</script>About', '/albums/about');
 
         //then
+        /** @noinspection HtmlUnknownTarget */
         $this->assertEquals('<a href="/albums/about" >&lt;script&gt;alert(\'hello\')&lt;/script&gt;About</a>', $linkTo);
     }
 

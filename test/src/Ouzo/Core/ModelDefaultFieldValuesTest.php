@@ -69,6 +69,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
         ProductWithDefaults::create(array('name' => 'Guybrush Threepwood', 'description' => 'Mighty pirate!'));
 
         //when
+        /** @var ProductWithDefaults $product */
         $product = ProductWithDefaults::where()->fetch();
 
         //then

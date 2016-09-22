@@ -29,9 +29,9 @@ class DebugErrorHandler extends ErrorHandler
         return new DebugExceptionHandler();
     }
 
-    public static function errorHandler($errno, $errstr, $errfile, $errline)
+    public static function errorHandler($errorNumber, $errorString, $errorFile, $errorLine)
     {
-        self::getRun()->handleError($errno, $errstr, $errfile, $errline);
+        self::getRun()->handleError($errorNumber, $errorString, $errorFile, $errorLine);
     }
 
     public static function shutdownHandler()

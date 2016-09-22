@@ -23,7 +23,9 @@ class ClassImplementingToString
 class ClassWithProperty
 {
     public $property;
-    private $privateProperty = 'private value';
+    private
+        /** @noinspection PhpUnusedPrivateFieldInspection */
+        $privateProperty = 'private value';
 }
 
 class ObjectsTest extends PHPUnit_Framework_TestCase
@@ -300,6 +302,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $stringifyArray = Objects::toString($associativeArray);
 
         //then
+        /** @noinspection HtmlUnknownTag */
         $this->assertEquals('[<key> => "value1", <key2> => "value2"]', $stringifyArray);
     }
 
@@ -317,6 +320,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $stringifyObject = Objects::toString($object);
 
         //then
+        /** @noinspection HtmlUnknownTag */
         $this->assertEquals('stdClass {<field1> => "field1", <field2> => "field2"}', $stringifyObject);
     }
 

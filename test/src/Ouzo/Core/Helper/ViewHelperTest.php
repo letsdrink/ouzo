@@ -131,6 +131,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         $actual = addFile(array('type' => 'script', 'params' => array('url' => '/public/js/test.js')), $remove);
 
         //then
+        /** @noinspection HtmlUnknownTarget */
         $this->assertEquals('<script type="text/javascript" src="/public/test.js?1234"></script>' . PHP_EOL, $actual);
     }
 
@@ -208,6 +209,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         $toString = toString($obj);
 
         //then
+        /** @noinspection HtmlUnknownTag */
         $this->assertEquals('stdClass {<name> => "John", <id> => 1}', $toString);
     }
 

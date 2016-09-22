@@ -22,12 +22,12 @@ class ErrorHandler
         static::getExceptionHandler()->handleException($exception);
     }
 
-    public static function errorHandler($errno, $errstr, $errfile, $errline)
+    public static function errorHandler($errorNumber, $errorString, $errorFile, $errorLine)
     {
-        if (self::stopsExecution($errno)) {
-            self::exceptionHandler(new ErrorException($errstr, $errno, 0, $errfile, $errline));
+        if (self::stopsExecution($errorNumber)) {
+            self::exceptionHandler(new ErrorException($errorString, $errorNumber, 0, $errorFile, $errorLine));
         } else {
-            throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+            throw new ErrorException($errorString, $errorNumber, 0, $errorFile, $errorLine);
         }
     }
 
@@ -60,8 +60,8 @@ class ErrorHandler
         }
     }
 
-    private static function trace($errfile, $errline)
+    private static function trace($errorFile, $errorLine)
     {
-        return "$errfile:$errline";
+        return "$errorFile:$errorLine";
     }
 }
