@@ -5,6 +5,7 @@
  */
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Utilities\Json;
+use Ouzo\Utilities\JsonDecodeException;
 
 class JsonTest extends PHPUnit_Framework_TestCase
 {
@@ -93,5 +94,57 @@ class JsonTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals(JSON_ERROR_NONE, $error);
+    }
+
+    /**
+     * @test
+     * @dataProvider validJson
+     * @param string $validJson
+     */
+    public function shouldNotThrowOnInvalidJson($validJson)
+    {
+        // when
+        Json::decode($validJson);
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidJson
+     * @param string $invalidJson
+     */
+    public function shouldThrowOnInvalidJson($invalidJson)
+    {
+        // when
+        try {
+            Json::decode($invalidJson);
+            $this->assertTrue(false);
+        } // then
+        catch (JsonDecodeException $e) {
+        }
+    }
+
+    function invalidJson() {
+        return array(
+            array('()'),
+            array('(asd)'),
+            array('{3}'),
+            array('{"3":,"3"}'),
+            array('<html>'),
+            array('3=3')
+        );
+    }
+
+    function validJson() {
+        return array(
+            array(''),
+            array('0'),
+            array('null'),
+            array('1'),
+            array('true'),
+            array('false'),
+            array('"test"'),
+            array('[1]'),
+            array('{"hej":4}'),
+        );
     }
 }
