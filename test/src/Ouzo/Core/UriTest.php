@@ -285,7 +285,7 @@ class UriTest extends PHPUnit_Framework_TestCase
         CatchException::when($this)->getRequestParameters('json://input');
 
         //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\Api\InternalException');
+        CatchException::assertThat()->isInstanceOf('Ouzo\Utilities\JsonDecodeException');
         StreamStub::unregister();
     }
 
