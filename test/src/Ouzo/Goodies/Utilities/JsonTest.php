@@ -17,7 +17,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
         $json = '{"name":"john","id":123,"ip":"127.0.0.1"}';
 
         //when
-        $decoded = Json::decode($json);
+        $decoded = Json::safeDecode($json);
 
         //then
         $this->assertEquals('john', $decoded->name);
@@ -32,7 +32,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
     {
         //given
         $json = "{'Organization':error 'PHP Documentation Team'}";
-        Json::decode($json);
+        Json::safeDecode($json);
 
         //when
         $error = Json::lastError();
@@ -50,7 +50,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
         $json = '{"name":"john","id":123,"ip":"127.0.0.1"}';
 
         //when
-        $decoded = Json::decode($json, true);
+        $decoded = Json::safeDecode($json, true);
 
         //then
         ArrayAssert::that($decoded)->hasSize(3)->contains('john', 123, '127.0.0.1');
@@ -76,7 +76,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
      */
     public function decodeShouldReturnNullForEmptyString()
     {
-        $this->assertNull(Json::decode(''));
+        $this->assertNull(Json::safeDecode(''));
     }
 
     /**
@@ -85,8 +85,8 @@ class JsonTest extends PHPUnit_Framework_TestCase
     public function shouldResetJsonError()
     {
         //given
-        Json::decode("error");
-        Json::decode("");
+        Json::safeDecode("error");
+        Json::safeDecode("");
 
         //when
         $error = Json::lastError();

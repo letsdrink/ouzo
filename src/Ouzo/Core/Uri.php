@@ -153,7 +153,7 @@ class Uri
     private static function _jsonParameters($content)
     {
         if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
-            $json = Json::decode($content, true);
+            $json = Json::safeDecode($content, true);
             if (Json::lastError() !== 0) {
                 throw new InternalException(new Error(0, 'JSON string is malformed'));
             }
