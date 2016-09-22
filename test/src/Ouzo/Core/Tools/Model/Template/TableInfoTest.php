@@ -6,6 +6,7 @@
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tools\Model\Template\DatabaseColumn;
+use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Tools\Model\Template\TableInfo;
 
 class TableInfoTest extends PHPUnit_Framework_TestCase
@@ -16,6 +17,7 @@ class TableInfoTest extends PHPUnit_Framework_TestCase
     public function shouldReturnFieldsWithoutPrimaryKeyWhenIsNotDefault()
     {
         //given
+        /** @var Dialect $dialect */
         $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
         Mock::when($dialect)->primaryKey()->thenReturn('id_name');
         Mock::when($dialect)->columns()->thenReturn(array(
@@ -38,6 +40,7 @@ class TableInfoTest extends PHPUnit_Framework_TestCase
     public function shouldReturnFieldsWithPrimaryKeyWhenIsDefault()
     {
         //given
+        /** @var Dialect $dialect */
         $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
         Mock::when($dialect)->primaryKey()->thenReturn('id');
         Mock::when($dialect)->columns()->thenReturn(array(
