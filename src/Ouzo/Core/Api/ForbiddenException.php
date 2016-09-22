@@ -5,9 +5,7 @@
  */
 namespace Ouzo\Api;
 
-use Ouzo\ExceptionHandling\Error;
 use Ouzo\ExceptionHandling\OuzoException;
-use Ouzo\I18n;
 
 class ForbiddenException extends OuzoException
 {

@@ -7,7 +7,6 @@ namespace Ouzo;
 
 use Exception;
 use InvalidArgumentException;
-use Ouzo\Db;
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Query;

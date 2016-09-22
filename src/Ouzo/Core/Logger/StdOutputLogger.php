@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Logger;
 
-use Ouzo\Config;
 use Ouzo\Utilities\Clock;
 
 class StdOutputLogger extends AbstractLogger

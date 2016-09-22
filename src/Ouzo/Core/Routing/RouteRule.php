@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Routing;
 
-use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Inflector;

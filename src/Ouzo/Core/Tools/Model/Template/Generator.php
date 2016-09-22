@@ -7,8 +7,6 @@ namespace Ouzo\Tools\Model\Template;
 
 use Exception;
 use Ouzo\AutoloadNamespaces;
-use Ouzo\Config;
-use Ouzo\Db;
 use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Utilities\Arrays;

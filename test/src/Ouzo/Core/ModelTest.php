@@ -9,7 +9,6 @@ use Application\Model\Test\ModelWithoutSequence;
 use Application\Model\Test\Order;
 use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
-use Ouzo\Db;
 use Ouzo\Db\ModelDefinition;
 use Ouzo\DbException;
 use Ouzo\Model;

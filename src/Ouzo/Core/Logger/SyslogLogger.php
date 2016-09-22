@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Logger;
 
-use Ouzo\Config;
 
 class SyslogLogger extends AbstractLogger
 {

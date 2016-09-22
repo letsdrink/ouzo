@@ -9,8 +9,6 @@ use Ouzo\Config;
 use Ouzo\Db\Dialect\Dialect;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
-use Ouzo\Tools\Model\Template\Generator;
-use Ouzo\Tools\Model\Template\GeneratorException;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 

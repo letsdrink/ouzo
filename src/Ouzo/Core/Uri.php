@@ -5,8 +5,6 @@
  */
 namespace Ouzo;
 
-use Ouzo\Api\InternalException;
-use Ouzo\ExceptionHandling\Error;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;
