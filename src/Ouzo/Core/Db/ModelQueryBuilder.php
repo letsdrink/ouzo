@@ -183,6 +183,8 @@ class ModelQueryBuilder
 
     /**
      * Runs an update query against a set of models
+     * @param array $attributes
+     * @return int
      */
     public function update(array $attributes)
     {

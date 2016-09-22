@@ -24,6 +24,8 @@ class JoinerTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider arrayJoinedWithSeparator
+     * @param array $array
+     * @param string $expectedResult
      */
     public function shouldJoinArrayWithSeparator($array, $expectedResult)
     {

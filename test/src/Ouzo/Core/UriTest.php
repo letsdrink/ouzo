@@ -328,6 +328,8 @@ class UriTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider malformedSlashes
+     * @param string $broken
+     * @param string $good
      */
     public function shouldReplaceTwoBackSlashes($broken, $good)
     {
@@ -359,6 +361,9 @@ class UriTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider protocols
+     * @param string $header
+     * @param mixed $value
+     * @param string $expected
      */
     public function shouldReturnCorrectProtocol($header, $value, $expected)
     {

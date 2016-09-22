@@ -72,7 +72,8 @@ class InflectorTest extends PHPUnit_Framework_TestCase
      * testInflectingSingulars method
      *
      * @dataProvider dataSampleWords
-     * @return void
+     * @param string $singular
+     * @param string $plural
      */
     public function testInflectingSingulars($singular, $plural)
     {
@@ -83,7 +84,8 @@ class InflectorTest extends PHPUnit_Framework_TestCase
      * testInflectingPlurals method
      *
      * @dataProvider dataSampleWords
-     * @return void
+     * @param $singular
+     * @param $plural
      */
     public function testInflectingPlurals($singular, $plural)
     {

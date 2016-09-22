@@ -196,6 +196,7 @@ class FormHelperTest extends DbTransactionalTestCase
     /**
      * @test
      * @dataProvider requestUnsupportedMethods
+     * @param string $method
      */
     public function shouldCreateWorkAroundForUnsupportedMethods($method)
     {
@@ -210,6 +211,7 @@ class FormHelperTest extends DbTransactionalTestCase
     /**
      * @test
      * @dataProvider requestSupportedMethods
+     * @param string $method
      */
     public function shouldNoCreateWorkAroundWhenSupportedMethods($method)
     {

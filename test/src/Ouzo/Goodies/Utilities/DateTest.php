@@ -106,6 +106,8 @@ class DateTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider intervalsAndDates
+     * @param string $interval
+     * @param string $expectedDate
      */
     public function shouldModifyDate($interval, $expectedDate)
     {

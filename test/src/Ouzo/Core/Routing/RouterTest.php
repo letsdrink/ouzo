@@ -159,6 +159,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider requestMethods
+     * @param string $method
      */
     public function shouldFindRouteAny($method)
     {
@@ -179,6 +180,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider requestRestMethods
+     * @param string $method
+     * @param string $uri
      */
     public function shouldFindRouteResource($method, $uri)
     {

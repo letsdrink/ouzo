@@ -66,6 +66,10 @@ class Db
 
     /**
      * Returns number of affected rows
+     * @param string $query
+     * @param array $params
+     * @param array $options
+     * @return int
      */
     public function execute($query, $params = array(), $options = array())
     {
@@ -75,6 +79,8 @@ class Db
     /**
      * Returns a new transactional proxy for given target object/function.
      * All methods called on proxy are run in a transaction.
+     * @param mixed $object
+     * @return TransactionalProxy
      */
     public static function transactional($object)
     {

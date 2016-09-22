@@ -83,6 +83,8 @@ class FilesTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider units
+     * @param int $size
+     * @param string $result
      */
     public function shouldConvertUnits($size, $result)
     {

@@ -29,6 +29,9 @@ class TranslatableTimeAgoTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider dates
+     * @param string $currentDate
+     * @param string $date
+     * @param string $expectedText
      */
     public function shouldCreateTranslatableTimeAgo($currentDate, $date, $expectedText)
     {

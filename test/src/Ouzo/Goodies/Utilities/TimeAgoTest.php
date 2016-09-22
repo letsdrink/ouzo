@@ -29,6 +29,10 @@ class TimeAgoTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider dates
+     * @param string $currentDate
+     * @param string $date
+     * @param string $expectedKey
+     * @param array $expectedParams
      */
     public function shouldCreateTimeAgo($currentDate, $date, $expectedKey, $expectedParams)
     {
