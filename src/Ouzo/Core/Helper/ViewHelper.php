@@ -70,6 +70,7 @@ function showErrors(array $errors = array())
         $errorView->errors = $errors;
         return $errorView->render();
     }
+    return null;
 }
 
 function showNotices(array $notices = array())
@@ -81,6 +82,7 @@ function showNotices(array $notices = array())
         $noticeView->notices = $notices;
         return $noticeView->render();
     }
+    return null;
 }
 
 function showSuccess(array $notices = array())
@@ -92,6 +94,7 @@ function showSuccess(array $notices = array())
         $noticeView->notices = $notices;
         return $noticeView->render();
     }
+    return null;
 }
 
 function showWarnings(array $warnings = array())
@@ -101,6 +104,7 @@ function showWarnings(array $warnings = array())
         $warningView->warnings = $warnings;
         return $warningView->render();
     }
+    return null;
 }
 
 function formatDate($date, $format = 'Y-m-d')
