@@ -25,15 +25,18 @@ class Error
 
     public static function forException(Exception $exception)
     {
-        if (self::_shouldReturnExceptionOriginalMessage($exception)) {
+        if (Config::getValue('debug')) {
+            return new Error($exception->getCode(), self::_classNameAndMessage($exception));
+        }
+        if ($exception instanceof UserException) {
             return new Error($exception->getCode(), $exception->getMessage());
         }
         return new Error($exception->getCode(), I18n::t('exception.unknown'), $exception->getMessage());
     }
 
-    private static function _shouldReturnExceptionOriginalMessage($exception)
+    private static function _classNameAndMessage(Exception $exception)
     {
-        return Config::getValue('debug') || ($exception instanceof UserException);
+        return get_class($exception) . ': ' . $exception->getMessage();
     }
 
     public function toArray()
