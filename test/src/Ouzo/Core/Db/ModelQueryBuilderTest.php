@@ -19,6 +19,7 @@ use Ouzo\Restrictions;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
+use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
@@ -869,10 +870,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldNotTryToDeleteIfEmptyInClause()
     {
         //given
-        $mockDb = $this->getMock('\Ouzo\Db', array('query'));
+        $mockDb = Mock::create('\Ouzo\Db');
         $builder = new ModelQueryBuilder(new Product(), $mockDb);
-
-        $mockDb->expects($this->never())->method('query');
 
         //when
         $affectedRows = $builder->where(array('name' => array()))->deleteAll();
@@ -880,6 +879,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertEquals(0, $affectedRows);
         //no interaction with db
+        Mock::verify($mockDb)->neverReceived();
     }
 
     /**

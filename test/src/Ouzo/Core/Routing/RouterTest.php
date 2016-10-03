@@ -8,6 +8,7 @@ use Ouzo\Routing\Router;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri;
 
 class RouterTest extends PHPUnit_Framework_TestCase
@@ -566,12 +567,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     private function _createRouter($method, $uri)
     {
         $_SERVER['REQUEST_METHOD'] = $method;
-
-        $pathMock = $this->getMock('\Ouzo\Uri\PathProvider', array('getPath'));
-        $pathMock->expects($this->any())
-            ->method('getPath')
-            ->will($this->returnValue($uri));
-
+        $pathMock = Mock::create('\Ouzo\Uri\PathProvider');
+        Mock::when($pathMock)->getPath()->thenReturn($uri);
         return new Router(new Uri($pathMock));
     }
 }
