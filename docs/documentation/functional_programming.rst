@@ -1,7 +1,7 @@
 Functional programming
 ======================
 
-Ouzo provides many utility classes that facilitates functional programming in php.
+Ouzo provides many utility classes that facilitate functional programming in php.
 
 
 * :doc:`../utils/arrays` contains facade for php arrays functions. You will never wonder if array_filter has array or closure as the first parameter.
