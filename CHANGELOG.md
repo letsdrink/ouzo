@@ -5,9 +5,25 @@ INCOMING
 --------
 Enhancements:
 * [ORM] Added Db::query()->fetchIterator() method (issue #241).
+* [Core] Added Validatable::errors method, so that multiple errors can be added at once.
+* [Utilities] Added Arrays::isAssociative and Arrays::concat.
+* [ORM] Added support for 'exists' subqueries.
+* [Utilities] Added UnbatchingIterator.
+* [ORM] Added fetchIterator for ModelQueryBuilder (issue #242).
+* [Core] Added Whoops library (issue #243).
+* [Tests] Added Assert::that (issue #245).
+* [Tests] Added Assert::thatBool.
+* [Utilities] Added method Json::safeDecode and change Json::decode to correct method with exceptions.
+* [ORM] Added Restrictions::isIn().
 
 Bug fixes:
 * [Tests] More verbose message when null is passed to Mock::verify (issue #236).
+* [Core] Fixed searching routes with a '@' char.
+* [Utilities] Fixed extracting ArraysAssert.
+* [ORM] Fixed query parenthesis (issue #239).
+* [Utilities] Fixed Arrays:toArray for empty string, false and zero.
+* [ORM] Insert returns int last insert id.
+* [ORM] Fixed EmptyQueryExecutor with fetchIterator method.
 
 Release 1.6.0
 --------
