@@ -282,4 +282,34 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('def', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldFlattenValue()
+    {
+        //given
+        $optional = Optional::of(Optional::of(Optional::of(1)));
+
+        //when
+        $result = $optional->flatten()->get();
+
+        //then
+        $this->assertEquals(1, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFlattenNullValue()
+    {
+        //given
+        $optional = Optional::of(Optional::of(Optional::fromNullable(null)));
+
+        //when
+        $result = $optional->flatten()->orNull();
+
+        //then
+        $this->assertNull($result);
+    }
 }
