@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Tests\CatchException;
+use Ouzo\Utilities\FluentFunctions;
 use Ouzo\Utilities\Optional;
 
 class MyOptionalClass
@@ -248,5 +249,37 @@ class OptionalTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('abc', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMapObject()
+    {
+        //given
+        $optional = Optional::fromNullable(new MyOptionalClass());
+        $closure = FluentFunctions::extractField('myField')->append('!!!');
+
+        //when
+        $result = $optional->map($closure)->get();
+
+        //then
+        $this->assertEquals('abc!!!', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnOrForAbsentMap()
+    {
+        //given
+        $optional = Optional::fromNullable(null);
+        $closure = FluentFunctions::extractField('myField')->append('!!!');
+
+        //when
+        $result = $optional->map($closure)->or('def');
+
+        //then
+        $this->assertEquals('def', $result);
     }
 }
