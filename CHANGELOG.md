@@ -15,6 +15,7 @@ Enhancements:
 * [Utilities] Added `Arrays::isAssociative()` and `Arrays::concat()`.
 * [Utilities] Added UnbatchingIterator.
 * [Utilities] Added `Json::safeDecode()` and changed `Json::decode()` to correct method with exceptions.
+* [Debug] After `renderPartial()`, you can now find `PARTIAL` and `END PARTIAL` HTML comments along with partial name.
 
 Bug fixes:
 * [Core] Fixed searching routes with a `@` character.
