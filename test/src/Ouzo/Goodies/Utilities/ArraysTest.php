@@ -1139,6 +1139,21 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldConcatEmptyArray()
+    {
+        //given
+        $array = array();
+
+        //when
+        $flattened = Arrays::concat($array);
+
+        //then
+        $this->assertEquals(array(), $flattened);
+    }
+
+    /**
+     * @test
+     */
     public function containsShouldWorkForDifferentTypes()
     {
         $this->assertTrue(Arrays::contains(array(1, 2, 3), 1));
