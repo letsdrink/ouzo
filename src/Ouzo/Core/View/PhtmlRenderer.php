@@ -19,11 +19,15 @@ class PhtmlRenderer implements ViewRenderer
     private $_attributes;
     private $_viewPath;
 
-    public function __construct($viewName, array $attributes)
+    /** @var bool */
+    private $_allowDebugTooltip;
+
+    public function __construct($viewName, array $attributes, $allowDebugTooltip = true)
     {
         $this->_viewName = $viewName;
         $this->_attributes = $attributes;
         $this->_viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . self::EXTENSION);
+        $this->_allowDebugTooltip = $allowDebugTooltip;
     }
 
     public function render()
@@ -70,15 +74,20 @@ class PhtmlRenderer implements ViewRenderer
 
     private function _htmlDebugTooltipStart()
     {
-        if (Config::getValue('debug')) {
+        if ($this->shouldPrintDebugTooltip()) {
             echo '<!-- [PARTIAL] ' . $this->_viewName . ' -->';
         }
     }
 
     private function _htmlDebugTooltipEnd()
     {
-        if (Config::getValue('debug')) {
+        if ($this->shouldPrintDebugTooltip()) {
             echo '<!-- [END PARTIAL] ' . $this->_viewName . ' -->';
         }
+    }
+
+    private function shouldPrintDebugTooltip()
+    {
+        return $this->_allowDebugTooltip && Config::getValue('debug');
     }
 }

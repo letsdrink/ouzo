@@ -32,13 +32,13 @@ class View
         $this->_loadHelpers();
     }
 
-    public function render($viewName = '')
+    public function render($viewName = '', $allowDebugTooltip = true)
     {
         if (!empty($viewName)) {
             $this->_viewName = $viewName;
         }
         if (!$this->_renderer) {
-            $this->_renderer = ViewRendererFactory::create($this->_viewName, $this->_attributes);
+            $this->_renderer = ViewRendererFactory::create($this->_viewName, $this->_attributes, $allowDebugTooltip);
         }
         $this->verifyExists($this->_renderer->getViewPath(), $this->_viewName);
         $this->_renderedView = $this->_renderer->render();

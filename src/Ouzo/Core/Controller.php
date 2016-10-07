@@ -139,7 +139,7 @@ class Controller
 
     public function renderAjaxView($viewName = null)
     {
-        $view = $this->view->render($viewName ?: $this->getViewName());
+        $view = $this->view->render($viewName ?: $this->getViewName(), false);
         $this->layout->renderAjax($view);
     }
 
