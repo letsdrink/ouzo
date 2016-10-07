@@ -23,6 +23,7 @@ class NoGetConfigMethod
 
 class PrivateGetConfigMethod
 {
+    /** @noinspection PhpUnusedPrivateMethodInspection */
     private function getConfig()
     {
         return array();
@@ -132,10 +133,11 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         //given
         $this->_createSampleConfigFile();
+        /** @noinspection PhpIncludeInspection */
         include_once '/tmp/SampleConfigFile.php';
+        /** @noinspection PhpUndefinedClassInspection */
         Config::registerConfig(new SampleConfigFile);
         Config::registerConfig(new SampleConfig);
-
 
         //when
         $value = Config::getValue('default');
