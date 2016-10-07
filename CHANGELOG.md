@@ -116,7 +116,7 @@ Release 1.4.1
 -------------
 Enhancements:
 * [ORM] New `Restrictions:isNull()` and `Restrictions::isNotNull()`.
-* [ORM] Added EmptyWhereClause class.
+* [ORM] Added `EmptyWhereClause`.
 * [ORM] Added switch for model generator to utilize shorthand array syntax (issue #160).
 * [ORM] Added switch for model generator to display output instead of saving file (issue #158).
 * [ORM] Added support for [sorted hasMany relations](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#sorted-hasmany-relation) (issue #171).
@@ -135,7 +135,7 @@ Bug fixes:
 Release 1.4.0
 -------------
 Enhancements:
-* Extracted Ouzo Goodies, which can be used from now on as a separate project.
+* Extracted [Ouzo Goodies](https://github.com/letsdrink/ouzo-goodies), which can be used from now on as a separate project.
 * Versioned documentation available at [ouzo.readthedocs.org](http://ouzo.readthedocs.io/en/latest/).
 * [ORM] Added `Any::of()` to produce `OR` operator (issue #141).
 * [Utilities] Added `Strings::substringBefore()`.
