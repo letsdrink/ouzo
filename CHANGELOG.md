@@ -4,75 +4,75 @@ CHANGELOG
 INCOMING
 --------
 Enhancements:
-* [ORM] Added Db::query()->fetchIterator() method (issue #241).
 * [Core] Added Validatable::errors() method, so that multiple errors can be added at once.
-* [Utilities] Added Arrays::isAssociative() and Arrays::concat().
-* [ORM] Added support for 'exists' subqueries.
-* [Utilities] Added UnbatchingIterator.
-* [ORM] Added FetchIterator for ModelQueryBuilder (issue #242).
 * [Core] Added Whoops library (issue #243).
+* [ORM] Added Db::query()->fetchIterator() method (issue #241).
+* [ORM] Added support for 'exists' subqueries.
+* [ORM] Added FetchIterator for ModelQueryBuilder (issue #242).
+* [ORM] Added Restrictions::isIn().
 * [Tests] Added Assert::that() (issue #245).
 * [Tests] Added Assert::thatBool().
+* [Utilities] Added Arrays::isAssociative() and Arrays::concat().
+* [Utilities] Added UnbatchingIterator.
 * [Utilities] Added method Json::safeDecode() and changed Json::decode() to correct method with exceptions.
-* [ORM] Added Restrictions::isIn().
 
 Bug fixes:
-* [Tests] More verbose message when null is passed to Mock::verify() (issue #236).
 * [Core] Fixed searching routes with a '@' char.
-* [Utilities] Fixed extracting ArraysAssert.
 * [ORM] Fixed query parenthesis (issue #239).
-* [Utilities] Fixed Arrays::toArray() for empty string, false and zero.
 * [ORM] Insert returns int last insert id.
 * [ORM] Fixed EmptyQueryExecutor with fetchIterator method.
+* [Tests] More verbose message when null is passed to Mock::verify() (issue #236).
+* [Utilities] Fixed extracting ArraysAssert.
+* [Utilities] Fixed Arrays::toArray() for empty string, false and zero.
 
 Release 1.6.0
 --------
 Enhancements:
+* [Core] ControllerFactory use Injector (issue #223).
+* [Core] Added Controller::getRequestHeaders().
+* [Core] Added options to PDO.
+* [DI] Added dependency injection support (IoC container).
+* [DI] Injector can inject itself.
+* [DI] Injector config can be modified after injector initialization.
+* [MVC] Layout has now access to view variables.
+* [ORM] Added exception handling for invalid query.
+* [ORM] Added BatchInserter.
+* [ORM] Added Restrictions:regex method (issue #213).
+* [Tests] Added verifier - Mock::receivedTimes() (issue #153).
+* [Tests] Handle parameters in ControllerTestCase::get().
+* [Tests] Added chain to Mock::when() (issue #209).
 * [Utilities] Implemented Arrays::contains() method (issue #103).
 * [Utilities] Added Clock::isAfterOrEqualTo() and Clock::isBeforeOrEqualTo().
 * [Utilities] Added multi-byte safe Strings::uppercaseFirst().
 * [Utilities] Added pseudo localization support.
-* [MVC] Layout has now access to view variables.
-* [ORM] Added exception handling for invalid query.
 * [Utilities] Added Functions::endsWith() method.
-* [Tests] Added verifier - Mock::receivedTimes() (issue #153).
 * [Utilities] Added method Strings::removeAccent().
-* [Tests] Handle parameters in ControllerTestCase::get().
-* [ORM] Added BatchInserter.
 * [Utilities] Added Strings::substringAfter() method.
 * [Utilities] Added FluentArray::sort() method.
 * [Utilities] Added FluentArray::filterByAllowedKeys() method.
-* [DI] Added dependency injection support (IoC container).
-* [Tests] Added chain to Mock::when() (issue #209).
-* [ORM] Added Restrictions:regex method (issue #213).
-* [Core] ControllerFactory use Injector (issue #223).
 * [Utilities] Added FluentArray::groupBy() method.
-* [DI] Injector can inject itself.
-* [DI] Injector config can be modified after injector initialization.
 * [Utilities] Added support for ArrayAssert::extract() method (issue #231).
 * [Utilities] Added methods Functions::inArray() and Functions::notInArray().
 * [Utilities] Refactored Booleans.
 * [Utilities] Added Arrays::shuffle().
-* [Core] Added Controller::getRequestHeaders().
-* [Core] Added options to PDO.
 
 Bug fixes:
-* [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains() behavior (issue #192).
+* [Core] Fixed json decode to make it compatible with PHP7 (issue #191).
+* [Core] Fixed ForbiddenException - takes errors.
+* [Core] Bootstrap::addConfig() loads everything multiple times on consecutive executions (issue #218).
+* [Core] Fixed exception when config was not added to Bootstrap.
+* [Core] Fixed render 404 on RouterException.
 * [MVC] Fixed major performance issue with routes validation.
 * [ORM] Fixed inserting records with no values (issue #216).
-* [Tests] Support for controller tests without configured database.
-* [Core] Fixed json decode to make it compatible with PHP7 (issue #191).
 * [ORM] Fixed method Model::nullifyIfEmpty().
-* [Core] Fixed ForbiddenException - takes errors.
-* [Tools] Fixed generating models (issue #214).
-* [Core] Bootstrap::addConfig() loads everything multiple times on consecutive executions (issue #218).
-* [Tools] Fixed generating `@property` (issue #168).
 * [ORM] Handle in batch inserter tables without primary key.
-* [Core] Fixed exception when config was not added to Bootstrap.
-* [Utilities] Fixed SkippingIterator so that map function is not applied on skipped elements.
 * [ORM] Fixed BatchInsert with fetched relations (issue #230).
+* [Tests] Support for controller tests without configured database.
+* [Tools] Fixed generating models (issue #214).
+* [Tools] Fixed generating `@property` (issue #168).
+* [Utilities] Fixed SkippingIterator so that map function is not applied on skipped elements.
+* [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains() behavior (issue #192).
 * [Utilities] Fixed cache for nulls.
-* [Core] Fixed render 404 on RouterException.
 * [Utilities] Fixed null handling for Optional.
 * [Utilities] Fixed String::contains() for multi-byte.
 * [Utilities] Added limit (10) to number of requests being kept in Stats (issue #217). 
