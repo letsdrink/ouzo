@@ -7,6 +7,7 @@ namespace Ouzo\View;
 
 use Exception;
 use Ouzo\ApplicationPaths;
+use Ouzo\Config;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
@@ -31,7 +32,9 @@ class PhtmlRenderer implements ViewRenderer
         ob_start();
         try {
             $this->_loadViewHelper();
+            $this->_htmlDebugTooltipStart();
             $this->_loadView();
+            $this->_htmlDebugTooltipEnd();
         } catch (Exception $e) {
             ob_end_flush();
             throw $e;
@@ -63,5 +66,19 @@ class PhtmlRenderer implements ViewRenderer
     public function getViewPath()
     {
         return $this->_viewPath;
+    }
+
+    private function _htmlDebugTooltipStart()
+    {
+        if (Config::getValue('debug')) {
+            echo '<!-- [PARTIAL] ' . $this->_viewName . ' -->';
+        }
+    }
+
+    private function _htmlDebugTooltipEnd()
+    {
+        if (Config::getValue('debug')) {
+            echo '<!-- [END PARTIAL] ' . $this->_viewName . ' -->';
+        }
     }
 }
