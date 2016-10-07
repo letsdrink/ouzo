@@ -4,146 +4,146 @@ CHANGELOG
 INCOMING
 --------
 Enhancements:
-* [Core] Added Validatable::errors() method, so that multiple errors can be added at once.
+* [Core] Added `Validatable::errors()`, so multiple errors can be added at once.
 * [Core] Added Whoops library (issue #243).
-* [ORM] Added Db::query()->fetchIterator() method (issue #241).
-* [ORM] Added support for 'exists' subqueries.
-* [ORM] Added FetchIterator for ModelQueryBuilder (issue #242).
-* [ORM] Added Restrictions::isIn().
-* [Tests] Added Assert::that() (issue #245).
-* [Tests] Added Assert::thatBool().
-* [Utilities] Added Arrays::isAssociative() and Arrays::concat().
+* [ORM] Added `Db::query()->fetchIterator()` method (issue #241).
+* [ORM] Added support for `EXISTS` subqueries.
+* [ORM] Added `ModelQueryBuilder::fetchIterator()` (issue #242).
+* [ORM] Added `Restrictions::isIn()`.
+* [Tests] Added `Assert::that()` (issue #245).
+* [Tests] Added `Assert::thatBool()`.
+* [Utilities] Added `Arrays::isAssociative()` and `Arrays::concat()`.
 * [Utilities] Added UnbatchingIterator.
-* [Utilities] Added method Json::safeDecode() and changed Json::decode() to correct method with exceptions.
+* [Utilities] Added `Json::safeDecode()` and changed `Json::decode()` to correct method with exceptions.
 
 Bug fixes:
-* [Core] Fixed searching routes with a '@' char.
+* [Core] Fixed searching routes with a `@` character.
 * [ORM] Fixed query parenthesis (issue #239).
-* [ORM] Insert returns int last insert id.
-* [ORM] Fixed EmptyQueryExecutor with fetchIterator method.
-* [Tests] More verbose message when null is passed to Mock::verify() (issue #236).
+* [ORM] Insert returns `id` of the last inserted element as `int`.
+* [ORM] Fixed `EmptyQueryExecutor::fetchIterator()` method.
+* [Tests] More verbose message when `null` is passed to `Mock::verify()` (issue #236).
 * [Utilities] Fixed extracting ArraysAssert.
-* [Utilities] Fixed Arrays::toArray() for empty string, false and zero.
+* [Utilities] Fixed `Arrays::toArray()` for empty string, false and zero.
 
 Release 1.6.0
 --------
 Enhancements:
-* [Core] ControllerFactory use Injector (issue #223).
-* [Core] Added Controller::getRequestHeaders().
+* [Core] ControllerFactory uses Injector (issue #223).
+* [Core] Added `Controller::getRequestHeaders()`.
 * [Core] Added options to PDO.
 * [DI] Added dependency injection support (IoC container).
 * [DI] Injector can inject itself.
 * [DI] Injector config can be modified after injector initialization.
-* [MVC] Layout has now access to view variables.
+* [MVC] `Layout` has now access to `View` variables.
 * [ORM] Added exception handling for invalid query.
 * [ORM] Added BatchInserter.
-* [ORM] Added Restrictions:regex method (issue #213).
-* [Tests] Added verifier - Mock::receivedTimes() (issue #153).
-* [Tests] Handle parameters in ControllerTestCase::get().
-* [Tests] Added chain to Mock::when() (issue #209).
-* [Utilities] Implemented Arrays::contains() method (issue #103).
-* [Utilities] Added Clock::isAfterOrEqualTo() and Clock::isBeforeOrEqualTo().
-* [Utilities] Added multi-byte safe Strings::uppercaseFirst().
+* [ORM] Added `Restrictions:regex()` (issue #213).
+* [Tests] Added verifier - `Mock::receivedTimes()` (issue #153).
+* [Tests] Handle parameters in `ControllerTestCase::get()`.
+* [Tests] Added chain to `Mock::when()` (issue #209).
+* [Utilities] Implemented `Arrays::contains()` (issue #103).
+* [Utilities] Added `Clock::isAfterOrEqualTo()` and `Clock::isBeforeOrEqualTo()`.
+* [Utilities] Added multi-byte safe `Strings::uppercaseFirst()`.
 * [Utilities] Added pseudo localization support.
-* [Utilities] Added Functions::endsWith() method.
-* [Utilities] Added method Strings::removeAccent().
-* [Utilities] Added Strings::substringAfter() method.
-* [Utilities] Added FluentArray::sort() method.
-* [Utilities] Added FluentArray::filterByAllowedKeys() method.
-* [Utilities] Added FluentArray::groupBy() method.
-* [Utilities] Added support for ArrayAssert::extract() method (issue #231).
-* [Utilities] Added methods Functions::inArray() and Functions::notInArray().
+* [Utilities] Added `Functions::endsWith()`.
+* [Utilities] Added `Strings::removeAccent()`.
+* [Utilities] Added `Strings::substringAfter()` .
+* [Utilities] Added `FluentArray::sort()`.
+* [Utilities] Added `FluentArray::filterByAllowedKeys()`.
+* [Utilities] Added `FluentArray::groupBy()`.
+* [Utilities] Added support for `ArrayAssert::extract()` (issue #231).
+* [Utilities] Added `Functions::inArray()` and `Functions::notInArray()`.
 * [Utilities] Refactored Booleans.
-* [Utilities] Added Arrays::shuffle().
+* [Utilities] Added `Arrays::shuffle()`.
 
 Bug fixes:
-* [Core] Fixed json decode to make it compatible with PHP7 (issue #191).
-* [Core] Fixed ForbiddenException - takes errors.
-* [Core] Bootstrap::addConfig() loads everything multiple times on consecutive executions (issue #218).
+* [Core] Fixed `Json::decode` to make it compatible with PHP7 (issue #191).
+* [Core] Fixed `ForbiddenException` - it now takes errors.
+* [Core] `Bootstrap::addConfig()` loads everything multiple times on consecutive executions (issue #218).
 * [Core] Fixed exception when config was not added to Bootstrap.
-* [Core] Fixed render 404 on RouterException.
+* [Core] Fixed render 404 on `RouterException`.
 * [MVC] Fixed major performance issue with routes validation.
 * [ORM] Fixed inserting records with no values (issue #216).
-* [ORM] Fixed method Model::nullifyIfEmpty().
-* [ORM] Handle in batch inserter tables without primary key.
-* [ORM] Fixed BatchInsert with fetched relations (issue #230).
+* [ORM] Fixed method `Model::nullifyIfEmpty()`.
+* [ORM] Handle tables without primary key in `BatchInserter`.
+* [ORM] Fixed `BatchInsert` with fetched relations (issue #230).
 * [Tests] Support for controller tests without configured database.
 * [Tools] Fixed generating models (issue #214).
 * [Tools] Fixed generating `@property` (issue #168).
-* [Utilities] Fixed SkippingIterator so that map function is not applied on skipped elements.
-* [Utilities] Fixed ArrayAssert, so that it does some type checking based on Arrays::contains() behavior (issue #192).
+* [Utilities] Fixed `SkippingIterator` so that `map()` is not applied on skipped elements.
+* [Utilities] Fixed ArrayAssert, so that it does some type checking based on `Arrays::contains()` behavior (issue #192).
 * [Utilities] Fixed cache for nulls.
 * [Utilities] Fixed null handling for Optional.
-* [Utilities] Fixed String::contains() for multi-byte.
-* [Utilities] Added limit (10) to number of requests being kept in Stats (issue #217). 
-* [Utilities] Fixed comparing in Functions::notEqual() and Functions::equal() with type check.
+* [Utilities] Fixed `String::contains()` for multi-byte.
+* [Utilities] Added limit (10) to the number of requests being kept in Stats (issue #217). 
+* [Utilities] Fixed comparing in `Functions::notEqual()` and `Functions::equal()` with type check.
 * [Utilities] Fixed reset JSON on error.
 
 Release 1.5.1
 --------
 Enhancements:
 * [ORM] Added support for subqueries in Query.
-* [Utilities] Added Functions::random().
+* [Utilities] Added `Functions::random()`.
 * [Utilities] Added [Iterators](http://ouzo.readthedocs.org/en/latest/utils/iterators.html) (issue #189). 
 
 Bug fixes:
 * [MVC] Request stats are now logged only when debug is enabled. 
 * [MVC] Added more verbose logging when controller was not found (issue #187).
-* [Utilities] Fixed Arrays::removeNestedKeys().
+* [Utilities] Fixed `Arrays::removeNestedKeys()`.
 
 Release 1.5.0
 --------
 Enhancements:
-* [Utilities] Extended Comparator::compareBy() to support multiple expressions (issue #169).
-* [ORM] Added possibility of using multiple Restrictions in Any::of() for the same key.
-* [Utilities] Added Suppliers::memoizeWithExpiration() that returns supplier which caches the result of function.
 * [Core] Minimal log level can be assigned to a particular class/name in logger configuration.
-* [Core] Added Validatable::validateEmpty() method.
-* [ORM] Extended Restrictions::between() with modes: inclusive, exclusive etc. (issue #176).
-* [ORM] When using DbTransactionTestCase transactions are disabled (issue #178).
+* [Core] Added `Validatable::validateEmpty()` method.
 * [Core] Added support for CSRF token in forms.
-* [Tools] Added method that lists all generated URI helper methods (GeneratedUriHelper::allGeneratedUriNames()). 
-* [Utilities] Implemented Optional class (issue #72).
-* [ORM] Added support for [SELECT ... FOR UPDATE - with ModelQueryBuilder's lockForUpdate method](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#locking).
-* [ORM] Added support for DELETE USING.
 * [MVC] Session is being closed when downloading or streaming file. 
-* [MVC] Added support for UTF-8 characters in routes.
+* [MVC] Added support for `UTF-8` characters in routes.
+* [ORM] Added possibility of using multiple Restrictions in `Any::of()` for the same key.
+* [ORM] Extended `Restrictions::between()` with modes: inclusive, exclusive etc. (issue #176).
+* [ORM] Transactions are disabled when using `DbTransactionTestCase` (issue #178).
+* [ORM] Added support for [SELECT ... FOR UPDATE - with ModelQueryBuilder's lockForUpdate method](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#locking).
+* [ORM] Added support for `DELETE USING`.
+* [Tools] Added method that lists all generated URI helper methods (`GeneratedUriHelper::allGeneratedUriNames()`). 
+* [Utilities] Extended `Comparator::compareBy()` to support multiple expressions (issue #169).
+* [Utilities] Added `Suppliers::memoizeWithExpiration()` that returns supplier which caches the result of function.
+* [Utilities] Implemented Optional class (issue #72).
 
 Bug fixes:
-* [Localization] Fixed I18n::loadLabels() not to load translation file if it was already loaded (issue #173).
+* [Localization] Fixed `I18n::loadLabels()` not to load translation file if it was already loaded (issue #173).
 
 Release 1.4.1
 -------------
 Enhancements:
-* [ORM] New restrictions: isNull and isNotNull.
+* [ORM] New `Restrictions:isNull()` and `Restrictions::isNotNull()`.
 * [ORM] Added EmptyWhereClause class.
-* [Utilities] Objects::getValue() supports arrays now. It means that all functions depending on it (e.g. Functions::extract()) support arrays as well.
 * [ORM] Added switch for model generator to utilize shorthand array syntax (issue #160).
 * [ORM] Added switch for model generator to display output instead of saving file (issue #158).
 * [ORM] Added support for [sorted hasMany relations](http://ouzo.readthedocs.org/en/latest/documentation/orm.html#sorted-hasmany-relation) (issue #171).
-* [Tests] Added ArrayAssert::isEqualTo() method.
+* [Tests] Added `ArrayAssert::isEqualTo()` method.
+* [Utilities] `Objects::getValue()` supports arrays now. It means that all functions depending on it (e.g. `Functions::extract()`) support arrays as well.
 
 Bug fixes:
-* [Utilities] Added [Arrays::mapEntries()](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
-* [ORM] Fixed null parameters in where clause (issue #161).
+* [ORM] Fixed `null` parameters in `WHERE` clause (issue #161).
 * [ORM] Fixed model generator namespace and folder name (issue #149).
-* [Utilities] Added [Arrays::uniqueBy()](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#uniqueby) (issue #159).
-* [Tests] Changed ArrayAssert::hasSize(), so it shows original array when assertion fails (issue #163).
 * [ORM] Fixed insert primaryKey when sequence is empty (issue #174).
-* [Utilities] Fixed Arrays::removeNestedKeys(), so that it can handle null values.
+* [Tests] Changed `ArrayAssert::hasSize()`, so it shows original array when assertion fails (issue #163).
+* [Utilities] Added [Arrays::mapEntries()](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#mapentries) (issue #156).
+* [Utilities] Added [Arrays::uniqueBy()](http://ouzo.readthedocs.org/en/latest/utils/arrays.html#uniqueby) (issue #159).
+* [Utilities] Fixed `Arrays::removeNestedKeys()`, so that it can handle `null` values.
 
 Release 1.4.0
 -------------
 Enhancements:
 * Extracted Ouzo Goodies, which can be used from now on as a separate project.
-* Versioned documentation available at ouzo.readthedocs.org.
-* [ORM] Added Any::of() to produce OR operator (issue #141).
-* [Utilities] Added Strings::substringBefore().
-* [Tests] Added CatchException::get().
+* Versioned documentation available at [ouzo.readthedocs.org](http://ouzo.readthedocs.io/en/latest/).
+* [ORM] Added `Any::of()` to produce `OR` operator (issue #141).
+* [Utilities] Added `Strings::substringBefore()`.
+* [Tests] Added `CatchException::get()`.
 
 Bug fixes:
 * [ORM] Fixed transaction rollback on exception (issue #115).
-* [Tests] Better messages when assertThat::onMethod() fails (issue #128).
+* [Tests] Better messages when `assertThat::onMethod()` fails (issue #128).
 
 Release 1.3
 -----------
@@ -243,7 +243,7 @@ Bug fixes:
 * [Core] Fixed logging of original error messages in error handler.
 * [Utilities] Throw exception if empty extractor is called (issue #97). 
 * [ORM] Fixed Model::__isset so that it works for lazy relations.
-* [Utilities] Arrays::hasNestedKey(): added a flag to treat null as a value (added const `TREAT_NULL_AS_VALUE`).
+* [Utilities] Arrays::hasNestedKey(): added a flag to treat `null` as a value (added const `TREAT_NULL_AS_VALUE`).
 * [Core] Fixed json parsing in Uri class.
 * [ORM] Fixed #100.
 
@@ -305,4 +305,4 @@ Bug fixes:
 * [Utilities] Fixed Arrays::getNestedValue() when pass more keys than are in the array.
 * [Tests] Fixed deleting sample config file in ConfigTest.
 * [ORM] Throw exception if invalid sequence in model (issue #85).
-* [Core] Fixed revert of null properties in config.
+* [Core] Fixed revert of `null` properties in config.
