@@ -9,7 +9,7 @@ use Ouzo\Config;
 
 class ViewRendererFactory
 {
-    public static function create($viewName, $attributes, $allowDebugTooltip = true)
+    public static function create($viewName, $attributes)
     {
         $rendererClass = Config::getValue('renderer', $viewName);
         if ($rendererClass) {
@@ -19,6 +19,6 @@ class ViewRendererFactory
         if ($rendererClass) {
             return new $rendererClass($viewName, $attributes);
         }
-        return new PhtmlRenderer($viewName, $attributes, $allowDebugTooltip);
+        return new PhtmlRenderer($viewName, $attributes);
     }
 }

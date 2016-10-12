@@ -7,7 +7,6 @@ namespace Ouzo\View;
 
 use Exception;
 use Ouzo\ApplicationPaths;
-use Ouzo\Config;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
@@ -19,15 +18,11 @@ class PhtmlRenderer implements ViewRenderer
     private $_attributes;
     private $_viewPath;
 
-    /** @var bool */
-    private $_allowDebugTooltip;
-
-    public function __construct($viewName, array $attributes, $allowDebugTooltip = true)
+    public function __construct($viewName, array $attributes)
     {
         $this->_viewName = $viewName;
         $this->_attributes = $attributes;
         $this->_viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . self::EXTENSION);
-        $this->_allowDebugTooltip = $allowDebugTooltip;
     }
 
     public function render()
@@ -36,9 +31,7 @@ class PhtmlRenderer implements ViewRenderer
         ob_start();
         try {
             $this->_loadViewHelper();
-            $this->_htmlDebugTooltipStart();
             $this->_loadView();
-            $this->_htmlDebugTooltipEnd();
         } catch (Exception $e) {
             ob_end_flush();
             throw $e;
@@ -70,24 +63,5 @@ class PhtmlRenderer implements ViewRenderer
     public function getViewPath()
     {
         return $this->_viewPath;
-    }
-
-    private function _htmlDebugTooltipStart()
-    {
-        if ($this->shouldPrintDebugTooltip()) {
-            echo '<!-- [PARTIAL] ' . $this->_viewName . ' -->';
-        }
-    }
-
-    private function _htmlDebugTooltipEnd()
-    {
-        if ($this->shouldPrintDebugTooltip()) {
-            echo '<!-- [END PARTIAL] ' . $this->_viewName . ' -->';
-        }
-    }
-
-    private function shouldPrintDebugTooltip()
-    {
-        return $this->_allowDebugTooltip && Config::getValue('debug');
     }
 }

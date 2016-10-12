@@ -12,7 +12,6 @@ class PhtmlRendererTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
         Config::overrideProperty('path', 'view')->with('test\src\Ouzo\Core\View');
-        Ouzo\Config::overrideProperty('debug')->with(false);
     }
 
     public function tearDown()
@@ -49,22 +48,5 @@ class PhtmlRendererTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('Hello Jack!', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldRenderDebugHtmlPartialTooltip()
-    {
-        //given
-        Ouzo\Config::overrideProperty('debug')->with(true);
-        $renderer = new PhtmlRenderer('hello', array('name' => 'Jack'));
-
-        //when
-        $result = $renderer->render();
-
-        //then
-        $this->assertEquals('<!-- [PARTIAL] hello -->Hello Jack!<!-- [END PARTIAL] hello -->', $result);
-        Ouzo\Config::revertProperty('debug');
     }
 }

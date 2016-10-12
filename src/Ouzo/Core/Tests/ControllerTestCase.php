@@ -10,7 +10,6 @@ use Ouzo\FrontController;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Json;
 use Ouzo\Utilities\Strings;
 
 class ControllerTestCase extends DbTransactionalTestCase
@@ -169,7 +168,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function getRenderedJsonAsArray()
     {
-        return Json::decode($this->getActualContent(), true);
+        return json_decode($this->getActualContent(), true);
     }
 
     public function assertResponseHeader($expected)
