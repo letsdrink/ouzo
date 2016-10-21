@@ -42,7 +42,7 @@ class Relations
         return isset($this->_relations[$name]);
     }
 
-    private function _addRelation($relation)
+    private function _addRelation(Relation $relation)
     {
         $name = $relation->getName();
         if (isset($this->_relations[$name])) {

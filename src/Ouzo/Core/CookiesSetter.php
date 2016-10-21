@@ -11,7 +11,7 @@ class CookiesSetter
 {
     public function setCookies($cookies)
     {
-        Arrays::map($cookies, function ($cookies) {
+        Arrays::map($cookies, function (array $cookies) {
             setcookie(
                 $cookies['name'],
                 $cookies['value'],

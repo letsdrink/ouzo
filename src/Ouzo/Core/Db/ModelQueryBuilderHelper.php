@@ -11,6 +11,11 @@ use Ouzo\Utilities\Arrays;
 
 class ModelQueryBuilderHelper
 {
+    /**
+     * @param Model $root
+     * @param string|Relation $relationSelector
+     * @return Relation[]
+     */
     public static function extractRelations(Model $root, $relationSelector)
     {
         $relations = array();
@@ -28,7 +33,12 @@ class ModelQueryBuilderHelper
         return $relations;
     }
 
-    public static function associateRelationsWithAliases($relations, $aliases)
+    /**
+     * @param Relation[] $relations
+     * @param string|string[]|null $aliases
+     * @return RelationWithAlias[]
+     */
+    public static function associateRelationsWithAliases(array $relations, $aliases)
     {
         $aliases = Arrays::toArray($aliases);
         if (count($relations) < count($aliases)) {
@@ -43,6 +53,13 @@ class ModelQueryBuilderHelper
         return $relationWithAliases;
     }
 
+    /**
+     * @param $fromTable
+     * @param RelationWithAlias[] $relationWithAliases
+     * @param $type
+     * @param $on
+     * @return ModelJoin[]
+     */
     public static function createModelJoins($fromTable, $relationWithAliases, $type, $on)
     {
         $result = array();
@@ -61,6 +78,4 @@ class ModelQueryBuilderHelper
         }
         return $result;
     }
-
-
 }

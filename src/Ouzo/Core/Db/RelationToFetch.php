@@ -23,9 +23,9 @@ class RelationToFetch
         return $this->relation === $other->relation && $this->field === $other->field && $this->destinationField === $other->destinationField;
     }
 
-    public static function equalsPredicate($other)
+    public static function equalsPredicate(RelationToFetch $other)
     {
-        return function ($relationToFetch) use ($other) {
+        return function (RelationToFetch $relationToFetch) use ($other) {
             return $relationToFetch->equals($other);
         };
     }

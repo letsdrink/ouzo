@@ -7,10 +7,13 @@ namespace Ouzo\Db;
 
 class RelationWithAlias
 {
+    /** @var Relation */
     public $relation;
+
+    /** @var string */
     public $alias;
 
-    public function __construct($relation, $alias)
+    public function __construct(Relation $relation, $alias)
     {
         $this->relation = $relation;
         $this->alias = $alias;
