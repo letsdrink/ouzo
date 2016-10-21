@@ -14,6 +14,7 @@ use Ouzo\Db\QueryExecutor;
 use Ouzo\Db\Relation;
 use Ouzo\Db\RelationFetcher;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
 use PDO;
@@ -104,9 +105,7 @@ class Model extends Validatable
 
     private function filterAttributes($data)
     {
-        return array_filter($this->filterAttributesPreserveNull($data), function ($var) {
-            return !is_null($var);
-        });
+        return Arrays::filter($this->filterAttributesPreserveNull($data), Functions::notNull());
     }
 
     public function attributes()
