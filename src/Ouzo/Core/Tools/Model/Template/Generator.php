@@ -65,7 +65,7 @@ class Generator
     {
         $dialect = DialectFactory::create();
         $dialectShortName = $this->objectShortClassName($dialect);
-        $selfClassPath = $this->thisNamespace($this);
+        $selfClassPath = $this->thisNamespace();
         $generatorDialect = "$selfClassPath\\Dialect\\$dialectShortName";
         if (!class_exists($generatorDialect)) {
             throw new GeneratorException("Model generator for '$dialectShortName' does not exists.");

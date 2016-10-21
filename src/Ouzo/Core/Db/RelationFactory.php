@@ -18,7 +18,7 @@ class RelationFactory
             return self::hasOne($relation, $relationParams, $primaryKeyName);
         }
         if ($relationType == 'belongsTo') {
-            return self::belongsTo($relation, $relationParams, $primaryKeyName);
+            return self::belongsTo($relation, $relationParams);
         }
         if ($relationType == 'hasMany') {
             return self::hasMany($relation, $relationParams, $primaryKeyName);

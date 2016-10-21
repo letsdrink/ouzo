@@ -288,7 +288,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        $this->patch('/restful/12', array());
+        $this->patch('/restful/12');
 
         //then
         $this->assertRenderedContent()->isEqualTo('update=12');
@@ -318,7 +318,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        $this->delete('/restful/12', array());
+        $this->delete('/restful/12');
 
         //then
         $this->assertRenderedContent()->isEqualTo('destroy=12');
@@ -333,7 +333,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        $this->patch('/restful/12', array());
+        $this->patch('/restful/12');
 
         //then
         $this->assertRenderedContent()->isNotEqualTo('destroy=12');
