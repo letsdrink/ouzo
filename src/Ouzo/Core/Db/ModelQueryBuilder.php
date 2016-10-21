@@ -17,18 +17,14 @@ use PDO;
 
 class ModelQueryBuilder
 {
-    /**
-     * @var Db
-     */
+    /** @var Db */
     private $_db;
     private $_model;
-    /**
-     * @var ModelJoin[]
-     */
+
+    /** @var ModelJoin[] */
     private $_joinedModels = array();
-    /**
-     * @var RelationToFetch[]
-     */
+
+    /** @var RelationToFetch[] */
     private $_relationsToFetch = array();
     private $_query;
     private $_selectModel = true;
@@ -176,9 +172,9 @@ class ModelQueryBuilder
     public function deleteEach()
     {
         $objects = $this->fetchAll();
-        return array_map(function ($object) {
+        return Arrays::map($objects, function ($object) {
             return !$object->delete();
-        }, $objects);
+        });
     }
 
     /**

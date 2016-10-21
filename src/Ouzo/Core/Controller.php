@@ -178,9 +178,9 @@ class Controller
     private function wrapAsNotices($messages, $url)
     {
         $array = Arrays::toArray($messages);
-        return array_map(function ($msg) use ($url) {
+        return Arrays::map($array, function ($msg) use ($url) {
             return new Notice($msg, $url);
-        }, $array);
+        });
     }
 
     private function saveMessagesWithEmptyCheck($messages)
