@@ -116,7 +116,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         //given
         $this->_createSampleConfigFile();
         include_once '/tmp/SampleConfigFile.php';
-        $configRepository = Config::registerConfig(new SampleConfigFile);
+        $configRepository = Config::registerConfig(new SampleConfigFile());
         $configRepository->reload();
 
         //when

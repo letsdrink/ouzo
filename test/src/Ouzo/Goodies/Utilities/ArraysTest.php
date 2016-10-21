@@ -824,6 +824,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $array = array('1' => array('2' => array('3' => 'value')));
 
         //when
+        /** @noinspection PhpDeprecationInspection */
         Arrays::removeNestedValue($array, array('1', '2'));
     }
 
