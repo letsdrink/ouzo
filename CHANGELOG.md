@@ -12,6 +12,7 @@ Enhancements:
 * [ORM] Added `Restrictions::isIn()`.
 * [Tests] Added `Assert::that()` (issue #245).
 * [Tests] Added `Assert::thatBool()`.
+* [Utilities] Added `Functions::notNull()`.
 * [Utilities] Added `Arrays::isAssociative()` and `Arrays::concat()`.
 * [Utilities] Added UnbatchingIterator.
 * [Utilities] Added `Json::safeDecode()` and changed `Json::decode()` to correct method with exceptions.

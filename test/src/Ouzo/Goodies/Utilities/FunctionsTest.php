@@ -255,4 +255,22 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertFalse(Functions::call(Functions::equals('value'), 0));
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckNotNull()
+    {
+        //then
+        $this->assertTrue(Functions::call(Functions::notNull(), 1));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckNull()
+    {
+        //then
+        $this->assertFalse(Functions::call(Functions::notNull(), null));
+    }
 }

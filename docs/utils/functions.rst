@@ -172,6 +172,12 @@ Returns a function object (predicate) that returns true if its argument is not b
 
 ----
 
+notNull
+~~~~~~~
+Returns a function object (predicate) that returns true if its argument is not null.
+
+----
+
 removePrefix
 ~~~~~~~~~~~~
 Returns a function object that removes the given prefix from its arguments.
