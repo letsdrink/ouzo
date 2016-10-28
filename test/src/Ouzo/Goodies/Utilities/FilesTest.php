@@ -142,9 +142,8 @@ class FilesTest extends PHPUnit_Framework_TestCase
         $files = Files::getFilesRecursivelyWithSpecifiedExtension(Path::joinWithTemp('test', 'tests_find_files'), 'phtml');
 
         //then
-        Assert::thatArray($files)->hasSize(3)
-            ->contains($file1, $file2, $file3);
         DeleteDirectory::recursive($dirPath);
+        Assert::thatArray($files)->hasSize(3)->contains($file1, $file2, $file3);
     }
 
     public function units()
