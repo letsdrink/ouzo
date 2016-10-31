@@ -32,6 +32,6 @@ class PartialTooltip
 
     private static function isJavaScriptView($viewName)
     {
-        return Strings::endsWith('.js', $viewName) || Strings::endsWith('_js', $viewName);
+        return Strings::endsWith($viewName, '.js') || Strings::endsWith($viewName, '_js');
     }
 }
