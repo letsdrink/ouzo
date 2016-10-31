@@ -5,12 +5,12 @@
  */
 namespace Ouzo;
 
-use Exception;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\ClassName;
 
 class ControllerFactory
 {
+    /** @var array */
     private $controllerNamespaces;
 
     /**
@@ -42,8 +42,4 @@ class ControllerFactory
         $controllerInstance->initialize($routeRule);
         return $controllerInstance;
     }
-}
-
-class ControllerNotFoundException extends Exception
-{
 }

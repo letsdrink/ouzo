@@ -5,10 +5,10 @@
  */
 namespace Ouzo;
 
-use Exception;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\ClassName;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Strings;
 
 class Controller
@@ -155,8 +155,8 @@ class Controller
 
     public function getTab()
     {
-        $noController = str_replace('Controller', '', get_called_class());
-        $noSlashes = str_replace('\\', '', $noController);
+        $noController = Strings::remove(get_called_class(), 'Controller');
+        $noSlashes = Strings::remove($noController, '\\');
         return Strings::camelCaseToUnderscore($noSlashes);
     }
 
@@ -185,10 +185,10 @@ class Controller
 
     private function saveMessagesWithEmptyCheck($messages)
     {
-        if (!$messages) {
-            Session::remove('messages');
-        } else {
+        if ($messages) {
             Session::set('messages', $messages);
+        } else {
+            Session::remove('messages');
         }
     }
 
@@ -206,15 +206,9 @@ class Controller
 
     public function getRequestHeaders()
     {
-        $headers = Arrays::filterByKeys($_SERVER, function ($key) {
-            return substr($key, 0, 5) == 'HTTP_';
-        });
+        $headers = Arrays::filterByKeys($_SERVER, Functions::startsWith('HTTP_'));
         return Arrays::mapKeys($headers, function ($key) {
             return str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
         });
     }
-}
-
-class NoControllerActionException extends Exception
-{
 }
