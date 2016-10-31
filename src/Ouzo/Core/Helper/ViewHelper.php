@@ -6,6 +6,7 @@
 use Ouzo\AutoloadNamespaces;
 use Ouzo\Config;
 use Ouzo\ControllerUrl;
+use Ouzo\Core\Helper\PartialTooltip;
 use Ouzo\I18n;
 use Ouzo\PluralizeOption;
 use Ouzo\Session;
@@ -34,7 +35,7 @@ function renderWidget($widgetName)
 function renderPartial($name, array $values = array())
 {
     $view = new View($name, $values);
-    return $view->render();
+    return PartialTooltip::wrap($view->render(), $name);
 }
 
 function addFile(array $fileInfo = array(), $stringToRemove = '')

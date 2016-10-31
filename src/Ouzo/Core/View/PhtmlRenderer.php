@@ -33,9 +33,7 @@ class PhtmlRenderer implements ViewRenderer
         ob_start();
         try {
             $this->_loadViewHelper();
-            $this->_debugTooltipStart();
             $this->_loadView();
-            $this->_dDebugTooltipEnd();
         } catch (Exception $e) {
             ob_end_flush();
             throw $e;
@@ -67,63 +65,5 @@ class PhtmlRenderer implements ViewRenderer
     public function getViewPath()
     {
         return $this->_viewPath;
-    }
-
-    private function _debugTooltipStart()
-    {
-        if ($this->_isViewJavaScriptFile()) {
-            $this->_jsDebugTooltipStart();
-        }
-        else {
-            $this->_htmlDebugTooltipStart();
-        }
-    }
-
-    private function _dDebugTooltipEnd()
-    {
-        if ($this->_isViewJavaScriptFile()) {
-            $this->_jsDebugTooltipEnd();
-        }
-        else {
-            $this->_htmlDebugTooltipEnd();
-        }
-    }
-
-    private function _isViewJavaScriptFile()
-    {
-        return Strings::endsWith($this->_viewName, '_js.phtml') || Strings::endsWith($this->_viewName, '.js.phtml');
-    }
-
-    private function _jsDebugTooltipStart()
-    {
-        if ($this->shouldPrintDebugTooltip()) {
-            echo '/** [PARTIAL] ' . $this->_viewName . ' */';
-        }
-    }
-
-    private function _jsDebugTooltipEnd()
-    {
-        if ($this->shouldPrintDebugTooltip()) {
-            echo '/** [END PARTIAL] ' . $this->_viewName . ' */';
-        }
-    }
-
-    private function _htmlDebugTooltipStart()
-    {
-        if ($this->shouldPrintDebugTooltip()) {
-            echo '<!-- [PARTIAL] ' . $this->_viewName . ' -->';
-        }
-    }
-
-    private function _htmlDebugTooltipEnd()
-    {
-        if ($this->shouldPrintDebugTooltip()) {
-            echo '<!-- [END PARTIAL] ' . $this->_viewName . ' -->';
-        }
-    }
-
-    private function shouldPrintDebugTooltip()
-    {
-        return Config::getValue('debug');
     }
 }

@@ -9,9 +9,13 @@ use Ouzo\Utilities\Path;
 
 class Layout
 {
+    /** @var View */
     public $view;
 
+    /** @var string */
     private $_renderContent;
+
+    /** @var string */
     private $_layout;
 
     public function __construct(View $view)

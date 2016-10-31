@@ -13,12 +13,16 @@ use Ouzo\View\ViewRendererFactory;
 
 class View
 {
-    /**
-     * @var ViewRenderer
-     */
+    /** @var ViewRenderer */
     private $_renderer;
+
+    /** @var string */
     private $_renderedView;
+
+    /** @var string */
     private $_viewName;
+
+    /** @var array */
     private $_attributes;
 
     public function __construct($viewName, array $attributes = array())
