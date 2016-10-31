@@ -7,17 +7,20 @@ namespace Ouzo\View;
 
 use Exception;
 use Ouzo\ApplicationPaths;
-use Ouzo\Config;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
-use Ouzo\Utilities\Strings;
 
 class PhtmlRenderer implements ViewRenderer
 {
     const EXTENSION = '.phtml';
 
+    /** @var string */
     private $_viewName;
+
+    /** @var array */
     private $_attributes;
+
+    /** @var string */
     private $_viewPath;
 
     public function __construct($viewName, array $attributes)

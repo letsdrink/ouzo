@@ -7,14 +7,18 @@ namespace Ouzo\Db\WhereClause;
 
 
 use Ouzo\Db\Dialect\DialectFactory;
+use Ouzo\Db\Query;
 use Ouzo\Db\QueryBoundValuesExtractor;
 
 class ExistsClause extends WhereClause
 {
+    /** @var Query */
     private $query;
+
+    /** @var bool */
     private $negate;
 
-    public function __construct($query, $negate = false)
+    public function __construct(Query $query, $negate = false)
     {
         $this->query = $query;
         $this->negate = $negate;

@@ -11,9 +11,7 @@ use Ouzo\Utilities\Arrays;
 
 class OrClause extends WhereClause
 {
-    /**
-     * @var WhereClause[]
-     */
+    /** @var WhereClause[] */
     private $conditions;
 
     public function __construct(array $conditions)
@@ -23,28 +21,28 @@ class OrClause extends WhereClause
 
     public function isEmpty()
     {
-        return Arrays::all($this->conditions, function ($where) {
+        return Arrays::all($this->conditions, function (WhereClause $where) {
             return $where->isEmpty();
         });
     }
 
     public function isNeverSatisfied()
     {
-        return Arrays::all($this->conditions, function ($where) {
+        return Arrays::all($this->conditions, function (WhereClause $where) {
             return $where->isNeverSatisfied();
         });
     }
 
     public function toSql()
     {
-        return DialectUtil::joinClauses($this->conditions, 'OR', function ($where) {
+        return DialectUtil::joinClauses($this->conditions, 'OR', function (WhereClause $where) {
             return $where->toSql();
         });
     }
 
     public function getParameters()
     {
-        return Arrays::concat(Arrays::map($this->conditions, function ($where) {
+        return Arrays::concat(Arrays::map($this->conditions, function (WhereClause $where) {
             return $where->getParameters();
         }));
     }

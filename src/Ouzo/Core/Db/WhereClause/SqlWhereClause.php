@@ -10,7 +10,10 @@ use Ouzo\Utilities\Strings;
 
 class SqlWhereClause extends WhereClause
 {
+    /** @var string */
     private $sql;
+
+    /** @var array */
     private $values;
 
     public function __construct($sql, $parameters = array())

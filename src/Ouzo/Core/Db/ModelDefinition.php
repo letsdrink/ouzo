@@ -13,18 +13,17 @@ use ReflectionClass;
 
 class ModelDefinition
 {
-    /**
-     * @var Db
-     */
+    /** @var Db */
     public $db;
+
     public $table;
     public $sequence;
     public $primaryKey;
     public $fields;
-    /**
-     * @var Relations
-     */
+
+    /** @var Relations */
     public $relations;
+
     public $afterSaveCallbacks = array();
     public $beforeSaveCallbacks = array();
     public $defaults = array();

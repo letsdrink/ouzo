@@ -15,6 +15,8 @@ class ArrayWhereClause extends WhereClause
 {
     private $where;
     private $values;
+
+    /** @var string */
     private $operator;
 
     public function __construct($where, $operator = 'AND')
@@ -80,7 +82,7 @@ class ArrayWhereClause extends WhereClause
         $useRestrictions = Arrays::any($array, Functions::isInstanceOf('\Ouzo\Restriction\Restriction'));
 
         if ($useRestrictions) {
-            return DialectUtil::joinClauses($array, 'OR', function ($restriction) use ($column) {
+            return DialectUtil::joinClauses($array, 'OR', function (Restriction $restriction) use ($column) {
                 return $restriction->toSql($column);
             });
         }

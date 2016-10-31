@@ -7,11 +7,13 @@ namespace Ouzo\Helper;
 
 use Ouzo\Csrf\CsrfProtector;
 use Ouzo\I18n;
+use Ouzo\Model;
 use Ouzo\Utilities\Joiner;
 use Ouzo\Utilities\Strings;
 
 class ModelFormBuilder
 {
+    /** @var Model */
     private $_object;
 
     public function __construct($object)

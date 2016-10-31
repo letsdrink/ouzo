@@ -23,7 +23,7 @@ abstract class WhereClause
 
     public static function isNotEmptyFunction()
     {
-        return function ($whereClause) {
+        return function (WhereClause $whereClause) {
             return !$whereClause->isEmpty();
         };
     }

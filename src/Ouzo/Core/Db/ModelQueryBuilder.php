@@ -19,6 +19,8 @@ class ModelQueryBuilder
 {
     /** @var Db */
     private $_db;
+
+    /** @var Model */
     private $_model;
 
     /** @var ModelJoin[] */
@@ -26,10 +28,14 @@ class ModelQueryBuilder
 
     /** @var RelationToFetch[] */
     private $_relationsToFetch = array();
+
+    /** @var Query */
     private $_query;
+
+    /** @var bool */
     private $_selectModel = true;
 
-    public function __construct(Model $model, $db = null, $alias = null)
+    public function __construct(Model $model, Db $db = null, $alias = null)
     {
         $this->_db = $db ? $db : Db::getInstance();
         $this->_model = $model;

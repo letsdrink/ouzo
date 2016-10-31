@@ -22,27 +22,29 @@ use ReflectionClass;
 
 class Model extends Validatable
 {
-    /**
-     * @var ModelDefinition
-     */
+    /** @var ModelDefinition */
     private $_modelDefinition;
+
+    /** @var array */
     private $_attributes;
+
+    /** @var array */
     private $_modifiedFields = array();
 
     /**
      * Creates a new model object.
      * Accepted parameters:
      * @param array $params {
-     *     @var string $table      defaults to pluralized class name. E.g. customer_orders for CustomerOrder
-     *     @var string $primaryKey defaults to id
-     *     @var string $sequence   defaults to table_primaryKey_seq
-     *     @var string $hasMany    specification of a has-many relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
-     *     @var string $hasOne     specification of a has-one relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
-     *     @var string $belongsTo  specification of a belongs-to relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
-     *     @var string $fields     mapped column names
-     *     @var string $attributes array of column => value
-     *     @var string $beforeSave function to invoke before insert or update
-     *     @var string $afterSave  function to invoke after insert or update
+     * @var string $table defaults to pluralized class name. E.g. customer_orders for CustomerOrder
+     * @var string $primaryKey defaults to id
+     * @var string $sequence defaults to table_primaryKey_seq
+     * @var string $hasMany specification of a has-many relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+     * @var string $hasOne specification of a has-one relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+     * @var string $belongsTo specification of a belongs-to relation e.g. array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))
+     * @var string $fields mapped column names
+     * @var string $attributes array of column => value
+     * @var string $beforeSave function to invoke before insert or update
+     * @var string $afterSave function to invoke after insert or update
      * }
      */
     public function __construct(array $params)
@@ -243,10 +245,10 @@ class Model extends Validatable
             throw new DbException('Primary key is not defined for table ' . $this->_modelDefinition->table);
         }
         $result = $this->_findByIdOrNull($value);
-        if (!$result) {
-            throw new DbException($this->_modelDefinition->table . " with " . $this->_modelDefinition->primaryKey . "=" . $value . " not found");
+        if ($result) {
+            return $result;
         }
-        return $result;
+        throw new DbException($this->_modelDefinition->table . " with " . $this->_modelDefinition->primaryKey . "=" . $value . " not found");
     }
 
     /**
@@ -468,11 +470,11 @@ class Model extends Validatable
     public static function create(array $attributes = array())
     {
         $instance = static::newInstance($attributes);
-        if (!$instance->isValid()) {
-            throw new ValidationException("Validation has failed for object: " . $instance->inspect(), $instance->getErrors());
+        if ($instance->isValid()) {
+            $instance->insert();
+            return $instance;
         }
-        $instance->insert();
-        return $instance;
+        throw new ValidationException("Validation has failed for object: " . $instance->inspect(), $instance->getErrors());
     }
 
     /**
