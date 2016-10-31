@@ -6,7 +6,7 @@
 use Ouzo\AutoloadNamespaces;
 use Ouzo\Config;
 use Ouzo\ControllerUrl;
-use Ouzo\Core\Helper\PartialTooltip;
+use Ouzo\Helper\PartialTooltip;
 use Ouzo\I18n;
 use Ouzo\PluralizeOption;
 use Ouzo\Session;

@@ -1,5 +1,5 @@
 <?php
-namespace Ouzo\Core\Helper;
+namespace Ouzo\Helper;
 
 
 use Ouzo\Config;
