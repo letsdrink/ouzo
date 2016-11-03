@@ -11,6 +11,7 @@ Enhancements:
 * [ORM] Added `ModelQueryBuilder::fetchIterator()` (issue #242).
 * [ORM] Added `Restrictions::isIn()`.
 * [Tests] Added `Assert::that()` (issue #245).
+* [Tests] Added `Assert::thatBool()`.
 * [Tests] Added `Assert::thatArray()->keys()`.
 * [Utilities] Added `Functions::notNull()`.
 * [Utilities] Added `Arrays::isAssociative()` and `Arrays::concat()`.
