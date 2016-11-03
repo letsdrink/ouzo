@@ -217,14 +217,15 @@ Assertions
 * ``containsOnly($element ..)`` - vararg elements to examine that array contains **only** them
 * ``containsExactly($element ..)`` - vararg elements to examine that array contain **exactly** elements in pass order
 * ``hasSize($expectedSize)`` - check size of the array
-* ``isNotNull()`` - check the array is not null
-* ``isEmpty()`` - check the array is empty
-* ``isNotEmpty()`` - check the array is not empty
+* ``isNotNull()`` - checks if array is not null
+* ``isEmpty()`` - checks if array is empty
+* ``isNotEmpty()`` - checks if array is not empty
 * ``containsKeyAndValue($elements)``
-* ``containsSequence($element ..)`` - check that vararg sequence is exists in the array
+* ``containsSequence($element ..)`` - checks if vararg sequence exists in the array
 * ``excludes($element ..)``
 * ``hasEqualKeysRecursively(array $array)``
 * ``isEqualTo($array)``
+* ``keys()`` - next assertions will be against array keys, not values
 
 ----
 

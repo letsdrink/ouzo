@@ -424,6 +424,18 @@ class ArrayAssertTest extends PHPUnit_Framework_TestCase
         Assert::thatArray($photos)->extracting('_data')->contains('d1', 'd2');
     }
 
+    /**
+     * @test
+     */
+    public function shouldAssertUsingKeys()
+    {
+        // given
+        $actual = array('14' => true, '15' => true);
+
+        // when
+        Assert::thatArray($actual)->keys()->contains('14', '15');
+    }
+
     private function _assertNot()
     {
         $args = func_get_args();
