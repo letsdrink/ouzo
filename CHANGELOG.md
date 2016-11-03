@@ -26,6 +26,7 @@ Bug fixes:
 * [Tests] More verbose message when `null` is passed to `Mock::verify()` (issue #236).
 * [Utilities] Fixed extracting ArraysAssert.
 * [Utilities] Fixed `Arrays::toArray()` for empty string, false and zero.
+* [Utilities] Fixed `Strings::remove()` when given falsy argument (like `'0'`).
 
 Release 1.6.0
 --------
