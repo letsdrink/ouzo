@@ -256,7 +256,7 @@ class Model extends Validatable
      */
     public function inspect()
     {
-        return get_called_class() . "\n" . print_r($this->attributes(), true);
+        return get_called_class() . Objects::toString(Arrays::filter($this->_attributes, Functions::notNull()));
     }
 
     public function getModelName()

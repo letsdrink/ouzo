@@ -472,7 +472,7 @@ class ModelTest extends DbTransactionalTestCase
         $string = $product->inspect();
 
         //then
-        $this->assertStringStartsWith('Application\Model\Test\Product', $string);
+        Assert::thatString($string)->isEqualTo('Application\Model\Test\Product[<name> => "Sport", <id> => ' . $product->id . ']');
     }
 
     /**
