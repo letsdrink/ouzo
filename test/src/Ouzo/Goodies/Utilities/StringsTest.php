@@ -725,4 +725,34 @@ class StringsTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('Łukasz', $uppercaseFirst);
     }
+
+    /**
+     * @test
+     */
+    public function shouldStartWithSecondIntegerParam()
+    {
+        //given
+        $string = "48123";
+
+        //when
+        $startsWith = Strings::startsWith($string, 48);
+
+        //then
+        $this->assertTrue($startsWith);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldEndWithSecondIntegerParam()
+    {
+        //given
+        $string = "1231";
+
+        //when
+        $endsWith = Strings::endsWith($string, 1);
+
+        //then
+        $this->assertTrue($endsWith);
+    }
 }
