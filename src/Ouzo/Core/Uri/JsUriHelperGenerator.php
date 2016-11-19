@@ -59,9 +59,12 @@ FUNCTION;
 
     function applicationHttpPath()
     {
-        $systemPrefix = $this->addEndingSlash(Config::getValue("global", "prefix_system"));
+        $systemPrefix = Config::getValue("global", "prefix_system");
         $applicationPrefix = Config::getValue("global", "prefix_application");
-        return $this->addEndingSlash("$systemPrefix$applicationPrefix");
+        if ($applicationPrefix) {
+            $systemPrefix = $this->addEndingSlash($systemPrefix);
+        }
+        return $systemPrefix . $applicationPrefix;
     }
 
     private function addEndingSlash($path)

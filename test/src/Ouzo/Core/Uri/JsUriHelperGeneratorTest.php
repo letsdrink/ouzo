@@ -20,7 +20,7 @@ class JsUriHelperGeneratorTest extends \PHPUnit_Framework_TestCase
         $path = $jsGenerator->applicationHttpPath();
 
         //then
-        $this->assertEquals("/root/", $path);
+        $this->assertEquals("/root", $path);
         Config::revertProperty("global", "prefix_system");
     }
 
@@ -38,7 +38,7 @@ class JsUriHelperGeneratorTest extends \PHPUnit_Framework_TestCase
         $path = $jsGenerator->applicationHttpPath();
 
         //then
-        $this->assertEquals("/root/application_root/", $path);
+        $this->assertEquals("/root/application_root", $path);
         Config::revertProperty("global", "prefix_system");
         Config::revertProperty("global", "prefix_application");
     }
