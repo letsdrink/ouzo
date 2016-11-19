@@ -8,6 +8,7 @@ namespace Command;
 use Ouzo\ApplicationPaths;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
+use Ouzo\Uri\JsUriHelperGenerator;
 use Ouzo\Uri\UriHelperGenerator;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Path;
@@ -31,24 +32,64 @@ class RoutesCommand extends Command
     {
         $this->setName('ouzo:routes')
             ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL)
-            ->addOption('generate', 'g', InputOption::VALUE_NONE);
+            ->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'Path for JS helper generated file', Path::join(ROOT_PATH, 'public'))
+            ->addOption('generate-all', 'a', InputOption::VALUE_NONE)
+            ->addOption('generate-php', 'g', InputOption::VALUE_NONE)
+            ->addOption('generate-js', 'j', InputOption::VALUE_NONE);
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->_input = $input;
         $this->_output = $output;
+        $generateOptionFunctionMap = array(
+            "generate-php" => "generatePhpHelper",
+            "generate-js" => "generateJsHelper",
+            "generate-all" => "generateAllHelpers",
+        );
+        $selectedOptions = array_filter($input->getOptions());
+        $selectedGeneratedOptions = array_intersect(array_keys($selectedOptions), array_keys($generateOptionFunctionMap));
 
-        if ($input->getOption('generate')) {
-            $path = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'GeneratedUriHelper.php');
-            UriHelperGenerator::generate()->saveToFile($path);
-            $output->writeln('File with uri helpers is generated in ' . $path);
+        if (sizeof($selectedGeneratedOptions)) {
+            $this->runSelectedGenerators($selectedGeneratedOptions, $generateOptionFunctionMap);
         } else {
             if ($input->getOption('controller')) {
                 $this->controller();
             } else {
                 $this->all();
             }
+        }
+    }
+
+    private function runSelectedGenerators($selectedGeneratedOptions, $generateOptionFunctionMap)
+    {
+        foreach ($generateOptionFunctionMap as $optionName => $functionName) {
+            if (in_array($optionName, $selectedGeneratedOptions)) {
+                call_user_func([$this, $functionName]);
+            }
+        }
+    }
+
+    public function generateAllHelpers()
+    {
+        $this->generatePhpHelper();
+        $this->generateJsHelper();
+    }
+
+    private function generatePhpHelper()
+    {
+        $routesPhpHelperPath = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'GeneratedUriHelper.php');
+        if (UriHelperGenerator::generate()->saveToFile($routesPhpHelperPath) !== false) {
+            $this->_output->writeln("File with PHP uri helpers is generated in <info>$routesPhpHelperPath</info>");
+        }
+    }
+
+    private function generateJsHelper()
+    {
+        $routesJSHelperPath = $this->_input->getOption('path');
+        $routesJSHelperPath = Path::join($routesJSHelperPath, 'generated_uri_helper.js');
+        if (JsUriHelperGenerator::generate()->saveToFile($routesJSHelperPath) !== false) {
+            $this->_output->writeln("File with JS uri helpers is generated in <info>$routesJSHelperPath</info>");
         }
     }
 
