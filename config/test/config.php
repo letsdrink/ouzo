@@ -22,7 +22,6 @@ if ($db == 'mysql') {
 $config['db']['dbname'] = 'ouzo_test';
 
 $config['global']['prefix_system'] = '';
-$config['global']['prefix_application'] = '';
 $config['global']['suffix_cache'] = '1234';
 $config['default']['auth'] = 'Database';
 $config['debug'] = true;

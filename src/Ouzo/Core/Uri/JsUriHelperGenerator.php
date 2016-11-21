@@ -5,7 +5,6 @@ use Ouzo\Config;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Strings;
 
 class JsUriHelperGenerator
 {
@@ -41,7 +40,7 @@ class JsUriHelperGenerator
 
     private function createFunction(RouteRule $routeRule)
     {
-        $url = $this->applicationHttpPath();
+        $applicationPrefix = Config::getValue("global", "prefix_system");
         $name = $routeRule->getName();
         $uri = $routeRule->getUri();
         $uriWithVariables = preg_replace('/:(\w+)/', '" + $1 + "', $uri);
@@ -51,28 +50,10 @@ class JsUriHelperGenerator
 
         $function = <<<FUNCTION
 function $name($parametersString) {
-{$checkParametersStatement}return "{$url}{$uriWithVariables}";
+{$checkParametersStatement}return "$applicationPrefix$uriWithVariables";
 }\n\n
 FUNCTION;
         return $name ? $function : '';
-    }
-
-    function applicationHttpPath()
-    {
-        $systemPrefix = Config::getValue("global", "prefix_system");
-        $applicationPrefix = Config::getValue("global", "prefix_application");
-        if ($applicationPrefix) {
-            $systemPrefix = $this->addEndingSlash($systemPrefix);
-        }
-        return $systemPrefix . $applicationPrefix;
-    }
-
-    private function addEndingSlash($path)
-    {
-        if (Strings::endsWith($path, '/')) {
-            return $path;
-        }
-        return $path . '/';
     }
 
     private function prepareParameters($uri)
