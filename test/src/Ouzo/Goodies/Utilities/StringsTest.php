@@ -772,4 +772,20 @@ class StringsTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue(Strings::endsWith("48123", ""));
     }
+
+    /**
+     * @test
+     */
+    public function shouldNullNotStartWithString()
+    {
+        $this->assertFalse(Strings::startsWith(null, "48123"));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNullNotEndWithString()
+    {
+        $this->assertFalse(Strings::endsWith(null, "48123"));
+    }
 }
