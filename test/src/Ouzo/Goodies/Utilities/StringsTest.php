@@ -43,13 +43,13 @@ class StringsTest extends PHPUnit_Framework_TestCase
     public function shouldConvertCamelCaseToUnderscore()
     {
         //given
-        $string = 'LannistersAlwaysPayTheirDebts';
+        $string = 'LannistersĄlwaysPayTheirDebtsĘlephant';
 
         //when
         $underscored = Strings::camelCaseToUnderscore($string);
 
         //then
-        $this->assertEquals('lannisters_always_pay_their_debts', $underscored);
+        $this->assertEquals('lannisters_ąlways_pay_their_debts_ęlephant', $underscored);
     }
 
     /**
