@@ -142,7 +142,7 @@ FUNCT;
     public function shouldGenerateUriHelperForCustomRouteName()
     {
         //given
-        Route::get('/users/show_item', 'users#show_item', ['as' => 'user_item']);
+        Route::get('/users/show_item', 'users#show_item', array('as' => 'user_item'));
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();
