@@ -28,7 +28,7 @@ class JsUriHelperGenerator
 
     private function generateFunctions()
     {
-        $namesAlreadyGenerated = [];
+        $namesAlreadyGenerated = array();
         foreach ($this->routeRules as $routeRule) {
             $name = $routeRule->getName();
             if (!in_array($name, $namesAlreadyGenerated)) {
@@ -59,7 +59,7 @@ FUNCTION;
     private function prepareParameters($uri)
     {
         preg_match_all('#:(\w+)#', $uri, $matches);
-        return Arrays::getValue($matches, 1, []);
+        return Arrays::getValue($matches, 1, array());
     }
 
     private function createCheckParameters($parameters)
