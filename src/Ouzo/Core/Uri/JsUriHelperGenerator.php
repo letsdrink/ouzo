@@ -65,10 +65,11 @@ FUNCTION;
     private function createCheckParameters($parameters)
     {
         if ($parameters) {
-            $checkFunctionParameters = Arrays::map($parameters, function ($element) {
-                return self::INDENT . "checkParameter($element);";
+            $indent = self::INDENT;
+            $checkFunctionParameters = Arrays::map($parameters, function ($element) use ($indent) {
+                return $indent . "checkParameter($element);";
             });
-            return implode("\n", $checkFunctionParameters) . "\n" . self::INDENT;
+            return implode("\n", $checkFunctionParameters) . "\n" . $indent;
         }
         return self::INDENT;
     }
