@@ -28,6 +28,7 @@ Bug fixes:
 * [Utilities] Fixed extracting ArraysAssert.
 * [Utilities] Fixed `Arrays::toArray()` for empty string, false and zero.
 * [Utilities] Fixed `Strings::remove()` when given falsy argument (like `'0'`).
+* [Utilities] Removed `$encoding` parameter from `Strings::uppercaseFirst()`.
 
 Release 1.6.0
 --------
