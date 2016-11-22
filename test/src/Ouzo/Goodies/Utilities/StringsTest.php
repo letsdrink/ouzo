@@ -341,7 +341,6 @@ class StringsTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($modified, 'Khal Drogo');
     }
 
-
     /**
      * @test
      */
@@ -731,14 +730,7 @@ class StringsTest extends PHPUnit_Framework_TestCase
      */
     public function shouldStartWithSecondIntegerParam()
     {
-        //given
-        $string = "48123";
-
-        //when
-        $startsWith = Strings::startsWith($string, 48);
-
-        //then
-        $this->assertTrue($startsWith);
+        $this->assertTrue(Strings::startsWith("48123", 48));
     }
 
     /**
@@ -746,13 +738,38 @@ class StringsTest extends PHPUnit_Framework_TestCase
      */
     public function shouldEndWithSecondIntegerParam()
     {
-        //given
-        $string = "1231";
+        $this->assertTrue(Strings::endsWith("1231", 31));
+    }
 
-        //when
-        $endsWith = Strings::endsWith($string, 1);
+    /**
+     * @test
+     */
+    public function shouldNotStartWithNull()
+    {
+        $this->assertFalse(Strings::startsWith("48123", null));
+    }
 
-        //then
-        $this->assertTrue($endsWith);
+    /**
+     * @test
+     */
+    public function shouldNotEndWithNull()
+    {
+        $this->assertFalse(Strings::endsWith("48123", null));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldStartWithEmptyString()
+    {
+        $this->assertTrue(Strings::startsWith("48123", ""));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldEndWithEmptyString()
+    {
+        $this->assertTrue(Strings::endsWith("48123", ""));
     }
 }
