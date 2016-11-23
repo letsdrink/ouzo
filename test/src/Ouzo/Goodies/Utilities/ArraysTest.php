@@ -167,6 +167,36 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldGetFirstKeyInteger()
+    {
+        //given
+        $array = array(3 => 'bar', 4 => 'example');
+
+        //when
+        $first = Arrays::first($array);
+
+        // then
+        Assert::thatString($first)->isEqualTo('bar');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetFirstKeyString()
+    {
+        //given
+        $array = array('foo' => 'bar', 2 => 'example');
+
+        //when
+        $first = Arrays::first($array);
+
+        // then
+        Assert::thatString($first)->isEqualTo('bar');
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnNullIfNotFoundFirstElement()
     {
         //given
