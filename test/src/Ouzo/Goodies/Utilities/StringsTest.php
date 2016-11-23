@@ -698,6 +698,21 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldReturnInputStringReplaceNthStringWhenNoSearchFound()
+    {
+        //given
+        $subject = 'name = ? AND description =    ?';
+
+        //when
+        $replaceNth = Strings::replaceNth($subject, 'not there', 'IS NULL', 1);
+
+        //then
+        $this->assertEquals($subject, $replaceNth);
+    }
+
+    /**
+     * @test
+     */
     public function shouldRemoveAccents()
     {
         //given
