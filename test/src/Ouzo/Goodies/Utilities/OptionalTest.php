@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\FluentFunctions;
 use Ouzo\Utilities\Optional;
@@ -46,7 +47,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $present = $optional->isPresent();
 
         //then
-        $this->assertTrue($present);
+        Assert::thatBool($present)->isTrue();
     }
 
     /**
@@ -61,7 +62,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->myMethod();
 
         //then
-        $this->assertInstanceOf('\Ouzo\Utilities\Optional', $result);
+        Assert::that($result)->isInstanceOf('\Ouzo\Utilities\Optional');
     }
 
     /**
@@ -106,8 +107,8 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->unknownMethod();
 
         //then
-        $this->assertInstanceOf('\Ouzo\Utilities\Optional', $result);
-        $this->assertNull($result->orNull());
+        Assert::that($result)->isInstanceOf('\Ouzo\Utilities\Optional');
+        Assert::that($result->orNull())->isNull();
     }
 
     /**
@@ -194,12 +195,12 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $optional = Optional::of(new stdClass());
 
         //then
-        $this->assertInstanceOf('\Ouzo\Utilities\Optional', $optional);
+        Assert::that($optional)->isInstanceOf('\Ouzo\Utilities\Optional');
     }
 
     /**
-     * @expectedException InvalidArgumentException
      * @test
+     * @expectedException InvalidArgumentException
      */
     public function ofShouldThrowExceptionOnNull()
     {
@@ -218,7 +219,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->myField;
 
         //then
-        $this->assertInstanceOf('\Ouzo\Utilities\Optional', $result);
+        Assert::that($result)->isInstanceOf('\Ouzo\Utilities\Optional');
     }
 
     /**
@@ -233,7 +234,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->unknownField;
 
         //then
-        $this->assertInstanceOf('\Ouzo\Utilities\Optional', $result);
+        Assert::that($result)->isInstanceOf('\Ouzo\Utilities\Optional');
     }
 
     /**
@@ -310,6 +311,6 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->flatten()->orNull();
 
         //then
-        $this->assertNull($result);
+        Assert::that($result)->isNull();
     }
 }
