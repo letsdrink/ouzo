@@ -728,6 +728,21 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldPreserveCaseInRestOfString()
+    {
+        //given
+        $string = "łuKaSz";
+
+        //when
+        $uppercaseFirst = Strings::uppercaseFirst($string);
+
+        //then
+        $this->assertEquals('ŁuKaSz', $uppercaseFirst);
+    }
+
+    /**
+     * @test
+     */
     public function shouldStartWithSecondIntegerParam()
     {
         $this->assertTrue(Strings::startsWith("48123", 48));
