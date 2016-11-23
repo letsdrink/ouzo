@@ -788,4 +788,20 @@ class StringsTest extends PHPUnit_Framework_TestCase
     {
         $this->assertFalse(Strings::endsWith(null, "48123"));
     }
+
+    /**
+     * @test
+     */
+    public function shouldIntegerStartWithInteger()
+    {
+        $this->assertTrue(Strings::startsWith(48123, 48));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldIntegerEndWithInteger()
+    {
+        $this->assertTrue(Strings::endsWith(1231, 31));
+    }
 }
