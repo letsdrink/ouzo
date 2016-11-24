@@ -539,6 +539,42 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('john.doe@foo.bar', $parameters['email']);
     }
 
+    /**
+     * @test
+     */
+    public function shouldParseParameterWithPercentChar()
+    {
+        //given
+        Route::get("/cabinets/:color/:order_id", "SummaryOrderedCorpuses#index");
+        $router = $this->_createRouter('GET', '/cabinets/Bia%C5%82y%20101/18');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $parameters = $rule->getParameters();
+        $this->assertEquals('Bia%C5%82y%20101', $parameters['color']);
+        $this->assertEquals('18', $parameters['order_id']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldParseParameterWithSpace()
+    {
+        //given
+        Route::get("/cabinets/:color/:order_id", "SummaryOrderedCorpuses#index");
+        $router = $this->_createRouter('GET', '/cabinets/Biały 101/18');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $parameters = $rule->getParameters();
+        $this->assertEquals('Biały 101', $parameters['color']);
+        $this->assertEquals('18', $parameters['order_id']);
+    }
+
     public function requestMethods()
     {
         return array(
