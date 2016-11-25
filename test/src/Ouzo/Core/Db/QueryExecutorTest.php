@@ -65,6 +65,40 @@ class QueryExecutorTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldReturnEmptyQueryExecutorForLimitZero()
+    {
+        //given
+        $query = Query::select()->from('table_name')->where(array('column' => 'first'))->limit(0);
+
+        //when
+        $executor = QueryExecutor::prepare(Db::getInstance(), $query);
+
+        //then
+        $this->assertTrue($executor instanceof EmptyQueryExecutor);
+
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotAddOffsetZero()
+    {
+        //given
+        $query = Query::select()->from('table_name')->where(array('column' => 'first'))->offset(0);
+
+        $executor = QueryExecutor::prepare(Db::getInstance(), $query);
+
+        //when
+        $executor->_buildQuery();
+
+        //then
+        $this->assertEquals('SELECT * FROM table_name WHERE column = ?', $executor->getSql());
+        $this->assertEquals(array("first"), $executor->getBoundValues());
+    }
+
+    /**
+     * @test
+     */
     public function shouldGenerateSqlForSubQueries()
     {
         //given

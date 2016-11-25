@@ -51,7 +51,7 @@ class QueryExecutor
             throw new InvalidArgumentException("Table name cannot be empty");
         }
 
-        if (self::isEmptyResult($query->whereClauses)) {
+        if (self::isEmptyResult($query)) {
             return new EmptyQueryExecutor();
         }
         return new QueryExecutor($db, $query);
@@ -118,7 +118,12 @@ class QueryExecutor
         $this->_sql = $this->_adapter->buildQuery($this->_query);
     }
 
-    private static function isEmptyResult($whereClauses)
+    private static function isEmptyResult($query)
+    {
+        return $query->limit === 0 || self::whereClauseNeverSatisfied($query->whereClauses);
+    }
+
+    private static function whereClauseNeverSatisfied($whereClauses)
     {
         return Arrays::any($whereClauses, function (WhereClause $whereClause) {
             return $whereClause->isNeverSatisfied();

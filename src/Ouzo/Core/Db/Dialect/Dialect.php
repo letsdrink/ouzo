@@ -108,7 +108,7 @@ abstract class Dialect
 
     public function limit()
     {
-        if ($this->_query->limit) {
+        if ($this->_query->limit !== null) {
             return ' LIMIT ?';
         }
         return '';

@@ -37,7 +37,7 @@ class QueryBoundValuesExtractor
         foreach ($query->whereClauses as $whereClause) {
             $this->_addBindValuesFromWhereClause($whereClause);
         }
-        if ($query->limit) {
+        if ($query->limit !== null) {
             $this->_addBindValue($query->limit);
         }
         if ($query->offset) {
