@@ -424,7 +424,7 @@ class Model extends Validatable
      * @param int $offset
      * @return Model[]
      */
-    public static function find($where, $whereValues, $orderBy = array(), $limit = 0, $offset = 0)
+    public static function find($where, $whereValues, $orderBy = array(), $limit = null, $offset = null)
     {
         return static::metaInstance()->where($where, $whereValues)->order($orderBy)->limit($limit)->offset($offset)->fetchAll();
     }
