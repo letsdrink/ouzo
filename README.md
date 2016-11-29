@@ -1,6 +1,6 @@
 ![Ouzo Framework](http://ouzoframework.org/img/logo.png)
 
-Ouzo is a PHP MVC framework with built-in ORM and util libraries. PHP 5.3 or later is required.
+Ouzo is a PHP MVC framework with built-in ORM and util libraries. PHP 5.3.10 or later is required.
 
 [![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
 [![Documentation Status](https://readthedocs.org/projects/ouzo/badge/?version=latest)](https://readthedocs.org/projects/ouzo/?badge=latest)
