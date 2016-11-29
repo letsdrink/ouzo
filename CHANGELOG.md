@@ -15,7 +15,7 @@ Enhancements:
 * [Tests] Added `Assert::thatArray()->keys()`.
 * [Utilities] Added `Functions::notNull()`.
 * [Utilities] Added `Arrays::isAssociative()` and `Arrays::concat()`.
-* [Utilities] Added UnbatchingIterator.
+* [Utilities] Added `UnbatchingIterator`.
 * [Utilities] Added `Json::safeDecode()` and changed `Json::decode()` to correct method with exceptions.
 * [Utilities] You can now read URL parameters as controllers' method arguments (issue #244).
 * [Debug] After `renderPartial()`, you can now find `PARTIAL` and `END PARTIAL` HTML comments along with partial name.
@@ -79,7 +79,7 @@ Bug fixes:
 * [Utilities] Fixed `SkippingIterator` so that `map()` is not applied on skipped elements.
 * [Utilities] Fixed ArrayAssert, so that it does some type checking based on `Arrays::contains()` behavior (issue #192).
 * [Utilities] Fixed cache for nulls.
-* [Utilities] Fixed null handling for Optional.
+* [Utilities] Fixed null handling for `Optional`.
 * [Utilities] Fixed `String::contains()` for multi-byte.
 * [Utilities] Added limit (10) to the number of requests being kept in Stats (issue #217). 
 * [Utilities] Fixed comparing in `Functions::notEqual()` and `Functions::equal()` with type check.

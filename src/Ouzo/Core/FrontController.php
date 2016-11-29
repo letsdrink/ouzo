@@ -17,8 +17,11 @@ class FrontController
     public static $requestId;
 
     private $defaults;
+    /** @var string */
     private $currentAction;
+    /** @var string */
     private $currentController;
+    /** @var Controller */
     private $currentControllerObject;
 
     /**
