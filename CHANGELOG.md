@@ -17,6 +17,7 @@ Enhancements:
 * [Utilities] Added `Arrays::isAssociative()` and `Arrays::concat()`.
 * [Utilities] Added UnbatchingIterator.
 * [Utilities] Added `Json::safeDecode()` and changed `Json::decode()` to correct method with exceptions.
+* [Utilities] You can now read URL parameters as controllers' method arguments (issue #244).
 * [Debug] After `renderPartial()`, you can now find `PARTIAL` and `END PARTIAL` HTML comments along with partial name.
 
 Bug fixes:
