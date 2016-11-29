@@ -83,6 +83,12 @@ class SimpleTestController extends Controller
         $this->layout->renderAjax('ONLY OUTPUT');
         $this->layout->unsetLayout();
     }
+
+    public function receive_params($user, $page)
+    {
+        $this->layout->renderAjax("Param1: $user Param2: $page");
+        $this->layout->unsetLayout();
+    }
 }
 
 class ControllerTest extends ControllerTestCase
@@ -167,6 +173,21 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertDownloadsFile('file.txt');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPassUrlParametersToControllerAction()
+    {
+        // given
+        Route::get('/simple_test/receive_params/:user/:page', 'simple_test#receive_params');
+
+        // when
+        $this->get('/simple_test/receive_params/Cersei/about-us');
+
+        // then
+        $this->assertRenderedContent()->isEqualTo('Param1: Cersei Param2: about-us');
     }
 
     /**

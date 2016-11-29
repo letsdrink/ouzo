@@ -147,8 +147,9 @@ class FrontController
 
     private function _invokeAction()
     {
-        $currentAction = $this->currentControllerObject->currentAction;
-        $this->currentControllerObject->$currentAction();
+        $controller = $this->currentControllerObject;
+        $currentAction = $controller->currentAction;
+        call_user_func_array(array($controller, $currentAction), $controller->params);
         $this->_logRequestIfDebugEnabled();
     }
 
