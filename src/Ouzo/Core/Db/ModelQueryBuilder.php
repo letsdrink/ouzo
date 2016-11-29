@@ -124,7 +124,7 @@ class ModelQueryBuilder
     }
 
     /**
-     * @return Model
+     * @return Model|array
      */
     public function fetch()
     {
@@ -136,7 +136,7 @@ class ModelQueryBuilder
     }
 
     /**
-     * @return Model[]
+     * @return Model[]|array[]
      */
     public function fetchAll()
     {
@@ -164,7 +164,6 @@ class ModelQueryBuilder
     /**
      * Issues "delete from ... where ..." sql command.
      * Note that overridden Model::delete is not called.
-     *
      */
     public function deleteAll()
     {
