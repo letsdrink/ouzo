@@ -206,7 +206,6 @@ class ControllerTest extends ControllerTestCase
         // then
         $this->assertRenderedContent()->isEqualTo(null);
         CatchException::assertThat()
-            ->isInstanceOf('ErrorException')
             ->hasMessage('Missing argument 2 for SimpleTestController::receive_params()');
     }
 
