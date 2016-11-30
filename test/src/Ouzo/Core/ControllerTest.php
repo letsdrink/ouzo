@@ -193,6 +193,26 @@ class ControllerTest extends ControllerTestCase
     /**
      * @test
      */
+    public function shouldPassOnlyUrlParametersNotPostOrGet()
+    {
+        // given
+        Route::post('/simple_test2/receive_params/:user', 'simple_test#receive_params');
+
+        // when
+        CatchException::when($this)->post('/simple_test2/receive_params/Cersei', array(
+            'page' => 'about-us'
+        ));
+
+        // then
+        $this->assertRenderedContent()->isEqualTo(null);
+        CatchException::assertThat()
+            ->isInstanceOf('ErrorException')
+            ->hasMessage('Missing argument 2 for SimpleTestController::receive_params()');
+    }
+
+    /**
+     * @test
+     */
     public function shouldThrowExceptionIfMethodDoesNotExist()
     {
         //given

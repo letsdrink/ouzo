@@ -152,7 +152,7 @@ class FrontController
     {
         $controller = $this->currentControllerObject;
         $currentAction = $controller->currentAction;
-        call_user_func_array(array($controller, $currentAction), $controller->params);
+        call_user_func_array(array($controller, $currentAction), $controller->getRouteRule()->getParameters());
         $this->_logRequestIfDebugEnabled();
     }
 
