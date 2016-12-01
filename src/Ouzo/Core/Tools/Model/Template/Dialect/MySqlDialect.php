@@ -47,7 +47,7 @@ class MySqlDialect extends Dialect
     public function dataTypeToPhpType($dataType)
     {
         $dataType = mb_strtolower($dataType);
-        if (preg_match('/int/', $dataType)) {
+        if (mb_strpos($dataType, 'int') !== false) {
             return 'int';
         }
         if (preg_match('/double.*|float.*|decimal.*/', $dataType)) {
