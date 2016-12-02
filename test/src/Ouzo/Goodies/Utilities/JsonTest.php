@@ -4,8 +4,10 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Tests\ArrayAssert;
+use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
+use Ouzo\Utilities\JsonEncodeException;
 
 class JsonTest extends PHPUnit_Framework_TestCase
 {
@@ -66,7 +68,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
         $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
 
         //when
-        $encoded = Json::encode($array);
+        $encoded = Json::safeEncode($array);
 
         //then
         $this->assertEquals('{"key1":"value1","key2":"value2","key3":"value3"}', $encoded);
@@ -123,7 +125,40 @@ class JsonTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    function invalidJson() {
+    /**
+     * @test
+     */
+    public function shouldEncodeThrowOnMalformedUtf8Syntax()
+    {
+        // when
+        try {
+            Json::encode("\xB1\x31");
+            $this->assertTrue(false);
+        } // then
+        catch (JsonEncodeException $e) {
+            Assert::thatString($e->getMessage())
+                ->isEqualTo('JSON encode error: Malformed UTF-8 characters, possibly incorrectly encoded');
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldEncodeThrowOnInfiniteValue()
+    {
+        // when
+        try {
+            Json::encode(log(0));
+            $this->assertTrue(false);
+        } // then
+        catch (JsonEncodeException $e) {
+            Assert::thatString($e->getMessage())
+                ->isEqualTo('JSON encode error: Inf and NaN cannot be JSON encoded');
+        }
+    }
+
+    function invalidJson()
+    {
         return array(
             array('()'),
             array('(asd)'),
@@ -134,7 +169,8 @@ class JsonTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    function validJson() {
+    function validJson()
+    {
         return array(
             array(''),
             array('0'),
