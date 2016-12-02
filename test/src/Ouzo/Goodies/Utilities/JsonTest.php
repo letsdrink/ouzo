@@ -136,8 +136,6 @@ class JsonTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         } // then
         catch (JsonEncodeException $e) {
-            Assert::thatString($e->getMessage())
-                ->isEqualTo('JSON encode error: Malformed UTF-8 characters, possibly incorrectly encoded');
         }
     }
 
@@ -152,8 +150,6 @@ class JsonTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         } // then
         catch (JsonEncodeException $e) {
-            Assert::thatString($e->getMessage())
-                ->isEqualTo('JSON encode error: Inf and NaN cannot be JSON encoded');
         }
     }
 
