@@ -4,7 +4,6 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Tests\ArrayAssert;
-use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
 
@@ -135,7 +134,10 @@ class JsonTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         } // then
         catch (Exception $e) {
-            Assert::that($e)->isInstanceOf('Ouzo\Utilities\JsonEncodeException');
+            $this->assertTrue(in_array(get_class($e), array(
+                'PHPUnit_Framework_Error_Warning',
+                'Ouzo\Utilities\JsonEncodeException'
+            )));
         }
     }
 
@@ -150,7 +152,10 @@ class JsonTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         } // then
         catch (Exception $e) {
-            Assert::that($e)->isInstanceOf('Ouzo\Utilities\JsonEncodeException');
+            $this->assertTrue(in_array(get_class($e), array(
+                'PHPUnit_Framework_Error_Warning',
+                'Ouzo\Utilities\JsonEncodeException'
+            )));
         }
     }
 
