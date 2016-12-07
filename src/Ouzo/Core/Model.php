@@ -7,6 +7,7 @@ namespace Ouzo;
 
 use Exception;
 use InvalidArgumentException;
+use Ouzo\Db\DbSession;
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Query;
@@ -289,7 +290,7 @@ class Model extends Validatable
     {
         $relation = $this->getRelation($name);
         $relationFetcher = new RelationFetcher($relation);
-        $results = array($this);
+        $results = DbSession::getModelsFetchTogetherWith($this);
         $relationFetcher->transform($results);
     }
 

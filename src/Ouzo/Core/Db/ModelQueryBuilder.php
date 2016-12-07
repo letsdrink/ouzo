@@ -158,7 +158,9 @@ class ModelQueryBuilder
     function _processResults($results)
     {
         $resultSetConverter = new ModelResultSetConverter($this->_model, $this->getModelAliasOrTable(), $this->_joinedModels, $this->_relationsToFetch);
-        return $resultSetConverter->convert($results);
+        $converted = $resultSetConverter->convert($results);
+        DbSession::attach($converted);
+        return $converted;
     }
 
     /**
@@ -279,13 +281,15 @@ class ModelQueryBuilder
      */
     public function with($relationSelector)
     {
-        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
-        $field = '';
+        if (!DbSession::isAllocated()) {
+            $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
+            $field = '';
 
-        foreach ($relations as $relation) {
-            $nestedField = $field ? $field . '->' . $relation->getName() : $relation->getName();
-            $this->_addRelationToFetch(new RelationToFetch($field, $relation, $nestedField));
-            $field = $nestedField;
+            foreach ($relations as $relation) {
+                $nestedField = $field ? $field . '->' . $relation->getName() : $relation->getName();
+                $this->_addRelationToFetch(new RelationToFetch($field, $relation, $nestedField));
+                $field = $nestedField;
+            }
         }
         return $this;
     }
