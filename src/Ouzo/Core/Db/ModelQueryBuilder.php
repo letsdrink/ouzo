@@ -159,7 +159,7 @@ class ModelQueryBuilder
     {
         $resultSetConverter = new ModelResultSetConverter($this->_model, $this->getModelAliasOrTable(), $this->_joinedModels, $this->_relationsToFetch);
         $converted = $resultSetConverter->convert($results);
-        DbSession::attach($converted);
+        BatchLoadingSession::attach($converted);
         return $converted;
     }
 
@@ -281,7 +281,7 @@ class ModelQueryBuilder
      */
     public function with($relationSelector)
     {
-        if (!DbSession::isAllocated()) {
+        if (!BatchLoadingSession::isAllocated()) {
             $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
             $field = '';
 

@@ -1,13 +1,13 @@
 <?php
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
-use Ouzo\Db\DbSession;
+use Ouzo\Db\BatchLoadingSession;
 use Ouzo\Db\Stats;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 
-class DbSessionTest extends DbTransactionalTestCase
+class BatchLoadingSessionTest extends DbTransactionalTestCase
 {
     public function setUp()
     {
@@ -28,7 +28,7 @@ class DbSessionTest extends DbTransactionalTestCase
         Stats::reset();
 
         //when
-        $products = DbSession::run(function() {
+        $products = BatchLoadingSession::run(function() {
             $models = Product::all();
             $models[0]->category;
             return $models;
@@ -52,7 +52,7 @@ class DbSessionTest extends DbTransactionalTestCase
         Stats::reset();
 
         //when
-        $products = DbSession::run(function() {
+        $products = BatchLoadingSession::run(function() {
             return Product::where()->with('category')->fetchAll();
         });
 
@@ -67,11 +67,11 @@ class DbSessionTest extends DbTransactionalTestCase
     public function shouldDeallocateSession()
     {
         //when
-        DbSession::run(function() {
+        BatchLoadingSession::run(function() {
             return Product::where()->with('category')->fetchAll();
         });
 
         //then
-        $this->assertFalse(DbSession::isAllocated());
+        $this->assertFalse(BatchLoadingSession::isAllocated());
     }
 }

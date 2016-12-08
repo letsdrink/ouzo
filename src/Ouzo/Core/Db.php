@@ -6,7 +6,6 @@
 namespace Ouzo;
 
 use Exception;
-use Ouzo\Db\DbSession;
 use Ouzo\Db\PDOExceptionExtractor;
 use Ouzo\Db\StatementExecutor;
 use Ouzo\Db\TransactionalProxy;
@@ -102,11 +101,6 @@ class Db
             }
         }
         return call_user_func($callable);
-    }
-
-    public function runInSession($callable)
-    {
-        return DbSession::run($callable);
     }
 
     public function beginTransaction()
