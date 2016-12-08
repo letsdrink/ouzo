@@ -36,7 +36,7 @@ class BatchLoadingSession
         BatchLoadingSession::$currentSession = null;
     }
 
-    public static function attach(array &$results)
+    public static function attach(array $results)
     {
         if (BatchLoadingSession::isAllocated()) {
             foreach ($results as $model) {
