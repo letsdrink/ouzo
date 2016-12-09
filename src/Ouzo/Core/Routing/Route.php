@@ -30,7 +30,7 @@ use Ouzo\Utilities\Strings;
  */
 class Route implements RouteInterface
 {
-    public static $methods = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE');
+    public static $methods = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS');
     public static $validate = true;
     public static $isDebug;
 
@@ -58,6 +58,11 @@ class Route implements RouteInterface
     public static function delete($uri, $action, array $options = array())
     {
         self::addRoute('DELETE', $uri, $action, true, $options);
+    }
+
+    public static function options($uri, $action, array $options = array())
+    {
+        self::addRoute('OPTIONS', $uri, $action, true, $options);
     }
 
     public static function any($uri, $action, array $options = array())

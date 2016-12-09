@@ -478,4 +478,20 @@ class RouteTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertCount(2, $routes);
     }
+
+    /**
+     * @test
+     */
+    public function shouldAddOptions()
+    {
+        //given
+        Route::options('/user', 'User#options');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertCount(1, $routes);
+        $this->assertEquals('OPTIONS', $routes[0]->getMethod());
+    }
 }
