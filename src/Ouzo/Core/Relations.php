@@ -56,7 +56,7 @@ class Relations
         foreach (self::$relationNames as $relationName) {
             if (isset($params[$relationName])) {
                 foreach ($params[$relationName] as $relation => $relationParams) {
-                    $this->_addRelation(RelationFactory::create($relationName, $relation, $relationParams, $primaryKeyName));
+                    $this->_addRelation(RelationFactory::create($relationName, $relation, $relationParams, $primaryKeyName, $this->modelClass));
                 }
             }
         }

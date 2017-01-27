@@ -15,9 +15,9 @@ class RelationsTest extends \PHPUnit_Framework_TestCase
         //given
         $params = array(
             'hasOne' => array(
-                'category' => array('class' => 'Category', 'foreignKey' => 'id_category')
+                'category' => array('class' => 'Test\Category', 'foreignKey' => 'id_category')
             ),
-            'belongsTo' => array('category' => array('class' => 'OrderProduct'))
+            'belongsTo' => array('category' => array('class' => 'Test\OrderProduct'))
         );
 
         //when
