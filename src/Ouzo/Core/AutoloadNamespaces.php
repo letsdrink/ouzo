@@ -18,7 +18,7 @@ class AutoloadNamespaces
     public static function getModelNamespace()
     {
         $controllerPath = Config::getValue('namespace', 'model');
-        return $controllerPath ? $controllerPath : "\\Application\\Model\\";
+        return $controllerPath !== null ? $controllerPath : "\\Application\\Model\\";
     }
 
     public static function getWidgetNamespace()
