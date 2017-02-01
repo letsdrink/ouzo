@@ -55,7 +55,7 @@ class RelationFactory
     {
         self::validateParams($params);
         $class = $params['class'];
-        $localKey = Arrays::getValue($params, 'foreignKey', $name . '_id');
+        $localKey = Arrays::getValue($params, 'foreignKey', self::defaultForeignKey($class));
         $foreignKey = Arrays::getValue($params, 'referencedColumn') ? : MetaModelCache::getMetaInstance(AutoloadNamespaces::getModelNamespace() . $class)->getIdName();
 
         return self::newRelation($name, $localKey, $foreignKey, false, $params);
