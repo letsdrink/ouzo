@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Clock;
 
 class ClockTest extends PHPUnit_Framework_TestCase
@@ -163,5 +164,20 @@ class ClockTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('2015-03-24 14:23:21', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotModifyClock()
+    {
+        // given
+        $clock = new Clock(new DateTime('2017-02-06 14:00:00'));
+
+        // when
+        $clock->plusHours(2);
+
+        // then
+        Assert::thatString($clock->format())->isEqualTo('2017-02-06 14:00:00');
     }
 }
