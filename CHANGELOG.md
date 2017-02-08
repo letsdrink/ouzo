@@ -19,6 +19,7 @@ Enhancements:
 * [Utilities] `Json::decode()` and `Json::encode()` will from now on, throw exceptions on invalid input.
 * [Utilities] Added `Json::safeDecode()` and `Json::safeEncode()`.
 * [Utilities] You can now read URL parameters as controllers' method arguments (issue #244).
+* [Utilities] `Clock.setTimezone()` accepts both `string` or `DateTimeZone`.
 * [Debug] After `renderPartial()`, you can now find `PARTIAL` and `END PARTIAL` HTML comments along with partial name.
 
 Bug fixes:
@@ -31,6 +32,7 @@ Bug fixes:
 * [Utilities] Fixed `Arrays::toArray()` for empty string, false and zero.
 * [Utilities] Fixed `Strings::remove()` when given falsy argument (like `'0'`).
 * [Utilities] Removed `$encoding` parameter from `Strings::uppercaseFirst()`.
+* [Utilities] Clock will not modify parameter `DateTime`.
 
 Release 1.6.0
 --------
