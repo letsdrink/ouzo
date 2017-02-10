@@ -157,7 +157,7 @@ class ClockTest extends PHPUnit_Framework_TestCase
     public function shouldCreateClockForGivenTimestamp()
     {
         //given
-        $clock = Clock::fromTimestamp(1427207001)->setTimezone('UTC');
+        $clock = Clock::fromTimestamp(1427207001)->withTimezone('UTC');
 
         //when
         $result = $clock->format();
@@ -192,7 +192,7 @@ class ClockTest extends PHPUnit_Framework_TestCase
         $clock = new Clock($dateTime);
 
         // when
-        $modifiedClock = $clock->setTimezone('UTC');
+        $modifiedClock = $clock->withTimezone('UTC');
 
         // then
         Assert::that($dateTime->getTimezone())->isEqualTo(new DateTimeZone('Europe/Warsaw'));
