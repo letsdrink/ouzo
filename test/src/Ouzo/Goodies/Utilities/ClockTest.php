@@ -175,9 +175,27 @@ class ClockTest extends PHPUnit_Framework_TestCase
         $clock = new Clock(new DateTime('2017-02-06 14:00:00'));
 
         // when
-        $clock->plusHours(2);
+        $modifiedClock = $clock->plusHours(2);
 
         // then
         Assert::thatString($clock->format())->isEqualTo('2017-02-06 14:00:00');
+        Assert::thatString($modifiedClock->format())->isEqualTo('2017-02-06 16:00:00');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotModifyTimeZone()
+    {
+        // given
+        $dateTime = new DateTime('2017-02-06 14:00:00', new DateTimeZone('Europe/Warsaw'));
+        $clock = new Clock($dateTime);
+
+        // when
+        $modifiedClock = $clock->setTimezone('UTC');
+
+        // then
+        Assert::that($dateTime->getTimezone())->isEqualTo(new DateTimeZone('Europe/Warsaw'));
+        Assert::that($modifiedClock->toDateTime()->getTimezone())->isEqualTo(new DateTimeZone('UTC'));
     }
 }
