@@ -102,16 +102,22 @@ function selectTag($name, array $items = array(), $value, array $attributes = ar
         $items = array(null => $promptOption) + $items;
     }
     foreach ($items as $optionValue => $optionName) {
-        $optionsString .= optionTag($optionValue, $optionName, $value);
+        $optionsString .= optionTag($optionValue, $optionName, $value, Arrays::getValue($attributes, 'readonly') == 'readonly');
     }
     return '<select ' . $attr . '>' . $optionsString . '</select>';
 }
 
-function optionTag($value, $name, $current)
+function optionTag($value, $name, $current, $disabled)
 {
-    $selected = Arrays::findKeyByValue($current, $value) !== false ? 'selected' : '';
+    $selected = Arrays::findKeyByValue($current, $value) !== false;
+    if ($selected) {
+        $attribute = 'selected';
+    } else {
+        $attribute = $disabled ? 'disabled' : '';
+    }
+
     $value = Strings::isNotBlank($value) ? ' value="' . $value . '" ' : ' value="" ';
-    return '<option' . $value . $selected . '>' . $name . '</option>';
+    return '<option' . $value . $attribute . '>' . $name . '</option>';
 }
 
 function passwordFieldTag($name, $value, array $attributes = array())

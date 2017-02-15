@@ -36,6 +36,23 @@ class FormHelperTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldGenerateReadOnlySelectTag()
+    {
+        //given
+        $items = array(1 => 'Opt1', 2 => 'Opt1');
+        $attributes = array('id' => "lab", 'size' => "1", 'readonly' => 'readonly');
+
+        //when
+        $result = selectTag("lab", $items, 2, $attributes);
+
+        //then
+        $expected = '<select id="lab" name="lab" size="1" readonly="readonly"><option value="1" disabled>Opt1</option><option value="2" selected>Opt1</option></select>';
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldGenerateMultipleSelectList()
     {
         //given
