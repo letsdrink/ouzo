@@ -56,6 +56,21 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldFlipArray()
+    {
+        //given
+        $array = array(1 => 'a', 2 => 'b', 3 => 'c');
+
+        //when
+        $transformed = FluentArray::from($array)->flip()->toArray();
+
+        //then
+        $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), $transformed);
+    }
+
+    /**
+     * @test
+     */
     public function shouldFlattenArray()
     {
         //given
