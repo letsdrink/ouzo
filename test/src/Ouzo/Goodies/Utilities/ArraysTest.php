@@ -22,6 +22,8 @@ class ArraysTest extends PHPUnit_Framework_TestCase
             'k1' => 4,
             'k2' => 'd',
             'k3' => 0,
+            'k4' => '',
+            'k5' => false,
             9 => 'p'
         );
         //when
@@ -185,7 +187,22 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGetFirstKeyString()
     {
         //given
-        $array = array('foo' => 'bar', 2 => 'example');
+        $array = array('foo' => 'bar', 0 => 'foo', 2 => 'example');
+
+        //when
+        $first = Arrays::first($array);
+
+        // then
+        Assert::thatString($first)->isEqualTo('bar');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetFirstKeyAccordingToOrder()
+    {
+        //given
+        $array = array(1 => 'bar', 0 => 'foo');
 
         //when
         $first = Arrays::first($array);
