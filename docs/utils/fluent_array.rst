@@ -250,3 +250,24 @@ Returns a FluentArray with its elements sorted using the given comparator
         [2] => 3
     )
 
+
+flip
+~~~~
+Returns a FluentArray with its elements flipped (keys replaced with values).
+
+**Example:**
+::
+
+    $array = ['a', 'b', 'c'];
+    $result = FluentArray::from($array)->flip()->toArray();
+
+**Result:**
+::
+
+    Array
+    (
+        ['a'] => 0,
+        ['b'] => 1,
+        ['c'] => 2
+    )
+

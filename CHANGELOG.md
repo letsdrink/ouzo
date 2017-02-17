@@ -16,6 +16,7 @@ Enhancements:
 * [Utilities] Added `Functions::notNull()`.
 * [Utilities] Added `Arrays::isAssociative()` and `Arrays::concat()`.
 * [Utilities] Added `UnbatchingIterator`.
+* [Utilities] Added `FluentArray::flip()`.
 * [Utilities] `Json::decode()` and `Json::encode()` will from now on, throw exceptions on invalid input.
 * [Utilities] Added `Json::safeDecode()` and `Json::safeEncode()`.
 * [Utilities] You can now read URL parameters as controllers' method arguments (issue #244).
