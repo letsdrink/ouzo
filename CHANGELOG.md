@@ -6,6 +6,7 @@ INCOMING
 Enhancements:
 * [Core] Added `Validatable::errors()`, so multiple errors can be added at once.
 * [Core] Added Whoops library (issue #243).
+* [Core] removed separate 404 view (you have to check http code in exception.phtml)
 * [ORM] Added `Db::query()->fetchIterator()` method (issue #241).
 * [ORM] Added support for `EXISTS` subqueries.
 * [ORM] Added `ModelQueryBuilder::fetchIterator()` (issue #242).
