@@ -19,6 +19,6 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         ErrorHandler::exceptionHandler($pageNotFoundException);
 
         //then
-        Mock::verify(ExceptionHandler::$errorRenderer)->render(Mock::any(), "404");
+        Mock::verify(ExceptionHandler::$errorRenderer)->render(Mock::any(), "exception");
     }
 }

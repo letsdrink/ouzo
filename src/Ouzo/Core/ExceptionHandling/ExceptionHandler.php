@@ -23,7 +23,7 @@ class ExceptionHandler
             $this->renderUserError(OuzoExceptionData::forException(500, $exception));
             return true;
         } elseif ($exception instanceof RouterException) {
-            $this->renderNotFoundError(OuzoExceptionData::forException(404, $exception));
+            $this->handleError(OuzoExceptionData::forException(404, $exception));
             return true;
         } elseif ($exception instanceof OuzoException) {
             $this->handleError($exception->asExceptionData());
@@ -56,11 +56,6 @@ class ExceptionHandler
     {
         header("Contains-Error-Message: User");
         $this->renderError($exception, 'user_exception');
-    }
-
-    private function renderNotFoundError($exception)
-    {
-        $this->renderError($exception, "404");
     }
 
     protected function renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
