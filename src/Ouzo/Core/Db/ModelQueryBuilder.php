@@ -59,7 +59,6 @@ class ModelQueryBuilder
     {
         if ($this->_selectModel) {
             $this->_query->selectColumns = array_merge($this->_query->selectColumns, ColumnAliasHandler::createSelectColumnsWithAliases($metaInstance->_getFields(), $alias));
-            $this->_query->comment(ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT);
         }
     }
 
@@ -120,11 +119,20 @@ class ModelQueryBuilder
         return intval(Arrays::firstOrNull(Arrays::toArray($value)));
     }
 
+
+    private function beforeSelect()
+    {
+        if ($this->_selectModel) {
+            $this->_query->comment(ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT);
+        }
+    }
+
     /**
      * @return Model|array
      */
     public function fetch()
     {
+        $this->beforeSelect();
         $result = QueryExecutor::prepare($this->_db, $this->_query)->fetch();
         if (!$result) {
             return null;
@@ -137,6 +145,7 @@ class ModelQueryBuilder
      */
     public function fetchAll()
     {
+        $this->beforeSelect();
         $result = QueryExecutor::prepare($this->_db, $this->_query)->fetchAll();
         return !$this->_selectModel ? $result : $this->_processResults($result);
     }
@@ -147,6 +156,7 @@ class ModelQueryBuilder
      */
     public function fetchIterator($batchSize = 500)
     {
+        $this->beforeSelect();
         $iterator = QueryExecutor::prepare($this->_db, $this->_query)->fetchIterator();
         $iterator->rewind();
         return !$this->_selectModel ? $iterator : new UnbatchingIterator(new TransformingIterator(new BatchingIterator($iterator, $batchSize), array($this, '_processResults')));
