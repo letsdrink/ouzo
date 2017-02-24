@@ -141,6 +141,11 @@ abstract class Dialect
         return ' FROM ' . $this->table();
     }
 
+    public function comment()
+    {
+        return $this->_query->comment ? ' /* ' . $this->_query->comment . ' */ ' : '';
+    }
+
     public function lockForUpdate()
     {
         return $this->_query->lockForUpdate ? ' FOR UPDATE' : '';
@@ -177,6 +182,8 @@ abstract class Dialect
             $sql .= $this->offset();
             $sql .= $this->lockForUpdate();
         }
+        $sql .= $this->comment();
+
         return rtrim($sql);
     }
 

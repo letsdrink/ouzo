@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\QueryHumanizer;
 
 class QueryHumanizerTest extends \PHPUnit_Framework_TestCase
@@ -13,7 +14,7 @@ class QueryHumanizerTest extends \PHPUnit_Framework_TestCase
     public function shouldHumanizeSqlQuery()
     {
         //given
-        $sql = "SELECT t_customers.name AS _t_customers_name, t_customers.surname AS _t_customers_surname, t_customers.identifier AS _t_customers_identifier, t_customer_phones.number AS _t_customer_phones_number FROM t_customers AS t_customers LEFT JOIN t_customer_phones AS t_customer_phones ON t_customer_phones.id_customer = t_customers.id_customer WHERE hidden = false AND (t_customer_phones.primary_flag is true or t_customer_phones.id_customer_phone is null) ORDER BY surname ASC LIMIT ?";
+        $sql = "SELECT t_customers.name, t_customers.surname, t_customers.identifier, t_customer_phones.number FROM t_customers AS t_customers LEFT JOIN t_customer_phones AS t_customer_phones ON t_customer_phones.id_customer = t_customers.id_customer WHERE hidden = false AND (t_customer_phones.primary_flag is true or t_customer_phones.id_customer_phone is null) ORDER BY surname ASC LIMIT ? /* " . ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT . ' */';
 
         //when
         $humanized = QueryHumanizer::humanize($sql);
@@ -28,7 +29,7 @@ class QueryHumanizerTest extends \PHPUnit_Framework_TestCase
     public function shouldHumanizeSqlQueryForOneTable()
     {
         //given
-        $sql = "SELECT t_customers.name AS _t_customers_name, t_customers.surname AS _t_customers_surname, t_customers.identifier AS _t_customers_identifier FROM t_customers AS t_customers WHERE hidden = false ORDER BY surname ASC LIMIT ?";
+        $sql = "SELECT t_customers.name, t_customers.surname, t_customers.identifier FROM t_customers AS t_customers WHERE hidden = false ORDER BY surname ASC LIMIT ? /* " . ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT . ' */';
 
         //when
         $humanized = QueryHumanizer::humanize($sql);

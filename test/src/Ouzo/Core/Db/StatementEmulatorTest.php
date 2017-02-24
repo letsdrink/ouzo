@@ -42,6 +42,6 @@ class StatementEmulatorTest extends DbTransactionalTestCase
             ->fetchAll();
 
         //then
-        Mock::verify($pdo)->query("SELECT simple_models.name AS _simple_models_name, simple_models.id AS _simple_models_id FROM simple_models WHERE name = 'bob'");
+        Mock::verify($pdo)->query("SELECT simple_models.name, simple_models.id FROM simple_models WHERE name = 'bob' /* orm:model */");
     }
 }

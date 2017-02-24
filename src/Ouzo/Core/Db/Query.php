@@ -26,6 +26,7 @@ class Query
     public $options = array();
     public $groupBy;
     public $lockForUpdate = false;
+    public $comment;
 
     public function __construct($type = null)
     {
@@ -146,6 +147,12 @@ class Query
     public function lockForUpdate()
     {
         $this->lockForUpdate = true;
+        return $this;
+    }
+
+    public function comment($comment)
+    {
+        $this->comment = $comment;
         return $this;
     }
 }

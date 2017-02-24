@@ -5,6 +5,8 @@
  */
 namespace Ouzo\Db;
 
+use Ouzo\Utilities\Strings;
+
 class SelectColumnCallback
 {
     private $prev_table;
@@ -13,15 +15,18 @@ class SelectColumnCallback
     {
         $table = $matches[1];
         $column = $matches[2];
-        $alias = $matches[3];
-        if ($alias != "_{$table}_$column") {
-            return $matches[0];
-        }
 
-        if ($table != $this->prev_table) {
-            $first = !$this->prev_table;
-            $this->prev_table = $table;
-            $result = "$table.*";
+        $sameTable = $table === $this->prev_table;
+        $first = $this->prev_table === NULL;
+        $this->prev_table = $table;
+
+        if (!$sameTable || !$table) {
+            if (isset($matches[3]) && $matches[3]) {
+                $result = "$table.$column" . $matches[3];
+            } else {
+                $result = "$table.*";
+            }
+
             return $first ? $result : ", $result";
         }
         return "";
@@ -32,6 +37,12 @@ class QueryHumanizer
 {
     public static function humanize($sql)
     {
-        return preg_replace_callback('/(\w+)\.(\w+) AS (_\w+)(, )?/', new SelectColumnCallback(), $sql);
+        if (Strings::endsWith($sql, ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT . ' */')) {
+            $sql = Strings::removeSuffix($sql, ' /* ' . ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT . ' */');
+            return preg_replace_callback('/SELECT .*? FROM/', function ($matches) {
+                return preg_replace_callback('/(\w+)\.(\w+)( AS \w+)?(, )?/', new SelectColumnCallback(), $matches[0]);
+            }, $sql);
+        }
+        return $sql;
     }
 }

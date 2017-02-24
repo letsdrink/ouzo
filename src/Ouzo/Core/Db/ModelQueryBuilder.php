@@ -17,6 +17,8 @@ use PDO;
 
 class ModelQueryBuilder
 {
+    CONST MODEL_QUERY_MARKER_COMMENT = 'orm:model';
+
     /** @var Db */
     private $_db;
 
@@ -56,14 +58,9 @@ class ModelQueryBuilder
     private function selectModelColumns(Model $metaInstance, $alias)
     {
         if ($this->_selectModel) {
-            $prefix = $this->aliasPrefixForSelect($alias);
-            $this->_query->selectColumns = $this->_query->selectColumns + ColumnAliasHandler::createSelectColumnsWithAliases($prefix, $metaInstance->_getFields(), $alias);
+            $this->_query->selectColumns = array_merge($this->_query->selectColumns, ColumnAliasHandler::createSelectColumnsWithAliases($metaInstance->_getFields(), $alias));
+            $this->_query->comment(ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT);
         }
-    }
-
-    private function aliasPrefixForSelect($alias)
-    {
-        return "_{$alias}_";
     }
 
     /**

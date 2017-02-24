@@ -5,19 +5,14 @@
  */
 namespace Ouzo\Db;
 
-use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Arrays;
 
 class ColumnAliasHandler
 {
-    public static function createSelectColumnsWithAliases($prefix, $columns, $alias)
+    public static function createSelectColumnsWithAliases($columns, $alias)
     {
-        return FluentArray::from($columns)->toMap(
-            function ($field) use ($prefix) {
-                return "{$prefix}{$field}";
-            },
-            function ($field) use ($alias) {
-                return "$alias.$field";
-            }
-        )->toArray();
+        return Arrays::map($columns, function ($field) use ($alias) {
+            return "$alias.$field";
+        });
     }
 }

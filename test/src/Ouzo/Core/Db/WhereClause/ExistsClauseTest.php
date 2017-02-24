@@ -23,7 +23,7 @@ class ExistsClauseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('phone'), $result->getParameters());
         Assert::thatString($result->toSql())
             ->startsWith('EXISTS (SELECT')
-            ->endsWith('FROM products WHERE name = ?)');
+            ->endsWith('FROM products WHERE name = ? /* orm:model */)');
     }
 
     /**
@@ -38,6 +38,6 @@ class ExistsClauseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('phone'), $result->getParameters());
         Assert::thatString($result->toSql())
             ->startsWith('NOT EXISTS (SELECT')
-            ->endsWith('FROM products WHERE name = ?)');
+            ->endsWith('FROM products WHERE name = ? /* orm:model */)');
     }
 }
