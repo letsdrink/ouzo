@@ -53,6 +53,16 @@ function addFile(array $fileInfo = array(), $stringToRemove = '')
     return null;
 }
 
+function addScript($url, $stringToRemove = '')
+{
+    return addFile(['type' => 'script', 'params' => ['url' => $url]], $stringToRemove);
+}
+
+function addLink($url, $stringToRemove = '')
+{
+    return addFile(['type' => 'link', 'params' => ['url' => $url]], $stringToRemove);
+}
+
 function _getHtmlFileTag($type, $url)
 {
     switch ($type) {
