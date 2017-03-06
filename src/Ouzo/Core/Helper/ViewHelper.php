@@ -55,12 +55,12 @@ function addFile(array $fileInfo = array(), $stringToRemove = '')
 
 function addScript($url, $stringToRemove = '')
 {
-    return addFile(['type' => 'script', 'params' => ['url' => $url]], $stringToRemove);
+    return addFile(array('type' => 'script', 'params' => array('url' => $url)), $stringToRemove);
 }
 
 function addLink($url, $stringToRemove = '')
 {
-    return addFile(['type' => 'link', 'params' => ['url' => $url]], $stringToRemove);
+    return addFile(array('type' => 'link', 'params' => array('url' => $url)), $stringToRemove);
 }
 
 function _getHtmlFileTag($type, $url)
