@@ -34,17 +34,15 @@ Ouzo:
 
 ::
 
-    function isAnyCool($users) {
-        return Arrays::any($users, function($user) { return $user->isCool(); });
-    }
+    return Arrays::any($users, function($user) {
+        return $user->isCool();
+    });
 
 or using Functions::extract():
 
 ::
 
-    function isAnyCool($users) {
-        return Arrays::any($users, Functions::extract()->isCool());
-    }
+    $anyCool = Arrays::any($users, Functions::extract()->isCool());
 
 
 Similarly, you may want to check if all of them are cool:
@@ -56,9 +54,9 @@ Similarly, you may want to check if all of them are cool:
 
 .. seealso::
 
-    :ref:`Arrays::groupBy <Arrays-groupBy>`
+    :ref:`Arrays::groupBy() <Arrays-groupBy>`
 
-    :ref:`Arrays::toMap <Arrays-toMap>`
+    :ref:`Arrays::toMap() <Arrays-toMap>`
 
 Example 2
 ~~~~~~~~~
@@ -92,7 +90,7 @@ Ouzo:
 
     :doc:`../utils/fluent_array`
 
-    :ref:`Functions::extract <functions-extract>`
+    :ref:`Functions::extract() <functions-extract>`
 
 
 Example 3

@@ -250,7 +250,8 @@ Returns the number of elements for which the predicate returns true.
 
 filter
 ~~~~~~
-This method filters array using function. Result contains all elements for which function  returns ``true``
+This method filters array using function. Result contains all elements for which function  returns ``true``.
+
 **Parameters:** ``$elements``, ``$function``
 
 **Example:**

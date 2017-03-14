@@ -204,7 +204,7 @@ Adds prefix to the string, if string does not start with the prefix already.
 
 tableize
 ~~~~~~~~
-Converts a word into the format for an Ouzo table name. Converts 'ModelName' to 'model_names'.
+Converts a word into the format for an Ouzo table name. Converts ``'ModelName'`` to ``'model_names'``.
 
 **Parameters:** ``$class``
 
