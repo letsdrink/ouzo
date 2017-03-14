@@ -5,193 +5,84 @@ Helper functions that can operate on arrays.
 
 ----
 
-all
-~~~
-Returns true if every element in array satisfies the predicate.
+contains
+~~~~~~~~
+Returns true if array contains given element. Comparison is based on the following rules:
+
+ - same type + same type = strict check
+ - object + object = loose check
+ - array + array = goes through all elements and invokes ``Arrays::contains()``
+ - string + integer = loose check
+ - boolean + string (``'true'`` or ``'false'``) = loose check
+ - ``false`` in other cases
+
+**Parameters:** ``array $array``, ``mixed $element``
+
+**Example:**
+::
+
+    $result = Arrays::contains(array(1, 2, 3), 2);
+
+**Result:** ``true``
+
+----
+
+keyExists
+~~~~~~~~~
+Checks is key exists in an array.
+
+**Parameters:** ``array $elements``, ``$key``
+
+**Example:**
+::
+
+    $array = ['id' => 1, 'name' => 'john'];
+    $return = Arrays::keyExists($array, 'name');
+
+**Result:** ``true``
+
+----
+
+count
+~~~~~
+Returns the number of elements for which the predicate returns true.
 
 **Parameters:** ``array $elements``, ``$predicate``
 
 **Example:**
 ::
 
-    $array = [1, 2];
-    $all = Arrays::all($array, function ($element) {
-        return $element < 3;
+    $array = [1, 2, 3];
+    $count = Arrays::count($array, function ($element) {
+       return $element < 3;
     });
 
-**Result:** ``true``
+**Result:** ``2``
 
 ----
 
-.. _Arrays-toMap:
+concat
+~~~~~~
+Merges array of arrays into one array.
+Unlike flatten, concat does not merge arrays that are nested more that once.
 
-toMap
-~~~~~
-This method creates associative array using key and value functions on array elements.
-
-**Parameters:** ``array $elements``, ``$keyFunction``, ``$valueFunction = null``
+**Parameters:** ``array $arrays``
 
 **Example:**
 ::
 
-    $array = range(1, 2);
-    $map = Arrays::toMap($array, function ($elem) {
-        return $elem * 10;
-    }, function ($elem) {
-        return $elem + 1;
-    }); 
+    $result = Arrays::concat(array(array(1, 2), array(3, 4)));
 
 **Result:**
 ::
 
-    Array
-    (
-        [10] => 2
-        [20] => 3
-    )
-
-.. note::
-
-    If ``$valueFunction`` is not given Functions::identity() is used.
-
-::
-
-    $users = array(new User('bob'), new User('john'));
-    $usersByName = Arrays::toMap($users, function ($user) {
-        return $user->name;
-    }); 
-
-``$usersByName`` will contain associative array with users indexed by their names.
-
-.. note::
-
-    You can Functions::extractField provided by ouzo:
-
-    ``$usersByName = Arrays::toMap($users, Functions::extractField('name'));``
-
-----
-
-flatten
-~~~~~~~
-Returns a new array that is a one-dimensional flattening of the given array.
-
-**Parameters:** ``array $elements``
-
-**Example:**
-::
-
-    $array = [
-        'names' => [
-            'john',
-            'peter',
-            'bill'
-        ],
-        'products' => [
-            'cheese',
-            ['milk', 'brie']
-        ]
-    ];
-    $flatten = Arrays::flatten($array);
-
-**Result:**
-::
-
-    Array
-    (
-        [0] => john
-        [1] => peter
-        [2] => bill
-        [3] => cheese
-        [4] => milk
-        [5] => brie
-    )
-
-----
-
-findKeyByValue
-~~~~~~~~~~~~~~
-This method returns a key for the given value.
-
-**Parameters:** ``array $elements``, ``$value``
-
-**Example:**
-::
-
-    $array = [
-        'k1' => 4,
-        'k2' => 'd',
-        'k3' => 0,
-        9 => 'p'
-    ];
-    $key = Arrays::findKeyByValue($array, 0);
-
-**Result:** ``k3``
-
-----
-
-any
-~~~
-Returns true if at least one element in the array satisfies the predicate.
-
-**Parameters:** ``array $elements``, ``$predicate``
-
-**Example:**
-::
-
-    $array = ['a', true, 'c'];
-    $any = Arrays::any($array, function ($element) {
-        return is_bool($element);
-    });
-
-**Result:** ``true``
-
-----
-
-first
-~~~~~
-This method returns the first value in the given array .
-
-**Parameters:** ``array $elements``
-
-**Example:**
-::
-
-    $array = ['one', 'two' 'three'];
-    $first = Arrays::first($array);
-
-**Result:** ``one``
-
-----
-
-last
-~~~~
-This method returns the last value in the given array.
-
-**Parameters:** ``array $elements``
-
-**Example:**
-::
-
-    $array = ['a', 'b', 'c'];
-    $last = Arrays::last($array);
-
-**Result:** ``c``
-
-----
-
-firstOrNull
-~~~~~~~~~~~
-This method returns the first value or ``null`` if array is empty.
-
-**Parameters:** ``array $elements``
-
-**Example:**
-::
-
-    $array = [];
-    $return = Arrays::firstOrNull($array);
-
-**Result:** ``null``
+  Array
+  (
+      [0] => 1
+      [1] => 2
+      [2] => 3
+      [3] => 4
+  )
 
 ----
 
@@ -219,23 +110,164 @@ Returns the element for the given key or a default value otherwise.
 
 ----
 
-filterByAllowedKeys
-~~~~~~~~~~~~~~~~~~~
-Returns an array containing only the given keys.
+sort
+~~~~
+Returns a new array sorted using given comparator.
+The comparator function must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
+To obtain comparator one may use ``Comparator`` class (for instance ``Comparator::natural()`` which yields ordering using comparison operators).
+
+**Parameters:** ``array $array``, ``$comparator``
 
 **Example:**
 ::
 
-    $array = ['a' => 1, 'b' => 2, 'c' => 3];
-    $filtered = Arrays::filterByAllowedKeys($array, ['a', 'b']);
+    class Foo
+    {
+        private $value;
 
-**Result:** 
+        public function __construct($value)
+        {
+          $this->value = $value;
+        }
+
+        public function getValue()
+        {
+          return $this->value;
+        }
+    }
+    $values = [new Foo(1), new Foo(3), new Foo(2)];
+    $sorted = Arrays::sort($values, Comparator::compareBy('getValue()'));
+
+**Result:**
 ::
 
     Array
     (
-        [a] => 1
-        [b] => 2
+         [0] =>  class Foo (1) {
+                     private $value => int(1)
+                 }
+         [1] =>  class Foo (1) {
+                     private $value => int(2)
+                 }
+         [2] =>  class Foo (1) {
+                     private $value => int(3)
+                 }
+    )
+
+----
+
+first
+~~~~~
+This method returns the first value in the given array .
+
+**Parameters:** ``array $elements``
+
+**Example:**
+::
+
+    $array = ['one', 'two' 'three'];
+    $first = Arrays::first($array);
+
+**Result:** ``one``
+
+----
+
+firstOrNull
+~~~~~~~~~~~
+This method returns the first value or ``null`` if array is empty.
+
+**Parameters:** ``array $elements``
+
+**Example:**
+::
+
+    $array = [];
+    $return = Arrays::firstOrNull($array);
+
+**Result:** ``null``
+
+----
+
+last
+~~~~
+This method returns the last value in the given array.
+
+**Parameters:** ``array $elements``
+
+**Example:**
+::
+
+    $array = ['a', 'b', 'c'];
+    $last = Arrays::last($array);
+
+**Result:** ``c``
+
+----
+
+any
+~~~
+Returns true if at least one element in the array satisfies the predicate.
+
+**Parameters:** ``array $elements``, ``$predicate``
+
+**Example:**
+::
+
+    $array = ['a', true, 'c'];
+    $any = Arrays::any($array, function ($element) {
+        return is_bool($element);
+    });
+
+**Result:** ``true``
+
+----
+
+all
+~~~
+Returns true if every element in array satisfies the predicate.
+
+**Parameters:** ``array $elements``, ``$predicate``
+
+**Example:**
+::
+
+    $array = [1, 2];
+    $all = Arrays::all($array, function ($element) {
+        return $element < 3;
+    });
+
+**Result:** ``true``
+
+----
+
+find
+~~~~
+Finds first element in array that is matched by function. Returns null if element was not found.
+
+**Parameters:** ``array $elements``, ``callable $function``
+
+----
+
+filter
+~~~~~~
+This method filters array using function. Result contains all elements for which function  returns ``true``
+**Parameters:** ``$elements``, ``$function``
+
+**Example:**
+::
+
+    $array = [1, 2, 3, 4];
+    $result = Arrays::filter($array, function ($value) {
+        return $value > 2;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+        [2] => 3
+        [3] => 4
     )
 
 ----
@@ -252,7 +284,7 @@ Filters array by keys using the predicate.
         return $elem[0] == 'a';
     });
 
-**Result:** 
+**Result:**
 ::
 
     Array
@@ -263,63 +295,189 @@ Filters array by keys using the predicate.
 
 ----
 
-.. _Arrays-groupBy:
-
-groupBy
-~~~~~~~
-Groups elements in array using given function. If ``$orderField`` is set, grouped elements will be also sorted.
-
-**Parameters:** ``array $elements``, ``$keyFunction``, ``$orderField = null``
+filterByAllowedKeys
+~~~~~~~~~~~~~~~~~~~
+Returns an array containing only the given keys.
 
 **Example:**
 ::
 
-    $obj1 = new stdClass();
-    $obj1->name = 'a';
-    $obj1->description = '1';
-    
-    $obj2 = new stdClass();
-    $obj2->name = 'b';
-    $obj2->description = '2';
-    
-    $obj3 = new stdClass();
-    $obj3->name = 'b';
-    $obj3->description = '3';
-    
-    $array = [$obj1, $obj2, $obj3];
-    $grouped = Arrays::groupBy($array, Functions::extractField('name'));
+    $array = ['a' => 1, 'b' => 2, 'c' => 3];
+    $filtered = Arrays::filterByAllowedKeys($array, ['a', 'b']);
 
 **Result:**
 ::
 
     Array
     (
-        [a] => Array
-            (
-                [0] => stdClass Object
-                    (
-                        [name] => a
-                        [description] => 1
-                    )
+        [a] => 1
+        [b] => 2
+    )
 
-            )
+----
 
-        [b] => Array
-            (
-                [0] => stdClass Object
-                    (
-                        [name] => b
-                        [description] => 2
-                    )
+filterNotBlank
+~~~~~~~~~~~~~~
+Returns a new array without blank elements.
 
-                [1] => stdClass Object
-                    (
-                        [name] => b
-                        [description] => 3
-                    )
+**Parameters:** ``array $elements``
 
-            )
+----
 
+map
+~~~
+This method maps array values using the function.
+It invokes the function for each value in the array and creates a new array containing the values returned by the function.
+
+**Parameters:** ``array $elements``, ``$function``
+
+**Example:**
+::
+
+    $array = ['k1', 'k2', 'k3'];
+    $result = Arrays::map($array, function ($value) {
+        return 'new_' . $value;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+        [0] => new_k1
+        [1] => new_k2
+        [2] => new_k3
+    )
+
+----
+
+mapKeys
+~~~~~~~
+This method maps array keys using the function. It invokes the function for each key in the array and creates a new array containing the keys returned by the function.
+
+**Parameters:** ``array $elements``, ``$function``
+
+**Example:**
+::
+
+    $array = [
+         'k1' => 'v1',
+         'k2' => 'v2',
+         'k3' => 'v3'
+    ];
+    $arrayWithNewKeys = Arrays::mapKeys($array, function ($key) {
+         return 'new_' . $key;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+         [new_k1] => v1
+         [new_k2] => v2
+         [new_k3] => v3
+    )
+
+----
+
+mapEntries
+~~~~~~~~~~
+This method maps array values using the function which takes key and value as parameters.
+Invokes the function for each value in the array.
+Creates a new array containing the values returned by the function.
+
+**Parameters:** ``array $elements``, ``$function``
+
+**Example:**
+::
+
+    $array = ['a' => '1', 'b' => '2', 'c' => '3'];
+    $result = Arrays::mapEntries($array, function ($key, $value) {
+        return $key . '_' . $value;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+        [a] => a_1
+        [b] => b_2
+        [c] => c_3
+    )
+
+----
+
+.. _Arrays-toMap:
+
+toMap
+~~~~~
+This method creates associative array using key and value functions on array elements.
+
+**Parameters:** ``array $elements``, ``$keyFunction``, ``$valueFunction = null``
+
+**Example:**
+::
+
+    $array = range(1, 2);
+    $map = Arrays::toMap($array, function ($elem) {
+        return $elem * 10;
+    }, function ($elem) {
+        return $elem + 1;
+    });
+
+**Result:**
+::
+
+    Array
+    (
+        [10] => 2
+        [20] => 3
+    )
+
+.. note::
+
+    If ``$valueFunction`` is not given Functions::identity() is used.
+
+::
+
+    $users = array(new User('bob'), new User('john'));
+    $usersByName = Arrays::toMap($users, function ($user) {
+        return $user->name;
+    });
+
+``$usersByName`` will contain associative array with users indexed by their names.
+
+.. note::
+
+    You can Functions::extractField provided by ouzo:
+
+    ``$usersByName = Arrays::toMap($users, Functions::extractField('name'));``
+
+----
+
+combine
+~~~~~~~
+Returns a new array with ``$keys`` as array keys and ``$values`` as array values.
+
+**Parameters:** ``array $keys``, ``array $values``
+
+**Example:**
+::
+
+    $keys = ['id', 'name', 'surname'];
+    $values = [1, 'john', 'smith'];
+    $combined = Arrays::combine($keys, $values);
+
+**Result:**
+::
+
+    Array
+    (
+        [id] => 1
+        [name] => john
+        [surname] => smith
     )
 
 ----
@@ -375,198 +533,92 @@ This method sorts elements in array using order field.
 
 ----
 
-mapKeys
+uniqueBy
+~~~~~~~~
+Removes duplicate values from an array. It uses the given expression to extract value that is compared.
+
+**Parameters:** ``array $elements``, ``$selector``
+
+**Example:**
+::
+
+    $a = new stdClass();
+    $a->name = 'bob';
+
+    $b = new stdClass();
+    $b->name = 'bob';
+
+    $array = [$a, $b];
+    $result = Arrays::uniqueBy($array, 'name');
+
+**Result:**
+::
+
+    Array
+    (
+        [0] => $b
+    )
+
+----
+
+.. _Arrays-groupBy:
+
+groupBy
 ~~~~~~~
-This method maps array keys using the function. It invokes the function for each key in the array and creates a new array containing the keys returned by the function.
+Groups elements in array using given function. If ``$orderField`` is set, grouped elements will be also sorted.
 
-**Parameters:** ``array $elements``, ``$function``
+**Parameters:** ``array $elements``, ``$keyFunction``, ``$orderField = null``
 
 **Example:**
 ::
 
-    $array = [
-         'k1' => 'v1',
-         'k2' => 'v2',
-         'k3' => 'v3'
-    ];
-    $arrayWithNewKeys = Arrays::mapKeys($array, function ($key) {
-         return 'new_' . $key;
-    });
+    $obj1 = new stdClass();
+    $obj1->name = 'a';
+    $obj1->description = '1';
+
+    $obj2 = new stdClass();
+    $obj2->name = 'b';
+    $obj2->description = '2';
+
+    $obj3 = new stdClass();
+    $obj3->name = 'b';
+    $obj3->description = '3';
+
+    $array = [$obj1, $obj2, $obj3];
+    $grouped = Arrays::groupBy($array, Functions::extractField('name'));
 
 **Result:**
 ::
 
     Array
     (
-         [new_k1] => v1
-         [new_k2] => v2
-         [new_k3] => v3
+        [a] => Array
+            (
+                [0] => stdClass Object
+                    (
+                        [name] => a
+                        [description] => 1
+                    )
+
+            )
+
+        [b] => Array
+            (
+                [0] => stdClass Object
+                    (
+                        [name] => b
+                        [description] => 2
+                    )
+
+                [1] => stdClass Object
+                    (
+                        [name] => b
+                        [description] => 3
+                    )
+
+            )
+
     )
-
-----
-
-map
-~~~
-This method maps array values using the function.
-It invokes the function for each value in the array and creates a new array containing the values returned by the function.
-
-**Parameters:** ``array $elements``, ``$function``
-
-**Example:**
-::
-
-    $array = ['k1', 'k2', 'k3'];
-    $result = Arrays::map($array, function ($value) {
-        return 'new_' . $value;
-    });
-
-**Result:**
-::
-
-    Array
-    (
-        [0] => new_k1
-        [1] => new_k2
-        [2] => new_k3
-    )
-
-----
-
-mapEntries
-~~~~~~~~~~
-This method maps array values using the function which takes key and value as parameters.
-Invokes the function for each value in the array.
-Creates a new array containing the values returned by the function.
-
-**Parameters:** ``array $elements``, ``$function``
-
-**Example:**
-::
-
-    $array = ['a' => '1', 'b' => '2', 'c' => '3'];
-    $result = Arrays::mapEntries($array, function ($key, $value) {
-        return $key . '_' . $value;
-    });
-
-**Result:**
-::
-
-    Array
-    (
-        [a] => a_1
-        [b] => b_2
-        [c] => c_3
-    )
-
-----
-
-filter
-~~~~~~
-This method filters array using function. Result contains all elements for which function  returns ``true``
-**Parameters:** ``$elements``, ``$function``
-
-**Example:**
-::
-
-    $array = [1, 2, 3, 4];
-    $result = Arrays::filter($array, function ($value) {
-        return $value > 2;
-    });
-
-**Result:**
-::
-
-    Array
-    (
-        [2] => 3
-        [3] => 4
-    )
-
-----
-
-filterNotBlank
-~~~~~~~~~~~~~~
-Returns a new array without blank elements.
-
-**Parameters:** ``array $elements``
-
-----
-
-toArray
-~~~~~~~
-Makes an array from element. Returns the given argument if it's already an array.
-
-**Parameters:** ``$element``
-
-**Example:**
-::
-
-    $result = Arrays::toArray('test');
-
-**Result:**
-::
-
-    Array
-    (
-        [0] => test
-    )
-
-----
-
-randElement
-~~~~~~~~~~~
-Returns a random element from the given array.
-
-**Parameters:** ``array $elements``
-
-**Example:**
-::
-
-    $array = ['john', 'city', 'small'[;
-    $rand = Arrays::randElement($array);
-
-**Result:** *rand element from array*
-
-----
-
-combine
-~~~~~~~
-Returns a new array with ``$keys`` as array keys and ``$values`` as array values.
-
-**Parameters:** ``array $keys``, ``array $values``
-
-**Example:**
-::
-
-    $keys = ['id', 'name', 'surname'];
-    $values = [1, 'john', 'smith'];
-    $combined = Arrays::combine($keys, $values);
-
-**Result:**
-::
-
-    Array
-    (
-        [id] => 1
-        [name] => john
-        [surname] => smith
-    )
-
-----
-
-keyExists
-~~~~~~~~~
-Checks is key exists in an array.
-
-**Parameters:** ``array $elements``, ``$key``
-
-**Example:**
-::
-
-    $array = ['id' => 1, 'name' => 'john'];
-    $return = Arrays::keyExists($array, 'name');
-
-**Result:** ``true``
 
 ----
 
@@ -575,22 +627,6 @@ reduce
 Method to reduce an array elements to a string value.
 
 **Parameters:** ``array $elements``, ``callable $function``
-
-----
-
-find
-~~~~
-Finds first element in array that is matched by function. Returns null if element was not found.
-
-**Parameters:** ``array $elements``, ``callable $function``
-
-----
-
-intersect
-~~~~~~~~~
-Computes the intersection of arrays.
-
-**Parameters:** ``array $array1``, ``array $array2``
 
 ----
 
@@ -622,52 +658,6 @@ Result:
 
 ----
 
-sort
-~~~~
-Returns a new array sorted using given comparator.
-The comparator function must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
-To obtain comparator one may use ``Comparator`` class (for instance ``Comparator::natural()`` which yields ordering using comparison operators).
-
-**Parameters:** ``array $array``, ``$comparator``
-
-**Example:**
-::
-
-    class Foo
-    {
-        private $value;
-
-        public function __construct($value)
-        {
-          $this->value = $value;
-        }
-
-        public function getValue()
-        {
-          return $this->value;
-        }
-    }
-    $values = [new Foo(1), new Foo(3), new Foo(2)];
-    $sorted = Arrays::sort($values, Comparator::compareBy('getValue()'));
-
-**Result:**
-::
-
-    Array
-    (
-         [0] =>  class Foo (1) {
-                     private $value => int(1)
-                 }
-         [1] =>  class Foo (1) {
-                     private $value => int(2)
-                 }
-         [2] =>  class Foo (1) {
-                     private $value => int(3)
-                 }
-    )
-
-----
-
 getNestedValue
 ~~~~~~~~~~~~~~
 Returns nested value when found, otherwise returns null.
@@ -684,11 +674,52 @@ Returns nested value when found, otherwise returns null.
 
 ----
 
-removeNestedValue
-~~~~~~~~~~~~~~~~~
-.. deprecated:: 1.0
+findKeyByValue
+~~~~~~~~~~~~~~
+This method returns a key for the given value.
 
-Use :ref:`Arrays::removeNestedKey <Arrays-removeNestedKey>` instead.
+**Parameters:** ``array $elements``, ``$value``
+
+**Example:**
+::
+
+    $array = [
+        'k1' => 4,
+        'k2' => 'd',
+        'k3' => 0,
+        9 => 'p'
+    ];
+    $key = Arrays::findKeyByValue($array, 0);
+
+**Result:** ``k3``
+
+----
+
+hasNestedKey
+~~~~~~~~~~~~
+Checks if array has a nested key.
+
+**Parameters:** ``array $array``, ``array $keys``, ``$flags = null``
+
+**Example:**
+::
+
+    $array = ['1' => ['2' => ['3' => 'value']]];
+    $value = Arrays::hasNestedKey($array, ['1', '2', '3']);
+
+**Result:** ``true``
+
+**Example with null values:**
+::
+
+    $array = ['1' => ['2' => ['3' => null]]];
+    $value = Arrays::hasNestedKey($array, ['1', '2', '3'], Arrays::TREAT_NULL_AS_VALUE);
+
+**Result:** ``true``
+
+.. note::
+
+    It's possible to check array with null values using flag ``Arrays::TREAT_NULL_AS_VALUE``.
 
 ----
 
@@ -735,31 +766,48 @@ Returns array with removed keys even are nested.
 
 ----
 
-hasNestedKey
-~~~~~~~~~~~~
-Checks if array has a nested key.
+removeNestedValue
+~~~~~~~~~~~~~~~~~
+.. deprecated:: 1.0
 
-**Parameters:** ``array $array``, ``array $keys``, ``$flags = null``
+Use :ref:`Arrays::removeNestedKey <Arrays-removeNestedKey>` instead.
+
+----
+
+flatten
+~~~~~~~
+Returns a new array that is a one-dimensional flattening of the given array.
+
+**Parameters:** ``array $elements``
 
 **Example:**
 ::
 
-    $array = ['1' => ['2' => ['3' => 'value']]];
-    $value = Arrays::hasNestedKey($array, ['1', '2', '3']);
+    $array = [
+        'names' => [
+            'john',
+            'peter',
+            'bill'
+        ],
+        'products' => [
+            'cheese',
+            ['milk', 'brie']
+        ]
+    ];
+    $flatten = Arrays::flatten($array);
 
-**Result:** ``true``
-
-**Example with null values:**
+**Result:**
 ::
 
-    $array = ['1' => ['2' => ['3' => null]]];
-    $value = Arrays::hasNestedKey($array, ['1', '2', '3'], Arrays::TREAT_NULL_AS_VALUE);
-
-**Result:** ``true``
-
-.. note::
-
-    It's possible to check array with null values using flag ``Arrays::TREAT_NULL_AS_VALUE``.
+    Array
+    (
+        [0] => john
+        [1] => peter
+        [2] => bill
+        [3] => cheese
+        [4] => milk
+        [5] => brie
+    )
 
 ----
 
@@ -805,49 +853,11 @@ Returns a flattened array of keys with corresponding values.
 
 ----
 
-count
-~~~~~
-Returns the number of elements for which the predicate returns true.
+intersect
+~~~~~~~~~
+Computes the intersection of arrays.
 
-**Parameters:** ``array $elements``, ``$predicate``
-
-**Example:**
-::
-
-    $array = [1, 2, 3];
-    $count = Arrays::count($array, function ($element) {
-       return $element < 3;
-    });
-
-**Result:** ``2``
-
-----
-
-uniqueBy
-~~~~~~~~
-Removes duplicate values from an array. It uses the given expression to extract value that is compared.
-
-**Parameters:** ``array $elements``, ``$selector``
-
-**Example:**
-::
-
-    $a = new stdClass();
-    $a->name = 'bob';
-
-    $b = new stdClass();
-    $b->name = 'bob';
-
-    $array = [$a, $b];
-    $result = Arrays::uniqueBy($array, 'name');
-
-**Result:**
-::
-
-    Array
-    (
-        [0] => $b
-    )
+**Parameters:** ``array $array1``, ``array $array2``
 
 ----
 
@@ -878,28 +888,24 @@ Returns a recursive diff of two arrays
 
 ----
 
-concat
-~~~~~~
-Merges array of arrays into one array.
-Unlike flatten, concat does not merge arrays that are nested more that once.
+toArray
+~~~~~~~
+Makes an array from element. Returns the given argument if it's already an array.
 
-**Parameters:** ``array $arrays``
+**Parameters:** ``$element``
 
 **Example:**
 ::
 
-    $result = Arrays::concat(array(array(1, 2), array(3, 4)));
+    $result = Arrays::toArray('test');
 
 **Result:**
 ::
 
-  Array
-  (
-      [0] => 1
-      [1] => 2
-      [2] => 3
-      [3] => 4
-  )
+    Array
+    (
+        [0] => test
+    )
 
 ----
 
@@ -940,22 +946,18 @@ Returns shuffled array with retained key association.
 
 ----
 
-contains
-~~~~~~~~
-Returns true if array contains given element. Comparison is based on the following rules:
+randElement
+~~~~~~~~~~~
+Returns a random element from the given array.
 
- - same type + same type = strict check
- - object + object = loose check
- - array + array = goes through all elements and invokes ``Arrays::contains()``
- - string + integer = loose check
- - boolean + string (``'true'`` or ``'false'``) = loose check
- - ``false`` in other cases
-
-**Parameters:** ``array $array``, ``mixed $element``
+**Parameters:** ``array $elements``
 
 **Example:**
 ::
 
-    $result = Arrays::contains(array(1, 2, 3), 2);
+    $array = ['john', 'city', 'small'[;
+    $rand = Arrays::randElement($array);
 
-**Result:** ``true``
+**Result:** *rand element from array*
+
+----
