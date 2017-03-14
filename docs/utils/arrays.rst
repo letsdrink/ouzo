@@ -43,24 +43,6 @@ Checks is key exists in an array.
 
 ----
 
-count
-~~~~~
-Returns the number of elements for which the predicate returns true.
-
-**Parameters:** ``array $elements``, ``$predicate``
-
-**Example:**
-::
-
-    $array = [1, 2, 3];
-    $count = Arrays::count($array, function ($element) {
-       return $element < 3;
-    });
-
-**Result:** ``2``
-
-----
-
 concat
 ~~~~~~
 Merges array of arrays into one array.
@@ -245,6 +227,24 @@ find
 Finds first element in array that is matched by function. Returns null if element was not found.
 
 **Parameters:** ``array $elements``, ``callable $function``
+
+----
+
+count
+~~~~~
+Returns the number of elements for which the predicate returns true.
+
+**Parameters:** ``array $elements``, ``$predicate``
+
+**Example:**
+::
+
+    $array = [1, 2, 3];
+    $count = Arrays::count($array, function ($element) {
+       return $element < 3;
+    });
+
+**Result:** ``2``
 
 ----
 
@@ -674,27 +674,6 @@ Returns nested value when found, otherwise returns null.
 
 ----
 
-findKeyByValue
-~~~~~~~~~~~~~~
-This method returns a key for the given value.
-
-**Parameters:** ``array $elements``, ``$value``
-
-**Example:**
-::
-
-    $array = [
-        'k1' => 4,
-        'k2' => 'd',
-        'k3' => 0,
-        9 => 'p'
-    ];
-    $key = Arrays::findKeyByValue($array, 0);
-
-**Result:** ``k3``
-
-----
-
 hasNestedKey
 ~~~~~~~~~~~~
 Checks if array has a nested key.
@@ -771,6 +750,27 @@ removeNestedValue
 .. deprecated:: 1.0
 
 Use :ref:`Arrays::removeNestedKey <Arrays-removeNestedKey>` instead.
+
+----
+
+findKeyByValue
+~~~~~~~~~~~~~~
+This method returns a key for the given value.
+
+**Parameters:** ``array $elements``, ``$value``
+
+**Example:**
+::
+
+    $array = [
+        'k1' => 4,
+        'k2' => 'd',
+        'k3' => 0,
+        9 => 'p'
+    ];
+    $key = Arrays::findKeyByValue($array, 0);
+
+**Result:** ``k3``
 
 ----
 
