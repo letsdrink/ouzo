@@ -928,3 +928,21 @@ Array (
   [1] => a
   [2] => b
 )
+
+contains
+~~~~~~~~
+Returns true if array contains given element. Comparison is based on the following rules:
+ - same type + same type = strict check
+ - object + object = loose check
+ - array + array = goes through all elements and invokes `Arrays::contains()`
+ - string + integer = loose check
+ - boolean + string (`'true'` or `'false'`) = loose check
+ - `false` in other cases
+**Parameters:** ``array $array``, ``mixed $element`` expected value
+
+**Example:**
+::
+
+    $result = Arrays::contains(array(1, 2, 3), 2);
+
+**Result:** ``true``
