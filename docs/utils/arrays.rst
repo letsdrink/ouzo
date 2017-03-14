@@ -909,3 +909,22 @@ Checks if the given array is associative. An array is considered associative whe
     $result = Arrays::isAssociative(array(1 => 'b', 'a' => 2, 'abc'))
 
 **Result:** ``true``
+
+shuffle
+~~~~~~~
+Returns shuffled array with retained key association.
+**Parameters:** ``array $array``
+
+**Example:**
+::
+
+    $result = Arrays::shuffle(array(1 => 'a', 2 => 'b', 3 => 'c'));
+
+**Result:**
+::
+
+Array (
+  [3] => c
+  [1] => a
+  [2] => b
+)
