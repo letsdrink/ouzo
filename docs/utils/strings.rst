@@ -274,15 +274,18 @@ Checks if string is blank.
 **Example:**
 ::
 
-    $result = Strings::isBlank('0');
+    Strings::isBlank('word'); // false
+    Strings::isBlank('0');    // false
 
-**Result:** ``false``
+    Strings::isBlank("\n");    // true
+    Strings::isBlank('   ');   // true
+    Strings::isBlank(PHP_EOL); // true
 
 ----
 
 isNotBlank
 ~~~~~~~~~~
-Checks if string is not blank.
+Checks if string is not blank. This method has a reverse effect of :ref:`Strings::isBlank <Strings-isBlank>`.
 
 **Parameters:** ``$string``
 
