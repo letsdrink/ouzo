@@ -687,6 +687,7 @@ Returns nested value when found, otherwise returns null.
 removeNestedValue
 ~~~~~~~~~~~~~~~~~
 .. deprecated:: 1.0
+
 Use :ref:`Arrays::removeNestedKey <Arrays-removeNestedKey>` instead.
 
 ----
@@ -728,9 +729,9 @@ Returns array with removed keys even are nested.
     **Result:**
     ::
 
-        Array
-        (
-        )
+    Array
+    (
+    )
 
 ----
 
@@ -868,13 +869,14 @@ Returns a recursive diff of two arrays
 
   Array
   (
-   [a] => Array
-         (
-           [d] => e
-         )
-   [0] => f
+      [a] => Array
+          (
+              [d] => e
+          )
+      [0] => f
   )
 
+----
 
 concat
 ~~~~~~
@@ -891,12 +893,15 @@ Unlike flatten, concat does not merge arrays that are nested more that once.
 **Result:**
 ::
 
-Array (
-  [0] => 1
-  [1] => 2
-  [2] => 3
-  [3] => 4
-)
+  Array
+  (
+      [0] => 1
+      [1] => 2
+      [2] => 3
+      [3] => 4
+  )
+
+----
 
 isAssociative
 ~~~~~~~~~~~~~
@@ -909,6 +914,8 @@ Checks if the given array is associative. An array is considered associative whe
     $result = Arrays::isAssociative(array(1 => 'b', 'a' => 2, 'abc'))
 
 **Result:** ``true``
+
+----
 
 shuffle
 ~~~~~~~
@@ -923,21 +930,25 @@ Returns shuffled array with retained key association.
 **Result:**
 ::
 
-Array (
-  [3] => c
-  [1] => a
-  [2] => b
-)
+  Array
+  (
+      [3] => c
+      [1] => a
+      [2] => b
+  )
+
+----
 
 contains
 ~~~~~~~~
 Returns true if array contains given element. Comparison is based on the following rules:
  - same type + same type = strict check
  - object + object = loose check
- - array + array = goes through all elements and invokes `Arrays::contains()`
+ - array + array = goes through all elements and invokes ``Arrays::contains()``
  - string + integer = loose check
- - boolean + string (`'true'` or `'false'`) = loose check
- - `false` in other cases
+ - boolean + string (``'true'`` or ``'false'``) = loose check
+ - ``false`` in other cases
+
 **Parameters:** ``array $array``, ``mixed $element`` expected value
 
 **Example:**
