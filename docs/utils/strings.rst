@@ -74,10 +74,10 @@ Returns a new string without the given suffix.
 **Example:**
 ::
 
-    $string = 'JohnSnow';
+    $string = 'JonSnow';
     $withoutSuffix = Strings::removeSuffix($string, 'Snow');
 
-**Result:** ``John``
+**Result:** ``Jon``
 
 ----
 
