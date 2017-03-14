@@ -36,15 +36,50 @@ class Router
         return $rule;
     }
 
-    /**
-     * @param $path
-     * @param $requestType
-     * @return RouteRule
-     */
     private function findRouteRule($path, $requestType)
     {
-        return Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($path, $requestType) {
-            return $rule->matches($path, $requestType);
-        });
+        //$helperPath = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'CompiledRoutes.php');
+        $trie = \Helper\CompiledRoutes::trie();
+
+        $trie = $trie[$requestType];
+
+        $parts = array_values(array_filter(explode('/', $path)));
+
+        array_push($parts, '/');
+
+        $trie = $this->tryMatch($parts, 0, $trie);
+        if (!$trie) {
+            return null;
+        }
+
+        $explode = explode('#', $trie['action']);
+        $controller = $explode[0];
+        $action = null;
+        if (count($explode) == 2) {
+            $action = $explode[1];
+        }
+        return new RouteRule($requestType, $trie['uri'], $controller, $action, $action !== NULL);
+    }
+
+    private function tryMatch($parts, $partIndex, $trie)
+    {
+        for ($i = $partIndex; $i < count($parts); $i += 1 ) {
+            $children = Arrays::getValue($trie, $parts[$i]);
+            if (!$children) {
+                if (isset($trie[':id'])) {
+                    $tryMatch = $this->tryMatch($parts, $i + 1, $trie[':id']);
+                    if ($tryMatch) {
+                        return $tryMatch;
+                    }
+                }
+                if (isset($trie['*'])) {
+                    return $trie['*'];
+                } else {
+                    return null;
+                }
+            }
+            $trie = $children;
+        }
+        return $trie;
     }
 }

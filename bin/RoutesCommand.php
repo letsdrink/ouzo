@@ -7,6 +7,7 @@ namespace Command;
 
 use Ouzo\ApplicationPaths;
 use Ouzo\Routing\Route;
+use Ouzo\Routing\RouteCompiler;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\JsUriHelperGenerator;
 use Ouzo\Uri\UriHelperGenerator;
@@ -74,6 +75,7 @@ class RoutesCommand extends Command
     {
         $this->generatePhpHelper();
         $this->generateJsHelper();
+        $this->compileRoutes();
     }
 
     private function generatePhpHelper()
@@ -82,6 +84,20 @@ class RoutesCommand extends Command
         if (UriHelperGenerator::generate()->saveToFile($routesPhpHelperPath) !== false) {
             $this->_output->writeln("File with PHP uri helpers is generated in <info>$routesPhpHelperPath</info>");
         }
+    }
+
+    private function compileRoutes()
+    {
+        $routesPhpHelperPath = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'CompiledRoutes.php');
+        $routeCompiler = new RouteCompiler();
+        $trie = $routeCompiler->generateTrie(Route::getRoutes());
+        $code = '<?php namespace Helper; class CompiledRoutes { static function trie() { static $routes =  ' . var_export($trie, true) . '; return $routes;}}';
+
+        $code = preg_replace('/(\n|\s)+/m', ' ', $code);
+        $code = preg_replace('/,\s*\)/m', ')', $code);
+
+        file_put_contents($routesPhpHelperPath, $code);
+        $this->_output->writeln("File with PHP routes is generated in <info>$routesPhpHelperPath</info>");
     }
 
     private function generateJsHelper()
