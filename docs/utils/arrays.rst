@@ -729,19 +729,15 @@ Returns array with removed keys even are nested.
     **Result:**
     ::
 
-    Array
-    (
-    )
+        Array
+        (
+        )
 
 ----
 
 hasNestedKey
 ~~~~~~~~~~~~
 Checks if array has a nested key.
-
-.. note::
-
-    It's possible to check array with null values using flag ``Arrays::TREAT_NULL_AS_VALUE``.
 
 **Parameters:** ``array $array``, ``array $keys``, ``$flags = null``
 
@@ -760,6 +756,10 @@ Checks if array has a nested key.
     $value = Arrays::hasNestedKey($array, ['1', '2', '3'], Arrays::TREAT_NULL_AS_VALUE);
 
 **Result:** ``true``
+
+.. note::
+
+    It's possible to check array with null values using flag ``Arrays::TREAT_NULL_AS_VALUE``.
 
 ----
 
@@ -920,6 +920,7 @@ Checks if the given array is associative. An array is considered associative whe
 shuffle
 ~~~~~~~
 Returns shuffled array with retained key association.
+
 **Parameters:** ``array $array``
 
 **Example:**
@@ -942,6 +943,7 @@ Returns shuffled array with retained key association.
 contains
 ~~~~~~~~
 Returns true if array contains given element. Comparison is based on the following rules:
+
  - same type + same type = strict check
  - object + object = loose check
  - array + array = goes through all elements and invokes ``Arrays::contains()``
@@ -949,7 +951,7 @@ Returns true if array contains given element. Comparison is based on the followi
  - boolean + string (``'true'`` or ``'false'``) = loose check
  - ``false`` in other cases
 
-**Parameters:** ``array $array``, ``mixed $element`` expected value
+**Parameters:** ``array $array``, ``mixed $element``
 
 **Example:**
 ::
