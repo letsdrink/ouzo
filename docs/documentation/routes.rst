@@ -67,19 +67,6 @@ Any route
 
 HTTP request must be one of ``GET``, ``POST``, ``PUT``, ``PATCH`` or ``DELETE``.
 
-Allow all route
----------------
-
-::
-
-    Route::allowAll('/api', 'api');
-
-This type of route allows you to map an action in ``api`` controller to all http methods. E.g. the following request will be accepted:
-
-.. http:method:: GET /api/method1
-.. http:method:: POST /api/method2
-.. http:method:: DELETE /api/method3
-
 ----
 
 Route parameters
@@ -135,15 +122,6 @@ This route creates a default REST routing:
 
 Options
 ~~~~~~~
-
-except
-------
-
-It is possible to exclude some actions from routing. 'except' parameter specifies methods that will be excluded.
-
-::
-
-    Route::allowAll('/api', 'api', ['except' => ['new', 'select']]);
 
 as
 --
