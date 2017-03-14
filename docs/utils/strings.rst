@@ -236,7 +236,7 @@ Changes new lines to ``<br>`` and converts special characters to HTML entities.
 
 htmlEntityDecode
 ~~~~~~~~~~~~~~~~
-Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT.
+Alias for ``html_entity_decode()`` with UTF-8 and defined flag ``ENT_COMPAT``.
 
 **Parameters:** ``$text``
 
@@ -244,7 +244,7 @@ Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT.
 
 htmlEntities
 ~~~~~~~~~~~~
-Alias for htmlentities() with UTF-8 and flags ENT_COMPAT and ENT_SUBSTITUTE (ENT_IGNORE for php <= 5.3).
+Alias for ``htmlentities()`` with UTF-8 and flags ``ENT_COMPAT`` and ``ENT_SUBSTITUTE`` (``ENT_IGNORE`` for php <= 5.3).
 
 **Parameters:** ``$text``
 
@@ -264,6 +264,8 @@ Checks if string representations of two objects are equal.
 **Result:** ``false``
 
 ----
+
+.. _Strings-isBlank:
 
 isBlank
 ~~~~~~~
@@ -285,7 +287,7 @@ Checks if string is blank.
 
 isNotBlank
 ~~~~~~~~~~
-Checks if string is not blank. This method has a reverse effect of :ref:`Strings::isBlank <Strings-isBlank>`.
+Checks if string is not blank. This method has a reverse effect of :ref:`Strings::isBlank() <Strings-isBlank>`.
 
 **Parameters:** ``$string``
 

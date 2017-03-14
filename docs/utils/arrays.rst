@@ -749,7 +749,7 @@ removeNestedValue
 ~~~~~~~~~~~~~~~~~
 .. deprecated:: 1.0
 
-Use :ref:`Arrays::removeNestedKey <Arrays-removeNestedKey>` instead.
+Use :ref:`Arrays::removeNestedKey() <Arrays-removeNestedKey>` instead.
 
 ----
 
