@@ -34,9 +34,11 @@ Ouzo:
 
 ::
 
-    return Arrays::any($users, function($user) {
-        return $user->isCool();
-    });
+    function isAnyCool($users) {
+        return Arrays::any($users, function($user) {
+            return $user->isCool();
+        });
+    }
 
 or using Functions::extract():
 
