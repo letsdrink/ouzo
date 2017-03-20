@@ -7,14 +7,7 @@ Helper functions that can operate on arrays.
 
 contains
 ~~~~~~~~
-Returns true if array contains given element. Comparison is based on the following rules:
-
- - same type + same type = strict check
- - object + object = loose check
- - array + array = compares arrays recursively with these rules
- - string + integer = loose check
- - boolean + string (``'true'`` or ``'false'``) = loose check
- - ``false`` in other cases
+Returns true if array contains given element. Comparison is based on :ref:`Objects::equal() <Objects-equal>`
 
 **Parameters:** ``array $array``, ``mixed $element``
 
@@ -22,6 +15,19 @@ Returns true if array contains given element. Comparison is based on the followi
 ::
 
     $result = Arrays::contains(array(1, 2, 3), 2);
+
+**Result:** ``true``
+
+containsAll
+~~~~~~~~~~~
+Returns true if array contains all given elements. Comparison is based on :ref:`Objects::equal() <Objects-equal>`
+
+**Parameters:** ``array $array``, ``array $elements``
+
+**Example:**
+::
+
+    $result = Arrays::containsAll(array(1, 2, 3), array(1, 2));
 
 **Result:** ``true``
 
