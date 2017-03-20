@@ -364,7 +364,7 @@ class ArrayAssertTest extends PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException')
-            ->hasMessage('Cannot find expected ["prop3"] in actual ["prop1", "prop2"]' . "\n" . 'Failed asserting that true is false.');
+            ->hasMessage('Cannot find expected ["prop3"] in actual ["prop1", "prop2"]');
     }
 
     /**
