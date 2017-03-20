@@ -11,7 +11,7 @@ Returns true if array contains given element. Comparison is based on the followi
 
  - same type + same type = strict check
  - object + object = loose check
- - array + array = goes through all elements and invokes ``Arrays::contains()``
+ - array + array = compares arrays recursively with these rules
  - string + integer = loose check
  - boolean + string (``'true'`` or ``'false'``) = loose check
  - ``false`` in other cases
