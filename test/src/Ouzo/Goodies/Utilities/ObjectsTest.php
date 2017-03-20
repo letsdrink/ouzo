@@ -405,7 +405,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Objects::equal(null, false));
         $this->assertFalse(Objects::equal(null, 'false'));
         $this->assertFalse(Objects::equal(null , ''));
-        $this->assertFalse(Objects::equal(null , []));
+        $this->assertFalse(Objects::equal(null , array()));
         $this->assertFalse(Objects::equal(null, new stdClass()));
     }
 
@@ -421,7 +421,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Objects::equal('', '0'));
         $this->assertFalse(Objects::equal('', false));
         $this->assertFalse(Objects::equal('', 'false'));
-        $this->assertFalse(Objects::equal('', []));
+        $this->assertFalse(Objects::equal('', array()));
         $this->assertFalse(Objects::equal('', new stdClass()));
     }
 
