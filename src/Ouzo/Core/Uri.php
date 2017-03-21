@@ -176,6 +176,14 @@ class Uri
         return $prefix . $url;
     }
 
+    public static function removePrefix($url)
+    {
+        $prefix = Config::getValue('global', 'prefix_system');
+        $prefixForGetMethod = Config::getValue('global', 'prefix_system_get');
+        return Strings::removePrefix(Strings::removePrefix($url, $prefix), $prefixForGetMethod);
+    }
+
+
     public static function getProtocol()
     {
         return (
