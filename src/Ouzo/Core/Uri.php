@@ -170,7 +170,8 @@ class Uri
 
     public static function addPrefixIfNeeded($url)
     {
-        $prefix = Config::getValue('global', 'prefix_system');
+        $prefixForGetMethod = Config::getValue('global', 'prefix_system_get');
+        $prefix = $prefixForGetMethod ? $prefixForGetMethod : Config::getValue('global', 'prefix_system');
         $url = Strings::removePrefix($url, $prefix);
         return $prefix . $url;
     }
