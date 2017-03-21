@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo\Uri;
 
-use Ouzo\Config;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
@@ -40,10 +39,10 @@ class JsUriHelperGenerator
 
     private function createFunction(RouteRule $routeRule)
     {
-        $applicationPrefix = Config::getValue("global", "prefix_system");
-        $name = $routeRule->getName();
         $uri = $routeRule->getUri();
+        $applicationPrefix = UriGeneratorHelper::getApplicationPrefix($routeRule);
         $uriWithVariables = preg_replace('/:(\w+)/', '" + $1 + "', $uri);
+        $name = $routeRule->getName();
         $parameters = $this->prepareParameters($uri);
         $parametersString = implode(', ', $parameters);
         $checkParametersStatement = $this->createCheckParameters($parameters);

@@ -66,7 +66,7 @@ function checkParameter(\$parameter)
         $uri = $routeRule->getUri();
         $parameters = $this->_prepareParameters($uri);
 
-        $uriWithVariables = str_replace(':', '$', $uri);
+        $url = $this->getUrl($routeRule, $uri);
         $parametersString = implode(', ', $parameters);
 
         $checkParametersStatement = $this->_createCheckParameters($parameters);
@@ -74,7 +74,7 @@ function checkParameter(\$parameter)
         $function = <<<FUNCTION
 function $name($parametersString)
 {
-{$checkParametersStatement}return url("$uriWithVariables");
+{$checkParametersStatement}return "$url";
 }\n\n
 FUNCTION;
         return $name ? $function : '';
@@ -108,5 +108,12 @@ FUNCTION;
     public function saveToFile($file)
     {
         return file_put_contents($file, $this->getGeneratedFunctions());
+    }
+
+    private function getUrl(RouteRule $routeRule, $uri)
+    {
+        $uriWithVariables = str_replace(':', '$', $uri);
+        $prefix = UriGeneratorHelper::getApplicationPrefix($routeRule);
+        return $prefix . $uriWithVariables;
     }
 }

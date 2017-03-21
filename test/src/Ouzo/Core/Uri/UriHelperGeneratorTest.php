@@ -38,7 +38,7 @@ function checkParameter(\$parameter)
 
 function showItemUsersPath()
 {
-    return url("/users/show_item");
+    return "/users/show_item";
 }
 
 function allGeneratedUriNames()
@@ -72,7 +72,7 @@ function checkParameter(\$parameter)
 
 function saveUsersPath()
 {
-    return url("/users/save");
+    return "/users/save";
 }
 
 function allGeneratedUriNames()
@@ -106,7 +106,7 @@ function checkParameter(\$parameter)
 
 function getDuplicatedUsersPath()
 {
-    return url("/users/get_duplicated");
+    return "/users/get_duplicated";
 }
 
 function allGeneratedUriNames()
@@ -142,7 +142,7 @@ function showUsersPath(\$id, \$call_id)
 {
     checkParameter(\$id);
     checkParameter(\$call_id);
-    return url("/users/show/id/\$id/call_id/\$call_id");
+    return "/users/show/id/\$id/call_id/\$call_id";
 }
 
 function allGeneratedUriNames()
@@ -176,7 +176,7 @@ function checkParameter(\$parameter)
 
 function userItemPath()
 {
-    return url("/users/show_item");
+    return "/users/show_item";
 }
 
 function allGeneratedUriNames()
@@ -210,24 +210,24 @@ function checkParameter(\$parameter)
 
 function usersPath()
 {
-    return url("/users");
+    return "/users";
 }
 
 function freshUserPath()
 {
-    return url("/users/fresh");
+    return "/users/fresh";
 }
 
 function editUserPath(\$id)
 {
     checkParameter(\$id);
-    return url("/users/\$id/edit");
+    return "/users/\$id/edit";
 }
 
 function userPath(\$id)
 {
     checkParameter(\$id);
-    return url("/users/\$id");
+    return "/users/\$id";
 }
 
 function allGeneratedUriNames()
@@ -289,7 +289,7 @@ function checkParameter(\$parameter)
 function ordersUsersApiPath(\$id)
 {
     checkParameter(\$id);
-    return url("/api/users/\$id/orders");
+    return "/api/users/\$id/orders";
 }
 
 function allGeneratedUriNames()
