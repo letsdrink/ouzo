@@ -563,13 +563,43 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldCheckIsStringContainsSubstring()
+    public function shouldCheckStringContainsSubstring()
     {
         //given
         $string = 'Fear cuts deeper than swords';
 
         //when
         $contains = Strings::contains($string, 'deeper');
+
+        //then
+        $this->assertTrue($contains);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckStringContainsSubstringWhenCaseDoesNotMatch()
+    {
+        //given
+        $string = 'Fear cuts deeper than swords';
+
+        //when
+        $contains = Strings::contains($string, 'DeEpEr');
+
+        //then
+        $this->assertFalse($contains);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckStringContainsSubstringIgnoringCase()
+    {
+        //given
+        $string = 'Fear cuts deeper than swords';
+
+        //when
+        $contains = Strings::containsIgnoreCase($string, 'DeEpEr');
 
         //then
         $this->assertTrue($contains);

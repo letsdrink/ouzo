@@ -6,7 +6,7 @@ INCOMING
 Enhancements:
 * [Core] Added `Validatable::errors()`, so multiple errors can be added at once.
 * [Core] Added Whoops library (issue #243).
-* [Core] removed separate 404 view (you have to check http code in exception.phtml)
+* [Core] Removed separate 404 view (you have to check http code in exception.phtml)
 * [ORM] Added `Db::query()->fetchIterator()` method (issue #241).
 * [ORM] Added support for `EXISTS` subqueries.
 * [ORM] Added `ModelQueryBuilder::fetchIterator()` (issue #242).
@@ -22,6 +22,7 @@ Enhancements:
 * [Utilities] Added `Json::safeDecode()` and `Json::safeEncode()`.
 * [Utilities] You can now read URL parameters as controllers' method arguments (issue #244).
 * [Utilities] `Clock.useTimezone()` accepts both `string` or `DateTimeZone`.
+* [Utilities] Added `Strings::containsIgnoreCase`.
 * [Debug] After `renderPartial()`, you can now find `PARTIAL` and `END PARTIAL` HTML comments along with partial name.
 
 Bug fixes:
