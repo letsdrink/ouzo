@@ -484,7 +484,7 @@ class Model extends Validatable
             $instance->insert();
             return $instance;
         }
-        throw new ValidationException("Validation has failed for object: " . $instance->inspect(), $instance->getErrors());
+        throw new ValidationException($instance->getErrorObjects());
     }
 
     /**

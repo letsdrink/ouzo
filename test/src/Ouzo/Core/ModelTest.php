@@ -16,7 +16,6 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
-use Ouzo\ValidationException;
 
 class ModelTest extends DbTransactionalTestCase
 {
@@ -722,7 +721,7 @@ class ModelTest extends DbTransactionalTestCase
         CatchException::when($product)->create(array());
 
         //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\ValidationException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ValidationException');
     }
 
     /**
