@@ -16,6 +16,7 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
+use Ouzo\ValidationException;
 
 class ModelTest extends DbTransactionalTestCase
 {
@@ -253,7 +254,7 @@ class ModelTest extends DbTransactionalTestCase
         $product = Product::create(array('name' => 'name1', 'description' => 'desc1'));
 
         //when
-        $result = $product->updateAttributes(array('name' => 'new name'));
+        $result = $product->updateAttributesIfValid(array('name' => 'new name'));
 
         //then
         $this->assertTrue($result);
@@ -261,6 +262,23 @@ class ModelTest extends DbTransactionalTestCase
         $updatedProduct = Product::findById($product->getId());
         $this->assertEquals('new name', $updatedProduct->name);
         $this->assertEquals('desc1', $updatedProduct->description);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFailedOnUpdateAttributesIfModelNotValid()
+    {
+        //given
+        $product = Product::create(array('name' => 'name1', 'description' => 'desc1'));
+
+        //when
+        CatchException::when($product)->updateAttributes(array('name' => null));
+
+        //then
+        CatchException::assertThat()
+            ->isInstanceOf('\Ouzo\Api\ValidationException')
+            ->hasMessage("Empty name");
     }
 
     /**

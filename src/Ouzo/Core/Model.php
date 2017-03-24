@@ -3,10 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Exception;
 use InvalidArgumentException;
+use Ouzo\Api\ValidationException;
 use Ouzo\Db\BatchLoadingSession;
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\ModelQueryBuilder;
@@ -204,6 +206,13 @@ class Model extends Validatable
     }
 
     public function updateAttributes($attributes)
+    {
+        if (!$this->updateAttributesIfValid($attributes)) {
+            throw new ValidationException($this->getErrorObjects());
+        }
+    }
+
+    public function updateAttributesIfValid($attributes)
     {
         $this->_modifiedFields = array_merge($this->_modifiedFields, array_keys($attributes));
         $this->assignAttributes($attributes);
