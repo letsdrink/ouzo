@@ -3,9 +3,11 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Logger;
 
 use Ouzo\Config;
+use Ouzo\Utilities\Arrays;
 
 /**
  * Logger class is used to obtain reference to current logger
@@ -17,18 +19,10 @@ use Ouzo\Config;
  *  Logger::getLogger('logger name')->debug('message');
  *  Logger::getLogger('logger name', 'user_custom_config')->debug('message');
  * </code>
- *
- * However, this won't work correctly:
- * <code>
- *  $loggerA = Logger::getLogger('A');
- *  $loggerB = Logger::getLogger('B');
- *  $loggerA->debug('message');
- * </code>
  */
 class Logger
 {
-    private static $_logger;
-    private static $_configuration;
+    private static $loggers = array();
 
     /**
      * @param $name
@@ -37,15 +31,15 @@ class Logger
      */
     public static function getLogger($name, $configuration = 'default')
     {
-        if (!self::$_logger || self::$_configuration != $configuration) {
-            self::$_logger = self::_loadLogger($name, $configuration);
+        $logger = Arrays::getNestedValue(self::$loggers, [$name, $configuration]);
+        if (!$logger) {
+            $logger = self::loadLogger($name, $configuration);
+            Arrays::setNestedValue(self::$loggers, [$name, $configuration], $logger);
         }
-        self::$_configuration = $configuration;
-        self::$_logger->setName($name);
-        return self::$_logger;
+        return $logger;
     }
 
-    private static function _loadLogger($name, $configuration)
+    private static function loadLogger($name, $configuration)
     {
         $logger = Config::getValue('logger', $configuration);
         if (!$logger || !isset($logger['class'])) {
