@@ -31,10 +31,10 @@ class Logger
      */
     public static function getLogger($name, $configuration = 'default')
     {
-        $logger = Arrays::getNestedValue(self::$loggers, [$name, $configuration]);
+        $logger = Arrays::getNestedValue(self::$loggers, array($name, $configuration));
         if (!$logger) {
             $logger = self::loadLogger($name, $configuration);
-            Arrays::setNestedValue(self::$loggers, [$name, $configuration], $logger);
+            Arrays::setNestedValue(self::$loggers, array($name, $configuration), $logger);
         }
         return $logger;
     }
