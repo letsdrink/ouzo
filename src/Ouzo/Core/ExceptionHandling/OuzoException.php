@@ -19,17 +19,17 @@ class OuzoException extends Exception
     /**
      * OuzoException constructor.
      * @param int $httpCode
+     * @param string $message
      * @param Error[]|\Error $errors
      * @param string[] $headers
      */
-    public function __construct($httpCode, $errors, $headers = array())
+    public function __construct($httpCode, $message, $errors, $headers = array())
     {
         $this->_httpCode = $httpCode;
         $this->_errors = Arrays::toArray($errors);
         $this->_headers = $headers;
-
-        $firstError = Arrays::first($this->_errors);
-        parent::__construct($firstError->getMessage(), $firstError->getCode());
+        $message .= " " .implode(", ", $this->getErrorMessages());
+        parent::__construct($message);
     }
 
     public function getHttpCode()

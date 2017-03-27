@@ -20,6 +20,6 @@ class ValidationException extends OuzoException
      */
     public function __construct($errors, $headers = array())
     {
-        parent::__construct(self::HTTP_CODE, $errors, $headers);
+        parent::__construct(self::HTTP_CODE, "Validation failed.", $errors, $headers);
     }
 }

@@ -277,7 +277,7 @@ class ModelTest extends DbTransactionalTestCase
         //then
         CatchException::assertThat()
             ->isInstanceOf('\Ouzo\Exception\ValidationException')
-            ->hasMessage("Empty name");
+            ->hasMessage("Validation failed. Empty name");
     }
 
     /**
