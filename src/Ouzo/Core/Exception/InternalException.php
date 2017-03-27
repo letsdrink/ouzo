@@ -3,13 +3,13 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-namespace Ouzo\Api;
+namespace Ouzo\Exception;
 
 use Ouzo\ExceptionHandling\OuzoException;
 
-class NotFoundException extends OuzoException
+class InternalException extends OuzoException
 {
-    const HTTP_CODE = 404;
+    const HTTP_CODE = 500;
 
     public function __construct($errors, $headers = array())
     {

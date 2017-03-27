@@ -5,7 +5,7 @@
  */
 namespace Ouzo\Csrf;
 
-use Ouzo\Api\ForbiddenException;
+use Ouzo\Exception\ForbiddenException;
 use Ouzo\Controller;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\I18n;

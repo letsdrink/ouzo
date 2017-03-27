@@ -276,7 +276,7 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         CatchException::assertThat()
-            ->isInstanceOf('\Ouzo\Api\ValidationException')
+            ->isInstanceOf('\Ouzo\Exception\ValidationException')
             ->hasMessage("Empty name");
     }
 
@@ -721,7 +721,7 @@ class ModelTest extends DbTransactionalTestCase
         CatchException::when($product)->create(array());
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ValidationException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ValidationException');
     }
 
     /**

@@ -58,7 +58,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/auth_sample/index');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\UnauthorizedException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\UnauthorizedException');
     }
 
     /**
@@ -74,7 +74,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/auth_sample/index');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\UnauthorizedException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\UnauthorizedException');
     }
 
     /**

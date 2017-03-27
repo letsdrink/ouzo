@@ -8,7 +8,7 @@ namespace Ouzo;
 
 use Exception;
 use InvalidArgumentException;
-use Ouzo\Api\ValidationException;
+use Ouzo\Exception\ValidationException;
 use Ouzo\Db\BatchLoadingSession;
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\ModelQueryBuilder;

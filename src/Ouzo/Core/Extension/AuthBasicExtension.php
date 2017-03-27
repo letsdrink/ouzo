@@ -5,7 +5,7 @@
  */
 namespace Ouzo\Extension;
 
-use Ouzo\Api\UnauthorizedException;
+use Ouzo\Exception\UnauthorizedException;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\I18n;
 use Ouzo\Utilities\Arrays;

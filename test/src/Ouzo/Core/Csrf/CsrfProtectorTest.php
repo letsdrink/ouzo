@@ -61,7 +61,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::when($this)->post('/csrf_sample/modify', array());
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
     }
 
     /**
@@ -77,7 +77,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::when($this)->post('/csrf_sample/modify', array('csrftoken' => CsrfProtector::getCsrfToken()));
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
     }
 
     /**
@@ -93,7 +93,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::when($this)->post('/csrf_sample/modify', array());
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
     }
 
     /**
@@ -109,7 +109,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::when($this)->post('/csrf_sample/modify', array('csrftoken' => 'invalid'));
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
     }
 
     /**
@@ -126,7 +126,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::when($this)->post('/csrf_sample/modify', array());
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\ForbiddenException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
     }
 
     /**
