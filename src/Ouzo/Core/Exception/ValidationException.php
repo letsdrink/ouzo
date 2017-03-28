@@ -14,7 +14,6 @@ class ValidationException extends OuzoException
     const HTTP_CODE = 400;
 
     /**
-     * @param int $httpCode
      * @param Error|Error[]| $errors
      * @param string[] $headers
      */
