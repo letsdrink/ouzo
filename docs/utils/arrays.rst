@@ -59,7 +59,7 @@ Unlike flatten, concat does not merge arrays that are nested more that once.
 **Example:**
 ::
 
-    $result = Arrays::concat([[1, 2], [3, 4]));
+    $result = Arrays::concat([[1, 2], [3, 4]]);
 
 **Result:**
 ::
