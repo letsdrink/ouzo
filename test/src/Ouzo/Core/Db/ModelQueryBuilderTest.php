@@ -1459,4 +1459,19 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray(iterator_to_array($results))->extracting('name')->containsExactly('1', '2', '3');
         $this->assertEquals(3, Stats::getNumberOfQueries());
     }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionWhenTryingToBindObjectAsArgument()
+    {
+        //given
+        $product = new Product();
+
+        //when
+        CatchException::when($product)->where(['name' => new stdClass()]);
+
+        //then
+        CatchException::assertThat()->isInstanceOf(DbException::class);
+    }
 }
