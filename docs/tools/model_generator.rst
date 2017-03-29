@@ -41,16 +41,16 @@ The command should output a model class **User**:
     */
     class User extends Model
     {
-        private $_fields = array('login', 'password');
+        private $_fields = ['login', 'password'];
 
-        public function __construct($attributes = array())
+        public function __construct($attributes = [])
         {
-            parent::__construct(array(
+            parent::__construct([
                 'table' => 'users',
                 'primaryKey' => 'id',
                 'attributes' => $attributes,
                 'fields' => $this->_fields
-            ));
+            ]);
         }
     }
     Saving class to file: '/path/to/myproject/Application/Model/User.php'

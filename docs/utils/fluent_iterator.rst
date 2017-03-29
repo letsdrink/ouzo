@@ -6,11 +6,11 @@ It's inspired by FluentIterable from guava library.
 
 ::
 
-    $result = FluentIterator::fromArray(array(1, 2, 3))
+    $result = FluentIterator::fromArray([1, 2, 3])
              ->cycle()
              ->limit(10)
              ->reindex()
-             ->toArray(); // array(1, 2, 3, 1, 2, 3, 1, 2, 3, 1)
+             ->toArray(); // [1, 2, 3, 1, 2, 3, 1, 2, 3, 1]
 
 ::
 

@@ -194,7 +194,7 @@ Returns a FluentArray with the first ``$number`` elements of this FluentArray.
 **Example:**
 ::
 
-    $array = array(1, 2, 3);
+    $array = [1, 2, 3];
     $result = FluentArray::from($array)->limit(2)->toArray();
 
 **Result:**

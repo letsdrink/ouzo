@@ -30,6 +30,6 @@ Let's create a function that extracts field 'name' from the given argument, then
             ->append('! ')
             ->surroundWith("***");
 
-      $product = new Product(array('name' => 'super phone'));
+      $product = new Product(['name' => 'super phone']);
 
       $result = Functions::call($function, $product); //=> '*** extra phone! ***'

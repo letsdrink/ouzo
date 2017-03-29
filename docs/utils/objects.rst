@@ -18,9 +18,9 @@ If the given object implements ``__toString`` method it will be used.
     Objects::toString(1); //=> 1
     Objects::toString(true); //=> true
 
-    Objects::toString(array('a', 1)); //=> ["a", 1]
+    Objects::toString(['a', 1]); //=> ["a", 1]
 
-    Objects::toString(array('key' => 'value1', 'key2' => 'value2'));
+    Objects::toString(['key' => 'value1', 'key2' => 'value2']);
     //=> [<key> => "value1", <key2> => "value2"]
 
     $object = new stdClass();
@@ -119,6 +119,6 @@ Returns true if $a is equal to $b. Comparison is based on the following rules:
 **Example:**
 ::
 
-    $result = Objects::equal(array('1'), array(1));
+    $result = Objects::equal(['1'], ['1']));
 
 **Result:** ``true``

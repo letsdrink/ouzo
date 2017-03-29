@@ -9,12 +9,12 @@ This code will map ``Category`` class to a ``categories`` table with *id* as a p
 
     class Category extends Model
     {
-        public function __construct($attributes = array())
+        public function __construct($attributes = [])
         {
-            parent::__construct(array(
+            parent::__construct([
                 'attributes' => $attributes,
-                'fields' => array('name')
-            ));
+                'fields' => ['name']
+            ]);
         }
     }
 
@@ -23,9 +23,9 @@ This code will map ``Category`` class to a ``categories`` table with *id* as a p
 * ``table`` - defaults to pluralized class name. E.g. customer_orders for ``CustomerOrder``
 * ``primaryKey`` - defaults to ``id``
 * ``sequence`` - defaults to ``table_primaryKey_seq``
-* ``hasMany`` specification of a has-many relation e.g. ``array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))``
-* ``hasOne`` specification of a has-one relation e.g. ``array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))``
-* ``belongsTo`` specification of a belongs-to relation e.g. ``array('name' => array('class' => 'Class', 'foreignKey' => 'foreignKey'))``
+* ``hasMany`` specification of a has-many relation e.g. ``['name' => ['class' => 'Class', 'foreignKey' => 'foreignKey']]``
+* ``hasOne`` specification of a has-one relation e.g. ``['name' => ['class' => 'Class', 'foreignKey' => 'foreignKey']]``
+* ``belongsTo`` specification of a belongs-to relation e.g. ``['name' => ['class' => 'Class', 'foreignKey' => 'foreignKey']]``
 * ``fields`` - mapped column names
 * ``attributes`` -  array of ``column => value``
 * ``beforeSave`` - function to invoke before *insert* or *update*
@@ -45,9 +45,9 @@ You can create an instance using Model's constructor or ```Model::newInstance`` 
 ::
 
     $user = new User();
-    $user = new User(array('name' => 'bob'));
+    $user = new User(['name' => 'bob']);
 
-    $user = User::newInstance(array('name' => 'bob'));
+    $user = User::newInstance(['name' => 'bob']);
 
 Instances created using constructor and ``Model::newInstance`` method are not inserted into db. Validation is also not performed.
 
@@ -55,7 +55,7 @@ If you want to create, validate and save an instance, you can use ``Model::creat
 
 ::
 
-    $user = User::create(array('name' => 'bob'));
+    $user = User::create(['name' => 'bob']);
 
 If validation fails, ``ValidationException`` is thrown.
 
@@ -86,15 +86,15 @@ You can call defined methods before/after save or update.
 
     class Product
     {
-        private $_fields = array('description', 'name', 'id_category', 'id_manufacturer', 'sale');
+        private $_fields = ['description', 'name', 'id_category', 'id_manufacturer', 'sale'];
 
         public function __construct($attributes)
         {
-            parent::__construct(array(
+            parent::__construct([
                     'attributes' => $attributes,
                     'fields' => $this->_fields,
                     'beforeSave' => 'addExclamationMarkToDescription'
-                ));
+                ]);
         }
 
         function addExclamationMarkToDescription()
@@ -109,7 +109,7 @@ All saves or updates will be adding an exclamation mark to description.
 This callback accepts following types of callback:
 
 * string e.g. ``'methodName'``
-* array e.g. ``array('methodName1', 'methodName2')``
+* array e.g. ``['methodName1', 'methodName2']``
 * lambda e.g. ``function() { ... }``
 
 Update of multiple records
@@ -118,8 +118,8 @@ You can update specific columns in records matching given criteria.
 
 ::
 
-    $affectedRows = User::where(array('name' => 'bob'))
-                     ->update(array('name' => 'eric'));
+    $affectedRows = User::where(['name' => 'bob'])
+                     ->update(['name' => 'eric']);
 
 Issued sql query:
 
@@ -262,14 +262,14 @@ We have products that are assigned to exactly one category, and categories that 
 
     class Category extends Model
     {
-        public function __construct($attributes = array())
+        public function __construct($attributes = [])
         {
-            parent::__construct(array(
-                'hasMany' => array(
-                     'products' => array('class' => 'Product', 'foreignKey' => 'category_id')
-                ),
+            parent::__construct([
+                'hasMany' => [
+                     'products' => ['class' => 'Product', 'foreignKey' => 'category_id']
+                ],
                 'attributes' => $attributes,
-                'fields' => array('name')));
+                'fields' => ['name']]);
         }
     }
 
@@ -280,14 +280,14 @@ Parameter ``referencedColumn`` was omitted so the Category's primary key will be
 
     class Product extends Model
     {
-        public function __construct($attributes = array())
+        public function __construct($attributes = [])
         {
-            parent::__construct(array(
+            parent::__construct([
                 'attributes' => $attributes,
-                'belongsTo' => array(
-                    'category' => array('class' => 'Category', 'foreignKey' => 'category_id'),
-                ),
-                'fields' => array('description', 'name', 'category_id')));
+                'belongsTo' => [
+                    'category' => ['class' => 'Category', 'foreignKey' => 'category_id'],
+                ],
+                'fields' => ['description', 'name', 'category_id']]);
         }
     }
 
@@ -300,11 +300,11 @@ If you want to join your class with another class without specifying the relatio
 
 ::
 
-    User::join(Relation::inline(array(
+    User::join(Relation::inline([
       'class' => 'Animal',
       'foreignKey' => 'name',
       'localKey' => 'strange_column_in_users'
-    )))->fetchAll();
+    ]))->fetchAll();
 
 Cyclic relations
 ----------------
@@ -317,25 +317,25 @@ If you want to customize your relation you can use **conditions** mechanism. For
 
 ::
 
-    'hasOne' => array(
-        'product_named_billy' => array(
+    'hasOne' => [
+        'product_named_billy' => [
             'class' => 'Test\Product',
             'foreignKey' => 'id_category',
             'conditions' => "products.name = 'billy'"
-        )
-    )
+        ]
+    ]
 
 you can use a closure too:
 
 ::
 
-    'products_ending_with_b_or_y' => array(
+    'products_ending_with_b_or_y' => [
         'class' => 'Test\Product',
         'foreignKey' => 'id_category',
         'conditions' => function () {
-            return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
+            return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", ['%b', '%y']);
         }
-    )
+    ]
 
 ----
 
@@ -346,23 +346,23 @@ You specify order of elements in hasMany relation:
 
 ::
 
-    'hasMany' => array(
-        'products_ordered_by_name' => array(
+    'hasMany' => [
+        'products_ordered_by_name' => [
             'class' => 'Test\Product',
             'foreignKey' => 'id_category',
             'order' => "products.name ASC"
-        )
-    )
+        ]
+    ]
 
 You can also order relation by multiple columns:
 
 ::
 
-    'product_ordered_by_name' => array(
+    'product_ordered_by_name' => [
         'class' => 'Test\Product',
         'foreignKey' => 'id_category',
-        'order' => array("products.name ASC", "products.description DESC")
-    )
+        'order' => ["products.name ASC", "products.description DESC"]
+    ]
 
 ----
 
@@ -378,7 +378,7 @@ Fully-fledged example:
             ->join('product->category', ['p', 'ct'])
             ->innerJoin('customer', 'c')
             ->where([
-                'o.tax'  => array(7, 22)
+                'o.tax'  => [7, 22],
                 'p.name' => 'Reno',
                 'ct.name' => 'cars'])
             ->with('customer->preferences')
@@ -396,7 +396,7 @@ Simplest way to filter records is to use where clause on Model class e.g.
 
 ::
 
-    User::where(array('login' => 'ouzo'))->fetch();
+    User::where(['login' => 'ouzo'])->fetch();
 
 In the above example we are searching for a user, who has login set to ouzo. You can check the log files (or use Stats class in debug mode) to verify that the database query is correct:
 
@@ -416,7 +416,7 @@ You can specify more than one parameter e.g.
 
 ::
 
-    User::where(array('login' => 'ouzo', 'password' => 'abc'))->fetch();
+    User::where(['login' => 'ouzo', 'password' => 'abc'])->fetch();
 
 Which leads to:
 
@@ -428,7 +428,7 @@ Alternative syntax:
 
 ::
 
-    User::where('login = ? AND password = ?', array('ouzo', 'abc'))->fetch();
+    User::where('login = ? AND password = ?', ['ouzo', 'abc'])->fetch();
 
 Restrictions
 ------------
@@ -436,7 +436,7 @@ You can specify restriction mechanism to build where conditions. Usage:
 
 ::
 
-    Product::where(array('name' => Restrictions::like('te%')))->fetch()
+    Product::where(['name' => Restrictions::like('te%')])->fetch()
 
 Supported restrictions:
 
@@ -518,8 +518,8 @@ Where clauses can be chained e.g.
 
 ::
 
-    User::where(array('login' => 'ouzo'))
-        ->where(array('password' => 'abc'))
+    User::where(['login' => 'ouzo'])
+        ->where(['password' => 'abc'])
         ->fetch();
 
 SQL query will be exactly the same as in the previous example.
@@ -531,7 +531,7 @@ Where clauses are chained with AND operator. In order to have OR operator you ne
 
 ::
 
-    User::where(Any::of(array('login' => 'ouzo', 'password' => 'abc')))
+    User::where(Any::of(['login' => 'ouzo', 'password' => 'abc']))
         ->fetch();
 
 Query:
@@ -546,7 +546,7 @@ If you wish to use multiple values for the same key, you can use Restrictions:
 
 ::
 
-    User::where(Any::of(array('login' => array(Restrictions::equalTo('ouzo'), Restrictions::equalTo('rules')))
+    User::where(Any::of(['login' => [Restrictions::equalTo('ouzo'), Restrictions::equalTo('rules')]]))
         ->fetch();
 
 
@@ -557,7 +557,7 @@ If you want to search for any of values equal to given parameter:
 
 ::
 
-    User::where(array('login' => array('ouzo', 'admin')))->fetch();
+    User::where(['login' => ['ouzo', 'admin']])->fetch();
 
 It results in:
 
@@ -574,7 +574,7 @@ It is not possible to use alternative syntax for this type of query.
 
     ::
 
-        User::where(array('login' => array('ouzo', 'admin')))->fetchAll();
+        User::where(['login' => ['ouzo', 'admin']])->fetchAll();
 
 Retrieve all records
 --------------------
@@ -609,14 +609,14 @@ As a first step relations have to be defined inside a Model class. Let's say the
 
     class User extends Model
     {
-        public function __construct($attributes = array())
+        public function __construct($attributes = [])
         {
-            parent::__construct(array(
+            parent::__construct([
                 'attributes' => $attributes,
-                'hasOne' => array('product' => array(
+                'hasOne' => ['product' => [
                                           'class' => 'Product',
-                                          'foreignKey' => 'user_id')),
-                'fields' => array('login', 'password')));
+                                          'foreignKey' => 'user_id']],
+                'fields' => ['login', 'password']]);
         }
     }
 
@@ -648,7 +648,7 @@ Join can be combined with other parts of query builder (where, limit, offset, or
 
 ::
 
-    User::join('product')->where(array('products.name' => 'app'))->fetch();
+    User::join('product')->where(['products.name' => 'app'])->fetch();
 
 Query:
 
@@ -717,7 +717,7 @@ If you want to alias tables in nested join you can pass array of aliases as a se
 ::
 
     $orders = Order::alias('o')
-            ->join('product->category', array('p', 'c'))
+            ->join('product->category', ['p', 'c'])
             ->where([
                 'o.tax'  => 7
                 'p.name' => 'Reno',
@@ -788,7 +788,7 @@ Count method accepts same arguments as where e.g.
 
 ::
 
-    User::count(array('login' => 'ouzo'));
+    User::count(['login' => 'ouzo']);
 
 Query:
 
@@ -868,7 +868,7 @@ If array is given as an argument the method sorts by multiple columns:
 
 ::
 
-    User::where()->order(array('login', 'id'))->fetch();
+    User::where()->order(['login', 'id'])->fetch();
 
 Query:
 
@@ -882,7 +882,7 @@ Ascending or descending:
 
 ::
 
-    User::where()->order(array('login asc', 'id desc'))->fetch();
+    User::where()->order(['login asc', 'id desc'])->fetch();
 
 Query:
 
