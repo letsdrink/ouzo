@@ -36,7 +36,7 @@ class StdOutputLogger extends AbstractOuzoLogger
         return $this->errorStreamName();
     }
 
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         $stdOut = $this->getStreamForLogLevel($level);
         $this->logWithFunction(function ($message) use ($stdOut) {

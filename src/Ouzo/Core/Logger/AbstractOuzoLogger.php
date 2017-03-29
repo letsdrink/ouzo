@@ -23,7 +23,7 @@ abstract class AbstractOuzoLogger extends AbstractLogger
     public function __construct($name, $configuration)
     {
         $this->name = $name;
-        $messageFormatterClass = 'Ouzo\Logger\DefaultMessageFormatter';
+        $messageFormatterClass = DefaultMessageFormatter::class;
         $logger = Config::getValue('logger', $configuration);
         if ($logger) {
             $messageFormatterClass = Arrays::getValue($logger, 'formatter', $messageFormatterClass);
@@ -51,7 +51,7 @@ abstract class AbstractOuzoLogger extends AbstractLogger
         }
     }
 
-    public function debug($message, array $context = array())
+    public function debug($message, array $context = [])
     {
         if ($this->isDebug()) {
             parent::debug($message, $context);

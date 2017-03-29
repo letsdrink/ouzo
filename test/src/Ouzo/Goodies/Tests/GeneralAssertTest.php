@@ -34,13 +34,13 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
 
     function notInstanceOf()
     {
-        return array(
-            array(array(), stdClass::class),
-            array(4, stdClass::class),
-            array(true, stdClass::class),
-            array(new Example(), stdClass::class),
-            array(new stdClass(), Example::class)
-        );
+        return [
+            [[], stdClass::class],
+            [4, stdClass::class],
+            [true, stdClass::class],
+            [new Example(), stdClass::class],
+            [new stdClass(), Example::class]
+        ];
     }
 
     /**

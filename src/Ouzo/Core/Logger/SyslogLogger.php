@@ -20,7 +20,7 @@ class SyslogLogger extends AbstractOuzoLogger
         closelog();
     }
 
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         $logger = $this->getLogger();
         $syslogLevel = LogLevelTranslator::toSyslogLevel($level);
