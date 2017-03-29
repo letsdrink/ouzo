@@ -432,7 +432,7 @@ Alternative syntax:
 
 Restrictions
 ------------
-You can specify restriction mechanism to build where conditions. Usage:
+You can use restriction mechanism to build where conditions. Usage:
 
 ::
 
@@ -510,7 +510,7 @@ for Sqlite driver produces
 
 .. note::
 
-    For Sqlite driver must be installed ``sqlite3-pcre`` package to correct working.
+    For Sqlite driver ``sqlite3-pcre`` package must be installed to support regular expressions.
 
 Parameters chaining
 -------------------
