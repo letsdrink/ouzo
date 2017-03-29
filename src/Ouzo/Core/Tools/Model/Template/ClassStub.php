@@ -16,23 +16,16 @@ class ClassStub
     private $_stubContent;
     private $_attributes = [];
     private $_placeholderWithReplacements = [];
-    private $shortArrays;
 
-    public function __construct($shortArrays = false)
+    public function __construct()
     {
-        $this->shortArrays = $shortArrays;
         $stubFilePath = $this->_getStubFilePath();
         $this->_stubContent = file_get_contents($stubFilePath);
     }
 
     private function _getStubFilePath()
     {
-        if ($this->shortArrays) {
-            $stubFileName = 'class_short_arrays.stub';
-        } else {
-            $stubFileName = 'class.stub';
-        }
-        return Path::join(__DIR__, 'stubs', $stubFileName);
+        return Path::join(__DIR__, 'stubs', 'class.stub');
     }
 
     public function addColumn(DatabaseColumn $databaseColumn)

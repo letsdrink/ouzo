@@ -22,9 +22,8 @@ class Generator
     private $dialectShortName;
     private $tablePrefix;
     private $namespace;
-    private $shortArrays;
 
-    public function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't', $shortArrays = false)
+    public function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't')
     {
         $this->tableName = $tableName;
         $this->className = $className;
@@ -32,7 +31,6 @@ class Generator
         $this->tablePrefix = $tablePrefix;
         $this->adapter = $this->dialectAdapter();
         $this->dialectShortName = $this->getDialectShortName($this->adapter);
-        $this->shortArrays = $shortArrays;
     }
 
     private function normalizeNameSpace($nameSpace)
@@ -89,7 +87,7 @@ class Generator
     public function templateContents()
     {
         $tableInfo = new TableInfo($this->adapter);
-        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo, $this->getClassNamespace(), $this->shortArrays);
+        $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo, $this->getClassNamespace());
         return $stubReplacer->contents();
     }
 
