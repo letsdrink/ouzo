@@ -13,48 +13,71 @@ class Layout
     public $view;
 
     /** @var string */
-    private $_renderContent;
-
+    private $renderContent;
     /** @var string */
-    private $_layout;
+    private $layout;
 
+    /**
+     * @param View $view
+     */
     public function __construct(View $view)
     {
         $this->view = $view;
     }
 
+    /**
+     * @param string $layout
+     * @return $this
+     */
     public function setLayout($layout)
     {
-        $this->_layout = $layout;
+        $this->layout = $layout;
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function unsetLayout()
     {
-        $this->_layout = null;
+        $this->layout = null;
         return $this;
     }
 
+    /**
+     * @param string $renderContent
+     * @return $this
+     */
     public function setRenderContent($renderContent)
     {
-        $this->_renderContent = $renderContent;
+        $this->renderContent = $renderContent;
         return $this;
     }
 
+    /**
+     * @return void
+     */
     public function renderLayout()
     {
-        if ($this->_layout) {
-            $layoutPath = Path::join(ROOT_PATH, ApplicationPaths::getLayoutPath(), $this->_layout . '.phtml');
+        if ($this->layout) {
+            $layoutPath = Path::join(ROOT_PATH, ApplicationPaths::getLayoutPath(), $this->layout . '.phtml');
             /** @noinspection PhpIncludeInspection */
             require_once($layoutPath);
         }
     }
 
+    /**
+     * @return string
+     */
     public function layoutContent()
     {
-        return $this->_renderContent;
+        return $this->renderContent;
     }
 
+    /**
+     * @param string $content
+     * @return void
+     */
     public function renderAjax($content = '')
     {
         if ($content) {

@@ -70,7 +70,7 @@ class BatchInserter
     public function callBeforeSaveCallbacks()
     {
         foreach ($this->models as $model) {
-            $model->_callBeforeSaveCallbacks();
+            $model->callBeforeSaveCallbacks();
         }
     }
 
@@ -80,8 +80,8 @@ class BatchInserter
     public function callAfterSaveCallbacks()
     {
         foreach ($this->models as $model) {
-            $model->_callAfterSaveCallbacks();
-            $model->_resetModifiedFields();
+            $model->callAfterSaveCallbacks();
+            $model->resetModifiedFields();
         }
     }
 

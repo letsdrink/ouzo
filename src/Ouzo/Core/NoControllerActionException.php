@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
-class NoControllerActionException extends \Exception
+use Exception;
+
+class NoControllerActionException extends Exception
 {
 }

@@ -11,52 +11,73 @@ use Ouzo\Db\RelationFactory;
 
 class Relations
 {
-    private $_relations;
+    /** @var array */
+    private $relations;
+    /** @var string */
     private $modelClass;
 
+    /** @var array */
     private static $relationNames = ['hasOne', 'belongsTo', 'hasMany'];
 
+    /**
+     * @param string $modelClass
+     * @param array $params
+     * @param string $primaryKeyName
+     */
     public function __construct($modelClass, array $params, $primaryKeyName)
     {
         $this->modelClass = $modelClass;
-        $this->_relations = [];
+        $this->relations = [];
 
-        $this->_addRelations($params, $primaryKeyName);
+        $this->addRelations($params, $primaryKeyName);
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @throws InvalidArgumentException
      * @return Relation
      */
     public function getRelation($name)
     {
-        if (!isset($this->_relations[$name])) {
+        if (!isset($this->relations[$name])) {
             throw new InvalidArgumentException("{$this->modelClass} has no relation: $name");
         }
-        return $this->_relations[$name];
+        return $this->relations[$name];
     }
 
+    /***
+     * @param string $name
+     * @return bool
+     */
     public function hasRelation($name)
     {
-        return isset($this->_relations[$name]);
+        return isset($this->relations[$name]);
     }
 
-    private function _addRelation(Relation $relation)
+    /**
+     * @param Relation $relation
+     * @return void
+     */
+    private function addRelation(Relation $relation)
     {
         $name = $relation->getName();
-        if (isset($this->_relations[$name])) {
+        if (isset($this->relations[$name])) {
             throw new InvalidArgumentException("{$this->modelClass} already has a relation: $name");
         }
-        $this->_relations[$name] = $relation;
+        $this->relations[$name] = $relation;
     }
 
-    private function _addRelations(array $params, $primaryKeyName)
+    /**
+     * @param array $params
+     * @param string $primaryKeyName
+     * @return void
+     */
+    private function addRelations(array $params, $primaryKeyName)
     {
         foreach (self::$relationNames as $relationName) {
             if (isset($params[$relationName])) {
                 foreach ($params[$relationName] as $relation => $relationParams) {
-                    $this->_addRelation(RelationFactory::create($relationName, $relation, $relationParams, $primaryKeyName, $this->modelClass));
+                    $this->addRelation(RelationFactory::create($relationName, $relation, $relationParams, $primaryKeyName, $this->modelClass));
                 }
             }
         }

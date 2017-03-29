@@ -21,7 +21,7 @@ class ModelDefinition
     public $sequence;
     /** @var string */
     public $primaryKey;
-    /** @var string */
+    /** @var array */
     public $fields;
     /** @var Relations */
     public $relations;
