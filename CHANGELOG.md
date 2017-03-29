@@ -3,6 +3,8 @@ CHANGELOG
 
 INCOMING
 --------
+Enhancements:
+* [ORM] Model implements Serializable and JsonSerializable interfaces (issue #203).
 
 Release 1.6.1
 --------
