@@ -5,7 +5,6 @@
  */
 namespace Ouzo\ExceptionHandling;
 
-use Exception;
 use Ouzo\Http\ResponseMapper;
 use Ouzo\Utilities\Joiner;
 
@@ -24,7 +23,7 @@ class OuzoExceptionData
         $this->_additionalHeaders = $additionalHeaders;
     }
 
-    public static function forException($httpCode, Exception $exception)
+    public static function forException($httpCode, $exception)
     {
         return new OuzoExceptionData($httpCode, [Error::forException($exception)], $exception->getTraceAsString());
     }

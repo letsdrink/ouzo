@@ -6,7 +6,6 @@
 namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
-use Exception;
 
 class ErrorHandler
 {
@@ -17,7 +16,7 @@ class ErrorHandler
         register_shutdown_function([__CLASS__, 'shutdownHandler']);
     }
 
-    public static function exceptionHandler(Exception $exception)
+    public static function exceptionHandler($exception)
     {
         static::getExceptionHandler()->handleException($exception);
     }
