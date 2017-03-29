@@ -13,12 +13,12 @@ class RelationsTest extends \PHPUnit_Framework_TestCase
     public function shouldThrowExceptionIfDuplicatedRelation()
     {
         //given
-        $params = array(
-            'hasOne' => array(
-                'category' => array('class' => 'Test\Category', 'foreignKey' => 'id_category')
-            ),
-            'belongsTo' => array('category' => array('class' => 'Test\OrderProduct'))
-        );
+        $params = [
+            'hasOne' => [
+                'category' => ['class' => 'Test\Category', 'foreignKey' => 'id_category']
+            ],
+            'belongsTo' => ['category' => ['class' => 'Test\OrderProduct']]
+        ];
 
         //when
         try {

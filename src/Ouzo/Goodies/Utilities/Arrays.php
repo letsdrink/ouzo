@@ -80,7 +80,7 @@ class Arrays
 
         $keys = array_map($keyFunction, $elements);
         $values = array_map($valueFunction, $elements);
-        return empty($keys) ? array() : array_combine($keys, $values);
+        return empty($keys) ? [] : array_combine($keys, $values);
     }
 
     /**
@@ -122,7 +122,7 @@ class Arrays
      */
     public static function flatten(array $array)
     {
-        $return = array();
+        $return = [];
         array_walk_recursive($array, function ($a) use (&$return) {
             $return[] = $a;
         });
@@ -397,7 +397,7 @@ class Arrays
      */
     public static function groupBy(array $elements, $keyFunction, $orderField = null)
     {
-        $map = array();
+        $map = [];
         if (!empty($orderField)) {
             $elements = self::orderBy($elements, $orderField);
         }
@@ -493,7 +493,7 @@ class Arrays
      */
     public static function mapKeys(array $elements, $function)
     {
-        $newArray = array();
+        $newArray = [];
         foreach ($elements as $oldKey => $value) {
             $newKey = Functions::call($function, $oldKey);
             $newArray[$newKey] = $value;
@@ -591,9 +591,9 @@ class Arrays
     public static function toArray($element)
     {
         if (is_null($element)) {
-            return array();
+            return [];
         }
-        return is_array($element) ? $element : array($element);
+        return is_array($element) ? $element : [$element];
     }
 
     /**
@@ -640,7 +640,7 @@ class Arrays
     public static function combine(array $keys, array $values)
     {
         if (empty($keys) || empty($values)) {
-            return array();
+            return [];
         }
         return array_combine($keys, $values);
     }
@@ -738,7 +738,7 @@ class Arrays
         $current = &$array;
         foreach ($keys as $key) {
             if (!isset($current[$key])) {
-                $current[$key] = array();
+                $current[$key] = [];
             }
             $current = &$current[$key];
         }
@@ -948,7 +948,7 @@ class Arrays
      */
     public static function flattenKeysRecursively(array $array)
     {
-        $result = array();
+        $result = [];
         self::_flattenKeyRecursively($array, $result, '');
         return $result;
     }
@@ -1087,7 +1087,7 @@ class Arrays
      */
     public static function recursiveDiff(array $array1, array $array2)
     {
-        $result = array();
+        $result = [];
         foreach ($array1 as $key => $value) {
             if (array_key_exists($key, $array2)) {
                 if (is_array($value)) {
@@ -1106,13 +1106,8 @@ class Arrays
     }
 
     /**
-     * Returns true if array contains given element. Comparison is based on the following rules:
-     *  - same type + same type = strict check
-     *  - object + object = loose check
-     *  - array + array = goes through all elements and invokes Arrays::contains
-     *  - string + integer = loose check
-     *  - boolean + string ('true' or 'false') = loose check
-     *  - false in other cases
+     * Returns true if array contains given element. Comparison is based on Objects:equal.
+     *
      * Example:
      * <code>
      * $result = Arrays::contains(array(1, 2, 3), 2);
@@ -1129,6 +1124,27 @@ class Arrays
     public static function contains(array $array, $element)
     {
         return ArrayContainFunctions::contains($array, $element);
+    }
+
+    /**
+     * Returns true if array contains given elements. Comparison is based on Objects:equal.
+     *
+     * Example:
+     * <code>
+     * $result = Arrays::containsAll(array(1, 2, 3), array(1, 2));
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     *
+     * @param array $array
+     * @param mixed $element expected value
+     * @return bool
+     */
+    public static function containsAll(array $array, $element)
+    {
+        return ArrayContainFunctions::containsAll($array, $element);
     }
 
     /**
@@ -1155,7 +1171,7 @@ class Arrays
         if (empty($array)) {
             return $array;
         }
-        $result = array();
+        $result = [];
         $keys = array_keys($array);
         shuffle($keys);
         foreach ($keys as $key) {
@@ -1212,7 +1228,7 @@ class Arrays
     public static function concat(array $arrays)
     {
         if (empty($arrays)) {
-            return array();
+            return [];
         }
         return call_user_func_array('array_merge', $arrays);
     }

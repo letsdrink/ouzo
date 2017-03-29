@@ -5,15 +5,15 @@
  */
 namespace Ouzo\Tests\Mock;
 
+use Ouzo\Tests\AssertAdapter;
 use PHPUnit_Framework_ExpectationFailedException;
-use SebastianBergmann\Comparator\ComparisonFailure;
 
 class InOrderVerifier
 {
     /**
      * @var array
      */
-    private $scope = array();
+    private $scope = [];
     /**
      * @var null|MethodCall
      */
@@ -73,9 +73,11 @@ class InOrderVerifier
      */
     private function fail($description, $expected, $actual)
     {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-            $description,
-            new ComparisonFailure($expected, $actual, $expected, $actual)
+        AssertAdapter::failWithDiff($description,
+            $expected,
+            $actual,
+            $expected,
+            $actual
         );
     }
 }

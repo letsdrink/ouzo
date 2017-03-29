@@ -20,7 +20,7 @@ class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
         /** @var Dialect $dialect */
         $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
         Mock::when($dialect)->tableName()->thenReturn('customers');
-        Mock::when($dialect)->columns()->thenReturn(array());
+        Mock::when($dialect)->columns()->thenReturn([]);
         $classStubReplacer = new ClassStubPlaceholderReplacer('Customer', new TableInfo($dialect));
 
         //when
@@ -42,7 +42,7 @@ class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
         /** @var Dialect $dialect */
         $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
         Mock::when($dialect)->primaryKey()->thenReturn('id');
-        Mock::when($dialect)->columns()->thenReturn(array());
+        Mock::when($dialect)->columns()->thenReturn([]);
         $classStubReplacer = new ClassStubPlaceholderReplacer('Customer', new TableInfo($dialect));
 
         //when
@@ -66,7 +66,7 @@ class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
         Mock::when($dialect)->primaryKey()->thenReturn('id');
         Mock::when($dialect)->tableName()->thenReturn('customers');
         Mock::when($dialect)->sequence()->thenReturn('customers_id_seq');
-        Mock::when($dialect)->columns()->thenReturn(array());
+        Mock::when($dialect)->columns()->thenReturn([]);
         $classStubReplacer = new ClassStubPlaceholderReplacer('Customer', new TableInfo($dialect));
 
         //when
@@ -88,7 +88,7 @@ class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
         /** @var Dialect $dialect */
         $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
         Mock::when($dialect)->primaryKey()->thenReturn('');
-        Mock::when($dialect)->columns()->thenReturn(array());
+        Mock::when($dialect)->columns()->thenReturn([]);
         $classStubReplacer = new ClassStubPlaceholderReplacer('Customer', new TableInfo($dialect));
 
         //when

@@ -148,16 +148,16 @@ class FilesTest extends PHPUnit_Framework_TestCase
 
     public function units()
     {
-        return array(
-            array(10, '10 B'),
-            array(143, '143 B'),
-            array(10240, '10 KB'),
-            array(146432, '143 KB'),
-            array(10485760, '10 MB'),
-            array(149946368, '143 MB'),
-            array(10737418240, '10 GB'),
-            array(153545080832, '143 GB'),
-        );
+        return [
+            [10, '10 B'],
+            [143, '143 B'],
+            [10240, '10 KB'],
+            [146432, '143 KB'],
+            [10485760, '10 MB'],
+            [149946368, '143 MB'],
+            [10737418240, '10 GB'],
+            [153545080832, '143 GB'],
+        ];
     }
 
     /**

@@ -48,7 +48,7 @@ class Objects
 
     private static function stringifyArrayElements($array)
     {
-        $elements = array();
+        $elements = [];
         $isAssociative = array_keys($array) !== range(0, sizeof($array) - 1);
         array_walk($array, function ($element, $key) use (&$elements, $isAssociative) {
             if ($isAssociative) {
@@ -167,5 +167,52 @@ class Objects
             return $result === null ? $default : $result;
         }
         return $default;
+    }
+
+    /**
+     * Returns true if $a is equal to $b. Comparison is based on the following rules:
+     *  - same type + same type = strict check
+     *  - object + object = loose check
+     *  - array + array = compares arrays recursively with these rules
+     *  - string + integer = loose check ('1' == 1)
+     *  - boolean + string ('true' or 'false') = loose check
+     *  - false in other cases ('' != null, '' != 0, '' != false)
+     *
+     * Example:
+     * <code>
+     * $result = Objects::equal(array('1'), array(1));
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     * @param $a
+     * @param $b
+     * @return bool
+     */
+    public static function equal($a, $b)
+    {
+        if ($a === $b) {
+            return true;
+        }
+        return self::_convertToComparable($a) == self::_convertToComparable($b);
+    }
+
+    static function _convertToComparable($value)
+    {
+        if ($value === NULL) {
+            return "____ouzo_null_marker_so_that_null_!=_''";
+        }
+        $type = gettype($value);
+        if ($type == 'boolean') {
+            $value = $value ? 'true' : 'false';
+        } else if ($type == 'array') {
+            array_walk_recursive($value, function (&$value) {
+                $value = Objects::_convertToComparable($value);
+            });
+        } else if ($type != 'object') {
+            $value = $type != 'object' ? (string)$value : $value;
+        }
+        return $value;
     }
 }

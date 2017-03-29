@@ -94,13 +94,13 @@ class DateTest extends PHPUnit_Framework_TestCase
 
     public function intervalsAndDates()
     {
-        return array(
-            array('1 day', '2010-01-21 12:00'),
-            array('2 days', '2010-01-22 12:00'),
-            array('1 hour', '2010-01-20 13:00'),
-            array('2 hours', '2010-01-20 14:00'),
-            array('25 hours', '2010-01-21 13:00')
-        );
+        return [
+            ['1 day', '2010-01-21 12:00'],
+            ['2 days', '2010-01-22 12:00'],
+            ['1 hour', '2010-01-20 13:00'],
+            ['2 hours', '2010-01-20 14:00'],
+            ['25 hours', '2010-01-21 13:00']
+        ];
     }
 
     /**

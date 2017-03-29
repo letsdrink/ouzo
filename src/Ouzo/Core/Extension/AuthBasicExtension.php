@@ -5,7 +5,7 @@
  */
 namespace Ouzo\Extension;
 
-use Ouzo\Api\UnauthorizedException;
+use Ouzo\Exception\UnauthorizedException;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\I18n;
 use Ouzo\Utilities\Arrays;
@@ -45,7 +45,7 @@ class AuthBasicExtension
         if ($authUser != $login || $authPassword != $pass) {
             $code = defined('UNAUTHORIZED') ? UNAUTHORIZED : 0;
             $error = new Error($code, I18n::t('exception.unauthorized'));
-            throw new UnauthorizedException($error, array('WWW-Authenticate: Basic realm="' . $realm . '"'));
+            throw new UnauthorizedException($error, ['WWW-Authenticate: Basic realm="' . $realm . '"']);
         }
         return true;
     }

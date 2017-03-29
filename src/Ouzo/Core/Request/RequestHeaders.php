@@ -32,7 +32,7 @@ class RequestHeaders
     public static function all()
     {
         //this implementation is for PHP where function getallheaders() doesn't exists in CLI
-        $headers = array();
+        $headers = [];
         foreach ($_SERVER as $name => $value) {
             if (Strings::startsWith($name, 'HTTP_')) {
                 $headerName = Strings::removePrefix($name, 'HTTP_');

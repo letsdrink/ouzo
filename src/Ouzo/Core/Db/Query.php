@@ -3,9 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Db\WhereClause\WhereClause;
+use Ouzo\DbException;
+use Ouzo\Restriction\Restriction;
 use PDO;
 
 class Query
@@ -18,12 +21,12 @@ class Query
     public $order;
     public $limit;
     public $offset;
-    public $updateAttributes = array();
-    public $whereClauses = array();
-    public $joinClauses = array();
-    public $usingClauses = array();
+    public $updateAttributes = [];
+    public $whereClauses = [];
+    public $joinClauses = [];
+    public $usingClauses = [];
     public $type;
-    public $options = array();
+    public $options = [];
     public $groupBy;
     public $lockForUpdate = false;
     public $comment;
@@ -115,6 +118,7 @@ class Query
 
     public function where($where = '', $whereValues = null)
     {
+        $this->validateParameters($where);
         $this->whereClauses[] = WhereClause::create($where, $whereValues);
         return $this;
     }
@@ -125,9 +129,9 @@ class Query
         return $this;
     }
 
-    public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = array())
+    public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = [])
     {
-        $onClauses = array(WhereClause::create($on));
+        $onClauses = [WhereClause::create($on)];
         $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ?: $this->table, $alias, $type, $onClauses);
         return $this;
     }
@@ -154,5 +158,16 @@ class Query
     {
         $this->comment = $comment;
         return $this;
+    }
+
+    private function validateParameters($where)
+    {
+        if (is_array($where)) {
+            foreach ($where as $key => $value) {
+                if (is_object($value) && !($value instanceof Restriction)) {
+                    throw new DbException('Cannot bind object as a parameter for "' . $key . '".');
+                }
+            }
+        }
     }
 }

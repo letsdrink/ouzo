@@ -9,19 +9,19 @@ use Ouzo\Model;
 
 class OrderProduct extends Model
 {
-    private $_fields = array('id_order', 'id_product');
+    private $_fields = ['id_order', 'id_product'];
 
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'table' => 'order_products',
             'sequence' => '',
             'primaryKey' => '',
             'attributes' => $attributes,
-            'belongsTo' => array(
-                'product' => array('class' => 'Test\Product', 'foreignKey' => 'id_product'),
-                'order' => array('class' => 'Test\Order', 'foreignKey' => 'id_order')
-            ),
-            'fields' => $this->_fields));
+            'belongsTo' => [
+                'product' => ['class' => 'Test\Product', 'foreignKey' => 'id_product'],
+                'order' => ['class' => 'Test\Order', 'foreignKey' => 'id_order']
+            ],
+            'fields' => $this->_fields]);
     }
 }

@@ -13,68 +13,96 @@ use Ouzo\Utilities\Path;
 
 class ConfigRepository
 {
-    private $_customConfigs = array();
-    private $_config = array();
-    private $_overriddenConfig = array();
+    /** @var array */
+    private $customConfigs = [];
+    /** @var array */
+    private $config = [];
+    /** @var array */
+    private $overriddenConfig = [];
 
+    /**
+     * @return void
+     */
     public function reload()
     {
-        $this->_config = $this->load();
+        $this->config = $this->load();
     }
 
+    /**
+     * @return array
+     */
     public function load()
     {
-        $configEnv = $this->_getConfigEnv();
-        $configCustom = $this->_getConfigCustom();
-        $configSession = $this->_getConfigFromSession();
+        $configEnv = $this->getConfigEnv();
+        $configCustom = $this->getConfigCustom();
+        $configSession = $this->getConfigFromSession();
         return array_replace_recursive($configEnv, $configCustom, $configSession);
     }
 
-    private function _getConfigEnv()
+    /**
+     * @return array
+     */
+    private function getConfigEnv()
     {
         $configPath = Path::join(ROOT_PATH, 'config', getenv('environment'), 'config.php');
         if (file_exists($configPath)) {
             /** @noinspection PhpIncludeInspection */
             return require($configPath);
         }
-        return array();
+        return [];
     }
 
-    private function _getConfigCustom()
+    /**
+     * @return array
+     */
+    private function getConfigCustom()
     {
-        $result = array();
-        foreach ($this->_customConfigs as $config) {
+        $result = [];
+        foreach ($this->customConfigs as $config) {
             $result = array_replace_recursive($result, $config->getConfig());
         }
         return $result;
     }
 
-    private function _getConfigFromSession()
+    /**
+     * @return array
+     */
+    private function getConfigFromSession()
     {
-        return Session::get('config') ? : array();
+        return Session::get('config') ?: [];
     }
 
+    /**
+     * @param array $keys
+     * @param mixed $value
+     * @return void
+     */
     public function overrideProperty($keys, $value)
     {
         $keys = Arrays::toArray($keys);
-        $oldValue = Arrays::getNestedValue($this->_config, $keys);
-        Arrays::setNestedValue($this->_config, $keys, $value);
-        Arrays::setNestedValue($this->_overriddenConfig, $keys, $oldValue);
+        $oldValue = Arrays::getNestedValue($this->config, $keys);
+        Arrays::setNestedValue($this->config, $keys, $value);
+        Arrays::setNestedValue($this->overriddenConfig, $keys, $oldValue);
     }
 
+    /**
+     * @param array $keys
+     * @throws InvalidArgumentException
+     * @return void
+     */
     public function revertProperty($keys)
     {
         $keys = Arrays::toArray($keys);
-        $config = & $this->_config;
-        $overriddenConfig = & $this->_overriddenConfig;
+        $config = &$this->config;
+        $overriddenConfig = &$this->overriddenConfig;
         $overriddenKey = null;
         foreach ($keys as $key) {
             if (!array_key_exists($key, $overriddenConfig)) {
                 throw new InvalidArgumentException('Cannot revert. No configuration override for: ' . Objects::toString($keys));
             }
-            $config = & $config[$key];
+            $config = &$config[$key];
             if (is_array($overriddenConfig[$key])) {
-                $overriddenConfig = & $overriddenConfig[$key];
+                $overriddenConfig = &$overriddenConfig[$key];
             } else {
                 $overriddenKey = $key;
             }
@@ -82,18 +110,29 @@ class ConfigRepository
         $config = $overriddenConfig[$overriddenKey];
     }
 
+    /**
+     * @param array $args
+     * @return mixed|null
+     */
     public function getValue($args)
     {
-        return Arrays::getNestedValue($this->_config, $args);
+        return Arrays::getNestedValue($this->config, $args);
     }
 
+    /**
+     * @return array
+     */
     public function all()
     {
-        return $this->_config;
+        return $this->config;
     }
 
+    /**
+     * @param object $customConfig
+     * @return void
+     */
     public function addCustomConfig($customConfig)
     {
-        $this->_customConfigs[] = $customConfig;
+        $this->customConfigs[] = $customConfig;
     }
 }

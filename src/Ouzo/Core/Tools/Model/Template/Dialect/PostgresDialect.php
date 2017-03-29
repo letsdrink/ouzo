@@ -61,7 +61,7 @@ class PostgresDialect extends Dialect
         $schema = Db::getInstance()
             ->query("SELECT column_name, data_type, column_default FROM information_schema.columns WHERE table_name = '$tableName' ORDER BY ordinal_position")
             ->fetchAll();
-        $tableColumns = array();
+        $tableColumns = [];
         foreach ($schema as $columnInfo) {
             $columnName = $columnInfo['column_name'];
             $columnDefault = $columnInfo['column_default'];

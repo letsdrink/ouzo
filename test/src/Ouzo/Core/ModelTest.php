@@ -19,7 +19,7 @@ use Ouzo\Utilities\Arrays;
 
 class ModelTest extends DbTransactionalTestCase
 {
-    public  function setUp()
+    public function setUp()
     {
         parent::setUp();
         ModelDefinition::resetCache();
@@ -31,7 +31,7 @@ class ModelTest extends DbTransactionalTestCase
      */
     public function shouldThrowExceptionWhenTableEmptyInPrepareParameters()
     {
-        new Model(array('table' => ''));
+        new Model(['table' => '']);
     }
 
     /**
@@ -40,7 +40,7 @@ class ModelTest extends DbTransactionalTestCase
      */
     public function shouldThrowExceptionWhenFieldsEmptyInPrepareParameters()
     {
-        new Model(array('table' => 't_example', 'fields' => ''));
+        new Model(['table' => 't_example', 'fields' => '']);
     }
 
     /**
@@ -68,7 +68,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldFilterConstructorData()
     {
         //given
-        $data = array('name' => 'Sport', 'junk' => 'Junk');
+        $data = ['name' => 'Sport', 'junk' => 'Junk'];
 
         // when
         $product = new Product($data);
@@ -84,7 +84,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldFilterAttributesForInsert()
     {
         //given
-        $product = new Product(array('name' => 'Sport'));
+        $product = new Product(['name' => 'Sport']);
         $product->junk = 'junk';
 
         // when
@@ -101,7 +101,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldFilterAttributesForUpdate()
     {
         //given
-        $product = Product::create(array('name' => 'Sport'));
+        $product = Product::create(['name' => 'Sport']);
         $product->junk = 'junk';
 
         // when
@@ -118,8 +118,8 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldUpdateAttributesToNull()
     {
         //given
-        $product = Product::create(array('name' => 'Sport', 'price' => '123'));
-        $product->assignAttributes(array('description' => null));
+        $product = Product::create(['name' => 'Sport', 'price' => '123']);
+        $product->assignAttributes(['description' => null]);
 
         // when
         $product->update();
@@ -135,7 +135,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldHaveNoErrorsWhenModelIsValid()
     {
         //given
-        $product = new Product(array('name' => 'Sport'));
+        $product = new Product(['name' => 'Sport']);
 
         //when
         $product->isValid();
@@ -150,7 +150,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldHaveErrorsWhenModelIsNotValid()
     {
         //given
-        $product = new Product(array());
+        $product = new Product([]);
 
         //when
         $product->isValid();
@@ -166,7 +166,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldReturnPrimaryKey()
     {
         //given
-        $product = Product::create(array('name' => 'name1'));
+        $product = Product::create(['name' => 'name1']);
         $id = $product->getId();
 
         $savedProduct = Product::findById($id);
@@ -201,7 +201,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldSetIdInInsert()
     {
         //when
-        $product = Product::create(array('name' => 'name'));
+        $product = Product::create(['name' => 'name']);
 
         //then
         $this->assertTrue(is_numeric($product->id));
@@ -213,7 +213,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldUpdateModel()
     {
         //given
-        $product = Product::create(array('name' => 'Tech'));
+        $product = Product::create(['name' => 'Tech']);
         $product->name = 'new name';
 
         //when
@@ -230,7 +230,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldUpdateModelMultipleTimes()
     {
         //given
-        $product = Product::create(array('name' => 'Tech'));
+        $product = Product::create(['name' => 'Tech']);
         $product->name = 'new name';
         $product->update();
 
@@ -250,10 +250,10 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldUpdateModelAttributes()
     {
         //given
-        $product = Product::create(array('name' => 'name1', 'description' => 'desc1'));
+        $product = Product::create(['name' => 'name1', 'description' => 'desc1']);
 
         //when
-        $result = $product->updateAttributes(array('name' => 'new name'));
+        $result = $product->updateAttributesIfValid(['name' => 'new name']);
 
         //then
         $this->assertTrue($result);
@@ -266,13 +266,30 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldFailedOnUpdateAttributesIfModelNotValid()
+    {
+        //given
+        $product = Product::create(['name' => 'name1', 'description' => 'desc1']);
+
+        //when
+        CatchException::when($product)->updateAttributes(['name' => null]);
+
+        //then
+        CatchException::assertThat()
+            ->isInstanceOf('\Ouzo\Exception\ValidationException')
+            ->hasMessage("Validation failed. Empty name");
+    }
+
+    /**
+     * @test
+     */
     public function updateShouldOnlyUpdateChangedFieldsForCreatedModel()
     {
         //given
-        $product = Product::create(array('name' => 'Tech', 'description' => 'Desc'));
+        $product = Product::create(['name' => 'Tech', 'description' => 'Desc']);
         $product->name = 'new name';
 
-        Product::where()->update(array('description' => 'Something else'));
+        Product::where()->update(['description' => 'Something else']);
 
         //when
         $product->update();
@@ -289,12 +306,12 @@ class ModelTest extends DbTransactionalTestCase
     public function updateShouldOnlyUpdateChangedFieldsForFetchedModel()
     {
         //given
-        Product::create(array('name' => 'Tech', 'description' => 'Desc'));
+        Product::create(['name' => 'Tech', 'description' => 'Desc']);
         $product = Product::where()->fetch();
 
         $product->name = 'new name';
 
-        Product::where()->update(array('description' => 'Something else'));
+        Product::where()->update(['description' => 'Something else']);
 
         //when
         $product->update();
@@ -311,7 +328,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldFilterOutNullAttributesSoThatInsertedAndLoadedObjectsAreEqual()
     {
         //given
-        $product = Product::create(array('name' => 'name'));
+        $product = Product::create(['name' => 'name']);
 
         //when
         $loadedProduct = Product::findById($product->getId());
@@ -326,7 +343,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldBeSameReturnIn_FindById_and_FindByIdOrNull()
     {
         //given
-        $product = Product::create(array('name' => 'name'));
+        $product = Product::create(['name' => 'name']);
 
         //when
         $loadedProduct1 = Product::findById($product->getId());
@@ -342,7 +359,7 @@ class ModelTest extends DbTransactionalTestCase
     public function findByIdOrNullShouldReturnNullWhenIdNotFound()
     {
         //given
-        Product::create(array('name' => 'name'));
+        Product::create(['name' => 'name']);
 
         //when
         $loadedProduct = Product::findByIdOrNull(00000);
@@ -357,7 +374,7 @@ class ModelTest extends DbTransactionalTestCase
     public function getShouldReturnFieldValue()
     {
         //given
-        $product = new Product(array('name' => 'Sport'));
+        $product = new Product(['name' => 'Sport']);
 
         //when
         $value = $product->get('name');
@@ -372,7 +389,7 @@ class ModelTest extends DbTransactionalTestCase
     public function getShouldReturnDefaultWhenNotExistentNestedField()
     {
         //given
-        $product = new Product(array());
+        $product = new Product([]);
 
         //when
         $value = $product->get('type->name', 'default');
@@ -387,7 +404,7 @@ class ModelTest extends DbTransactionalTestCase
     public function getShouldReturnDefaultForNotExistentField()
     {
         //given
-        $product = new Product(array());
+        $product = new Product([]);
 
         //when
         $value = $product->get('name', 'default');
@@ -402,8 +419,8 @@ class ModelTest extends DbTransactionalTestCase
     public function getShouldReturnDefaultForNullField()
     {
         //given
-        $product = new Product(array());
-        $product->assignAttributes(array('name' => null));
+        $product = new Product([]);
+        $product->assignAttributes(['name' => null]);
 
         //when
         $value = $product->get('name', 'default');
@@ -418,8 +435,8 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldReturnNestedValueThroughLazyRelation()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $product = Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
 
         //when
         $result = $product->get('category->name');
@@ -434,7 +451,7 @@ class ModelTest extends DbTransactionalTestCase
     public function getShouldInvokeMethod()
     {
         //given
-        $product = new Product(array());
+        $product = new Product([]);
 
         //when
         $description = $product->get('getDescription()');
@@ -449,7 +466,7 @@ class ModelTest extends DbTransactionalTestCase
     public function attributesShouldReturnAllFieldsIncludingNulls()
     {
         //given
-        $product = Product::create(array('name' => 'Sport'))->reload();
+        $product = Product::create(['name' => 'Sport'])->reload();
 
         //when
         $attributes = $product->attributes();
@@ -466,7 +483,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldReturnDerivedClassNameInInspect()
     {
         //given
-        $product = Product::create(array('name' => 'Sport'));
+        $product = Product::create(['name' => 'Sport']);
 
         //when
         $string = $product->inspect();
@@ -481,13 +498,13 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldNotIncludeBlankPrimaryKeyInFields()
     {
         //given
-        $model = new Model(array('table' => 't_example', 'primaryKey' => '', 'fields' => array('field1')));
+        $model = new Model(['table' => 't_example', 'primaryKey' => '', 'fields' => ['field1']]);
 
         //when
         $fields = $model->_getFields();
 
         //then
-        $this->assertEquals(array('field1'), $fields);
+        $this->assertEquals(['field1'], $fields);
     }
 
     /**
@@ -496,7 +513,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldReturnValueByMagicGetter()
     {
         //given
-        $product = Product::create(array('name' => 'Sport'));
+        $product = Product::create(['name' => 'Sport']);
 
         //when
         $name = $product->name;
@@ -511,7 +528,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldReturnNullWhenFieldWasNotFound()
     {
         //given
-        $product = Product::create(array('name' => 'Sport'));
+        $product = Product::create(['name' => 'Sport']);
 
         //when
         $value = $product->missing_field;
@@ -540,7 +557,7 @@ class ModelTest extends DbTransactionalTestCase
      */
     public function shouldThrowExceptionIfNoRelation()
     {
-        $model = new Model(array('fields' => array('field1')));
+        $model = new Model(['fields' => ['field1']]);
 
         //when
         try {
@@ -557,9 +574,9 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldLazyFetchHasManyRelation()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
-        $product2 = Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $product1 = Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
+        $product2 = Product::create(['name' => 'samsung', 'id_category' => $category->getId()]);
 
         //when
         $products = $category->products;
@@ -574,7 +591,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldLazyFetchHasManyRelationWithoutChildren()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
+        $category = Category::create(['name' => 'phones']);
 
         //when
         $products = $category->products;
@@ -589,8 +606,8 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldLazyFetchHasOneRelation()
     {
         //given
-        $product = Product::create(array('name' => 'sony'));
-        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+        $product = Product::create(['name' => 'sony']);
+        $orderProduct = OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         $fetched = $product->orderProduct;
@@ -605,8 +622,8 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldLazyFetchBelongsToRelation()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $product = Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
 
         //when
         $fetched = $product->category;
@@ -621,20 +638,20 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldJoinMultipleModels()
     {
         //given
-        $category1 = Category::create(array('name' => 'phones'));
-        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category1->getId()));
-        $order1 = Order::create(array('name' => 'order#1'));
-        OrderProduct::create(array('id_order' => $order1->getId(), 'id_product' => $product1->getId()));
+        $category1 = Category::create(['name' => 'phones']);
+        $product1 = Product::create(['name' => 'sony', 'id_category' => $category1->getId()]);
+        $order1 = Order::create(['name' => 'order#1']);
+        OrderProduct::create(['id_order' => $order1->getId(), 'id_product' => $product1->getId()]);
 
-        $category2 = Category::create(array('name' => 'phones'));
-        $product2 = Product::create(array('name' => 'sony', 'id_category' => $category2->getId()));
-        $order2 = Order::create(array('name' => 'order#2'));
-        OrderProduct::create(array('id_order' => $order2->getId(), 'id_product' => $product2->getId()));
+        $category2 = Category::create(['name' => 'phones']);
+        $product2 = Product::create(['name' => 'sony', 'id_category' => $category2->getId()]);
+        $order2 = Order::create(['name' => 'order#2']);
+        OrderProduct::create(['id_order' => $order2->getId(), 'id_product' => $product2->getId()]);
 
         //when
         $orderProducts = OrderProduct::join('product')
             ->join('order')
-            ->where(array('products.id' => $product1->getId()))
+            ->where(['products.id' => $product1->getId()])
             ->fetchAll();
 
         //then
@@ -651,7 +668,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldFindByNativeSql()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
+        $category = Category::create(['name' => 'phones']);
 
         //when
         $found = Category::findBySql("SELECT * FROM categories");
@@ -666,11 +683,11 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldAcceptParamsInFindBySql()
     {
         //given
-        Category::create(array('name' => 'phones1'));
-        Category::create(array('name' => 'phones2'));
+        Category::create(['name' => 'phones1']);
+        Category::create(['name' => 'phones2']);
 
         //when
-        $found = Category::findBySql("SELECT * FROM categories where name = ?", array('phones1'));
+        $found = Category::findBySql("SELECT * FROM categories where name = ?", ['phones1']);
 
         //then
         Assert::thatArray($found)->onProperty('name')->containsOnly('phones1');
@@ -682,8 +699,8 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldAcceptSingleParamInFindBySql()
     {
         //given
-        Category::create(array('name' => 'phones1'));
-        Category::create(array('name' => 'phones2'));
+        Category::create(['name' => 'phones1']);
+        Category::create(['name' => 'phones2']);
 
         //when
         $found = Category::findBySql("SELECT * FROM categories where name = ?", 'phones1');
@@ -701,10 +718,10 @@ class ModelTest extends DbTransactionalTestCase
         $product = new Product();
 
         //when
-        CatchException::when($product)->create(array());
+        CatchException::when($product)->create([]);
 
         //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\ValidationException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ValidationException');
     }
 
     /**
@@ -743,9 +760,9 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldThrowExceptionIfInvalidSequence()
     {
         //given
-        $model = new Model(array('table' => 'products', 'primaryKey' => 'id', 'fields' => array('name'), 'sequence' => 'invalid_seq', 'attributes' => array(
+        $model = new Model(['table' => 'products', 'primaryKey' => 'id', 'fields' => ['name'], 'sequence' => 'invalid_seq', 'attributes' => [
             'name' => 'name'
-        )));
+        ]]);
 
         //when
         CatchException::when($model)->insert();
@@ -763,7 +780,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldHandleZeroAsPrimaryKey()
     {
         //when
-        $product = new Product(array('id' => 0, 'name' => 'Phone'));
+        $product = new Product(['id' => 0, 'name' => 'Phone']);
 
         //then
         $this->assertTrue(0 === $product->id);
@@ -789,8 +806,8 @@ class ModelTest extends DbTransactionalTestCase
     public function updateShouldUpdateOnlyChangedFieldsWhenAssignAttributesIsUsed()
     {
         //given
-        $product = Product::create(array('name' => 'Sport', 'price' => '123'));
-        $product->assignAttributes(array('description' => 'Desc'));
+        $product = Product::create(['name' => 'Sport', 'price' => '123']);
+        $product->assignAttributes(['description' => 'Desc']);
 
         // when
         $product->update();
@@ -806,10 +823,10 @@ class ModelTest extends DbTransactionalTestCase
     public function updateShouldUpdateOnlyChangedFieldsWhenObjectWasCreatedByHandAndIdWasSet()
     {
         //given
-        $product = Product::create(array('name' => 'Sport', 'price' => '123'));
+        $product = Product::create(['name' => 'Sport', 'price' => '123']);
         $id = $product->getId();
 
-        $product = new Product(array('name' => 'Water', 'price' => '123', 'id' => $id));
+        $product = new Product(['name' => 'Water', 'price' => '123', 'id' => $id]);
 
         // when
         $product->update();
@@ -825,7 +842,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldCountValuesWithoutWhere()
     {
         //given
-        Product::create(array('name' => 'Sport', 'price' => '123'));
+        Product::create(['name' => 'Sport', 'price' => '123']);
 
         //when
         $count = Product::count();
@@ -840,13 +857,13 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldUpdateModelWithoutSequence()
     {
         //given
-        $model = ModelWithoutSequence::create(array(
+        $model = ModelWithoutSequence::create([
             'name' => 'name',
             'id' => 1
-        ));
+        ]);
 
         //when
-        $model->updateAttributes(array('name' => 'new name'));
+        $model->updateAttributes(['name' => 'new name']);
 
         //then
         $this->assertEquals('new name', $model->reload()->name);
@@ -859,7 +876,7 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldSelectForUpdate()
     {
         // given
-        Product::create(array('name' => 'Sport', 'price' => '123'));
+        Product::create(['name' => 'Sport', 'price' => '123']);
 
         // when
         $products = Product::where()->lockForUpdate()->fetchAll();
@@ -874,11 +891,72 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldInsertRecordWithoutValues()
     {
         // when
-        $order = Order::create(array());
+        $order = Order::create([]);
 
         // then
         $this->assertNotNull($order);
         $this->assertNotNull($order->getId());
         $this->assertNull($order->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSerializeModel()
+    {
+        // given
+        $product = new Product(['name' => 'Sport']);
+
+        // when
+        $serialized = $product->serialize();
+
+        // then
+        $this->assertEquals('a:1:{s:4:"name";s:5:"Sport";}', $serialized);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldUnserializeModel()
+    {
+        // given
+        $product = new Product(['name' => 'Test']);
+
+        // when
+        $product->unserialize('a:1:{s:4:"name";s:5:"Sport";}');
+
+        // then
+        $this->assertEquals('Sport', $product->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSerializeAndUnserializeModel()
+    {
+        // given
+        $product = new Product(['name' => 'Test']);
+        $serialized = serialize($product);
+
+        // when
+        $unserialized = unserialize($serialized);
+
+        // then
+        $this->assertEquals('Test', $unserialized->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSerializeModelToJson()
+    {
+        // given
+        $product = new Product(['name' => 'Sport']);
+
+        // when
+        $json = $product->jsonSerialize();
+
+        // then
+        $this->assertEquals('{"name":"Sport"}', $json);
     }
 }

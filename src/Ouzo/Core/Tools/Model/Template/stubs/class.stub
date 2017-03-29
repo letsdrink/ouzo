@@ -8,14 +8,14 @@ use Ouzo\Model;
  */
 class {class} extends Model
 {
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             {table_table}
             {table_primaryKey}
             {table_sequence}
             'attributes' => $attributes,
-            'fields' => array({fields})
-        ));
+            'fields' => [{fields}]
+        ]);
     }
 }

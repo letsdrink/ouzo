@@ -9,14 +9,14 @@ use Ouzo\Model;
 
 class ModelWithoutSequence extends Model
 {
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'table' => 'products',
             'primaryKey' => 'id',
-            'fields' => array('name'),
+            'fields' => ['name'],
             'sequence' => '',
             'attributes' => $attributes
-        ));
+        ]);
     }
 }

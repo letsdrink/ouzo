@@ -37,8 +37,7 @@ class ModelGeneratorCommand extends Command
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Class file path. If not specified namespace and class name is used.')
             ->addOption('namespace', 's', InputOption::VALUE_REQUIRED, 'Class namespace (e.g \'Model\MyModel\'). Hint: Remember to escape backslash (\\\\)!', $defaultNamespace)
             ->addOption('remove-prefix', 'p', InputOption::VALUE_REQUIRED, 'Remove prefix from table name when generating class name.', 't')
-            ->addOption('output-only', 'o', InputOption::VALUE_NONE, 'Only displaying generated model class.')
-            ->addOption('short-arrays', 'a', InputOption::VALUE_NONE, 'Generate model class with short arrays. (PHP 5.4).');
+            ->addOption('output-only', 'o', InputOption::VALUE_NONE, 'Only displaying generated model class.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -60,12 +59,11 @@ class ModelGeneratorCommand extends Command
         $fileName = $this->input->getOption('file');
         $nameSpace = $this->input->getOption('namespace');
         $tablePrefixToRemove = $this->input->getOption('remove-prefix') ?: 't';
-        $shortArrays = $this->input->getOption('short-arrays');
         if (empty($tableName)) {
             $this->fail("Specify table name e.g. users");
         }
         try {
-            $modelGenerator = new Generator($tableName, $className, $nameSpace, $tablePrefixToRemove, $shortArrays);
+            $modelGenerator = new Generator($tableName, $className, $nameSpace, $tablePrefixToRemove);
             $this->output->writeln('---------------------------------');
             $this->writeInfo('Database name: <info>%s</info>', Config::getValue('db', 'dbname'));
             $this->writeInfo('Class name: <info>%s</info>', $modelGenerator->getTemplateClassName());

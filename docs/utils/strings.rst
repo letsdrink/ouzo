@@ -74,10 +74,10 @@ Returns a new string without the given suffix.
 **Example:**
 ::
 
-    $string = 'JohnSnow';
+    $string = 'JonSnow';
     $withoutSuffix = Strings::removeSuffix($string, 'Snow');
 
-**Result:** ``John``
+**Result:** ``Jon``
 
 ----
 
@@ -204,7 +204,7 @@ Adds prefix to the string, if string does not start with the prefix already.
 
 tableize
 ~~~~~~~~
-Converts a word into the format for an Ouzo table name. Converts 'ModelName' to 'model_names'.
+Converts a word into the format for an Ouzo table name. Converts ``'ModelName'`` to ``'model_names'``.
 
 **Parameters:** ``$class``
 
@@ -236,7 +236,7 @@ Changes new lines to ``<br>`` and converts special characters to HTML entities.
 
 htmlEntityDecode
 ~~~~~~~~~~~~~~~~
-Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT.
+Alias for ``html_entity_decode()`` with UTF-8 and defined flag ``ENT_COMPAT``.
 
 **Parameters:** ``$text``
 
@@ -244,7 +244,7 @@ Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT.
 
 htmlEntities
 ~~~~~~~~~~~~
-Alias for htmlentities() with UTF-8 and flags ENT_COMPAT and ENT_SUBSTITUTE (ENT_IGNORE for php <= 5.3).
+Alias for ``htmlentities()`` with UTF-8 and flags ``ENT_COMPAT`` and ``ENT_SUBSTITUTE`` (``ENT_IGNORE`` for php <= 5.3).
 
 **Parameters:** ``$text``
 
@@ -265,6 +265,8 @@ Checks if string representations of two objects are equal.
 
 ----
 
+.. _Strings-isBlank:
+
 isBlank
 ~~~~~~~
 Checks if string is blank.
@@ -274,15 +276,18 @@ Checks if string is blank.
 **Example:**
 ::
 
-    $result = Strings::isBlank('0');
+    Strings::isBlank('word'); // false
+    Strings::isBlank('0');    // false
 
-**Result:** ``false``
+    Strings::isBlank("\n");    // true
+    Strings::isBlank('   ');   // true
+    Strings::isBlank(PHP_EOL); // true
 
 ----
 
 isNotBlank
 ~~~~~~~~~~
-Checks if string is not blank.
+Checks if string is not blank. This method has a reverse effect of :ref:`Strings::isBlank() <Strings-isBlank>`.
 
 **Parameters:** ``$string``
 

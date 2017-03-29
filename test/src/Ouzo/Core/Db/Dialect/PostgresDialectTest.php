@@ -63,7 +63,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query = new Query();
         $query->type = QueryType::$DELETE;
         $query->table = 'products';
-        $query->addUsing(new JoinClause('categories', 'id_category', 'id', 'products', 'c', 'USING', array()));
+        $query->addUsing(new JoinClause('categories', 'id_category', 'id', 'products', 'c', 'USING', []));
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -114,7 +114,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
     public function shouldReturnGroupBy()
     {
         // given
-        $query = Query::select(array('category', 'count(*)'))
+        $query = Query::select(['category', 'count(*)'])
             ->table('products')
             ->groupBy('category');
 
@@ -133,7 +133,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->selectColumns = array('id', 'name');
+        $query->selectColumns = ['id', 'name'];
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -167,7 +167,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->order = array('id ASC', 'name DESC');
+        $query->order = ['id ASC', 'name DESC'];
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -235,7 +235,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(array('name' => 'bob', 'id' => '1'));
+        $query->where(['name' => 'bob', 'id' => '1']);
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -252,7 +252,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(array('name' => 'bob', 'id' => '1'));
+        $query->where(['name' => 'bob', 'id' => '1']);
         $query->where('a = 1 OR b = 2');
 
         // when
@@ -270,7 +270,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(Any::of(array('name' => 'bob', 'id' => '1')));
+        $query->where(Any::of(['name' => 'bob', 'id' => '1']));
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -287,8 +287,8 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(array('a' => '5'));
-        $query->where(Any::of(array('name' => 'bob', 'id' => '1')));
+        $query->where(['a' => '5']);
+        $query->where(Any::of(['name' => 'bob', 'id' => '1']));
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -305,7 +305,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(array('name' => array('james', 'bob')));
+        $query->where(['name' => ['james', 'bob']]);
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -339,7 +339,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->join('categories', 'id_category', 'id_category', null, 'LEFT', array('col' => 2));
+        $query->join('categories', 'id_category', 'id_category', null, 'LEFT', ['col' => 2]);
 
         // when
         $sql = $this->dialect->buildQuery($query);
@@ -374,7 +374,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(array('name' => 'james'));
+        $query->where(['name' => 'james']);
         $query->where('id = ?', 1);
 
         // when
@@ -432,8 +432,8 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
         $query = new Query();
         $query->table = 'products';
         $query->type = QueryType::$UPDATE;
-        $query->updateAttributes = array('col1' => 'val1', 'col2' => 'val2');
-        $query->where(array('col1' => 'prev1', 'col2' => 'prev2'));
+        $query->updateAttributes = ['col1' => 'val1', 'col2' => 'val2'];
+        $query->where(['col1' => 'prev1', 'col2' => 'prev2']);
 
         //when
         $sql = $this->dialect->buildQuery($query);
@@ -449,7 +449,7 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
     {
         // given
         $query = new Query();
-        $query->selectColumns = array('name');
+        $query->selectColumns = ['name'];
         $query->table = 'products';
         $query->distinct = true;
 

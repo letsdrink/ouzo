@@ -9,13 +9,21 @@ use Ouzo\Config;
 
 class ConfigOverrideProperty
 {
+    /** @var array */
     private $keys;
 
+    /**
+     * @param array $keys
+     */
     public function __construct($keys)
     {
         $this->keys = $keys;
     }
 
+    /**
+     * @param string $value
+     * @return void
+     */
     public function with($value)
     {
         Config::overridePropertyArray($this->keys, $value);

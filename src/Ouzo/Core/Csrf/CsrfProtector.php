@@ -5,8 +5,8 @@
  */
 namespace Ouzo\Csrf;
 
-use Ouzo\Api\ForbiddenException;
 use Ouzo\Controller;
+use Ouzo\Exception\ForbiddenException;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\I18n;
 use Ouzo\Request\RequestHeaders;
@@ -16,6 +16,10 @@ use Ouzo\Utilities\Arrays;
 
 class CsrfProtector
 {
+    /**
+     * @param Controller $controller
+     * @return void
+     */
     public static function protect(Controller $controller)
     {
         $controller->before[] = function () {
@@ -25,16 +29,20 @@ class CsrfProtector
             return true;
         };
         $controller->after[] = function () use ($controller) {
-            $controller->setCookie(array(
+            $controller->setCookie([
                 'name' => 'csrftoken',
                 'value' => CsrfProtector::getCsrfToken(),
                 'expire' => 0,
                 'path' => '/'
-            ));
+            ]);
             return true;
         };
     }
 
+    /**
+     * @throws ForbiddenException
+     * @return void
+     */
     public static function validate()
     {
         $csrfToken = self::getCsrfToken();
@@ -50,11 +58,18 @@ class CsrfProtector
         }
     }
 
+    /**
+     * @param string $method
+     * @return bool
+     */
     public static function isMethodProtected($method)
     {
-        return !in_array($method, array('GET', 'HEAD', 'OPTIONS', 'TRACE'));
+        return !in_array($method, ['GET', 'HEAD', 'OPTIONS', 'TRACE']);
     }
 
+    /**
+     * @return string
+     */
     public static function getCsrfToken()
     {
         if (Session::has('csrftoken')) {
@@ -65,6 +80,9 @@ class CsrfProtector
         return $token;
     }
 
+    /**
+     * @return bool|string
+     */
     private static function generateCsrfToken()
     {
         $length = 32;
@@ -73,6 +91,10 @@ class CsrfProtector
         return substr(base64_encode($hex), 0, $length);
     }
 
+    /**
+     * @throws ForbiddenException
+     * @return void
+     */
     private static function _throwException()
     {
         throw new ForbiddenException(new Error(defined('UNAUTHORIZED') ? UNAUTHORIZED : 0, I18n::t('exception.forbidden')));

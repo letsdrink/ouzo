@@ -207,14 +207,21 @@ class Functions
     public static function equals($object)
     {
         return function ($value) use ($object) {
-            return $value === $object;
+            return Objects::equal($value, $object);
         };
     }
 
     public static function notEquals($object)
     {
         return function ($value) use ($object) {
-            return $value !== $object;
+            return !Objects::equal($value, $object);
+        };
+    }
+
+    public static function containsAll($element)
+    {
+        return function ($array) use ($element) {
+            return Arrays::containsAll($array, $element);
         };
     }
 

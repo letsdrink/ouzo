@@ -100,3 +100,25 @@ The ``$names`` parameter can also contain method calls e.g.:
     $result = Objects::getValueRecursively($object, 'field1->field2->field3', 'not found');
 
 **Result:** ``'not found'``
+
+.. _Objects-equal:
+
+equal
+~~~~~
+Returns true if $a is equal to $b. Comparison is based on the following rules:
+
+ - same type + same type = strict check
+ - object + object = loose check
+ - array + array = compares arrays recursively with these rules
+ - string + integer = loose check (``'1' == 1``)
+ - boolean + string (``'true'`` or ``'false'``) = loose check
+ - ``false`` in other cases (``'' != null``, ``'' != 0``, ``'' != false``)
+
+**Parameters:** ``mixed $a``, ``mixed $b``
+
+**Example:**
+::
+
+    $result = Objects::equal(array('1'), array(1));
+
+**Result:** ``true``

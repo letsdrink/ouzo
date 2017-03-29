@@ -20,7 +20,7 @@ class QueryExecutor
     private $_db;
     private $_adapter;
     private $_query;
-    private $_boundValues = array();
+    private $_boundValues = [];
 
     public $_sql;
     public $_fetchStyle = PDO::FETCH_ASSOC;

@@ -19,6 +19,6 @@ class EmptyWhereClause extends WhereClause
 
     public function getParameters()
     {
-        return array();
+        return [];
     }
 }

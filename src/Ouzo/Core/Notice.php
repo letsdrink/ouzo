@@ -23,7 +23,7 @@ class Notice
 
     public function requestUrlMatches()
     {
-        return $this->getUrl() == null || !strcmp($this->getCurrentPath(), $this->getUrl());
+        return $this->getUrl() == null || !strcmp(Uri::removePrefix($this->getCurrentPath()), Uri::removePrefix($this->getUrl()));
     }
 
     public function __toString()

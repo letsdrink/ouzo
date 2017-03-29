@@ -5,7 +5,6 @@
  */
 namespace Ouzo\ExceptionHandling;
 
-use Exception;
 use Ouzo\Config;
 use Ouzo\I18n;
 use Ouzo\UserException;
@@ -23,7 +22,7 @@ class Error
         $this->originalMessage = $originalMessage ?: $message;
     }
 
-    public static function forException(Exception $exception)
+    public static function forException($exception)
     {
         if (Config::getValue('debug')) {
             return new Error($exception->getCode(), self::_classNameAndMessage($exception));
@@ -34,17 +33,17 @@ class Error
         return new Error($exception->getCode(), I18n::t('exception.unknown'), $exception->getMessage());
     }
 
-    private static function _classNameAndMessage(Exception $exception)
+    private static function _classNameAndMessage($exception)
     {
         return get_class($exception) . ': ' . $exception->getMessage();
     }
 
     public function toArray()
     {
-        return array('message' => $this->message, 'code' => $this->code);
+        return ['message' => $this->message, 'code' => $this->code];
     }
 
-    public static function getByCode($code, $params = array(), $prefix = 'errors.')
+    public static function getByCode($code, $params = [], $prefix = 'errors.')
     {
         $message = I18n::t($prefix . $code, $params);
         return new Error($code, $message);

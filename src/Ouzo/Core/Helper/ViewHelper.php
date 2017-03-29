@@ -32,13 +32,13 @@ function renderWidget($widgetName)
     return $widget->render();
 }
 
-function renderPartial($name, array $values = array())
+function renderPartial($name, array $values = [])
 {
     $view = new View($name, $values);
     return PartialTooltip::wrap($view->render(), $name);
 }
 
-function addFile(array $fileInfo = array(), $stringToRemove = '')
+function addFile(array $fileInfo = [], $stringToRemove = '')
 {
     if (!empty($fileInfo)) {
         $prefixSystem = Config::getValue('global', 'prefix_system');
@@ -53,6 +53,16 @@ function addFile(array $fileInfo = array(), $stringToRemove = '')
     return null;
 }
 
+function addScript($url, $stringToRemove = '')
+{
+    return addFile(['type' => 'script', 'params' => ['url' => $url]], $stringToRemove);
+}
+
+function addLink($url, $stringToRemove = '')
+{
+    return addFile(['type' => 'link', 'params' => ['url' => $url]], $stringToRemove);
+}
+
 function _getHtmlFileTag($type, $url)
 {
     switch ($type) {
@@ -64,7 +74,7 @@ function _getHtmlFileTag($type, $url)
     return null;
 }
 
-function showErrors(array $errors = array())
+function showErrors(array $errors = [])
 {
     if ($errors) {
         $errorView = new View('error_alert');
@@ -74,7 +84,7 @@ function showErrors(array $errors = array())
     return null;
 }
 
-function showNotices(array $notices = array())
+function showNotices(array $notices = [])
 {
     if (Session::has('messages') || $notices) {
         $sessionMessages = Arrays::filterNotBlank(Arrays::toArray(Session::get('messages')));
@@ -86,7 +96,7 @@ function showNotices(array $notices = array())
     return null;
 }
 
-function showSuccess(array $notices = array())
+function showSuccess(array $notices = [])
 {
     if (Session::has('messages') || $notices) {
         $sessionMessages = Arrays::filterNotBlank(Arrays::toArray(Session::get('messages')));
@@ -98,7 +108,7 @@ function showSuccess(array $notices = array())
     return null;
 }
 
-function showWarnings(array $warnings = array())
+function showWarnings(array $warnings = [])
 {
     if ($warnings) {
         $warningView = new View('warning_alert');
@@ -128,7 +138,7 @@ function pluralise($count, $words)
     return $words[$count == 1 ? 'singular' : 'plural'];
 }
 
-function t($textKey, $params = array(), PluralizeOption $pluralize = null)
+function t($textKey, $params = [], PluralizeOption $pluralize = null)
 {
     return I18n::t($textKey, $params, $pluralize);
 }

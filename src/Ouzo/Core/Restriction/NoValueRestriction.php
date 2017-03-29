@@ -9,6 +9,6 @@ abstract class NoValueRestriction extends Restriction
 {
     public function getValues()
     {
-        return array();
+        return [];
     }
 }

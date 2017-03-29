@@ -55,7 +55,7 @@ You can render other views by passing a parameter to the render method.
         public function update()
         {
             $user = User::findById($this->params['id']);
-            if ($user->updateAttributes($this->params['user'])) {
+            if ($user->updateAttributesIfValid($this->params['user'])) {
                 $this->redirect(userPath($user->id), "User updated");
             } else {
                 $this->view->user = $user;
@@ -68,7 +68,7 @@ Method **edit** is called when edition page is requested. It assigns ``user`` va
 
 Method **update** is called when updated user form is submitted. It loads a user by id and then tries to update it. If update succeeds we return redirect to the user page with message *"User updated"*.
 If update fails we use ``$user`` variable containing new values to render edition page.
-It's important that we use the same ``$user`` variable on which $user->updateAttributes was called.
+It's important that we use the same ``$user`` variable on which $user->updateAttributesIfValid was called.
 It will contain values submitted by browser and validation errors that prevented successful update.
 
 ----
@@ -109,7 +109,7 @@ You can pass additional options to override the default mapping.
         'fields' => ['login', 'password']
     ]);
 
-Function **validate** is called by function **isValid** and **updateAttributes**.
+Function **validate** is called by function **isValid** and **updateAttributesIfValid**.
 **validateNotBlank** takes a value to validate, error message and a field that is highlighted in red when validation fails.
 
 ----

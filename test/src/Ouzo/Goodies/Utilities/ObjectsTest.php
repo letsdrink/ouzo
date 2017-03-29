@@ -281,7 +281,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     public function shouldStringifyNotAssociativeArray()
     {
         //given
-        $notAssociativeArray = array('a', 1);
+        $notAssociativeArray = ['a', 1];
 
         //when
         $stringifyArray = Objects::toString($notAssociativeArray);
@@ -296,7 +296,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     public function shouldStringifyAssociativeArray()
     {
         //given
-        $associativeArray = array('key' => 'value1', 'key2' => 'value2');
+        $associativeArray = ['key' => 'value1', 'key2' => 'value2'];
 
         //when
         $stringifyArray = Objects::toString($associativeArray);
@@ -360,7 +360,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     public function shouldReturnValueFormArray()
     {
         //given
-        $array = array('id' => 123, 'name' => 'John');
+        $array = ['id' => 123, 'name' => 'John'];
 
         //when
         $value = Objects::getValue($array, 'name');
@@ -375,21 +375,162 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     public function shouldReturnValueFormMultidimensionalArray()
     {
         //given
-        $array = array(
+        $array = [
             'id' => 123,
             'name' => 'John',
-            'info' => array(
-                'account' => array(
+            'info' => [
+                'account' => [
                     'number' => '2343-de',
                     'info' => 'some info about account'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         //when
         $value = Objects::getValueRecursively($array, 'info->account->number');
 
         //then
         $this->assertEquals('2343-de', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCompareWithNull()
+    {
+        $this->assertTrue(Objects::equal(null, null));
+
+        $this->assertFalse(Objects::equal(null, 0));
+        $this->assertFalse(Objects::equal(null, '0'));
+        $this->assertFalse(Objects::equal(null, false));
+        $this->assertFalse(Objects::equal(null, 'false'));
+        $this->assertFalse(Objects::equal(null , ''));
+        $this->assertFalse(Objects::equal(null , []));
+        $this->assertFalse(Objects::equal(null, new stdClass()));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCompareWithEmptyString()
+    {
+        $this->assertTrue(Objects::equal('', ''));
+
+        $this->assertFalse(Objects::equal('', null));
+        $this->assertFalse(Objects::equal('', 0));
+        $this->assertFalse(Objects::equal('', '0'));
+        $this->assertFalse(Objects::equal('', false));
+        $this->assertFalse(Objects::equal('', 'false'));
+        $this->assertFalse(Objects::equal('', []));
+        $this->assertFalse(Objects::equal('', new stdClass()));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCompareStrings()
+    {
+        $this->assertTrue(Objects::equal('', ''));
+        $this->assertTrue(Objects::equal('a', 'a'));
+        $this->assertTrue(Objects::equal('1', '1'));
+
+        $this->assertFalse(Objects::equal('a', 'b'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCompareStringsWithIntegers()
+    {
+        $this->assertTrue(Objects::equal('1', 1));
+        $this->assertTrue(Objects::equal(1, '1'));
+
+        $this->assertFalse(Objects::equal('1', 2));
+        $this->assertFalse(Objects::equal(2, '1'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCompareArrays()
+    {
+        $this->assertTrue(Objects::equal(['1'], [1]));
+        $this->assertTrue(Objects::equal([1], ['1']));
+        $this->assertTrue(Objects::equal([null], [null]));
+        $this->assertTrue(Objects::equal([''], ['']));
+        $this->assertTrue(Objects::equal(['a'], ['a']));
+        $this->assertTrue(Objects::equal([new stdClass()], [new stdClass()]));
+
+        $this->assertFalse(Objects::equal(['1'], [2]));
+        $this->assertFalse(Objects::equal([2], ['1']));
+        $this->assertFalse(Objects::equal([''], [false]));
+        $this->assertFalse(Objects::equal([''], [0]));
+        $this->assertFalse(Objects::equal([''], [null]));
+        $this->assertFalse(Objects::equal(['a'], ['b']));
+        $this->assertFalse(Objects::equal([''], [new stdClass()]));
+        $this->assertFalse(Objects::equal([null], [new stdClass()]));
+        $this->assertFalse(Objects::equal([false], [new stdClass()]));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCompareNestedArrays()
+    {
+        $array = [
+            '1',
+            [
+                1 => 123
+            ],
+            new stdClass(),
+            3 => null
+        ];
+        $arrayWithIntConversion = [
+            1,
+            [
+                '1' => '123'
+            ],
+            new stdClass(),
+            3 => null
+        ];
+        $arrayWithNullToStringConversion = [
+            1,
+            [
+                '1' => '123'
+            ],
+            new stdClass(),
+            3 => ''
+        ];
+        $arrayWithDifferentKey = [
+            1,
+            [
+                2 => '123'
+            ],
+            new stdClass()
+        ];
+
+        $this->assertTrue(Objects::equal($array, $arrayWithIntConversion));
+        $this->assertFalse(Objects::equal($array, $arrayWithNullToStringConversion));
+        $this->assertFalse(Objects::equal($array, $arrayWithDifferentKey));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCompareObjects()
+    {
+        $a = new stdClass();
+        $a->var = 1;
+
+        $b = new stdClass();
+        $b->var = 2;
+
+        $c = new stdClass();
+        $c->var = '1';
+
+        $this->assertTrue(Objects::equal(new stdClass(), new stdClass()));
+        $this->assertTrue(Objects::equal($a, $a));
+        $this->assertTrue(Objects::equal($a, $c));
+        $this->assertFalse(Objects::equal($a, new stdClass()));
     }
 }

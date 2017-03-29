@@ -106,7 +106,7 @@ class StringsTest extends PHPUnit_Framework_TestCase
         $string = 'prefixRest';
 
         //when
-        $withoutPrefix = Strings::removePrefixes($string, array('pre', 'fix'));
+        $withoutPrefix = Strings::removePrefixes($string, ['pre', 'fix']);
 
         //then
         $this->assertEquals('Rest', $withoutPrefix);
@@ -529,10 +529,10 @@ class StringsTest extends PHPUnit_Framework_TestCase
     {
         //given
         $sprintfString = "This is %{what}! %{what}? This is %{place}!";
-        $assocArray = array(
+        $assocArray = [
             'what' => 'madness',
             'place' => 'Sparta'
-        );
+        ];
 
         //when
         $resultString = Strings::sprintAssoc($sprintfString, $assocArray);
@@ -548,10 +548,10 @@ class StringsTest extends PHPUnit_Framework_TestCase
     {
         //given
         $sprintfString = "This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!";
-        $assocArray = array(
+        $assocArray = [
             'what' => 'madness',
             'place' => 'Sparta'
-        );
+        ];
 
         //when
         $resultString = Strings::sprintAssocDefault($sprintfString, $assocArray);
@@ -563,13 +563,43 @@ class StringsTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldCheckIsStringContainsSubstring()
+    public function shouldCheckStringContainsSubstring()
     {
         //given
         $string = 'Fear cuts deeper than swords';
 
         //when
         $contains = Strings::contains($string, 'deeper');
+
+        //then
+        $this->assertTrue($contains);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckStringContainsSubstringWhenCaseDoesNotMatch()
+    {
+        //given
+        $string = 'Fear cuts deeper than swords';
+
+        //when
+        $contains = Strings::contains($string, 'DeEpEr');
+
+        //then
+        $this->assertFalse($contains);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCheckStringContainsSubstringIgnoringCase()
+    {
+        //given
+        $string = 'Fear cuts deeper than swords';
+
+        //when
+        $contains = Strings::containsIgnoreCase($string, 'DeEpEr');
 
         //then
         $this->assertTrue($contains);

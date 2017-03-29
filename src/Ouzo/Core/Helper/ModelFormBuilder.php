@@ -39,7 +39,7 @@ class ModelFormBuilder
     private function _generatePredefinedAttributes($field)
     {
         $id = $this->_generateId($field);
-        $attributes = array('id' => $id);
+        $attributes = ['id' => $id];
 
         if (in_array($field, $this->_object->getErrorFields())) {
             $attributes['class'] = 'error';
@@ -52,47 +52,47 @@ class ModelFormBuilder
         return I18n::t($this->_objectName() . '.' . $field);
     }
 
-    public function label($field, array $options = array())
+    public function label($field, array $options = [])
     {
         return labelTag($this->_generateId($field), $this->_translate($field), $options);
     }
 
-    public function textField($field, array $options = array())
+    public function textField($field, array $options = [])
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
         return textFieldTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
-    public function textArea($field, array $options = array())
+    public function textArea($field, array $options = [])
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
         return textAreaTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
-    public function selectField($field, array $items, $options = array(), $promptOption = null)
+    public function selectField($field, array $items, $options = [], $promptOption = null)
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
-        return selectTag($this->generateName($field), $items, array($this->_object->$field), $attributes, $promptOption);
+        return selectTag($this->generateName($field), $items, [$this->_object->$field], $attributes, $promptOption);
     }
 
-    public function hiddenField($field, $options = array())
+    public function hiddenField($field, $options = [])
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
         return hiddenTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
-    public function passwordField($field, array $options = array())
+    public function passwordField($field, array $options = [])
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
         return passwordFieldTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
-    public function checkboxField($field, array $options = array())
+    public function checkboxField($field, array $options = [])
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
@@ -101,14 +101,14 @@ class ModelFormBuilder
         return checkboxTag($this->generateName($field), '1', $checked, $attributes);
     }
 
-    public function radioField($field, array $options = array())
+    public function radioField($field, array $options = [])
     {
         $attributes = $this->_generatePredefinedAttributes($field);
         $attributes = $this->_mergeAttributes($attributes, $options);
         return radioButtonTag($this->generateName($field), $this->_object->$field, $attributes);
     }
 
-    public function start($url, $method = 'post', $attributes = array())
+    public function start($url, $method = 'post', $attributes = [])
     {
         return formTag($url, $method, $attributes) . hiddenTag('csrftoken', CsrfProtector::getCsrfToken());
     }
@@ -126,7 +126,7 @@ class ModelFormBuilder
     private function _mergeAttributes($attributes, $options)
     {
         if (isset($options['class']) && isset($attributes['class'])) {
-            $options['class'] = Joiner::on(' ')->skipNulls()->join(array($options['class'], $attributes['class']));
+            $options['class'] = Joiner::on(' ')->skipNulls()->join([$options['class'], $attributes['class']]);
         }
         return array_merge($attributes, $options);
     }

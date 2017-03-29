@@ -25,7 +25,7 @@ class TransactionalProxy
     {
         $object = $this->_object;
         return Db::getInstance()->runInTransaction(function () use ($object, $name, $arguments) {
-            return call_user_func_array(array($object, $name), $arguments);
+            return call_user_func_array([$object, $name], $arguments);
         });
     }
 

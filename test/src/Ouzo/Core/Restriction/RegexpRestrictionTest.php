@@ -28,7 +28,7 @@ class RegexpRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key ~ ?', $sql);
-        $this->assertEquals(array('value'), $restriction->getValues());
+        $this->assertEquals(['value'], $restriction->getValues());
     }
 
     /**
@@ -45,7 +45,7 @@ class RegexpRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key REGEXP ?', $sql);
-        $this->assertEquals(array('value'), $restriction->getValues());
+        $this->assertEquals(['value'], $restriction->getValues());
     }
 
     /**
@@ -62,6 +62,6 @@ class RegexpRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key REGEXP ?', $sql);
-        $this->assertEquals(array('value'), $restriction->getValues());
+        $this->assertEquals(['value'], $restriction->getValues());
     }
 }

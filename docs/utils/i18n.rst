@@ -66,7 +66,7 @@ Ouzo supports translation parameters. There can be as many parameters given as w
 Usage:
 ::
 
-    <?= t('introduction', array('name' => 'John Snow')) ?>
+    <?= t('introduction', array('name' => 'Jon Snow')) ?>
 
 ----
 

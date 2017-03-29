@@ -61,7 +61,7 @@ class ModelJoin
         $joinTable = $joinedModel->getTableName();
         $joinKey = $this->relation->getForeignKey();
         $idName = $this->relation->getLocalKey();
-        $onClauses = array(WhereClause::create($this->on), $this->relation->getCondition());
+        $onClauses = [WhereClause::create($this->on), $this->relation->getCondition()];
         return new JoinClause($joinTable, $joinKey, $idName, $this->fromTable, $this->alias, $this->type, $onClauses);
     }
 

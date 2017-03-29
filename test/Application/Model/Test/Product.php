@@ -14,19 +14,19 @@ use Ouzo\Model;
  */
 class Product extends Model
 {
-    private $_fields = array('description', 'name', 'id_category', 'id_manufacturer', 'sale');
+    private $_fields = ['description', 'name', 'id_category', 'id_manufacturer', 'sale'];
 
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'attributes' => $attributes,
-            'belongsTo' => array(
-                'manufacturer' => array('class' => 'Test\Manufacturer', 'foreignKey' => 'id_manufacturer'),
-                'category' => array('class' => 'Test\Category', 'foreignKey' => 'id_category'),
-                'categoryWithNameByDescription' => array('class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name')
-            ),
-            'hasOne' => array('orderProduct' => array('class' => 'Test\OrderProduct', 'foreignKey' => 'id_product')),
-            'fields' => $this->_fields));
+            'belongsTo' => [
+                'manufacturer' => ['class' => 'Test\Manufacturer', 'foreignKey' => 'id_manufacturer'],
+                'category' => ['class' => 'Test\Category', 'foreignKey' => 'id_category'],
+                'categoryWithNameByDescription' => ['class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name']
+            ],
+            'hasOne' => ['orderProduct' => ['class' => 'Test\OrderProduct', 'foreignKey' => 'id_product']],
+            'fields' => $this->_fields]);
     }
 
     public function validate()

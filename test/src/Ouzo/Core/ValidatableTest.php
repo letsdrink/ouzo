@@ -8,7 +8,7 @@ use Ouzo\Validatable;
 
 class ValidatableChild extends Validatable
 {
-    public function __construct($errors = array(), $errorFields = array())
+    public function __construct($errors = [], $errorFields = [])
     {
         $this->errors($errors);
         $this->_errorFields = $errorFields;
@@ -24,7 +24,7 @@ class ValidatableParent extends Validatable
 {
     private $child;
 
-    public function __construct($child, $errors = array(), $errorFields = array())
+    public function __construct($child, $errors = [], $errorFields = [])
     {
         $this->errors($errors);
         $this->_errorFields = $errorFields;
@@ -45,14 +45,14 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     public function shouldReturnParentAndChildErrors()
     {
         //given
-        $child = new ValidatableChild(array('error from child'), array('errorField from child'));
-        $validatable = new ValidatableParent($child, array('error from parent'), array('errorField from parent'));
+        $child = new ValidatableChild(['error from child'], ['errorField from child']);
+        $validatable = new ValidatableParent($child, ['error from parent'], ['errorField from parent']);
 
         //when
         $validatable->validate();
 
         //then
-        $this->assertEquals(array('error from parent', 'error from child'), $validatable->getErrors());
+        $this->assertEquals(['error from parent', 'error from child'], $validatable->getErrors());
     }
 
     /**
@@ -61,14 +61,14 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     public function shouldReturnParentAndChildErrorFields()
     {
         //given
-        $child = new ValidatableChild(array('error from child'), array('errorField from child'));
-        $validatable = new ValidatableParent($child, array('error from parent'), array('errorField from parent'));
+        $child = new ValidatableChild(['error from child'], ['errorField from child']);
+        $validatable = new ValidatableParent($child, ['error from parent'], ['errorField from parent']);
 
         //when
         $validatable->validate();
 
         //then
-        $this->assertEquals(array('errorField from parent', 'errorField from child'), $validatable->getErrorFields());
+        $this->assertEquals(['errorField from parent', 'errorField from child'], $validatable->getErrorFields());
     }
 
     /**
@@ -87,7 +87,7 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
      */
     public function shouldNotBeValidIfChildNotValid()
     {
-        $child = new ValidatableChild(array('error from child'), array('errorField from child'));
+        $child = new ValidatableChild(['error from child'], ['errorField from child']);
         $validatable = new ValidatableParent($child);
 
         $this->assertFalse($validatable->isValid());
@@ -99,7 +99,7 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     public function shouldNotBeValidIfParentNotValid()
     {
         $child = new ValidatableChild();
-        $validatable = new ValidatableParent($child, array('error from parent'), array('errorField from parent'));
+        $validatable = new ValidatableParent($child, ['error from parent'], ['errorField from parent']);
 
         $this->assertFalse($validatable->isValid());
     }
@@ -143,7 +143,7 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     {
         // given
         $validatable = new Validatable();
-        $validatable->validateAssociated(new ValidatableChild(array('error'), array('errorField')));
+        $validatable->validateAssociated(new ValidatableChild(['error'], ['errorField']));
 
         // when
         $validatable->validate();
@@ -272,10 +272,10 @@ class ValidatableTest extends PHPUnit_Framework_TestCase
     {
         // given
         $validatable = new Validatable();
-        $others = array(
-            new ValidatableChild(array('error1'), array('errorField1')),
-            new ValidatableChild(array('error2'), array('errorField2'))
-        );
+        $others = [
+            new ValidatableChild(['error1'], ['errorField1']),
+            new ValidatableChild(['error2'], ['errorField2'])
+        ];
 
         // when
         $validatable->validateAssociatedCollection($others);

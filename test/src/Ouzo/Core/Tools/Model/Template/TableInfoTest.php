@@ -20,11 +20,11 @@ class TableInfoTest extends PHPUnit_Framework_TestCase
         /** @var Dialect $dialect */
         $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
         Mock::when($dialect)->primaryKey()->thenReturn('id_name');
-        Mock::when($dialect)->columns()->thenReturn(array(
+        Mock::when($dialect)->columns()->thenReturn([
             new DatabaseColumn('sale', 'text'),
             new DatabaseColumn('description', 'text'),
             new DatabaseColumn('id_name', 'int'),
-        ));
+        ]);
         $tableInfo = new TableInfo($dialect);
 
         //when
@@ -43,11 +43,11 @@ class TableInfoTest extends PHPUnit_Framework_TestCase
         /** @var Dialect $dialect */
         $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
         Mock::when($dialect)->primaryKey()->thenReturn('id');
-        Mock::when($dialect)->columns()->thenReturn(array(
+        Mock::when($dialect)->columns()->thenReturn([
             new DatabaseColumn('sale', 'text'),
             new DatabaseColumn('description', 'text'),
             new DatabaseColumn('id', 'int'),
-        ));
+        ]);
         $tableInfo = new TableInfo($dialect);
 
         //when

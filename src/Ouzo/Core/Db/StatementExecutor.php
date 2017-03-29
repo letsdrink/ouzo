@@ -90,7 +90,7 @@ class StatementExecutor
     public function _createPdoStatement()
     {
         $sqlString = $this->_humanizedSql . ' with params: ' . Objects::toString($this->_boundValues);
-        Logger::getLogger(__CLASS__)->info("Query: %s", array($sqlString));
+        Logger::getLogger(__CLASS__)->info("Query: %s", [$sqlString]);
 
         return $this->_pdoExecutor->createPDOStatement($this->_dbHandle, $this->_sql, $this->_boundValues, $sqlString);
     }

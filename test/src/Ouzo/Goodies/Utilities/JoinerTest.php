@@ -9,16 +9,16 @@ class JoinerTest extends PHPUnit_Framework_TestCase
 {
     public function arrayJoinedWithSeparator()
     {
-        return array(
-            array(array('A', 'B', 'C'), 'A, B, C'),
-            array(array('A'), 'A'),
-            array(array('A', '', 'C'), 'A, , C'),
-            array(array('A', null, 'C'), 'A, , C'),
-            array(array('A', null), 'A'),
-            array(array(''), ''),
-            array(array(null), ''),
-            array(array(), '')
-        );
+        return [
+            [['A', 'B', 'C'], 'A, B, C'],
+            [['A'], 'A'],
+            [['A', '', 'C'], 'A, , C'],
+            [['A', null, 'C'], 'A, , C'],
+            [['A', null], 'A'],
+            [[''], ''],
+            [[null], ''],
+            [[], '']
+        ];
     }
 
     /**
@@ -42,7 +42,7 @@ class JoinerTest extends PHPUnit_Framework_TestCase
     public function shouldJoinArrayWithEmptySeparator()
     {
         //when
-        $result = Joiner::on('')->join(array('A', 'B', 'C'));
+        $result = Joiner::on('')->join(['A', 'B', 'C']);
 
         //then
         $this->assertEquals('ABC', $result);
@@ -54,7 +54,7 @@ class JoinerTest extends PHPUnit_Framework_TestCase
     public function shouldJoinArrayAndSkipNulls()
     {
         //when
-        $result = Joiner::on(', ')->skipNulls()->join(array('A', null, 'C'));
+        $result = Joiner::on(', ')->skipNulls()->join(['A', null, 'C']);
 
         //then
         $this->assertEquals('A, C', $result);
@@ -66,7 +66,7 @@ class JoinerTest extends PHPUnit_Framework_TestCase
     public function shouldJoinArrayAndSkipEmptyStringsOnSkipNulls()
     {
         //when
-        $result = Joiner::on(', ')->skipNulls()->join(array('A', '', 'C'));
+        $result = Joiner::on(', ')->skipNulls()->join(['A', '', 'C']);
 
         //then
         $this->assertEquals('A, C', $result);
@@ -78,7 +78,7 @@ class JoinerTest extends PHPUnit_Framework_TestCase
     public function shouldJoinMap()
     {
         //when
-        $result = Joiner::on(', ')->join(array(1 => 'A', 2 => 'B', 3 => 'C'));
+        $result = Joiner::on(', ')->join([1 => 'A', 2 => 'B', 3 => 'C']);
 
         //then
         $this->assertEquals('A, B, C', $result);
@@ -92,7 +92,7 @@ class JoinerTest extends PHPUnit_Framework_TestCase
         //when
         $result = Joiner::on(', ')->map(function ($key, $value) {
             return strtolower($value);
-        })->join(array('A', 'B', 'C'));
+        })->join(['A', 'B', 'C']);
 
         //then
         $this->assertEquals('a, b, c', $result);
@@ -106,7 +106,7 @@ class JoinerTest extends PHPUnit_Framework_TestCase
         //when
         $result = Joiner::on(', ')->map(function ($key, $value) {
             return "$key => $value";
-        })->join(array(1 => 'A', 2 => 'B', 3 => 'C'));
+        })->join([1 => 'A', 2 => 'B', 3 => 'C']);
 
         //then
         $this->assertEquals('1 => A, 2 => B, 3 => C', $result);
@@ -120,7 +120,7 @@ class JoinerTest extends PHPUnit_Framework_TestCase
         //when
         $result = Joiner::on(', ')->mapValues(function ($value) {
             return "val = $value";
-        })->join(array(1 => 'A', 2 => 'B', 3 => 'C'));
+        })->join([1 => 'A', 2 => 'B', 3 => 'C']);
 
         //then
         $this->assertEquals('val = A, val = B, val = C', $result);

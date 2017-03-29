@@ -27,7 +27,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
     public function shouldOverrideDefaultValueWithAttributesWhenCreatingNewInstance()
     {
         //when
-        $product = new ProductWithDefaults(array('description' => 'overridden desc', 'name' => 'overridden name'));
+        $product = new ProductWithDefaults(['description' => 'overridden desc', 'name' => 'overridden name']);
 
         //then
         $this->assertEquals('overridden desc', $product->description);
@@ -53,7 +53,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
     public function createShouldOverrideDefaultValueWithAttributes()
     {
         //when
-        $product = ProductWithDefaults::create(array('description' => 'overridden desc', 'name' => 'overridden name'));
+        $product = ProductWithDefaults::create(['description' => 'overridden desc', 'name' => 'overridden name']);
 
         //then
         $this->assertEquals('overridden desc', $product->description);
@@ -66,7 +66,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
     public function shouldNotUseDefaultValueWhenObjectIsLoadedFromDb()
     {
         // given
-        ProductWithDefaults::create(array('name' => 'Guybrush Threepwood', 'description' => 'Mighty pirate!'));
+        ProductWithDefaults::create(['name' => 'Guybrush Threepwood', 'description' => 'Mighty pirate!']);
 
         //when
         /** @var ProductWithDefaults $product */
@@ -83,11 +83,11 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
     public function shouldEvaluateCallableDefaultsEveryTime()
     {
         // given
-        $product1 = new ProductWithDefaults(array('description' => '1'));
+        $product1 = new ProductWithDefaults(['description' => '1']);
 
         //when
         ProductWithDefaults::$defaultName = 'new default';
-        $product2 = new ProductWithDefaults(array('description' => '2'));
+        $product2 = new ProductWithDefaults(['description' => '2']);
 
         //then
         $this->assertEquals('no name', $product1->name);
@@ -100,11 +100,11 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
     public function shouldEvaluateDefaultsEveryTime()
     {
         // given
-        $product1 = new ProductWithDefaults(array());
+        $product1 = new ProductWithDefaults([]);
 
         //when
         ProductWithDefaults::$defaultDescription = 'desc';
-        $product2 = new ProductWithDefaults(array());
+        $product2 = new ProductWithDefaults([]);
 
         //then
         $this->assertEquals('no desc', $product1->description);

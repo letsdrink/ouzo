@@ -262,7 +262,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function shouldSetCustomRuleNameToGetMethod()
     {
         //given
-        Route::get('/users/index', 'users#index', array('as' => 'all_users'));
+        Route::get('/users/index', 'users#index', ['as' => 'all_users']);
 
         //when
         $routes = Route::getRoutes();
@@ -292,7 +292,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function shouldSetCustomRuleNameToPostMethod()
     {
         //given
-        Route::post('/users/save', 'users#save', array('as' => 'add_user'));
+        Route::post('/users/save', 'users#save', ['as' => 'add_user']);
 
         //when
         $routes = Route::getRoutes();
@@ -322,7 +322,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function shouldSetCustomRuleNameToAnyMethod()
     {
         //given
-        Route::any('/users/add', 'users#add', array('as' => 'create_user'));
+        Route::any('/users/add', 'users#add', ['as' => 'create_user']);
 
         //when
         $routes = Route::getRoutes();
@@ -352,7 +352,7 @@ class RouteTest extends PHPUnit_Framework_TestCase
     public function shouldNotSetCustomRuleNameToAllowAllMethod()
     {
         //given
-        Route::allowAll('/users', 'users', array('as' => 'custom'));
+        Route::allowAll('/users', 'users', ['as' => 'custom']);
 
         //when
         $routes = Route::getRoutes();

@@ -27,7 +27,7 @@ class RelationFetcher
             ->unique()
             ->toArray();
 
-        $relationObjectsById = $localKeys? $this->_loadRelationObjectsIndexedById($localKeys) : array();
+        $relationObjectsById = $localKeys? $this->_loadRelationObjectsIndexedById($localKeys) : [];
 
         foreach ($results as $result) {
             $values = $this->_findRelationObject($relationObjectsById, $result->$localKeyName);
@@ -39,7 +39,7 @@ class RelationFetcher
     private function _loadRelationObjectsIndexedById($localKeys)
     {
         $relationObject = $this->_relation->getRelationModelObject();
-        $relationObjects = $relationObject::where(array($this->_relation->getForeignKey() => $localKeys))
+        $relationObjects = $relationObject::where([$this->_relation->getForeignKey() => $localKeys])
             ->where($this->_relation->getCondition())
             ->order($this->_relation->getOrder())
             ->fetchAll();
@@ -48,6 +48,6 @@ class RelationFetcher
 
     private function _findRelationObject($relationObjectsById, $localKey)
     {
-        return Arrays::getValue($relationObjectsById, $localKey, array());
+        return Arrays::getValue($relationObjectsById, $localKey, []);
     }
 }

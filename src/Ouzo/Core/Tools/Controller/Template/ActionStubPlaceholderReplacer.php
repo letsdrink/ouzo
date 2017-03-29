@@ -23,9 +23,9 @@ class ActionStubPlaceholderReplacer
     public function content()
     {
         $stubContent = file_get_contents($this->stubFilePath());
-        $strSubstitutor = new StrSubstitutor(array(
+        $strSubstitutor = new StrSubstitutor([
             'action' => $this->actionGenerator->getActionName()
-        ));
+        ]);
         return $strSubstitutor->replace($stubContent);
     }
 

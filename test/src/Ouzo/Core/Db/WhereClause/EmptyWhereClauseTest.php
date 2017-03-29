@@ -17,8 +17,8 @@ class EmptyWhereClauseTest extends DbTransactionalTestCase
     public function shouldTreatEmptyWhereClauseAsNothingWasGivenAsParameter()
     {
         // given
-        Product::create(array('name' => 'one'));
-        Product::create(array('name' => 'two'));
+        Product::create(['name' => 'one']);
+        Product::create(['name' => 'two']);
 
         // when
         $products = Product::where(new EmptyWhereClause())->fetchAll();

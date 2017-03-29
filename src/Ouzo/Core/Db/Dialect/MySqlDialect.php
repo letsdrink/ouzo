@@ -24,7 +24,7 @@ class MySqlDialect extends Dialect
 
     public function getConnectionErrorCodes()
     {
-        return array(2003, 2006);
+        return [2003, 2006];
     }
 
     public function getErrorCode($errorInfo)

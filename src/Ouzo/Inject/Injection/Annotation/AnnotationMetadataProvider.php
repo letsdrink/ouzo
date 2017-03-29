@@ -12,4 +12,10 @@ interface AnnotationMetadataProvider
      * @return mixed array that contains properties metadata: 'property_name' => ['className' => '\Class', 'name' => 'Name']
      */
     public function getMetadata($instance);
+
+    /**
+     * @param $className string
+     * @return mixed array that contains ordered constructor arguments metadata: '0' => ['className' => '\Class', 'name' => 'Name']
+     */
+    public function getConstructorMetadata($className);
 }

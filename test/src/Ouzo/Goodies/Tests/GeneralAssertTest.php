@@ -34,13 +34,13 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
 
     function notInstanceOf()
     {
-        return array(
-            array(array(), 'stdClass'),
-            array(4, 'stdClass'),
-            array(true, 'stdClass'),
-            array(new Example(), 'stdClass'),
-            array(new stdClass(), 'Example')
-        );
+        return [
+            [[], 'stdClass'],
+            [4, 'stdClass'],
+            [true, 'stdClass'],
+            [new Example(), 'stdClass'],
+            [new stdClass(), 'Example']
+        ];
     }
 
     /**
@@ -76,34 +76,34 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
 
     function notNull()
     {
-        return array(
-            array(1),
-            array(0),
-            array('1'),
-            array(''),
-            array('0'),
-            array(5.4),
-            array('word'),
-            array(true),
-            array('true'),
-            array('false'),
-            array(array())
-        );
+        return [
+            [1],
+            [0],
+            ['1'],
+            [''],
+            ['0'],
+            [5.4],
+            ['word'],
+            [true],
+            ['true'],
+            ['false'],
+            [[]]
+        ];
     }
 
     function notEqualToNull()
     {
-        return array(
-            array(1),
-            array('1'),
-            array('0'),
-            array(5.4),
-            array('word'),
-            array(true),
-            array('true'),
-            array('false'),
-            array(array())
-        );
+        return [
+            [1],
+            ['1'],
+            ['0'],
+            [5.4],
+            ['word'],
+            [true],
+            ['true'],
+            ['false'],
+            [[]]
+        ];
     }
 
     /**

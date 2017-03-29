@@ -31,13 +31,13 @@ class ArrayAssert
     public function extracting()
     {
         $selectors = func_get_args();
-        $actual = array();
+        $actual = [];
         if (count($selectors) == 1) {
             $selector = Arrays::first($selectors);
             $actual = Arrays::map($this->actual, Functions::extractExpression($selector, true));
         } else {
             foreach ($this->actual as $item) {
-                $extracted = array();
+                $extracted = [];
                 foreach ($selectors as $selector) {
                     $extracted[] = Functions::call(Functions::extractExpression($selector, true), $item);
                 }
@@ -60,7 +60,15 @@ class ArrayAssert
         $nonExistingElements = $this->findNonExistingElements($elements);
 
         $nonExistingString = Objects::toString($nonExistingElements);
-        AssertAdapter::assertFalse(!empty($nonExistingElements), "Cannot find expected {$nonExistingString} in actual {$this->actualString}");
+
+        if (!empty($nonExistingElements)) {
+            AssertAdapter::failWithDiff("Cannot find expected {$nonExistingString} in actual {$this->actualString}",
+                $elements,
+                $this->actual,
+                $nonExistingString,
+                $this->actualString
+            );
+        }
 
         return $this;
     }
@@ -73,18 +81,30 @@ class ArrayAssert
         $found = sizeof($elements) - sizeof($this->findNonExistingElements($elements));
 
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertFalse(sizeof($elements) > sizeof($this->actual) || sizeof($this->actual) > $found,
-            "Expected only $elementsString elements in actual {$this->actualString}"
-        );
-        AssertAdapter::assertFalse((sizeof($elements) < sizeof($this->actual) || sizeof($this->actual) < $found),
-            "There are more in expected $elementsString than in actual {$this->actualString}"
-        );
+
+        if (sizeof($elements) > sizeof($this->actual) || sizeof($this->actual) > $found) {
+            AssertAdapter::failWithDiff("Expected only $elementsString elements in actual {$this->actualString}",
+                $elements,
+                $this->actual,
+                $elementsString,
+                $this->actualString
+            );
+        }
+
+        if (sizeof($elements) < sizeof($this->actual) || sizeof($this->actual) < $found) {
+            AssertAdapter::failWithDiff("There are more in expected $elementsString than in actual {$this->actualString}",
+                $elements,
+                $this->actual,
+                $elementsString,
+                $this->actualString
+            );
+        }
         return $this;
     }
 
     private function findNonExistingElements($elements)
     {
-        $nonExistingElements = array();
+        $nonExistingElements = [];
         foreach ($elements as $element) {
             if (!Arrays::contains($this->actual, $element)) {
                 $nonExistingElements[] = $element;
@@ -101,15 +121,19 @@ class ArrayAssert
         $found = 0;
         $min = min(sizeof($this->actual), sizeof($elements));
         for ($i = 0; $i < $min; $i++) {
-            if ($this->actual[$i] == $elements[$i]) {
+            if (Objects::equal($this->actual[$i], $elements[$i])) {
                 $found++;
             }
         }
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertFalse(
-            (sizeof($elements) != $found || sizeof($this->actual) != $found),
-            "Elements from expected $elementsString were not found in actual {$this->actualString} or have different order"
-        );
+        if (sizeof($elements) != $found || sizeof($this->actual) != $found) {
+            AssertAdapter::failWithDiff("Elements from expected $elementsString were not found in actual {$this->actualString} or have different order",
+                $elements,
+                $this->actual,
+                $elementsString,
+                $this->actualString
+            );
+        }
         return $this;
     }
 
@@ -167,7 +191,7 @@ class ArrayAssert
         $result = false;
         $size = count($this->actual) - count($elements) + 1;
         for ($i = 0; $i < $size; ++$i) {
-            if (array_slice($this->actual, $i, count($elements)) == $elements) {
+            if (Objects::equal(array_slice($this->actual, $i, count($elements)), $elements)) {
                 $result = true;
             }
         }

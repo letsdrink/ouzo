@@ -1,7 +1,10 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Uri;
 
-use Ouzo\Config;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
@@ -28,7 +31,7 @@ class JsUriHelperGenerator
 
     private function generateFunctions()
     {
-        $namesAlreadyGenerated = array();
+        $namesAlreadyGenerated = [];
         foreach ($this->routeRules as $routeRule) {
             $name = $routeRule->getName();
             if (!in_array($name, $namesAlreadyGenerated)) {
@@ -40,10 +43,10 @@ class JsUriHelperGenerator
 
     private function createFunction(RouteRule $routeRule)
     {
-        $applicationPrefix = Config::getValue("global", "prefix_system");
-        $name = $routeRule->getName();
         $uri = $routeRule->getUri();
+        $applicationPrefix = UriGeneratorHelper::getApplicationPrefix($routeRule);
         $uriWithVariables = preg_replace('/:(\w+)/', '" + $1 + "', $uri);
+        $name = $routeRule->getName();
         $parameters = $this->prepareParameters($uri);
         $parametersString = implode(', ', $parameters);
         $checkParametersStatement = $this->createCheckParameters($parameters);
@@ -59,7 +62,7 @@ FUNCTION;
     private function prepareParameters($uri)
     {
         preg_match_all('#:(\w+)#', $uri, $matches);
-        return Arrays::getValue($matches, 1, array());
+        return Arrays::getValue($matches, 1, []);
     }
 
     private function createCheckParameters($parameters)

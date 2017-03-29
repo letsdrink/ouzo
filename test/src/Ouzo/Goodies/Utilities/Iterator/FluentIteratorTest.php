@@ -19,7 +19,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     public function shouldMapItems()
     {
         //given
-        $iterator = new \ArrayIterator(array(2, 3, 4, 5));
+        $iterator = new \ArrayIterator([2, 3, 4, 5]);
 
         //when
         $mappedIterator = FluentIterator::from($iterator)->map(function ($item) {
@@ -27,7 +27,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
         });
 
         //then
-        $this->assertEquals(array(3, 4, 5, 6), $mappedIterator->toArray());
+        $this->assertEquals([3, 4, 5, 6], $mappedIterator->toArray());
     }
 
     /**
@@ -36,13 +36,13 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     public function shouldSkipAndLimitItems()
     {
         //given
-        $iterator = new \ArrayIterator(array(1, 2, 3, 4, 5));
+        $iterator = new \ArrayIterator([1, 2, 3, 4, 5]);
 
         //when
         $result = FluentIterator::from($iterator)->skip(1)->limit(2);
 
         //then
-        $this->assertEquals(array(2, 3), array_values($result->toArray()));
+        $this->assertEquals([2, 3], array_values($result->toArray()));
     }
 
     /**
@@ -51,13 +51,13 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     public function shouldBatchIteratorElements()
     {
         //given
-        $iterator = new \ArrayIterator(array(1, 2, 3, 4));
+        $iterator = new \ArrayIterator([1, 2, 3, 4]);
 
         //when
         $result = FluentIterator::from($iterator)->batch(2);
 
         //then
-        $this->assertEquals(array(array(1, 2), array(3, 4)), $result->toArray());
+        $this->assertEquals([[1, 2], [3, 4]], $result->toArray());
     }
 
     /**
@@ -66,13 +66,13 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     public function shouldCycleIndefinitely()
     {
         //given
-        $iterator = new \ArrayIterator(array(1, 2, 3, 4));
+        $iterator = new \ArrayIterator([1, 2, 3, 4]);
 
         //when
         $result = FluentIterator::from($iterator)->cycle()->limit(10)->reindex();
 
         //then
-        $this->assertEquals(array(1, 2, 3, 4, 1, 2, 3, 4, 1, 2), $result->toArray());
+        $this->assertEquals([1, 2, 3, 4, 1, 2, 3, 4, 1, 2], $result->toArray());
     }
 
     /**
@@ -88,7 +88,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
         $result = FluentIterator::fromFunction($generator)->limit(3);
 
         //then
-        $this->assertEquals(array(1, 1, 1), $result->toArray());
+        $this->assertEquals([1, 1, 1], $result->toArray());
     }
 
     /**
@@ -97,13 +97,13 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     public function shouldFilterIteratorElements()
     {
         //given
-        $iterator = new \ArrayIterator(array('a', 'pref_a', 'pref_b', 'b'));
+        $iterator = new \ArrayIterator(['a', 'pref_a', 'pref_b', 'b']);
 
         //when
         $result = FluentIterator::from($iterator)->filter(FluentFunctions::startsWith('pref'))->reindex();
 
         //then
-        $this->assertEquals(array('pref_a', 'pref_b'), $result->toArray());
+        $this->assertEquals(['pref_a', 'pref_b'], $result->toArray());
     }
 
     /**
@@ -111,8 +111,8 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnFirstElementOrDefault()
     {
-        $this->assertEquals('a', FluentIterator::fromArray(array('a'))->firstOr('default'));
-        $this->assertEquals('default', FluentIterator::fromArray(array())->firstOr('default'));
+        $this->assertEquals('a', FluentIterator::fromArray(['a'])->firstOr('default'));
+        $this->assertEquals('default', FluentIterator::fromArray([])->firstOr('default'));
     }
 
     /**
@@ -121,7 +121,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     public function shouldThrowExceptionIfFirstCalledForEmptyIterator()
     {
         //given
-        $iterator = FluentIterator::fromArray(array());
+        $iterator = FluentIterator::fromArray([]);
 
         // when
         CatchException::when($iterator)->first();
@@ -136,7 +136,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnFirstElementInIterator()
     {
         //given
-        $iterator = FluentIterator::fromArray(array('a', 'b'));
+        $iterator = FluentIterator::fromArray(['a', 'b']);
 
         // when
         $first = $iterator->first();
@@ -151,7 +151,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
     public function shouldNotCallMapFunctionOnSkippedElements()
     {
         //given
-        $iterator = new \ArrayIterator(array(1, 2, 3));
+        $iterator = new \ArrayIterator([1, 2, 3]);
         $mapper = Mock::create();
         Mock::when($mapper)->map(Mock::anyArgList())->thenAnswer(function (MethodCall $methodCall) {
             return Arrays::first($methodCall->arguments);
@@ -166,7 +166,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
             ->limit(1);
 
         //then
-        $this->assertEquals(array(2), array_values($result->toArray()));
+        $this->assertEquals([2], array_values($result->toArray()));
         Mock::verify($mapper)->neverReceived()->map(1);
         Mock::verify($mapper)->neverReceived()->map(3);
     }

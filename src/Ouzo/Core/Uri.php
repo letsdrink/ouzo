@@ -28,7 +28,7 @@ class Uri
 
     private function _splitParamsKeyValueMap($pathElements)
     {
-        $paramsArray = array();
+        $paramsArray = [];
         if (!empty($pathElements[2])) {
             $params = $pathElements[2];
             $paramsGet = strpos($params, '&') ? str_replace('?', '', (strstr($params, '?') ?: $params)) : '';
@@ -41,7 +41,7 @@ class Uri
 
     private function _parseParams($params)
     {
-        $paramsArray = array();
+        $paramsArray = [];
         $paramsParts = explode('/', $params);
         $k = 0;
         for ($i = 0; $i < (int)floor((count($paramsParts) / 2)); $i++) {
@@ -109,7 +109,7 @@ class Uri
             $pathWithoutPrefix = urldecode(str_replace($prefix, '', $path));
             return preg_split('#/|\?#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);
         }
-        return array();
+        return [];
     }
 
     public function getFullUrlWithPrefix()
@@ -145,7 +145,7 @@ class Uri
             return $putParameters;
         }
 
-        return array();
+        return [];
     }
 
     private static function _jsonParameters($content)
@@ -170,15 +170,24 @@ class Uri
 
     public static function addPrefixIfNeeded($url)
     {
-        $prefix = Config::getValue('global', 'prefix_system');
+        $prefixForGetMethod = Config::getValue('global', 'prefix_system_get');
+        $prefix = $prefixForGetMethod ? $prefixForGetMethod : Config::getValue('global', 'prefix_system');
         $url = Strings::removePrefix($url, $prefix);
         return $prefix . $url;
     }
 
+    public static function removePrefix($url)
+    {
+        $prefix = Config::getValue('global', 'prefix_system');
+        $prefixForGetMethod = Config::getValue('global', 'prefix_system_get');
+        return Strings::removePrefix(Strings::removePrefix($url, $prefix), $prefixForGetMethod);
+    }
+
+
     public static function getProtocol()
     {
         return (
-            self::_isServerVariableSetAndHasValue('HTTPS', array('on', 1)) ||
+            self::_isServerVariableSetAndHasValue('HTTPS', ['on', 1]) ||
             self::_isServerVariableSetAndHasValue('HTTP_X_FORWARDED_PROTO', 'https')
         ) ? 'https://' : 'http://';
     }

@@ -23,10 +23,10 @@ class ControllerClassStubPlaceholderReplacer
     public function content()
     {
         $stubContent = file_get_contents($this->stubFilePath());
-        $strSubstitutor = new StrSubstitutor(array(
+        $strSubstitutor = new StrSubstitutor([
             'namespace' => $this->generator->getClassNamespace(),
             'class' => $this->generator->getClassName()
-        ));
+        ]);
         return $strSubstitutor->replace($stubContent);
     }
 

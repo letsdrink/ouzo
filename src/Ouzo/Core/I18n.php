@@ -17,7 +17,7 @@ class I18n
     private static $_translator;
     private static $_labels;
 
-    public static function t($key, $params = array(), PluralizeOption $pluralize = null)
+    public static function t($key, $params = [], PluralizeOption $pluralize = null)
     {
         if (!$key) {
             return '';

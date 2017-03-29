@@ -181,7 +181,7 @@ class MyImagineDialect extends Dialect
 {
     public function getConnectionErrorCodes()
     {
-        return array();
+        return [];
     }
 
     public function getErrorCode($errorInfo)

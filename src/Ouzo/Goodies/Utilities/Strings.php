@@ -397,7 +397,7 @@ class Strings
     {
         $flag = defined('ENT_SUBSTITUTE') ? ENT_SUBSTITUTE : ENT_IGNORE;
         $htmlEntities = htmlentities($text, ENT_COMPAT | $flag, 'UTF-8');
-        $htmlEntities = str_replace(array('&Oacute;', '&oacute;'), array('Ó', 'ó'), $htmlEntities);
+        $htmlEntities = str_replace(['&Oacute;', '&oacute;'], ['Ó', 'ó'], $htmlEntities);
         return $htmlEntities;
     }
 
@@ -582,6 +582,18 @@ class Strings
     }
 
     /**
+     * Checks if string contains the substring, ignoring the case of the letters in the strings.
+     *
+     * @param string $string
+     * @param string $substring
+     * @return bool
+     */
+    public static function containsIgnoreCase($string, $substring)
+    {
+        return self::contains(mb_strtolower($string), mb_strtolower($substring));
+    }
+
+    /**
      * Gets the substring before the first occurrence of a separator. The separator is not returned.
      *
      * @param string $string
@@ -647,7 +659,7 @@ class Strings
             return $string;
         }
 
-        $chars = array(
+        $chars = [
             // Decompositions for Latin-1 Supplement
             chr(195) . chr(128) => 'A', chr(195) . chr(129) => 'A',
             chr(195) . chr(130) => 'A', chr(195) . chr(131) => 'A',
@@ -742,7 +754,7 @@ class Strings
             chr(197) . chr(186) => 'z', chr(197) . chr(187) => 'Z',
             chr(197) . chr(188) => 'z', chr(197) . chr(189) => 'Z',
             chr(197) . chr(190) => 'z', chr(197) . chr(191) => 's'
-        );
+        ];
         return strtr($string, $chars);
     }
 

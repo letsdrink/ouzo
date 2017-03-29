@@ -14,10 +14,10 @@ class AuthSampleController extends Controller
 {
     public function init()
     {
-        AuthBasicExtension::register($this, array(
+        AuthBasicExtension::register($this, [
             'login' => 'login',
             'password' => 'pass'
-        ));
+        ]);
     }
 
     public function index()
@@ -58,7 +58,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/auth_sample/index');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\UnauthorizedException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\UnauthorizedException');
     }
 
     /**
@@ -74,7 +74,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/auth_sample/index');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Api\UnauthorizedException');
+        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\UnauthorizedException');
     }
 
     /**

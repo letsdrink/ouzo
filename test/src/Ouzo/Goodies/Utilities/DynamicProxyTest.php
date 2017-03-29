@@ -21,7 +21,7 @@ class ClassWithMethodDefaultParameters
 {
     const C = 1;
 
-    public function fun($p1 = 1, $p2 = null, $p3 = 'a', $p4 = array('1' => 2), $p5 = self::C)
+    public function fun($p1 = 1, $p2 = null, $p3 = 'a', $p4 = ['1' => 2], $p5 = self::C)
     {
     }
 }
@@ -85,11 +85,11 @@ class ClassWithMethodThatTakesParamsByRef
 
 class TestMethodHandler
 {
-    public $calls = array();
+    public $calls = [];
 
     public function __call($name, $arguments)
     {
-        $this->calls[] = array($name, $arguments);
+        $this->calls[] = [$name, $arguments];
         return "TestMethodHandler " . $name;
     }
 }
@@ -119,7 +119,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         $proxy->fun1(1, 2);
 
         //then
-        $this->assertEquals(array(array('fun1', array(1, 2))), $testMethodHandler->calls);
+        $this->assertEquals([['fun1', [1, 2]]], $testMethodHandler->calls);
     }
 
     /**
@@ -182,7 +182,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         $proxy->fun();
 
         //then
-        $this->assertEquals(array(array('fun', array())), $testMethodHandler->calls);
+        $this->assertEquals([['fun', []]], $testMethodHandler->calls);
     }
 
     /**
@@ -199,7 +199,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         $proxy->fun1($param);
 
         //then
-        $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
+        $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
     }
 
     /**
@@ -291,7 +291,7 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         $proxy->fun1($param);
 
         //then
-        $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
+        $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
     }
 
     /**
@@ -302,12 +302,12 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         //when
         $testMethodHandler = new TestMethodHandler();
         $proxy = DynamicProxy::newInstance('Ouzo\Utilities\ClassWithMethodThatTakesParamsByRef', $testMethodHandler);
-        $param = array();
+        $param = [];
 
         //when
         $proxy->fun1($param);
 
         //then
-        $this->assertEquals(array(array('fun1', array($param))), $testMethodHandler->calls);
+        $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
     }
 }

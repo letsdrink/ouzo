@@ -84,7 +84,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $query = new Query();
         $query->type = QueryType::$DELETE;
         $query->table = 'products';
-        $query->addUsing(new JoinClause('categories', 'id_category', 'id', 'products', 'c', 'USING', array()));
+        $query->addUsing(new JoinClause('categories', 'id_category', 'id', 'products', 'c', 'USING', []));
 
         // when
         $sql = $this->_dialect->buildQuery($query);
@@ -118,7 +118,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->selectColumns = array('id', 'name');
+        $query->selectColumns = ['id', 'name'];
 
         // when
         $sql = $this->_dialect->buildQuery($query);
@@ -152,7 +152,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->order = array('id asc', 'name desc');
+        $query->order = ['id asc', 'name desc'];
 
         // when
         $sql = $this->_dialect->buildQuery($query);
@@ -184,7 +184,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
     public function shouldReturnGroupBy()
     {
         // given
-        $query = Query::select(array('category', 'count(*)'))
+        $query = Query::select(['category', 'count(*)'])
             ->table('products')
             ->groupBy('category');
 
@@ -237,7 +237,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(array('name' => 'bob', 'id' => '1'));
+        $query->where(['name' => 'bob', 'id' => '1']);
 
         // when
         $sql = $this->_dialect->buildQuery($query);
@@ -254,7 +254,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(array('name' => array('james', 'bob')));
+        $query->where(['name' => ['james', 'bob']]);
 
         // when
         $sql = $this->_dialect->buildQuery($query);
@@ -288,7 +288,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         // given
         $query = new Query();
         $query->table = 'products';
-        $query->where(array('name' => 'james'));
+        $query->where(['name' => 'james']);
         $query->where('id = ?', 1);
 
         // when
@@ -384,7 +384,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
         $previous = Config::getValue('sql_dialect');
         Config::overrideProperty('sql_dialect')->with('Ouzo\Db\Dialect\MySqlDialect');
         $inserter = new BatchInserter();
-        $inserter->add(new Product(array('name' => 'product1')));
+        $inserter->add(new Product(['name' => 'product1']));
 
         //when
         CatchException::when($inserter)->execute();

@@ -26,10 +26,10 @@ class ModelQueryBuilder
     private $_model;
 
     /** @var ModelJoin[] */
-    private $_joinedModels = array();
+    private $_joinedModels = [];
 
     /** @var RelationToFetch[] */
-    private $_relationsToFetch = array();
+    private $_relationsToFetch = [];
 
     /** @var Query */
     private $_query;
@@ -46,7 +46,7 @@ class ModelQueryBuilder
         $this->_query->table = $model->getTableName();
         $this->_query->aliasTable = $alias;
         $this->_query->selectType = PDO::FETCH_NUM;
-        $this->_query->selectColumns = array();
+        $this->_query->selectColumns = [];
         $this->selectModelColumns($model, $this->getModelAliasOrTable());
     }
 
@@ -67,7 +67,7 @@ class ModelQueryBuilder
      * @param array $values
      * @return ModelQueryBuilder
      */
-    public function where($where = '', $values = array())
+    public function where($where = '', $values = [])
     {
         $this->_query->where($where, $values);
         return $this;
@@ -137,7 +137,7 @@ class ModelQueryBuilder
         if (!$result) {
             return null;
         }
-        return !$this->_selectModel ? $result : Arrays::firstOrNull($this->_processResults(array($result)));
+        return !$this->_selectModel ? $result : Arrays::firstOrNull($this->_processResults([$result]));
     }
 
     /**
@@ -159,7 +159,7 @@ class ModelQueryBuilder
         $this->beforeSelect();
         $iterator = QueryExecutor::prepare($this->_db, $this->_query)->fetchIterator();
         $iterator->rewind();
-        return !$this->_selectModel ? $iterator : new UnbatchingIterator(new TransformingIterator(new BatchingIterator($iterator, $batchSize), array($this, '_processResults')));
+        return !$this->_selectModel ? $iterator : new UnbatchingIterator(new TransformingIterator(new BatchingIterator($iterator, $batchSize), [$this, '_processResults']));
     }
 
     function _processResults($results)
@@ -210,7 +210,7 @@ class ModelQueryBuilder
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public function join($relationSelector, $aliases = null, $type = 'LEFT', $on = array())
+    public function join($relationSelector, $aliases = null, $type = 'LEFT', $on = [])
     {
         $modelJoins = $this->createModelJoins($relationSelector, $aliases, $type, $on);
         foreach ($modelJoins as $modelJoin) {
@@ -225,7 +225,7 @@ class ModelQueryBuilder
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public function innerJoin($relationSelector, $aliases = null, $on = array())
+    public function innerJoin($relationSelector, $aliases = null, $on = [])
     {
         return $this->join($relationSelector, $aliases, 'INNER', $on);
     }
@@ -236,7 +236,7 @@ class ModelQueryBuilder
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public function rightJoin($relationSelector, $aliases = null, $on = array())
+    public function rightJoin($relationSelector, $aliases = null, $on = [])
     {
         return $this->join($relationSelector, $aliases, 'RIGHT', $on);
     }
@@ -247,7 +247,7 @@ class ModelQueryBuilder
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public function leftJoin($relationSelector, $aliases = null, $on = array())
+    public function leftJoin($relationSelector, $aliases = null, $on = [])
     {
         return $this->join($relationSelector, $aliases, 'LEFT', $on);
     }
@@ -259,7 +259,7 @@ class ModelQueryBuilder
      */
     public function using($relationSelector, $aliases)
     {
-        $modelJoins = $this->createModelJoins($relationSelector, $aliases, 'USING', array());
+        $modelJoins = $this->createModelJoins($relationSelector, $aliases, 'USING', []);
         foreach ($modelJoins as $modelJoin) {
             $this->_query->addUsing($modelJoin->asJoinClause());
         }

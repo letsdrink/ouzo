@@ -13,7 +13,7 @@ class StatsTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $_SESSION = array();
+        $_SESSION = [];
         Stats::reset();
         FrontController::$requestId = null;
     }
@@ -75,13 +75,13 @@ class StatsTest extends PHPUnit_Framework_TestCase
     public function shouldTraceInfoAboutHttpRequest()
     {
         //given
-        $this->_createHttpTraceRequest('/request1', array('param1' => 1, 'param2' => 2));
+        $this->_createHttpTraceRequest('/request1', ['param1' => 1, 'param2' => 2]);
 
         //when
         $queries = Arrays::first(Stats::queries());
 
         //then
-        ArrayAssert::that($queries['request_params'][0])->hasSize(2)->containsKeyAndValue(array('param1' => 1, 'param2' => 2));
+        ArrayAssert::that($queries['request_params'][0])->hasSize(2)->containsKeyAndValue(['param1' => 1, 'param2' => 2]);
     }
 
     private function _createTraceRequest($request)
@@ -93,7 +93,7 @@ class StatsTest extends PHPUnit_Framework_TestCase
         });
     }
 
-    private function _createHttpTraceRequest($request, $params = array())
+    private function _createHttpTraceRequest($request, $params = [])
     {
         $_SERVER['REQUEST_URI'] = $request;
         Stats::traceHttpRequest($params);

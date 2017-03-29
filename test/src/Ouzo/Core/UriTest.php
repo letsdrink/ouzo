@@ -111,7 +111,7 @@ class UriTest extends PHPUnit_Framework_TestCase
         $reflectionOfUri = $this->_privateMethod('_parsePath');
 
         //when
-        $paramsExpected = array('user', 'add', 'id', '5', 'name', 'john');
+        $paramsExpected = ['user', 'add', 'id', '5', 'name', 'john'];
         $callMethod = $reflectionOfUri->invoke(new Uri(), '/user/add/id/5/name/john');
 
         //then
@@ -127,7 +127,7 @@ class UriTest extends PHPUnit_Framework_TestCase
         $reflectionOfUri = $this->_privateMethod('_parsePath');
 
         //when
-        $paramsExpected = array('user', 'add', 'id/5/name/john');
+        $paramsExpected = ['user', 'add', 'id/5/name/john'];
         $callMethod = $reflectionOfUri->invoke(new Uri(), '/user/add/id/5/name/john', 3);
 
         //then
@@ -144,7 +144,7 @@ class UriTest extends PHPUnit_Framework_TestCase
 
         //when
         $params = $this->uri->getParams();
-        $paramsExpected = array('id' => 5, 'name' => 'john', 'surname' => 'smith');
+        $paramsExpected = ['id' => 5, 'name' => 'john', 'surname' => 'smith'];
 
         //then
         $this->assertEquals($paramsExpected, $params);
@@ -175,7 +175,7 @@ class UriTest extends PHPUnit_Framework_TestCase
 
         //when
         $params = $this->uri->getParams();
-        $paramsExpected = array('id' => 5, 'param1' => 'val1', 'param2' => 'val2');
+        $paramsExpected = ['id' => 5, 'param1' => 'val1', 'param2' => 'val2'];
 
         //then
         $this->assertEquals($paramsExpected, $params);
@@ -191,7 +191,7 @@ class UriTest extends PHPUnit_Framework_TestCase
 
         //when
         $params = $this->uri->getParams();
-        $paramsExpected = array('param1' => 'val1', 'param2' => 'val2', 'param3' => 't1,t2,t3');
+        $paramsExpected = ['param1' => 'val1', 'param2' => 'val2', 'param3' => 't1,t2,t3'];
 
         //then
         $this->assertEquals($paramsExpected, $params);
@@ -207,7 +207,7 @@ class UriTest extends PHPUnit_Framework_TestCase
 
         //when
         $params = $this->uri->getParams();
-        $paramsExpected = array('id' => 4, 'param1' => 'path/to/file', 'param2' => 'val2');
+        $paramsExpected = ['id' => 4, 'param1' => 'path/to/file', 'param2' => 'val2'];
 
         //then
         $this->assertEquals($paramsExpected, $params);
@@ -304,7 +304,7 @@ class UriTest extends PHPUnit_Framework_TestCase
         $parameters = $this->getRequestParameters('json://input');
 
         //then
-        ArrayAssert::that($parameters)->containsKeyAndValue(array("name" => "łucja"));
+        ArrayAssert::that($parameters)->containsKeyAndValue(["name" => "łucja"]);
         StreamStub::unregister();
     }
 
@@ -380,21 +380,21 @@ class UriTest extends PHPUnit_Framework_TestCase
 
     public function protocols()
     {
-        return array(
-            array('HTTP_X_FORWARDED_PROTO', 'https', 'https://'),
-            array('HTTPS', 'on', 'https://'),
-            array('HTTPS', 1, 'https://'),
-            array('HTTPS', 'off', 'http://')
-        );
+        return [
+            ['HTTP_X_FORWARDED_PROTO', 'https', 'https://'],
+            ['HTTPS', 'on', 'https://'],
+            ['HTTPS', 1, 'https://'],
+            ['HTTPS', 'off', 'http://']
+        ];
     }
 
     public function malformedSlashes()
     {
-        return array(
-            array('/users//index', '/users/index'),
-            array('///', '/'),
-            array('/actions//', '/actions')
-        );
+        return [
+            ['/users//index', '/users/index'],
+            ['///', '/'],
+            ['/actions//', '/actions']
+        ];
     }
 
     private function _path($path)

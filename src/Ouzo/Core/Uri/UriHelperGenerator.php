@@ -42,7 +42,7 @@ function checkParameter(\$parameter)
 
     private function _generateFunctions()
     {
-        $namesAlreadyGenerated = array();
+        $namesAlreadyGenerated = [];
         foreach ($this->_routes as $route) {
             if (!in_array($route->getName(), $namesAlreadyGenerated)) {
                 $this->_generatedFunctions .= $this->_createFunction($route);
@@ -66,7 +66,7 @@ function checkParameter(\$parameter)
         $uri = $routeRule->getUri();
         $parameters = $this->_prepareParameters($uri);
 
-        $uriWithVariables = str_replace(':', '$', $uri);
+        $url = $this->getUrl($routeRule, $uri);
         $parametersString = implode(', ', $parameters);
 
         $checkParametersStatement = $this->_createCheckParameters($parameters);
@@ -74,7 +74,7 @@ function checkParameter(\$parameter)
         $function = <<<FUNCTION
 function $name($parametersString)
 {
-{$checkParametersStatement}return url("$uriWithVariables");
+{$checkParametersStatement}return "$url";
 }\n\n
 FUNCTION;
         return $name ? $function : '';
@@ -94,7 +94,7 @@ FUNCTION;
     private function _prepareParameters($uri)
     {
         preg_match_all('#:(\w+)#', $uri, $matches);
-        $parameters = Arrays::getValue($matches, 1, array());
+        $parameters = Arrays::getValue($matches, 1, []);
         return Arrays::map($parameters, function ($parameter) {
             return '$' . $parameter;
         });
@@ -102,11 +102,18 @@ FUNCTION;
 
     public function getGeneratedFunctions()
     {
-        return trim(Strings::sprintAssoc($this->_generatedFunctions, array('INDENT' => self::INDENT)));
+        return trim(Strings::sprintAssoc($this->_generatedFunctions, ['INDENT' => self::INDENT]));
     }
 
     public function saveToFile($file)
     {
         return file_put_contents($file, $this->getGeneratedFunctions());
+    }
+
+    private function getUrl(RouteRule $routeRule, $uri)
+    {
+        $uriWithVariables = str_replace(':', '$', $uri);
+        $prefix = UriGeneratorHelper::getApplicationPrefix($routeRule);
+        return $prefix . $uriWithVariables;
     }
 }

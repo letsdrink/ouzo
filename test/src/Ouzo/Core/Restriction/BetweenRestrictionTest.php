@@ -21,7 +21,7 @@ class BetweenRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('(key >= ? AND key <= ?)', $sql);
-        $this->assertEquals(array(1, 3), $restriction->getValues());
+        $this->assertEquals([1, 3], $restriction->getValues());
     }
 
     /**

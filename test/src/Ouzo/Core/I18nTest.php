@@ -47,7 +47,7 @@ class I18nTest extends \PHPUnit_Framework_TestCase
     public function shouldTranslateWithChoice()
     {
         //when
-        $translation = I18n::t('product.quantity', array('count' => '5'), I18n::pluralizeBasedOn(5));
+        $translation = I18n::t('product.quantity', ['count' => '5'], I18n::pluralizeBasedOn(5));
 
         //then
         $this->assertEquals('5 products', $translation);

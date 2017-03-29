@@ -283,12 +283,16 @@ Returns a function object that surround with given character its arguments.
 
 equals
 ~~~~~~
+Comparison is based on :ref:`Objects::equal() <Objects-equal>`
+
 **Parameters:** ``$object``
 
 ----
 
 notEquals
 ~~~~~~~~~
+Comparison is based on :ref:`Objects::equal() <Objects-equal>`
+
 **Parameters:** ``$object``
 
 ----

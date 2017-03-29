@@ -25,22 +25,22 @@ class BooleansTest extends PHPUnit_Framework_TestCase
 
     public function toBoolean()
     {
-        return array(
-            array(true, true),
-            array(null, false),
-            array('true', true),
-            array('TRUE', true),
-            array('tRUe', true),
-            array('on', true),
-            array('yes', true),
-            array('false', false),
-            array('x gti', false),
-            array('0', false),
-            array('1', true),
-            array('2', true),
-            array(0, false),
-            array(1, true),
-            array(2, true)
-        );
+        return [
+            [true, true],
+            [null, false],
+            ['true', true],
+            ['TRUE', true],
+            ['tRUe', true],
+            ['on', true],
+            ['yes', true],
+            ['false', false],
+            ['x gti', false],
+            ['0', false],
+            ['1', true],
+            ['2', true],
+            [0, false],
+            [1, true],
+            [2, true]
+        ];
     }
 }
