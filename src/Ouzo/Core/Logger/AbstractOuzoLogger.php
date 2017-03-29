@@ -3,12 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Logger;
 
 use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
 use Psr\Log\AbstractLogger;
-use Psr\Log\LogLevel;
 
 abstract class AbstractOuzoLogger extends AbstractLogger
 {
@@ -54,7 +54,7 @@ abstract class AbstractOuzoLogger extends AbstractLogger
     public function debug($message, array $context = array())
     {
         if ($this->isDebug()) {
-            $this->log(LogLevel::DEBUG, $message, $context);
+            parent::debug($message, $context);
         }
     }
 
