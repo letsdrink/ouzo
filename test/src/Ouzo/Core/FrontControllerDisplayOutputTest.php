@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Config;
+use Ouzo\HeaderSender;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\ControllerTestCase;
@@ -35,7 +36,7 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
     protected function frontControllerBindings(InjectorConfig $config)
     {
         parent::frontControllerBindings($config);
-        $config->bind('\Ouzo\HeaderSender')->toInstance(Mock::create());
+        $config->bind(HeaderSender::class)->toInstance(Mock::create());
     }
 
     /**

@@ -11,6 +11,7 @@ use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
 use Ouzo\Db\ModelDefinition;
 use Ouzo\DbException;
+use Ouzo\Exception\ValidationException;
 use Ouzo\Model;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
@@ -276,7 +277,7 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         CatchException::assertThat()
-            ->isInstanceOf('\Ouzo\Exception\ValidationException')
+            ->isInstanceOf(ValidationException::class)
             ->hasMessage("Validation failed. Empty name");
     }
 
@@ -721,7 +722,7 @@ class ModelTest extends DbTransactionalTestCase
         CatchException::when($product)->create([]);
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ValidationException');
+        CatchException::assertThat()->isInstanceOf(ValidationException::class);
     }
 
     /**
@@ -769,7 +770,7 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         if (!$model->id) {
-            CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
+            CatchException::assertThat()->isInstanceOf(DbException::class);
             //drivers other than postgres return last inserted id even if invalid sequence is given
         }
     }
@@ -796,7 +797,7 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         CatchException::assertThat()
-            ->isInstanceOf('\Ouzo\DbException')
+            ->isInstanceOf(DbException::class)
             ->hasMessage('Primary key is not defined for table products');
     }
 

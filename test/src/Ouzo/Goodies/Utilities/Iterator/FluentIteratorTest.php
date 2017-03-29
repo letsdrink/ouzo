@@ -5,6 +5,7 @@
  */
 namespace Ouzo\Utilities\Iterator;
 
+use InvalidArgumentException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
@@ -127,7 +128,7 @@ class FluentIteratorTest extends \PHPUnit_Framework_TestCase
         CatchException::when($iterator)->first();
 
         // then
-        CatchException::assertThat()->isInstanceOf('\InvalidArgumentException');
+        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
     /**

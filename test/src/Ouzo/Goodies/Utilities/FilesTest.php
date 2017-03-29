@@ -8,6 +8,7 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\DeleteDirectory;
+use Ouzo\Utilities\FileNotFoundException;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
@@ -42,7 +43,7 @@ class FilesTest extends PHPUnit_Framework_TestCase
         CatchException::when($files)->delete('/broken/path/file');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\FileNotFoundException');
+        CatchException::assertThat()->isInstanceOf(FileNotFoundException::class);
     }
 
     /**
@@ -77,7 +78,7 @@ class FilesTest extends PHPUnit_Framework_TestCase
         CatchException::when($files)->move('/broken/path/file', '/broken/path/new_file');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\FileNotFoundException');
+        CatchException::assertThat()->isInstanceOf(FileNotFoundException::class);
     }
 
     /**

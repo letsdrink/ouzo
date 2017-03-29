@@ -6,6 +6,7 @@
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
+use Ouzo\Utilities\JsonEncodeException;
 
 class JsonTest extends PHPUnit_Framework_TestCase
 {
@@ -63,7 +64,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
     public function shouldEncodeArrayToJson()
     {
         //given
-        $array = ['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3'];
+        $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
 
         //when
         $encoded = Json::safeEncode($array);
@@ -134,10 +135,10 @@ class JsonTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         } // then
         catch (Exception $e) {
-            $this->assertTrue(in_array(get_class($e), [
-                'PHPUnit_Framework_Error_Warning',
-                'Ouzo\Utilities\JsonEncodeException'
-            ]));
+            $this->assertTrue(in_array(get_class($e), array(
+                PHPUnit_Framework_Error_Warning::class,
+                JsonEncodeException::class
+            )));
         }
     }
 
@@ -152,10 +153,10 @@ class JsonTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         } // then
         catch (Exception $e) {
-            $this->assertTrue(in_array(get_class($e), [
-                'PHPUnit_Framework_Error_Warning',
-                'Ouzo\Utilities\JsonEncodeException'
-            ]));
+            $this->assertTrue(in_array(get_class($e), array(
+                PHPUnit_Framework_Error_Warning::class,
+                JsonEncodeException::class
+            )));
         }
     }
 

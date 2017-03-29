@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Options;
 use Ouzo\Model;
@@ -27,7 +28,7 @@ class StatementEmulatorTest extends DbTransactionalTestCase
         //given
         $pdoStatement = Mock::mock();
         $pdo = Mock::mock();
-        $db = Mock::mock('Ouzo\Db');
+        $db = Mock::mock(Db::class);
         $db->_dbHandle = $pdo;
 
         Mock::when($pdo)->query(Mock::anyArgList())->thenReturn($pdoStatement);

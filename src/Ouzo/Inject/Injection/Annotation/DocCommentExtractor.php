@@ -21,7 +21,7 @@ class DocCommentExtractor implements AnnotationMetadataProvider
             $doc = $property->getDocComment();
             if (Strings::contains($doc, '@Inject')) {
                 if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {
-                    $className = $matched[1];
+                    $className = Strings::removePrefix($matched[1], "\\");
                     $name = $this->extractName($doc);
                     $annotations[$property->getName()] = ['name' => $name, 'className' => $className];
                 } else {

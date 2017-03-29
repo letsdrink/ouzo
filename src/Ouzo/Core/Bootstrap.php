@@ -107,6 +107,6 @@ class Bootstrap
     private function createFrontController()
     {
         $injector = $this->injector ?: new Injector($this->injectorConfig);
-        return $injector->getInstance('\Ouzo\FrontController');
+        return $injector->getInstance(FrontController::class);
     }
 }

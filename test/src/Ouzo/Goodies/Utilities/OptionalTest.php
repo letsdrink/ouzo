@@ -62,7 +62,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->myMethod();
 
         //then
-        Assert::that($result)->isInstanceOf('\Ouzo\Utilities\Optional');
+        Assert::that($result)->isInstanceOf(Optional::class);
     }
 
     /**
@@ -92,7 +92,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         CatchException::when($optional)->get();
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Exception');
+        CatchException::assertThat()->isInstanceOf(Exception::class);
     }
 
     /**
@@ -107,7 +107,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->unknownMethod();
 
         //then
-        Assert::that($result)->isInstanceOf('\Ouzo\Utilities\Optional');
+        Assert::that($result)->isInstanceOf(Optional::class);
         Assert::that($result->orNull())->isNull();
     }
 
@@ -195,7 +195,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $optional = Optional::of(new stdClass());
 
         //then
-        Assert::that($optional)->isInstanceOf('\Ouzo\Utilities\Optional');
+        Assert::that($optional)->isInstanceOf(Optional::class);
     }
 
     /**
@@ -219,7 +219,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->myField;
 
         //then
-        Assert::that($result)->isInstanceOf('\Ouzo\Utilities\Optional');
+        Assert::that($result)->isInstanceOf(Optional::class);
     }
 
     /**
@@ -234,7 +234,7 @@ class OptionalTest extends PHPUnit_Framework_TestCase
         $result = $optional->unknownField;
 
         //then
-        Assert::that($result)->isInstanceOf('\Ouzo\Utilities\Optional');
+        Assert::that($result)->isInstanceOf(Optional::class);
     }
 
     /**

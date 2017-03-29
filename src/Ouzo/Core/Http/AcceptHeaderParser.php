@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Http;
 
 use Ouzo\Utilities\Arrays;
@@ -23,7 +24,7 @@ class AcceptHeaderParser
             $q = Arrays::getValue(self::extractParams($params), 'q');
             $array[] = ['type' => $type, 'subtype' => $subtype, 'q' => $q];
         }
-        usort($array, '\Ouzo\Http\AcceptHeaderParser::_compare');
+        usort($array, [AcceptHeaderParser::class, '_compare']);
         return Arrays::toMap($array, function ($input) {
             return $input['type'] . '/' . $input['subtype'];
         }, function ($input) {

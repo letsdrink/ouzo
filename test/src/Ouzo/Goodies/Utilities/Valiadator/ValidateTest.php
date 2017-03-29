@@ -5,6 +5,7 @@
  */
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Validator\Validate;
+use Ouzo\Utilities\Validator\ValidateException;
 
 class ValidateTest extends PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,7 @@ class ValidateTest extends PHPUnit_Framework_TestCase
         CatchException::when(new Validate())->isTrue($value, 'This value is not true');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidateException');
+        CatchException::assertThat()->isInstanceOf(ValidateException::class);
         CatchException::assertThat()->hasMessage('This value is not true');
     }
 
@@ -51,7 +52,7 @@ class ValidateTest extends PHPUnit_Framework_TestCase
         CatchException::when(new Validate())->isEmail($value, 'Is not correct email');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidateException');
+        CatchException::assertThat()->isInstanceOf(ValidateException::class);
         CatchException::assertThat()->hasMessage('Is not correct email');
     }
 
@@ -82,7 +83,7 @@ class ValidateTest extends PHPUnit_Framework_TestCase
         CatchException::when(new Validate())->isNotNull($value, 'Is null');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Utilities\Validator\ValidateException');
+        CatchException::assertThat()->isInstanceOf(ValidateException::class);
         CatchException::assertThat()->hasMessage('Is null');
     }
 

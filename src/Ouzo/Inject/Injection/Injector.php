@@ -7,6 +7,7 @@ namespace Ouzo\Injection;
 
 use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
 use Ouzo\Injection\Annotation\DocCommentExtractor;
+use Ouzo\Utilities\Strings;
 
 class Injector
 {
