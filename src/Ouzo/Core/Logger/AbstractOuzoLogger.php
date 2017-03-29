@@ -12,38 +12,38 @@ use Psr\Log\AbstractLogger;
 
 abstract class AbstractOuzoLogger extends AbstractLogger
 {
-    private $_name;
+    private $name;
     /**
      * @var MessageFormatter
      */
-    private $_messageFormatter;
-    private $_minimalLevels;
-    private $_logger;
+    private $messageFormatter;
+    private $minimalLevels;
+    private $logger;
 
     public function __construct($name, $configuration)
     {
-        $this->_name = $name;
+        $this->name = $name;
         $messageFormatterClass = 'Ouzo\Logger\DefaultMessageFormatter';
         $logger = Config::getValue('logger', $configuration);
         if ($logger) {
             $messageFormatterClass = Arrays::getValue($logger, 'formatter', $messageFormatterClass);
-            $this->_minimalLevels = Arrays::getValue($logger, 'minimal_levels');
+            $this->minimalLevels = Arrays::getValue($logger, 'minimal_levels');
         }
-        $this->_messageFormatter = new $messageFormatterClass();
-        $this->_logger = $logger;
+        $this->messageFormatter = new $messageFormatterClass();
+        $this->logger = $logger;
     }
 
     public function setName($name)
     {
-        $this->_name = $name;
+        $this->name = $name;
     }
 
     protected function logWithFunction($writeToLogFunction, $level, $message, $params)
     {
         $ouzoLevel = LogLevelTranslator::toSyslogLevel($level);
-        $minimalLevel = $this->_minimalLevels ? Arrays::getValue($this->_minimalLevels, $this->_name, LOG_DEBUG) : LOG_DEBUG;
+        $minimalLevel = $this->minimalLevels ? Arrays::getValue($this->minimalLevels, $this->name, LOG_DEBUG) : LOG_DEBUG;
         if ($ouzoLevel <= $minimalLevel) {
-            $message = $this->_messageFormatter->format($this->_name, $level, $message);
+            $message = $this->messageFormatter->format($this->name, $level, $message);
             if (!empty($params)) {
                 $message = call_user_func_array('sprintf', array_merge([$message], $params));
             }
@@ -65,6 +65,6 @@ abstract class AbstractOuzoLogger extends AbstractLogger
 
     protected function getLogger()
     {
-        return $this->_logger;
+        return $this->logger;
     }
 }
