@@ -28,7 +28,7 @@ class StatementEmulatorTest extends DbTransactionalTestCase
         //given
         $pdoStatement = Mock::mock();
         $pdo = Mock::mock();
-        $db = Mock::mock('Ouzo\Db');
+        $db = Mock::mock(Db::class);
         $db->dbHandle = $pdo;
 
         Mock::when($pdo)->query(Mock::anyArgList())->thenReturn($pdoStatement);
