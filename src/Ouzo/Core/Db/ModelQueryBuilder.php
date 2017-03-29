@@ -205,10 +205,12 @@ class ModelQueryBuilder
      */
     public function deleteEach()
     {
-        $objects = $this->fetchAll();
-        return Arrays::map($objects, function (Model $object) {
-            return !$object->delete();
-        });
+        $objectIterator = $this->fetchIterator();
+        $result = [];
+        foreach ($objectIterator as $object) {
+            $result[] = !$object->delete();
+        }
+        return $result;
     }
 
     /**

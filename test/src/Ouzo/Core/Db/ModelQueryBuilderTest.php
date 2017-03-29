@@ -1474,4 +1474,21 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         CatchException::assertThat()->isInstanceOf(DbException::class);
     }
+
+    /**
+     * @test
+     */
+    public function shouldDeleteEach()
+    {
+        //given
+        $category = Category::create(['name' => 'shop1']);
+        Category::create(['name' => 'shop2', 'id_parent' => $category->getId()]);
+        Category::create(['name' => 'shop3', 'id_parent' => $category->getId()]);
+
+        //when
+        Category::where(['id_parent' => $category->getId()])->deleteEach();
+
+        //then
+        Assert::thatArray(Category::all())->containsExactly($category);
+    }
 }
