@@ -5,48 +5,65 @@
  */
 namespace Ouzo\Db;
 
+use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
 class RelationFetcher
 {
-    private $_relation;
+    /** @var Relation */
+    private $relation;
 
+    /**
+     * @param Relation $relation
+     */
     public function __construct(Relation $relation)
     {
-        $this->_relation = $relation;
+        $this->relation = $relation;
     }
 
+    /**
+     * @param Model $results
+     */
     public function transform(&$results)
     {
-        $localKeyName = $this->_relation->getLocalKey();
+        $localKeyName = $this->relation->getLocalKey();
         $localKeys = FluentArray::from($results)
             ->map(Functions::extractField($localKeyName))
             ->filterNotBlank()
             ->unique()
             ->toArray();
 
-        $relationObjectsById = $localKeys? $this->_loadRelationObjectsIndexedById($localKeys) : [];
+        $relationObjectsById = $localKeys ? $this->loadRelationObjectsIndexedById($localKeys) : [];
 
         foreach ($results as $result) {
-            $values = $this->_findRelationObject($relationObjectsById, $result->$localKeyName);
-            $destinationField = $this->_relation->getName();
-            $result->$destinationField = $this->_relation->extractValue($values);
+            $values = $this->findRelationObject($relationObjectsById, $result->$localKeyName);
+            $destinationField = $this->relation->getName();
+            $result->$destinationField = $this->relation->extractValue($values);
         }
     }
 
-    private function _loadRelationObjectsIndexedById($localKeys)
+    /**
+     * @param string $localKeys
+     * @return array
+     */
+    private function loadRelationObjectsIndexedById($localKeys)
     {
-        $relationObject = $this->_relation->getRelationModelObject();
-        $relationObjects = $relationObject::where([$this->_relation->getForeignKey() => $localKeys])
-            ->where($this->_relation->getCondition())
-            ->order($this->_relation->getOrder())
+        $relationObject = $this->relation->getRelationModelObject();
+        $relationObjects = $relationObject::where([$this->relation->getForeignKey() => $localKeys])
+            ->where($this->relation->getCondition())
+            ->order($this->relation->getOrder())
             ->fetchAll();
-        return Arrays::groupBy($relationObjects, Functions::extractField($this->_relation->getForeignKey()));
+        return Arrays::groupBy($relationObjects, Functions::extractField($this->relation->getForeignKey()));
     }
 
-    private function _findRelationObject($relationObjectsById, $localKey)
+    /**
+     * @param array $relationObjectsById
+     * @param string $localKey
+     * @return mixed
+     */
+    private function findRelationObject($relationObjectsById, $localKey)
     {
         return Arrays::getValue($relationObjectsById, $localKey, []);
     }
