@@ -10,17 +10,25 @@ use Ouzo\Utilities\Functions;
 
 class FieldTransformer
 {
+    /** @var string */
     private $field;
-
     /** @var RelationFetcher */
     private $transformer;
 
+    /**
+     * @param string $field
+     * @param RelationFetcher $transformer
+     */
     public function __construct($field, RelationFetcher $transformer)
     {
         $this->field = $field;
         $this->transformer = $transformer;
     }
 
+    /**
+     * @param array $results
+     * @return void
+     */
     public function transform(&$results)
     {
         if ($this->field) {

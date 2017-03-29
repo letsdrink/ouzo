@@ -68,3 +68,20 @@ class MyClass
   private $otherClass;
 }
 ```
+
+Constructor injection (requires arguments types):
+
+```php
+class MyClass
+{
+    private $otherClass;
+
+    /**
+     * @Inject
+     */
+    public function __construct(OtherClass $otherClass)
+    {
+        $this->otherClass = $otherClass;
+    }
+}
+```

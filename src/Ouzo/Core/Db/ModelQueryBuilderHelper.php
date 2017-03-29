@@ -54,10 +54,10 @@ class ModelQueryBuilderHelper
     }
 
     /**
-     * @param $fromTable
+     * @param string $fromTable
      * @param RelationWithAlias[] $relationWithAliases
-     * @param $type
-     * @param $on
+     * @param string $type
+     * @param string $on
      * @return ModelJoin[]
      */
     public static function createModelJoins($fromTable, $relationWithAliases, $type, $on)

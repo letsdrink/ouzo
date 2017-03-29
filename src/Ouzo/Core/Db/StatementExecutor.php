@@ -31,9 +31,8 @@ class StatementExecutor
 
     private function _execute($afterCallback)
     {
-        $obj = $this;
-        return Stats::trace($this->_humanizedSql, $this->_boundValues, function () use ($obj, $afterCallback) {
-            return $obj->_internalExecute($afterCallback);
+        return Stats::trace($this->_humanizedSql, $this->_boundValues, function () use ($afterCallback) {
+            return $this->_internalExecute($afterCallback);
         });
     }
 
@@ -80,9 +79,8 @@ class StatementExecutor
 
     public function fetchIterator()
     {
-        $obj = $this;
-        return Stats::trace($this->_humanizedSql, $this->_boundValues, function () use ($obj) {
-            $pdoStatement = $obj->_createPdoStatement();
+        return Stats::trace($this->_humanizedSql, $this->_boundValues, function () {
+            $pdoStatement = $this->_createPdoStatement();
             return new StatementIterator($pdoStatement);
         });
     }

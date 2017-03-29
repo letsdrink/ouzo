@@ -5,8 +5,13 @@
  */
 namespace Ouzo\Db;
 
+use PDO;
+
 class EmulatedPDOPreparedStatementExecutor extends PDOExecutor
 {
+    /**
+     * @inheritdoc
+     */
     public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString)
     {
         $sql = PreparedStatementEmulator::substitute($sql, $boundValues);

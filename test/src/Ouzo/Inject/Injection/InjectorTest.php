@@ -6,6 +6,7 @@
 
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
+use Ouzo\Injection\InjectorException;
 use Ouzo\Injection\Scope;
 use Ouzo\Tests\CatchException;
 
@@ -278,6 +279,31 @@ class InjectorTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertSame($object, $instance);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectDependencyByConstructor()
+    {
+        //when
+        $instance = $this->injector->getInstance(ClassWithConstructorDep::class);
+
+        //then
+        $this->assertInstanceOf(ClassWithConstructorDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotInjectDependencyByConstructorWhenConstructorHasParameterWithoutType()
+    {
+        //when
+        CatchException::when($this->injector)->getInstance(ClassWithConstructorDepWithoutType::class);
+
+        //then
+        CatchException::assertThat()->isInstanceOf(InjectorException::class);
     }
 
     private function assertDependencyInjected($className, $instance)
