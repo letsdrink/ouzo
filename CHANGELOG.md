@@ -3,6 +3,9 @@ CHANGELOG
 
 INCOMING
 --------
+
+Release 1.6.1
+--------
 Enhancements:
 * [Core] Added `Validatable::errors()`, so multiple errors can be added at once.
 * [Core] Added Whoops library (issue #243).
