@@ -19,7 +19,7 @@ use Ouzo\Utilities\Arrays;
 
 class ModelTest extends DbTransactionalTestCase
 {
-    public  function setUp()
+    public function setUp()
     {
         parent::setUp();
         ModelDefinition::resetCache();
@@ -897,5 +897,66 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNotNull($order);
         $this->assertNotNull($order->getId());
         $this->assertNull($order->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSerializeModel()
+    {
+        // given
+        $product = new Product(['name' => 'Sport']);
+
+        // when
+        $serialized = $product->serialize();
+
+        // then
+        $this->assertEquals('a:1:{s:4:"name";s:5:"Sport";}', $serialized);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldUnserializeModel()
+    {
+        // given
+        $product = new Product(['name' => 'Test']);
+
+        // when
+        $product->unserialize('a:1:{s:4:"name";s:5:"Sport";}');
+
+        // then
+        $this->assertEquals('Sport', $product->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSerializeAndUnserializeModel()
+    {
+        // given
+        $product = new Product(['name' => 'Test']);
+        $serialized = serialize($product);
+
+        // when
+        $unserialized = unserialize($serialized);
+
+        // then
+        $this->assertEquals('Test', $unserialized->name);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSerializeModelToJson()
+    {
+        // given
+        $product = new Product(['name' => 'Sport']);
+
+        // when
+        $json = $product->jsonSerialize();
+
+        // then
+        $this->assertEquals('{"name":"Sport"}', $json);
     }
 }
