@@ -8,6 +8,7 @@ namespace Ouzo\Logger;
 
 use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
+use Psr\Log\LoggerInterface;
 
 /**
  * Logger class is used to obtain reference to current logger

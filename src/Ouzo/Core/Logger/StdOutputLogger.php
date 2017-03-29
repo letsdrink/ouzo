@@ -9,36 +9,36 @@ use Ouzo\Utilities\Clock;
 
 class StdOutputLogger extends AbstractOuzoLogger
 {
-    private $_outputStreamIdentifier;
+    private $outputStreamIdentifier;
 
     public function __construct($name, $configuration, $outputStreamIdentifier = 'php')
     {
         parent::__construct($name, $configuration);
-        $this->_outputStreamIdentifier = $outputStreamIdentifier;
+        $this->outputStreamIdentifier = $outputStreamIdentifier;
     }
 
-    private function _errorStreamName()
+    private function errorStreamName()
     {
-        return $this->_outputStreamIdentifier . "://stderr";
+        return $this->outputStreamIdentifier . "://stderr";
     }
 
-    private function _standardStreamName()
+    private function standardStreamName()
     {
-        return $this->_outputStreamIdentifier . "://stdout";
+        return $this->outputStreamIdentifier . "://stdout";
     }
 
 
-    private function _getStreamForLogLevel($logLevel)
+    private function getStreamForLogLevel($logLevel)
     {
         if (LogLevelTranslator::toSyslogLevel($logLevel) >= LOG_WARNING) {
-            return $this->_standardStreamName();
+            return $this->standardStreamName();
         }
-        return $this->_errorStreamName();
+        return $this->errorStreamName();
     }
 
     public function log($level, $message, array $context = array())
     {
-        $stdOut = $this->_getStreamForLogLevel($level);
+        $stdOut = $this->getStreamForLogLevel($level);
         $this->logWithFunction(function ($message) use ($stdOut) {
             $date = Clock::nowAsString();
             $fileHandle = fopen($stdOut, 'a');

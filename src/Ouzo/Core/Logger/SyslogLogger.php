@@ -28,7 +28,7 @@ class SyslogLogger extends AbstractOuzoLogger
             if ($logger) {
                 openlog($logger['ident'], $logger['option'], $logger['facility']);
             }
-            $this->logMessage($level, $message);
+            $this->logMessage($syslogLevel, $message);
         }, $level, $message, $context);
     }
 
