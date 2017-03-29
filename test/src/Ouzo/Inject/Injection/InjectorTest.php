@@ -287,11 +287,11 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldInjectDependencyByConstructor()
     {
         //when
-        $instance = $this->injector->getInstance('\ClassWithConstructorDep');
+        $instance = $this->injector->getInstance(ClassWithConstructorDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithConstructorDep', $instance);
-        $this->assertDependencyInjected('\ClassWithNoDep', $instance->myClass);
+        $this->assertInstanceOf(ClassWithConstructorDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
     /**
@@ -300,7 +300,7 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldNotInjectDependencyByConstructorWhenConstructorHasParameterWithoutType()
     {
         //when
-        CatchException::when($this->injector)->getInstance('\ClassWithConstructorDepWithoutType');
+        CatchException::when($this->injector)->getInstance(ClassWithConstructorDepWithoutType::class);
 
         //then
         CatchException::assertThat()->isInstanceOf(InjectorException::class);
