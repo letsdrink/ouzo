@@ -16,7 +16,7 @@ class OuzoExceptionData
     private $_stackTrace;
     private $_additionalHeaders;
 
-    public function __construct($httpCode, $errors, $stackTrace, $additionalHeaders = array())
+    public function __construct($httpCode, $errors, $stackTrace, $additionalHeaders = [])
     {
         $this->_errors = $errors;
         $this->_httpCode = $httpCode;
@@ -26,7 +26,7 @@ class OuzoExceptionData
 
     public static function forException($httpCode, Exception $exception)
     {
-        return new OuzoExceptionData($httpCode, array(Error::forException($exception)), $exception->getTraceAsString());
+        return new OuzoExceptionData($httpCode, [Error::forException($exception)], $exception->getTraceAsString());
     }
 
     public function getErrors()

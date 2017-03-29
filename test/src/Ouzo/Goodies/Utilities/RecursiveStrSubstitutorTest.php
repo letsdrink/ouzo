@@ -13,7 +13,7 @@ class RecursiveStrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldSubstituteNormalValues()
     {
         //given
-        $strSubstitutor = new RecursiveStrSubstitutor(array('NAME' => 'John', 'SURNAME' => 'Smith'));
+        $strSubstitutor = new RecursiveStrSubstitutor(['NAME' => 'John', 'SURNAME' => 'Smith']);
 
         //when
         $substituted = $strSubstitutor->replace('Hi {{NAME}} {{SURNAME}}');
@@ -28,7 +28,7 @@ class RecursiveStrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldSubstituteRecursively()
     {
         //given
-        $strSubstitutor = new RecursiveStrSubstitutor(array('URL' => '{{HOST}}', 'HOST' => 'ouzoframework.org'));
+        $strSubstitutor = new RecursiveStrSubstitutor(['URL' => '{{HOST}}', 'HOST' => 'ouzoframework.org']);
 
         //when
         $substituted = $strSubstitutor->replace('Best website: {{URL}}');
@@ -43,7 +43,7 @@ class RecursiveStrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldReturnValueWhenInfinityLoopOccurs()
     {
         //given
-        $strSubstitutor = new RecursiveStrSubstitutor(array('URL' => '{{HOST}}', 'HOST' => '{{URL}}'), null, 10);
+        $strSubstitutor = new RecursiveStrSubstitutor(['URL' => '{{HOST}}', 'HOST' => '{{URL}}'], null, 10);
 
         //when
         $substituted = $strSubstitutor->replace('Best website: {{URL}}');

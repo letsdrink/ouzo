@@ -66,15 +66,15 @@ class QueryTest extends PHPUnit_Framework_TestCase
     public function shouldCreateSelectQueryWithWhereOrderLimitOffset()
     {
         // when
-        $query = Query::select()->from('table')->where(array('name' => 'bob'))->limit(5)->offset(10)->groupBy('group')->order(array('name asc'));
+        $query = Query::select()->from('table')->where(['name' => 'bob'])->limit(5)->offset(10)->groupBy('group')->order(['name asc']);
 
         // then
         $this->assertEquals('table', $query->table);
-        $this->assertEquals(new ArrayWhereClause(array('name' => 'bob')), $query->whereClauses[0]);
+        $this->assertEquals(new ArrayWhereClause(['name' => 'bob']), $query->whereClauses[0]);
         $this->assertEquals(5, $query->limit);
         $this->assertEquals(10, $query->offset);
         $this->assertEquals('group', $query->groupBy);
-        $this->assertEquals(array('name asc'), $query->order);
+        $this->assertEquals(['name asc'], $query->order);
     }
 
     /**
@@ -99,11 +99,11 @@ class QueryTest extends PHPUnit_Framework_TestCase
     public function shouldCreateSelectQueryWithColumns()
     {
         // when
-        $query = Query::select(array('name', 'id'));
+        $query = Query::select(['name', 'id']);
 
         // then
         $this->assertEquals(QueryType::$SELECT, $query->type);
-        $this->assertEquals(array('name', 'id'), $query->selectColumns);
+        $this->assertEquals(['name', 'id'], $query->selectColumns);
     }
 
     /**

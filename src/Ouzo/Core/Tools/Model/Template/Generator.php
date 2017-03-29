@@ -108,7 +108,7 @@ class Generator
         $parts = Arrays::map($parts, 'ucfirst');
         $modelNamespace = trim(AutoloadNamespaces::getModelNamespace(), '\\');
         if (!Strings::startsWith($this->namespace, $modelNamespace)) {
-            $parts = array_merge(array($modelNamespace), $parts);
+            $parts = array_merge([$modelNamespace], $parts);
         }
         $parts = Arrays::filterNotBlank($parts);
         return implode('\\', $parts);

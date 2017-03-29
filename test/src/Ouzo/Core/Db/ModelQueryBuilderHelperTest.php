@@ -57,7 +57,7 @@ class ModelQueryBuilderHelperTest extends \PHPUnit_Framework_TestCase
         $relation2 = new Relation('relation2', 'Test\OrderProduct', 'id', 'id_product', false);
 
         //when
-        $relationToAlias = ModelQueryBuilderHelper::associateRelationsWithAliases(array($relation1, $relation2), 'r1');
+        $relationToAlias = ModelQueryBuilderHelper::associateRelationsWithAliases([$relation1, $relation2], 'r1');
 
         //then
         Assert::thatArray($relationToAlias)->containsExactly(
@@ -75,7 +75,7 @@ class ModelQueryBuilderHelperTest extends \PHPUnit_Framework_TestCase
         $relation2 = new Relation('relation2', 'Test\OrderProduct', 'id', 'id_product', false);
 
         //when
-        $relationToAlias = ModelQueryBuilderHelper::associateRelationsWithAliases(array($relation1, $relation2), null);
+        $relationToAlias = ModelQueryBuilderHelper::associateRelationsWithAliases([$relation1, $relation2], null);
 
         //then
         Assert::thatArray($relationToAlias)->containsExactly(
@@ -93,7 +93,7 @@ class ModelQueryBuilderHelperTest extends \PHPUnit_Framework_TestCase
         $relation2 = new Relation('relation2', 'Test\OrderProduct', 'id', 'id_product', false);
 
         //when
-        $relationToAlias = ModelQueryBuilderHelper::associateRelationsWithAliases(array($relation1, $relation2), array('relation2' => 'r2'));
+        $relationToAlias = ModelQueryBuilderHelper::associateRelationsWithAliases([$relation1, $relation2], ['relation2' => 'r2']);
 
         //then
         Assert::thatArray($relationToAlias)->containsExactly(

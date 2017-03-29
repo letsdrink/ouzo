@@ -38,7 +38,7 @@ class ControllerUrl
         $action = Arrays::getValue($params, 'action');
         $extraParams = Arrays::getValue($params, 'extraParams');
         if ($controller && $action) {
-            $url = Joiner::on('/')->join(array($prefixSystem, $controller, $action));
+            $url = Joiner::on('/')->join([$prefixSystem, $controller, $action]);
             if ($extraParams) {
                 $url .= self::_mergeParams($extraParams);
             }

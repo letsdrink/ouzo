@@ -12,7 +12,7 @@ class AcceptHeaderParser
 {
     public static function parse($data)
     {
-        $array = array();
+        $array = [];
         $items = Arrays::filterNotBlank(explode(',', $data));
         foreach ($items as $item) {
             $elements = explode(';', $item);
@@ -21,7 +21,7 @@ class AcceptHeaderParser
 
             list($type, $subtype) = Arrays::map(explode('/', $media), Functions::trim());
             $q = Arrays::getValue(self::extractParams($params), 'q');
-            $array[] = array('type' => $type, 'subtype' => $subtype, 'q' => $q);
+            $array[] = ['type' => $type, 'subtype' => $subtype, 'q' => $q];
         }
         usort($array, '\Ouzo\Http\AcceptHeaderParser::_compare');
         return Arrays::toMap($array, function ($input) {
@@ -59,7 +59,7 @@ class AcceptHeaderParser
 
     private static function extractParams($elements)
     {
-        $params = array();
+        $params = [];
         foreach ($elements as $element) {
             list($name, $value) = Arrays::map(explode('=', $element), Functions::trim());
             $params[$name] = $value;

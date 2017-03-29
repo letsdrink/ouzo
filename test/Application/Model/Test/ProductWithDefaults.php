@@ -17,12 +17,12 @@ class ProductWithDefaults extends Model
     public static $defaultName = 'no name';
     public static $defaultDescription = 'no desc';
 
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'table' => 'products',
             'attributes' => $attributes,
-            'fields' => array(
+            'fields' => [
                 'description' => self::$defaultDescription,
                 'name' => function () {
                     return ProductWithDefaults::$defaultName;
@@ -30,6 +30,6 @@ class ProductWithDefaults extends Model
                 'id_category',
                 'id_manufacturer',
                 'sale'
-            )));
+            ]]);
     }
 }

@@ -10,7 +10,7 @@ use Ouzo\Utilities\Objects;
 
 class ParameterPlaceHolderCallback
 {
-    private $_boundValues = array();
+    private $_boundValues = [];
     private $_param_index = 0;
     private $_quote_count = 0;
 

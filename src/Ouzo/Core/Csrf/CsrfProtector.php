@@ -25,12 +25,12 @@ class CsrfProtector
             return true;
         };
         $controller->after[] = function () use ($controller) {
-            $controller->setCookie(array(
+            $controller->setCookie([
                 'name' => 'csrftoken',
                 'value' => CsrfProtector::getCsrfToken(),
                 'expire' => 0,
                 'path' => '/'
-            ));
+            ]);
             return true;
         };
     }
@@ -52,7 +52,7 @@ class CsrfProtector
 
     public static function isMethodProtected($method)
     {
-        return !in_array($method, array('GET', 'HEAD', 'OPTIONS', 'TRACE'));
+        return !in_array($method, ['GET', 'HEAD', 'OPTIONS', 'TRACE']);
     }
 
     public static function getCsrfToken()

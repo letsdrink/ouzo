@@ -18,12 +18,12 @@ class Query
     public $order;
     public $limit;
     public $offset;
-    public $updateAttributes = array();
-    public $whereClauses = array();
-    public $joinClauses = array();
-    public $usingClauses = array();
+    public $updateAttributes = [];
+    public $whereClauses = [];
+    public $joinClauses = [];
+    public $usingClauses = [];
     public $type;
-    public $options = array();
+    public $options = [];
     public $groupBy;
     public $lockForUpdate = false;
     public $comment;
@@ -125,9 +125,9 @@ class Query
         return $this;
     }
 
-    public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = array())
+    public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = [])
     {
-        $onClauses = array(WhereClause::create($on));
+        $onClauses = [WhereClause::create($on)];
         $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ?: $this->table, $alias, $type, $onClauses);
         return $this;
     }

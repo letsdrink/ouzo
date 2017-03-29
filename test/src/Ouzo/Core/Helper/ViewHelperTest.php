@@ -14,7 +14,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
      */
     public function shouldConstructUrlForController()
     {
-        $url = url(array('controller' => 'users', 'action' => 'show', 'extraParams' => array('id' => 3, 'age' => 34)));
+        $url = url(['controller' => 'users', 'action' => 'show', 'extraParams' => ['id' => 3, 'age' => 34]]);
 
         $this->assertEquals(Config::getPrefixSystem() . '/users/show/id/3/age/34', $url);
     }
@@ -24,7 +24,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
      */
     public function shouldConstructUrlForAddress()
     {
-        $url = url(array('string' => '/users/show'));
+        $url = url(['string' => '/users/show']);
 
         $this->assertEquals(Config::getPrefixSystem() . '/users/show', $url);
     }
@@ -35,7 +35,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
      */
     public function shouldThrowExceptionForInvalidArguments()
     {
-        url(array('action' => 'show', 'extraParams' => array('id' => 3)));
+        url(['action' => 'show', 'extraParams' => ['id' => 3]]);
     }
 
     /**
@@ -44,7 +44,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
      */
     public function shouldThrowExceptionForEmptyParams()
     {
-        url(array());
+        url([]);
     }
 
     /**
@@ -81,7 +81,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 
         //when
         $expected = '<link rel="stylesheet" href="' . $defaults['prefix_system'] . '/public/css/style.css?' . $defaults['suffix_cache'] . '" type="text/css" />' . PHP_EOL;
-        $actual = addFile(array('type' => 'link', 'params' => array('url' => '/public/css/style.css')));
+        $actual = addFile(['type' => 'link', 'params' => ['url' => '/public/css/style.css']]);
 
         //then
         $this->assertEquals($expected, $actual);
@@ -97,7 +97,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 
         //when
         $expected = '<script type="text/javascript" src="' . $defaults['prefix_system'] . '/public/js/test.js?' . $defaults['suffix_cache'] . '"></script>' . PHP_EOL;
-        $actual = addFile(array('type' => 'script', 'params' => array('url' => '/public/js/test.js')));
+        $actual = addFile(['type' => 'script', 'params' => ['url' => '/public/js/test.js']]);
 
         //then
         $this->assertEquals($expected, $actual);
@@ -113,7 +113,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 
         //when
         $expected = '<script type="text/javascript" src="' . $defaults['prefix_system'] . '/public/js/test.js?' . $defaults['suffix_cache'] . '"></script>' . PHP_EOL;
-        $actual = addFile(array('type' => 'script', 'params' => array('url' => '/public/js/test.js')));
+        $actual = addFile(['type' => 'script', 'params' => ['url' => '/public/js/test.js']]);
 
         //then
         $this->assertEquals($expected, $actual);
@@ -128,7 +128,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         $remove = '/js';
 
         //when
-        $actual = addFile(array('type' => 'script', 'params' => array('url' => '/public/js/test.js')), $remove);
+        $actual = addFile(['type' => 'script', 'params' => ['url' => '/public/js/test.js']], $remove);
 
         //then
         /** @noinspection HtmlUnknownTarget */
@@ -222,7 +222,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
         $count = 1;
 
         //when
-        $inflected = pluralise($count, array('plural' => 'clients', 'singular' => 'client'));
+        $inflected = pluralise($count, ['plural' => 'clients', 'singular' => 'client']);
 
         //then
         $this->assertEquals('client', $inflected);

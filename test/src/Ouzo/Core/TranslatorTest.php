@@ -14,7 +14,7 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldTranslateSimpleKey()
     {
         //given
-        $labels = array('key' => 'translation');
+        $labels = ['key' => 'translation'];
         $translator = new Translator('en', $labels);
 
         //when
@@ -30,11 +30,11 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldSubstituteParams()
     {
         //given
-        $labels = array('key' => 'translation %{param1}');
+        $labels = ['key' => 'translation %{param1}'];
         $translator = new Translator('en', $labels);
 
         //when
-        $translation = $translator->translate('key', array('param1' => 'value1'));
+        $translation = $translator->translate('key', ['param1' => 'value1']);
 
         //then
         $this->assertEquals('translation value1', $translation);
@@ -46,12 +46,12 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldSupportPluralizationForEnglish()
     {
         //given
-        $labels = array('key' => 'I\'ve got %{n} leg|I\'ve got %{n} legs');
+        $labels = ['key' => 'I\'ve got %{n} leg|I\'ve got %{n} legs'];
         $translator = new Translator('en', $labels);
 
         //when
-        $translation1 = $translator->translateWithChoice('key', 1, array('n' => '1'));
-        $translation2 = $translator->translateWithChoice('key', 2, array('n' => '2'));
+        $translation1 = $translator->translateWithChoice('key', 1, ['n' => '1']);
+        $translation2 = $translator->translateWithChoice('key', 2, ['n' => '2']);
 
         //then
         $this->assertEquals("I've got 1 leg", $translation1);
@@ -64,11 +64,11 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldSupportPluralizationAndReturnLastPossibleEntryWhenProperWasNotFound()
     {
         //given
-        $labels = array('key' => 'I\'ve got %{n} leg');
+        $labels = ['key' => 'I\'ve got %{n} leg'];
         $translator = new Translator('en', $labels);
 
         //when
-        $translation = $translator->translateWithChoice('key', 5, array('n' => '5'));
+        $translation = $translator->translateWithChoice('key', 5, ['n' => '5']);
 
         //then
         $this->assertEquals("I've got 5 leg", $translation);
@@ -80,13 +80,13 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldSupportPluralizationForPolish()
     {
         //given
-        $labels = array('key' => 'Mam %{n} rok|Mam %{n} lata|Mam %{n} lat');
+        $labels = ['key' => 'Mam %{n} rok|Mam %{n} lata|Mam %{n} lat'];
         $translator = new Translator('pl', $labels);
 
         //when
-        $translation1 = $translator->translateWithChoice('key', 1, array('n' => '1'));
-        $translation2 = $translator->translateWithChoice('key', 2, array('n' => '2'));
-        $translation3 = $translator->translateWithChoice('key', 5, array('n' => '5'));
+        $translation1 = $translator->translateWithChoice('key', 1, ['n' => '1']);
+        $translation2 = $translator->translateWithChoice('key', 2, ['n' => '2']);
+        $translation3 = $translator->translateWithChoice('key', 5, ['n' => '5']);
 
         //then
         $this->assertEquals("Mam 1 rok", $translation1);
@@ -100,7 +100,7 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldHandleNestedKeys()
     {
         //given
-        $labels = array('prefix1' => array('prefix2' => array('key' => 'translation')));
+        $labels = ['prefix1' => ['prefix2' => ['key' => 'translation']]];
         $translator = new Translator('en', $labels);
 
         //when
@@ -116,7 +116,7 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     public function shouldReturnKeyIfTranslationNotFound()
     {
         //given
-        $labels = array('prefix1' => array('key' => 'translation'));
+        $labels = ['prefix1' => ['key' => 'translation']];
         $translator = new Translator('en', $labels);
 
         //when
@@ -134,7 +134,7 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
         //given
         Config::overrideProperty('pseudo_localization')->with(true);
 
-        $labels = array('key' => 'translation');
+        $labels = ['key' => 'translation'];
         $translator = new Translator('en', $labels);
 
         //when
@@ -154,14 +154,14 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
         //given
         Config::overrideProperty('pseudo_localization')->with(true);
 
-        $labels = array('key' => array('k1' => 'value', 'k2' => 'other'));
+        $labels = ['key' => ['k1' => 'value', 'k2' => 'other']];
         $translator = new Translator('en', $labels);
 
         //when
         $translation = $translator->translate('key');
 
         //then
-        $this->assertEquals(array('k1' => 'ṽȧŀŭḗ', 'k2' => 'ǿŧħḗř'), $translation);
+        $this->assertEquals(['k1' => 'ṽȧŀŭḗ', 'k2' => 'ǿŧħḗř'], $translation);
         Config::clearProperty('pseudo_localization');
     }
 }

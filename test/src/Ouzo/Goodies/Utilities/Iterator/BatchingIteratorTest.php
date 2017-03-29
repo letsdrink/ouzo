@@ -12,9 +12,9 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
     public function shouldChunkElementsWhenLengthDivisibleByChunk()
     {
         //given
-        $array = array(1, 2, 3, 4);
+        $array = [1, 2, 3, 4];
         $batchIterator = new BatchingIterator(new ArrayIterator($array), 2);
-        $result = array();
+        $result = [];
 
         //when
         foreach ($batchIterator as $key => $value) {
@@ -22,7 +22,7 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
         }
 
         //then
-        $this->assertEquals(array(array(1, 2), array(3, 4)), $result);
+        $this->assertEquals([[1, 2], [3, 4]], $result);
     }
 
     /**
@@ -31,9 +31,9 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
     public function shouldChunkElementsWhenLengthNotDivisibleByChunk()
     {
         //given
-        $array = array(1, 2, 3);
+        $array = [1, 2, 3];
         $batchIterator = new BatchingIterator(new ArrayIterator($array), 2);
-        $result = array();
+        $result = [];
 
         //when
         foreach ($batchIterator as $key => $value) {
@@ -41,7 +41,7 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
         }
 
         //then
-        $this->assertEquals(array(array(1, 2), array(3)), $result);
+        $this->assertEquals([[1, 2], [3]], $result);
     }
 
     /**
@@ -50,7 +50,7 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
     public function shouldNotBeValidForEmptyArray()
     {
         //given
-        $batchIterator = new BatchingIterator(new ArrayIterator(array()), 2);
+        $batchIterator = new BatchingIterator(new ArrayIterator([]), 2);
 
         //when
         $valid = $batchIterator->valid();
@@ -64,7 +64,7 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
      */
     public function shouldRewindIterator()
     {
-        $ait = new ArrayIterator(array('a', 'b', 'c', 'd'));
+        $ait = new ArrayIterator(['a', 'b', 'c', 'd']);
         $ait->next();
         $ait->next();
         $batchIterator = new BatchingIterator($ait, 2);
@@ -73,6 +73,6 @@ class BatchingIteratorTest extends PHPUnit_Framework_TestCase
         $batchIterator->rewind();
 
         //then
-        $this->assertEquals(array(array('a', 'b'), array('c', 'd')), iterator_to_array($batchIterator));
+        $this->assertEquals([['a', 'b'], ['c', 'd']], iterator_to_array($batchIterator));
     }
 }

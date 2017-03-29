@@ -41,10 +41,10 @@ class Error
 
     public function toArray()
     {
-        return array('message' => $this->message, 'code' => $this->code);
+        return ['message' => $this->message, 'code' => $this->code];
     }
 
-    public static function getByCode($code, $params = array(), $prefix = 'errors.')
+    public static function getByCode($code, $params = [], $prefix = 'errors.')
     {
         $message = I18n::t($prefix . $code, $params);
         return new Error($code, $message);

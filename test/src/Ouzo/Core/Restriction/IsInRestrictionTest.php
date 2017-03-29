@@ -9,7 +9,7 @@ class IsInRestrictionTest extends PHPUnit_Framework_TestCase
     public function shouldCreateSql()
     {
         //given
-        $restriction = Restrictions::isIn(array(1, 2, 3));
+        $restriction = Restrictions::isIn([1, 2, 3]);
 
         //when
         $sql = $restriction->toSql('category_id');
@@ -24,7 +24,7 @@ class IsInRestrictionTest extends PHPUnit_Framework_TestCase
     public function shouldReturnNullForEmptyArray()
     {
         //given
-        $restriction = Restrictions::isIn(array());
+        $restriction = Restrictions::isIn([]);
 
         //when
         $sql = $restriction->toSql('category_id');

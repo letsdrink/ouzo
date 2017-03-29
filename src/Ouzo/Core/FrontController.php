@@ -91,7 +91,7 @@ class FrontController
 
         $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
         if ($afterInitCallback) {
-            Functions::call($afterInitCallback, array());
+            Functions::call($afterInitCallback, []);
         }
 
         try {
@@ -152,7 +152,7 @@ class FrontController
     {
         $controller = $this->currentControllerObject;
         $currentAction = $controller->currentAction;
-        call_user_func_array(array($controller, $currentAction), $controller->getRouteRule()->getParameters());
+        call_user_func_array([$controller, $currentAction], $controller->getRouteRule()->getParameters());
         $this->_logRequestIfDebugEnabled();
     }
 
@@ -196,18 +196,18 @@ class FrontController
 
     private function _logRequest()
     {
-        Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', array($this->currentController, $this->currentAction));
+        Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', [$this->currentController, $this->currentAction]);
     }
 
     private function _isRedirect()
     {
-        return in_array($this->currentControllerObject->getStatusResponse(), array('redirect', 'redirectOld'));
+        return in_array($this->currentControllerObject->getStatusResponse(), ['redirect', 'redirectOld']);
     }
 
     private function callCallback($callback)
     {
         if (is_string($callback)) {
-            $callback = array($this->currentControllerObject, $callback);
+            $callback = [$this->currentControllerObject, $callback];
         }
         return call_user_func($callback, $this->currentControllerObject);
     }

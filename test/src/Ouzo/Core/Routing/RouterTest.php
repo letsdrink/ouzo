@@ -221,7 +221,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function shouldNotFindRouteWhenExceptAction()
     {
         //given
-        Route::allowAll('/users', 'users', array('except' => array('add')));
+        Route::allowAll('/users', 'users', ['except' => ['add']]);
         $router = $this->_createRouter('GET', '/users/add');
 
         //when
@@ -238,7 +238,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         //given
         Route::get('/users/add', 'users#add');
-        Route::allowAll('/users', 'users', array('except' => array('add')));
+        Route::allowAll('/users', 'users', ['except' => ['add']]);
         $router = $this->_createRouter('GET', '/users/add');
 
         //when
@@ -264,7 +264,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $rule = $router->findRoute();
 
         //then
-        Assert::thatArray($rule->getParameters())->hasSize(2)->containsKeyAndValue(array('id' => 1, 'call_id' => 2));
+        Assert::thatArray($rule->getParameters())->hasSize(2)->containsKeyAndValue(['id' => 1, 'call_id' => 2]);
     }
 
     /**
@@ -336,7 +336,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('users', $rule->getController());
         $this->assertEquals('show', $rule->getAction());
-        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
     /**
@@ -354,7 +354,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('users', $rule->getController());
         $this->assertEquals('edit', $rule->getAction());
-        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
     /**
@@ -372,7 +372,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('users', $rule->getController());
         $this->assertEquals('update', $rule->getAction());
-        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
     /**
@@ -390,7 +390,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('users', $rule->getController());
         $this->assertEquals('update', $rule->getAction());
-        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
     /**
@@ -408,7 +408,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('users', $rule->getController());
         $this->assertEquals('destroy', $rule->getAction());
-        Assert::thatArray($rule->getParameters())->containsKeyAndValue(array('id' => 12));
+        Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
     /**
@@ -443,7 +443,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('resources', $rule->getController());
         $this->assertEquals('server', $rule->getAction());
-        ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('file' => 'file_name.js'));
+        ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(['file' => 'file_name.js']);
     }
 
     /**
@@ -461,7 +461,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('api/users', $rule->getController());
         $this->assertEquals('archive', $rule->getAction());
-        ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('id' => '12'));
+        ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(['id' => '12']);
     }
 
     /**
@@ -500,7 +500,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('DELETE', $rule->getMethod());
         $this->assertEquals('user', $rule->getController());
         $this->assertEquals('delete', $rule->getAction());
-        Assert::thatArray($rule->getParameters())->hasSize(1)->containsKeyAndValue(array('id' => 12));
+        Assert::thatArray($rule->getParameters())->hasSize(1)->containsKeyAndValue(['id' => 12]);
     }
 
     /**
@@ -577,27 +577,27 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function requestMethods()
     {
-        return array(
-            array('GET'),
-            array('POST'),
-            array('PUT'),
-            array('PATCH'),
-            array('DELETE')
-        );
+        return [
+            ['GET'],
+            ['POST'],
+            ['PUT'],
+            ['PATCH'],
+            ['DELETE']
+        ];
     }
 
     public function requestRestMethods()
     {
-        return array(
-            array('GET', '/albums'),
-            array('GET', '/albums/new'),
-            array('POST', '/albums'),
-            array('GET', '/albums/12'),
-            array('GET', '/albums/12/edit'),
-            array('PUT', '/albums/12'),
-            array('PATCH', '/albums/12'),
-            array('DELETE', '/albums/12')
-        );
+        return [
+            ['GET', '/albums'],
+            ['GET', '/albums/new'],
+            ['POST', '/albums'],
+            ['GET', '/albums/12'],
+            ['GET', '/albums/12/edit'],
+            ['PUT', '/albums/12'],
+            ['PATCH', '/albums/12'],
+            ['DELETE', '/albums/12']
+        ];
     }
 
     private function _createRouter($method, $uri)

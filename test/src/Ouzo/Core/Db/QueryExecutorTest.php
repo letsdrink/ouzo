@@ -53,7 +53,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
     public function shouldReturnEmptyQueryExecutorForEmptyWhereValues()
     {
         // given
-        $query = Query::select()->from('table_name')->where(array('column' => array()));
+        $query = Query::select()->from('table_name')->where(['column' => []]);
 
         // when
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
@@ -68,7 +68,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
     public function shouldReturnEmptyQueryExecutorForLimitZero()
     {
         //given
-        $query = Query::select()->from('table_name')->where(array('column' => 'first'))->limit(0);
+        $query = Query::select()->from('table_name')->where(['column' => 'first'])->limit(0);
 
         //when
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
@@ -84,7 +84,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
     public function shouldNotAddOffsetZero()
     {
         //given
-        $query = Query::select()->from('table_name')->where(array('column' => 'first'))->offset(0);
+        $query = Query::select()->from('table_name')->where(['column' => 'first'])->offset(0);
 
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
 
@@ -93,7 +93,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals('SELECT * FROM table_name WHERE column = ?', $executor->getSql());
-        $this->assertEquals(array("first"), $executor->getBoundValues());
+        $this->assertEquals(["first"], $executor->getBoundValues());
     }
 
     /**
@@ -102,10 +102,10 @@ class QueryExecutorTest extends DbTransactionalTestCase
     public function shouldGenerateSqlForSubQueries()
     {
         //given
-        $query = Query::select(array('count(*)'))
+        $query = Query::select(['count(*)'])
             ->from(
-                Query::select(array('a', 'count(*) c'))->from('table')->groupBy('a')->where(array('col' => 12)), 'sub'
-            )->where(array('c' => 123));
+                Query::select(['a', 'count(*) c'])->from('table')->groupBy('a')->where(['col' => 12]), 'sub'
+            )->where(['c' => 123]);
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
 
         //when
@@ -113,7 +113,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals('SELECT count(*) FROM (SELECT a, count(*) c FROM table WHERE col = ? GROUP BY a) AS sub WHERE c = ?', $executor->getSql());
-        $this->assertEquals(array(12, 123), $executor->getBoundValues());
+        $this->assertEquals([12, 123], $executor->getBoundValues());
     }
 
     /**
@@ -122,20 +122,20 @@ class QueryExecutorTest extends DbTransactionalTestCase
     public function shouldHandleSubQueries()
     {
         //given
-        Product::create(array('name' => 'prod1', 'description' => 'd'));
-        Product::create(array('name' => 'prod1', 'description' => 'd'));
-        Product::create(array('name' => 'prod2', 'description' => 'd'));
+        Product::create(['name' => 'prod1', 'description' => 'd']);
+        Product::create(['name' => 'prod1', 'description' => 'd']);
+        Product::create(['name' => 'prod2', 'description' => 'd']);
 
-        $query = Query::select(array('count(*) AS c'))
+        $query = Query::select(['count(*) AS c'])
             ->from(
-                Query::select(array('name', 'count(*) c'))->from('products')->groupBy('name')->where(array('description' => 'd')), 'sub'
-            )->where(array('c' => 2));
+                Query::select(['name', 'count(*) c'])->from('products')->groupBy('name')->where(['description' => 'd']), 'sub'
+            )->where(['c' => 2]);
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
 
         //when
         $result = $executor->fetch();
 
         //then
-        $this->assertEquals(array('c' => 1), $result);
+        $this->assertEquals(['c' => 1], $result);
     }
 }

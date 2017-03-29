@@ -15,14 +15,14 @@ class DocCommentExtractor implements AnnotationMetadataProvider
     {
         $class = new ReflectionClass($instance);
         $properties = $class->getProperties();
-        $annotations = array();
+        $annotations = [];
         foreach ($properties as $property) {
             $doc = $property->getDocComment();
             if (Strings::contains($doc, '@Inject')) {
                 if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {
                     $className = $matched[1];
                     $name = $this->extractName($doc);
-                    $annotations[$property->getName()] = array('name' => $name, 'className' => $className);
+                    $annotations[$property->getName()] = ['name' => $name, 'className' => $className];
                 } else {
                     throw new InjectorException('Cannot @Inject dependency. @var is not defined for property $' . $property->getName() . ' in class ' . $class->getName() . '.');
                 }

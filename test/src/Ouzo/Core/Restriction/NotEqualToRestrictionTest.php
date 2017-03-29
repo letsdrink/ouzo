@@ -20,7 +20,7 @@ class NotEqualToRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key <> ?', $sql);
-        $this->assertEquals(array('value'), $restriction->getValues());
+        $this->assertEquals(['value'], $restriction->getValues());
     }
 
     /**
@@ -36,6 +36,6 @@ class NotEqualToRestrictionTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('key <> ?', $sql);
-        $this->assertEquals(array(''), $restriction->getValues());
+        $this->assertEquals([''], $restriction->getValues());
     }
 }

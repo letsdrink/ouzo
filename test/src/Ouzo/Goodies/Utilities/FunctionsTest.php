@@ -16,7 +16,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function shouldExtractId()
     {
         //given
-        $product = new Product(array('id' => 1));
+        $product = new Product(['id' => 1]);
 
         //when
         $id = Functions::call(Functions::extractId(), $product);
@@ -55,7 +55,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function shouldTestIfArgumentIsArray()
     {
         $this->assertFalse(Functions::call(Functions::isArray(), 'string'));
-        $this->assertTrue(Functions::call(Functions::isArray(), array()));
+        $this->assertTrue(Functions::call(Functions::isArray(), []));
     }
 
     /**
@@ -214,7 +214,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function shouldCheckIsInArray()
     {
         //given
-        $array = array('white', 'snow');
+        $array = ['white', 'snow'];
 
         //when
         $result = Functions::call(Functions::inArray($array), 'snow');
@@ -229,7 +229,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function shouldCheckIsNotInArray()
     {
         //given
-        $array = array('white', 'snow');
+        $array = ['white', 'snow'];
 
         //when
         $result = Functions::call(Functions::notInArray($array), 'missing');

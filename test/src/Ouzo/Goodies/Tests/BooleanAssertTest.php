@@ -41,36 +41,36 @@ class BooleanAssertTest extends PHPUnit_Framework_TestCase
 
     function notTrue()
     {
-        return array(
-            array(false),
-            array(1),
-            array(0),
-            array(''),
-            array('0'),
-            array('1'),
-            array('t'),
-            array('aa'),
-            array(new stdClass()),
-            array(array()),
-            array(null),
-        );
+        return [
+            [false],
+            [1],
+            [0],
+            [''],
+            ['0'],
+            ['1'],
+            ['t'],
+            ['aa'],
+            [new stdClass()],
+            [[]],
+            [null],
+        ];
     }
 
     function notFalse()
     {
-        return array(
-            array(true),
-            array(1),
-            array(0),
-            array(''),
-            array('0'),
-            array('1'),
-            array('t'),
-            array('aa'),
-            array(new stdClass()),
-            array(array()),
-            array(null),
-        );
+        return [
+            [true],
+            [1],
+            [0],
+            [''],
+            ['0'],
+            ['1'],
+            ['t'],
+            ['aa'],
+            [new stdClass()],
+            [[]],
+            [null],
+        ];
     }
 
     /**

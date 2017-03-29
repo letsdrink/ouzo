@@ -29,7 +29,7 @@ class RequestHeadersTest extends PHPUnit_Framework_TestCase
 
         //then
         Assert::thatArray($all)->hasSize(9)
-            ->containsKeyAndValue(array(
+            ->containsKeyAndValue([
                 'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                 'Accept-Charset' => 'UTF-8,*;q=0.5',
                 'Accept-Encoding' => 'gzip,deflate,sdch',
@@ -39,7 +39,7 @@ class RequestHeadersTest extends PHPUnit_Framework_TestCase
                 'Cookie' => '__utmz=179618234.1309856897.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utma=179618234.703966342.1309856897.1309856897.1309856897.1',
                 'Host' => 'www.yoursite.com',
                 'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30'
-            ));
+            ]);
     }
 
     /**

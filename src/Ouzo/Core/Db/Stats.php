@@ -16,12 +16,12 @@ class Stats
 
     public static function queries()
     {
-        return Session::get('stats_queries') ? : array();
+        return Session::get('stats_queries') ? : [];
     }
 
     public static function queriesForRequest($request)
     {
-        return Session::get('stats_queries', $request, 'queries') ? : array();
+        return Session::get('stats_queries', $request, 'queries') ? : [];
     }
 
     public static function reset()
@@ -45,7 +45,7 @@ class Stats
 
         $uri = new Uri();
         $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
-        $value = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+        $value = ['query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString()];
         Session::push('stats_queries', $requestDetails, 'queries', $value);
 
         self::removeExcessiveRequests();

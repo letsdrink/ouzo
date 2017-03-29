@@ -16,7 +16,7 @@ require 'vendor/autoload.php';
 Files::loadIfExists(ROOT_PATH . 'test/Application/config/routes.php');
 
 $app = new Application();
-$app->addCommands(array(
+$app->addCommands([
     new ConsoleCommand(), new RoutesCommand(), new ModelGeneratorCommand(), new ControllerGeneratorCommand()
-));
+]);
 $app->run();

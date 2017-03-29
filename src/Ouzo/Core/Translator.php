@@ -21,14 +21,14 @@ class Translator
         $this->pseudoLocalizationEnabled = Config::getValue('pseudo_localization') ? true : false;
     }
 
-    public function translate($key, $params = array())
+    public function translate($key, $params = [])
     {
         $explodedKey = explode('.', $key);
         $translation = Arrays::getNestedValue($this->_labels, $explodedKey) ?: $key;
         return $this->localize(Strings::sprintAssoc($translation, $params));
     }
 
-    public function translateWithChoice($key, $choice, $params = array())
+    public function translateWithChoice($key, $choice, $params = [])
     {
         $value = $this->translate($key, $params);
 
@@ -67,8 +67,8 @@ class Translator
 
     private function strtr_utf8($text, $from, $to)
     {
-        $keys = array();
-        $values = array();
+        $keys = [];
+        $values = [];
         preg_match_all('/./u', $from, $keys);
         preg_match_all('/./u', $to, $values);
         $mapping = array_combine($keys[0], $values[0]);

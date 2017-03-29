@@ -68,7 +68,7 @@ class DialectUtil
             ->toArray();
         if ($usingClauses && $table) {
             $tableElement = $table . ($alias ? " AS {$alias}" : "");
-            $elements = array_merge(array($tableElement), $elements);
+            $elements = array_merge([$tableElement], $elements);
         }
         return implode($glue, $elements);
     }

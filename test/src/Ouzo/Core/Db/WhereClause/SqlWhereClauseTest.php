@@ -17,7 +17,7 @@ class SqlWhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = WhereClause::create('name = ?', 'bob');
 
         // then
-        $this->assertEquals(array('bob'), $result->getParameters());
+        $this->assertEquals(['bob'], $result->getParameters());
         $this->assertEquals('name = ?', $result->toSql());
     }
 
@@ -27,10 +27,10 @@ class SqlWhereClauseTest extends \PHPUnit_Framework_TestCase
     public function shouldWrapSqlWithOrInParenthesis()
     {
         // when
-        $result = WhereClause::create('name = ? OR name = ?', array('bob', 'john'));
+        $result = WhereClause::create('name = ? OR name = ?', ['bob', 'john']);
 
         // then
-        $this->assertEquals(array('bob', 'john'), $result->getParameters());
+        $this->assertEquals(['bob', 'john'], $result->getParameters());
         $this->assertEquals('(name = ? OR name = ?)', $result->toSql());
     }
 
@@ -43,7 +43,7 @@ class SqlWhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = WhereClause::create('name = ?', null);
 
         // then
-        $this->assertEquals(array(null), $result->getParameters());
+        $this->assertEquals([null], $result->getParameters());
         $this->assertEquals('name = ?', $result->toSql());
     }
 }

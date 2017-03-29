@@ -30,7 +30,7 @@ class ValidatableValidateUniqueTest extends PHPUnit_Framework_TestCase
     public function shouldBeValidIfUniqueValues()
     {
         //given
-        $validatable = new UniquenessValidatable(array('a', 'b'));
+        $validatable = new UniquenessValidatable(['a', 'b']);
 
         //when
         $valid = $validatable->isValid();
@@ -45,7 +45,7 @@ class ValidatableValidateUniqueTest extends PHPUnit_Framework_TestCase
     public function shouldNotBeValidIfNonUniqueValues()
     {
         //given
-        $validatable = new UniquenessValidatable(array('a', 'b', 'a'));
+        $validatable = new UniquenessValidatable(['a', 'b', 'a']);
 
         //when
         $valid = $validatable->isValid();

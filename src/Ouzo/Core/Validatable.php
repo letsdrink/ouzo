@@ -12,8 +12,8 @@ use Ouzo\Utilities\Strings;
 
 class Validatable
 {
-    protected $_errors = array();
-    protected $_errorFields = array();
+    protected $_errors = [];
+    protected $_errorFields = [];
 
     public function isValid()
     {
@@ -39,8 +39,8 @@ class Validatable
 
     public function validate()
     {
-        $this->_errors = array();
-        $this->_errorFields = array();
+        $this->_errors = [];
+        $this->_errorFields = [];
     }
 
     public function validateAssociated(Validatable $validatable)

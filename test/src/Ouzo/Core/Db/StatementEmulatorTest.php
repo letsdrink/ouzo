@@ -13,7 +13,7 @@ class SimpleModel extends Model
 {
     public function __construct()
     {
-        parent::__construct(array('fields' => array('name')));
+        parent::__construct(['fields' => ['name']]);
     }
 }
 
@@ -32,13 +32,13 @@ class StatementEmulatorTest extends DbTransactionalTestCase
 
         Mock::when($pdo)->query(Mock::anyArgList())->thenReturn($pdoStatement);
         Mock::when($pdo)->quote("bob")->thenReturn("'bob'");
-        Mock::when($pdoStatement)->fetchAll(Mock::anyArgList())->thenReturn(array());
+        Mock::when($pdoStatement)->fetchAll(Mock::anyArgList())->thenReturn([]);
 
         $modelQueryBuilder = new ModelQueryBuilder(SimpleModel::metaInstance(), $db);
 
         //when
-        $modelQueryBuilder->where(array('name' => 'bob'))
-            ->options(array(Options::EMULATE_PREPARES => true))
+        $modelQueryBuilder->where(['name' => 'bob'])
+            ->options([Options::EMULATE_PREPARES => true])
             ->fetchAll();
 
         //then

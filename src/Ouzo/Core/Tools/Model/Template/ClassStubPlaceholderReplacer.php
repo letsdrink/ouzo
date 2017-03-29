@@ -38,7 +38,7 @@ class ClassStubPlaceholderReplacer
         $this->_setupTablePlaceholderReplacements();
         $this->classStub->addPlaceholderReplacement('class', $this->className);
         $this->classStub->addPlaceholderReplacement('namespace', $this->classNamespace);
-        Arrays::map($this->tableInfo->tableColumns, array($this->classStub, 'addColumn'));
+        Arrays::map($this->tableInfo->tableColumns, [$this->classStub, 'addColumn']);
         return $this->classStub->contents();
     }
 

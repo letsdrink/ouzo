@@ -25,7 +25,7 @@ class View
     /** @var array */
     private $_attributes;
 
-    public function __construct($viewName, array $attributes = array())
+    public function __construct($viewName, array $attributes = [])
     {
         if (empty($viewName)) {
             throw new ViewException('View name is empty');

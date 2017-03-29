@@ -41,10 +41,10 @@ class Db
         return self::$_instance;
     }
 
-    public function connectDb($params = array())
+    public function connectDb($params = [])
     {
         $this->_dbHandle = $this->_createPdo($params);
-        $attributes = Arrays::getValue($params, 'attributes', array());
+        $attributes = Arrays::getValue($params, 'attributes', []);
         foreach ($attributes as $attribute => $value) {
             $this->_dbHandle->setAttribute($attribute, $value);
         }
@@ -55,11 +55,11 @@ class Db
     {
         $db = self::getInstance();
         $bindParams = Arrays::toArray($parameters);
-        $paramsQueryString = implode(',', array_pad(array(), sizeof($bindParams), '?'));
+        $paramsQueryString = implode(',', array_pad([], sizeof($bindParams), '?'));
         return Arrays::first($db->query("SELECT $functionName($paramsQueryString)", $parameters)->fetch());
     }
 
-    public function query($query, $params = array(), $options = array())
+    public function query($query, $params = [], $options = [])
     {
         return StatementExecutor::prepare($this->_dbHandle, $query, $params, $options);
     }
@@ -71,7 +71,7 @@ class Db
      * @param array $options
      * @return int
      */
-    public function execute($query, $params = array(), $options = array())
+    public function execute($query, $params = [], $options = [])
     {
         return StatementExecutor::prepare($this->_dbHandle, $query, $params, $options)->execute();
     }
@@ -143,7 +143,7 @@ class Db
     private function _createPdo($params)
     {
         $dsn = Arrays::getValue($params, 'dsn');
-        $options = Arrays::getValue($params, 'options', array());
+        $options = Arrays::getValue($params, 'options', []);
         if ($dsn) {
             return new PDO($dsn, '', '', $options);
         }

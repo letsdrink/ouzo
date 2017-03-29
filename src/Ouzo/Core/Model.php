@@ -34,7 +34,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     private $_attributes;
 
     /** @var array */
-    private $_modifiedFields = array();
+    private $_modifiedFields = [];
 
     /**
      * Creates a new model object.
@@ -128,7 +128,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     private function _prepareParameters(array &$params)
     {
         if (empty($params['attributes'])) {
-            $params['attributes'] = array();
+            $params['attributes'] = [];
         }
         if (empty($params['fields'])) {
             throw new InvalidArgumentException("Fields are required");
@@ -169,7 +169,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
         if ($attributes) {
             $query = Query::update($attributes)
                 ->table($this->_modelDefinition->table)
-                ->where(array($this->_modelDefinition->primaryKey => $this->getId()));
+                ->where([$this->_modelDefinition->primaryKey => $this->getId()]);
 
             QueryExecutor::prepare($this->_modelDefinition->db, $query)->execute();
         }
@@ -191,7 +191,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     {
         foreach ($callbacks as $callback) {
             if (is_string($callback)) {
-                $callback = array($this, $callback);
+                $callback = [$this, $callback];
             }
             call_user_func($callback, $this);
         }
@@ -227,7 +227,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
 
     public function delete()
     {
-        return (bool)$this->where(array($this->_modelDefinition->primaryKey => $this->getId()))->deleteAll();
+        return (bool)$this->where([$this->_modelDefinition->primaryKey => $this->getId()])->deleteAll();
     }
 
     public function getId()
@@ -248,7 +248,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
 
     private function _findByIdOrNull($value)
     {
-        return $this->where(array($this->_modelDefinition->primaryKey => $value))->fetch();
+        return $this->where([$this->_modelDefinition->primaryKey => $value])->fetch();
     }
 
     private function _findById($value)
@@ -289,7 +289,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
 
     private function _getFieldsWithoutPrimaryKey()
     {
-        return array_diff($this->_modelDefinition->fields, array($this->_modelDefinition->primaryKey));
+        return array_diff($this->_modelDefinition->fields, [$this->_modelDefinition->primaryKey]);
     }
 
     public static function getFieldsWithoutPrimaryKey()
@@ -360,7 +360,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public static function join($relation, $alias = null, $type = 'LEFT', $on = array())
+    public static function join($relation, $alias = null, $type = 'LEFT', $on = [])
     {
         return static::queryBuilder()->join($relation, $alias, $type, $on);
     }
@@ -371,7 +371,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public static function innerJoin($relation, $alias = null, $on = array())
+    public static function innerJoin($relation, $alias = null, $on = [])
     {
         return static::queryBuilder()->innerJoin($relation, $alias, $on);
     }
@@ -382,7 +382,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public static function rightJoin($relation, $alias = null, $on = array())
+    public static function rightJoin($relation, $alias = null, $on = [])
     {
         return static::queryBuilder()->rightJoin($relation, $alias, $on);
     }
@@ -403,7 +403,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      * @param array $values
      * @return ModelQueryBuilder
      */
-    public static function where($params = '', $values = array())
+    public static function where($params = '', $values = [])
     {
         return static::queryBuilder()->where($params, $values);
     }
@@ -436,7 +436,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      * @param int $offset
      * @return Model[]
      */
-    public static function find($where, $whereValues, $orderBy = array(), $limit = null, $offset = null)
+    public static function find($where, $whereValues, $orderBy = [], $limit = null, $offset = null)
     {
         return static::metaInstance()->where($where, $whereValues)->order($orderBy)->limit($limit)->offset($offset)->fetchAll();
     }
@@ -446,7 +446,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      * @param array $params - bind parameters
      * @return Model[]
      */
-    public static function findBySql($nativeSql, $params = array())
+    public static function findBySql($nativeSql, $params = [])
     {
         $meta = static::metaInstance();
         $results = $meta->_modelDefinition->db->query($nativeSql, Arrays::toArray($params))->fetchAll();
@@ -479,7 +479,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      * @throws ValidationException
      * @return static
      */
-    public static function create(array $attributes = array())
+    public static function create(array $attributes = [])
     {
         $instance = static::newInstance($attributes);
         if ($instance->isValid()) {
@@ -495,7 +495,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      * @param $attributes
      * @return static
      */
-    public static function createWithoutValidation(array $attributes = array())
+    public static function createWithoutValidation(array $attributes = [])
     {
         $instance = static::newInstance($attributes);
         $instance->insert();
@@ -542,7 +542,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
 
     public function _resetModifiedFields()
     {
-        $this->_modifiedFields = array();
+        $this->_modifiedFields = [];
     }
 
     private function getAttributesForUpdate()

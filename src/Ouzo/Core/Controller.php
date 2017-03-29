@@ -19,17 +19,17 @@ class Controller
     /** @var Layout */
     public $layout;
 
-    public $before = array();
-    public $after = array();
+    public $before = [];
+    public $after = [];
     public $currentController = '';
     public $currentAction = '';
     public $params;
 
     private $_statusResponse = 'show';
     private $_redirectLocation = '';
-    private $_fileData = array();
-    private $_headers = array();
-    private $_cookies = array();
+    private $_fileData = [];
+    private $_headers = [];
+    private $_cookies = [];
     private $_routeRule = null;
     private $_keepMessage = false;
 
@@ -76,7 +76,7 @@ class Controller
         return $this->_cookies;
     }
 
-    public function redirect($url, $messages = array())
+    public function redirect($url, $messages = [])
     {
         $url = trim($url);
         $this->notice($messages, false, $url);
@@ -87,7 +87,7 @@ class Controller
 
     public function downloadFile($label, $mime, $path, $type = 'file')
     {
-        $this->_fileData = array('label' => $label, 'mime' => $mime, 'path' => $path);
+        $this->_fileData = ['label' => $label, 'mime' => $mime, 'path' => $path];
         $this->_statusResponse = $type;
     }
 

@@ -10,7 +10,7 @@ use Ouzo\Utilities\Strings;
 
 class ResponseMapper
 {
-    protected static $_messages = array(
+    protected static $_messages = [
         //Informational 1xx
         100 => '100 Continue',
         101 => '101 Switching Protocols',
@@ -60,7 +60,7 @@ class ResponseMapper
         503 => '503 Service Unavailable',
         504 => '504 Gateway Timeout',
         505 => '505 HTTP Version Not Supported'
-    );
+    ];
 
     public static function getMessage($code, $default = '500 Internal Server Error')
     {

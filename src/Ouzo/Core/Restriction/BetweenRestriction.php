@@ -33,6 +33,6 @@ class BetweenRestriction extends Restriction
 
     public function getValues()
     {
-        return array($this->value1, $this->value2);
+        return [$this->value1, $this->value2];
     }
 }

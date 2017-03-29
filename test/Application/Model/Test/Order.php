@@ -9,15 +9,15 @@ use Ouzo\Model;
 
 class Order extends Model
 {
-    private $_fields = array('name');
+    private $_fields = ['name'];
 
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'table' => 'orders',
             'sequence' => 'orders_id_order_seq',
             'primaryKey' => 'id_order',
             'attributes' => $attributes,
-            'fields' => $this->_fields));
+            'fields' => $this->_fields]);
     }
 }
