@@ -11,47 +11,71 @@ use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
+    /**
+     * @inheritdoc
+     */
     public function table()
     {
-        $alias = $this->_query->aliasTable;
+        $alias = $this->query->aliasTable;
         $table = $this->tableOrSubQuery();
         if ($alias) {
-            $aliasOperator = $this->_query->type == QueryType::$DELETE ? '' : ' AS ';
+            $aliasOperator = $this->query->type == QueryType::$DELETE ? '' : ' AS ';
             return $table . $aliasOperator . $alias;
         }
         return $table;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getConnectionErrorCodes()
     {
         return [2003, 2006];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getErrorCode($errorInfo)
     {
         return Arrays::getValue($errorInfo, 1);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function using()
     {
-        return $this->_using($this->_query->usingClauses, ' INNER JOIN ', $this->_query->table, $this->_query->aliasTable);
+        return $this->_using($this->query->usingClauses, ' INNER JOIN ', $this->query->table, $this->query->aliasTable);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
         throw new InvalidArgumentException("Batch insert not supported in mysql");
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function insertEmptyRow()
     {
-        return "INSERT INTO {$this->_query->table} VALUES ()";
+        return "INSERT INTO {$this->query->table} VALUES ()";
     }
 
+    /**
+     * @inheritdoc
+     */
     public function regexpMatcher()
     {
         return 'REGEXP';
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function quote($word)
     {
         return '`' . $word . '`';
