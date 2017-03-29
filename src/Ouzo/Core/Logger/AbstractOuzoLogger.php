@@ -18,19 +18,19 @@ abstract class AbstractOuzoLogger extends AbstractLogger
      */
     private $messageFormatter;
     private $minimalLevels;
-    private $logger;
+    private $loggerConfiguration;
 
     public function __construct($name, $configuration)
     {
         $this->name = $name;
         $messageFormatterClass = 'Ouzo\Logger\DefaultMessageFormatter';
-        $logger = Config::getValue('logger', $configuration);
-        if ($logger) {
-            $messageFormatterClass = Arrays::getValue($logger, 'formatter', $messageFormatterClass);
-            $this->minimalLevels = Arrays::getValue($logger, 'minimal_levels');
+        $loggerConfiguration = Config::getValue('logger', $configuration);
+        if ($loggerConfiguration) {
+            $messageFormatterClass = Arrays::getValue($loggerConfiguration, 'formatter', $messageFormatterClass);
+            $this->minimalLevels = Arrays::getValue($loggerConfiguration, 'minimal_levels');
         }
         $this->messageFormatter = new $messageFormatterClass();
-        $this->logger = $logger;
+        $this->loggerConfiguration = $loggerConfiguration;
     }
 
     public function setName($name)
@@ -63,8 +63,8 @@ abstract class AbstractOuzoLogger extends AbstractLogger
         return Config::getValue('debug');
     }
 
-    protected function getLogger()
+    protected function getLoggerConfiguration()
     {
-        return $this->logger;
+        return $this->loggerConfiguration;
     }
 }

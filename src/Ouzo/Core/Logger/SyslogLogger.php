@@ -10,9 +10,15 @@ class SyslogLogger extends AbstractOuzoLogger
 {
     const MAX_MESSAGE_SIZE = 1024;
 
-    public function __construct($name, $configuration)
+    /**
+     * @var SyslogLogProvider
+     */
+    private $syslogLogProvider;
+
+    public function __construct($name, $configuration, $syslogLogProvider = null)
     {
         parent::__construct($name, $configuration);
+        $this->syslogLogProvider = $syslogLogProvider ?: new SyslogLogProvider();
     }
 
     public function __destruct()
@@ -22,11 +28,11 @@ class SyslogLogger extends AbstractOuzoLogger
 
     public function log($level, $message, array $context = array())
     {
-        $logger = $this->getLogger();
+        $loggerConfiguration = $this->getLoggerConfiguration();
         $syslogLevel = LogLevelTranslator::toSyslogLevel($level);
-        $this->logWithFunction(function ($message) use ($logger, $syslogLevel) {
-            if ($logger) {
-                openlog($logger['ident'], $logger['option'], $logger['facility']);
+        $this->logWithFunction(function ($message) use ($loggerConfiguration, $syslogLevel) {
+            if ($loggerConfiguration) {
+                $this->syslogLogProvider->open($loggerConfiguration);
             }
             $this->logMessage($syslogLevel, $message);
         }, $level, $message, $context);
@@ -36,7 +42,7 @@ class SyslogLogger extends AbstractOuzoLogger
     {
         $messageLength = strlen($message);
         if ($messageLength < self::MAX_MESSAGE_SIZE) {
-            syslog($level, $message);
+            $this->syslogLogProvider->log($level, $message);
         } else {
             $messageId = uniqid();
             $multipartMessagePrefix = "Multipart $messageId [%d/%d] ";
@@ -44,7 +50,7 @@ class SyslogLogger extends AbstractOuzoLogger
             $parts = str_split($message, self::MAX_MESSAGE_SIZE - strlen($multipartMessagePrefix) - 10);
             foreach ($parts as $idx => $part) {
                 $prefix = sprintf($multipartMessagePrefix, $idx + 1, sizeof($parts));
-                syslog($level, $prefix . $part);
+                $this->syslogLogProvider->log($level, $prefix . $part);
             }
         }
     }

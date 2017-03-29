@@ -12,7 +12,7 @@ class OuzoExceptionTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnErrorMessages()
     {
         //given
-        $ouzoException = new OuzoException(500, [new Error(0, "Error 1"), new Error(1, "Error 2")]);
+        $ouzoException = new OuzoException(500, "TestException", [new Error(0, "Error 1"), new Error(1, "Error 2")]);
 
         //when
         $messages = $ouzoException->getErrorMessages();
