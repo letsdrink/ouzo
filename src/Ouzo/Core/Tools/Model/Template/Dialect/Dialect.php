@@ -31,6 +31,6 @@ class Dialect
 
     public function columns()
     {
-        return array();
+        return [];
     }
 }

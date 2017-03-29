@@ -18,7 +18,7 @@ class ModelQueryBuilderHelper
      */
     public static function extractRelations(Model $root, $relationSelector)
     {
-        $relations = array();
+        $relations = [];
         if ($relationSelector instanceof Relation) {
             $relations[] = $relationSelector;
         } else {
@@ -45,7 +45,7 @@ class ModelQueryBuilderHelper
             throw new InvalidArgumentException("More aliases than relations in join");
         }
 
-        $relationWithAliases = array();
+        $relationWithAliases = [];
         foreach ($relations as $index => $relation) {
             $alias = Arrays::getValue($aliases, $index, Arrays::getValue($aliases, $relation->getName()));
             $relationWithAliases[] = new RelationWithAlias($relation, $alias);
@@ -54,15 +54,15 @@ class ModelQueryBuilderHelper
     }
 
     /**
-     * @param $fromTable
+     * @param string $fromTable
      * @param RelationWithAlias[] $relationWithAliases
-     * @param $type
-     * @param $on
+     * @param string $type
+     * @param string $on
      * @return ModelJoin[]
      */
     public static function createModelJoins($fromTable, $relationWithAliases, $type, $on)
     {
-        $result = array();
+        $result = [];
         $field = '';
         $table = $fromTable;
         $fetch = true;

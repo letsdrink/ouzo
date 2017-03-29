@@ -17,10 +17,10 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->_category = Category::create(array('name' => 'sony'));
-        Product::create(array('name' => 'bob', 'id_category' => $this->_category->getId()));
-        Product::create(array('name' => 'billy', 'id_category' => $this->_category->getId()));
-        Product::create(array('name' => 'peter', 'id_category' => $this->_category->getId()));
+        $this->_category = Category::create(['name' => 'sony']);
+        Product::create(['name' => 'bob', 'id_category' => $this->_category->getId()]);
+        Product::create(['name' => 'billy', 'id_category' => $this->_category->getId()]);
+        Product::create(['name' => 'peter', 'id_category' => $this->_category->getId()]);
     }
 
     /**
@@ -107,8 +107,8 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
     public function shouldFetchHasManyJoinWithStringCondition()
     {
         //given
-        $category = Category::create(array('name' => 'samsung'));
-        Product::create(array('name' => 'cris', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'samsung']);
+        Product::create(['name' => 'cris', 'id_category' => $category->getId()]);
 
         //when
         $searchCategory = Category::innerJoin('products_starting_with_b')->fetchAll();
@@ -123,8 +123,8 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
     public function shouldFetchHasManyJoinWithCallbackCondition()
     {
         //given
-        $category = Category::create(array('name' => 'samsung'));
-        Product::create(array('name' => 'cris', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'samsung']);
+        Product::create(['name' => 'cris', 'id_category' => $category->getId()]);
 
         //when
         $searchCategory = Category::innerJoin('products_ending_with_b_or_y')->fetchAll();
@@ -139,8 +139,8 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
     public function shouldFetchHasManyJoinWithArrayCondition()
     {
         //given
-        $category = Category::create(array('name' => 'samsung'));
-        Product::create(array('name' => 'cris', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'samsung']);
+        Product::create(['name' => 'cris', 'id_category' => $category->getId()]);
 
         //when
         $searchCategory = Category::innerJoin('products_name_bob')->fetchAll();

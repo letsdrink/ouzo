@@ -18,10 +18,10 @@ class RouteRule
     private $action;
     private $actionRequired;
     private $options;
-    private $parameters = array();
+    private $parameters = [];
     private $isResource;
 
-    public function __construct($method, $uri, $controller, $action, $requireAction, $options = array(), $isResource = false)
+    public function __construct($method, $uri, $controller, $action, $requireAction, $options = [], $isResource = false)
     {
         $this->method = $method;
         $this->uri = $uri;
@@ -60,7 +60,7 @@ class RouteRule
     public function hasRequiredAction()
     {
         if ($this->actionRequired) {
-            return (in_array($this->method, array('GET', 'POST')) || is_array($this->method)) && !$this->action;
+            return (in_array($this->method, ['GET', 'POST']) || is_array($this->method)) && !$this->action;
         }
         return $this->actionRequired;
     }
@@ -105,7 +105,7 @@ class RouteRule
 
     public function getExcept()
     {
-        return Arrays::getValue($this->options, 'except', array());
+        return Arrays::getValue($this->options, 'except', []);
     }
 
     public function setParameters($uri)
@@ -153,7 +153,7 @@ class RouteRule
     private function prepareResourceActionName()
     {
         $action = $this->action;
-        if (in_array($action, array('fresh', 'edit'))) {
+        if (in_array($action, ['fresh', 'edit'])) {
             return $action . '_';
         }
         return '';
@@ -162,7 +162,7 @@ class RouteRule
     private function prepareResourceControllerName()
     {
         $parts = explode('_', $this->controller);
-        if (in_array($this->action, array('index', 'create'))) {
+        if (in_array($this->action, ['index', 'create'])) {
             $suffix = array_pop($parts);
         } else {
             $suffix = Inflector::singularize(array_pop($parts));

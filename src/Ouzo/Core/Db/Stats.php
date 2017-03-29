@@ -14,21 +14,37 @@ class Stats
 {
     const NUMBER_OF_REQUESTS_TO_KEEP = 10;
 
+    /**
+     * @return array
+     */
     public static function queries()
     {
-        return Session::get('stats_queries') ? : array();
+        return Session::get('stats_queries') ?: [];
     }
 
+    /**
+     * @param string $request
+     * @return array
+     */
     public static function queriesForRequest($request)
     {
-        return Session::get('stats_queries', $request, 'queries') ? : array();
+        return Session::get('stats_queries', $request, 'queries') ?: [];
     }
 
+    /**
+     * @return void
+     */
     public static function reset()
     {
         Session::remove('stats_queries');
     }
 
+    /**
+     * @param string $query
+     * @param array $params
+     * @param $function
+     * @return mixed
+     */
     public static function trace($query, $params, $function)
     {
         if (Config::getValue('debug')) {
@@ -37,6 +53,12 @@ class Stats
         return $function();
     }
 
+    /**
+     * @param string $query
+     * @param array $params
+     * @param $function
+     * @return mixed
+     */
     public static function traceNoCheck($query, $params, $function)
     {
         $startTime = microtime(true);
@@ -45,7 +67,7 @@ class Stats
 
         $uri = new Uri();
         $requestDetails = $uri->getPathWithoutPrefix() . '#' . FrontController::$requestId;
-        $value = array('query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString());
+        $value = ['query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString()];
         Session::push('stats_queries', $requestDetails, 'queries', $value);
 
         self::removeExcessiveRequests();
@@ -55,6 +77,7 @@ class Stats
 
     /**
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * @return int
      */
     public static function getTotalTime()
     {
@@ -66,6 +89,10 @@ class Stats
         return $sum;
     }
 
+    /**
+     * @param string $request
+     * @return mixed
+     */
     public static function getRequestTotalTime($request)
     {
         return array_reduce(self::queriesForRequest($request), function ($sum, $value) {
@@ -73,11 +100,17 @@ class Stats
         });
     }
 
+    /**
+     * @return int
+     */
     public static function getNumberOfRequests()
     {
         return sizeof(self::queries());
     }
 
+    /**
+     * @return int
+     */
     public static function getNumberOfQueries()
     {
         $sum = 0;
@@ -88,11 +121,18 @@ class Stats
         return $sum;
     }
 
+    /**
+     * @param string $request
+     * @return int
+     */
     public static function getRequestNumberOfQueries($request)
     {
         return sizeof(self::queriesForRequest($request));
     }
 
+    /**
+     * @return string
+     */
     public static function getBacktraceString()
     {
         $trace = debug_backtrace();
@@ -105,6 +145,11 @@ class Stats
         return $stack;
     }
 
+    /**
+     * @param string $index
+     * @param array $frame
+     * @return string
+     */
     public static function formatStackFrame($index, array $frame)
     {
         $stack = '';
@@ -119,6 +164,10 @@ class Stats
         return $stack;
     }
 
+    /**
+     * @param array $params
+     * @return void
+     */
     public static function traceHttpRequest($params)
     {
         $uri = new Uri();
@@ -126,6 +175,9 @@ class Stats
         Session::push('stats_queries', $requestDetails, 'request_params', $params);
     }
 
+    /**
+     * @return void
+     */
     private static function removeExcessiveRequests()
     {
         $all = Session::get('stats_queries');

@@ -20,45 +20,53 @@ class ModelQueryBuilder
     CONST MODEL_QUERY_MARKER_COMMENT = 'orm:model';
 
     /** @var Db */
-    private $_db;
-
+    private $db;
     /** @var Model */
-    private $_model;
-
+    private $model;
     /** @var ModelJoin[] */
-    private $_joinedModels = array();
-
+    private $joinedModels = [];
     /** @var RelationToFetch[] */
-    private $_relationsToFetch = array();
-
+    private $relationsToFetch = [];
     /** @var Query */
-    private $_query;
-
+    private $query;
     /** @var bool */
-    private $_selectModel = true;
+    private $selectModel = true;
 
+    /**
+     * @param Model $model
+     * @param Db|null $db
+     * @param string|null $alias
+     */
     public function __construct(Model $model, Db $db = null, $alias = null)
     {
-        $this->_db = $db ? $db : Db::getInstance();
-        $this->_model = $model;
+        $this->db = $db ? $db : Db::getInstance();
+        $this->model = $model;
 
-        $this->_query = new Query();
-        $this->_query->table = $model->getTableName();
-        $this->_query->aliasTable = $alias;
-        $this->_query->selectType = PDO::FETCH_NUM;
-        $this->_query->selectColumns = array();
+        $this->query = new Query();
+        $this->query->table = $model->getTableName();
+        $this->query->aliasTable = $alias;
+        $this->query->selectType = PDO::FETCH_NUM;
+        $this->query->selectColumns = [];
         $this->selectModelColumns($model, $this->getModelAliasOrTable());
     }
 
+    /**
+     * @return string
+     */
     private function getModelAliasOrTable()
     {
-        return $this->_query->aliasTable ?: $this->_model->getTableName();
+        return $this->query->aliasTable ?: $this->model->getTableName();
     }
 
+    /**
+     * @param Model $metaInstance
+     * @param string $alias
+     * @return void
+     */
     private function selectModelColumns(Model $metaInstance, $alias)
     {
-        if ($this->_selectModel) {
-            $this->_query->selectColumns = array_merge($this->_query->selectColumns, ColumnAliasHandler::createSelectColumnsWithAliases($metaInstance->_getFields(), $alias));
+        if ($this->selectModel) {
+            $this->query->selectColumns = array_merge($this->query->selectColumns, ColumnAliasHandler::createSelectColumnsWithAliases($metaInstance->_getFields(), $alias));
         }
     }
 
@@ -67,39 +75,39 @@ class ModelQueryBuilder
      * @param array $values
      * @return ModelQueryBuilder
      */
-    public function where($where = '', $values = array())
+    public function where($where = '', $values = [])
     {
-        $this->_query->where($where, $values);
+        $this->query->where($where, $values);
         return $this;
     }
 
     /**
-     * @param $columns
+     * @param string $columns
      * @return ModelQueryBuilder
      */
     public function order($columns)
     {
-        $this->_query->order = $columns;
+        $this->query->order = $columns;
         return $this;
     }
 
     /**
-     * @param $offset
+     * @param int $offset
      * @return ModelQueryBuilder
      */
     public function offset($offset)
     {
-        $this->_query->offset = $offset;
+        $this->query->offset = $offset;
         return $this;
     }
 
     /**
-     * @param $limit
+     * @param int $limit
      * @return ModelQueryBuilder
      */
     public function limit($limit)
     {
-        $this->_query->limit = $limit;
+        $this->query->limit = $limit;
         return $this;
     }
 
@@ -108,46 +116,52 @@ class ModelQueryBuilder
      */
     public function lockForUpdate()
     {
-        $this->_query->lockForUpdate = true;
+        $this->query->lockForUpdate = true;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
-        $this->_query->type = QueryType::$COUNT;
-        $value = QueryExecutor::prepare($this->_db, $this->_query)->fetch();
+        $this->query->type = QueryType::$COUNT;
+        $value = QueryExecutor::prepare($this->db, $this->query)->fetch();
         return intval(Arrays::firstOrNull(Arrays::toArray($value)));
     }
 
 
+    /**
+     * @return void
+     */
     private function beforeSelect()
     {
-        if ($this->_selectModel) {
-            $this->_query->comment(ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT);
+        if ($this->selectModel) {
+            $this->query->comment(ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT);
         }
     }
 
     /**
-     * @return Model|array
+     * @return Model[]
      */
     public function fetch()
     {
         $this->beforeSelect();
-        $result = QueryExecutor::prepare($this->_db, $this->_query)->fetch();
+        $result = QueryExecutor::prepare($this->db, $this->query)->fetch();
         if (!$result) {
             return null;
         }
-        return !$this->_selectModel ? $result : Arrays::firstOrNull($this->_processResults(array($result)));
+        return !$this->selectModel ? $result : Arrays::firstOrNull($this->_processResults([$result]));
     }
 
     /**
-     * @return Model[]|array[]
+     * @return Model[]
      */
     public function fetchAll()
     {
         $this->beforeSelect();
-        $result = QueryExecutor::prepare($this->_db, $this->_query)->fetchAll();
-        return !$this->_selectModel ? $result : $this->_processResults($result);
+        $result = QueryExecutor::prepare($this->db, $this->query)->fetchAll();
+        return !$this->selectModel ? $result : $this->_processResults($result);
     }
 
     /**
@@ -157,14 +171,18 @@ class ModelQueryBuilder
     public function fetchIterator($batchSize = 500)
     {
         $this->beforeSelect();
-        $iterator = QueryExecutor::prepare($this->_db, $this->_query)->fetchIterator();
+        $iterator = QueryExecutor::prepare($this->db, $this->query)->fetchIterator();
         $iterator->rewind();
-        return !$this->_selectModel ? $iterator : new UnbatchingIterator(new TransformingIterator(new BatchingIterator($iterator, $batchSize), array($this, '_processResults')));
+        return !$this->selectModel ? $iterator : new UnbatchingIterator(new TransformingIterator(new BatchingIterator($iterator, $batchSize), [$this, '_processResults']));
     }
 
+    /**
+     * @param array $results
+     * @return Model[]
+     */
     function _processResults($results)
     {
-        $resultSetConverter = new ModelResultSetConverter($this->_model, $this->getModelAliasOrTable(), $this->_joinedModels, $this->_relationsToFetch);
+        $resultSetConverter = new ModelResultSetConverter($this->model, $this->getModelAliasOrTable(), $this->joinedModels, $this->relationsToFetch);
         $converted = $resultSetConverter->convert($results);
         BatchLoadingSession::attach($converted);
         return $converted;
@@ -173,22 +191,26 @@ class ModelQueryBuilder
     /**
      * Issues "delete from ... where ..." sql command.
      * Note that overridden Model::delete is not called.
+     * @return int
      */
     public function deleteAll()
     {
-        $this->_query->type = QueryType::$DELETE;
-        return QueryExecutor::prepare($this->_db, $this->_query)->execute();
+        $this->query->type = QueryType::$DELETE;
+        return QueryExecutor::prepare($this->db, $this->query)->execute();
     }
 
     /**
      * Calls Model::delete method for each matching object
+     * @return array
      */
     public function deleteEach()
     {
-        $objects = $this->fetchAll();
-        return Arrays::map($objects, function (Model $object) {
-            return !$object->delete();
-        });
+        $objectIterator = $this->fetchIterator();
+        $result = [];
+        foreach ($objectIterator as $object) {
+            $result[] = !$object->delete();
+        }
+        return $result;
     }
 
     /**
@@ -198,19 +220,19 @@ class ModelQueryBuilder
      */
     public function update(array $attributes)
     {
-        $this->_query->type = QueryType::$UPDATE;
-        $this->_query->updateAttributes = $attributes;
-        return QueryExecutor::prepare($this->_db, $this->_query)->execute();
+        $this->query->type = QueryType::$UPDATE;
+        $this->query->updateAttributes = $attributes;
+        return QueryExecutor::prepare($this->db, $this->query)->execute();
     }
 
     /**
-     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
-     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param string $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param string|null|array $aliases - alias of the first joined table or array of aliases for nested joins
      * @param string $type - join type, defaults to LEFT
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public function join($relationSelector, $aliases = null, $type = 'LEFT', $on = array())
+    public function join($relationSelector, $aliases = null, $type = 'LEFT', $on = [])
     {
         $modelJoins = $this->createModelJoins($relationSelector, $aliases, $type, $on);
         foreach ($modelJoins as $modelJoin) {
@@ -220,158 +242,198 @@ class ModelQueryBuilder
     }
 
     /**
-     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
-     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param string $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param string|null $aliases - alias of the first joined table or array of aliases for nested joins
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public function innerJoin($relationSelector, $aliases = null, $on = array())
+    public function innerJoin($relationSelector, $aliases = null, $on = [])
     {
         return $this->join($relationSelector, $aliases, 'INNER', $on);
     }
 
     /**
-     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
-     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param string $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param string|null $aliases - alias of the first joined table or array of aliases for nested joins
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public function rightJoin($relationSelector, $aliases = null, $on = array())
+    public function rightJoin($relationSelector, $aliases = null, $on = [])
     {
         return $this->join($relationSelector, $aliases, 'RIGHT', $on);
     }
 
     /**
-     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
-     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param string $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param string|null $aliases - alias of the first joined table or array of aliases for nested joins
      * @param array $on
      * @return ModelQueryBuilder
      */
-    public function leftJoin($relationSelector, $aliases = null, $on = array())
+    public function leftJoin($relationSelector, $aliases = null, $on = [])
     {
         return $this->join($relationSelector, $aliases, 'LEFT', $on);
     }
 
     /**
-     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
-     * @param null $aliases - alias of the first joined table or array of aliases for nested joins
+     * @param string $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param string|null|array $aliases - alias of the first joined table or array of aliases for nested joins
      * @return ModelQueryBuilder
      */
     public function using($relationSelector, $aliases)
     {
-        $modelJoins = $this->createModelJoins($relationSelector, $aliases, 'USING', array());
+        $modelJoins = $this->createModelJoins($relationSelector, $aliases, 'USING', []);
         foreach ($modelJoins as $modelJoin) {
-            $this->_query->addUsing($modelJoin->asJoinClause());
+            $this->query->addUsing($modelJoin->asJoinClause());
         }
         return $this;
     }
 
+    /**
+     * @param ModelJoin $modelJoin
+     * @return void
+     */
     private function addJoin(ModelJoin $modelJoin)
     {
         if (!$this->isAlreadyJoined($modelJoin)) {
-            $this->_query->addJoin($modelJoin->asJoinClause());
-            $this->_joinedModels[] = $modelJoin;
+            $this->query->addJoin($modelJoin->asJoinClause());
+            $this->joinedModels[] = $modelJoin;
             if ($modelJoin->storeField()) {
                 $this->selectModelColumns($modelJoin->getModelObject(), $modelJoin->alias());
             }
         }
     }
 
+    /**
+     * @param ModelJoin $modelJoin
+     * @return bool
+     */
     private function isAlreadyJoined(ModelJoin $modelJoin)
     {
-        return Arrays::any($this->_joinedModels, ModelJoin::equalsPredicate($modelJoin));
+        return Arrays::any($this->joinedModels, ModelJoin::equalsPredicate($modelJoin));
     }
 
     /**
-     * @param $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
+     * @param string $relationSelector - Relation object, relation name or nested relations 'rel1->rel2'
      * @return ModelQueryBuilder
      */
     public function with($relationSelector)
     {
         if (!BatchLoadingSession::isAllocated()) {
-            $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
+            $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector);
             $field = '';
 
             foreach ($relations as $relation) {
                 $nestedField = $field ? $field . '->' . $relation->getName() : $relation->getName();
-                $this->_addRelationToFetch(new RelationToFetch($field, $relation, $nestedField));
+                $this->addRelationToFetch(new RelationToFetch($field, $relation, $nestedField));
                 $field = $nestedField;
             }
         }
         return $this;
     }
 
-    private function _addRelationToFetch($relationToFetch)
+    /**
+     * @param string $relationToFetch
+     */
+    private function addRelationToFetch($relationToFetch)
     {
         if (!$this->isAlreadyAddedToFetch($relationToFetch)) {
-            $this->_relationsToFetch[] = $relationToFetch;
+            $this->relationsToFetch[] = $relationToFetch;
         }
     }
 
+    /**
+     * @param RelationToFetch $relationToFetch
+     * @return bool
+     */
     private function isAlreadyAddedToFetch(RelationToFetch $relationToFetch)
     {
-        return Arrays::any($this->_relationsToFetch, RelationToFetch::equalsPredicate($relationToFetch));
+        return Arrays::any($this->relationsToFetch, RelationToFetch::equalsPredicate($relationToFetch));
     }
 
     /**
-     * @param $columns
+     * @param array|string $columns
      * @param int $type
      * @return ModelQueryBuilder
      */
     public function select($columns, $type = PDO::FETCH_NUM)
     {
-        $this->_selectModel = false;
-        $this->_query->selectColumns = Arrays::toArray($columns);
-        $this->_query->selectType = $type;
+        $this->selectModel = false;
+        $this->query->selectColumns = Arrays::toArray($columns);
+        $this->query->selectType = $type;
         return $this;
     }
 
     /**
-     * @param $columns
+     * @param string|array $columns
      * @param int $type
      * @return ModelQueryBuilder
      */
     public function selectDistinct($columns, $type = PDO::FETCH_NUM)
     {
-        $this->_query->distinct = true;
+        $this->query->distinct = true;
         return $this->select($columns, $type);
     }
 
+    /**
+     * @return void
+     */
     public function __clone()
     {
-        $this->_query = clone $this->_query;
+        $this->query = clone $this->query;
     }
 
+    /**
+     * @return ModelQueryBuilder
+     */
     public function copy()
     {
         return clone $this;
     }
 
+    /**
+     * @param array $options
+     * @return $this
+     */
     public function options(array $options)
     {
-        $this->_query->options = $options;
+        $this->query->options = $options;
         return $this;
     }
 
+    /**
+     * @param string $groupBy
+     * @throws DbException
+     * @return $this
+     */
     public function groupBy($groupBy)
     {
-        if ($this->_selectModel) {
+        if ($this->selectModel) {
             throw new DbException("Cannot use group by without specifying columns.\n"
                 . "e.g. Model::select('column, count(*)')->groupBy('column')->fetchAll();");
         }
 
-        $this->_query->groupBy = $groupBy;
+        $this->query->groupBy = $groupBy;
         return $this;
     }
 
+    /**
+     * @return Query
+     */
     public function getQuery()
     {
-        return $this->_query;
+        return $this->query;
     }
 
+    /**
+     * @param string $relationSelector
+     * @param string|null|array $aliases
+     * @param string $type
+     * @param array $on
+     * @return ModelJoin[]
+     */
     private function createModelJoins($relationSelector, $aliases, $type, $on)
     {
-        $relations = ModelQueryBuilderHelper::extractRelations($this->_model, $relationSelector);
+        $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector);
         $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
         return ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases, $type, $on);
     }

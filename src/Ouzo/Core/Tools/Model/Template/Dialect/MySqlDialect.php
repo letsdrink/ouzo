@@ -34,7 +34,7 @@ class MySqlDialect extends Dialect
     private function _getTableColumns($tableName)
     {
         $schema = Db::getInstance()->query("SHOW COLUMNS FROM $tableName")->fetchAll();
-        $tableColumns = array();
+        $tableColumns = [];
         foreach ($schema as $columnInfo) {
             $columnName = $columnInfo['Field'];
             $columnDefault = $columnInfo['Default'];

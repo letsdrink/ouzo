@@ -44,13 +44,11 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
     public function shouldNotDisplayOutputBeforeHeadersAreSent()
     {
         //given
-        $self = $this;
-
         $obLevel = ob_get_level();
-        Mock::when($this->frontController->getHeaderSender())->send(Mock::any())->thenAnswer(function () use ($self, $obLevel) {
+        Mock::when($this->frontController->getHeaderSender())->send(Mock::any())->thenAnswer(function () use ($obLevel) {
             //if there's a nested buffer, nothing was sent to output
-            $self->assertTrue(ob_get_level() > $obLevel);
-            $self->expectOutputString('OUTPUT');
+            $this->assertTrue(ob_get_level() > $obLevel);
+            $this->expectOutputString('OUTPUT');
         });
 
         Route::allowAll('/sample', 'sample');

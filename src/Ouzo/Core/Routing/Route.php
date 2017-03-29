@@ -30,42 +30,42 @@ use Ouzo\Utilities\Strings;
  */
 class Route implements RouteInterface
 {
-    public static $methods = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS');
+    public static $methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
     public static $validate = true;
     public static $isDebug;
 
     /**
      * @var RouteRule[]
      */
-    private static $routes = array();
-    private static $routeKeys = array();
+    private static $routes = [];
+    private static $routeKeys = [];
 
-    public static function get($uri, $action, array $options = array())
+    public static function get($uri, $action, array $options = [])
     {
         self::addRoute('GET', $uri, $action, true, $options);
     }
 
-    public static function post($uri, $action, array $options = array())
+    public static function post($uri, $action, array $options = [])
     {
         self::addRoute('POST', $uri, $action, true, $options);
     }
 
-    public static function put($uri, $action, array $options = array())
+    public static function put($uri, $action, array $options = [])
     {
         self::addRoute('PUT', $uri, $action, true, $options);
     }
 
-    public static function delete($uri, $action, array $options = array())
+    public static function delete($uri, $action, array $options = [])
     {
         self::addRoute('DELETE', $uri, $action, true, $options);
     }
 
-    public static function options($uri, $action, array $options = array())
+    public static function options($uri, $action, array $options = [])
     {
         self::addRoute('OPTIONS', $uri, $action, true, $options);
     }
 
-    public static function any($uri, $action, array $options = array())
+    public static function any($uri, $action, array $options = [])
     {
         self::addRoute(self::$methods, $uri, $action, true, $options);
     }
@@ -82,12 +82,12 @@ class Route implements RouteInterface
         self::addResourceRoute($controller, 'DELETE', '/:id', 'destroy');
     }
 
-    public static function allowAll($uri, $controller, $options = array())
+    public static function allowAll($uri, $controller, $options = [])
     {
         self::addRoute(self::$methods, $uri, $controller, false, $options);
     }
 
-    private static function addRoute($method, $uri, $action, $requireAction = true, $options = array(), $isResource = false)
+    private static function addRoute($method, $uri, $action, $requireAction = true, $options = [], $isResource = false)
     {
         $methods = Arrays::toArray($method);
         if (self::$isDebug && $requireAction && self::$validate && self::existRouteRule($methods, $uri)) {
@@ -121,7 +121,7 @@ class Route implements RouteInterface
     {
         $uri = self::createRouteUri($controller, $uriSuffix);
         $routeAction = self::createRouteAction($controller, $action);
-        self::addRoute($method, $uri, $routeAction, true, array(), true);
+        self::addRoute($method, $uri, $routeAction, true, [], true);
     }
 
     private static function createRouteUri($action, $suffix = '')
@@ -157,8 +157,8 @@ class Route implements RouteInterface
 
     public static function clear()
     {
-        self::$routes = array();
-        self::$routeKeys = array();
+        self::$routes = [];
+        self::$routeKeys = [];
     }
 }
 

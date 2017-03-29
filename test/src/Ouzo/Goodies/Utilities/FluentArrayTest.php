@@ -18,11 +18,11 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldSupportChaining()
     {
         //given
-        $array = array(
+        $array = [
             1 => 2,
             2 => 3,
             3 => 3
-        );
+        ];
 
         //when
         $transformed = FluentArray::from($array)
@@ -35,7 +35,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
             ->toArray();
 
         //then
-        $this->assertEquals(array(3), $transformed);
+        $this->assertEquals([3], $transformed);
     }
 
     /**
@@ -44,13 +44,13 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReturnArrayKeys()
     {
         //given
-        $array = array(1 => 'a', 2 => 'b', 3 => 'c');
+        $array = [1 => 'a', 2 => 'b', 3 => 'c'];
 
         //when
         $transformed = FluentArray::from($array)->keys()->toArray();
 
         //then
-        $this->assertEquals(array(1, 2, 3), $transformed);
+        $this->assertEquals([1, 2, 3], $transformed);
     }
 
     /**
@@ -59,13 +59,13 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldFlipArray()
     {
         //given
-        $array = array(1 => 'a', 2 => 'b', 3 => 'c');
+        $array = [1 => 'a', 2 => 'b', 3 => 'c'];
 
         //when
         $transformed = FluentArray::from($array)->flip()->toArray();
 
         //then
-        $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), $transformed);
+        $this->assertEquals(['a' => 1, 'b' => 2, 'c' => 3], $transformed);
     }
 
     /**
@@ -74,13 +74,13 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldFlattenArray()
     {
         //given
-        $array = array(array(1, 2), array(3, 4));
+        $array = [[1, 2], [3, 4]];
 
         //when
         $flattened = FluentArray::from($array)->flatten()->toArray();
 
         //then
-        $this->assertEquals(array(1, 2, 3, 4), $flattened);
+        $this->assertEquals([1, 2, 3, 4], $flattened);
     }
 
     /**
@@ -100,7 +100,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
         $toMap = FluentArray::from($obj)->toMap(Functions::extractField('field1'), Functions::extractField('field2'))->toArray();
 
         //then
-        $this->assertEquals(array('key1' => 'value1', 'key2' => 'value2'), $toMap);
+        $this->assertEquals(['key1' => 'value1', 'key2' => 'value2'], $toMap);
     }
 
     /**
@@ -109,7 +109,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldConvertToJson()
     {
         //given
-        $array = array(1 => 'a', 2 => 'b', 3 => 'c');
+        $array = [1 => 'a', 2 => 'b', 3 => 'c'];
 
         //when
         $json = FluentArray::from($array)->toJson();
@@ -124,14 +124,14 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReturnArraysIntersection()
     {
         //given
-        $a1 = array('1', '4', '5');
-        $a2 = array('1', '4', '6');
+        $a1 = ['1', '4', '5'];
+        $a2 = ['1', '4', '6'];
 
         //when
         $intersection = FluentArray::from($a1)->intersect($a2)->toArray();
 
         //then
-        $this->assertEquals(array('1', '4'), $intersection);
+        $this->assertEquals(['1', '4'], $intersection);
     }
 
     /**
@@ -140,13 +140,13 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReverseArray()
     {
         //given
-        $array = array('1', '2');
+        $array = ['1', '2'];
 
         //when
         $reversed = FluentArray::from($array)->reverse()->toArray();
 
         //then
-        $this->assertEquals(array('2', '1'), $reversed);
+        $this->assertEquals(['2', '1'], $reversed);
     }
 
     /**
@@ -155,7 +155,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReturnTheFirstElement()
     {
         //given
-        $array = array('1', '2');
+        $array = ['1', '2'];
 
         //when
         $first = FluentArray::from($array)->firstOr(null);
@@ -170,7 +170,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReturnDefaultIfNoFirstElement()
     {
         //given
-        $array = array();
+        $array = [];
 
         //when
         $first = FluentArray::from($array)->firstOr('default');
@@ -185,13 +185,13 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldSkipElements()
     {
         //given
-        $array = array(1, 2, 3, 4, 5);
+        $array = [1, 2, 3, 4, 5];
 
         //when
         $result = FluentArray::from($array)->skip(2)->toArray();
 
         //then
-        $this->assertEquals(array(3, 4, 5), $result);
+        $this->assertEquals([3, 4, 5], $result);
     }
 
     /**
@@ -200,13 +200,13 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldLimitElements()
     {
         //given
-        $array = array(1, 2, 3, 4, 5);
+        $array = [1, 2, 3, 4, 5];
 
         //when
         $result = FluentArray::from($array)->limit(3)->toArray();
 
         //then
-        $this->assertEquals(array(1, 2, 3), $result);
+        $this->assertEquals([1, 2, 3], $result);
     }
 
     /**
@@ -215,7 +215,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReturnObjectsUniqueByField()
     {
         //given
-        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+        $array = [new Product(['name' => 'bob']), new Product(['name' => 'bob']), new Product(['name' => 'john'])];
 
         //when
         $uniqueByName = FluentArray::from($array)->uniqueBy('name')->toArray();
@@ -230,7 +230,7 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReturnObjectsUniqueByFunctionResults()
     {
         //given
-        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+        $array = [new Product(['name' => 'bob']), new Product(['name' => 'bob']), new Product(['name' => 'john'])];
 
         //when
         $uniqueByName = FluentArray::from($array)->uniqueBy(Functions::extract()->name)->toArray();
@@ -245,20 +245,20 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReturnObjectsGroupedByFunctionResults()
     {
         //given
-        $array = array(
-            $product1 = new Product(array('name' => 'bob')),
-            $product2 = new Product(array('name' => 'john')),
-            $product3 = new Product(array('name' => 'bob'))
-        );
+        $array = [
+            $product1 = new Product(['name' => 'bob']),
+            $product2 = new Product(['name' => 'john']),
+            $product3 = new Product(['name' => 'bob'])
+        ];
 
         //when
         $groupedByName = FluentArray::from($array)->groupBy(Functions::extract()->name)->toArray();
 
         //then
-        $this->assertSame(array(
-            'bob' => array($product1, $product3),
-            'john' => array($product2)
-        ), $groupedByName);
+        $this->assertSame([
+            'bob' => [$product1, $product3],
+            'john' => [$product2]
+        ], $groupedByName);
     }
 
     /**
@@ -267,15 +267,15 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldReturnObjectsUniqueByNestedField()
     {
         //given
-        $category = new Category(array('name' => 'cat1'));
+        $category = new Category(['name' => 'cat1']);
 
-        $product1 = new Product(array('name' => 'bob'));
+        $product1 = new Product(['name' => 'bob']);
         $product1->category = $category;
 
-        $product2 = new Product(array('name' => 'john'));
+        $product2 = new Product(['name' => 'john']);
         $product2->category = $category;
 
-        $array = array($product1, $product2);
+        $array = [$product1, $product2];
 
         //when
         $uniqueByName = FluentArray::from($array)->uniqueBy('category->name')->toArray();
@@ -290,12 +290,12 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
     public function shouldSortElements()
     {
         //given
-        $array = array(4, 1, 3, 2);
+        $array = [4, 1, 3, 2];
 
         //when
         $result = FluentArray::from($array)->sort(Comparator::natural())->toArray();
 
         //then
-        $this->assertEquals(array(1, 2, 3, 4), $result);
+        $this->assertEquals([1, 2, 3, 4], $result);
     }
 }

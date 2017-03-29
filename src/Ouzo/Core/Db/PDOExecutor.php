@@ -6,12 +6,25 @@
 namespace Ouzo\Db;
 
 use Ouzo\Utilities\Arrays;
+use PDO;
+use PDOStatement;
 
 abstract class PDOExecutor
 {
+    /**
+     * @param PDO $dbHandle
+     * @param string $sql
+     * @param array $boundValues
+     * @param string $queryString
+     * @return PDOStatement
+     */
     abstract public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString);
 
-    public static function newInstance($options)
+    /**
+     * @param array $options
+     * @return PDOExecutor
+     */
+    public static function newInstance(array $options)
     {
         if (Arrays::getValue($options, Options::EMULATE_PREPARES)) {
             return new EmulatedPDOPreparedStatementExecutor();

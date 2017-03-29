@@ -9,6 +9,9 @@ use PDOException;
 
 class PDOPreparedStatementExecutor extends PDOExecutor
 {
+    /**
+     * @inheritdoc
+     */
     public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString)
     {
         $pdoStatement = $dbHandle->prepare($sql);
@@ -27,7 +30,7 @@ class PDOPreparedStatementExecutor extends PDOExecutor
                 throw PDOExceptionExtractor::getException($pdoStatement->errorInfo(), $queryString);
             }
         } catch (PDOException $exception) {
-            $errorInfo = array($exception->getCode(), $exception->getCode(), $exception->getMessage());
+            $errorInfo = [$exception->getCode(), $exception->getCode(), $exception->getMessage()];
             throw PDOExceptionExtractor::getException($errorInfo, $queryString);
         }
         return $pdoStatement;

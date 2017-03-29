@@ -18,7 +18,7 @@ class ClassStubTest extends \PHPUnit_Framework_TestCase
         $classStub = new ClassStub();
 
         //when
-        $classStub->replacePlaceholders(array('class' => 'TestClassName', 'fields' => 'fieldA, fieldB'));
+        $classStub->replacePlaceholders(['class' => 'TestClassName', 'fields' => 'fieldA, fieldB']);
 
         //then
         $this->assertContains('TestClassName', $classStub->contents());

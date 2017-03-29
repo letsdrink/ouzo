@@ -1,10 +1,8 @@
 #!/usr/bin/env php
 <?php
-use Command\ConsoleCommand;
-use Command\ControllerGeneratorCommand;
-use Command\ModelGeneratorCommand;
-use Command\RoutesCommand;
+use Ouzo\Console\CommandsLoader;
 use Ouzo\Utilities\Files;
+use Ouzo\Utilities\Path;
 use Symfony\Component\Console\Application;
 
 putenv('environment=prod');
@@ -16,7 +14,5 @@ require 'vendor/autoload.php';
 Files::loadIfExists(ROOT_PATH . 'test/Application/config/routes.php');
 
 $app = new Application();
-$app->addCommands(array(
-    new ConsoleCommand(), new RoutesCommand(), new ModelGeneratorCommand(), new ControllerGeneratorCommand()
-));
+CommandsLoader::forApplication($app)->registerCommandsFromPath(Path::join(ROOT_PATH, "bin"), "\\Command");
 $app->run();

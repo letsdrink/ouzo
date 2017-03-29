@@ -18,9 +18,9 @@ class PostgresDialectTest extends PHPUnit_Framework_TestCase
     {
         //given
         $dialect = new PostgresDialect('test');
-        $columns = array(
+        $columns = [
             'primary' => new DatabaseColumn('primary', 'int', "nextval('test_id_seq'::regclass)")
-        );
+        ];
 
         //when
         $sequence = $dialect->getSequenceName($columns, 'primary');

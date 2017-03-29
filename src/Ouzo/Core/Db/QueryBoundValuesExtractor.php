@@ -5,79 +5,106 @@
  */
 namespace Ouzo\Db;
 
-
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Restriction\Restriction;
 use Ouzo\Utilities\Objects;
 
 class QueryBoundValuesExtractor
 {
-    private $_boundValues = array();
+    /** @var array */
+    private $boundValues = [];
+    /** @var Query */
     private $query;
 
-    public function __construct($query)
+    /**
+     * @param Query $query
+     */
+    public function __construct(Query $query)
     {
         $this->query = $query;
     }
 
+    /**
+     * @return array
+     */
     public function extract()
     {
-        $this->_addBindValues($this->query);
-        return $this->_boundValues;
+        $this->addBindValues($this->query);
+        return $this->boundValues;
     }
 
-    private function _addBindValues($query)
+    /**
+     * @param $query
+     * @return void
+     */
+    private function addBindValues($query)
     {
         if ($query->table instanceof Query) {
-            $this->_addBindValues($query->table);
+            $this->addBindValues($query->table);
         }
-        $this->_addBindValue(array_values($query->updateAttributes));
+        $this->addBindValue(array_values($query->updateAttributes));
 
-        $this->_addBindValuesFromJoinClauses($query->joinClauses);
+        $this->addBindValuesFromJoinClauses($query->joinClauses);
 
         foreach ($query->whereClauses as $whereClause) {
-            $this->_addBindValuesFromWhereClause($whereClause);
+            $this->addBindValuesFromWhereClause($whereClause);
         }
         if ($query->limit !== null) {
-            $this->_addBindValue($query->limit);
+            $this->addBindValue($query->limit);
         }
         if ($query->offset) {
-            $this->_addBindValue($query->offset);
+            $this->addBindValue($query->offset);
         }
     }
 
-    private function _addBindValuesFromJoinClauses($joinClauses)
+    /**
+     * @param JoinClause[] $joinClauses
+     * @return void
+     */
+    private function addBindValuesFromJoinClauses($joinClauses)
     {
         foreach ($joinClauses as $joinClause) {
             foreach ($joinClause->onClauses as $onClause) {
-                $this->_addBindValuesFromWhereClause($onClause);
+                $this->addBindValuesFromWhereClause($onClause);
             }
         }
     }
 
-    private function _addBindValuesFromWhereClause($whereClause)
+    /**
+     * @param WhereClause $whereClause
+     * @return void
+     */
+    private function addBindValuesFromWhereClause(WhereClause $whereClause)
     {
         if (!$whereClause->isEmpty()) {
-            $this->_addBindValue($whereClause->getParameters());
+            $this->addBindValue($whereClause->getParameters());
         }
     }
 
-    private function _addBindArrayValue(array $array)
+    /**
+     * @param array $array
+     * @return void
+     */
+    private function addBindArrayValue(array $array)
     {
         foreach ($array as $value) {
             if ($value instanceof Restriction) {
-                $this->_boundValues = array_merge($this->_boundValues, $value->getValues());
+                $this->boundValues = array_merge($this->boundValues, $value->getValues());
             } else {
-                $this->_boundValues[] = $value;
+                $this->boundValues[] = $value;
             }
         }
     }
 
-    public function _addBindValue($value)
+    /**
+     * @param mixed $value
+     */
+    public function addBindValue($value)
     {
         if (is_array($value)) {
-            $this->_addBindArrayValue($value);
+            $this->addBindArrayValue($value);
         } else {
-            $this->_boundValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
+            $this->boundValues[] = is_bool($value) ? Objects::booleanToString($value) : $value;
         }
     }
 }

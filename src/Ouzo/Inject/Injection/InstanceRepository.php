@@ -9,7 +9,7 @@ use BadMethodCallException;
 
 class InstanceRepository
 {
-    private $instances = array();
+    private $instances = [];
 
     public function getInstance(InstanceFactory $factory, Binder $binder)
     {

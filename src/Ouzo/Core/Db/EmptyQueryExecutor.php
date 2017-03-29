@@ -9,26 +9,41 @@ use ArrayIterator;
 
 class EmptyQueryExecutor
 {
+    /**
+     * @return null
+     */
     public function fetch()
     {
         return null;
     }
 
+    /**
+     * @return array
+     */
     public function fetchAll()
     {
-        return array();
+        return [];
     }
 
+    /**
+     * @return ArrayIterator
+     */
     public function fetchIterator()
     {
-        return new ArrayIterator(array());
+        return new ArrayIterator([]);
     }
 
+    /**
+     * @return int
+     */
     public function execute()
     {
         return 0;
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return 0;

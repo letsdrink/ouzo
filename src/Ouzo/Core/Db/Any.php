@@ -7,10 +7,15 @@ namespace Ouzo\Db;
 
 use Ouzo\Db\WhereClause\ArrayWhereClause;
 use Ouzo\Db\WhereClause\OrClause;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Utilities\Arrays;
 
 class Any
 {
+    /**
+     * @param array $conditions
+     * @return WhereClause
+     */
     public static function of(array $conditions)
     {
         if (Arrays::isAssociative($conditions)) {

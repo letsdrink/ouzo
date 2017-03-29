@@ -17,11 +17,11 @@ class ViewPathResolver
 
     private static function getViewPostfix($responseType)
     {
-        $availableViewsMap = array(
+        $availableViewsMap = [
             'text/xml' => '.xml.phtml',
             'application/json' => '.json.phtml',
             'text/json' => '.json.phtml',
-        );
+        ];
 
         $viewForType = Arrays::getValue($availableViewsMap, $responseType, false);
         if ($viewForType) {

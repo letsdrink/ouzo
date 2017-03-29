@@ -9,9 +9,9 @@ class DebugErrorHandler extends ErrorHandler
 {
     public function register()
     {
-        set_exception_handler(array(__CLASS__, 'exceptionHandler'));
-        set_error_handler(array(__CLASS__, 'errorHandler'));
-        register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
+        set_exception_handler([__CLASS__, 'exceptionHandler']);
+        set_error_handler([__CLASS__, 'errorHandler']);
+        register_shutdown_function([__CLASS__, 'shutdownHandler']);
     }
 
     protected static function getRun()

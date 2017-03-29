@@ -17,7 +17,7 @@ function escapeNewLine($text)
     return Strings::escapeNewLines($text);
 }
 
-function linkTo($name, $href, $attributes = array())
+function linkTo($name, $href, $attributes = [])
 {
     $attr = _prepareAttributes($attributes);
     return '<a href="' . escapeNewLine($href) . '" ' . $attr . '>' . escapeNewLine($name) . '</a>';
@@ -25,7 +25,7 @@ function linkTo($name, $href, $attributes = array())
 
 function linkButton($params)
 {
-    $defaultParams = array('class' => 'buttonLong');
+    $defaultParams = ['class' => 'buttonLong'];
     $params = array_merge($defaultParams, $params);
 
     $url = $params['url'];
@@ -43,7 +43,7 @@ HTML;
 
 function formButton($params)
 {
-    $defaultParams = array('class' => 'buttonLong');
+    $defaultParams = ['class' => 'buttonLong'];
     $params = array_merge($defaultParams, $params);
     $value = escapeText($params['value']);
 
@@ -54,52 +54,52 @@ HTML;
 
 function translatableOptions($prefix, $options)
 {
-    $result = array();
+    $result = [];
     foreach ($options as $optionKey) {
         $result[$optionKey] = t($prefix . $optionKey);
     }
     return $result;
 }
 
-function labelTag($name, $content, array $attributes = array())
+function labelTag($name, $content, array $attributes = [])
 {
     $attr = _prepareAttributes($attributes);
     $attr = $attr ? ' ' . $attr : '';
     return '<label for="' . $name . '"' . $attr . '>' . escapeText($content) . '</label>';
 }
 
-function hiddenTag($name, $value, array $attributes = array())
+function hiddenTag($name, $value, array $attributes = [])
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => escapeText($value)));
+    $attr = _prepareAttributes($attributes, ['name' => $name, 'value' => escapeText($value)]);
     return '<input type="hidden" ' . $attr . '/>';
 }
 
-function textFieldTag($name, $value, array $attributes = array())
+function textFieldTag($name, $value, array $attributes = [])
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => escapeText($value)));
+    $attr = _prepareAttributes($attributes, ['name' => $name, 'value' => escapeText($value)]);
     return '<input type="text" ' . $attr . '/>';
 }
 
-function textAreaTag($name, $content, array $attributes = array())
+function textAreaTag($name, $content, array $attributes = [])
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name));
+    $attr = _prepareAttributes($attributes, ['name' => $name]);
     return '<textarea ' . $attr . '>' . escapeText($content) . '</textarea>';
 }
 
-function checkboxTag($name, $value, $checked, array $attributes = array())
+function checkboxTag($name, $value, $checked, array $attributes = [])
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name));
+    $attr = _prepareAttributes($attributes, ['name' => $name]);
     $workaround = '<input name="' . $name . '" type="hidden" value="0" />';
     return $workaround . '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
 }
 
-function selectTag($name, array $items = array(), $value, array $attributes = array(), $promptOption = null)
+function selectTag($name, array $items = [], $value, array $attributes = [], $promptOption = null)
 {
     $value = Arrays::toArray($value);
-    $attr = _prepareAttributes($attributes, array('name' => $name));
+    $attr = _prepareAttributes($attributes, ['name' => $name]);
     $optionsString = '';
     if ($promptOption) {
-        $items = array(null => $promptOption) + $items;
+        $items = [null => $promptOption] + $items;
     }
     foreach ($items as $optionValue => $optionName) {
         $optionsString .= optionTag($optionValue, $optionName, $value, Arrays::getValue($attributes, 'readonly') == 'readonly');
@@ -120,19 +120,19 @@ function optionTag($value, $name, $current, $disabled)
     return '<option' . $value . $attribute . '>' . $name . '</option>';
 }
 
-function passwordFieldTag($name, $value, array $attributes = array())
+function passwordFieldTag($name, $value, array $attributes = [])
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => escapeText($value)));
+    $attr = _prepareAttributes($attributes, ['name' => $name, 'value' => escapeText($value)]);
     return '<input type="password" ' . $attr . '/>';
 }
 
-function radioButtonTag($name, $value, array $attributes = array())
+function radioButtonTag($name, $value, array $attributes = [])
 {
-    $attr = _prepareAttributes($attributes, array('name' => $name, 'value' => $value));
+    $attr = _prepareAttributes($attributes, ['name' => $name, 'value' => $value]);
     return '<input type="radio" ' . $attr . '/>';
 }
 
-function formTag($url, $method = 'POST', $attributes = array())
+function formTag($url, $method = 'POST', $attributes = [])
 {
     $method = strtoupper($method);
     $workAroundTag = _methodWorkAroundTag($method);
@@ -158,13 +158,13 @@ function _methodWorkAroundTag($method)
 
 function _isUnsupportedMethod($method)
 {
-    return in_array($method, array('PUT', 'PATCH', 'DELETE'));
+    return in_array($method, ['PUT', 'PATCH', 'DELETE']);
 }
 
-function _prepareAttributes(array $attributes = array(), array $predefinedAttributes = array())
+function _prepareAttributes(array $attributes = [], array $predefinedAttributes = [])
 {
     if (isset($predefinedAttributes['name'])) {
-        $predefinedAttributes = array('id' => $predefinedAttributes['name']) + $predefinedAttributes;
+        $predefinedAttributes = ['id' => $predefinedAttributes['name']] + $predefinedAttributes;
     }
     $attributes = array_merge($predefinedAttributes, $attributes);
     return _attributesToHtml($attributes);

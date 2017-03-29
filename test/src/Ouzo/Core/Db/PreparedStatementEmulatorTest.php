@@ -16,7 +16,7 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $sql = 'select * from users where name = ? and surname = ?';
-        $params = array('bob', 'smith');
+        $params = ['bob', 'smith'];
 
         //when
         $result = PreparedStatementEmulator::substitute($sql, $params);
@@ -32,7 +32,7 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $sql = 'select * from users where verified = ? or admin = ?';
-        $params = array(true, false);
+        $params = [true, false];
 
         //when
         $result = PreparedStatementEmulator::substitute($sql, $params);
@@ -48,7 +48,7 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $sql = "select * from users where age = ?";
-        $params = array('26');
+        $params = ['26'];
 
         //when
         $result = PreparedStatementEmulator::substitute($sql, $params);
@@ -64,7 +64,7 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $sql = "select * from users where id = '?'";
-        $params = array();
+        $params = [];
 
         //when
         $result = PreparedStatementEmulator::substitute($sql, $params);
@@ -80,7 +80,7 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $sql = "select * from users where name = 'bob?' and age = ? and  surname = 'smith?'";
-        $params = array('26');
+        $params = ['26'];
 
         //when
         $result = PreparedStatementEmulator::substitute($sql, $params);
@@ -99,7 +99,7 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
         $param = "' or '1' = '1";
 
         //when
-        $result = PreparedStatementEmulator::substitute($sql, array($param));
+        $result = PreparedStatementEmulator::substitute($sql, [$param]);
 
         //then
         Assert::thatString($result)->isEqualTo("select * from users where surname = " . Db::getInstance()->_dbHandle->quote($param));

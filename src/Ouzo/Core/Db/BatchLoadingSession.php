@@ -1,7 +1,9 @@
 <?php
-
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Db;
-
 
 use Exception;
 use Ouzo\Model;
@@ -9,33 +11,52 @@ use Ouzo\Utilities\Arrays;
 
 class BatchLoadingSession
 {
-    private $queryResultsById = array();
+    /** @var array */
+    private $queryResultsById = [];
 
+    /** @var string|null */
     private static $currentSession;
 
+    /**
+     * @param Model $model
+     * @return mixed
+     */
     public static function getBatch(Model $model)
     {
         if (self::isAllocated()) {
-            return Arrays::getValue(BatchLoadingSession::$currentSession->queryResultsById, spl_object_hash($model), array($model));
+            return Arrays::getValue(BatchLoadingSession::$currentSession->queryResultsById, spl_object_hash($model), [$model]);
         }
-        return array($model);
+        return [$model];
     }
 
+    /**
+     * @return bool
+     */
     public static function isAllocated()
     {
         return BatchLoadingSession::$currentSession !== NULL;
     }
 
+    /**
+     * @return void
+     */
     public static function allocate()
     {
         BatchLoadingSession::$currentSession = new BatchLoadingSession();
     }
 
+    /**
+     * @return void
+     */
     public static function deallocate()
     {
         BatchLoadingSession::$currentSession = null;
     }
 
+    /**
+     * @param array $results
+     * @return void
+     */
     public static function attach(array $results)
     {
         if (BatchLoadingSession::isAllocated()) {
@@ -45,6 +66,11 @@ class BatchLoadingSession
         }
     }
 
+    /**
+     * @param \Closure $function
+     * @throws Exception
+     * @return mixed
+     */
     public static function run($function)
     {
         $allocatedSession = false;

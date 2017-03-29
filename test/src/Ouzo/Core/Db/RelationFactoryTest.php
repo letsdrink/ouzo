@@ -14,7 +14,7 @@ class RelationFactoryTest extends PHPUnit_Framework_TestCase
     public function shouldSetDefaultLocalKeyForBelongsTo()
     {
         // when
-        $relation = RelationFactory::create('belongsTo', 'product', array('class' => 'Test\Product'), 'primary_id', '\Model\User');
+        $relation = RelationFactory::create('belongsTo', 'product', ['class' => 'Test\Product'], 'primary_id', '\Model\User');
 
         // then
         $this->assertEquals('Test\Product', $relation->getClass());
@@ -40,7 +40,7 @@ class RelationFactoryTest extends PHPUnit_Framework_TestCase
     public function shouldSetDefaultLocalKeyForHasOne()
     {
         // when
-        $relation = RelationFactory::create('hasOne', 'product', array('class' => 'Test\Product'), 'primary_id', '\Model\User');
+        $relation = RelationFactory::create('hasOne', 'product', ['class' => 'Test\Product'], 'primary_id', '\Model\User');
 
         // then
         $this->assertEquals('Test\Product', $relation->getClass());
@@ -54,7 +54,7 @@ class RelationFactoryTest extends PHPUnit_Framework_TestCase
     public function shouldSetDefaultLocalKeyForHasMany()
     {
         // when
-        $relation = RelationFactory::create('hasMany', 'product', array('class' => 'Test\Product'), 'primary_id', '\Model\User');
+        $relation = RelationFactory::create('hasMany', 'product', ['class' => 'Test\Product'], 'primary_id', '\Model\User');
 
         // then
         $this->assertEquals('Test\Product', $relation->getClass());

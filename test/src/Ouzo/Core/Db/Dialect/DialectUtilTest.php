@@ -16,7 +16,7 @@ class DialectUtilTest extends PHPUnit_Framework_TestCase
     public function shouldReplaceTableWithAlias()
     {
         //given
-        $joinClause = new JoinClause('products', 'id', 'product_id', 'order_products', 'p', 'LEFT', array(WhereClause::create('products.active = true')));
+        $joinClause = new JoinClause('products', 'id', 'product_id', 'order_products', 'p', 'LEFT', [WhereClause::create('products.active = true')]);
 
         //when
         $buildJoinQueryPart = DialectUtil::buildJoinQueryPart($joinClause);
@@ -31,7 +31,7 @@ class DialectUtilTest extends PHPUnit_Framework_TestCase
     public function shouldNotReplaceWhenTableNameIsPartOfOtherTableName()
     {
         //given
-        $onClauses = array(WhereClause::create('products.active = true'), WhereClause::create('order_products.active = true'));
+        $onClauses = [WhereClause::create('products.active = true'), WhereClause::create('order_products.active = true')];
         $joinClause = new JoinClause('products', 'id', 'product_id', 'order_products', 'p', 'LEFT', $onClauses);
 
         //when

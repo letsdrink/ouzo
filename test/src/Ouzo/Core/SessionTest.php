@@ -11,7 +11,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $_SESSION = array();
+        $_SESSION = [];
     }
 
     /**
@@ -25,7 +25,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatSession()
             ->hasSize(1)
-            ->containsKeyAndValue(array('key' => 'value'));
+            ->containsKeyAndValue(['key' => 'value']);
     }
 
     /**
@@ -54,10 +54,10 @@ class SessionTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatSession()
             ->hasSize(3)
-            ->containsKeyAndValue(array(
+            ->containsKeyAndValue([
                 'key1' => 'value1',
                 'key2' => 'value2',
-                'key3' => 'value3'));
+                'key3' => 'value3']);
     }
 
     /**
@@ -171,7 +171,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatSession()
             ->hasSize('1')
-            ->containsKeyAndValue(array('key2' => 'value2'));
+            ->containsKeyAndValue(['key2' => 'value2']);
     }
 
     /**
@@ -200,7 +200,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
         //then
         Assert::thatArray($all)
             ->hasSize(1)
-            ->containsKeyAndValue(array('key' => 'value'));
+            ->containsKeyAndValue(['key' => 'value']);
     }
 
     /**

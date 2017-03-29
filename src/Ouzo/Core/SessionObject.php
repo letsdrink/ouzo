@@ -60,7 +60,7 @@ class SessionObject
         }
         list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
 
-        $array = $this->get($keys) ? : array();
+        $array = $this->get($keys) ? : [];
         $array[] = $value;
         Arrays::setNestedValue($_SESSION, $keys, $array);
     }
@@ -76,6 +76,6 @@ class SessionObject
 
         $value = array_pop($args);
         $keys = Arrays::toArray($args);
-        return array($keys, $value);
+        return [$keys, $value];
     }
 }

@@ -1,8 +1,7 @@
 <?php
-
 namespace Ouzo\Db;
 
-
+use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
@@ -10,12 +9,22 @@ use Ouzo\Utilities\Objects;
 
 class ModelResultSetConverter
 {
+    /** @var Model */
     private $metaInstance;
+    /** @var string */
     private $alias;
+    /** @var ModelJoin[] */
     private $joinedModels;
+    /** @var RelationToFetch[] */
     private $relationsToFetch;
 
-    public function __construct($metaInstance, $alias, $joinedModels, $relationsToFetch)
+    /**
+     * @param Model $metaInstance
+     * @param string $alias
+     * @param ModelJoin[] $joinedModels
+     * @param RelationToFetch[] $relationsToFetch
+     */
+    public function __construct($metaInstance, $alias, array $joinedModels, array $relationsToFetch)
     {
         $this->metaInstance = $metaInstance;
         $this->alias = $alias;
@@ -23,24 +32,31 @@ class ModelResultSetConverter
         $this->relationsToFetch = $relationsToFetch;
     }
 
+    /**
+     * @param array $results
+     * @return Model[]
+     */
     public function convert($results)
     {
-        $aliasToOffset = $this->_createAliasToOffsetMap();
+        $aliasToOffset = $this->createAliasToOffsetMap();
         $joinsToStore = FluentArray::from($this->joinedModels)
             ->filter(Functions::extract()->storeField())
             ->uniqueBy(Functions::extract()->destinationField())
             ->toArray();
 
-        $models = array();
+        $models = [];
         foreach ($results as $row) {
             $models[] = $this->convertRowToModel($row, $aliasToOffset, $joinsToStore);
         }
-        return $this->_fetchRelations($models, $joinsToStore);
+        return $this->fetchRelations($models, $joinsToStore);
     }
 
-    private function _createAliasToOffsetMap()
+    /**
+     * @return array
+     */
+    private function createAliasToOffsetMap()
     {
-        $aliasToOffset = array();
+        $aliasToOffset = [];
 
         $aliasToOffset[$this->alias] = 0;
         $offset = count($this->metaInstance->getFields());
@@ -53,7 +69,13 @@ class ModelResultSetConverter
         return $aliasToOffset;
     }
 
-    private function convertRowToModel($row, $aliasToOffset, $joinsToStore)
+    /**
+     * @param array $row
+     * @param array $aliasToOffset
+     * @param ModelJoin[] $joinsToStore
+     * @return Model
+     */
+    private function convertRowToModel(array $row, $aliasToOffset, $joinsToStore)
     {
         $model = $this->extractModelFromResult($this->metaInstance, $row, $aliasToOffset[$this->alias]);
 
@@ -66,9 +88,15 @@ class ModelResultSetConverter
         return $model;
     }
 
+    /**
+     * @param Model $metaInstance
+     * @param array $row
+     * @param mixed $offsetInResultSet
+     * @return Model|null
+     */
     private function extractModelFromResult($metaInstance, array $row, $offsetInResultSet)
     {
-        $attributes = array();
+        $attributes = [];
         $offset = $offsetInResultSet;
         $hasAnyNonEmptyAttribute = false;
         foreach ($metaInstance->_getFields() as $field) {
@@ -79,7 +107,12 @@ class ModelResultSetConverter
         return $hasAnyNonEmptyAttribute ? $metaInstance->newInstance($attributes) : null;
     }
 
-    private function _fetchRelations($results, $joinsToStore)
+    /**
+     * @param Model[] $results
+     * @param ModelJoin[] $joinsToStore
+     * @return Model[]
+     */
+    private function fetchRelations($results, $joinsToStore)
     {
         $joinedRelations = Arrays::map($joinsToStore, Functions::extract()->destinationField());
         foreach ($this->relationsToFetch as $relationToFetch) {

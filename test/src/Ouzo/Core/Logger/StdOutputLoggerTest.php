@@ -38,7 +38,7 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
     public function shouldWriteErrorMessage()
     {
         //when
-        $this->logger->error('My error log line with param %s and %s.', array(42, 'Zaphod'));
+        $this->logger->error('My error log line with param %s and %s.', [42, 'Zaphod']);
 
         //then
         $logContent = $this->_readStreamContent('test://stderr');
@@ -51,7 +51,7 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
     public function shouldWriteInfoMessage()
     {
         //when
-        $this->logger->info('My info log line with param %s and %s.', array(42, 'Zaphod'));
+        $this->logger->info('My info log line with param %s and %s.', [42, 'Zaphod']);
 
         //then
         $logContent = $this->_readStreamContent('test://stdout');
@@ -64,11 +64,11 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
     public function shouldNotWriteInfoMessageIfMinimalLevelIsSetToWarning()
     {
         //given
-        Config::overrideProperty('logger', 'default', 'minimal_levels')->with(array('TEST' => LOG_WARNING));
+        Config::overrideProperty('logger', 'default', 'minimal_levels')->with(['TEST' => LOG_WARNING]);
         $this->logger = new StdOutputLogger('TEST', 'default', 'test');
 
         //when
-        $this->logger->info('My info log line with param %s and %s.', array(42, 'Zaphod'));
+        $this->logger->info('My info log line with param %s and %s.', [42, 'Zaphod']);
 
         //then
         $logContent = $this->_readStreamContent('test://stdout');
@@ -81,11 +81,11 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
     public function shouldWriteInfoMessageIfMinimalLevelIsSetToInfo()
     {
         //given
-        Config::overrideProperty('logger', 'default', 'minimal_levels')->with(array('TEST' => LOG_INFO));
+        Config::overrideProperty('logger', 'default', 'minimal_levels')->with(['TEST' => LOG_INFO]);
         $this->logger = new StdOutputLogger('TEST', 'default', 'test');
 
         //when
-        $this->logger->info('My info log line with param %s and %s.', array(42, 'Zaphod'));
+        $this->logger->info('My info log line with param %s and %s.', [42, 'Zaphod']);
 
         //then
         $logContent = $this->_readStreamContent('test://stdout');

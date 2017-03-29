@@ -39,12 +39,13 @@ namespace Ouzo\Utilities;
  * @method static FluentFunction inArray($array)
  * @method static FluentFunction notInArray($array)
  * @method static FluentFunction negate()
+ * @method static FluentFunction equalsIgnoreCase($string)
  */
 class FluentFunctions
 {
     public static function __callStatic($name, $arguments)
     {
         $fluentFunction = new FluentFunction();
-        return call_user_func_array(array($fluentFunction, $name), $arguments);
+        return call_user_func_array([$fluentFunction, $name], $arguments);
     }
 }

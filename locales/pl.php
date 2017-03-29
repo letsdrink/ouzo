@@ -1,7 +1,7 @@
 <?php
 
-return array(
-    'product' => array(
+return [
+    'product' => [
         'description' => 'Opis produktu'
-    )
-);
+    ]
+];

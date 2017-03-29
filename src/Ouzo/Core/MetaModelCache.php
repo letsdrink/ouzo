@@ -7,7 +7,7 @@ namespace Ouzo;
 
 class MetaModelCache
 {
-    private static $_modelMetaInstances = array();
+    private static $_modelMetaInstances = [];
 
     /**
      * @param $modelClass
@@ -16,7 +16,7 @@ class MetaModelCache
     public static function getMetaInstance($modelClass)
     {
         if (!isset(self::$_modelMetaInstances[$modelClass])) {
-            self::$_modelMetaInstances[$modelClass] = $modelClass::newInstance(array());
+            self::$_modelMetaInstances[$modelClass] = $modelClass::newInstance([]);
         }
         return self::$_modelMetaInstances[$modelClass];
     }

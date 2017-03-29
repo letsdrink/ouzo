@@ -8,36 +8,52 @@ namespace Ouzo\Db;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Objects;
 use PDO;
+use PDOStatement;
 
 class StatementExecutor
 {
-    private $_sql;
-    private $_humanizedSql;
-    private $_dbHandle;
-    private $_boundValues;
-    /**
-     * @var PDOExecutor
-     */
-    private $_pdoExecutor;
+    /** @var string */
+    private $sql;
+    /** @var string */
+    private $humanizedSql;
+    /** @var PDO */
+    private $dbHandle;
+    /** @var array */
+    private $boundValues;
+    /** @var PDOExecutor */
+    private $pdoExecutor;
 
-    private function __construct($dbHandle, $sql, $boundValues, $pdoExecutor)
+    /**
+     * @param PDO $dbHandle
+     * @param string $sql
+     * @param array $boundValues
+     * @param PDOExecutor $pdoExecutor
+     */
+    private function __construct($dbHandle, $sql, $boundValues, PDOExecutor $pdoExecutor)
     {
-        $this->_boundValues = $boundValues;
-        $this->_dbHandle = $dbHandle;
-        $this->_sql = $sql;
-        $this->_humanizedSql = QueryHumanizer::humanize($sql);
-        $this->_pdoExecutor = $pdoExecutor;
+        $this->boundValues = $boundValues;
+        $this->dbHandle = $dbHandle;
+        $this->sql = $sql;
+        $this->humanizedSql = QueryHumanizer::humanize($sql);
+        $this->pdoExecutor = $pdoExecutor;
     }
 
+    /**
+     * @param \Closure $afterCallback
+     * @return mixed
+     */
     private function _execute($afterCallback)
     {
-        $obj = $this;
-        return Stats::trace($this->_humanizedSql, $this->_boundValues, function () use ($obj, $afterCallback) {
-            return $obj->_internalExecute($afterCallback);
+        return Stats::trace($this->humanizedSql, $this->boundValues, function () use ($afterCallback) {
+            return $this->internalExecute($afterCallback);
         });
     }
 
-    public function _internalExecute($afterCallback)
+    /**
+     * @param \Closure $afterCallback
+     * @return mixed
+     */
+    private function internalExecute($afterCallback)
     {
         $pdoStatement = $this->_createPdoStatement();
         $result = call_user_func($afterCallback, $pdoStatement);
@@ -47,14 +63,20 @@ class StatementExecutor
 
     /**
      * Returns number of affected rows
+     * @return mixed
      */
     public function execute()
     {
-        return $this->_execute(function ($pdoStatement) {
+        return $this->_execute(function (PDOStatement $pdoStatement) {
             return $pdoStatement->rowCount();
         });
     }
 
+    /**
+     * @param string $function
+     * @param string $fetchStyle
+     * @return mixed
+     */
     public function executeAndFetch($function, $fetchStyle)
     {
         return $this->_execute(function ($pdoStatement) use ($function, $fetchStyle) {
@@ -62,36 +84,56 @@ class StatementExecutor
         });
     }
 
+    /**
+     * @param int $fetchMode
+     * @return mixed
+     */
     public function fetch($fetchMode = PDO::FETCH_ASSOC)
     {
         return $this->executeAndFetch('fetch', $fetchMode);
     }
 
+    /**
+     * @param int $fetchMode
+     * @return mixed
+     */
     public function fetchAll($fetchMode = PDO::FETCH_ASSOC)
     {
         return $this->executeAndFetch('fetchAll', $fetchMode);
     }
 
+    /**
+     * @param PDO $dbHandle
+     * @param string $sql
+     * @param array $boundValues
+     * @param array $options
+     * @return StatementExecutor
+     */
     public static function prepare($dbHandle, $sql, $boundValues, $options)
     {
         $pdoExecutor = PDOExecutor::newInstance($options);
         return new StatementExecutor($dbHandle, $sql, $boundValues, $pdoExecutor);
     }
 
+    /**
+     * @return StatementIterator
+     */
     public function fetchIterator()
     {
-        $obj = $this;
-        return Stats::trace($this->_humanizedSql, $this->_boundValues, function () use ($obj) {
-            $pdoStatement = $obj->_createPdoStatement();
+        return Stats::trace($this->humanizedSql, $this->boundValues, function () {
+            $pdoStatement = $this->_createPdoStatement();
             return new StatementIterator($pdoStatement);
         });
     }
 
+    /**
+     * @return PDOStatement
+     */
     public function _createPdoStatement()
     {
-        $sqlString = $this->_humanizedSql . ' with params: ' . Objects::toString($this->_boundValues);
-        Logger::getLogger(__CLASS__)->info("Query: %s", array($sqlString));
+        $sqlString = $this->humanizedSql . ' with params: ' . Objects::toString($this->boundValues);
+        Logger::getLogger(__CLASS__)->info("Query: %s", [$sqlString]);
 
-        return $this->_pdoExecutor->createPDOStatement($this->_dbHandle, $this->_sql, $this->_boundValues, $sqlString);
+        return $this->pdoExecutor->createPDOStatement($this->dbHandle, $this->sql, $this->boundValues, $sqlString);
     }
 }

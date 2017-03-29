@@ -1,11 +1,9 @@
 language: php
 
 php:
-    - 5.3
-    - 5.4
-    - 5.5
     - 5.6
     - 7.0
+    - 7.1
     - hhvm
 
 env:
@@ -17,13 +15,12 @@ matrix:
     fast_finish: true
     allow_failures:
         - php: hhvm
-        - php: nightly
     exclude:
       - php: hhvm
         env: db=postgres
 
 addons:
-    postgresql: "9.3"
+    postgresql: "9.6"
 
 cache:
     directories:

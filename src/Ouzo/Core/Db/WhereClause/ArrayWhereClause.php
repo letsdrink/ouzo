@@ -59,7 +59,7 @@ class ArrayWhereClause extends WhereClause
 
     private static function _buildWhereKeys($params)
     {
-        $keys = array();
+        $keys = [];
         foreach ($params as $column => $value) {
             $keys[] = self::_buildWhereKey($column, $value);
         }

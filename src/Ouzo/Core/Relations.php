@@ -14,12 +14,12 @@ class Relations
     private $_relations;
     private $modelClass;
 
-    private static $relationNames = array('hasOne', 'belongsTo', 'hasMany');
+    private static $relationNames = ['hasOne', 'belongsTo', 'hasMany'];
 
     public function __construct($modelClass, array $params, $primaryKeyName)
     {
         $this->modelClass = $modelClass;
-        $this->_relations = array();
+        $this->_relations = [];
 
         $this->_addRelations($params, $primaryKeyName);
     }

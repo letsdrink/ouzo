@@ -1,18 +1,18 @@
 <?php
 
-return array(
-    'product' => array(
+return [
+    'product' => [
         'description' => 'Product description',
         'id_category' => 'Category>"ID"',
         'quantity' => '%{count} product|%{count} products'
-    ),
-    'timeAgo' => array(
+    ],
+    'timeAgo' => [
         'justNow' => 'just now',
         'minAgo' => '%{label} min. ago',
         'todayAt' => 'today at %{label}',
         'yesterdayAt' => 'yesterday at %{label}',
         'thisYear' => '%{month} %{day}',
-        'month' => array(
+        'month' => [
             '1' => 'Jan',
             '2' => 'Feb',
             '3' => 'Mar',
@@ -25,6 +25,6 @@ return array(
             '10' => 'Oct',
             '11' => 'Nov',
             '12' => 'Dec'
-        )
-    )
-);
+        ]
+    ]
+];

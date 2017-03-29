@@ -9,29 +9,45 @@ use Ouzo\Db;
 
 class TransactionalProxy
 {
-    private $_object;
+    /** @var mixed */
+    private $object;
 
+    /**
+     * @param mixed $object
+     */
     public function __construct($object)
     {
-        $this->_object = $object;
+        $this->object = $object;
     }
 
+    /**
+     * @param mixed $object
+     * @return TransactionalProxy
+     */
     public static function newInstance($object)
     {
         return new TransactionalProxy($object);
     }
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
-        $object = $this->_object;
+        $object = $this->object;
         return Db::getInstance()->runInTransaction(function () use ($object, $name, $arguments) {
-            return call_user_func_array(array($object, $name), $arguments);
+            return call_user_func_array([$object, $name], $arguments);
         });
     }
 
+    /**
+     * @return mixed
+     */
     public function __invoke()
     {
-        $function = $this->_object;
+        $function = $this->object;
         $arguments = func_get_args();
         return Db::getInstance()->runInTransaction(function () use ($function, $arguments) {
             return call_user_func_array($function, $arguments);

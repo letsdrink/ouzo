@@ -29,12 +29,12 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
     public function shouldCreateModelWithGivenMapping()
     {
         //when
-        $testModel = new TestModel(array(
+        $testModel = new TestModel([
             'table' => 'table',
             'primaryKey' => 'key',
             'sequence' => 'sequence',
-            'fields' => array('field1')
-        ));
+            'fields' => ['field1']
+        ]);
 
         //then
         $this->assertEquals('key', $testModel->getIdName());
@@ -48,9 +48,9 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
     public function shouldCreateModelWithDefaultMapping()
     {
         //when
-        $testModel = new TestModel(array(
-            'fields' => array('field1')
-        ));
+        $testModel = new TestModel([
+            'fields' => ['field1']
+        ]);
 
         //then
         $this->assertEquals('id', $testModel->getIdName());
@@ -64,10 +64,10 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
     public function shouldCreateModelWithDefaultSequenceWhenPrimaryKeyGiven()
     {
         //when
-        $testModel = new TestModel(array(
+        $testModel = new TestModel([
             'primaryKey' => 'key',
-            'fields' => array('field1')
-        ));
+            'fields' => ['field1']
+        ]);
 
         //then
         $this->assertEquals('key', $testModel->getIdName());
@@ -80,10 +80,10 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
     public function shouldCreateModelWithDefaultSequenceWhenTableGiven()
     {
         //when
-        $testModel = new TestModel(array(
+        $testModel = new TestModel([
             'table' => 'table',
-            'fields' => array('field1')
-        ));
+            'fields' => ['field1']
+        ]);
 
         //then
         $this->assertEquals('table_id_seq', $testModel->getSequenceName());
@@ -95,11 +95,11 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
     public function shouldCreateModelWithEmptyPrimaryKeyAndSequence()
     {
         //when
-        $testModel = new TestModel(array(
+        $testModel = new TestModel([
             'primaryKey' => '',
             'sequence' => '',
-            'fields' => array('field1')
-        ));
+            'fields' => ['field1']
+        ]);
 
         //then
         $this->assertEquals('', $testModel->getIdName());

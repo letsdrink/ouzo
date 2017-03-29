@@ -24,7 +24,7 @@ class ControllerTestCase extends DbTransactionalTestCase
      */
     protected $frontController;
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
@@ -90,7 +90,7 @@ class ControllerTestCase extends DbTransactionalTestCase
     {
         $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST = array_merge($data, array('_method' => 'PUT'));
+        $_POST = array_merge($data, ['_method' => 'PUT']);
         $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
         $this->_initFrontController();
     }

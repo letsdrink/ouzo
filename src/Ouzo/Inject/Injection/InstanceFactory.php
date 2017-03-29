@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Injection;
 
 use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
@@ -28,7 +29,7 @@ class InstanceFactory
 
     public function createInstance(InstanceRepository $repository, $className)
     {
-        $instance = new $className();
+        $instance = $this->constructInstance($repository, $className);
         $this->injectDependencies($repository, $instance);
         return $instance;
     }
@@ -41,11 +42,34 @@ class InstanceFactory
         foreach ($properties as $property) {
             $annotation = Arrays::getValue($annotations, $property->getName());
             if ($annotation) {
-                $binder = $this->bindings->getBinder($annotation['className'], $annotation['name']);
-                $dependencyInstance = $repository->getInstance($this, $binder);
+                $dependencyInstance = $this->getInstance($repository, $annotation);
                 $property->setAccessible(true);
                 $property->setValue($instance, $dependencyInstance);
             }
         }
+    }
+
+    private function constructInstance(InstanceRepository $repository, $className)
+    {
+        $arguments = $this->getConstructorArguments($repository, $className);
+        if ($arguments) {
+            $class = new ReflectionClass($className);
+            return $class->newInstanceArgs($arguments);
+        }
+        return new $className;
+    }
+
+    private function getConstructorArguments(InstanceRepository $repository, $className)
+    {
+        $annotations = $this->provider->getConstructorMetadata($className);
+        return Arrays::map($annotations, function ($annotation) use ($repository) {
+            return $this->getInstance($repository, $annotation);
+        });
+    }
+
+    private function getInstance(InstanceRepository $repository, $annotation)
+    {
+        $binder = $this->bindings->getBinder($annotation['className'], $annotation['name']);
+        return $repository->getInstance($this, $binder);
     }
 }

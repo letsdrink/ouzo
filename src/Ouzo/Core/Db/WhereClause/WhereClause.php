@@ -28,7 +28,7 @@ abstract class WhereClause
         };
     }
 
-    public static function create($where, $parameters = array())
+    public static function create($where, $parameters = [])
     {
         if (is_null($where)) {
             return new EmptyWhereClause();
