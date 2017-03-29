@@ -14,10 +14,10 @@ class AuthSampleController extends Controller
 {
     public function init()
     {
-        AuthBasicExtension::register($this, array(
+        AuthBasicExtension::register($this, [
             'login' => 'login',
             'password' => 'pass'
-        ));
+        ]);
     }
 
     public function index()

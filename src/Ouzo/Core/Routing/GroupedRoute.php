@@ -14,27 +14,27 @@ class GroupedRoute implements RouteInterface
         self::$name = $name;
     }
 
-    public static function get($uri, $action, array $options = array())
+    public static function get($uri, $action, array $options = [])
     {
         Route::get(self::uri($uri), self::action($action), $options);
     }
 
-    public static function post($uri, $action, array $options = array())
+    public static function post($uri, $action, array $options = [])
     {
         Route::post(self::uri($uri), self::action($action), $options);
     }
 
-    public static function put($uri, $action, array $options = array())
+    public static function put($uri, $action, array $options = [])
     {
         Route::put(self::uri($uri), self::action($action), $options);
     }
 
-    public static function delete($uri, $action, array $options = array())
+    public static function delete($uri, $action, array $options = [])
     {
         Route::delete(self::uri($uri), self::action($action), $options);
     }
 
-    public static function any($uri, $action, array $options = array())
+    public static function any($uri, $action, array $options = [])
     {
         Route::any(self::uri($uri), self::action($action), $options);
     }

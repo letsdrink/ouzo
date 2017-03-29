@@ -31,7 +31,7 @@ class ModelResultSetConverter
             ->uniqueBy(Functions::extract()->destinationField())
             ->toArray();
 
-        $models = array();
+        $models = [];
         foreach ($results as $row) {
             $models[] = $this->convertRowToModel($row, $aliasToOffset, $joinsToStore);
         }
@@ -40,7 +40,7 @@ class ModelResultSetConverter
 
     private function _createAliasToOffsetMap()
     {
-        $aliasToOffset = array();
+        $aliasToOffset = [];
 
         $aliasToOffset[$this->alias] = 0;
         $offset = count($this->metaInstance->getFields());
@@ -68,7 +68,7 @@ class ModelResultSetConverter
 
     private function extractModelFromResult($metaInstance, array $row, $offsetInResultSet)
     {
-        $attributes = array();
+        $attributes = [];
         $offset = $offsetInResultSet;
         $hasAnyNonEmptyAttribute = false;
         foreach ($metaInstance->_getFields() as $field) {

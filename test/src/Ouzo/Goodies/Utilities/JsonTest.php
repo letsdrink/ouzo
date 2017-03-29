@@ -63,7 +63,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
     public function shouldEncodeArrayToJson()
     {
         //given
-        $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
+        $array = ['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3'];
 
         //when
         $encoded = Json::safeEncode($array);
@@ -134,10 +134,10 @@ class JsonTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         } // then
         catch (Exception $e) {
-            $this->assertTrue(in_array(get_class($e), array(
+            $this->assertTrue(in_array(get_class($e), [
                 'PHPUnit_Framework_Error_Warning',
                 'Ouzo\Utilities\JsonEncodeException'
-            )));
+            ]));
         }
     }
 
@@ -152,37 +152,37 @@ class JsonTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         } // then
         catch (Exception $e) {
-            $this->assertTrue(in_array(get_class($e), array(
+            $this->assertTrue(in_array(get_class($e), [
                 'PHPUnit_Framework_Error_Warning',
                 'Ouzo\Utilities\JsonEncodeException'
-            )));
+            ]));
         }
     }
 
     function invalidJson()
     {
-        return array(
-            array('()'),
-            array('(asd)'),
-            array('{3}'),
-            array('{"3":,"3"}'),
-            array('<html>'),
-            array('3=3')
-        );
+        return [
+            ['()'],
+            ['(asd)'],
+            ['{3}'],
+            ['{"3":,"3"}'],
+            ['<html>'],
+            ['3=3']
+        ];
     }
 
     function validJson()
     {
-        return array(
-            array(''),
-            array('0'),
-            array('null'),
-            array('1'),
-            array('true'),
-            array('false'),
-            array('"test"'),
-            array('[1]'),
-            array('{"hej":4}'),
-        );
+        return [
+            [''],
+            ['0'],
+            ['null'],
+            ['1'],
+            ['true'],
+            ['false'],
+            ['"test"'],
+            ['[1]'],
+            ['{"hej":4}'],
+        ];
     }
 }

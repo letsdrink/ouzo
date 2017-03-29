@@ -22,7 +22,7 @@ use Ouzo\Utilities\Arrays;
  */
 class Logger
 {
-    private static $loggers = array();
+    private static $loggers = [];
 
     /**
      * @param $name
@@ -31,10 +31,10 @@ class Logger
      */
     public static function getLogger($name, $configuration = 'default')
     {
-        $logger = Arrays::getNestedValue(self::$loggers, array($name, $configuration));
+        $logger = Arrays::getNestedValue(self::$loggers, [$name, $configuration]);
         if (!$logger) {
             $logger = self::loadLogger($name, $configuration);
-            Arrays::setNestedValue(self::$loggers, array($name, $configuration), $logger);
+            Arrays::setNestedValue(self::$loggers, [$name, $configuration], $logger);
         }
         return $logger;
     }

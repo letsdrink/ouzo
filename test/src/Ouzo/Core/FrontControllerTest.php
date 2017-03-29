@@ -73,7 +73,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldExceptActionInAllAllow()
     {
         //given
-        Route::allowAll('/sample', 'sample', array('except' => array('except')));
+        Route::allowAll('/sample', 'sample', ['except' => ['except']]);
 
         //when
         try {
@@ -123,7 +123,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        $this->post('/restful', array());
+        $this->post('/restful', []);
 
         //then
         $this->assertRenderedContent()->isNotEqualTo('index');
@@ -153,7 +153,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        CatchException::when($this)->post('/restful/fresh', array());
+        CatchException::when($this)->post('/restful/fresh', []);
 
         //then
         CatchException::assertThat();
@@ -168,7 +168,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        $this->post('/restful', array());
+        $this->post('/restful', []);
 
         //then
         $this->assertRenderedContent()->isEqualTo('create');
@@ -198,7 +198,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        $this->get('/restful/12', array());
+        $this->get('/restful/12', []);
 
         //then
         $this->assertRenderedContent()->isEqualTo('show=12');
@@ -213,7 +213,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        CatchException::when($this)->post('/restful/12', array());
+        CatchException::when($this)->post('/restful/12', []);
 
         //then
         CatchException::assertThat();
@@ -228,7 +228,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        $this->get('/restful/12/edit', array());
+        $this->get('/restful/12/edit', []);
 
         //then
         $this->assertRenderedContent()->isEqualTo('edit=12');
@@ -258,7 +258,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        $this->put('/restful/12', array());
+        $this->put('/restful/12', []);
 
         //then
         $this->assertRenderedContent()->isEqualTo('update=12');
@@ -348,7 +348,7 @@ class FrontControllerTest extends ControllerTestCase
         Route::post('/sample/redirect_to', 'sample#redirect_to');
 
         //when
-        $this->post('/sample/redirect_to', array());
+        $this->post('/sample/redirect_to', []);
 
         //then
         $this->assertRedirectsTo('/sample/add');
@@ -399,7 +399,7 @@ class FrontControllerTest extends ControllerTestCase
         $queries = Arrays::first(Stats::queries());
 
         //then
-        ArrayAssert::that($queries['request_params'][0])->hasSize(1)->containsKeyAndValue(array('param' => 1));
+        ArrayAssert::that($queries['request_params'][0])->hasSize(1)->containsKeyAndValue(['param' => 1]);
     }
 
     /**
@@ -423,7 +423,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldCallbackInvokeAfterInit()
     {
         //given
-        $callback = array($this, '_afterInitCallback');
+        $callback = [$this, '_afterInitCallback'];
         Config::overrideProperty('callback', 'afterControllerInit')->with($callback);
         Route::get('/sample/save', 'sample#save');
 

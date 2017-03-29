@@ -12,9 +12,9 @@ class ErrorHandler
 {
     public function register()
     {
-        set_exception_handler(array(__CLASS__, 'exceptionHandler'));
-        set_error_handler(array(__CLASS__, 'errorHandler'));
-        register_shutdown_function(array(__CLASS__, 'shutdownHandler'));
+        set_exception_handler([__CLASS__, 'exceptionHandler']);
+        set_error_handler([__CLASS__, 'errorHandler']);
+        register_shutdown_function([__CLASS__, 'shutdownHandler']);
     }
 
     public static function exceptionHandler(Exception $exception)
@@ -56,7 +56,7 @@ class ErrorHandler
         $error = error_get_last();
 
         if (!ExceptionHandler::lastErrorHandled() && $error && $error['type'] & (E_ERROR | E_USER_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR)) {
-            static::getExceptionHandler()->handleExceptionData(new OuzoExceptionData(500, array(new Error(0, $error['message'])), self::trace($error['file'], $error['line'])));
+            static::getExceptionHandler()->handleExceptionData(new OuzoExceptionData(500, [new Error(0, $error['message'])], self::trace($error['file'], $error['line'])));
         }
     }
 

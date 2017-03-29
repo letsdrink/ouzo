@@ -18,50 +18,50 @@ use Ouzo\Model;
 class Category extends Model
 {
     //id is not required here but it should not cause errors (it's here just for a test)
-    private $_fields = array('id', 'name', 'id_parent');
+    private $_fields = ['id', 'name', 'id_parent'];
 
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
-            'hasMany' => array(
-                'products' => array('class' => 'Test\Product', 'foreignKey' => 'id_category'),
-                'products_starting_with_b' => array(
+        parent::__construct([
+            'hasMany' => [
+                'products' => ['class' => 'Test\Product', 'foreignKey' => 'id_category'],
+                'products_starting_with_b' => [
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
                     'conditions' => "products.name LIKE 'b%'",
-                ),
-                'products_ending_with_b_or_y' => array(
+                ],
+                'products_ending_with_b_or_y' => [
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
                     'conditions' => function () {
-                        return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", array('%b', '%y'));
+                        return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", ['%b', '%y']);
                     },
-                ),
-                'products_name_bob' => array(
+                ],
+                'products_name_bob' => [
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
-                    'conditions' => array("products.name" => "bob")
-                ),
-                'products_ordered_by_name' => array(
+                    'conditions' => ["products.name" => "bob"]
+                ],
+                'products_ordered_by_name' => [
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
-                    'order' => array("products.name ASC")
-                )
-            ),
-            'hasOne' => array(
-                'product_named_billy' => array(
+                    'order' => ["products.name ASC"]
+                ]
+            ],
+            'hasOne' => [
+                'product_named_billy' => [
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
                     'conditions' => "products.name = 'billy'"
-                )
-            ),
-            'belongsTo' => array('parent' => array('class' => 'Test\Category', 'foreignKey' => 'id_parent', 'referencedColumn' => 'id')),
+                ]
+            ],
+            'belongsTo' => ['parent' => ['class' => 'Test\Category', 'foreignKey' => 'id_parent', 'referencedColumn' => 'id']],
             'attributes' => $attributes,
-            'fields' => $this->_fields));
+            'fields' => $this->_fields]);
     }
 
     public function getName($name)
     {
-        return Db::callFunction('get_name', array($name));
+        return Db::callFunction('get_name', [$name]);
     }
 }

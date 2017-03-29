@@ -14,13 +14,13 @@ class OuzoTwigExtension extends Twig_Extension
     {
         $uriHelperFunctions = allGeneratedUriNames();
 
-        $helperFunctions = array('t', 'linkTo', 'linkButton', 'formButton', 'translatableOptions', 'labelTag',
+        $helperFunctions = ['t', 'linkTo', 'linkButton', 'formButton', 'translatableOptions', 'labelTag',
             'hiddenTag', 'textFieldTag', 'textAreaTag', 'checkboxTag', 'selectTag', 'optionTag', 'passwordFieldTag',
             'radioButtonTag', 'endFormTag', 'formTag', 'formFor', 'showErrors', 'showNotices', 'showSuccess',
-            'showWarnings', 'renderPartial');
+            'showWarnings', 'renderPartial'];
 
         return array_merge(
-            $this->toSimpleFunctions($helperFunctions, array('is_safe' => array('html'))),
+            $this->toSimpleFunctions($helperFunctions, ['is_safe' => ['html']]),
             $this->toSimpleFunctions($uriHelperFunctions)
         );
     }
@@ -30,9 +30,9 @@ class OuzoTwigExtension extends Twig_Extension
         return 'ouzo';
     }
 
-    private function toSimpleFunctions($functions, array $options = array())
+    private function toSimpleFunctions($functions, array $options = [])
     {
-        $result = array();
+        $result = [];
         foreach ($functions as $function) {
             $result[] = new Twig_SimpleFunction($function, $function, $options);
         }

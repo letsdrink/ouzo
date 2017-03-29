@@ -11,7 +11,7 @@ use Ouzo\Utilities\Objects;
 
 class QueryBoundValuesExtractor
 {
-    private $_boundValues = array();
+    private $_boundValues = [];
     private $query;
 
     public function __construct($query)

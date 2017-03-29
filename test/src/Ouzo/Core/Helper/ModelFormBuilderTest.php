@@ -22,7 +22,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
     public function shouldAddErrorClass()
     {
         //given
-        $product = new Product(array());
+        $product = new Product([]);
         $product->validate();
         $formBuilder = new ModelFormBuilder($product);
 
@@ -39,12 +39,12 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
     public function shouldAddErrorClassIfClassGiven()
     {
         //given
-        $product = new Product(array());
+        $product = new Product([]);
         $product->validate();
         $formBuilder = new ModelFormBuilder($product);
 
         //when
-        $html = $formBuilder->textField('name', array('class' => 'class1 class2'));
+        $html = $formBuilder->textField('name', ['class' => 'class1 class2']);
 
         //then
         $this->assertContains('class="class1 class2 error"', $html);
@@ -56,7 +56,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
     public function shouldNotAddEmptyClassAttribute()
     {
         //given
-        $product = new Product(array('name' => 'valid'));
+        $product = new Product(['name' => 'valid']);
         $formBuilder = new ModelFormBuilder($product);
 
         //when

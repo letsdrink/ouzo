@@ -14,7 +14,7 @@ class OuzoException extends Exception
 {
     private $_httpCode;
     private $_errors;
-    private $_headers = array();
+    private $_headers = [];
 
     /**
      * OuzoException constructor.
@@ -23,7 +23,7 @@ class OuzoException extends Exception
      * @param Error[]|\Error $errors
      * @param string[] $headers
      */
-    public function __construct($httpCode, $message, $errors, $headers = array())
+    public function __construct($httpCode, $message, $errors, $headers = [])
     {
         $this->_httpCode = $httpCode;
         $this->_errors = Arrays::toArray($errors);

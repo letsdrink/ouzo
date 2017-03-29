@@ -12,15 +12,15 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldForEmptyArrays()
     {
-        $this->assertFalse(ArrayContainFunctions::contains(array(), array()));
-        $this->assertFalse(ArrayContainFunctions::contains(array(), null));
-        $this->assertFalse(ArrayContainFunctions::contains(array(), true));
-        $this->assertFalse(ArrayContainFunctions::contains(array(), false));
-        $this->assertFalse(ArrayContainFunctions::contains(array(), 0));
-        $this->assertFalse(ArrayContainFunctions::contains(array(), 1));
-        $this->assertFalse(ArrayContainFunctions::contains(array(), '0'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(), '1'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(), new stdClass()));
+        $this->assertFalse(ArrayContainFunctions::contains([], []));
+        $this->assertFalse(ArrayContainFunctions::contains([], null));
+        $this->assertFalse(ArrayContainFunctions::contains([], true));
+        $this->assertFalse(ArrayContainFunctions::contains([], false));
+        $this->assertFalse(ArrayContainFunctions::contains([], 0));
+        $this->assertFalse(ArrayContainFunctions::contains([], 1));
+        $this->assertFalse(ArrayContainFunctions::contains([], '0'));
+        $this->assertFalse(ArrayContainFunctions::contains([], '1'));
+        $this->assertFalse(ArrayContainFunctions::contains([], new stdClass()));
     }
 
     /**
@@ -28,25 +28,25 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldForBooleans()
     {
-        $this->assertTrue(ArrayContainFunctions::contains(array(true, 3), true));
-        $this->assertTrue(ArrayContainFunctions::contains(array(true, 3), 'true'));
-        $this->assertTrue(ArrayContainFunctions::contains(array(true, 3), 3));
-        $this->assertTrue(ArrayContainFunctions::contains(array(true, 3), '3'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(true, 3), null));
-        $this->assertFalse(ArrayContainFunctions::contains(array(true, 3), 1));
-        $this->assertFalse(ArrayContainFunctions::contains(array(true, 3), '1'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(true, 3), false));
-        $this->assertFalse(ArrayContainFunctions::contains(array(true, 3), new stdClass()));
+        $this->assertTrue(ArrayContainFunctions::contains([true, 3], true));
+        $this->assertTrue(ArrayContainFunctions::contains([true, 3], 'true'));
+        $this->assertTrue(ArrayContainFunctions::contains([true, 3], 3));
+        $this->assertTrue(ArrayContainFunctions::contains([true, 3], '3'));
+        $this->assertFalse(ArrayContainFunctions::contains([true, 3], null));
+        $this->assertFalse(ArrayContainFunctions::contains([true, 3], 1));
+        $this->assertFalse(ArrayContainFunctions::contains([true, 3], '1'));
+        $this->assertFalse(ArrayContainFunctions::contains([true, 3], false));
+        $this->assertFalse(ArrayContainFunctions::contains([true, 3], new stdClass()));
 
-        $this->assertTrue(ArrayContainFunctions::contains(array(false, 3), false));
-        $this->assertTrue(ArrayContainFunctions::contains(array(false, 3), 'false'));
-        $this->assertTrue(ArrayContainFunctions::contains(array(false, 3), 3));
-        $this->assertTrue(ArrayContainFunctions::contains(array(false, 3), '3'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(false, 3), null));
-        $this->assertFalse(ArrayContainFunctions::contains(array(false, 3), 0));
-        $this->assertFalse(ArrayContainFunctions::contains(array(false, 3), '0'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(false, 3), true));
-        $this->assertFalse(ArrayContainFunctions::contains(array(false, 3), new stdClass()));
+        $this->assertTrue(ArrayContainFunctions::contains([false, 3], false));
+        $this->assertTrue(ArrayContainFunctions::contains([false, 3], 'false'));
+        $this->assertTrue(ArrayContainFunctions::contains([false, 3], 3));
+        $this->assertTrue(ArrayContainFunctions::contains([false, 3], '3'));
+        $this->assertFalse(ArrayContainFunctions::contains([false, 3], null));
+        $this->assertFalse(ArrayContainFunctions::contains([false, 3], 0));
+        $this->assertFalse(ArrayContainFunctions::contains([false, 3], '0'));
+        $this->assertFalse(ArrayContainFunctions::contains([false, 3], true));
+        $this->assertFalse(ArrayContainFunctions::contains([false, 3], new stdClass()));
     }
 
     /**
@@ -54,14 +54,14 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldForNull()
     {
-        $this->assertTrue(ArrayContainFunctions::contains(array(null, 1), null));
-        $this->assertTrue(ArrayContainFunctions::contains(array(null, 1), 1));
-        $this->assertTrue(ArrayContainFunctions::contains(array(null, 1), '1'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(null, 1), true));
-        $this->assertFalse(ArrayContainFunctions::contains(array(null, 1), false));
-        $this->assertFalse(ArrayContainFunctions::contains(array(null, 1), 0));
-        $this->assertFalse(ArrayContainFunctions::contains(array(null, 1), ''));
-        $this->assertFalse(ArrayContainFunctions::contains(array(null, 1), new stdClass()));
+        $this->assertTrue(ArrayContainFunctions::contains([null, 1], null));
+        $this->assertTrue(ArrayContainFunctions::contains([null, 1], 1));
+        $this->assertTrue(ArrayContainFunctions::contains([null, 1], '1'));
+        $this->assertFalse(ArrayContainFunctions::contains([null, 1], true));
+        $this->assertFalse(ArrayContainFunctions::contains([null, 1], false));
+        $this->assertFalse(ArrayContainFunctions::contains([null, 1], 0));
+        $this->assertFalse(ArrayContainFunctions::contains([null, 1], ''));
+        $this->assertFalse(ArrayContainFunctions::contains([null, 1], new stdClass()));
     }
 
     /**
@@ -69,20 +69,20 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldForPrimitives()
     {
-        $this->assertTrue(ArrayContainFunctions::contains(array(1, 2, 3), 1));
-        $this->assertTrue(ArrayContainFunctions::contains(array(1, 2, 3), 2));
-        $this->assertTrue(ArrayContainFunctions::contains(array(1, 2, 3), 3));
-        $this->assertTrue(ArrayContainFunctions::contains(array(1, 2, 3), '1'));
-        $this->assertTrue(ArrayContainFunctions::contains(array(1, 2, 3), '2'));
-        $this->assertTrue(ArrayContainFunctions::contains(array(1, 2, 3), '3'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2, 3), 0));
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2, 3), 4));
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2, 3), '5'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2, 3), '11'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2, 3), true));
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2, 3), false));
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2, 3), null));
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2, 3), new stdClass()));
+        $this->assertTrue(ArrayContainFunctions::contains([1, 2, 3], 1));
+        $this->assertTrue(ArrayContainFunctions::contains([1, 2, 3], 2));
+        $this->assertTrue(ArrayContainFunctions::contains([1, 2, 3], 3));
+        $this->assertTrue(ArrayContainFunctions::contains([1, 2, 3], '1'));
+        $this->assertTrue(ArrayContainFunctions::contains([1, 2, 3], '2'));
+        $this->assertTrue(ArrayContainFunctions::contains([1, 2, 3], '3'));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], 0));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], 4));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], '5'));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], '11'));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], true));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], false));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], null));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], new stdClass()));
     }
 
     /**
@@ -90,26 +90,26 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsAllShouldWorkForArraysValues()
     {
-        $this->assertTrue(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(array(1))));
-        $this->assertTrue(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(array(2))));
-        $this->assertTrue(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(array('1'))));
-        $this->assertTrue(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(array('2'))));
+        $this->assertTrue(ArrayContainFunctions::containsAll([[1], [2]], [[1]]));
+        $this->assertTrue(ArrayContainFunctions::containsAll([[1], [2]], [[2]]));
+        $this->assertTrue(ArrayContainFunctions::containsAll([[1], [2]], [['1']]));
+        $this->assertTrue(ArrayContainFunctions::containsAll([[1], [2]], [['2']]));
 
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(1)));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(2)));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array('1')));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array('2')));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), 1));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), '1'));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), null));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(true)));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(null)));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array()));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(new stdClass())));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [1]));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [2]));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], ['1']));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], ['2']));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], 1));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], '1'));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], null));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [true]));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [null]));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], []));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [new stdClass()]));
 
-        $this->assertTrue(ArrayContainFunctions::containsAll(array(array('1' => 'a', '2' => 'b'), array('1' => 'c', '2' => 'd')), array(array('1' => 'a', '2' => 'b'))));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array('a', 'b'), array('c', 'd')), array('a', 'd')));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array('1' => 'a', '2' => 'b'), array('1' => 'c', '2' => 'd')), array('x' => 'a', 'y' => 'd')));
+        $this->assertTrue(ArrayContainFunctions::containsAll([['1' => 'a', '2' => 'b'], ['1' => 'c', '2' => 'd']], [['1' => 'a', '2' => 'b']]));
+        $this->assertFalse(ArrayContainFunctions::containsAll([['a', 'b'], ['c', 'd']], ['a', 'd']));
+        $this->assertFalse(ArrayContainFunctions::containsAll([['1' => 'a', '2' => 'b'], ['1' => 'c', '2' => 'd']], ['x' => 'a', 'y' => 'd']));
     }
 
     /**
@@ -117,20 +117,20 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldForArraysValues()
     {
-        $this->assertTrue(ArrayContainFunctions::contains(array(array(1), array(2)), array(1)));
-        $this->assertTrue(ArrayContainFunctions::contains(array(array(1), array(2)), array(2)));
-        $this->assertTrue(ArrayContainFunctions::contains(array(array(1), array(2)), array('1')));
-        $this->assertTrue(ArrayContainFunctions::contains(array(array(1), array(2)), array('2')));
-        $this->assertFalse(ArrayContainFunctions::contains(array(array(1), array(2)), 1));
-        $this->assertFalse(ArrayContainFunctions::contains(array(array(1), array(2)), '1'));
-        $this->assertFalse(ArrayContainFunctions::contains(array(array(1), array(2)), null));
-        $this->assertFalse(ArrayContainFunctions::contains(array(array(1), array(2)), array(null)));
-        $this->assertFalse(ArrayContainFunctions::contains(array(array(1), array(2)), array()));
-        $this->assertFalse(ArrayContainFunctions::contains(array(array(1), array(2)), array(new stdClass())));
+        $this->assertTrue(ArrayContainFunctions::contains([[1], [2]], [1]));
+        $this->assertTrue(ArrayContainFunctions::contains([[1], [2]], [2]));
+        $this->assertTrue(ArrayContainFunctions::contains([[1], [2]], ['1']));
+        $this->assertTrue(ArrayContainFunctions::contains([[1], [2]], ['2']));
+        $this->assertFalse(ArrayContainFunctions::contains([[1], [2]], 1));
+        $this->assertFalse(ArrayContainFunctions::contains([[1], [2]], '1'));
+        $this->assertFalse(ArrayContainFunctions::contains([[1], [2]], null));
+        $this->assertFalse(ArrayContainFunctions::contains([[1], [2]], [null]));
+        $this->assertFalse(ArrayContainFunctions::contains([[1], [2]], []));
+        $this->assertFalse(ArrayContainFunctions::contains([[1], [2]], [new stdClass()]));
 
-        $this->assertTrue(ArrayContainFunctions::contains(array(array('1' => 'a', '2' => 'b'), array('1' => 'c', '2' => 'd')), array('1' => 'a', '2' => 'b')));
-        $this->assertFalse(ArrayContainFunctions::contains(array(array('a', 'b'), array('c', 'd')), array('a', 'd')));
-        $this->assertFalse(ArrayContainFunctions::contains(array(array('1' => 'a', '2' => 'b'), array('1' => 'c', '2' => 'd')), array('x' => 'a', 'y' => 'd')));
+        $this->assertTrue(ArrayContainFunctions::contains([['1' => 'a', '2' => 'b'], ['1' => 'c', '2' => 'd']], ['1' => 'a', '2' => 'b']));
+        $this->assertFalse(ArrayContainFunctions::contains([['a', 'b'], ['c', 'd']], ['a', 'd']));
+        $this->assertFalse(ArrayContainFunctions::contains([['1' => 'a', '2' => 'b'], ['1' => 'c', '2' => 'd']], ['x' => 'a', 'y' => 'd']));
     }
 
     /**
@@ -138,8 +138,8 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldNotTreatOneAsTrue()
     {
-        $this->assertFalse(ArrayContainFunctions::contains(array(array(1), array(2)), array(true)));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(1), array(2)), array(true)));
+        $this->assertFalse(ArrayContainFunctions::contains([[1], [2]], [true]));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [true]));
     }
 
     /**
@@ -147,8 +147,8 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldNotTreatNumbersAsTrue()
     {
-        $this->assertFalse(ArrayContainFunctions::contains(array(array(3), array(2)), array(true)));
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array(3), array(2)), array(true)));
+        $this->assertFalse(ArrayContainFunctions::contains([[3], [2]], [true]));
+        $this->assertFalse(ArrayContainFunctions::containsAll([[3], [2]], [true]));
     }
 
     /**
@@ -157,8 +157,8 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
     public function containsShouldBeSymmetric()
     {
         $this->assertEquals(
-            ArrayContainFunctions::contains(array(true), 1),
-            ArrayContainFunctions::contains(array(1), true)
+            ArrayContainFunctions::contains([true], 1),
+            ArrayContainFunctions::contains([1], true)
         );
     }
 
@@ -168,8 +168,8 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
     public function containsShouldBeSymmetricForArrays()
     {
         $this->assertEquals(
-            ArrayContainFunctions::contains(array(array(true)), array(1)),
-            ArrayContainFunctions::contains(array(array(1)), array(true))
+            ArrayContainFunctions::contains([[true]], [1]),
+            ArrayContainFunctions::contains([[1]], [true])
         );
     }
 
@@ -178,7 +178,7 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldNotTreatOneAsTrue1()
     {
-        $this->assertFalse(ArrayContainFunctions::contains(array(1, 2), true));
+        $this->assertFalse(ArrayContainFunctions::contains([1, 2], true));
     }
 
     /**
@@ -186,7 +186,7 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
      */
     public function containsAllShouldCompareWholeElements()
     {
-        $this->assertFalse(ArrayContainFunctions::containsAll(array(array('a', 'b'), array('c', 'd')), array('a', 'd')));
+        $this->assertFalse(ArrayContainFunctions::containsAll([['a', 'b'], ['c', 'd']], ['a', 'd']));
     }
 
     /**
@@ -200,10 +200,10 @@ class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
         $b->var = 2;
         $c = new stdClass();
         $c->var = '1';
-        $this->assertTrue(ArrayContainFunctions::contains(array(new stdClass()), new stdClass()));
-        $this->assertTrue(ArrayContainFunctions::contains(array($a, $b), $a));
-        $this->assertTrue(ArrayContainFunctions::contains(array($a, $b), $b));
-        $this->assertTrue(ArrayContainFunctions::contains(array($a, $b), $c));
-        $this->assertFalse(ArrayContainFunctions::contains(array($a, $b), new stdClass()));
+        $this->assertTrue(ArrayContainFunctions::contains([new stdClass()], new stdClass()));
+        $this->assertTrue(ArrayContainFunctions::contains([$a, $b], $a));
+        $this->assertTrue(ArrayContainFunctions::contains([$a, $b], $b));
+        $this->assertTrue(ArrayContainFunctions::contains([$a, $b], $c));
+        $this->assertFalse(ArrayContainFunctions::contains([$a, $b], new stdClass()));
     }
 }

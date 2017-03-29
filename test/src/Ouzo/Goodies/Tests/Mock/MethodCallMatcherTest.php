@@ -26,10 +26,10 @@ class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldMatchExactArguments()
     {
         //given
-        $matcher = new MethodCallMatcher('fun', array(1, 2, '3'));
+        $matcher = new MethodCallMatcher('fun', [1, 2, '3']);
 
         //when
-        $result = $matcher->matches(new MethodCall('fun', array(1, 2, '3')));
+        $result = $matcher->matches(new MethodCall('fun', [1, 2, '3']));
 
         //then
         $this->assertTrue($result);
@@ -41,10 +41,10 @@ class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldMatchExactObjectArguments()
     {
         //given
-        $matcher = new MethodCallMatcher('fun', array(new TestClass('value')));
+        $matcher = new MethodCallMatcher('fun', [new TestClass('value')]);
 
         //when
-        $result = $matcher->matches(new MethodCall('fun', array(new TestClass('value'))));
+        $result = $matcher->matches(new MethodCall('fun', [new TestClass('value')]));
 
         //then
         $this->assertTrue($result);
@@ -56,10 +56,10 @@ class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldFailIfDifferentMethod()
     {
         //given
-        $matcher = new MethodCallMatcher('fun', array());
+        $matcher = new MethodCallMatcher('fun', []);
 
         //when
-        $result = $matcher->matches(new MethodCall('other', array()));
+        $result = $matcher->matches(new MethodCall('other', []));
 
         //then
         $this->assertFalse($result);
@@ -71,10 +71,10 @@ class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldMatchAnyArgument()
     {
         //given
-        $matcher = new MethodCallMatcher('fun', array(1, new AnyArgument(), "1"));
+        $matcher = new MethodCallMatcher('fun', [1, new AnyArgument(), "1"]);
 
         //when
-        $result = $matcher->matches(new MethodCall('fun', array(1, "any", "1")));
+        $result = $matcher->matches(new MethodCall('fun', [1, "any", "1"]));
 
         //then
         $this->assertTrue($result);
@@ -86,10 +86,10 @@ class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldMatchAnyArgumentList()
     {
         //given
-        $matcher = new MethodCallMatcher('fun', array(new AnyArgumentList()));
+        $matcher = new MethodCallMatcher('fun', [new AnyArgumentList()]);
 
         //when
-        $result = $matcher->matches(new MethodCall('fun', array(1, "1")));
+        $result = $matcher->matches(new MethodCall('fun', [1, "1"]));
 
         //then
         $this->assertTrue($result);
@@ -101,10 +101,10 @@ class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldMatchNoArgumentsForAnyArgumentList()
     {
         //given
-        $matcher = new MethodCallMatcher('fun', array(new AnyArgumentList()));
+        $matcher = new MethodCallMatcher('fun', [new AnyArgumentList()]);
 
         //when
-        $result = $matcher->matches(new MethodCall('fun', array()));
+        $result = $matcher->matches(new MethodCall('fun', []));
 
         //then
         $this->assertTrue($result);
@@ -116,10 +116,10 @@ class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldNotMatchDifferentExactArguments()
     {
         //given
-        $matcher = new MethodCallMatcher('fun', array(1, new AnyArgument(), "1"));
+        $matcher = new MethodCallMatcher('fun', [1, new AnyArgument(), "1"]);
 
         //when
-        $result = $matcher->matches(new MethodCall('fun', array(1, "any", "other")));
+        $result = $matcher->matches(new MethodCall('fun', [1, "any", "other"]));
 
         //then
         $this->assertFalse($result);

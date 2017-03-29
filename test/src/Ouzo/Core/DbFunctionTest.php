@@ -25,7 +25,7 @@ class DbFunctionTest extends DbTransactionalTestCase
     public function shouldCallDbFunction()
     {
         //given
-        $category = Category::create(array('name' => 'test'));
+        $category = Category::create(['name' => 'test']);
 
         //when
         $name = $category->getName('test');

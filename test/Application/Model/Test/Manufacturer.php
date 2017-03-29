@@ -14,13 +14,13 @@ use Ouzo\Model;
  */
 class Manufacturer extends Model
 {
-    private $_fields = array('name');
+    private $_fields = ['name'];
 
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
-            'hasMany' => array('products' => array('class' => 'Test\Product', 'foreignKey' => 'id_manufacturer')),
+        parent::__construct([
+            'hasMany' => ['products' => ['class' => 'Test\Product', 'foreignKey' => 'id_manufacturer']],
             'attributes' => $attributes,
-            'fields' => $this->_fields));
+            'fields' => $this->_fields]);
     }
 }

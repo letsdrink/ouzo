@@ -281,7 +281,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     public function shouldStringifyNotAssociativeArray()
     {
         //given
-        $notAssociativeArray = array('a', 1);
+        $notAssociativeArray = ['a', 1];
 
         //when
         $stringifyArray = Objects::toString($notAssociativeArray);
@@ -296,7 +296,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     public function shouldStringifyAssociativeArray()
     {
         //given
-        $associativeArray = array('key' => 'value1', 'key2' => 'value2');
+        $associativeArray = ['key' => 'value1', 'key2' => 'value2'];
 
         //when
         $stringifyArray = Objects::toString($associativeArray);
@@ -360,7 +360,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     public function shouldReturnValueFormArray()
     {
         //given
-        $array = array('id' => 123, 'name' => 'John');
+        $array = ['id' => 123, 'name' => 'John'];
 
         //when
         $value = Objects::getValue($array, 'name');
@@ -375,16 +375,16 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
     public function shouldReturnValueFormMultidimensionalArray()
     {
         //given
-        $array = array(
+        $array = [
             'id' => 123,
             'name' => 'John',
-            'info' => array(
-                'account' => array(
+            'info' => [
+                'account' => [
                     'number' => '2343-de',
                     'info' => 'some info about account'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         //when
         $value = Objects::getValueRecursively($array, 'info->account->number');
@@ -405,7 +405,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Objects::equal(null, false));
         $this->assertFalse(Objects::equal(null, 'false'));
         $this->assertFalse(Objects::equal(null , ''));
-        $this->assertFalse(Objects::equal(null , array()));
+        $this->assertFalse(Objects::equal(null , []));
         $this->assertFalse(Objects::equal(null, new stdClass()));
     }
 
@@ -421,7 +421,7 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Objects::equal('', '0'));
         $this->assertFalse(Objects::equal('', false));
         $this->assertFalse(Objects::equal('', 'false'));
-        $this->assertFalse(Objects::equal('', array()));
+        $this->assertFalse(Objects::equal('', []));
         $this->assertFalse(Objects::equal('', new stdClass()));
     }
 
@@ -454,22 +454,22 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
      */
     public function shouldCompareArrays()
     {
-        $this->assertTrue(Objects::equal(array('1'), array(1)));
-        $this->assertTrue(Objects::equal(array(1), array('1')));
-        $this->assertTrue(Objects::equal(array(null), array(null)));
-        $this->assertTrue(Objects::equal(array(''), array('')));
-        $this->assertTrue(Objects::equal(array('a'), array('a')));
-        $this->assertTrue(Objects::equal(array(new stdClass()), array(new stdClass())));
+        $this->assertTrue(Objects::equal(['1'], [1]));
+        $this->assertTrue(Objects::equal([1], ['1']));
+        $this->assertTrue(Objects::equal([null], [null]));
+        $this->assertTrue(Objects::equal([''], ['']));
+        $this->assertTrue(Objects::equal(['a'], ['a']));
+        $this->assertTrue(Objects::equal([new stdClass()], [new stdClass()]));
 
-        $this->assertFalse(Objects::equal(array('1'), array(2)));
-        $this->assertFalse(Objects::equal(array(2), array('1')));
-        $this->assertFalse(Objects::equal(array(''), array(false)));
-        $this->assertFalse(Objects::equal(array(''), array(0)));
-        $this->assertFalse(Objects::equal(array(''), array(null)));
-        $this->assertFalse(Objects::equal(array('a'), array('b')));
-        $this->assertFalse(Objects::equal(array(''), array(new stdClass())));
-        $this->assertFalse(Objects::equal(array(null), array(new stdClass())));
-        $this->assertFalse(Objects::equal(array(false), array(new stdClass())));
+        $this->assertFalse(Objects::equal(['1'], [2]));
+        $this->assertFalse(Objects::equal([2], ['1']));
+        $this->assertFalse(Objects::equal([''], [false]));
+        $this->assertFalse(Objects::equal([''], [0]));
+        $this->assertFalse(Objects::equal([''], [null]));
+        $this->assertFalse(Objects::equal(['a'], ['b']));
+        $this->assertFalse(Objects::equal([''], [new stdClass()]));
+        $this->assertFalse(Objects::equal([null], [new stdClass()]));
+        $this->assertFalse(Objects::equal([false], [new stdClass()]));
     }
 
     /**
@@ -477,37 +477,37 @@ class ObjectsTest extends PHPUnit_Framework_TestCase
      */
     public function shouldCompareNestedArrays()
     {
-        $array = array(
+        $array = [
             '1',
-            array(
+            [
                 1 => 123
-            ),
+            ],
             new stdClass(),
             3 => null
-        );
-        $arrayWithIntConversion = array(
+        ];
+        $arrayWithIntConversion = [
             1,
-            array(
+            [
                 '1' => '123'
-            ),
+            ],
             new stdClass(),
             3 => null
-        );
-        $arrayWithNullToStringConversion = array(
+        ];
+        $arrayWithNullToStringConversion = [
             1,
-            array(
+            [
                 '1' => '123'
-            ),
+            ],
             new stdClass(),
             3 => ''
-        );
-        $arrayWithDifferentKey = array(
+        ];
+        $arrayWithDifferentKey = [
             1,
-            array(
+            [
                 2 => '123'
-            ),
+            ],
             new stdClass()
-        );
+        ];
 
         $this->assertTrue(Objects::equal($array, $arrayWithIntConversion));
         $this->assertFalse(Objects::equal($array, $arrayWithNullToStringConversion));

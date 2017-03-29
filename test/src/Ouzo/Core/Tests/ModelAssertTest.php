@@ -16,8 +16,8 @@ class ModelAssertTest extends DbTransactionalTestCase
      */
     public function shouldFailForModelsOfDifferentType()
     {
-        $product = new Product(array('name' => 'abc'));
-        $category = new Category(array('name' => 'abc'));
+        $product = new Product(['name' => 'abc']);
+        $category = new Category(['name' => 'abc']);
 
         CatchException::when(Assert::thatModel($product))->hasSameAttributesAs($category);
 
@@ -29,8 +29,8 @@ class ModelAssertTest extends DbTransactionalTestCase
      */
     public function shouldFailIfModelsHaveDifferentAttributes()
     {
-        $product = new Product(array('name' => 'abc'));
-        $otherProduct = new Product(array('name' => 'other'));
+        $product = new Product(['name' => 'abc']);
+        $otherProduct = new Product(['name' => 'other']);
 
         CatchException::when(Assert::thatModel($product))->hasSameAttributesAs($otherProduct);
 
@@ -42,8 +42,8 @@ class ModelAssertTest extends DbTransactionalTestCase
      */
     public function shouldNotCompareRelations()
     {
-        $cars = Category::create(array('name' => 'phones'));
-        $product = Product::create(array('name' => 'Reno', 'id_category' => $cars->getId()));
+        $cars = Category::create(['name' => 'phones']);
+        $product = Product::create(['name' => 'Reno', 'id_category' => $cars->getId()]);
         $productWithoutLoadedCategory = Product::findById($product->getId());
 
         // when relation is loaded
@@ -59,8 +59,8 @@ class ModelAssertTest extends DbTransactionalTestCase
     public function shouldFailIfModelsAreNotEqual()
     {
         //given
-        $product = new Product(array('name' => 'abc'));
-        $otherProduct = new Product(array('name' => 'abc'));
+        $product = new Product(['name' => 'abc']);
+        $otherProduct = new Product(['name' => 'abc']);
         $otherProduct->non_persistent_field = 'a';
 
         //when
@@ -76,10 +76,10 @@ class ModelAssertTest extends DbTransactionalTestCase
     public function shouldPassIfModelsAreEqual()
     {
         //given
-        $product = new Product(array('name' => 'abc'));
+        $product = new Product(['name' => 'abc']);
 
         //when
-        $otherProduct = new Product(array('name' => 'abc'));
+        $otherProduct = new Product(['name' => 'abc']);
 
         //then
         Assert::thatModel($product)->isEqualTo($otherProduct);

@@ -58,7 +58,7 @@ class CsrfProtectorTest extends ControllerTestCase
     public function shouldFailIfNoCsrfCookie()
     {
         //when
-        CatchException::when($this)->post('/csrf_sample/modify', array());
+        CatchException::when($this)->post('/csrf_sample/modify', []);
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
@@ -70,11 +70,11 @@ class CsrfProtectorTest extends ControllerTestCase
     public function shouldFailIfInvalidCsrfCookie()
     {
         //
-        $_SESSION = array();
+        $_SESSION = [];
         $_COOKIE['csrftoken'] = 'invalid';
 
         //when
-        CatchException::when($this)->post('/csrf_sample/modify', array('csrftoken' => CsrfProtector::getCsrfToken()));
+        CatchException::when($this)->post('/csrf_sample/modify', ['csrftoken' => CsrfProtector::getCsrfToken()]);
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
@@ -86,11 +86,11 @@ class CsrfProtectorTest extends ControllerTestCase
     public function shouldFailIfNoCsrfToken()
     {
         //given
-        $_SESSION = array();
+        $_SESSION = [];
         $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
 
         //when
-        CatchException::when($this)->post('/csrf_sample/modify', array());
+        CatchException::when($this)->post('/csrf_sample/modify', []);
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
@@ -102,11 +102,11 @@ class CsrfProtectorTest extends ControllerTestCase
     public function shouldFailIfInvalidCsrfToken()
     {
         //given
-        $_SESSION = array();
+        $_SESSION = [];
         $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
 
         //when
-        CatchException::when($this)->post('/csrf_sample/modify', array('csrftoken' => 'invalid'));
+        CatchException::when($this)->post('/csrf_sample/modify', ['csrftoken' => 'invalid']);
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
@@ -118,12 +118,12 @@ class CsrfProtectorTest extends ControllerTestCase
     public function shouldFailIfInvalidCsrfAjaxHeader()
     {
         //given
-        $_SESSION = array();
+        $_SESSION = [];
         $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
         $_SERVER['HTTP_X_CSRFTOKEN'] = 'invalid';
 
         //when
-        CatchException::when($this)->post('/csrf_sample/modify', array());
+        CatchException::when($this)->post('/csrf_sample/modify', []);
 
         //then
         CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\ForbiddenException');
@@ -135,12 +135,12 @@ class CsrfProtectorTest extends ControllerTestCase
     public function shouldAcceptValidCsrfAjaxHeader()
     {
         //given
-        $_SESSION = array();
+        $_SESSION = [];
         $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
         $_SERVER['HTTP_X_CSRFTOKEN'] = CsrfProtector::getCsrfToken();
 
         //when
-        CatchException::when($this)->post('/csrf_sample/modify', array());
+        CatchException::when($this)->post('/csrf_sample/modify', []);
 
         //then
         CatchException::assertThat()->notCaught();
@@ -152,11 +152,11 @@ class CsrfProtectorTest extends ControllerTestCase
     public function shouldAcceptValidCsrfToken()
     {
         //given
-        $_SESSION = array();
+        $_SESSION = [];
         $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
 
         //when
-        CatchException::when($this)->post('/csrf_sample/modify', array('csrftoken' => CsrfProtector::getCsrfToken()));
+        CatchException::when($this)->post('/csrf_sample/modify', ['csrftoken' => CsrfProtector::getCsrfToken()]);
 
         //then
         CatchException::assertThat()->notCaught();
@@ -183,11 +183,11 @@ class CsrfProtectorTest extends ControllerTestCase
         $this->get('/csrf_sample/index');
 
         //then
-        $this->assertHasCookie(array(
+        $this->assertHasCookie([
             'name' => 'csrftoken',
             'value' => CsrfProtector::getCsrfToken(),
             'expire' => 0,
             'path' => '/'
-        ));
+        ]);
     }
 }

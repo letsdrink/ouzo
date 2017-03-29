@@ -28,7 +28,7 @@ class ExtractorTest extends DbTransactionalTestCase
         $function = Functions::extract()->name;
 
         //when
-        $result = Functions::call($function, new Product(array('name' => 'bmw')));
+        $result = Functions::call($function, new Product(['name' => 'bmw']));
 
         //then
         Assert::thatString($result)->isEqualTo('bmw');
@@ -43,7 +43,7 @@ class ExtractorTest extends DbTransactionalTestCase
         $function = Functions::extract()->id;
 
         //when
-        $result = Functions::call($function, new Product(array('id' => 0)));
+        $result = Functions::call($function, new Product(['id' => 0]));
 
         //then
         $this->assertTrue($result === 0);
@@ -94,7 +94,7 @@ class ExtractorTest extends DbTransactionalTestCase
     {
         //given
         $product = new Product();
-        $product->category = new Category(array('name' => 'category'));
+        $product->category = new Category(['name' => 'category']);
 
         $function = Functions::extract()->getCategory()->name;
 
@@ -145,7 +145,7 @@ class ExtractorTest extends DbTransactionalTestCase
     {
         //given
         $product = new Product();
-        $product->category = new Category(array('name' => 'category'));
+        $product->category = new Category(['name' => 'category']);
 
         //PhpStorm with dynamicReturnType plugin will complete all methods/properties
         $function = Functions::extract('Model\Test\Product')->category->name;
@@ -181,7 +181,7 @@ class ExtractorTest extends DbTransactionalTestCase
     {
         //given
         $object = new stdClass();
-        $object->field1 = array('key' => 'value');
+        $object->field1 = ['key' => 'value'];
 
         $function = Functions::extract()->field1['key'];
 
@@ -198,7 +198,7 @@ class ExtractorTest extends DbTransactionalTestCase
     public function shouldExtractArrayValue()
     {
         //given
-        $object = array('key' => 'value');
+        $object = ['key' => 'value'];
 
         //$function = Functions::extract()['key']; only i php 5.4
         $function = Functions::extract()->offsetGet('key');

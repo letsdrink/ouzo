@@ -19,15 +19,15 @@ class TestCallback
 
 class CallbackTestModel extends Model
 {
-    public function __construct($attributes = array(), $beforeSaveCallback = null, $afterSaveCallback = null)
+    public function __construct($attributes = [], $beforeSaveCallback = null, $afterSaveCallback = null)
     {
-        parent::__construct(array(
+        parent::__construct([
             'beforeSave' => $beforeSaveCallback,
             'afterSave' => $afterSaveCallback,
             'table' => 'products',
             'primaryKey' => 'id',
             'attributes' => $attributes,
-            'fields' => array('name')));
+            'fields' => ['name']]);
     }
 
     public function _callback()
@@ -51,14 +51,14 @@ class ModelCallbackTest extends DbTransactionalTestCase
     {
         //given
         $callback = new TestCallback();
-        $attributes = array('name' => 'bmw');
+        $attributes = ['name' => 'bmw'];
         $model = new CallbackTestModel($attributes, null, $callback);
 
         //when
         $model->insert();
 
         //then
-        $this->assertEquals(array($model), $callback->args);
+        $this->assertEquals([$model], $callback->args);
     }
 
     /**
@@ -68,15 +68,15 @@ class ModelCallbackTest extends DbTransactionalTestCase
     {
         //given
         $callback = new TestCallback();
-        $attributes = array('name' => 'bmw');
+        $attributes = ['name' => 'bmw'];
         $model = new CallbackTestModel($attributes, null, $callback);
         $model->insert();
 
         //when
-        $model->updateAttributes(array('name' => 'audi'));
+        $model->updateAttributes(['name' => 'audi']);
 
         //then
-        $this->assertEquals(array($model), $callback->args);
+        $this->assertEquals([$model], $callback->args);
     }
 
     /**
@@ -88,7 +88,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
         $callback = function ($model) {
             $model->name = $model->name . '_updated';
         };
-        $model = new CallbackTestModel(array('name' => 'bmw'), $callback, null);
+        $model = new CallbackTestModel(['name' => 'bmw'], $callback, null);
 
         //when
         $model->insert();
@@ -106,11 +106,11 @@ class ModelCallbackTest extends DbTransactionalTestCase
         $callback = function ($model) {
             $model->name = $model->name . '_updated';
         };
-        $model = new CallbackTestModel(array('name' => 'bmw'), $callback, null);
+        $model = new CallbackTestModel(['name' => 'bmw'], $callback, null);
         $model->insert();
 
         //when
-        $model->updateAttributes(array('name' => 'audi'));
+        $model->updateAttributes(['name' => 'audi']);
 
         //then
         $this->assertEquals('audi_updated', $model->reload()->name);
@@ -122,7 +122,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
     public function shouldCallMemberFunctionCallback()
     {
         //given
-        $model = new CallbackTestModel(array('name' => 'bmw'), '_callback');
+        $model = new CallbackTestModel(['name' => 'bmw'], '_callback');
 
         //when
         $model->insert();

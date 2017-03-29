@@ -26,7 +26,7 @@ class PrivateGetConfigMethod
     /** @noinspection PhpUnusedPrivateMethodInspection */
     private function getConfig()
     {
-        return array();
+        return [];
     }
 }
 
@@ -44,7 +44,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         Config::overrideProperty('debug')->with(true);
         Config::overrideProperty('language')->with('en');
-        Config::overridePropertyArray(array('global', 'prefix_system'), '');
+        Config::overridePropertyArray(['global', 'prefix_system'], '');
         if (Files::exists('/tmp/SampleConfigFile.php')) {
             unlink('/tmp/SampleConfigFile.php');
         }
@@ -285,7 +285,7 @@ TEMPLATE;
         $values = Config::all();
 
         //then
-        Assert::thatArray($values)->containsKeyAndValue(array('debug' => false, 'language' => 'pl', 'custom' => 'value'));
+        Assert::thatArray($values)->containsKeyAndValue(['debug' => false, 'language' => 'pl', 'custom' => 'value']);
         Assert::thatArray($values['global'])->contains('/sample');
     }
 

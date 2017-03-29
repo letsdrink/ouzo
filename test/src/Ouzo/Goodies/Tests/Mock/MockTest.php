@@ -190,7 +190,7 @@ class MockTest extends PHPUnit_Framework_TestCase
     {
         //given
         $mock = Mock::mock();
-        $mock->method(1, null, array(1, 2), new MockTestClass());
+        $mock->method(1, null, [1, 2], new MockTestClass());
 
         //when
         try {
@@ -523,7 +523,7 @@ class MockTest extends PHPUnit_Framework_TestCase
     {
         //given
         $mock = Mock::mock('MockTestClass');
-        $a = array();
+        $a = [];
         Mock::when($mock)->method3(Mock::anyArgList())->thenReturn('result');
 
         //when

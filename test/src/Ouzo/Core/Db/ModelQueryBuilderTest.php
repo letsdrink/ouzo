@@ -29,7 +29,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function setUp()
     {
         parent::setUp();
-        $_SESSION = array();
+        $_SESSION = [];
     }
 
     /**
@@ -38,7 +38,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAcceptStringInWhere()
     {
         //given
-        $product = Product::create(array('name' => 'tech'));
+        $product = Product::create(['name' => 'tech']);
 
         //when
         $loadedProduct = Product::where('name = ?', 'tech')->fetch();
@@ -53,7 +53,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchResultWhenNoParameters()
     {
         //given
-        $product = Product::create(array('name' => 'tech'));
+        $product = Product::create(['name' => 'tech']);
 
         //when
         $loadedProduct = Product::where('name is not null')->fetch();
@@ -68,10 +68,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAcceptArrayOfColumnValuePairsInWhere()
     {
         //given
-        $product = Product::create(array('name' => 'tech'));
+        $product = Product::create(['name' => 'tech']);
 
         //when
-        $loadedProduct = Product::where(array('name' => 'tech'))->fetch();
+        $loadedProduct = Product::where(['name' => 'tech'])->fetch();
 
         //then
         $this->assertEquals($product, $loadedProduct);
@@ -83,11 +83,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAcceptArrayOfValuesInWhere()
     {
         //given
-        Product::create(array('name' => 'a'));
-        Product::create(array('name' => 'b'));
+        Product::create(['name' => 'a']);
+        Product::create(['name' => 'b']);
 
         //when
-        $loadedProducts = Product::where(array('name' => array('a', 'b')))->fetchAll();
+        $loadedProducts = Product::where(['name' => ['a', 'b']])->fetchAll();
 
         //then
         $this->assertCount(2, $loadedProducts);
@@ -99,11 +99,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldIgnoreEmptyArrayForArrayOfValuesInWhere()
     {
         //given
-        Product::create(array('name' => 'a'));
-        Product::create(array('name' => 'b'));
+        Product::create(['name' => 'a']);
+        Product::create(['name' => 'b']);
 
         //when
-        $loadedProducts = Product::where(array('name' => array()))->fetchAll();
+        $loadedProducts = Product::where(['name' => []])->fetchAll();
 
         //then
         $this->assertCount(0, $loadedProducts);
@@ -115,12 +115,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAcceptMultipleArraysOfValuesMixedWithSingleValuesInWhere()
     {
         //given
-        $product = Product::create(array('name' => 'a', 'description' => 'bob'));
-        Product::create(array('name' => 'b', 'description' => 'john'));
-        Product::create(array('name' => 'c', 'description' => 'bob'));
+        $product = Product::create(['name' => 'a', 'description' => 'bob']);
+        Product::create(['name' => 'b', 'description' => 'john']);
+        Product::create(['name' => 'c', 'description' => 'bob']);
 
         //when
-        $loadedProducts = Product::where(array('description' => 'bob', 'name' => array('a', 'b')))->fetchAll();
+        $loadedProducts = Product::where(['description' => 'bob', 'name' => ['a', 'b']])->fetchAll();
 
         //then
         $this->assertCount(1, $loadedProducts);
@@ -133,13 +133,13 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAcceptRestrictionsMixedWithValuesInWhere()
     {
         //given
-        $product = Product::create(array('name' => 'tech', 'description' => 'desc'));
+        $product = Product::create(['name' => 'tech', 'description' => 'desc']);
 
         //when
-        $loadedProduct = Product::where(array(
+        $loadedProduct = Product::where([
             'name' => Restrictions::equalTo('tech'),
             'description' => 'desc'
-        ))->fetch();
+        ])->fetch();
 
         //then
         $this->assertEquals($product, $loadedProduct);
@@ -151,11 +151,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldOrderResults()
     {
         //given
-        $product2 = Product::create(array('name' => 'b', 'description' => 'bb'));
-        $product1 = Product::create(array('name' => 'a', 'description' => 'aa'));
+        $product2 = Product::create(['name' => 'b', 'description' => 'bb']);
+        $product1 = Product::create(['name' => 'a', 'description' => 'aa']);
 
         //when
-        $loadedProducts = Product::where()->order(array('name asc'))->fetchAll();
+        $loadedProducts = Product::where()->order(['name asc'])->fetchAll();
 
         //then
         $this->assertCount(2, $loadedProducts);
@@ -169,12 +169,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldOrderResultsByTwoColumns()
     {
         //given
-        $product1 = Product::create(array('name' => 'b', 'description' => 'bb'));
-        $product2 = Product::create(array('name' => 'a', 'description' => 'aa'));
-        $product3 = Product::create(array('name' => 'a', 'description' => 'bb'));
+        $product1 = Product::create(['name' => 'b', 'description' => 'bb']);
+        $product2 = Product::create(['name' => 'a', 'description' => 'aa']);
+        $product3 = Product::create(['name' => 'a', 'description' => 'bb']);
 
         //when
-        $loadedProducts = Product::where()->order(array('name asc', 'description desc'))->fetchAll();
+        $loadedProducts = Product::where()->order(['name asc', 'description desc'])->fetchAll();
 
         //then
         $this->assertCount(3, $loadedProducts);
@@ -189,9 +189,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldLimitAndOffsetResults()
     {
         //given
-        Product::create(array('name' => 'a'));
-        $product = Product::create(array('name' => 'b'));
-        Product::create(array('name' => 'c'));
+        Product::create(['name' => 'a']);
+        $product = Product::create(['name' => 'b']);
+        Product::create(['name' => 'c']);
 
         //when
         $loadedProducts = Product::where()->offset(1)->limit(1)->order('name asc')->fetchAll();
@@ -207,13 +207,13 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldJoinWithOtherTable()
     {
         //given
-        Product::create(array('name' => 'other'));
-        $product = Product::create(array('name' => 'phones'));
+        Product::create(['name' => 'other']);
+        $product = Product::create(['name' => 'phones']);
 
-        Order::create(array('name' => 'other'));
-        $order = Order::create(array('name' => 'a'));
+        Order::create(['name' => 'other']);
+        $order = Order::create(['name' => 'a']);
 
-        OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
+        OrderProduct::create(['id_order' => $order->getId(), 'id_product' => $product->getId()]);
 
         //when
         $products = Product::join('orderProduct')->where('id_order IS NOT NULL')->fetchAll();
@@ -229,12 +229,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFindWhereExists()
     {
         //given
-        Product::create(array('name' => 'other'));
-        $product = Product::create(array('name' => 'phones'));
+        Product::create(['name' => 'other']);
+        $product = Product::create(['name' => 'phones']);
 
-        $order = Order::create(array('name' => 'a'));
+        $order = Order::create(['name' => 'a']);
 
-        OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
+        OrderProduct::create(['id_order' => $order->getId(), 'id_product' => $product->getId()]);
 
         //when
         $products = Product::where(WhereClause::exists(OrderProduct::where('id_product = products.id')))->fetchAll();
@@ -250,9 +250,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldJoinThroughOtherRelation()
     {
         //given
-        $cars = Category::create(array('name' => 'phones'));
-        $product = Product::create(array('name' => 'Reno', 'id_category' => $cars->getId()));
-        OrderProduct::create(array('id_product' => $product->getId()));
+        $cars = Category::create(['name' => 'phones']);
+        $product = Product::create(['name' => 'Reno', 'id_category' => $cars->getId()]);
+        OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         $orderProducts = OrderProduct::join('product->category')
@@ -275,9 +275,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldStoreJoinedModelsInAttributeForMultipleJoins()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $product = Product::create(array('name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()));
-        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $product = Product::create(['name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()]);
+        $orderProduct = OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         $products = Product::join('category')->join('orderProduct')->fetchAll();
@@ -294,8 +294,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldStoreJoinedModelInAttribute()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        Product::create(['name' => 'sony', 'description' => 'desc', 'id_category' => $category->getId()]);
 
         //when
         $products = Product::join('category')->fetchAll();
@@ -311,17 +311,17 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldNotOverrideFetchedModelWhenDuplicatedJoinWithDifferentAlias()
     {
         //given
-        $vans = Category::create(array('name' => 'phones'));
-        $product = Product::create(array('name' => 'Reno', 'id_category' => $vans->getId()));
-        OrderProduct::create(array('id_product' => $product->getId()));
+        $vans = Category::create(['name' => 'phones']);
+        $product = Product::create(['name' => 'Reno', 'id_category' => $vans->getId()]);
+        OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
-        $orderProduct = OrderProduct::join('product->category', array('p1', 'c'))
+        $orderProduct = OrderProduct::join('product->category', ['p1', 'c'])
             ->join('product', 'p2')
-            ->where(array(
+            ->where([
                 'p1.name' => 'Reno',
                 'p2.name' => 'Reno',
-            ))
+            ])
             ->fetch();
 
         //then
@@ -334,9 +334,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldNotOverrideFetchedModelWhenThereIsWithForJoinedField()
     {
         //given
-        $vans = Category::create(array('name' => 'phones'));
-        $product = Product::create(array('name' => 'Reno', 'id_category' => $vans->getId()));
-        OrderProduct::create(array('id_product' => $product->getId()));
+        $vans = Category::create(['name' => 'phones']);
+        $product = Product::create(['name' => 'Reno', 'id_category' => $vans->getId()]);
+        OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         $orderProduct = OrderProduct::join('product->category')
@@ -353,8 +353,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldJoinHasOneRelation()
     {
         //given
-        $product = Product::create(array('name' => 'sony'));
-        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+        $product = Product::create(['name' => 'sony']);
+        $orderProduct = OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         $fetched = Product::join('orderProduct')->fetch();
@@ -369,16 +369,16 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldJoinInlineRelation()
     {
         //given
-        $product = Product::create(array('name' => 'sony'));
-        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+        $product = Product::create(['name' => 'sony']);
+        $orderProduct = OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
-        $fetched = Product::join(Relation::inline(array(
+        $fetched = Product::join(Relation::inline([
             'destinationField' => 'orderProduct',
             'class' => 'Test\OrderProduct',
             'foreignKey' => 'id_product',
             'localKey' => 'id'
-        )))->fetch();
+        ]))->fetch();
 
         //then
         $this->assertEquals($orderProduct, self::getNoLazy($fetched, 'orderProduct'));
@@ -390,7 +390,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldNotStoreJoinedModelInAttributeIfNotFound()
     {
         //given
-        Product::create(array('name' => 'sony', 'description' => 'desc'));
+        Product::create(['name' => 'sony', 'description' => 'desc']);
 
         //when
         $products = Product::join('category')->fetchAll();
@@ -406,9 +406,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldInnerJoinWithOtherTable()
     {
         //given
-        $category = Category::create(array('name' => 'other'));
-        Product::create(array('name' => 'other', 'id_category' => $category->id));
-        Product::create(array('name' => 'other'));
+        $category = Category::create(['name' => 'other']);
+        Product::create(['name' => 'other', 'id_category' => $category->id]);
+        Product::create(['name' => 'other']);
 
         //when
         $products = Product::innerJoin('category')->fetchAll();
@@ -425,12 +425,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldRightJoinWithOtherTable()
     {
         //given
-        $category = Category::create(array('name' => 'category 1'));
-        Category::create(array('name' => 'category 2'));
-        Category::create(array('name' => 'category 3'));
-        Category::create(array('name' => 'category 4'));
-        Product::create(array('name' => 'prod 1', 'id_category' => $category->id));
-        Product::create(array('name' => 'prod 2', 'id_category' => $category->id));
+        $category = Category::create(['name' => 'category 1']);
+        Category::create(['name' => 'category 2']);
+        Category::create(['name' => 'category 3']);
+        Category::create(['name' => 'category 4']);
+        Product::create(['name' => 'prod 1', 'id_category' => $category->id]);
+        Product::create(['name' => 'prod 2', 'id_category' => $category->id]);
 
         //when
         $products = Product::where()->rightJoin('category')->fetchAll();
@@ -446,12 +446,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldThrowExceptionRightJoinWithOtherTable()
     {
         //given
-        $category = Category::create(array('name' => 'category 1'));
-        Category::create(array('name' => 'category 2'));
-        Category::create(array('name' => 'category 3'));
-        Category::create(array('name' => 'category 4'));
-        Product::create(array('name' => 'prod 1', 'id_category' => $category->id));
-        Product::create(array('name' => 'prod 2', 'id_category' => $category->id));
+        $category = Category::create(['name' => 'category 1']);
+        Category::create(['name' => 'category 2']);
+        Category::create(['name' => 'category 3']);
+        Category::create(['name' => 'category 4']);
+        Product::create(['name' => 'prod 1', 'id_category' => $category->id]);
+        Product::create(['name' => 'prod 2', 'id_category' => $category->id]);
         $products = Product::where()->rightJoin('category');
 
         //when
@@ -467,10 +467,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldLeftJoinWithOtherTable()
     {
         //given
-        $category = Category::create(array('name' => 'category 1'));
-        Product::create(array('name' => 'prod 1', 'id_category' => $category->id));
-        Product::create(array('name' => 'prod 2', 'id_category' => $category->id));
-        Product::create(array('name' => 'prod 3', 'id_category' => null));
+        $category = Category::create(['name' => 'category 1']);
+        Product::create(['name' => 'prod 1', 'id_category' => $category->id]);
+        Product::create(['name' => 'prod 2', 'id_category' => $category->id]);
+        Product::create(['name' => 'prod 3', 'id_category' => null]);
 
         //when
         $products = Product::where()->leftJoin('category')->fetchAll();
@@ -485,8 +485,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldCountRecords()
     {
         //given
-        Product::create(array('name' => 'a', 'description' => 'aa'));
-        Product::create(array('name' => 'b', 'description' => 'bb'));
+        Product::create(['name' => 'a', 'description' => 'aa']);
+        Product::create(['name' => 'b', 'description' => 'bb']);
 
         //when
         $count = Product::where()->count();
@@ -501,7 +501,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldReturnZeroForCountingQueryThatAlwaysReturnsNothing()
     {
         //when
-        $count = Product::where(array('name' => array()))->count();
+        $count = Product::where(['name' => []])->count();
 
         //then
         $this->assertEquals(0, $count);
@@ -513,13 +513,13 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldCountRecordsWithJoinWithOtherTable()
     {
         //given
-        Product::create(array('name' => 'other'));
-        $product = Product::create(array('name' => 'phones'));
+        Product::create(['name' => 'other']);
+        $product = Product::create(['name' => 'phones']);
 
-        Order::create(array('name' => 'other'));
-        $order = Order::create(array('name' => 'a'));
+        Order::create(['name' => 'other']);
+        $order = Order::create(['name' => 'a']);
 
-        OrderProduct::create(array('id_order' => $order->getId(), 'id_product' => $product->getId()));
+        OrderProduct::create(['id_order' => $order->getId(), 'id_product' => $product->getId()]);
 
         //when
         $products = Product::join('orderProduct')->where('id_order IS NOT NULL')->count();
@@ -534,9 +534,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchWithRelationWhenTwoObjectReferenceTheSameForeignKey()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
-        Product::create(array('name' => 'htc', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
+        Product::create(['name' => 'htc', 'id_category' => $category->getId()]);
 
         //when
         $products = Product::where()->with('category')->fetchAll();
@@ -552,8 +552,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchHasOneRelation()
     {
         //given
-        $product = Product::create(array('name' => 'sony'));
-        $orderProduct = OrderProduct::create(array('id_product' => $product->getId()));
+        $product = Product::create(['name' => 'sony']);
+        $orderProduct = OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         $fetched = Product::where()->with('orderProduct')->fetchAll();
@@ -568,8 +568,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchBelongsToRelation()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
 
         //when
         $products = Product::where()->with('category')->fetchAll();
@@ -584,12 +584,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchHasManyRelation()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
-        $product2 = Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $product1 = Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
+        $product2 = Product::create(['name' => 'samsung', 'id_category' => $category->getId()]);
 
         //when
-        $category = Category::where(array('name' => 'phones'))
+        $category = Category::where(['name' => 'phones'])
             ->with('products')->fetch();
 
         //then
@@ -602,10 +602,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldThrowExceptionIfMultipleValuesForHasOne()
     {
         //given
-        $product = Product::create(array('name' => 'phones'));
+        $product = Product::create(['name' => 'phones']);
 
-        OrderProduct::create(array('id_product' => $product->getId()));
-        OrderProduct::create(array('id_product' => $product->getId()));
+        OrderProduct::create(['id_product' => $product->getId()]);
+        OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         try {
@@ -622,9 +622,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldNotFetchJoinedRelationOnHasMany()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $product1 = Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
-        Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $product1 = Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
+        Product::create(['name' => 'samsung', 'id_category' => $category->getId()]);
 
         //when
         $joined = Category::join('products')->where('products.id = ?', $product1->getId())->fetch();
@@ -640,10 +640,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldNotFetchRelationJoinedThroughHasMany()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $samsung = Manufacturer::create(array('name' => 'samsung'));
-        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $samsung->getId()));
-        Product::create(array('name' => 'samsung', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $samsung = Manufacturer::create(['name' => 'samsung']);
+        $product = Product::create(['name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $samsung->getId()]);
+        Product::create(['name' => 'samsung', 'id_category' => $category->getId()]);
 
         //when
         $joined = Category::join('products->manufacturer')->where('products.id = ?', $product->getId())->fetch();
@@ -659,7 +659,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchWithRelationWhenObjectHasNoForeignKeyValue()
     {
         //given
-        Product::create(array('name' => 'sony'));
+        Product::create(['name' => 'sony']);
 
         //when
         $products = Product::where()->with('category')->fetchAll();
@@ -674,12 +674,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchRelationThroughOtherRelation()
     {
         //given
-        $cars = Category::create(array('name' => 'phones'));
-        $vans = Category::create(array('name' => 'phones', 'id_parent' => $cars->getId()));
+        $cars = Category::create(['name' => 'phones']);
+        $vans = Category::create(['name' => 'phones', 'id_parent' => $cars->getId()]);
 
-        $product = Product::create(array('name' => 'Reno', 'id_category' => $vans->getId()));
-        OrderProduct::create(array('id_product' => $product->getId()));
-        OrderProduct::create(array('id_product' => $product->getId()));
+        $product = Product::create(['name' => 'Reno', 'id_category' => $vans->getId()]);
+        OrderProduct::create(['id_product' => $product->getId()]);
+        OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         $orderProducts = OrderProduct::where()
@@ -697,13 +697,13 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchRelationThroughOneToManyRelation()
     {
         //given
-        $phones = Category::create(array('name' => 'phones'));
-        $sony = Manufacturer::create(array('name' => 'sony'));
-        Product::create(array('name' => 'best ever sony', 'id_category' => $phones->id, 'id_manufacturer' => $sony->id));
+        $phones = Category::create(['name' => 'phones']);
+        $sony = Manufacturer::create(['name' => 'sony']);
+        Product::create(['name' => 'best ever sony', 'id_category' => $phones->id, 'id_manufacturer' => $sony->id]);
 
-        $tablets = Category::create(array('name' => 'tablets'));
-        $samsung = Manufacturer::create(array('name' => 'samsung'));
-        Product::create(array('name' => 'best ever samsung', 'id_category' => $tablets->id, 'id_manufacturer' => $samsung->id));
+        $tablets = Category::create(['name' => 'tablets']);
+        $samsung = Manufacturer::create(['name' => 'samsung']);
+        Product::create(['name' => 'best ever samsung', 'id_category' => $tablets->id, 'id_manufacturer' => $samsung->id]);
 
         //when
         $categories = Category::where()
@@ -725,8 +725,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
      */
     public function shouldFetchRelationThroughNullRelation()
     {
-        $order = Order::create(array('name' => 'name'));
-        OrderProduct::create(array('id_order' => $order->getId()));
+        $order = Order::create(['name' => 'name']);
+        OrderProduct::create(['id_order' => $order->getId()]);
 
         //when
         $orderProducts = OrderProduct::where()
@@ -743,8 +743,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchOtherObjectsByArbitraryAttributes()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'a', 'description' => 'phones'));
+        $category = Category::create(['name' => 'phones']);
+        Product::create(['name' => 'a', 'description' => 'phones']);
 
         //when
         $products = Product::where()->with('categoryWithNameByDescription')->fetchAll();
@@ -759,8 +759,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldNotThrowExceptionIfNoRelationWithForeignKey()
     {
         //given
-        Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'a', 'description' => 'desc'));
+        Category::create(['name' => 'phones']);
+        Product::create(['name' => 'a', 'description' => 'desc']);
 
         //when
         $products = Product::where()->with('categoryWithNameByDescription')->fetchAll();
@@ -775,9 +775,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldReturnDistinctResults()
     {
         //given
-        Product::create(array('name' => 'a', 'description' => 'bob'));
-        Product::create(array('name' => 'b', 'description' => 'john'));
-        Product::create(array('name' => 'c', 'description' => 'bob'));
+        Product::create(['name' => 'a', 'description' => 'bob']);
+        Product::create(['name' => 'b', 'description' => 'john']);
+        Product::create(['name' => 'c', 'description' => 'bob']);
 
         //when
         $result = Product::selectDistinct('description')->fetchAll();
@@ -794,12 +794,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldReturnSpecifiedColumnAsArray()
     {
         //given
-        Product::create(array('name' => 'a', 'description' => 'bob'));
-        Product::create(array('name' => 'b', 'description' => 'john'));
-        Product::create(array('name' => 'c', 'description' => 'bob'));
+        Product::create(['name' => 'a', 'description' => 'bob']);
+        Product::create(['name' => 'b', 'description' => 'john']);
+        Product::create(['name' => 'c', 'description' => 'bob']);
 
         //when
-        $result = Product::select('name')->where(array('description' => 'bob'))->fetchAll();
+        $result = Product::select('name')->where(['description' => 'bob'])->fetchAll();
 
         //then
         $this->assertCount(2, $result);
@@ -813,12 +813,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldReturnSpecifiedColumnAsArrayByName()
     {
         //given
-        Product::create(array('name' => 'a', 'description' => 'bob'));
-        Product::create(array('name' => 'b', 'description' => 'john'));
-        Product::create(array('name' => 'c', 'description' => 'bob'));
+        Product::create(['name' => 'a', 'description' => 'bob']);
+        Product::create(['name' => 'b', 'description' => 'john']);
+        Product::create(['name' => 'c', 'description' => 'bob']);
 
         //when
-        $result = Product::select(array('name'), PDO::FETCH_BOTH)->where(array('description' => 'bob'))->fetchAll();
+        $result = Product::select(['name'], PDO::FETCH_BOTH)->where(['description' => 'bob'])->fetchAll();
 
         //then
         $this->assertCount(2, $result);
@@ -832,12 +832,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldReturnSpecifiedColumnsAsArrayOfArrays()
     {
         //given
-        Product::create(array('name' => 'a', 'description' => 'bob'));
-        Product::create(array('name' => 'b', 'description' => 'john'));
-        Product::create(array('name' => 'c', 'description' => 'bob'));
+        Product::create(['name' => 'a', 'description' => 'bob']);
+        Product::create(['name' => 'b', 'description' => 'john']);
+        Product::create(['name' => 'c', 'description' => 'bob']);
 
         //when
-        $result = Product::select(array('name', 'description'))->where(array('description' => 'bob'))->fetchAll();
+        $result = Product::select(['name', 'description'])->where(['description' => 'bob'])->fetchAll();
 
         //then
         $this->assertCount(2, $result);
@@ -853,10 +853,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldReturnSpecifiedColumnByStringAsArrayOfArrays()
     {
         //given
-        Product::create(array('name' => 'a', 'description' => 'bob'));
+        Product::create(['name' => 'a', 'description' => 'bob']);
 
         //when
-        $result = Product::select('name')->where(array('description' => 'bob'))->fetchAll();
+        $result = Product::select('name')->where(['description' => 'bob'])->fetchAll();
 
         //then
         $this->assertCount(1, $result);
@@ -874,7 +874,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $builder = new ModelQueryBuilder(new Product(), $mockDb);
 
         //when
-        $affectedRows = $builder->where(array('name' => array()))->deleteAll();
+        $affectedRows = $builder->where(['name' => []])->deleteAll();
 
         //then
         $this->assertEquals(0, $affectedRows);
@@ -888,7 +888,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldDeleteRecord()
     {
         //given
-        $product = Product::create(array('name' => 'a', 'description' => 'bob'));
+        $product = Product::create(['name' => 'a', 'description' => 'bob']);
 
         //when
         $product->delete();
@@ -905,14 +905,14 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldDeleteRecordsWithUsingClause()
     {
         //given
-        $category1 = Category::create(array('name' => 'cat1'));
-        $category2 = Category::create(array('name' => 'cat2'));
-        Product::create(array('name' => 'pro1', 'id_category' => $category1->getId()));
-        $product = Product::create(array('name' => 'pro2', 'id_category' => $category2->getId()));
+        $category1 = Category::create(['name' => 'cat1']);
+        $category2 = Category::create(['name' => 'cat2']);
+        Product::create(['name' => 'pro1', 'id_category' => $category1->getId()]);
+        $product = Product::create(['name' => 'pro2', 'id_category' => $category2->getId()]);
 
         //when
         $deleted = Product::using('category', 'c')
-            ->where(array('c.name' => 'cat1'))
+            ->where(['c.name' => 'cat1'])
             ->deleteAll();
 
         //then
@@ -935,12 +935,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAllowChainedWheres()
     {
         //given
-        $product = Product::create(array('name' => 'a', 'description' => 'bob1'));
-        Product::create(array('name' => 'a', 'description' => 'smith'));
-        Product::create(array('name' => 'c', 'description' => 'bob3'));
+        $product = Product::create(['name' => 'a', 'description' => 'bob1']);
+        Product::create(['name' => 'a', 'description' => 'smith']);
+        Product::create(['name' => 'c', 'description' => 'bob3']);
 
         //when
-        $products = Product::where(array('name' => 'a'))
+        $products = Product::where(['name' => 'a'])
             ->where('description like(?)', 'bob%')
             ->fetchAll();
 
@@ -954,11 +954,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldHandleBooleanTrueInWhere()
     {
         //given
-        $product = Product::create(array('name' => 'a', 'sale' => true));
-        Product::create(array('name' => 'b', 'sale' => false));
+        $product = Product::create(['name' => 'a', 'sale' => true]);
+        Product::create(['name' => 'b', 'sale' => false]);
 
         //when
-        $products = Product::where(array('sale' => true))->fetchAll();
+        $products = Product::where(['sale' => true])->fetchAll();
 
         //then
         Assert::thatArray($products)->containsOnly($product);
@@ -970,11 +970,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldHandleBooleanFalseInWhere()
     {
         //given
-        Product::create(array('name' => 'a', 'sale' => true));
-        $product = Product::create(array('name' => 'b', 'sale' => false));
+        Product::create(['name' => 'a', 'sale' => true]);
+        $product = Product::create(['name' => 'b', 'sale' => false]);
 
         //when
-        $products = Product::where(array('sale' => false))->fetchAll();
+        $products = Product::where(['sale' => false])->fetchAll();
 
         //then
         Assert::thatArray($products)->containsOnly($product);
@@ -986,12 +986,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAllowEmptyWheres()
     {
         //given
-        $product = Product::create(array('name' => 'a'));
-        Product::create(array('name' => 'c'));
+        $product = Product::create(['name' => 'a']);
+        Product::create(['name' => 'c']);
 
         //when
         $products = Product::where()
-            ->where(array('name' => 'a'))
+            ->where(['name' => 'a'])
             ->fetchAll();
 
         //then
@@ -1004,8 +1004,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAllowEmptyParametersInWhere()
     {
         //given
-        $product = Product::create(array('name' => 'a'));
-        Product::create(array('name' => 'c'));
+        $product = Product::create(['name' => 'a']);
+        Product::create(['name' => 'c']);
 
         //when
         $products = Product::where()
@@ -1022,8 +1022,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAllowEmptyStringAsParameterInWhere()
     {
         //given
-        $product = Product::create(array('name' => 'a', 'description' => ''));
-        Product::create(array('name' => 'c', 'description' => 'a'));
+        $product = Product::create(['name' => 'a', 'description' => '']);
+        Product::create(['name' => 'c', 'description' => 'a']);
 
         //when
         $products = Product::where()
@@ -1042,7 +1042,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //it will return nothing but we don't want to force users to add null checks
 
         //given
-        Product::create(array('name' => 'c'));
+        Product::create(['name' => 'c']);
 
         //when
         $products = Product::where()
@@ -1059,11 +1059,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldCloneBuilder()
     {
         //given
-        $product = Product::create(array('name' => 'a'));
+        $product = Product::create(['name' => 'a']);
         $query = Product::where();
 
         //when
-        $query->copy()->where(array('name' => 'other'))->count();
+        $query->copy()->where(['name' => 'other'])->count();
 
         //then
         $this->assertEquals($product, $query->fetch());
@@ -1075,8 +1075,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAliasTables()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'a', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        Product::create(['name' => 'a', 'id_category' => $category->getId()]);
 
         //when
         $product = Product::alias('p')
@@ -1087,10 +1087,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //then
         $this->assertNotNull($product);
         $this->assertEquals($category, self::getNoLazy($product, 'category'));
-        Assert::thatArray($product->attributes())->containsKeyAndValue(array(
+        Assert::thatArray($product->attributes())->containsKeyAndValue([
             'name' => 'a',
             'id_category' => $category->getId()
-        ));
+        ]);
     }
 
     /**
@@ -1099,17 +1099,17 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAliasTablesInNestedJoin()
     {
         //given
-        $cars = Category::create(array('name' => 'cars'));
-        $product = Product::create(array('name' => 'Reno', 'id_category' => $cars->getId()));
-        OrderProduct::create(array('id_product' => $product->getId()));
+        $cars = Category::create(['name' => 'cars']);
+        $product = Product::create(['name' => 'Reno', 'id_category' => $cars->getId()]);
+        OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
         $orderProduct = OrderProduct::alias('op')
-            ->join('product->category', array('p', 'c'))
+            ->join('product->category', ['p', 'c'])
             ->where('op.id_order is null')
-            ->where(array(
+            ->where([
                 'p.name' => 'Reno',
-                'c.name' => 'cars'))
+                'c.name' => 'cars'])
             ->fetch();
 
         //then
@@ -1124,14 +1124,14 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldDoSelfJoinWithConditions()
     {
         //given
-        $vehicles = Category::create(array('name' => 'vehicles'));
-        $sportCars = Category::create(array('name' => 'sport cars', 'id_parent' => $vehicles->id));
-        $bmw = Category::create(array('name' => 'bmw', 'id_parent' => $sportCars->id));
+        $vehicles = Category::create(['name' => 'vehicles']);
+        $sportCars = Category::create(['name' => 'sport cars', 'id_parent' => $vehicles->id]);
+        $bmw = Category::create(['name' => 'bmw', 'id_parent' => $sportCars->id]);
 
         //when
         $category = Category::alias('c')
-            ->join('parent->parent', array('p1', 'p2'))
-            ->where(array('c.name' => 'bmw', 'p1.name' => 'sport cars', 'p2.name' => 'vehicles'))
+            ->join('parent->parent', ['p1', 'p2'])
+            ->where(['c.name' => 'bmw', 'p1.name' => 'sport cars', 'p2.name' => 'vehicles'])
             ->fetch();
 
         //then
@@ -1147,10 +1147,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldOptimizeDuplicatedJoins()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $manufacturer = Manufacturer::create(array('name' => 'sony'));
-        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id));
-        OrderProduct::create(array('id_product' => $product->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $manufacturer = Manufacturer::create(['name' => 'sony']);
+        $product = Product::create(['name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id]);
+        OrderProduct::create(['id_product' => $product->getId()]);
 
         Stats::reset();
 
@@ -1172,10 +1172,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldOptimizeDuplicatedRelationFetches()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        $manufacturer = Manufacturer::create(array('name' => 'sony'));
-        $product = Product::create(array('name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id));
-        OrderProduct::create(array('id_product' => $product->getId()));
+        $category = Category::create(['name' => 'phones']);
+        $manufacturer = Manufacturer::create(['name' => 'sony']);
+        $product = Product::create(['name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id]);
+        OrderProduct::create(['id_product' => $product->getId()]);
 
         Stats::reset();
 
@@ -1198,15 +1198,15 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchEmptyHasManyRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
     {
         //given
-        Category::create(array('name' => 'sony'));
+        Category::create(['name' => 'sony']);
 
         //when
-        $category = Category::where(array('name' => 'sony'))
+        $category = Category::where(['name' => 'sony'])
             ->with('products')
             ->fetch();
 
         //then
-        $this->assertEquals(array(), self::getNoLazy($category, 'products'));
+        $this->assertEquals([], self::getNoLazy($category, 'products'));
     }
 
     /**
@@ -1215,8 +1215,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchEmptyHasOneRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
     {
         //given
-        Product::create(array('name' => 'sony'));
-        $product = Product::where(array('products.name' => 'sony'))
+        Product::create(['name' => 'sony']);
+        $product = Product::where(['products.name' => 'sony'])
             ->with('orderProduct')
             ->fetch();
         Stats::reset();
@@ -1235,15 +1235,15 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldSetEmptyRelationInJoinSoThatLazyLoadingDoesNotTryToLoadItAgain()
     {
         //given
-        Product::create(array('name' => 'sony'));
+        Product::create(['name' => 'sony']);
 
         //when
-        $product = Product::where(array('products.name' => 'sony'))
+        $product = Product::where(['products.name' => 'sony'])
             ->join('category')
             ->fetch();
 
         //then
-        Assert::thatArray($product->attributes())->containsKeyAndValue(array('category' => null));
+        Assert::thatArray($product->attributes())->containsKeyAndValue(['category' => null]);
     }
 
     /**
@@ -1252,10 +1252,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldUpdateModel()
     {
         //given
-        $product = Product::create(array('name' => 'bob'));
+        $product = Product::create(['name' => 'bob']);
 
         //when
-        $affectedRows = Product::where(array('name' => 'bob'))->update(array('name' => 'eric'));
+        $affectedRows = Product::where(['name' => 'bob'])->update(['name' => 'eric']);
 
         //then
         $this->assertEquals('eric', $product->reload()->name);
@@ -1268,17 +1268,17 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldGroupByCategory()
     {
         //given
-        $category1 = Category::create(array('name' => 'computer'));
-        $category2 = Category::create(array('name' => 'phone'));
-        Product::create(array('name' => 'notebook', 'id_category' => $category1->getId()));
-        Product::create(array('name' => 'laptop', 'id_category' => $category1->getId()));
-        Product::create(array('name' => 'smartphone', 'id_category' => $category2->getId()));
+        $category1 = Category::create(['name' => 'computer']);
+        $category2 = Category::create(['name' => 'phone']);
+        Product::create(['name' => 'notebook', 'id_category' => $category1->getId()]);
+        Product::create(['name' => 'laptop', 'id_category' => $category1->getId()]);
+        Product::create(['name' => 'smartphone', 'id_category' => $category2->getId()]);
 
         //when
         $result = Product::select('id_category, count(*)')->groupBy('id_category')->fetchAll();
 
         //then
-        Assert::thatArray($result)->containsOnly(array($category1->getId(), 2), array($category2->getId(), 1));
+        Assert::thatArray($result)->containsOnly([$category1->getId(), 2], [$category2->getId(), 1]);
     }
 
     /**
@@ -1287,14 +1287,14 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldGroupByCategoryUsingArray()
     {
         //given
-        $category = Category::create(array('name' => 'computer'));
-        Product::create(array('name' => 'notebook', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'computer']);
+        Product::create(['name' => 'notebook', 'id_category' => $category->getId()]);
 
         //when
-        $result = Product::select('id_category, count(*)')->groupBy(array('id_category'))->fetchAll();
+        $result = Product::select('id_category, count(*)')->groupBy(['id_category'])->fetchAll();
 
         //then
-        Assert::thatArray($result)->containsOnly(array($category->getId(), 1));
+        Assert::thatArray($result)->containsOnly([$category->getId(), 1]);
     }
 
     /**
@@ -1312,11 +1312,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldSelectFunctionShouldSelectOnlySpecifiedColumns()
     {
         //given
-        $category1 = Category::create(array('name' => 'category for billy'));
-        Product::create(array('name' => 'billy', 'id_category' => $category1->getId()));
+        $category1 = Category::create(['name' => 'category for billy']);
+        Product::create(['name' => 'billy', 'id_category' => $category1->getId()]);
 
         //when
-        $names = Category::select(array('categories.name'))
+        $names = Category::select(['categories.name'])
             ->join('product_named_billy')
             ->fetch();
 
@@ -1331,16 +1331,16 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldAliasTableInUpdateQuery()
     {
         //given
-        Category::create(array('name' => 'old'));
+        Category::create(['name' => 'old']);
 
         //when
         Category::alias('c')
-            ->where(array(
+            ->where([
                 'c.name' => 'old'
-            ))
-            ->update(array(
+            ])
+            ->update([
                 'name' => "new"
-            ));
+            ]);
 
         //then
         Assert::thatArray(Category::all())->onProperty('name')->containsExactly('new');
@@ -1354,12 +1354,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     {
         //when
         CatchException::when(Category::alias('c')
-            ->where(array(
+            ->where([
                 'c.name' => 'old'
-            )))
-            ->update(array(
+            ]))
+            ->update([
                 'name' => "new"
-            ));
+            ]);
 
         //then
         CatchException::assertThat()->isInstanceOf('\InvalidArgumentException');
@@ -1371,12 +1371,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldSearchAnyOf()
     {
         //given
-        $category1 = Category::create(array('name' => 'test1'));
-        $category2 = Category::create(array('name' => 'test3'));
-        $category3 = Category::create(array('name' => 'test with parent', 'id_parent' => $category2->getId()));
+        $category1 = Category::create(['name' => 'test1']);
+        $category2 = Category::create(['name' => 'test3']);
+        $category3 = Category::create(['name' => 'test with parent', 'id_parent' => $category2->getId()]);
 
         //when
-        $categories = Category::where(Any::of(array('name' => array('test1', 'test2'), 'id_parent' => $category2->getId())))
+        $categories = Category::where(Any::of(['name' => ['test1', 'test2'], 'id_parent' => $category2->getId()]))
             ->fetchAll();
 
         //then
@@ -1390,13 +1390,13 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldSearchAnyOfWithRestrictions()
     {
         //given
-        $category1 = Category::create(array('name' => 'test1'));
-        $category2 = Category::create(array('name' => 'test2'));
-        $category3 = Category::create(array('name' => 'other name'));
-        Category::create(array('name' => 'some other name'));
+        $category1 = Category::create(['name' => 'test1']);
+        $category2 = Category::create(['name' => 'test2']);
+        $category3 = Category::create(['name' => 'other name']);
+        Category::create(['name' => 'some other name']);
 
         //when
-        $categories = Category::where(Any::of(array('name' => Restrictions::like('tes%'), 'id' => $category3->getId())))
+        $categories = Category::where(Any::of(['name' => Restrictions::like('tes%'), 'id' => $category3->getId()]))
             ->fetchAll();
 
         //then
@@ -1410,14 +1410,14 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldSearchAnyOfAndWhereValues()
     {
         //given
-        $category = Category::create(array('name' => 'shop'));
-        $product1 = Product::create(array('name' => 'notebook', 'description' => 'notebook desc', 'id_category' => $category->getId()));
-        $product2 = Product::create(array('name' => 'tablet', 'description' => 'tablet desc', 'id_category' => $category->getId()));
-        Product::create(array('name' => 'pc', 'description' => 'pc desc'));
+        $category = Category::create(['name' => 'shop']);
+        $product1 = Product::create(['name' => 'notebook', 'description' => 'notebook desc', 'id_category' => $category->getId()]);
+        $product2 = Product::create(['name' => 'tablet', 'description' => 'tablet desc', 'id_category' => $category->getId()]);
+        Product::create(['name' => 'pc', 'description' => 'pc desc']);
 
         //when
-        $products = Product::where(Any::of(array('name' => 'tablet', 'description' => Restrictions::like('%desc'))))
-            ->where(array('id_category' => $category->getId()))
+        $products = Product::where(Any::of(['name' => 'tablet', 'description' => Restrictions::like('%desc')]))
+            ->where(['id_category' => $category->getId()])
             ->fetchAll();
 
         //then
@@ -1431,11 +1431,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldSearchForNullValue()
     {
         //given
-        $category = Category::create(array('name' => 'shop'));
-        $product = Product::create(array('name' => 'notebook', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'shop']);
+        $product = Product::create(['name' => 'notebook', 'id_category' => $category->getId()]);
 
         //when
-        $search = Product::where(array('description' => null))->fetch();
+        $search = Product::where(['description' => null])->fetch();
 
         //then
         Assert::thatModel($search)->isEqualTo($product);
@@ -1447,9 +1447,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchIteratorAndFetchRelationsInBatches()
     {
         //given
-        Product::create(array('name' => '1', 'id_category' => Category::create(array('name' => 'cat1'))->getId()));
-        Product::create(array('name' => '2', 'id_category' => Category::create(array('name' => 'cat2'))->getId()));
-        Product::create(array('name' => '3', 'id_category' => Category::create(array('name' => 'cat3'))->getId()));
+        Product::create(['name' => '1', 'id_category' => Category::create(['name' => 'cat1'])->getId()]);
+        Product::create(['name' => '2', 'id_category' => Category::create(['name' => 'cat2'])->getId()]);
+        Product::create(['name' => '3', 'id_category' => Category::create(['name' => 'cat3'])->getId()]);
         Stats::reset();
 
         //when

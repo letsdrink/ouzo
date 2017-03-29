@@ -14,14 +14,14 @@ use Ouzo\Model;
  */
 class ModelWithoutPrimaryKey extends Model
 {
-    private $_fields = array('name');
+    private $_fields = ['name'];
 
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
-        parent::__construct(array(
+        parent::__construct([
             'table' => 'products',
             'primaryKey' => '',
             'attributes' => $attributes,
-            'fields' => $this->_fields));
+            'fields' => $this->_fields]);
     }
 }

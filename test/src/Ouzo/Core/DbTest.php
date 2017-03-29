@@ -29,7 +29,7 @@ class DbTest extends DbTransactionalTestCase
     public function shouldRunFunctionInTransaction()
     {
         //when
-        $result = Db::getInstance()->runInTransaction(array(new Sample(), 'callMethod'));
+        $result = Db::getInstance()->runInTransaction([new Sample(), 'callMethod']);
 
         //then
         $this->assertEquals('OK', $result);
@@ -48,7 +48,7 @@ class DbTest extends DbTransactionalTestCase
         $db->_dbHandle = $dbHandle;
 
         //when
-        $result = $db->runInTransaction(array(new Sample(), 'callMethod'));
+        $result = $db->runInTransaction([new Sample(), 'callMethod']);
 
         //then
         $this->assertEquals('OK', $result);
@@ -70,7 +70,7 @@ class DbTest extends DbTransactionalTestCase
         $db->_dbHandle = $dbHandle;
 
         //when
-        CatchException::when($db)->runInTransaction(array(new Sample(), 'exceptionMethod'));
+        CatchException::when($db)->runInTransaction([new Sample(), 'exceptionMethod']);
 
         //then
         CatchException::assertThat()->isInstanceOf('InvalidArgumentException');

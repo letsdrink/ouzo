@@ -19,11 +19,11 @@ class AcceptHeaderParserTest extends PHPUnit_Framework_TestCase
         $parsed = AcceptHeaderParser::parse($accept);
 
         //then
-        $this->assertEquals(array(
+        $this->assertEquals([
             'text/html' => 0.7,
             '*/*' => 0.5,
             'text/*' => 0.3
-        ), $parsed);
+        ], $parsed);
     }
 
     /**
@@ -38,12 +38,12 @@ class AcceptHeaderParserTest extends PHPUnit_Framework_TestCase
         $parsed = AcceptHeaderParser::parse($accept);
 
         //then
-        $this->assertEquals(array_keys(array(
+        $this->assertEquals(array_keys([
             'text/plain' => null,
             'text/html' => null,
             'text/*' => null,
             '*/*' => null
-        )), array_keys($parsed));
+        ]), array_keys($parsed));
     }
 
     /**

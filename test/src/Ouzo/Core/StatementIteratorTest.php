@@ -21,7 +21,7 @@ class StatementIteratorTest extends DbTransactionalTestCase
         $chunkSize = 20;
 
         for ($i = 0; $i < $numberOfItems; $i++) {
-            Product::create(array('name' => sprintf('p%03d', $i)));
+            Product::create(['name' => sprintf('p%03d', $i)]);
         }
 
         // when

@@ -12,7 +12,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
     public function setUp()
     {
         parent::setUp();
-        $_SESSION = array();
+        $_SESSION = [];
     }
 
     /**
@@ -21,9 +21,9 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
     public function shouldLoadRelationsInAllModelsFromResultWhenAccessingAnyRelation()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
-        Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
+        Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
 
         Stats::reset();
 
@@ -45,9 +45,9 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
     public function shouldNotLoadRelationsEagerlyWhenSessionAllocated()
     {
         //given
-        $category = Category::create(array('name' => 'phones'));
-        Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
-        Product::create(array('name' => 'sony', 'id_category' => $category->getId()));
+        $category = Category::create(['name' => 'phones']);
+        Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
+        Product::create(['name' => 'sony', 'id_category' => $category->getId()]);
 
         Stats::reset();
 

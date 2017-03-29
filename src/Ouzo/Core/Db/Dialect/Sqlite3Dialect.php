@@ -15,7 +15,7 @@ class Sqlite3Dialect extends Dialect
 {
     public function getConnectionErrorCodes()
     {
-        return array(10, 11, 14);
+        return [10, 11, 14];
     }
 
     public function getErrorCode($errorInfo)

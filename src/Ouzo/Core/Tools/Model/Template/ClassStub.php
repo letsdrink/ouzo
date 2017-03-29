@@ -14,8 +14,8 @@ class ClassStub
     const FIELDS_COUNT_IN_LINE = 7;
 
     private $_stubContent;
-    private $_attributes = array();
-    private $_placeholderWithReplacements = array();
+    private $_attributes = [];
+    private $_placeholderWithReplacements = [];
     private $shortArrays;
 
     public function __construct($shortArrays = false)
@@ -77,7 +77,7 @@ class ClassStub
 
     public function getPropertiesAsString()
     {
-        $properties = array();
+        $properties = [];
         foreach ($this->_attributes as $name => $type) {
             $properties[] = " * @property $type $name";
         }

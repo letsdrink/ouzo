@@ -32,7 +32,7 @@ class TwigRenderer implements ViewRenderer
 
     public function render()
     {
-        $options = Config::getValue('twig', 'options') ?: array();
+        $options = Config::getValue('twig', 'options') ?: [];
         $loader = new Twig_Loader_Filesystem($this->_loaderPath);
         $environment = new Twig_Environment($loader, $options);
         $environment->addExtension(new OuzoTwigExtension());

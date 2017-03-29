@@ -16,8 +16,8 @@ class ModelAttributesMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldMatchOnlyModelFields()
     {
         //given
-        $model1 = new Product(array('name' => 'product', 'other' => 'other1'));
-        $model2 = new Product(array('name' => 'product', 'other' => 'other2'));
+        $model1 = new Product(['name' => 'product', 'other' => 'other1']);
+        $model2 = new Product(['name' => 'product', 'other' => 'other2']);
 
         $matcher = new ModelAttributesMatcher($model1);
 
@@ -34,8 +34,8 @@ class ModelAttributesMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldReturnFalseIfDifferentAttributes()
     {
         //given
-        $model1 = new Product(array('name' => 'product1'));
-        $model2 = new Product(array('name' => 'product2'));
+        $model1 = new Product(['name' => 'product1']);
+        $model2 = new Product(['name' => 'product2']);
 
         $matcher = new ModelAttributesMatcher($model1);
 
@@ -52,7 +52,7 @@ class ModelAttributesMatcherTest extends PHPUnit_Framework_TestCase
     public function shouldReturnDescription()
     {
         //given
-        $model = new Product(array('name' => 'product1'));
+        $model = new Product(['name' => 'product1']);
         $matcher = new ModelAttributesMatcher($model);
 
         //when

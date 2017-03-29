@@ -26,7 +26,7 @@ class PhtmlRendererTest extends PHPUnit_Framework_TestCase
     public function shouldRenderView()
     {
         //given
-        $renderer = new PhtmlRenderer('hello_world', array());
+        $renderer = new PhtmlRenderer('hello_world', []);
 
         //when
         $result = $renderer->render();
@@ -41,7 +41,7 @@ class PhtmlRendererTest extends PHPUnit_Framework_TestCase
     public function shouldRenderViewWithAttributes()
     {
         //given
-        $renderer = new PhtmlRenderer('hello', array('name' => 'Jack'));
+        $renderer = new PhtmlRenderer('hello', ['name' => 'Jack']);
 
         //when
         $result = $renderer->render();

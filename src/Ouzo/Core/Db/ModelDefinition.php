@@ -24,11 +24,11 @@ class ModelDefinition
     /** @var Relations */
     public $relations;
 
-    public $afterSaveCallbacks = array();
-    public $beforeSaveCallbacks = array();
-    public $defaults = array();
+    public $afterSaveCallbacks = [];
+    public $beforeSaveCallbacks = [];
+    public $defaults = [];
 
-    private static $cache = array();
+    private static $cache = [];
 
     public function __construct(Db $db, $table, $sequence, $primaryKey, $fields, $relations, array $afterSaveCallbacks, array $beforeSaveCallbacks, $defaults)
     {
@@ -45,7 +45,7 @@ class ModelDefinition
 
     public static function resetCache()
     {
-        self::$cache = array();
+        self::$cache = [];
     }
 
     /**
@@ -110,8 +110,8 @@ class ModelDefinition
 
     private static function _extractFieldsAndDefaults($fields)
     {
-        $newFields = array();
-        $defaults = array();
+        $newFields = [];
+        $defaults = [];
         foreach ($fields as $key => $value) {
             if (is_numeric($key)) {
                 $newFields[] = $value;
@@ -120,6 +120,6 @@ class ModelDefinition
                 $defaults[$key] = $value;
             }
         }
-        return array($newFields, $defaults);
+        return [$newFields, $defaults];
     }
 }

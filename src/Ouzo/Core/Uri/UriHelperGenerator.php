@@ -42,7 +42,7 @@ function checkParameter(\$parameter)
 
     private function _generateFunctions()
     {
-        $namesAlreadyGenerated = array();
+        $namesAlreadyGenerated = [];
         foreach ($this->_routes as $route) {
             if (!in_array($route->getName(), $namesAlreadyGenerated)) {
                 $this->_generatedFunctions .= $this->_createFunction($route);
@@ -94,7 +94,7 @@ FUNCTION;
     private function _prepareParameters($uri)
     {
         preg_match_all('#:(\w+)#', $uri, $matches);
-        $parameters = Arrays::getValue($matches, 1, array());
+        $parameters = Arrays::getValue($matches, 1, []);
         return Arrays::map($parameters, function ($parameter) {
             return '$' . $parameter;
         });
@@ -102,7 +102,7 @@ FUNCTION;
 
     public function getGeneratedFunctions()
     {
-        return trim(Strings::sprintAssoc($this->_generatedFunctions, array('INDENT' => self::INDENT)));
+        return trim(Strings::sprintAssoc($this->_generatedFunctions, ['INDENT' => self::INDENT]));
     }
 
     public function saveToFile($file)

@@ -17,10 +17,10 @@ class ExistsClauseTest extends \PHPUnit_Framework_TestCase
     public function shouldBuildExistsClause()
     {
         // when
-        $result = WhereClause::exists(Product::where(array('name' => 'phone')));
+        $result = WhereClause::exists(Product::where(['name' => 'phone']));
 
         // then
-        $this->assertEquals(array('phone'), $result->getParameters());
+        $this->assertEquals(['phone'], $result->getParameters());
         Assert::thatString($result->toSql())
             ->startsWith('EXISTS (SELECT')
             ->endsWith('FROM products WHERE name = ?)');
@@ -32,10 +32,10 @@ class ExistsClauseTest extends \PHPUnit_Framework_TestCase
     public function shouldBuildNotExistsClause()
     {
         // when
-        $result = WhereClause::notExists(Product::where(array('name' => 'phone')));
+        $result = WhereClause::notExists(Product::where(['name' => 'phone']));
 
         // then
-        $this->assertEquals(array('phone'), $result->getParameters());
+        $this->assertEquals(['phone'], $result->getParameters());
         Assert::thatString($result->toSql())
             ->startsWith('NOT EXISTS (SELECT')
             ->endsWith('FROM products WHERE name = ?)');

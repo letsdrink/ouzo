@@ -17,7 +17,7 @@ class InternalException extends OuzoException
      * @param Error[]|\Error $errors
      * @param string[] $headers
      */
-    public function __construct($errors, $headers = array())
+    public function __construct($errors, $headers = [])
     {
         parent::__construct(self::HTTP_CODE, "Internal error.", $errors, $headers);
     }

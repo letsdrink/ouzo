@@ -9,16 +9,16 @@ use Ouzo\Utilities\Arrays;
 
 class BatchLoadingSession
 {
-    private $queryResultsById = array();
+    private $queryResultsById = [];
 
     private static $currentSession;
 
     public static function getBatch(Model $model)
     {
         if (self::isAllocated()) {
-            return Arrays::getValue(BatchLoadingSession::$currentSession->queryResultsById, spl_object_hash($model), array($model));
+            return Arrays::getValue(BatchLoadingSession::$currentSession->queryResultsById, spl_object_hash($model), [$model]);
         }
-        return array($model);
+        return [$model];
     }
 
     public static function isAllocated()

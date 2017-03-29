@@ -22,7 +22,7 @@ class FluentFunctionTest extends \PHPUnit_Framework_TestCase
             ->surroundWith("***");
 
         //when
-        $result = Functions::call($function, new Product(array('name' => 'super phone')));
+        $result = Functions::call($function, new Product(['name' => 'super phone']));
 
         //then
         $this->assertEquals('*** extra phone! ***', $result);

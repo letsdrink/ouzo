@@ -13,9 +13,9 @@ use Ouzo\Utilities\Path;
 
 class ConfigRepository
 {
-    private $_customConfigs = array();
-    private $_config = array();
-    private $_overriddenConfig = array();
+    private $_customConfigs = [];
+    private $_config = [];
+    private $_overriddenConfig = [];
 
     public function reload()
     {
@@ -37,12 +37,12 @@ class ConfigRepository
             /** @noinspection PhpIncludeInspection */
             return require($configPath);
         }
-        return array();
+        return [];
     }
 
     private function _getConfigCustom()
     {
-        $result = array();
+        $result = [];
         foreach ($this->_customConfigs as $config) {
             $result = array_replace_recursive($result, $config->getConfig());
         }
@@ -51,7 +51,7 @@ class ConfigRepository
 
     private function _getConfigFromSession()
     {
-        return Session::get('config') ? : array();
+        return Session::get('config') ? : [];
     }
 
     public function overrideProperty($keys, $value)

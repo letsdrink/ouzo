@@ -18,14 +18,14 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldFindIntZeroInArray()
     {
         //given
-        $array = array(
+        $array = [
             'k1' => 4,
             'k2' => 'd',
             'k3' => 0,
             'k4' => '',
             'k5' => false,
             9 => 'p'
-        );
+        ];
         //when
         $zeroKey = Arrays::findKeyByValue($array, 0);
 
@@ -39,22 +39,22 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldMapKeys()
     {
         //given
-        $array = array(
+        $array = [
             'k1' => 'v1',
             'k2' => 'v2',
             'k3' => 'v3',
-        );
+        ];
         //when
         $arrayWithNewKeys = Arrays::mapKeys($array, function ($key) {
             return 'new_' . $key;
         });
 
         //then
-        $this->assertEquals(array(
+        $this->assertEquals([
             'new_k1' => 'v1',
             'new_k2' => 'v2',
             'new_k3' => 'v3',
-        ), $arrayWithNewKeys);
+        ], $arrayWithNewKeys);
     }
 
     /**
@@ -63,7 +63,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldMapValues()
     {
         //given
-        $array = array('k1', 'k2', 'k3');
+        $array = ['k1', 'k2', 'k3'];
 
         //when
         $result = Arrays::map($array, function ($value) {
@@ -71,7 +71,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         });
 
         //then
-        $this->assertEquals(array('new_k1', 'new_k2', 'new_k3'), $result);
+        $this->assertEquals(['new_k1', 'new_k2', 'new_k3'], $result);
     }
 
     /**
@@ -80,7 +80,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldMapEntries()
     {
         //given
-        $array = array('a' => 1, 'b' => 2, 'c' => 3);
+        $array = ['a' => 1, 'b' => 2, 'c' => 3];
 
         //when
         $result = Arrays::mapEntries($array, function ($key, $value) {
@@ -88,7 +88,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         });
 
         //then
-        $this->assertEquals(array('a' => 'a_1', 'b' => 'b_2', 'c' => 'c_3'), $result);
+        $this->assertEquals(['a' => 'a_1', 'b' => 'b_2', 'c' => 'c_3'], $result);
     }
 
     /**
@@ -97,7 +97,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldFilterValues()
     {
         //given
-        $array = array(1, 2, 3, 4);
+        $array = [1, 2, 3, 4];
 
         //when
         $result = Arrays::filter($array, function ($value) {
@@ -105,7 +105,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         });
 
         //then
-        $this->assertEquals(array(2 => 3, 3 => 4), $result);
+        $this->assertEquals([2 => 3, 3 => 4], $result);
     }
 
     /**
@@ -122,7 +122,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         });
 
         //then
-        $this->assertEquals(array(10 => 1, 20 => 2), $map);
+        $this->assertEquals([10 => 1, 20 => 2], $map);
     }
 
     /**
@@ -131,7 +131,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGetLastElementOfArray()
     {
         //given
-        $array = array('a', 'b', 'c');
+        $array = ['a', 'b', 'c'];
 
         //when
         $last = Arrays::last($array);
@@ -147,7 +147,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldThrowExceptionWhenElementsAreEmptyInLast()
     {
         //given
-        $array = array();
+        $array = [];
 
         //when
         Arrays::last($array);
@@ -160,7 +160,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldThrowExceptionWhenElementsAreEmptyInFirst()
     {
         //given
-        $array = array();
+        $array = [];
 
         //when
         Arrays::first($array);
@@ -172,7 +172,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGetFirstKeyInteger()
     {
         //given
-        $array = array(3 => 'bar', 4 => 'example');
+        $array = [3 => 'bar', 4 => 'example'];
 
         //when
         $first = Arrays::first($array);
@@ -187,7 +187,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGetFirstKeyString()
     {
         //given
-        $array = array('foo' => 'bar', 0 => 'foo', 2 => 'example');
+        $array = ['foo' => 'bar', 0 => 'foo', 2 => 'example'];
 
         //when
         $first = Arrays::first($array);
@@ -202,7 +202,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGetFirstKeyAccordingToOrder()
     {
         //given
-        $array = array(1 => 'bar', 0 => 'foo');
+        $array = [1 => 'bar', 0 => 'foo'];
 
         //when
         $first = Arrays::first($array);
@@ -217,7 +217,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnNullIfNotFoundFirstElement()
     {
         //given
-        $array = array();
+        $array = [];
 
         //when
         $return = Arrays::firstOrNull($array);
@@ -232,7 +232,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnTrueIfAllElementSatisfyPredicate()
     {
         //given
-        $array = array(1, 2);
+        $array = [1, 2];
 
         //when
         $all = Arrays::all($array, function ($element) {
@@ -249,7 +249,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnFalseIfNotAllElementSatisfyPredicate()
     {
         //given
-        $array = array(1, 2, 3);
+        $array = [1, 2, 3];
 
         //when
         $all = Arrays::all($array, function ($element) {
@@ -266,7 +266,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldCheckIsAnyIsBool()
     {
         //given
-        $array = array('a', true, 'c');
+        $array = ['a', true, 'c'];
 
         //when
         $any = Arrays::any($array, function ($element) {
@@ -283,13 +283,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldFilterByAllowedKeys()
     {
         //given
-        $array = array('a' => 1, 'b' => 2, 'c' => 3);
+        $array = ['a' => 1, 'b' => 2, 'c' => 3];
 
         //when
-        $filtered = Arrays::filterByAllowedKeys($array, array('a', 'b'));
+        $filtered = Arrays::filterByAllowedKeys($array, ['a', 'b']);
 
         //then
-        $this->assertEquals(array('a' => 1, 'b' => 2), $filtered);
+        $this->assertEquals(['a' => 1, 'b' => 2], $filtered);
     }
 
     /**
@@ -298,7 +298,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldFilterByKeys()
     {
         //given
-        $array = array('a1' => 1, 'a2' => 2, 'c' => 3);
+        $array = ['a1' => 1, 'a2' => 2, 'c' => 3];
 
         //when
         $filtered = Arrays::filterByKeys($array, function ($elem) {
@@ -306,7 +306,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         });
 
         //then
-        $this->assertEquals(array('a1' => 1, 'a2' => 2), $filtered);
+        $this->assertEquals(['a1' => 1, 'a2' => 2], $filtered);
     }
 
     /**
@@ -315,18 +315,18 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGroupByFunctionResult()
     {
         //given
-        $product1 = new Product(array('name' => 'a', 'description' => '1'));
-        $product2 = new Product(array('name' => 'b', 'description' => '2'));
-        $product3 = new Product(array('name' => 'c', 'description' => '2'));
-        $array = array($product1, $product2, $product3);
+        $product1 = new Product(['name' => 'a', 'description' => '1']);
+        $product2 = new Product(['name' => 'b', 'description' => '2']);
+        $product3 = new Product(['name' => 'c', 'description' => '2']);
+        $array = [$product1, $product2, $product3];
 
         //when
         $grouped = Arrays::groupBy($array, Functions::extractField('description'));
 
         //then
-        $this->assertEquals(array(
-            '1' => array($product1),
-            '2' => array($product2, $product3)), $grouped);
+        $this->assertEquals([
+            '1' => [$product1],
+            '2' => [$product2, $product3]], $grouped);
     }
 
     /**
@@ -335,7 +335,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldHandleEmptyArrayInGroupBy()
     {
         //given
-        $array = array();
+        $array = [];
 
         //when
         $grouped = Arrays::groupBy($array, Functions::extractField('field'));
@@ -350,18 +350,18 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGroupByAndSort()
     {
         //given
-        $product1 = new Product(array('name' => 'a', 'description' => '1', 'id_category' => '1'));
-        $product2 = new Product(array('name' => 'b', 'description' => '2', 'id_category' => '2'));
-        $product3 = new Product(array('name' => 'c', 'description' => '2', 'id_category' => '1'));
-        $array = array($product1, $product2, $product3);
+        $product1 = new Product(['name' => 'a', 'description' => '1', 'id_category' => '1']);
+        $product2 = new Product(['name' => 'b', 'description' => '2', 'id_category' => '2']);
+        $product3 = new Product(['name' => 'c', 'description' => '2', 'id_category' => '1']);
+        $array = [$product1, $product2, $product3];
 
         //when
         $grouped = Arrays::groupBy($array, Functions::extractField('description'), 'id_category');
 
         //then
-        $this->assertEquals(array(
-            '1' => array($product1),
-            '2' => array($product3, $product2)), $grouped);
+        $this->assertEquals([
+            '1' => [$product1],
+            '2' => [$product3, $product2]], $grouped);
     }
 
     /**
@@ -370,16 +370,16 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldSortArrayByField()
     {
         //given
-        $product1 = new Product(array('id_category' => '2'));
-        $product2 = new Product(array('id_category' => '3'));
-        $product3 = new Product(array('id_category' => '1'));
-        $array = array($product1, $product2, $product3);
+        $product1 = new Product(['id_category' => '2']);
+        $product2 = new Product(['id_category' => '3']);
+        $product3 = new Product(['id_category' => '1']);
+        $array = [$product1, $product2, $product3];
 
         //when
         $sorted = Arrays::orderBy($array, 'id_category');
 
         //then
-        $this->assertEquals(array($product3, $product1, $product2), $sorted);
+        $this->assertEquals([$product3, $product1, $product2], $sorted);
     }
 
     /**
@@ -388,11 +388,11 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldSortArrayByCompoundComparator()
     {
         //given
-        $product1 = new Product(array('name' => 'b', 'description' => '2'));
-        $product2 = new Product(array('name' => 'a', 'description' => '1'));
-        $product3 = new Product(array('name' => 'a', 'description' => '2'));
+        $product1 = new Product(['name' => 'b', 'description' => '2']);
+        $product2 = new Product(['name' => 'a', 'description' => '1']);
+        $product3 = new Product(['name' => 'a', 'description' => '2']);
 
-        $array = array($product3, $product1, $product2);
+        $array = [$product3, $product1, $product2];
 
         $comparator = Comparator::compound(Comparator::reverse(Comparator::compareBy('name')), Comparator::compareBy('description'));
 
@@ -409,11 +409,11 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldSortArrayByCompareByWithMultipleExpressions()
     {
         //given
-        $product1 = new Product(array('name' => 'a', 'description' => '2'));
-        $product2 = new Product(array('name' => 'b', 'description' => '2'));
-        $product3 = new Product(array('name' => 'a', 'description' => '1'));
+        $product1 = new Product(['name' => 'a', 'description' => '2']);
+        $product2 = new Product(['name' => 'b', 'description' => '2']);
+        $product3 = new Product(['name' => 'a', 'description' => '1']);
 
-        $array = array($product1, $product2, $product3);
+        $array = [$product1, $product2, $product3];
 
         $comparator = Comparator::compareBy('name', 'description');
 
@@ -430,13 +430,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldSortArrayIndependentlyFromInitialOrder()
     {
         //given
-        $product1 = new Product(array('name' => 'a'));
-        $product2 = new Product(array('name' => 'b'));
-        $product3 = new Product(array('name' => 'c'));
+        $product1 = new Product(['name' => 'a']);
+        $product2 = new Product(['name' => 'b']);
+        $product3 = new Product(['name' => 'c']);
 
-        $array1 = array($product1, $product2, $product3);
-        $array2 = array($product2, $product1, $product3);
-        $array3 = array($product3, $product1, $product2);
+        $array1 = [$product1, $product2, $product3];
+        $array2 = [$product2, $product1, $product3];
+        $array3 = [$product3, $product1, $product2];
 
         $comparator = Comparator::compareBy('name');
 
@@ -456,13 +456,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldSortArrayByDefaultExtractor()
     {
         //given
-        $array = array(1, 3, 2);
+        $array = [1, 3, 2];
 
         //when
         $sorted = Arrays::sort($array, Comparator::natural());
 
         //then
-        $this->assertEquals(array(1, 2, 3), $sorted);
+        $this->assertEquals([1, 2, 3], $sorted);
     }
 
     /**
@@ -471,7 +471,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function toArrayShouldReturnSameArrayForArray()
     {
         // given
-        $array = array(1, 2, 3);
+        $array = [1, 2, 3];
 
         // when
         $result = Arrays::toArray($array);
@@ -489,7 +489,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $result = Arrays::toArray('test');
 
         // then
-        $this->assertEquals(array('test'), $result);
+        $this->assertEquals(['test'], $result);
     }
 
     /**
@@ -501,7 +501,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $result = Arrays::toArray(null);
 
         // then
-        $this->assertEquals(array(), $result);
+        $this->assertEquals([], $result);
     }
 
     /**
@@ -513,7 +513,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $result = Arrays::toArray(false);
 
         // then
-        $this->assertEquals(array(false), $result);
+        $this->assertEquals([false], $result);
     }
 
     /**
@@ -525,7 +525,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $result = Arrays::toArray(0);
 
         // then
-        $this->assertEquals(array(0), $result);
+        $this->assertEquals([0], $result);
     }
 
     /**
@@ -537,7 +537,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
         $result = Arrays::toArray('');
 
         // then
-        $this->assertEquals(array(''), $result);
+        $this->assertEquals([''], $result);
     }
 
     /**
@@ -546,7 +546,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGetRandomElement()
     {
         //given
-        $array = array(1, 3, 6, 9);
+        $array = [1, 3, 6, 9];
 
         //when
         $result = Arrays::randElement($array);
@@ -561,7 +561,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnNullIfNotFindRandomElement()
     {
         //given
-        $array = array();
+        $array = [];
 
         //when
         $result = Arrays::randElement($array);
@@ -576,7 +576,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldGetValueFromArray()
     {
         //given
-        $array = array('id' => 1, 'name' => 'john');
+        $array = ['id' => 1, 'name' => 'john'];
 
         //when
         $value = Arrays::getValue($array, 'name');
@@ -591,7 +591,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnDefaultValueIfNotGetValueFromArray()
     {
         //given
-        $array = array('id' => 1, 'name' => 'john');
+        $array = ['id' => 1, 'name' => 'john'];
 
         //when
         $value = Arrays::getValue($array, 'surname', '--not found--');
@@ -606,14 +606,14 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnCombinedArray()
     {
         //given
-        $keys = array('id', 'name', 'surname');
-        $values = array(1, 'john', 'smith');
+        $keys = ['id', 'name', 'surname'];
+        $values = [1, 'john', 'smith'];
 
         //when
         $combined = Arrays::combine($keys, $values);
 
         //then
-        Assert::thatArray($combined)->hasSize(3)->containsKeyAndValue(array('id' => 1, 'name' => 'john', 'surname' => 'smith'));
+        Assert::thatArray($combined)->hasSize(3)->containsKeyAndValue(['id' => 1, 'name' => 'john', 'surname' => 'smith']);
     }
 
     /**
@@ -622,20 +622,20 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldFlattenAnArray()
     {
         //given
-        $array = array(
-            'names' => array(
+        $array = [
+            'names' => [
                 'john',
                 'peter',
                 'bill'
-            ),
-            'products' => array(
+            ],
+            'products' => [
                 'cheese',
-                'test' => array(
+                'test' => [
                     'natural' => 'milk',
                     'brie'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         //when
         $flatten = Arrays::flatten($array);
@@ -650,7 +650,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldCheckIsKeyExists()
     {
         //given
-        $array = array('id' => 1, 'name' => 'john');
+        $array = ['id' => 1, 'name' => 'john'];
 
         //when
         $return = Arrays::keyExists($array, 'name');
@@ -665,7 +665,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReduceAnArray()
     {
         //given
-        $array = array('$id', '$name', '$phone');
+        $array = ['$id', '$name', '$phone'];
 
         //when
         $reduced = Arrays::reduce($array, function ($result, $element) {
@@ -687,7 +687,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldFindElement()
     {
         //when
-        $value = Arrays::find(array('a', 'b', 'c'), function ($element) {
+        $value = Arrays::find(['a', 'b', 'c'], function ($element) {
             return $element == 'b';
         });
 
@@ -701,7 +701,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function findShouldReturnNullWhenElementWasNotFound()
     {
         //when
-        $value = Arrays::find(array('a', 'c'), function ($element) {
+        $value = Arrays::find(['a', 'c'], function ($element) {
             return $element == 'b';
         });
 
@@ -715,14 +715,14 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnArraysIntersection()
     {
         //given
-        $a1 = array('1', '4', '5');
-        $a2 = array('1', '4', '6');
+        $a1 = ['1', '4', '5'];
+        $a2 = ['1', '4', '6'];
 
         //when
         $intersection = Arrays::intersect($a1, $a2);
 
         //then
-        $this->assertEquals(array('1', '4'), $intersection);
+        $this->assertEquals(['1', '4'], $intersection);
     }
 
     /**
@@ -731,10 +731,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnNestedValue()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        $value = Arrays::getNestedValue($array, array('1', '2', '3'));
+        $value = Arrays::getNestedValue($array, ['1', '2', '3']);
 
         //then
         $this->assertEquals('value', $value);
@@ -746,10 +746,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function getNestedValueShouldReturnNullWhenKeyNotFound()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        $value = Arrays::getNestedValue($array, array('1', '4'));
+        $value = Arrays::getNestedValue($array, ['1', '4']);
 
         //then
         $this->assertNull($value);
@@ -761,10 +761,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function getNestedValueShouldReturnEmptyValue()
     {
         //given
-        $array = array('1' => array('2' => ''));
+        $array = ['1' => ['2' => '']];
 
         //when
-        $value = Arrays::getNestedValue($array, array('1', '2'));
+        $value = Arrays::getNestedValue($array, ['1', '2']);
 
         //then
         $this->assertTrue($value === '');
@@ -776,10 +776,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function getNestedValueShouldReturnZero()
     {
         //given
-        $array = array('1' => array('2' => '0'));
+        $array = ['1' => ['2' => '0']];
 
         //when
-        $value = Arrays::getNestedValue($array, array('1', '2'));
+        $value = Arrays::getNestedValue($array, ['1', '2']);
 
         //then
         $this->assertTrue($value === '0');
@@ -791,13 +791,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldSetNestedValue()
     {
         //given
-        $array = array();
+        $array = [];
 
         //when
-        Arrays::setNestedValue($array, array('1', '2', '3'), 'value');
+        Arrays::setNestedValue($array, ['1', '2', '3'], 'value');
 
         //then
-        $this->assertEquals(array('1' => array('2' => array('3' => 'value'))), $array);
+        $this->assertEquals(['1' => ['2' => ['3' => 'value']]], $array);
     }
 
     /**
@@ -806,13 +806,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldRemoveNestedKeyAtRoot()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        Arrays::removeNestedKey($array, array('1'));
+        Arrays::removeNestedKey($array, ['1']);
 
         //then
-        $this->assertEquals(array(), $array);
+        $this->assertEquals([], $array);
     }
 
     /**
@@ -821,13 +821,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldRemoveNestedKeyWithoutEmptyParent()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        Arrays::removeNestedKey($array, array('1', '2'));
+        Arrays::removeNestedKey($array, ['1', '2']);
 
         //then
-        $this->assertEquals(array('1' => array()), $array);
+        $this->assertEquals(['1' => []], $array);
     }
 
     /**
@@ -836,13 +836,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldRemoveNestedKeyWithEmptyParent()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        Arrays::removeNestedKey($array, array('1', '2'), Arrays::REMOVE_EMPTY_PARENTS);
+        Arrays::removeNestedKey($array, ['1', '2'], Arrays::REMOVE_EMPTY_PARENTS);
 
         //then
-        $this->assertEquals(array(), $array);
+        $this->assertEquals([], $array);
     }
 
     /**
@@ -851,13 +851,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldNotRemoveNestedKeyWhenKeyNotFoundAndValueIsNull()
     {
         //given
-        $array = array('1' => null);
+        $array = ['1' => null];
 
         //when
-        Arrays::removeNestedKey($array, array('1', '2'));
+        Arrays::removeNestedKey($array, ['1', '2']);
 
         //then
-        $this->assertEquals(array('1' => null), $array);
+        $this->assertEquals(['1' => null], $array);
     }
 
     /**
@@ -868,11 +868,11 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldThrowDeprecatedExceptionWhenUseRemoveNestedValue()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
         /** @noinspection PhpDeprecationInspection */
-        Arrays::removeNestedValue($array, array('1', '2'));
+        Arrays::removeNestedValue($array, ['1', '2']);
     }
 
     /**
@@ -881,13 +881,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldNotRemoveNestedKeyWhenKeyNotFound()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        Arrays::removeNestedKey($array, array('1', '4'));
+        Arrays::removeNestedKey($array, ['1', '4']);
 
         //then
-        $this->assertEquals(array('1' => array('2' => array('3' => 'value'))), $array);
+        $this->assertEquals(['1' => ['2' => ['3' => 'value']]], $array);
     }
 
     /**
@@ -896,13 +896,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldNotRemoveKeyWhenKeyNotFoundInTheFirstLevel()
     {
         //given
-        $array = array('1' => array('2' => 'value'));
+        $array = ['1' => ['2' => 'value']];
 
         //when
-        Arrays::removeNestedKey($array, array('2', '4'));
+        Arrays::removeNestedKey($array, ['2', '4']);
 
         //then
-        $this->assertEquals(array('1' => array('2' => 'value')), $array);
+        $this->assertEquals(['1' => ['2' => 'value']], $array);
     }
 
     /**
@@ -911,10 +911,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldCheckIfArrayHasNestedKey()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        $value = Arrays::hasNestedKey($array, array('1', '2', '3'));
+        $value = Arrays::hasNestedKey($array, ['1', '2', '3']);
 
         //then
         $this->assertTrue($value);
@@ -926,10 +926,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldCheckIfArrayHasNestedKeyForRoot()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        $value = Arrays::hasNestedKey($array, array('1'));
+        $value = Arrays::hasNestedKey($array, ['1']);
 
         //then
         $this->assertTrue($value);
@@ -941,10 +941,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function hasNestedKeyShouldReturnFalseWhenKeyDoesNotExist()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        $value = Arrays::hasNestedKey($array, array('1', '4'));
+        $value = Arrays::hasNestedKey($array, ['1', '4']);
 
         //then
         $this->assertFalse($value);
@@ -956,10 +956,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function hasNestedKeyShouldReturnTrueWhenKeyIsNullAndNullIsValue()
     {
         //given
-        $array = array('1' => array('2' => array('3' => null)));
+        $array = ['1' => ['2' => ['3' => null]]];
 
         //when
-        $value = Arrays::hasNestedKey($array, array('1', '2', '3'), Arrays::TREAT_NULL_AS_VALUE);
+        $value = Arrays::hasNestedKey($array, ['1', '2', '3'], Arrays::TREAT_NULL_AS_VALUE);
 
         //then
         $this->assertTrue($value);
@@ -971,10 +971,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function hasNestedKeyShouldReturnFalseWhenKeyIsNullAndNullIsNotValue()
     {
         //given
-        $array = array('1' => array('2' => array('3' => null)));
+        $array = ['1' => ['2' => ['3' => null]]];
 
         //when
-        $value = Arrays::hasNestedKey($array, array('1', '2', '3'));
+        $value = Arrays::hasNestedKey($array, ['1', '2', '3']);
 
         //then
         $this->assertFalse($value);
@@ -986,13 +986,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldFilterNotBlank()
     {
         //given
-        $array = array(
+        $array = [
             0 => 'foo',
             1 => false,
             2 => -1,
             3 => null,
             4 => ''
-        );
+        ];
 
         //when
         $filtered = Arrays::filterNotBlank($array);
@@ -1007,10 +1007,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnEmptyArrayWhenNotFoundInNestedValue()
     {
         //given
-        $array = array('1' => array('2' => array('3' => 'value')));
+        $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        $value = Arrays::getNestedValue($array, array('1', '2', '3', '4'));
+        $value = Arrays::getNestedValue($array, ['1', '2', '3', '4']);
 
         //then
         $this->assertNull($value);
@@ -1022,35 +1022,35 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldCreateArrayWithFlattenKeys()
     {
         //given
-        $array = array(
-            'customer' => array(
+        $array = [
+            'customer' => [
                 'name' => 'Name',
                 'phone' => '123456789',
-            ),
-            'other' => array(
-                'ids_map' => array(
+            ],
+            'other' => [
+                'ids_map' => [
                     '1qaz' => 'qaz',
                     '2wsx' => 'wsx'
-                ),
-                'first' => array(
-                    'second' => array(
+                ],
+                'first' => [
+                    'second' => [
                         'third' => 'some value'
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
 
         //when
         $flatten = Arrays::flattenKeysRecursively($array);
 
         //then
-        $expected = array(
+        $expected = [
             'customer.name' => 'Name',
             'customer.phone' => '123456789',
             'other.ids_map.1qaz' => 'qaz',
             'other.ids_map.2wsx' => 'wsx',
             'other.first.second.third' => 'some value'
-        );
+        ];
         $this->assertEquals($expected, $flatten);
     }
 
@@ -1060,7 +1060,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldCountElements()
     {
         //given
-        $array = array(1, 2, 3);
+        $array = [1, 2, 3];
 
         //when
         $count = Arrays::count($array, function ($element) {
@@ -1077,7 +1077,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnObjectsUniqueByField()
     {
         //given
-        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+        $array = [new Product(['name' => 'bob']), new Product(['name' => 'bob']), new Product(['name' => 'john'])];
 
         //when
         $uniqueByName = Arrays::uniqueBy($array, 'name');
@@ -1092,7 +1092,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnObjectsUniqueByFunctionResults()
     {
         //given
-        $array = array(new Product(array('name' => 'bob')), new Product(array('name' => 'bob')), new Product(array('name' => 'john')));
+        $array = [new Product(['name' => 'bob']), new Product(['name' => 'bob']), new Product(['name' => 'john'])];
 
         //when
         $uniqueByName = Arrays::uniqueBy($array, Functions::extract()->name);
@@ -1107,15 +1107,15 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnObjectsUniqueByNestedField()
     {
         //given
-        $category = new Category(array('name' => 'cat1'));
+        $category = new Category(['name' => 'cat1']);
 
-        $product1 = new Product(array('name' => 'bob'));
+        $product1 = new Product(['name' => 'bob']);
         $product1->category = $category;
 
-        $product2 = new Product(array('name' => 'john'));
+        $product2 = new Product(['name' => 'john']);
         $product2->category = $category;
 
-        $array = array($product1, $product2);
+        $array = [$product1, $product2];
 
         //when
         $uniqueByName = Arrays::uniqueBy($array, 'category->name');
@@ -1130,10 +1130,10 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldExtractRecursivelyArrayColumn()
     {
         //given
-        $array = array(
-            array('id' => 123, 'name' => 'value1', 'test' => array('number' => 90)),
-            array('id' => 123, 'name' => 'value1', 'test' => array('number' => 100))
-        );
+        $array = [
+            ['id' => 123, 'name' => 'value1', 'test' => ['number' => 90]],
+            ['id' => 123, 'name' => 'value1', 'test' => ['number' => 100]]
+        ];
 
         //when
         $numbers = Arrays::map($array, Functions::extract()->test->number);
@@ -1149,14 +1149,14 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnAdditionalValueInRecursiveDiff()
     {
         //given
-        $array1 = array('a' => array('b' => 'c', 'd' => 'e'), 'f' => array('b' => 'c'), 'z');
-        $array2 = array('a' => array('b' => 'c'));
+        $array1 = ['a' => ['b' => 'c', 'd' => 'e'], 'f' => ['b' => 'c'], 'z'];
+        $array2 = ['a' => ['b' => 'c']];
 
         //when
         $recursiveDiff = Arrays::recursiveDiff($array1, $array2);
 
         //then
-        $this->assertEquals(array('a' => array('d' => 'e'), 'f' => array('b' => 'c'), 'z'), $recursiveDiff);
+        $this->assertEquals(['a' => ['d' => 'e'], 'f' => ['b' => 'c'], 'z'], $recursiveDiff);
     }
 
     /**
@@ -1164,9 +1164,9 @@ class ArraysTest extends PHPUnit_Framework_TestCase
      */
     public function shouldCheckIfArrayIsAssociative()
     {
-        $this->assertTrue(Arrays::isAssociative(array('a' => 1, 2, 'c')));
-        $this->assertFalse(Arrays::isAssociative(array(1 => 1, 2, 'c')));
-        $this->assertFalse(Arrays::isAssociative(array('a', 'b', 'c')));
+        $this->assertTrue(Arrays::isAssociative(['a' => 1, 2, 'c']));
+        $this->assertFalse(Arrays::isAssociative([1 => 1, 2, 'c']));
+        $this->assertFalse(Arrays::isAssociative(['a', 'b', 'c']));
     }
 
     /**
@@ -1175,13 +1175,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldConcatArrays()
     {
         //given
-        $arrays = array(array(1, 2), array(3, 4));
+        $arrays = [[1, 2], [3, 4]];
 
         //when
         $flattened = Arrays::concat($arrays);
 
         //then
-        $this->assertEquals(array(1, 2, 3, 4), $flattened);
+        $this->assertEquals([1, 2, 3, 4], $flattened);
     }
 
     /**
@@ -1190,13 +1190,13 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldConcatEmptyArray()
     {
         //given
-        $array = array();
+        $array = [];
 
         //when
         $flattened = Arrays::concat($array);
 
         //then
-        $this->assertEquals(array(), $flattened);
+        $this->assertEquals([], $flattened);
     }
 
     /**
@@ -1204,7 +1204,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
      */
     public function containsShouldWorkForDifferentTypes()
     {
-        $this->assertTrue(Arrays::contains(array(1, 2, 3), 1));
+        $this->assertTrue(Arrays::contains([1, 2, 3], 1));
     }
 
     /**
@@ -1213,16 +1213,16 @@ class ArraysTest extends PHPUnit_Framework_TestCase
     public function shouldReturnShuffledArrayWithKeyAssociation()
     {
         //given
-        $array = array(1 => 'a', 2 => 'b', 3 => 'c');
+        $array = [1 => 'a', 2 => 'b', 3 => 'c'];
 
         //when
         $result = Arrays::shuffle($array);
 
         //then
         Assert::thatArray($result)
-            ->containsKeyAndValue(array(1 => 'a'))
-            ->containsKeyAndValue(array(2 => 'b'))
-            ->containsKeyAndValue(array(3 => 'c'));
+            ->containsKeyAndValue([1 => 'a'])
+            ->containsKeyAndValue([2 => 'b'])
+            ->containsKeyAndValue([3 => 'c']);
     }
 
     /**
@@ -1230,6 +1230,6 @@ class ArraysTest extends PHPUnit_Framework_TestCase
      */
     public function shuffleShouldReturnEmptyArrayForEmptyArray()
     {
-        $this->assertEmpty(Arrays::shuffle(array()));
+        $this->assertEmpty(Arrays::shuffle([]));
     }
 }

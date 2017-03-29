@@ -16,7 +16,7 @@ class RelationFactory
     public static function create($relationType, $relation, $relationParams, $primaryKeyName, $modelClass)
     {
         if (is_string($relationParams)) {
-            $relationParams = array('class' => $relationParams);
+            $relationParams = ['class' => $relationParams];
         }
 
         if ($relationType == 'hasOne') {

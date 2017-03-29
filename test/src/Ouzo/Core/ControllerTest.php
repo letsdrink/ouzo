@@ -28,33 +28,33 @@ class SimpleTestController extends Controller
 
     public function keep()
     {
-        $this->notice(array('Keep this'), true);
+        $this->notice(['Keep this'], true);
     }
 
     public function keep_set_url()
     {
-        $this->notice(array('Keep this'), false, '/simple_test/read_kept');
+        $this->notice(['Keep this'], false, '/simple_test/read_kept');
     }
 
     public function do_not_keep()
     {
-        $this->notice(array('Keep this'), false);
+        $this->notice(['Keep this'], false);
     }
 
     public function read_kept()
     {
-        $this->layout->renderAjax(Arrays::firstOrNull(Session::get('messages') ?: array()));
+        $this->layout->renderAjax(Arrays::firstOrNull(Session::get('messages') ?: []));
         $this->layout->unsetLayout();
     }
 
     public function add_notice_for_full_url()
     {
-        $this->notice(array('notice'), false, 'prefix/simple_test/read_kept');
+        $this->notice(['notice'], false, 'prefix/simple_test/read_kept');
     }
 
     public function add_notice_for_short_url()
     {
-        $this->notice(array('notice'), false, '/simple_test/read_kept');
+        $this->notice(['notice'], false, '/simple_test/read_kept');
     }
 
     public function other_action()
@@ -75,7 +75,7 @@ class SimpleTestController extends Controller
 
     public function notice_with_query()
     {
-        $this->notice(array('notice'), false, '/simple_test/notice_with_query?data=some-data');
+        $this->notice(['notice'], false, '/simple_test/notice_with_query?data=some-data');
     }
 
     public function string_output()
@@ -147,7 +147,7 @@ class ControllerTest extends ControllerTestCase
         $requestHeaders = $controller->getRequestHeaders();
 
         //then
-        $this->assertEquals(array(
+        $this->assertEquals([
             'Host' => 'localhost',
             'User-Agent' => 'Mozilla/5.0',
             'Accept' => 'text/html',
@@ -156,7 +156,7 @@ class ControllerTest extends ControllerTestCase
             'Referer' => 'http://localhost/index',
             'Cookie' => 'PHPSESSID=6j8kkq2r62n32rtf4tmlnbspn1',
             'Connection' => 'keep-alive',
-        ), $requestHeaders);
+        ], $requestHeaders);
     }
 
     /**
@@ -199,9 +199,9 @@ class ControllerTest extends ControllerTestCase
         Route::post('/simple_test2/receive_params/:user', 'simple_test#receive_params');
 
         // when
-        CatchException::when($this)->post('/simple_test2/receive_params/Cersei', array(
+        CatchException::when($this)->post('/simple_test2/receive_params/Cersei', [
             'page' => 'about-us'
-        ));
+        ]);
 
         // then
         $this->assertRenderedContent()->isEqualTo(null);
@@ -236,7 +236,7 @@ class ControllerTest extends ControllerTestCase
         $this->get('/simple_test/params?p1=v1&p2=v2');
 
         //then
-        $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2'), $this->getAssigned('params'));
+        $this->assertEquals(['p1' => 'v1', 'p2' => 'v2'], $this->getAssigned('params'));
     }
 
     /**
@@ -246,16 +246,16 @@ class ControllerTest extends ControllerTestCase
     {
         //given
         Route::allowAll('/simple_test', 'simple_test');
-        $data = array(
+        $data = [
             'p1' => 'v1',
             'p2' => 'v2'
-        );
+        ];
 
         //when
         $this->get('/simple_test/params', $data);
 
         //then
-        $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2'), $this->getAssigned('params'));
+        $this->assertEquals(['p1' => 'v1', 'p2' => 'v2'], $this->getAssigned('params'));
     }
 
     /**
@@ -265,16 +265,16 @@ class ControllerTest extends ControllerTestCase
     {
         //given
         Route::allowAll('/simple_test', 'simple_test');
-        $data = array(
+        $data = [
             'p2' => 'v2',
             'p3' => 'v3'
-        );
+        ];
 
         //when
         $this->get('/simple_test/params?p1=v1', $data);
 
         //then
-        $this->assertEquals(array('p1' => 'v1', 'p2' => 'v2', 'p3' => 'v3'), $this->getAssigned('params'));
+        $this->assertEquals(['p1' => 'v1', 'p2' => 'v2', 'p3' => 'v3'], $this->getAssigned('params'));
     }
 
 
@@ -293,7 +293,7 @@ class ControllerTest extends ControllerTestCase
         $actual = $this->getAssigned('params');
         Assert::thatArray($actual)
             ->hasSize(2)
-            ->containsKeyAndValue(array('p1' => 'v1'));
+            ->containsKeyAndValue(['p1' => 'v1']);
         Assert::thatArray($actual['id'])->hasSize(3)->containsExactly(1, 2, 3);
     }
 
@@ -309,7 +309,7 @@ class ControllerTest extends ControllerTestCase
         $this->get('/simple_test/params?p1');
 
         //then
-        $this->assertEquals(array('p1' => null), $this->getAssigned('params'));
+        $this->assertEquals(['p1' => null], $this->getAssigned('params'));
     }
 
     /**
@@ -468,8 +468,8 @@ class ControllerTest extends ControllerTestCase
     public function shouldNotStoreEmptyUrlForNotices()
     {
         //given
-        Config::overridePropertyArray(array('global', 'prefix_system'), 'prefix');
-        $_SESSION = array();
+        Config::overridePropertyArray(['global', 'prefix_system'], 'prefix');
+        $_SESSION = [];
         $controller = Controller::createInstance(new RouteRule('', '', '', '', false));
 
         //when
@@ -478,7 +478,7 @@ class ControllerTest extends ControllerTestCase
         //then
         Assert::thatArray(Session::get('messages'))->containsOnly(new Notice('hello', null));
 
-        Config::revertPropertyArray(array('global', 'prefix_system'));
+        Config::revertPropertyArray(['global', 'prefix_system']);
     }
 
     /**

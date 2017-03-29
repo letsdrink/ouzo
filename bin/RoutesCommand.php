@@ -42,11 +42,11 @@ class RoutesCommand extends Command
     {
         $this->_input = $input;
         $this->_output = $output;
-        $generateOptionFunctionMap = array(
+        $generateOptionFunctionMap = [
             "generate-php" => "generatePhpHelper",
             "generate-js" => "generateJsHelper",
             "generate-all" => "generateAllHelpers",
-        );
+        ];
         $selectedOptions = array_filter($input->getOptions());
         $selectedGeneratedOptions = array_intersect(array_keys($selectedOptions), array_keys($generateOptionFunctionMap));
 
@@ -104,16 +104,16 @@ class RoutesCommand extends Command
         $this->_renderRoutes(Route::getRoutes());
     }
 
-    private function _renderRoutes($routes = array())
+    private function _renderRoutes($routes = [])
     {
         $table = $this->getHelper('table');
-        $table->setHeaders(array('URL Helper', 'HTTP Verb', 'Path', 'Controller#Action'));
+        $table->setHeaders(['URL Helper', 'HTTP Verb', 'Path', 'Controller#Action']);
 
         foreach ($routes as $route) {
             $method = $this->_getRuleMethod($route);
             $action = $route->getAction() ? '#' . $route->getAction() : $route->getAction();
             $controllerAction = $route->getController() . $action;
-            $table->addRow(array($route->getName(), $method, $route->getUri(), $controllerAction));
+            $table->addRow([$route->getName(), $method, $route->getUri(), $controllerAction]);
             $this->_printExceptIfExists($route, $table);
         }
 
@@ -132,9 +132,9 @@ class RoutesCommand extends Command
     {
         $except = $rule->getExcept();
         if ($except) {
-            $table->addRow(array('', '', '  <info>except:</info>', ''));
+            $table->addRow(['', '', '  <info>except:</info>', '']);
             Arrays::map($except, function ($except) use ($table) {
-                $table->addRow(array('', '', '    ' . $except, ''));
+                $table->addRow(['', '', '    ' . $except, '']);
                 return $except;
             });
         }

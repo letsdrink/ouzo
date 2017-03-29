@@ -16,12 +16,12 @@ class EmptyQueryExecutor
 
     public function fetchAll()
     {
-        return array();
+        return [];
     }
 
     public function fetchIterator()
     {
-        return new ArrayIterator(array());
+        return new ArrayIterator([]);
     }
 
     public function execute()

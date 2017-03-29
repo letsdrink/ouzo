@@ -42,7 +42,7 @@ abstract class AbstractLogger implements LoggerInterface
         if ($level <= $minimalLevel) {
             $message = $this->_messageFormatter->format($this->_name, $levelName, $message);
             if (!empty($params)) {
-                $message = call_user_func_array('sprintf', array_merge(array($message), $params));
+                $message = call_user_func_array('sprintf', array_merge([$message], $params));
             }
             $writeToLogFunction($message);
         }

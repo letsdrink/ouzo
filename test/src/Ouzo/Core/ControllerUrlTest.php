@@ -17,7 +17,7 @@ class ControllerUrlTest extends PHPUnit_Framework_TestCase
         $defaults = Config::getValue('global');
 
         //when
-        $url = ControllerUrl::createUrl(array('controller' => 'users', 'action' => 'add'));
+        $url = ControllerUrl::createUrl(['controller' => 'users', 'action' => 'add']);
 
         //then
         $this->assertEquals($defaults['prefix_system'] . '/users/add', $url);
@@ -32,7 +32,7 @@ class ControllerUrlTest extends PHPUnit_Framework_TestCase
         $defaults = Config::getValue('global');
 
         //when
-        $url = ControllerUrl::createUrl(array('string' => '/users/add'));
+        $url = ControllerUrl::createUrl(['string' => '/users/add']);
 
         //then
         $this->assertEquals($defaults['prefix_system'] . '/users/add', $url);
@@ -47,11 +47,11 @@ class ControllerUrlTest extends PHPUnit_Framework_TestCase
         $defaults = Config::getValue('global');
 
         //when
-        $url = ControllerUrl::createUrl(array(
+        $url = ControllerUrl::createUrl([
             'controller' => 'users',
             'action' => 'add',
-            'extraParams' => array('id' => 5, 'name' => 'john')
-        ));
+            'extraParams' => ['id' => 5, 'name' => 'john']
+        ]);
 
         //then
         $this->assertEquals($defaults['prefix_system'] . '/users/add/id/5/name/john', $url);

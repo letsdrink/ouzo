@@ -13,7 +13,7 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldSubstituteWithValues()
     {
         //given
-        $strSubstitutor = new StrSubstitutor(array('NAME' => 'Marek', 'SURNAME' => 'Kowalski'));
+        $strSubstitutor = new StrSubstitutor(['NAME' => 'Marek', 'SURNAME' => 'Kowalski']);
 
         //when
         $substituted = $strSubstitutor->replace('Czesc {{NAME}} {{SURNAME}}');
@@ -28,7 +28,7 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldLeaveMissingPlaceholders()
     {
         //given
-        $strSubstitutor = new StrSubstitutor(array());
+        $strSubstitutor = new StrSubstitutor([]);
 
         //when
         $substituted = $strSubstitutor->replace('Czesc {{NAME}}');
@@ -43,7 +43,7 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldReplaceMissingPlaceholdersWithDefault()
     {
         //given
-        $strSubstitutor = new StrSubstitutor(array(), 'Unknown');
+        $strSubstitutor = new StrSubstitutor([], 'Unknown');
 
         //when
         $substituted = $strSubstitutor->replace('Hi {{NAME}}');
@@ -58,7 +58,7 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldReplaceMissingPlaceholdersWithEmptyDefault()
     {
         //given
-        $strSubstitutor = new StrSubstitutor(array(), '');
+        $strSubstitutor = new StrSubstitutor([], '');
 
         //when
         $substituted = $strSubstitutor->replace('Hi {{NAME}}');
@@ -73,7 +73,7 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldChangeToEmptyString()
     {
         //given
-        $strSubstitutor = new StrSubstitutor(array('EMPTY' => ''));
+        $strSubstitutor = new StrSubstitutor(['EMPTY' => '']);
 
         //when
         $substituted = $strSubstitutor->replace('Czesc {{EMPTY}}');
@@ -88,7 +88,7 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldReplaceUnicodeChar()
     {
         //given
-        $strSubstitutor = new StrSubstitutor(array('ODDZIAŁ' => 'krakowski'));
+        $strSubstitutor = new StrSubstitutor(['ODDZIAŁ' => 'krakowski']);
 
         //when
         $substituted = $strSubstitutor->replace('Oddział: {{ODDZIAŁ}}');
@@ -103,7 +103,7 @@ class StrSubstitutorTest extends PHPUnit_Framework_TestCase
     public function shouldReplaceWithSpaceInPlaceholderName()
     {
         //given
-        $strSubstitutor = new StrSubstitutor(array('SOME PLACEHOLDER' => 'new value'));
+        $strSubstitutor = new StrSubstitutor(['SOME PLACEHOLDER' => 'new value']);
 
         //when
         $substituted = $strSubstitutor->replace('Value: {{SOME PLACEHOLDER}}');

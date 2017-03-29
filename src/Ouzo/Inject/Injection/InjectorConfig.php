@@ -10,7 +10,7 @@ use Ouzo\Utilities\Strings;
 
 class InjectorConfig
 {
-    private $binders = array();
+    private $binders = [];
 
     public function bind($className, $name = '')
     {

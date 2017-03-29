@@ -22,8 +22,8 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldGenerateSelectTag()
     {
         //given
-        $items = array(1 => 'Opt1', 2 => 'Opt1');
-        $attributes = array('id' => "lab", 'size' => "1");
+        $items = [1 => 'Opt1', 2 => 'Opt1'];
+        $attributes = ['id' => "lab", 'size' => "1"];
 
         //when
         $result = selectTag("lab", $items, 2, $attributes);
@@ -39,8 +39,8 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldGenerateReadOnlySelectTag()
     {
         //given
-        $items = array(1 => 'Opt1', 2 => 'Opt1');
-        $attributes = array('id' => "lab", 'size' => "1", 'readonly' => 'readonly');
+        $items = [1 => 'Opt1', 2 => 'Opt1'];
+        $attributes = ['id' => "lab", 'size' => "1", 'readonly' => 'readonly'];
 
         //when
         $result = selectTag("lab", $items, 2, $attributes);
@@ -56,11 +56,11 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldGenerateMultipleSelectList()
     {
         //given
-        $items = array(1 => 'Opt1', 2 => 'Opt2', 3 => 'Opt3', 4 => 'Opt4');
-        $attributes = array('multiple' => "1", 'size' => "4");
+        $items = [1 => 'Opt1', 2 => 'Opt2', 3 => 'Opt3', 4 => 'Opt4'];
+        $attributes = ['multiple' => "1", 'size' => "4"];
 
         //when
-        $result = selectTag("lab", $items, array(2, 4), $attributes);
+        $result = selectTag("lab", $items, [2, 4], $attributes);
 
         //then
         $expected = '<select id="lab" name="lab" multiple="1" size="4"><option value="1" >Opt1</option><option value="2" selected>Opt2</option><option value="3" >Opt3</option><option value="4" selected>Opt4</option></select>';
@@ -73,13 +73,13 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateTextFieldInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name "<&', 'id_category' => 1));
+        $product = new Product(['description' => 'desc', 'name' => 'name "<&', 'id_category' => 1]);
         $form = formFor($product);
 
         //when
         $textField1 = $form->textField('name');
-        $textField2 = $form->textField('name', array('id' => 'id_new'));
-        $textField3 = $form->textField('name', array('style' => 'color: red;'));
+        $textField2 = $form->textField('name', ['id' => 'id_new']);
+        $textField3 = $form->textField('name', ['style' => 'color: red;']);
 
         //then
         $this->assertEquals('<input type="text" id="product_name" name="product[name]" value="name &quot;&lt;&amp;"/>', $textField1);
@@ -93,13 +93,13 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateTextAreaInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 1]);
         $form = formFor($product);
 
         //when
         $textArea1 = $form->textArea('name');
-        $textField2 = $form->textField('name', array('id' => 'id_new'));
-        $textField3 = $form->textField('name', array('rows' => 12, 'cols' => 10, 'style' => 'color: red;'));
+        $textField2 = $form->textField('name', ['id' => 'id_new']);
+        $textField3 = $form->textField('name', ['rows' => 12, 'cols' => 10, 'style' => 'color: red;']);
 
         //then
         $this->assertEquals('<textarea id="product_name" name="product[name]">name</textarea>', $textArea1);
@@ -113,13 +113,13 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateSelectFieldInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
-        $categories = array(1 => 'Cat1', 2 => 'Cat2');
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 1]);
+        $categories = [1 => 'Cat1', 2 => 'Cat2'];
         $form = formFor($product);
 
         //when
         $selectField1 = $form->selectField('id_category', $categories);
-        $selectField2 = $form->selectField('name', $categories, array('id' => 'id_new'));
+        $selectField2 = $form->selectField('name', $categories, ['id' => 'id_new']);
 
         //then
         $this->assertEquals(
@@ -135,7 +135,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateHiddenFieldInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name "<&', 'id_category' => 1));
+        $product = new Product(['description' => 'desc', 'name' => 'name "<&', 'id_category' => 1]);
         $form = formFor($product);
 
         //when
@@ -151,7 +151,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateLabelInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 1]);
         $form = formFor($product);
 
         //when
@@ -171,7 +171,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreatePasswordFieldInFormModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name "<&', 'id_category' => 1));
+        $product = new Product(['description' => 'desc', 'name' => 'name "<&', 'id_category' => 1]);
 
         //when
         $result = formFor($product)->passwordField('name');
@@ -186,7 +186,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateUncheckedCheckboxFieldInFormModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 0]);
 
         //when
         $result = formFor($product)->checkboxField('id_category');
@@ -201,7 +201,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateCheckedCheckboxFieldInFormModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 1]);
 
         //when
         $result = formFor($product)->checkboxField('id_category');
@@ -246,11 +246,11 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateFormStartTagWithCsrfTokenInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 0]);
         $form = formFor($product);
 
         //when
-        $startTag = $form->start('/sample/url', 'GET', array('class' => 'form-horizontal'));
+        $startTag = $form->start('/sample/url', 'GET', ['class' => 'form-horizontal']);
 
         //then
         /** @noinspection HtmlUnknownTarget */
@@ -263,7 +263,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateFormEndTagInFormForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 0]);
         $form = formFor($product);
 
         //when
@@ -279,7 +279,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldReturnCorrectModelObjectDelegatedAtFormBuilder()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 0));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 0]);
         $form = formFor($product);
 
         //when
@@ -291,19 +291,19 @@ class FormHelperTest extends DbTransactionalTestCase
 
     public function requestUnsupportedMethods()
     {
-        return array(
-            array('PUT'),
-            array('PATCH'),
-            array('DELETE')
-        );
+        return [
+            ['PUT'],
+            ['PATCH'],
+            ['DELETE']
+        ];
     }
 
     public function requestSupportedMethods()
     {
-        return array(
-            array('POST'),
-            array('GET')
-        );
+        return [
+            ['POST'],
+            ['GET']
+        ];
     }
 
     /**
@@ -325,7 +325,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldCreateLinkToWithAttributes()
     {
         //given
-        $attributes = array('class' => 'link', 'id' => 'about');
+        $attributes = ['class' => 'link', 'id' => 'about'];
 
         //when
         $linkTo = linkTo('About', '/albums/about', $attributes);
@@ -354,11 +354,11 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldSetDefaultOptionInSelectTag()
     {
         //given
-        $items = array(1 => 'Opt1', 2 => 'Opt2');
-        $attributes = array('id' => "lab", 'size' => "1");
+        $items = [1 => 'Opt1', 2 => 'Opt2'];
+        $attributes = ['id' => "lab", 'size' => "1"];
 
         //when
-        $result = selectTag("lab", $items, array(2), $attributes, 'default option');
+        $result = selectTag("lab", $items, [2], $attributes, 'default option');
 
         //then
         $expected = '<select id="lab" name="lab" size="1"><option value="" >default option</option><option value="1" >Opt1</option><option value="2" selected>Opt2</option></select>';
@@ -371,9 +371,9 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldReturnSelectTagForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 1]);
         $form = formFor($product);
-        $items = array(1 => 'Cat1', 2 => 'Cat2');
+        $items = [1 => 'Cat1', 2 => 'Cat2'];
 
         //when
         $result = $form->selectField('id_category', $items);
@@ -389,12 +389,12 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldSetDefaultOptionInSelectTagForModelClass()
     {
         //given
-        $product = new Product(array('description' => 'desc', 'name' => 'name', 'id_category' => 1));
+        $product = new Product(['description' => 'desc', 'name' => 'name', 'id_category' => 1]);
         $form = formFor($product);
-        $items = array(1 => 'Cat1', 2 => 'Cat2');
+        $items = [1 => 'Cat1', 2 => 'Cat2'];
 
         //when
-        $result = $form->selectField('id_category', $items, array(), 'select category');
+        $result = $form->selectField('id_category', $items, [], 'select category');
 
         //then
         $expected = '<select id="product_id_category" name="product[id_category]"><option value="" >select category</option><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>';
@@ -407,11 +407,11 @@ class FormHelperTest extends DbTransactionalTestCase
     public function shouldReturnSelectWhenOptionValuesStartFromZero()
     {
         //given
-        $items = array(0 => 'Opt1', 1 => 'Opt2');
-        $attributes = array('size' => "1");
+        $items = [0 => 'Opt1', 1 => 'Opt2'];
+        $attributes = ['size' => "1"];
 
         //when
-        $result = selectTag("lab", $items, array(1), $attributes);
+        $result = selectTag("lab", $items, [1], $attributes);
 
         //then
         $expected = '<select id="lab" name="lab" size="1"><option value="0" >Opt1</option><option value="1" selected>Opt2</option></select>';
