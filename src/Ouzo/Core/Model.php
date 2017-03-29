@@ -8,7 +8,7 @@ namespace Ouzo;
 
 use Exception;
 use InvalidArgumentException;
-use Ouzo\Exception\ValidationException;
+use JsonSerializable;
 use Ouzo\Db\BatchLoadingSession;
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\ModelQueryBuilder;
@@ -16,14 +16,16 @@ use Ouzo\Db\Query;
 use Ouzo\Db\QueryExecutor;
 use Ouzo\Db\Relation;
 use Ouzo\Db\RelationFetcher;
+use Ouzo\Exception\ValidationException;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
 use PDO;
 use ReflectionClass;
+use Serializable;
 
-class Model extends Validatable
+class Model extends Validatable implements Serializable, JsonSerializable
 {
     /** @var ModelDefinition */
     private $_modelDefinition;
@@ -547,5 +549,23 @@ class Model extends Validatable
     {
         $attributes = $this->filterAttributesPreserveNull($this->_attributes);
         return array_intersect_key($attributes, array_flip($this->_modifiedFields));
+    }
+
+    public function serialize()
+    {
+        return serialize($this->_attributes);
+    }
+
+    public function unserialize($serialized)
+    {
+        $result = unserialize($serialized);
+        foreach ($result as $key => $value) {
+            $this->$key = $value;
+        }
+    }
+
+    function jsonSerialize()
+    {
+        return json_encode($this->_attributes);
     }
 }
