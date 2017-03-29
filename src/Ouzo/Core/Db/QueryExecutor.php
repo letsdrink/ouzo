@@ -7,35 +7,42 @@ namespace Ouzo\Db;
 
 use InvalidArgumentException;
 use Ouzo\Db;
+use Ouzo\Db\Dialect\Dialect;
 use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Utilities\Arrays;
 use PDO;
+use PDOStatement;
 
 class QueryExecutor
 {
+    /** @var Db */
+    private $db;
+    /** @var Dialect */
+    private $adapter;
+    /** @var Query */
+    private $query;
+    /** @var array */
+    private $boundValues = [];
+
+    public $sql;
+    public $fetchStyle = PDO::FETCH_ASSOC;
+
     /**
-     * @var Db
+     * @param Db $db
+     * @param Query $query
      */
-    private $_db;
-    private $_adapter;
-    private $_query;
-    private $_boundValues = [];
-
-    public $_sql;
-    public $_fetchStyle = PDO::FETCH_ASSOC;
-
-    public function __construct($db, $query)
+    public function __construct(Db $db, Query $query)
     {
-        $this->_db = $db;
-        $this->_query = $query;
+        $this->db = $db;
+        $this->query = $query;
 
-        $this->_adapter = DialectFactory::create();
+        $this->adapter = DialectFactory::create();
     }
 
     /**
-     * @param $db
-     * @param $query
+     * @param Db $db
+     * @param Query $query
      * @throws InvalidArgumentException
      * @return QueryExecutor|EmptyQueryExecutor
      */
@@ -57,72 +64,112 @@ class QueryExecutor
         return new QueryExecutor($db, $query);
     }
 
+    /**
+     * @return mixed
+     */
     public function fetch()
     {
-        $this->_buildQuery();
+        $this->buildQuery();
         return $this->_fetch('fetch');
     }
 
+    /**
+     * @return mixed
+     */
     public function fetchAll()
     {
-        $this->_buildQuery();
+        $this->buildQuery();
         return $this->_fetch('fetchAll');
     }
 
+    /**
+     * @return StatementIterator
+     */
     public function fetchIterator()
     {
-        $this->_buildQuery();
-        $statement = StatementExecutor::prepare($this->_db->_dbHandle, $this->_sql, $this->_boundValues, $this->_query->options);
+        $this->buildQuery();
+        $statement = StatementExecutor::prepare($this->db->_dbHandle, $this->sql, $this->boundValues, $this->query->options);
         return $statement->fetchIterator();
 
     }
 
+    /**
+     * @return int
+     */
     public function execute()
     {
-        $this->_buildQuery();
-        return $this->_db->execute($this->_sql, $this->_boundValues);
+        $this->buildQuery();
+        return $this->db->execute($this->sql, $this->boundValues);
     }
 
+    /**
+     * @param string $sequence
+     * @return int|null
+     */
     public function insert($sequence = '')
     {
         $this->execute();
-        return $sequence ? (int)$this->_db->lastInsertId($sequence) : null;
+        return $sequence ? (int)$this->db->lastInsertId($sequence) : null;
     }
 
+    /**
+     * @param string $function
+     * @return mixed
+     */
     private function _fetch($function)
     {
-        $statement = StatementExecutor::prepare($this->_db->_dbHandle, $this->_sql, $this->_boundValues, $this->_query->options);
-        return $statement->executeAndFetch($function, $this->_fetchStyle);
+        $statement = StatementExecutor::prepare($this->db->_dbHandle, $this->sql, $this->boundValues, $this->query->options);
+        return $statement->executeAndFetch($function, $this->fetchStyle);
     }
 
+    /**
+     * @return string
+     */
     public function getSql()
     {
-        return $this->_sql;
+        return $this->sql;
     }
 
+    /**
+     * @return array
+     */
     public function getBoundValues()
     {
-        return $this->_boundValues;
+        return $this->boundValues;
     }
 
+    /**
+     * @return string
+     */
     public function lastErrorMessage()
     {
-        return $this->_db->lastErrorMessage();
+        return $this->db->lastErrorMessage();
     }
 
-    public function _buildQuery()
+    /**
+     * @return void
+     */
+    public function buildQuery()
     {
-        $this->_fetchStyle = $this->_query->selectType;
-        $queryBindValuesExtractor = new QueryBoundValuesExtractor($this->_query);
-        $this->_boundValues = $queryBindValuesExtractor->extract();
-        $this->_sql = $this->_adapter->buildQuery($this->_query);
+        $this->fetchStyle = $this->query->selectType;
+        $queryBindValuesExtractor = new QueryBoundValuesExtractor($this->query);
+        $this->boundValues = $queryBindValuesExtractor->extract();
+        $this->sql = $this->adapter->buildQuery($this->query);
     }
 
+    /**
+     * @param Query $query
+     * @return bool
+     */
     private static function isEmptyResult($query)
     {
         return $query->limit === 0 || self::whereClauseNeverSatisfied($query->whereClauses);
     }
 
+    /**
+     * @param WhereClause $whereClauses
+     * @return bool
+     */
     private static function whereClauseNeverSatisfied($whereClauses)
     {
         return Arrays::any($whereClauses, function (WhereClause $whereClause) {
