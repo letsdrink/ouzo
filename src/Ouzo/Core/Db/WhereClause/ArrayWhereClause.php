@@ -79,7 +79,7 @@ class ArrayWhereClause extends WhereClause
 
     private static function _buildWhereKeyIn($column, array $array)
     {
-        $useRestrictions = Arrays::any($array, Functions::isInstanceOf('\Ouzo\Restriction\Restriction'));
+        $useRestrictions = Arrays::any($array, Functions::isInstanceOf(Restriction::class));
 
         if ($useRestrictions) {
             return DialectUtil::joinClauses($array, 'OR', function (Restriction $restriction) use ($column) {

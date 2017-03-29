@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\JoinClause;
@@ -31,7 +32,7 @@ class DialectUtil
     {
         $parts = FluentArray::from($whereClauses)
             ->filter(WhereClause::isNotEmptyFunction())
-            ->map('\Ouzo\Db\Dialect\DialectUtil::buildWhereQueryPart')
+            ->map([DialectUtil::class, 'buildWhereQueryPart'])
             ->toArray();
         return implode(' AND ', Arrays::filterNotBlank($parts));
     }
@@ -52,7 +53,7 @@ class DialectUtil
     public static function buildJoinQuery($joinClauses)
     {
         $elements = FluentArray::from($joinClauses)
-            ->map('\Ouzo\Db\Dialect\DialectUtil::buildJoinQueryPart')
+            ->map([DialectUtil::class, 'buildJoinQueryPart'])
             ->toArray();
         return implode(" ", $elements);
     }
@@ -94,7 +95,7 @@ class DialectUtil
     public static function buildUsingQuery($usingClauses, $glue, $table, $alias)
     {
         $elements = FluentArray::from($usingClauses)
-            ->map('\Ouzo\Db\Dialect\DialectUtil::buildUsingQueryPart')
+            ->map([DialectUtil::class, 'buildUsingQueryPart'])
             ->toArray();
         if ($usingClauses && $table) {
             $tableElement = $table . ($alias ? " AS {$alias}" : "");

@@ -3,12 +3,15 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Db\WhereClause\WhereClause;
+use Ouzo\DbConnectionException;
+use Ouzo\DbException;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
 
@@ -247,9 +250,9 @@ abstract class Dialect
     public function getExceptionForError($errorInfo)
     {
         if ($this->isConnectionError($errorInfo)) {
-            return '\Ouzo\DbConnectionException';
+            return DbConnectionException::class;
         }
-        return '\Ouzo\DbException';
+        return DbException::class;
     }
 
     /**

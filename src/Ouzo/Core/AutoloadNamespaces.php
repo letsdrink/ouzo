@@ -9,18 +9,27 @@ use Ouzo\Utilities\Arrays;
 
 class AutoloadNamespaces
 {
+    /**
+     * @return array
+     */
     public static function getControllerNamespace()
     {
         $controllerPath = Config::getValue('namespace', 'controller');
         return $controllerPath ? Arrays::toArray($controllerPath) : ["\\Application\\Controller\\"];
     }
 
+    /**
+     * @return string
+     */
     public static function getModelNamespace()
     {
         $controllerPath = Config::getValue('namespace', 'model');
         return $controllerPath !== null ? $controllerPath : "\\Application\\Model\\";
     }
 
+    /**
+     * @return string
+     */
     public static function getWidgetNamespace()
     {
         $controllerPath = Config::getValue('namespace', 'widget');

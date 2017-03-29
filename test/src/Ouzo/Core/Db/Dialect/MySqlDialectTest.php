@@ -382,7 +382,7 @@ class MySqlDialectTest extends PHPUnit_Framework_TestCase
     {
         //given
         $previous = Config::getValue('sql_dialect');
-        Config::overrideProperty('sql_dialect')->with('Ouzo\Db\Dialect\MySqlDialect');
+        Config::overrideProperty('sql_dialect')->with(MySqlDialect::class);
         $inserter = new BatchInserter();
         $inserter->add(new Product(['name' => 'product1']));
 

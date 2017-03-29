@@ -12,9 +12,7 @@ use ReflectionMethod;
 
 class Config
 {
-    /**
-     * @var null|ConfigRepository
-     */
+    /** @var null|ConfigRepository */
     private static $configInstance = null;
 
     /**
@@ -32,11 +30,12 @@ class Config
      *
      * If value does not exist it will return empty array.
      *
+     * @param array $keys
      * @return mixed
      */
-    public static function getValue()
+    public static function getValue(...$keys)
     {
-        return self::getInstance()->getValue(func_get_args());
+        return self::getInstance()->getValue($keys);
     }
 
     /**
@@ -79,7 +78,7 @@ class Config
     }
 
     /**
-     * @param $customConfig
+     * @param object $customConfig
      * @throws InvalidArgumentException
      * @return ConfigRepository
      */
@@ -101,27 +100,30 @@ class Config
     }
 
     /**
+     * @param array $keys
      * @return ConfigOverrideProperty
      */
-    public static function overrideProperty()
+    public static function overrideProperty(...$keys)
     {
-        return new ConfigOverrideProperty(func_get_args());
+        return new ConfigOverrideProperty($keys);
     }
 
     /**
+     * @param array $keys
      * @return void
      */
-    public static function clearProperty()
+    public static function clearProperty(...$keys)
     {
-        self::overridePropertyArray(func_get_args(), null);
+        self::overridePropertyArray($keys, null);
     }
 
     /**
+     * @param array $keys
      * @return void
      */
-    public static function revertProperty()
+    public static function revertProperty(...$keys)
     {
-        self::revertPropertyArray(func_get_args());
+        self::revertPropertyArray($keys);
     }
 
     /**

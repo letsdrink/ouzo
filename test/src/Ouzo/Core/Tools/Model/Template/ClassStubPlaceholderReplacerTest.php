@@ -18,7 +18,7 @@ class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
     {
         //given
         /** @var Dialect $dialect */
-        $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
+        $dialect = Mock::mock(Dialect::class);
         Mock::when($dialect)->tableName()->thenReturn('customers');
         Mock::when($dialect)->columns()->thenReturn([]);
         $classStubReplacer = new ClassStubPlaceholderReplacer('Customer', new TableInfo($dialect));
@@ -40,7 +40,7 @@ class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
     {
         //given
         /** @var Dialect $dialect */
-        $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
+        $dialect = Mock::mock(Dialect::class);
         Mock::when($dialect)->primaryKey()->thenReturn('id');
         Mock::when($dialect)->columns()->thenReturn([]);
         $classStubReplacer = new ClassStubPlaceholderReplacer('Customer', new TableInfo($dialect));
@@ -62,7 +62,7 @@ class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
     {
         //given
         /** @var Dialect $dialect */
-        $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
+        $dialect = Mock::mock(Dialect::class);
         Mock::when($dialect)->primaryKey()->thenReturn('id');
         Mock::when($dialect)->tableName()->thenReturn('customers');
         Mock::when($dialect)->sequence()->thenReturn('customers_id_seq');
@@ -86,7 +86,7 @@ class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
     {
         //given
         /** @var Dialect $dialect */
-        $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
+        $dialect = Mock::mock(Dialect::class);
         Mock::when($dialect)->primaryKey()->thenReturn('');
         Mock::when($dialect)->columns()->thenReturn([]);
         $classStubReplacer = new ClassStubPlaceholderReplacer('Customer', new TableInfo($dialect));

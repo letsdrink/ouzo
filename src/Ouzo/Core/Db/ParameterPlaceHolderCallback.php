@@ -54,7 +54,7 @@ class ParameterPlaceHolderCallback
         if (is_bool($value)) {
             return Objects::booleanToString($value);
         }
-        return Db::getInstance()->_dbHandle->quote($value);
+        return Db::getInstance()->dbHandle->quote($value);
     }
 
     /**

@@ -286,7 +286,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $model = $form->getObject();
 
         //then
-        $this->assertInstanceOf('\Application\Model\Test\Product', $model);
+        $this->assertInstanceOf(Product::class, $model);
     }
 
     public function requestUnsupportedMethods()

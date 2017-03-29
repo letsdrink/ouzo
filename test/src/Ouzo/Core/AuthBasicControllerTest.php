@@ -5,6 +5,7 @@
  */
 use Ouzo\Config;
 use Ouzo\Controller;
+use Ouzo\Exception\UnauthorizedException;
 use Ouzo\Extension\AuthBasicExtension;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
@@ -58,7 +59,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/auth_sample/index');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\UnauthorizedException');
+        CatchException::assertThat()->isInstanceOf(UnauthorizedException::class);
     }
 
     /**
@@ -74,7 +75,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/auth_sample/index');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Exception\UnauthorizedException');
+        CatchException::assertThat()->isInstanceOf(UnauthorizedException::class);
     }
 
     /**

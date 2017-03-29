@@ -51,7 +51,7 @@ abstract class AbstractOuzoLogger extends AbstractLogger
         }
     }
 
-    public function debug($message, array $context = array())
+    public function debug($message, array $context = [])
     {
         if ($this->isDebug()) {
             parent::debug($message, $context);

@@ -18,7 +18,7 @@ class TableInfoTest extends PHPUnit_Framework_TestCase
     {
         //given
         /** @var Dialect $dialect */
-        $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
+        $dialect = Mock::mock(Dialect::class);
         Mock::when($dialect)->primaryKey()->thenReturn('id_name');
         Mock::when($dialect)->columns()->thenReturn([
             new DatabaseColumn('sale', 'text'),
@@ -41,7 +41,7 @@ class TableInfoTest extends PHPUnit_Framework_TestCase
     {
         //given
         /** @var Dialect $dialect */
-        $dialect = Mock::mock('Ouzo\Tools\Model\Template\Dialect\Dialect');
+        $dialect = Mock::mock(Dialect::class);
         Mock::when($dialect)->primaryKey()->thenReturn('id');
         Mock::when($dialect)->columns()->thenReturn([
             new DatabaseColumn('sale', 'text'),

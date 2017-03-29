@@ -18,7 +18,7 @@ class BooleanAssertTest extends PHPUnit_Framework_TestCase
         $instance = BooleanAssert::that(0);
 
         // then
-        $this->assertInstanceOf('Ouzo\Tests\BooleanAssert', $instance);
+        $this->assertInstanceOf(BooleanAssert::class, $instance);
     }
 
     /**
@@ -82,7 +82,7 @@ class BooleanAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(BooleanAssert::that($notTrue))->isTrue();
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 
     /**
@@ -94,6 +94,6 @@ class BooleanAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(BooleanAssert::that($notFalse))->isFalse();
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 }

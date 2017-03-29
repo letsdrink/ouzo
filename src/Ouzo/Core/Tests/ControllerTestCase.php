@@ -3,12 +3,19 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
 use Ouzo\Config;
+use Ouzo\CookiesSetter;
+use Ouzo\DownloadHandler;
 use Ouzo\FrontController;
+use Ouzo\HeaderSender;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
+use Ouzo\OutputDisplayer;
+use Ouzo\RedirectHandler;
+use Ouzo\SessionInitializer;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\Strings;
@@ -31,7 +38,7 @@ class ControllerTestCase extends DbTransactionalTestCase
         $this->injectorConfig = new InjectorConfig();
         $this->frontControllerBindings($this->injectorConfig);
         $injector = new Injector($this->injectorConfig);
-        $this->frontController = $injector->getInstance('\Ouzo\FrontController');
+        $this->frontController = $injector->getInstance(FrontController::class);
     }
 
     private static function _prefixSystem()
@@ -196,12 +203,12 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     protected function frontControllerBindings(InjectorConfig $config)
     {
-        $config->bind('\Ouzo\OutputDisplayer')->toInstance(new MockOutputDisplayer());
-        $config->bind('\Ouzo\HeaderSender')->toInstance(new MockHeaderSender());
-        $config->bind('\Ouzo\CookiesSetter')->toInstance(new MockCookiesSetter());
-        $config->bind('\Ouzo\RedirectHandler')->toInstance(new MockRedirectHandler());
-        $config->bind('\Ouzo\SessionInitializer')->toInstance(new MockSessionInitializer());
-        $config->bind('\Ouzo\DownloadHandler')->toInstance(new MockDownloadHandler());
+        $config->bind(OutputDisplayer::class)->toInstance(new MockOutputDisplayer());
+        $config->bind(HeaderSender::class)->toInstance(new MockHeaderSender());
+        $config->bind(CookiesSetter::class)->toInstance(new MockCookiesSetter());
+        $config->bind(RedirectHandler::class)->toInstance(new MockRedirectHandler());
+        $config->bind(SessionInitializer::class)->toInstance(new MockSessionInitializer());
+        $config->bind(DownloadHandler::class)->toInstance(new MockDownloadHandler());
     }
 
     protected function requestContext()
