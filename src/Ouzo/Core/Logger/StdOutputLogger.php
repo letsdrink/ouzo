@@ -7,7 +7,7 @@ namespace Ouzo\Logger;
 
 use Ouzo\Utilities\Clock;
 
-class StdOutputLogger extends AbstractLogger
+class StdOutputLogger extends AbstractOuzoLogger
 {
     private $_outputStreamIdentifier;
 
@@ -27,40 +27,23 @@ class StdOutputLogger extends AbstractLogger
         return $this->_outputStreamIdentifier . "://stdout";
     }
 
-    private function _log($stdOut, $level, $levelName, $message, $params)
+
+    private function _getStreamForLogLevel($logLevel)
     {
-        $this->log(function ($message) use ($stdOut) {
+        if (LogLevelTranslator::toSyslogLevel($logLevel) >= LOG_WARNING) {
+            return $this->_standardStreamName();
+        }
+        return $this->_errorStreamName();
+    }
+
+    public function log($level, $message, array $context = array())
+    {
+        $stdOut = $this->_getStreamForLogLevel($level);
+        $this->logWithFunction(function ($message) use ($stdOut) {
             $date = Clock::nowAsString();
             $fileHandle = fopen($stdOut, 'a');
             fwrite($fileHandle, "$date: $message\n");
             fclose($fileHandle);
-        }, $level, $levelName, $message, $params);
-    }
-
-    public function error($message, $params = null)
-    {
-        $this->_log($this->_errorStreamName(), LOG_ERR, 'Error', $message, $params);
-    }
-
-    public function info($message, $params = null)
-    {
-        $this->_log($this->_standardStreamName(), LOG_INFO, 'Info', $message, $params);
-    }
-
-    public function debug($message, $params = null)
-    {
-        if ($this->isDebug()) {
-            $this->_log($this->_standardStreamName(), LOG_DEBUG, 'Debug', $message, $params);
-        }
-    }
-
-    public function warning($message, $params = null)
-    {
-        $this->_log($this->_standardStreamName(), LOG_WARNING, 'Warning', $message, $params);
-    }
-
-    public function fatal($message, $params = null)
-    {
-        $this->_log($this->_errorStreamName(), LOG_CRIT, 'Fatal', $message, $params);
+        }, $level, $message, $context);
     }
 }

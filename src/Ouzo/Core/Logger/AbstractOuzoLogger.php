@@ -7,8 +7,10 @@ namespace Ouzo\Logger;
 
 use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LogLevel;
 
-abstract class AbstractLogger implements LoggerInterface
+abstract class AbstractOuzoLogger extends AbstractLogger
 {
     private $_name;
     /**
@@ -36,15 +38,23 @@ abstract class AbstractLogger implements LoggerInterface
         $this->_name = $name;
     }
 
-    protected function log($writeToLogFunction, $level, $levelName, $message, $params)
+    protected function logWithFunction($writeToLogFunction, $level, $message, $params)
     {
+        $ouzoLevel = LogLevelTranslator::toSyslogLevel($level);
         $minimalLevel = $this->_minimalLevels ? Arrays::getValue($this->_minimalLevels, $this->_name, LOG_DEBUG) : LOG_DEBUG;
-        if ($level <= $minimalLevel) {
-            $message = $this->_messageFormatter->format($this->_name, $levelName, $message);
+        if ($ouzoLevel <= $minimalLevel) {
+            $message = $this->_messageFormatter->format($this->_name, $level, $message);
             if (!empty($params)) {
                 $message = call_user_func_array('sprintf', array_merge(array($message), $params));
             }
             $writeToLogFunction($message);
+        }
+    }
+
+    public function debug($message, array $context = array())
+    {
+        if ($this->isDebug()) {
+            $this->log(LogLevel::DEBUG, $message, $context);
         }
     }
 

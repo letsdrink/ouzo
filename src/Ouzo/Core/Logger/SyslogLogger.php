@@ -6,7 +6,7 @@
 namespace Ouzo\Logger;
 
 
-class SyslogLogger extends AbstractLogger
+class SyslogLogger extends AbstractOuzoLogger
 {
     public function __construct($name, $configuration)
     {
@@ -18,41 +18,15 @@ class SyslogLogger extends AbstractLogger
         closelog();
     }
 
-    private function _log($level, $levelName, $message, $params)
+    public function log($level, $message, array $context = array())
     {
         $logger = $this->getLogger();
-        $this->log(function ($message) use ($logger, $level) {
+        $syslogLevel = LogLevelTranslator::toSyslogLevel($level);
+        $this->logWithFunction(function ($message) use ($logger, $syslogLevel) {
             if ($logger) {
                 openlog($logger['ident'], $logger['option'], $logger['facility']);
             }
-            syslog($level, $message);
-        }, $level, $levelName, $message, $params);
-    }
-
-    public function error($message, $params = null)
-    {
-        $this->_log(LOG_ERR, 'Error', $message, $params);
-    }
-
-    public function info($message, $params = null)
-    {
-        $this->_log(LOG_INFO, 'Info', $message, $params);
-    }
-
-    public function debug($message, $params = null)
-    {
-        if ($this->isDebug()) {
-            $this->_log(LOG_DEBUG, 'Debug', $message, $params);
-        }
-    }
-
-    public function warning($message, $params = null)
-    {
-        $this->_log(LOG_WARNING, 'Warning', $message, $params);
-    }
-
-    public function fatal($message, $params = null)
-    {
-        $this->_log(LOG_CRIT, 'Fatal', $message, $params);
+            syslog($syslogLevel, $message);
+        }, $level, $message, $context);
     }
 }
