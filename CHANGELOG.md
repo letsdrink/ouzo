@@ -5,6 +5,7 @@ INCOMING
 --------
 Enhancements:
 * [ORM] Model implements Serializable and JsonSerializable interfaces (issue #203).
+* [DI] Added constructor injection for arguments with types defined (issue #265).
 
 Release 1.6.1
 --------
