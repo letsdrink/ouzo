@@ -15,17 +15,11 @@ use Ouzo\Utilities\Path;
 
 class Bootstrap
 {
-    /**
-     * @var ConfigRepository
-     */
+    /** @var ConfigRepository */
     private $configRepository;
-    /**
-     * @var Injector
-     */
+    /** @var Injector */
     private $injector;
-    /**
-     * @var InjectorConfig
-     */
+    /** @var InjectorConfig */
     private $injectorConfig;
 
     public function __construct()
@@ -35,7 +29,7 @@ class Bootstrap
     }
 
     /**
-     * @param $config
+     * @param string $config
      * @return $this
      */
     public function addConfig($config)

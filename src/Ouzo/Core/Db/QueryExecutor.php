@@ -88,7 +88,7 @@ class QueryExecutor
     public function fetchIterator()
     {
         $this->buildQuery();
-        $statement = StatementExecutor::prepare($this->db->_dbHandle, $this->sql, $this->boundValues, $this->query->options);
+        $statement = StatementExecutor::prepare($this->db->dbHandle, $this->sql, $this->boundValues, $this->query->options);
         return $statement->fetchIterator();
 
     }
@@ -118,7 +118,7 @@ class QueryExecutor
      */
     private function _fetch($function)
     {
-        $statement = StatementExecutor::prepare($this->db->_dbHandle, $this->sql, $this->boundValues, $this->query->options);
+        $statement = StatementExecutor::prepare($this->db->dbHandle, $this->sql, $this->boundValues, $this->query->options);
         return $statement->executeAndFetch($function, $this->fetchStyle);
     }
 

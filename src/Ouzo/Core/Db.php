@@ -14,15 +14,19 @@ use PDO;
 
 class Db
 {
+    /** @var PDO */
+    public $dbHandle = null;
+    /** @var bool */
+    public $startedTransaction = false;
+
+    /** @var Db */
+    private static $instance = null;
+    /** @var bool */
+    private static $transactionsEnabled = true;
+
     /**
-     * @var PDO
+     * @param bool $loadDefault
      */
-    public $_dbHandle = null;
-    public $_startedTransaction = false;
-
-    private static $_instance;
-    private static $_transactionsEnabled = true;
-
     public function __construct($loadDefault = true)
     {
         if ($loadDefault) {
@@ -33,24 +37,36 @@ class Db
         }
     }
 
+    /**
+     * @return Db
+     */
     public static function getInstance()
     {
-        if (!self::$_instance) {
-            self::$_instance = new self();
+        if (!self::$instance) {
+            self::$instance = new self();
         }
-        return self::$_instance;
+        return self::$instance;
     }
 
+    /**
+     * @param array $params
+     * @return $this
+     */
     public function connectDb($params = [])
     {
-        $this->_dbHandle = $this->_createPdo($params);
+        $this->dbHandle = $this->createPdo($params);
         $attributes = Arrays::getValue($params, 'attributes', []);
         foreach ($attributes as $attribute => $value) {
-            $this->_dbHandle->setAttribute($attribute, $value);
+            $this->dbHandle->setAttribute($attribute, $value);
         }
         return $this;
     }
 
+    /**
+     * @param string $functionName
+     * @param array $parameters
+     * @return mixed
+     */
     public static function callFunction($functionName, $parameters)
     {
         $db = self::getInstance();
@@ -59,9 +75,15 @@ class Db
         return Arrays::first($db->query("SELECT $functionName($paramsQueryString)", $parameters)->fetch());
     }
 
+    /**
+     * @param string $query
+     * @param array $params
+     * @param array $options
+     * @return StatementExecutor
+     */
     public function query($query, $params = [], $options = [])
     {
-        return StatementExecutor::prepare($this->_dbHandle, $query, $params, $options);
+        return StatementExecutor::prepare($this->dbHandle, $query, $params, $options);
     }
 
     /**
@@ -73,7 +95,7 @@ class Db
      */
     public function execute($query, $params = [], $options = [])
     {
-        return StatementExecutor::prepare($this->_dbHandle, $query, $params, $options)->execute();
+        return StatementExecutor::prepare($this->dbHandle, $query, $params, $options)->execute();
     }
 
     /**
@@ -87,9 +109,14 @@ class Db
         return TransactionalProxy::newInstance($object);
     }
 
+    /**
+     * @param \Closure $callable
+     * @return mixed
+     * @throws Exception
+     */
     public function runInTransaction($callable)
     {
-        if (!$this->_startedTransaction) {
+        if (!$this->startedTransaction) {
             $this->beginTransaction();
             try {
                 $result = call_user_func($callable);
@@ -103,75 +130,109 @@ class Db
         return call_user_func($callable);
     }
 
+    /**
+     * @return void
+     */
     public function beginTransaction()
     {
-        if (self::$_transactionsEnabled) {
-            $this->_startedTransaction = true;
-            $this->_dbHandle->beginTransaction();
+        if (self::$transactionsEnabled) {
+            $this->startedTransaction = true;
+            $this->dbHandle->beginTransaction();
         }
     }
 
+    /**
+     * @return void
+     */
     public function commitTransaction()
     {
-        if (self::$_transactionsEnabled) {
-            $this->_dbHandle->commit();
-            $this->_startedTransaction = false;
+        if (self::$transactionsEnabled) {
+            $this->dbHandle->commit();
+            $this->startedTransaction = false;
         }
     }
 
+    /**
+     * @return void
+     */
     public function rollbackTransaction()
     {
-        if (self::$_transactionsEnabled) {
-            $this->_dbHandle->rollBack();
-            $this->_startedTransaction = false;
+        if (self::$transactionsEnabled) {
+            $this->dbHandle->rollBack();
+            $this->startedTransaction = false;
         }
     }
 
+    /**
+     * @return string
+     */
     public function lastErrorMessage()
     {
-        $errorInfo = $this->_dbHandle->errorInfo();
+        $errorInfo = $this->dbHandle->errorInfo();
         return $errorInfo[2];
     }
 
-    private function _buildDsn($params)
+    /**
+     * @param array $params
+     * @return string
+     */
+    private function buildDsn(array $params)
     {
         $charset = Arrays::getValue($params, 'charset');
         $dsn = $params['driver'] . ':host=' . $params['host'] . ';port=' . $params['port'] . ';dbname=' . $params['dbname'] . ';user=' . $params['user'] . ';password=' . $params['pass'];
         return $dsn . ($charset ? ';charset=' . $charset : '');
     }
 
-    private function _createPdo($params)
+    /**
+     * @param array $params
+     * @return PDO
+     */
+    private function createPdo(array $params)
     {
         $dsn = Arrays::getValue($params, 'dsn');
         $options = Arrays::getValue($params, 'options', []);
         if ($dsn) {
             return new PDO($dsn, '', '', $options);
         }
-        $dsn = $this->_buildDsn($params);
+        $dsn = $this->buildDsn($params);
         return new PDO($dsn, $params['user'], $params['pass'], $options);
     }
 
+    /**
+     * @param string $sequence
+     * @return string
+     * @throws Exception
+     */
     public function lastInsertId($sequence)
     {
-        $lastInsertId = $this->_dbHandle->lastInsertId($sequence);
+        $lastInsertId = $this->dbHandle->lastInsertId($sequence);
         if (!$lastInsertId) {
-            throw PDOExceptionExtractor::getException($this->_dbHandle->errorInfo(), "Cannot get sequence value: $sequence");
+            throw PDOExceptionExtractor::getException($this->dbHandle->errorInfo(), "Cannot get sequence value: $sequence");
         }
         return $lastInsertId;
     }
 
+    /**
+     * @return void
+     */
     public function disableTransactions()
     {
-        self::$_transactionsEnabled = false;
+        self::$transactionsEnabled = false;
     }
 
+    /**
+     * @return void
+     */
     public function enableTransactions()
     {
-        self::$_transactionsEnabled = true;
+        self::$transactionsEnabled = true;
     }
 
+    /**
+     * @return bool
+     */
     public function isConnected()
     {
-        return $this->_dbHandle != null;
+        return $this->dbHandle != null;
     }
 }

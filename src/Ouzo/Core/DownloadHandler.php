@@ -9,6 +9,10 @@ use Ouzo\Utilities\Arrays;
 
 class DownloadHandler
 {
+    /**
+     * @param array $fileData
+     * @return void
+     */
     public function downloadFile(array $fileData)
     {
         header('Content-Type: ' . $fileData['mime']);
@@ -16,6 +20,10 @@ class DownloadHandler
         readfile($fileData['path']);
     }
 
+    /**
+     * @param array $fileData
+     * @return void
+     */
     public function streamMediaFile(array $fileData)
     {
         $location = $fileData['path'];

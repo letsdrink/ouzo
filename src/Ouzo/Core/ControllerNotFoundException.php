@@ -1,6 +1,8 @@
 <?php
 namespace Ouzo;
 
-class ControllerNotFoundException extends \Exception
+use Exception;
+
+class ControllerNotFoundException extends Exception
 {
 }

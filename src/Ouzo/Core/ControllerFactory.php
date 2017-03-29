@@ -24,6 +24,11 @@ class ControllerFactory
         $this->controllerNamespaces = AutoloadNamespaces::getControllerNamespace();
     }
 
+    /**
+     * @param RouteRule $routeRule
+     * @return Controller
+     * @throws ControllerNotFoundException
+     */
     public function createController(RouteRule $routeRule)
     {
         $controllerName = ClassName::pathToFullyQualifiedName($routeRule->getController());
@@ -36,6 +41,11 @@ class ControllerFactory
         throw new ControllerNotFoundException('Controller [' . $controllerName . '] for URI [' . $routeRule->getUri() . '] does not exist!');
     }
 
+    /**
+     * @param RouteRule $routeRule
+     * @param string $controller
+     * @return Controller
+     */
     private function getInstance(RouteRule $routeRule, $controller)
     {
         $controllerInstance = $this->injector->getInstance($controller);
