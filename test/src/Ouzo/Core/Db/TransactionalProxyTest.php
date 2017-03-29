@@ -27,11 +27,10 @@ class TransactionalProxyTest extends PHPUnit_Framework_TestCase
     public function shouldRunFunctionInTransaction()
     {
         //given
-        $test = $this;
-        $transactionalFunction = Db::transactional(function ($param1, $param2) use ($test) {
-            $test->method();
-            $test->assertEquals(1, $param1);
-            $test->assertEquals(2, $param2);
+        $transactionalFunction = Db::transactional(function ($param1, $param2) {
+            $this->method();
+            $this->assertEquals(1, $param1);
+            $this->assertEquals(2, $param2);
         });
 
         //when
