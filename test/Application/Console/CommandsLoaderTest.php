@@ -2,6 +2,7 @@
 
 namespace Ouzo\Console;
 
+use Ouzo\Injection\Injector;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Path;
 use Symfony\Component\Console\Application;
@@ -31,6 +32,25 @@ class CommandsLoaderTest extends \PHPUnit_Framework_TestCase
 
         //then
         Mock::verify($application)->addCommands([new \TestCommand()]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLoadCommandsUsingInjector()
+    {
+        //given
+        $application = Mock::mock(Application::class);
+        $injector = Mock::mock(Injector::class);
+        Mock::when($injector)->getInstance("\\TestCommand")->thenReturn(new \TestCommand());
+        $loader = CommandsLoader::forApplicationAndInjector($application, $injector);
+
+        //when
+        $loader->registerCommandsFromPath($this->testCommandsPath);
+
+        //then
+        Mock::verify($application)->addCommands([new \TestCommand()]);
+        Mock::verify($injector)->getInstance("\\TestCommand");
     }
 
 }
