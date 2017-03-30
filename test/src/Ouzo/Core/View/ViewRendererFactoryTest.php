@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Config;
+use Ouzo\View\PhtmlRenderer;
 use Ouzo\View\ViewRenderer;
 use Ouzo\View\ViewRendererFactory;
 
@@ -29,7 +30,7 @@ class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase
         $renderer = ViewRendererFactory::create('my_view', []);
 
         //then
-        $this->assertInstanceOf('\Ouzo\View\PhtmlRenderer', $renderer);
+        $this->assertInstanceOf(PhtmlRenderer::class, $renderer);
     }
 
     /**

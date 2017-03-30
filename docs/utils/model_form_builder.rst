@@ -18,7 +18,7 @@ ModelFormBuilder simplifies implementation of forms for model objects.
   
     <?= $form->textArea('description'); ?>
   
-    <?= $form->selectField('role', array('admin' => 'Admin', 'user' => 'User')); ?>
+    <?= $form->selectField('role', ['admin' => 'Admin', 'user' => 'User']); ?>
   
   <?= $form->end(); ?>
 
@@ -38,12 +38,12 @@ label
 ~~~~~
 Creates a label tag.
 
-**Parameters:** ``$field``, ``$options = array()``
+**Parameters:** ``$field``, ``$options = []``
 
 **Example:**
 ::
 
-  $form->label("name", array('class' => 'pretty'))
+  $form->label("name", ['class' => 'pretty'])
   //=> <label for="name" class="pretty">A Label</label>
   // assuming that there's a translation for modelName.name e.g. user.name => A Label
 
@@ -51,19 +51,19 @@ hiddenField
 ~~~~~~~~~~~
 Creates a hidden input tag.
 
-**Parameters:** ``$field``, ``$options = array()``
+**Parameters:** ``$field``, ``$options = []``
 
 **Example:**
 ::
 
-  $form->hiddenField("name", array('id' => 'my-id'))
+  $form->hiddenField("name", ['id' => 'my-id'])
   //=> <input type="hidden" id="my-id" name="user[name]" value="">
 
 textField
 ~~~~~~~~~
 Creates a text input tag.
 
-**Parameters:** ``$name``, ``$value``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$value``, ``$attributes = []``
 
 **Example:**
 ::
@@ -75,7 +75,7 @@ textArea
 ~~~~~~~~
 Creates a textarea tag.
 
-**Parameters:** ``$field``, ``$options = array()``
+**Parameters:** ``$field``, ``$options = []``
 
 **Example:**
 ::
@@ -87,12 +87,12 @@ checkboxField
 ~~~~~~~~~~~~~
 Creates a checkbox input tag.
 
-**Parameters:** ``$field``, ``$options = array()``
+**Parameters:** ``$field``, ``$options = []``
 
 **Example:**
 ::
 
-  $form->checkboxField("cool",  array('class' => 'my-class'))
+  $form->checkboxField("cool",  ['class' => 'my-class'])
   //=>
   //<input type="checkbox" value="1" id="user_cool" name="user[cool]" class="my-class">
   //<input name="user[cool]" type="hidden" value="0">
@@ -101,12 +101,12 @@ selectField
 ~~~~~~~~~~~
 Creates a select tag.
 
-**Parameters:** ``$field``, ``$items = array()``, ``$options = array()``, ``$promptOption = null``
+**Parameters:** ``$field``, ``$items = []``, ``$options = []``, ``$promptOption = null``
 
 **Example:**
 ::
 
-  $form->selectField('person', array('bob' => 'Bob', 'fred' => 'Fred'), array('class' => "my-select"), 'select person')
+  $form->selectField('person', ['bob' => 'Bob', 'fred' => 'Fred'], ['class' => "my-select"], 'select person')
   //=>
   //<select id="user_person" name="user[person]" class="my-select">
   //  <option value="" selected="">select person</option>
@@ -117,11 +117,11 @@ passwordField
 ~~~~~~~~~~~~~
 Creates a password input tag.
 
-**Parameters:** ``$field``, ``$options = array()``
+**Parameters:** ``$field``, ``$options = []``
 
 **Example:**
 ::
 
-  $form->passwordField("name",  array('class' => 'my-class'))
+  $form->passwordField("name",  ['class' => 'my-class'])
   //=>
   //<input type="password" id="user_password" name="user[password]" value="value">

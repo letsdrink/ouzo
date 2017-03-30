@@ -7,6 +7,9 @@ namespace Ouzo;
 
 class OutputDisplayer
 {
+    /**
+     * @param string $content
+     */
     public function display($content)
     {
         echo $content;

@@ -42,7 +42,7 @@ class TransactionalProxyTest extends PHPUnit_Framework_TestCase
 
     public function method()
     {
-        $startedTransaction = Db::getInstance()->_startedTransaction;
+        $startedTransaction = Db::getInstance()->startedTransaction;
         $this->transactionStatus = $startedTransaction;
     }
 }

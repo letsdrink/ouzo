@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Controller;
+use Ouzo\ControllerFactory;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\ControllerTestCase;
@@ -59,7 +60,7 @@ class BeforeFilterTest extends ControllerTestCase
     protected function frontControllerBindings(InjectorConfig $config)
     {
         parent::frontControllerBindings($config);
-        $config->bind('\Ouzo\ControllerFactory')->toInstance(new MockControllerFactory());
+        $config->bind(ControllerFactory::class)->toInstance(new MockControllerFactory());
     }
 
     /**

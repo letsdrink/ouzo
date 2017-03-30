@@ -59,7 +59,7 @@ Removes prefixes defined in array from string.
 ::
 
     $string = 'prefixRest';
-    $withoutPrefix = Strings::removePrefixes($string, array('pre', 'fix'));
+    $withoutPrefix = Strings::removePrefixes($string, ['pre', 'fix']);
 
 **Result:** ``Rest``
 
@@ -340,10 +340,10 @@ Replaces all occurrences of placeholder in string with values from associative a
 ::
 
     $sprintfString = "This is %{what}! %{what}? This is %{place}!";
-    $assocArray = array(
+    $assocArray = [
       'what' => 'madness',
       'place' => 'Sparta'
-    );
+    ];
 
 **Result:** ``This is madness! madness? This is Sparta!``
 
@@ -360,10 +360,10 @@ When no value for placeholder is found in array, a default empty value is used i
 ::
 
     $sprintfString = "This is %{what}! %{what}? This is %{place}!";
-    $assocArray = array(
+    $assocArray = [
       'what' => 'madness',
       'place' => 'Sparta'
-    );
+    ];
 
 **Result:** ``This is madness! madness? This is Sparta!``
 

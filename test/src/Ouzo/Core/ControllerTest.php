@@ -5,6 +5,7 @@
  */
 use Ouzo\Config;
 use Ouzo\Controller;
+use Ouzo\NoControllerActionException;
 use Ouzo\Notice;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
@@ -13,6 +14,7 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Utilities\Arrays;
+use Ouzo\View\ViewException;
 
 class SimpleTestController extends Controller
 {
@@ -221,7 +223,7 @@ class ControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/simple_test/invalid');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\NoControllerActionException');
+        CatchException::assertThat()->isInstanceOf(NoControllerActionException::class);
     }
 
     /**
@@ -493,7 +495,7 @@ class ControllerTest extends ControllerTestCase
         CatchException::when($this)->get('/simple_test/empty_view_name');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\View\ViewException');
+        CatchException::assertThat()->isInstanceOf(ViewException::class);
     }
 
     /**

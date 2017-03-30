@@ -9,6 +9,9 @@ use Ouzo\Utilities\Arrays;
 
 class HeaderSender
 {
+    /**
+     * @param array $headers
+     */
     public function send($headers)
     {
         Arrays::map($headers, function ($header) {

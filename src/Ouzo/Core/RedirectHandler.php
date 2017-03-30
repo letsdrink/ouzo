@@ -7,6 +7,10 @@ namespace Ouzo;
 
 class RedirectHandler
 {
+    /**
+     * @param string $url
+     * @return void
+     */
     public function redirect($url)
     {
         header('Location: ' . $url);

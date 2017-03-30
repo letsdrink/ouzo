@@ -8,6 +8,7 @@ use Application\Model\Test\Manufacturer;
 use Application\Model\Test\Order;
 use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
+use Ouzo\Db;
 use Ouzo\Db\Any;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Relation;
@@ -458,7 +459,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         CatchException::when($products)->fetchAll();
 
         //then
-        CatchException::assertThat()->isInstanceOf('\BadMethodCallException');
+        CatchException::assertThat()->isInstanceOf(BadMethodCallException::class);
     }
 
     /**
@@ -870,7 +871,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldNotTryToDeleteIfEmptyInClause()
     {
         //given
-        $mockDb = Mock::create('\Ouzo\Db');
+        $mockDb = Mock::create(Db::class);
         $builder = new ModelQueryBuilder(new Product(), $mockDb);
 
         //when
@@ -1362,7 +1363,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ]);
 
         //then
-        CatchException::assertThat()->isInstanceOf('\InvalidArgumentException');
+        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
     /**

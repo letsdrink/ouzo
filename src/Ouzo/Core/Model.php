@@ -28,13 +28,11 @@ use Serializable;
 class Model extends Validatable implements Serializable, JsonSerializable
 {
     /** @var ModelDefinition */
-    private $_modelDefinition;
-
+    private $modelDefinition;
     /** @var array */
-    private $_attributes;
-
+    private $attributes;
     /** @var array */
-    private $_modifiedFields = [];
+    private $modifiedFields = [];
 
     /**
      * Creates a new model object.
@@ -54,78 +52,116 @@ class Model extends Validatable implements Serializable, JsonSerializable
      */
     public function __construct(array $params)
     {
-        $this->_prepareParameters($params);
+        $this->prepareParameters($params);
 
-        $this->_modelDefinition = ModelDefinition::get(get_called_class(), $params);
-        $primaryKeyName = $this->_modelDefinition->primaryKey;
-        $attributes = $this->_modelDefinition->mergeWithDefaults($params['attributes'], $params['fields']);
+        $this->modelDefinition = ModelDefinition::get(get_called_class(), $params);
+        $primaryKeyName = $this->modelDefinition->primaryKey;
+        $attributes = $this->modelDefinition->mergeWithDefaults($params['attributes'], $params['fields']);
 
         if (isset($attributes[$primaryKeyName]) && Strings::isBlank($attributes[$primaryKeyName])) {
             unset($attributes[$primaryKeyName]);
         }
-        $this->_attributes = $this->filterAttributes($attributes);
-        $this->_modifiedFields = array_keys($this->_attributes);
+        $this->attributes = $this->filterAttributes($attributes);
+        $this->modifiedFields = array_keys($this->attributes);
     }
 
+    /**
+     * @param string $name
+     * @param string $value
+     */
     public function __set($name, $value)
     {
-        $this->_modifiedFields[] = $name;
-        $this->_attributes[$name] = $value;
+        $this->modifiedFields[] = $name;
+        $this->attributes[$name] = $value;
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     * @throws Exception
+     */
     public function __get($name)
     {
         if (empty($name)) {
             throw new Exception('Illegal attribute: field name for Model cannot be empty');
         }
-        if (array_key_exists($name, $this->_attributes)) {
-            return $this->_attributes[$name];
+        if (array_key_exists($name, $this->attributes)) {
+            return $this->attributes[$name];
         }
 
-        if ($this->_modelDefinition->relations->hasRelation($name)) {
-            $this->_fetchRelation($name);
-            return $this->_attributes[$name];
+        if ($this->modelDefinition->relations->hasRelation($name)) {
+            $this->fetchRelation($name);
+            return $this->attributes[$name];
         }
         return null;
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function __isset($name)
     {
         return $this->__get($name) !== null;
     }
 
+    /**
+     * @param string $name
+     * @return void
+     */
     public function __unset($name)
     {
-        unset($this->_attributes[$name]);
+        unset($this->attributes[$name]);
     }
 
-    public function assignAttributes($attributes)
+    /**
+     * @param array $attributes
+     */
+    public function assignAttributes(array $attributes)
     {
-        $this->_modifiedFields = array_merge($this->_modifiedFields, array_keys($attributes));
-        $this->_attributes = array_merge($this->_attributes, $this->filterAttributesPreserveNull($attributes));
+        $this->modifiedFields = array_merge($this->modifiedFields, array_keys($attributes));
+        $this->attributes = array_merge($this->attributes, $this->filterAttributesPreserveNull($attributes));
     }
 
-    private function filterAttributesPreserveNull($data)
+    /**
+     * @param array $data
+     * @return array
+     */
+    private function filterAttributesPreserveNull(array $data)
     {
-        return array_intersect_key($data, array_flip($this->_modelDefinition->fields));
+        return array_intersect_key($data, array_flip($this->modelDefinition->fields));
     }
 
-    private function filterAttributes($data)
+    /**
+     * @param array $data
+     * @return array
+     */
+    private function filterAttributes(array $data)
     {
         return Arrays::filter($this->filterAttributesPreserveNull($data), Functions::notNull());
     }
 
+    /**
+     * @return array
+     */
     public function attributes()
     {
-        return array_replace(array_fill_keys($this->_modelDefinition->fields, null), $this->_attributes);
+        return array_replace(array_fill_keys($this->modelDefinition->fields, null), $this->attributes);
     }
 
+    /**
+     * @return array
+     */
     public function definedAttributes()
     {
         return $this->filterAttributesPreserveNull($this->attributes());
     }
 
-    private function _prepareParameters(array &$params)
+    /**
+     * @param array $params
+     * @return void
+     */
+    private function prepareParameters(array &$params)
     {
         if (empty($params['attributes'])) {
             $params['attributes'] = [];
@@ -135,59 +171,78 @@ class Model extends Validatable implements Serializable, JsonSerializable
         }
     }
 
+    /**
+     * @return string
+     */
     public function getTableName()
     {
-        return $this->_modelDefinition->table;
+        return $this->modelDefinition->table;
     }
 
+    /**
+     * @return int|null
+     */
     public function insert()
     {
-        $this->_callBeforeSaveCallbacks();
+        $this->callBeforeSaveCallbacks();
 
-        $primaryKey = $this->_modelDefinition->primaryKey;
-        $attributes = $this->filterAttributesPreserveNull($this->_attributes);
+        $primaryKey = $this->modelDefinition->primaryKey;
+        $attributes = $this->filterAttributesPreserveNull($this->attributes);
 
-        $query = Query::insert($attributes)->into($this->_modelDefinition->table);
-        $lastInsertedId = QueryExecutor::prepare($this->_modelDefinition->db, $query)->insert($this->_modelDefinition->sequence);
+        $query = Query::insert($attributes)->into($this->modelDefinition->table);
+        $lastInsertedId = QueryExecutor::prepare($this->modelDefinition->db, $query)->insert($this->modelDefinition->sequence);
 
-        if ($primaryKey && $this->_modelDefinition->sequence) {
+        if ($primaryKey && $this->modelDefinition->sequence) {
             $this->$primaryKey = $lastInsertedId;
         }
 
-        $this->_callAfterSaveCallbacks();
+        $this->callAfterSaveCallbacks();
 
-        $this->_resetModifiedFields();
+        $this->resetModifiedFields();
 
         return $lastInsertedId;
     }
 
+    /**
+     * @return void
+     */
     public function update()
     {
-        $this->_callBeforeSaveCallbacks();
+        $this->callBeforeSaveCallbacks();
 
         $attributes = $this->getAttributesForUpdate();
         if ($attributes) {
             $query = Query::update($attributes)
-                ->table($this->_modelDefinition->table)
-                ->where([$this->_modelDefinition->primaryKey => $this->getId()]);
+                ->table($this->modelDefinition->table)
+                ->where([$this->modelDefinition->primaryKey => $this->getId()]);
 
-            QueryExecutor::prepare($this->_modelDefinition->db, $query)->execute();
+            QueryExecutor::prepare($this->modelDefinition->db, $query)->execute();
         }
 
-        $this->_callAfterSaveCallbacks();
+        $this->callAfterSaveCallbacks();
     }
 
-    public function _callAfterSaveCallbacks()
+    /**
+     * @return void
+     */
+    public function callAfterSaveCallbacks()
     {
-        $this->_callCallbacks($this->_modelDefinition->afterSaveCallbacks);
+        $this->callCallbacks($this->modelDefinition->afterSaveCallbacks);
     }
 
-    public function _callBeforeSaveCallbacks()
+    /**
+     * @return void
+     */
+    public function callBeforeSaveCallbacks()
     {
-        $this->_callCallbacks($this->_modelDefinition->beforeSaveCallbacks);
+        $this->callCallbacks($this->modelDefinition->beforeSaveCallbacks);
     }
 
-    private function _callCallbacks($callbacks)
+    /**
+     * @param array $callbacks
+     * @return void
+     */
+    private function callCallbacks($callbacks)
     {
         foreach ($callbacks as $callback) {
             if (is_string($callback)) {
@@ -197,26 +252,40 @@ class Model extends Validatable implements Serializable, JsonSerializable
         }
     }
 
+    /**
+     * @return void
+     */
     public function insertOrUpdate()
     {
         $this->isNew() ? $this->insert() : $this->update();
     }
 
+    /**
+     * @return bool
+     */
     public function isNew()
     {
         return !$this->getId();
     }
 
-    public function updateAttributes($attributes)
+    /**
+     * @param array $attributes
+     * @throws ValidationException
+     */
+    public function updateAttributes(array $attributes)
     {
         if (!$this->updateAttributesIfValid($attributes)) {
             throw new ValidationException($this->getErrorObjects());
         }
     }
 
-    public function updateAttributesIfValid($attributes)
+    /**
+     * @param array $attributes
+     * @return bool
+     */
+    public function updateAttributesIfValid(array $attributes)
     {
-        $this->_modifiedFields = array_merge($this->_modifiedFields, array_keys($attributes));
+        $this->modifiedFields = array_merge($this->modifiedFields, array_keys($attributes));
         $this->assignAttributes($attributes);
         if ($this->isValid()) {
             $this->update();
@@ -225,79 +294,94 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function delete()
     {
-        return (bool)$this->where([$this->_modelDefinition->primaryKey => $this->getId()])->deleteAll();
+        return (bool)$this->where([$this->modelDefinition->primaryKey => $this->getId()])->deleteAll();
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
-        $primaryKeyName = $this->_modelDefinition->primaryKey;
+        $primaryKeyName = $this->modelDefinition->primaryKey;
         return $this->$primaryKeyName;
     }
 
+    /**
+     * @return string
+     */
     public function getIdName()
     {
-        return $this->_modelDefinition->primaryKey;
+        return $this->modelDefinition->primaryKey;
     }
 
+    /**
+     * @return string
+     */
     public function getSequenceName()
     {
-        return $this->_modelDefinition->sequence;
-    }
-
-    private function _findByIdOrNull($value)
-    {
-        return $this->where([$this->_modelDefinition->primaryKey => $value])->fetch();
-    }
-
-    private function _findById($value)
-    {
-        if (!$this->_modelDefinition->primaryKey) {
-            throw new DbException('Primary key is not defined for table ' . $this->_modelDefinition->table);
-        }
-        $result = $this->_findByIdOrNull($value);
-        if ($result) {
-            return $result;
-        }
-        throw new DbException($this->_modelDefinition->table . " with " . $this->_modelDefinition->primaryKey . "=" . $value . " not found");
+        return $this->modelDefinition->sequence;
     }
 
     /**
      * Returns model object as a nicely formatted string.
+     * @return string
      */
     public function inspect()
     {
-        return get_called_class() . Objects::toString(Arrays::filter($this->_attributes, Functions::notNull()));
+        return get_called_class() . Objects::toString(Arrays::filter($this->attributes, Functions::notNull()));
     }
 
+    /**
+     * @return string
+     */
     public function getModelName()
     {
         $function = new ReflectionClass($this);
         return $function->getShortName();
     }
 
-    public function _getFields()
-    {
-        return $this->_modelDefinition->fields;
-    }
-
+    /**
+     * @return array
+     */
     public static function getFields()
     {
         return static::metaInstance()->_getFields();
     }
 
-    private function _getFieldsWithoutPrimaryKey()
+    /**
+     * @return array
+     */
+    public function _getFields()
     {
-        return array_diff($this->_modelDefinition->fields, [$this->_modelDefinition->primaryKey]);
+        return $this->modelDefinition->fields;
     }
 
+    /**
+     * @return array
+     */
     public static function getFieldsWithoutPrimaryKey()
     {
         return static::metaInstance()->_getFieldsWithoutPrimaryKey();
     }
 
-    private function _fetchRelation($name)
+    /**
+     * @return array
+     */
+    private function _getFieldsWithoutPrimaryKey()
+    {
+        return array_diff($this->modelDefinition->fields, [$this->modelDefinition->primaryKey]);
+    }
+
+    /**
+     * @param string $name
+     * @return void
+     */
+    private function fetchRelation($name)
     {
         $relation = $this->getRelation($name);
         $relationFetcher = new RelationFetcher($relation);
@@ -312,8 +396,9 @@ class Model extends Validatable implements Serializable, JsonSerializable
     public static function newInstance(array $attributes)
     {
         $className = get_called_class();
+        /** @var Model $object */
         $object = new $className($attributes);
-        $object->_resetModifiedFields();
+        $object->resetModifiedFields();
         return $object;
     }
 
@@ -334,7 +419,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param $columns
+     * @param array|string $columns
      * @param int $type
      * @return ModelQueryBuilder
      */
@@ -344,7 +429,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param $columns
+     * @param array|string $columns
      * @param int $type
      * @return ModelQueryBuilder
      */
@@ -354,8 +439,8 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param $relation
-     * @param null $alias
+     * @param string $relation
+     * @param null|string $alias
      * @param string $type
      * @param array $on
      * @return ModelQueryBuilder
@@ -366,8 +451,8 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param $relation
-     * @param null $alias
+     * @param string $relation
+     * @param null|string $alias
      * @param array $on
      * @return ModelQueryBuilder
      */
@@ -377,8 +462,8 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param $relation
-     * @param null $alias
+     * @param string $relation
+     * @param null|string $alias
      * @param array $on
      * @return ModelQueryBuilder
      */
@@ -388,15 +473,14 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param $relation
-     * @param null $alias
+     * @param string $relation
+     * @param null|string $alias
      * @return ModelQueryBuilder
      */
     public static function using($relation, $alias = null)
     {
         return static::queryBuilder()->using($relation, $alias);
     }
-
 
     /**
      * @param string $params
@@ -409,28 +493,37 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param null $alias
+     * @param null|string $alias
      * @return ModelQueryBuilder
      */
     public static function queryBuilder($alias = null)
     {
         $obj = static::metaInstance();
-        return new ModelQueryBuilder($obj, $obj->_modelDefinition->db, $alias);
+        return new ModelQueryBuilder($obj, $obj->modelDefinition->db, $alias);
     }
 
+    /**
+     * @param string $where
+     * @param null|array $bindValues
+     * @return int
+     */
     public static function count($where = '', $bindValues = null)
     {
         return static::metaInstance()->where($where, $bindValues)->count();
     }
 
+    /**
+     * @param string $alias
+     * @return ModelQueryBuilder
+     */
     public static function alias($alias)
     {
         return static::queryBuilder($alias);
     }
 
     /**
-     * @param $where
-     * @param $whereValues
+     * @param array|string $where
+     * @param array $whereValues
      * @param array $orderBy
      * @param int $limit
      * @param int $offset
@@ -442,14 +535,14 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /** Executes a native sql and returns an array of model objects created by passing every result row to the model constructor.
-     * @param $nativeSql - database specific sql
+     * @param string $nativeSql - database specific sql
      * @param array $params - bind parameters
      * @return Model[]
      */
     public static function findBySql($nativeSql, $params = [])
     {
         $meta = static::metaInstance();
-        $results = $meta->_modelDefinition->db->query($nativeSql, Arrays::toArray($params))->fetchAll();
+        $results = $meta->modelDefinition->db->query($nativeSql, Arrays::toArray($params))->fetchAll();
 
         return Arrays::map($results, function ($row) use ($meta) {
             return $meta->newInstance($row);
@@ -457,7 +550,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param $value
+     * @param int $value
      * @return static
      */
     public static function findById($value)
@@ -466,12 +559,38 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param $value
+     * @param int $value
+     * @return Model
+     * @throws DbException
+     */
+    private function _findById($value)
+    {
+        if (!$this->modelDefinition->primaryKey) {
+            throw new DbException('Primary key is not defined for table ' . $this->modelDefinition->table);
+        }
+        $result = $this->_findByIdOrNull($value);
+        if ($result) {
+            return $result;
+        }
+        throw new DbException($this->modelDefinition->table . " with " . $this->modelDefinition->primaryKey . "=" . $value . " not found");
+    }
+
+    /**
+     * @param int $value
      * @return static
      */
     public static function findByIdOrNull($value)
     {
         return static::metaInstance()->_findByIdOrNull($value);
+    }
+
+    /**
+     * @param int $value
+     * @return Model
+     */
+    private function _findByIdOrNull($value)
+    {
+        return $this->where([$this->modelDefinition->primaryKey => $value])->fetch();
     }
 
     /**
@@ -492,7 +611,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     /**
      * Should be used for tests purposes only.
      *
-     * @param $attributes
+     * @param array $attributes
      * @return static
      */
     public static function createWithoutValidation(array $attributes = [])
@@ -507,13 +626,16 @@ class Model extends Validatable implements Serializable, JsonSerializable
      */
     public function reload()
     {
-        $this->_attributes = $this->findById($this->getId())->_attributes;
+        $this->attributes = $this->findById($this->getId())->attributes;
         return $this;
     }
 
-    public function nullifyIfEmpty()
+    /**
+     * @param array $fields
+     * @return void
+     */
+    public function nullifyIfEmpty(...$fields)
     {
-        $fields = func_get_args();
         foreach ($fields as $field) {
             if (isset($this->$field) && !is_bool($this->$field) && Strings::isBlank($this->$field)) {
                 $this->$field = null;
@@ -521,41 +643,62 @@ class Model extends Validatable implements Serializable, JsonSerializable
         }
     }
 
+    /**
+     * @param string $names
+     * @param null|mixed $default
+     * @return mixed|null
+     */
     public function get($names, $default = null)
     {
         return Objects::getValueRecursively($this, $names, $default);
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return Relation
      */
     public function getRelation($name)
     {
-        return $this->_modelDefinition->relations->getRelation($name);
+        return $this->modelDefinition->relations->getRelation($name);
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->inspect();
     }
 
-    public function _resetModifiedFields()
+    /**
+     * @return void
+     */
+    public function resetModifiedFields()
     {
-        $this->_modifiedFields = [];
+        $this->modifiedFields = [];
     }
 
+    /**
+     * @return array
+     */
     private function getAttributesForUpdate()
     {
-        $attributes = $this->filterAttributesPreserveNull($this->_attributes);
-        return array_intersect_key($attributes, array_flip($this->_modifiedFields));
+        $attributes = $this->filterAttributesPreserveNull($this->attributes);
+        return array_intersect_key($attributes, array_flip($this->modifiedFields));
     }
 
+    /**
+     * @return string
+     */
     public function serialize()
     {
-        return serialize($this->_attributes);
+        return serialize($this->attributes);
     }
 
+    /**
+     * @param string $serialized
+     * @return void
+     */
     public function unserialize($serialized)
     {
         $result = unserialize($serialized);
@@ -564,8 +707,11 @@ class Model extends Validatable implements Serializable, JsonSerializable
         }
     }
 
-    function jsonSerialize()
+    /**
+     * @return string
+     */
+    public function jsonSerialize()
     {
-        return json_encode($this->_attributes);
+        return json_encode($this->attributes);
     }
 }

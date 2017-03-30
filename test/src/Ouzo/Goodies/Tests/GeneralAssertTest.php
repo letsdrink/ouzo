@@ -19,7 +19,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
         $instance = GeneralAssert::that(0);
 
         // then
-        $this->assertInstanceOf('Ouzo\Tests\GeneralAssert', $instance);
+        $this->assertInstanceOf(GeneralAssert::class, $instance);
     }
 
     /**
@@ -28,18 +28,18 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     public function shouldBeInstanceOf()
     {
         // then
-        GeneralAssert::that(new stdClass())->isInstanceOf('stdClass');
-        GeneralAssert::that(Mock::create('stdClass'))->isInstanceOf('stdClass');
+        GeneralAssert::that(new stdClass())->isInstanceOf(stdClass::class);
+        GeneralAssert::that(Mock::create(stdClass::class))->isInstanceOf(stdClass::class);
     }
 
     function notInstanceOf()
     {
         return [
-            [[], 'stdClass'],
-            [4, 'stdClass'],
-            [true, 'stdClass'],
-            [new Example(), 'stdClass'],
-            [new stdClass(), 'Example']
+            [[], stdClass::class],
+            [4, stdClass::class],
+            [true, stdClass::class],
+            [new Example(), stdClass::class],
+            [new stdClass(), Example::class]
         ];
     }
 
@@ -53,7 +53,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(GeneralAssert::that($instance))->isInstanceOf($name);
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 
     /**
@@ -115,7 +115,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(GeneralAssert::that($notNull))->isNull();
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 
     /**
@@ -125,7 +125,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(GeneralAssert::that(null))->isNotNull();
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 
     /**
@@ -147,7 +147,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(GeneralAssert::that(null))->isEqualTo($notNull);
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 }
 

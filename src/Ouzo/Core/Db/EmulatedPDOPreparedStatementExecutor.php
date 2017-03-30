@@ -5,8 +5,6 @@
  */
 namespace Ouzo\Db;
 
-use PDO;
-
 class EmulatedPDOPreparedStatementExecutor extends PDOExecutor
 {
     /**

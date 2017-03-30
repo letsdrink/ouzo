@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Db\EmulatedPDOPreparedStatementExecutor;
+use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 
@@ -38,6 +39,6 @@ class EmulatedPDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCas
         CatchException::when($executor)->createPDOStatement($this->dbMock, 'sql', [], 'sql string');
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
+        CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 }

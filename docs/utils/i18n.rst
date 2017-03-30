@@ -11,10 +11,10 @@ Locale files are placed under ``locales`` directory. File names are used as loca
 Locale files are simple arrays. Each translations has got its corresponding label in array.
 ::
 
-    return array(
+    return [
         'ouzo' => 'Ouzo',
         'framework' => 'Framework'
-    );
+    ];
 
 ----
 
@@ -41,11 +41,11 @@ Hierarchical labels
 In order to create more complex structures multi-dimensional arrays are supported, e.g.:
 ::
 
-    return array(
-        'hello' => array(
+    return [
+        'hello' => [
             'world' => 'Hi, world!'
-        )
-    );
+        ]
+    ];
 
 Each level of array is combined by dot when using in ``t`` method:
 ::
@@ -59,14 +59,14 @@ Parametrization
 Ouzo supports translation parameters. There can be as many parameters given as we need. Parameters are referenced in translations by ``%{name}``. E.g.
 ::
 
-    return array(
+    return [
         'introduction' => 'My name is %{name}.'
-    );
+    ];
 
 Usage:
 ::
 
-    <?= t('introduction', array('name' => 'Jon Snow')) ?>
+    <?= t('introduction', ['name' => 'Jon Snow']) ?>
 
 ----
 
@@ -77,14 +77,14 @@ Whenever there is a need to distinguish between singular and plural forms, ``plu
 First, we need to specify all forms (number of forms is determined by locale, e.g. 2 for English):
 ::
 
-    return array(
+    return [
         'dog' => '%{count} dog|%{count} dogs'
-    );
+    ];
 
 Usage:
 ::
 
-    <?= t('dog', array('count' => $count), pluralizeBasedOn($count)) ?>
+    <?= t('dog', ['count' => $count], pluralizeBasedOn($count)) ?>
 
 It will print:
 

@@ -25,12 +25,12 @@ linkTo
 ~~~~~~
 Creates a link tag.
 
-**Parameters:** ``$name``, ``$href``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$href``, ``$attributes = []``
 
 **Example:**
 ::
 
-    linkTo("Name", "url", array('class' => 'btn'))
+    linkTo("Name", "url", ['class' => 'btn'])
 
 **Result:**
 ::
@@ -51,12 +51,12 @@ labelTag
 ~~~~~~~~
 Creates a label tag.
 
-**Parameters:** ``$name``, ``$content``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$content``, ``$attributes = []``
 
 **Example:**
 ::
 
-    labelTag("name", "A Label", array('class' => 'pretty'))
+    labelTag("name", "A Label", ['class' => 'pretty'])
 
 **Result:**
 ::
@@ -69,12 +69,12 @@ hiddenTag
 ~~~~~~~~~
 Creates a hidden input tag.
 
-**Parameters:** ``$name``, ``$value``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$value``, ``$attributes = []``
 
 **Example:**
 ::
 
-    hiddenTag("name", "value", array('id' => 'my-id'))
+    hiddenTag("name", "value", ['id' => 'my-id'])
 
 **Result:**
 ::
@@ -87,12 +87,12 @@ textFieldTag
 ~~~~~~~~~~~~
 Creates a text input tag.
 
-**Parameters:** ``$name``, ``$value``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$value``, ``$attributes = []``
 
 **Example:**
 ::
 
-    textFieldTag("name", "value", array('id' => 'my-id'))
+    textFieldTag("name", "value", ['id' => 'my-id'])
 
 **Result:**
 ::
@@ -105,12 +105,12 @@ textAreaTag
 ~~~~~~~~~~~
 Creates a textarea tag.
 
-**Parameters:** ``$name``, ``$content``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$content``, ``$attributes = []``
 
 **Example:**
 ::
 
-    textAreaTag("name", "Content", array('id' => 'my-id'))
+    textAreaTag("name", "Content", ['id' => 'my-id'])
 
 **Result:**
 ::
@@ -123,12 +123,12 @@ checkboxTag
 ~~~~~~~~~~~
 Creates a checkbox input tag.
 
-**Parameters:** ``$name``, ``$value``, ``$checked``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$value``, ``$checked``, ``$attributes = []``
 
 **Example:**
 ::
 
-    checkboxTag("name", "true", true,  array('class' => 'my-class'))
+    checkboxTag("name", "true", true,  ['class' => 'my-class'])
 
 **Result:**
 ::
@@ -142,12 +142,12 @@ selectTag
 ~~~~~~~~~
 Creates a select tag.
 
-**Parameters:** ``$name``, ``$items = array()``, ``$value``, ``$attributes = array()``, ``$promptOption = null``
+**Parameters:** ``$name``, ``$items = []``, ``$value``, ``$attributes = []``, ``$promptOption = null``
 
 **Example:**
 ::
 
-    selectTag('status', array('bob' => 'Bob', 'fred' => 'Fred'), array('bob'), array('class' => "my-select"))
+    selectTag('status', ['bob' => 'Bob', 'fred' => 'Fred'], ['bob'], ['class' => "my-select"])
 
 **Result:**
 ::
@@ -163,12 +163,12 @@ passwordFieldTag
 ~~~~~~~~~~~~~~~~
 Creates a password input tag.
 
-**Parameters:** ``$name``, ``$value``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$value``, ``$attributes = []``
 
 **Example:**
 ::
 
-    passwordFieldTag("name", "value",  array('class' => 'my-class'))
+    passwordFieldTag("name", "value",  ['class' => 'my-class'])
 
 **Result:**
 ::
@@ -181,7 +181,7 @@ radioButtonTag
 ~~~~~~~~~~~~~~
 Creates radio tag.
 
-**Parameters:** ``$name``, ``$value``, ``$attributes = array()``
+**Parameters:** ``$name``, ``$value``, ``$attributes = []``
 
 **Example:**
 ::
@@ -199,12 +199,12 @@ formTag
 ~~~~~~~
 Creates a form tag.
 
-**Parameters:** ``$url``, ``$method = 'POST'``, ``$attributes = array()``
+**Parameters:** ``$url``, ``$method = 'POST'``, ``$attributes = []``
 
 **Example:**
 ::
 
-    formTag('url', 'post', array('class' => "my-select"))
+    formTag('url', 'post', ['class' => "my-select"])
 
 **Result:**
 ::

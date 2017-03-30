@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Model\Template;
 
 use Ouzo\Config;
@@ -94,7 +95,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
     public function shouldThrowExceptionWhenDialectAdapterNotExists()
     {
         //given
-        Config::overrideProperty('sql_dialect')->with('\Ouzo\Tools\Model\Template\MyImagineDialect');
+        Config::overrideProperty('sql_dialect')->with(MyImagineDialect::class);
 
         //when
         try {
@@ -138,7 +139,7 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         CatchException::when($generator)->saveToFile($fileName);
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Tools\Model\Template\GeneratorException');
+        CatchException::assertThat()->isInstanceOf(GeneratorException::class);
         unlink($fileName);
     }
 

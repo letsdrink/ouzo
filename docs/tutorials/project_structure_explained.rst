@@ -121,12 +121,12 @@ View
 
 ::
 
-    <?php echo renderPartial('Users/_form', array(
+    <?php echo renderPartial('Users/_form', [
         'user' => $this->user,
         'url' => userPath($this->user->id),
         'method' => 'PUT',
         'title' => 'Edit user'
-    ));
+    ]);
 
 Function **renderPartial** displays a fragment of php code using variables passed in the second argument.
 By convention partials names start with underscore. We extracted ``Users/_form`` partial so that we can use the same form for user creation and update.
@@ -141,10 +141,10 @@ By convention partials names start with underscore. We extracted ``Users/_form``
         <div class="panel-heading"><?php echo $this->title; ?></div>
         <div class="panel-body">
             <?php $form = formFor($this->user); ?>
-            <?php echo $form->start($this->url, $this->method, array('class' => 'form-horizontal')); ?>
+            <?php echo $form->start($this->url, $this->method, ['class' => 'form-horizontal']); ?>
 
             <div class="form-group">
-                <?php echo $form->label('login', array('class' => 'control-label col-lg-2')); ?>
+                <?php echo $form->label('login', ['class' => 'control-label col-lg-2']); ?>
 
                 <div class="col-lg-10">
                     <?php echo $form->textField('login') ?>
@@ -152,7 +152,7 @@ By convention partials names start with underscore. We extracted ``Users/_form``
             </div>
 
             <div class="form-group">
-                <?php echo $form->label('password', array('class' => 'control-label col-lg-2')); ?>
+                <?php echo $form->label('password', ['class' => 'control-label col-lg-2']); ?>
 
                 <div class="col-lg-10">
                     <?php echo $form->passwordField('password'); ?>
@@ -162,7 +162,7 @@ By convention partials names start with underscore. We extracted ``Users/_form``
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <?php echo linkButton(array('name' => 'cancel', 'value' => 'Cancel', 'url' => usersPath(), 'class' => "btn btn-default")); ?>
+                    <?php echo linkButton(['name' => 'cancel', 'value' => 'Cancel', 'url' => usersPath(), 'class' => "btn btn-default"]); ?>
                 </div>
             </div>
 
@@ -177,7 +177,7 @@ Lines:
 
 ::
 
-    $form->label('login', array('class' => 'control-label col-lg-2'));
+    $form->label('login', ['class' => 'control-label col-lg-2']);
     //<label for="user_login" class="control-label col-lg-2">Login</label>
     $form->textField('login');
     //<input type="text" id="user_login" name="user[login]" value="thulium">

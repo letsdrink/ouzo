@@ -102,6 +102,6 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
         $result = PreparedStatementEmulator::substitute($sql, [$param]);
 
         //then
-        Assert::thatString($result)->isEqualTo("select * from users where surname = " . Db::getInstance()->_dbHandle->quote($param));
+        Assert::thatString($result)->isEqualTo("select * from users where surname = " . Db::getInstance()->dbHandle->quote($param));
     }
 }

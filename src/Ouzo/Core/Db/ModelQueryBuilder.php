@@ -142,7 +142,7 @@ class ModelQueryBuilder
     }
 
     /**
-     * @return Model[]
+     * @return Model
      */
     public function fetch()
     {

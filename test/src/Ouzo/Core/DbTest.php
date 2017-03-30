@@ -45,7 +45,7 @@ class DbTest extends DbTransactionalTestCase
         $dbHandle = Mock::mock();
 
         $db = new Db(false);
-        $db->_dbHandle = $dbHandle;
+        $db->dbHandle = $dbHandle;
 
         //when
         $result = $db->runInTransaction([new Sample(), 'callMethod']);
@@ -67,7 +67,7 @@ class DbTest extends DbTransactionalTestCase
         $dbHandle = Mock::mock();
 
         $db = new Db(false);
-        $db->_dbHandle = $dbHandle;
+        $db->dbHandle = $dbHandle;
 
         //when
         CatchException::when($db)->runInTransaction([new Sample(), 'exceptionMethod']);

@@ -22,7 +22,7 @@ Returns a string containing array elements joined together with a separator.
 **Example:**
 ::
 
-    $result = Joiner::on(', ')->join(array(1 => 'A', 2 => 'B', 3 => 'C'));
+    $result = Joiner::on(', ')->join([1 => 'A', 2 => 'B', 3 => 'C']);
 
 **Result:** ``'A, B, C'``
 
@@ -35,7 +35,7 @@ Returns a ``Joiner`` that skips null elements.
 **Example:**
 ::
 
-    $result = Joiner::on(', ')->skipNulls()->join(array('A', null, 'C'));
+    $result = Joiner::on(', ')->skipNulls()->join(['A', null, 'C']);
 
 **Result:** ``'A, C'``
 
@@ -50,7 +50,7 @@ Returns a ``Joiner`` that transforms array elements before joining.
 
     $result = Joiner::on(', ')->map(function ($key, $value) {
             return "$key => $value";
-        })->join(array(1 => 'A', 2 => 'B', 3 => 'C'));
+        })->join([1 => 'A', 2 => 'B', 3 => 'C']);
 
 **Result:**: ``'1 => A, 2 => B, 3 => C'``
 
@@ -65,6 +65,6 @@ Returns a ``Joiner`` that transforms array values before joining.
 
     $result = Joiner::on(', ')->mapValues(function ($value) {
             return "val = $value";
-        })->join(array(1 => 'A', 2 => 'B', 3 => 'C'));
+        })->join([1 => 'A', 2 => 'B', 3 => 'C']);
 
 **Result:** ``'val = A, val = B, val = C'``
