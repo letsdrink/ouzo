@@ -4,11 +4,11 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Config;
-use Ouzo\Logger\LoggerInterface;
 use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
+use Psr\Log\LoggerInterface;
 
 class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
 {
@@ -42,7 +42,7 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
 
         //then
         $logContent = $this->_readStreamContent('test://stderr');
-        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST Error: [ID: ] My error log line with param 42 and Zaphod.');
+        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST error: [ID: ] My error log line with param 42 and Zaphod.');
     }
 
     /**
@@ -55,7 +55,7 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
 
         //then
         $logContent = $this->_readStreamContent('test://stdout');
-        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST Info: [ID: ] My info log line with param 42 and Zaphod.');
+        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST info: [ID: ] My info log line with param 42 and Zaphod.');
     }
 
     /**
@@ -102,20 +102,20 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
 
         //then
         $logContent = $this->_readStreamContent('test://stdout');
-        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST Warning: [ID: ] My warning log line without params.');
+        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST warning: [ID: ] My warning log line without params.');
     }
 
     /**
      * @test
      */
-    public function shouldWriteFatalMessage()
+    public function shouldWriteCriticalMessage()
     {
         //when
-        $this->logger->fatal('My fatal log line without params.');
+        $this->logger->critical('My fatal log line without params.');
 
         //then
         $logContent = $this->_readStreamContent('test://stdout');
-        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST Fatal: [ID: ] My fatal log line without params.');
+        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST critical: [ID: ] My fatal log line without params.');
     }
 
     /**
@@ -131,7 +131,7 @@ class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
 
         //then
         $logContent = $this->_readStreamContent('test://stdout');
-        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST Debug: [ID: ] My debug log line without params.');
+        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST debug: [ID: ] My debug log line without params.');
     }
 
     /**

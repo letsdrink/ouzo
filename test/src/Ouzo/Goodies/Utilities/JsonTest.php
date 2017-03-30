@@ -6,6 +6,7 @@
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
+use Ouzo\Utilities\JsonEncodeException;
 
 class JsonTest extends PHPUnit_Framework_TestCase
 {
@@ -135,8 +136,8 @@ class JsonTest extends PHPUnit_Framework_TestCase
         } // then
         catch (Exception $e) {
             $this->assertTrue(in_array(get_class($e), [
-                'PHPUnit_Framework_Error_Warning',
-                'Ouzo\Utilities\JsonEncodeException'
+                PHPUnit_Framework_Error_Warning::class,
+                JsonEncodeException::class
             ]));
         }
     }
@@ -153,8 +154,8 @@ class JsonTest extends PHPUnit_Framework_TestCase
         } // then
         catch (Exception $e) {
             $this->assertTrue(in_array(get_class($e), [
-                'PHPUnit_Framework_Error_Warning',
-                'Ouzo\Utilities\JsonEncodeException'
+                PHPUnit_Framework_Error_Warning::class,
+                JsonEncodeException::class
             ]));
         }
     }

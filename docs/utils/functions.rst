@@ -25,7 +25,7 @@ Returns a function object that returns a value of the given field of its argumen
 **Example:**
 ::
 
-  $users = array(User::new(array('name' => 'bob')), User::new(array('name' => 'john')));
+  $users = [User::new(['name' => 'bob']), User::new(['name' => 'john'])];
   $names = Arrays::map($users, Functions::extractField('name'));
 
 ----

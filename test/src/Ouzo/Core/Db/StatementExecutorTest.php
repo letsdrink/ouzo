@@ -4,7 +4,11 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Config;
+use Ouzo\Db\Dialect\MySqlDialect;
+use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\StatementExecutor;
+use Ouzo\DbConnectionException;
+use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 
@@ -40,7 +44,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
         CatchException::when($executor)->execute();
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\DbException');
+        CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
     /**
@@ -49,7 +53,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
     public function shouldThrowConnectionExceptionFromForMySQL()
     {
         //given
-        Config::overrideProperty('sql_dialect')->with('\Ouzo\Db\Dialect\MySqlDialect');
+        Config::overrideProperty('sql_dialect')->with(MySqlDialect::class);
         Mock::when($this->pdoMock)->errorInfo()->thenReturn(['HY000', 2003, 'Execution error']);
         $executor = StatementExecutor::prepare($this->dbMock, 'SELECT 1', [], []);
 
@@ -57,7 +61,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
         CatchException::when($executor)->execute();
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\DbConnectionException');
+        CatchException::assertThat()->isInstanceOf(DbConnectionException::class);
         Config::revertProperty('sql_dialect');
     }
 
@@ -67,7 +71,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
     public function shouldThrowConnectionExceptionFromForPostgres()
     {
         //given
-        Config::overrideProperty('sql_dialect')->with('\Ouzo\Db\Dialect\PostgresDialect');
+        Config::overrideProperty('sql_dialect')->with(PostgresDialect::class);
         Mock::when($this->pdoMock)->errorInfo()->thenReturn(['57P01', 7, 'Execution error']);
         $executor = StatementExecutor::prepare($this->dbMock, 'SELECT 1', [], []);
 
@@ -75,7 +79,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
         CatchException::when($executor)->execute();
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\DbConnectionException');
+        CatchException::assertThat()->isInstanceOf(DbConnectionException::class);
         Config::revertProperty('sql_dialect');
     }
 }

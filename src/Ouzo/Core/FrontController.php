@@ -14,6 +14,7 @@ use Ouzo\Utilities\Functions;
 
 class FrontController
 {
+    /** @var string */
     public static $requestId;
 
     private $defaults;
@@ -23,7 +24,6 @@ class FrontController
     private $currentController;
     /** @var Controller */
     private $currentControllerObject;
-
     /**
      * @Inject
      * @var \Ouzo\RedirectHandler
@@ -72,6 +72,10 @@ class FrontController
         $this->defaults = Config::getValue('global');
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function init()
     {
         $uri = new Uri();
@@ -87,7 +91,7 @@ class FrontController
         $this->currentControllerObject = $this->controllerFactory->createController($routeRule);
         $this->requestContext->setCurrentControllerObject($this->currentControllerObject);
 
-        $this->_logRequest();
+        $this->logRequest();
 
         $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
         if ($afterInitCallback) {
@@ -96,7 +100,7 @@ class FrontController
 
         try {
             ob_start();
-            $this->_invokeControllerMethods();
+            $this->invokeControllerMethods();
         } catch (Exception $e) {
             ob_end_clean();
             throw $e;
@@ -104,76 +108,101 @@ class FrontController
         ob_end_flush();
     }
 
-    public function _invokeControllerMethods()
+    /**
+     * @return void
+     */
+    public function invokeControllerMethods()
     {
-        $this->_invokeInit();
-        if ($this->_invokeBeforeMethods()) {
-            $this->_invokeAction();
-            $this->_invokeAfterMethods();
+        $this->invokeInit();
+        if ($this->invokeBeforeMethods()) {
+            $this->invokeAction();
+            $this->invokeAfterMethods();
         }
 
-        $this->_doActionOnResponse();
+        $this->doActionOnResponse();
     }
 
-    private function _redirect($url)
+    /**
+     * @param string $url
+     * @return void
+     */
+    private function redirect($url)
     {
         $url = Uri::addPrefixIfNeeded($url);
         $this->redirectHandler->redirect($url);
     }
 
-    private function _invokeInit()
+    /**
+     * @return void
+     */
+    private function invokeInit()
     {
         if (method_exists($this->currentControllerObject, 'init')) {
             $this->currentControllerObject->init();
         }
     }
 
-    private function _invokeBeforeMethods()
+    /**
+     * @return bool
+     */
+    private function invokeBeforeMethods()
     {
         foreach ($this->currentControllerObject->before as $callback) {
             if (!($this->callCallback($callback))) {
                 return false;
             }
-            if ($this->_isRedirect()) {
+            if ($this->isRedirect()) {
                 return false;
             }
         }
         return true;
     }
 
-    private function _invokeAfterMethods()
+    /**
+     * @return void
+     */
+    private function invokeAfterMethods()
     {
         foreach ($this->currentControllerObject->after as $callback) {
             $this->callCallback($callback);
         }
     }
 
-    private function _invokeAction()
+    /**
+     * @return void
+     */
+    private function invokeAction()
     {
         $controller = $this->currentControllerObject;
         $currentAction = $controller->currentAction;
         call_user_func_array([$controller, $currentAction], $controller->getRouteRule()->getParameters());
-        $this->_logRequestIfDebugEnabled();
+        $this->logRequestIfDebugEnabled();
     }
 
-    private function _logRequestIfDebugEnabled()
+    /**
+     * @return void
+     */
+    private function logRequestIfDebugEnabled()
     {
         if (Config::getValue('debug')) {
             Stats::traceHttpRequest($this->currentControllerObject->params);
         }
     }
 
-    private function _doActionOnResponse()
+    /**
+     * @return void
+     */
+    private function doActionOnResponse()
     {
         $controller = $this->currentControllerObject;
-        $this->_sendHeaders($controller->getHeaders());
+        $this->sendHeaders($controller->getHeaders());
         $this->cookiesSetter->setCookies($controller->getNewCookies());
         switch ($controller->getStatusResponse()) {
             case 'show':
                 $this->renderOutput();
                 break;
             case 'redirect':
-                $this->_redirect($controller->getRedirectLocation());
+                $this->redirect($controller->getRedirectLocation());
                 break;
             case 'redirectOld':
                 $this->redirectHandler->redirect($controller->getRedirectLocation());
@@ -189,21 +218,35 @@ class FrontController
         }
     }
 
-    private function _sendHeaders($headers)
+    /**
+     * @param array $headers
+     * @return void
+     */
+    private function sendHeaders($headers)
     {
         $this->headerSender->send($headers);
     }
 
-    private function _logRequest()
+    /**
+     * @return void
+     */
+    private function logRequest()
     {
         Logger::getLogger(__CLASS__)->info('[Request:/%s/%s]', [$this->currentController, $this->currentAction]);
     }
 
-    private function _isRedirect()
+    /**
+     * @return bool
+     */
+    private function isRedirect()
     {
         return in_array($this->currentControllerObject->getStatusResponse(), ['redirect', 'redirectOld']);
     }
 
+    /**
+     * @param $callback
+     * @return mixed
+     */
     private function callCallback($callback)
     {
         if (is_string($callback)) {
@@ -212,6 +255,9 @@ class FrontController
         return call_user_func($callback, $this->currentControllerObject);
     }
 
+    /**
+     * @return void
+     */
     private function renderOutput()
     {
         ob_start();

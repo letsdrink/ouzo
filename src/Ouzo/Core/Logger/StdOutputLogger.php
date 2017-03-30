@@ -7,60 +7,43 @@ namespace Ouzo\Logger;
 
 use Ouzo\Utilities\Clock;
 
-class StdOutputLogger extends AbstractLogger
+class StdOutputLogger extends AbstractOuzoLogger
 {
-    private $_outputStreamIdentifier;
+    private $outputStreamIdentifier;
 
     public function __construct($name, $configuration, $outputStreamIdentifier = 'php')
     {
         parent::__construct($name, $configuration);
-        $this->_outputStreamIdentifier = $outputStreamIdentifier;
+        $this->outputStreamIdentifier = $outputStreamIdentifier;
     }
 
-    private function _errorStreamName()
+    private function errorStreamName()
     {
-        return $this->_outputStreamIdentifier . "://stderr";
+        return $this->outputStreamIdentifier . "://stderr";
     }
 
-    private function _standardStreamName()
+    private function standardStreamName()
     {
-        return $this->_outputStreamIdentifier . "://stdout";
+        return $this->outputStreamIdentifier . "://stdout";
     }
 
-    private function _log($stdOut, $level, $levelName, $message, $params)
+
+    private function getStreamForLogLevel($logLevel)
     {
-        $this->log(function ($message) use ($stdOut) {
+        if (LogLevelTranslator::toSyslogLevel($logLevel) >= LOG_WARNING) {
+            return $this->standardStreamName();
+        }
+        return $this->errorStreamName();
+    }
+
+    public function log($level, $message, array $context = [])
+    {
+        $stdOut = $this->getStreamForLogLevel($level);
+        $this->logWithFunction(function ($message) use ($stdOut) {
             $date = Clock::nowAsString();
             $fileHandle = fopen($stdOut, 'a');
             fwrite($fileHandle, "$date: $message\n");
             fclose($fileHandle);
-        }, $level, $levelName, $message, $params);
-    }
-
-    public function error($message, $params = null)
-    {
-        $this->_log($this->_errorStreamName(), LOG_ERR, 'Error', $message, $params);
-    }
-
-    public function info($message, $params = null)
-    {
-        $this->_log($this->_standardStreamName(), LOG_INFO, 'Info', $message, $params);
-    }
-
-    public function debug($message, $params = null)
-    {
-        if ($this->isDebug()) {
-            $this->_log($this->_standardStreamName(), LOG_DEBUG, 'Debug', $message, $params);
-        }
-    }
-
-    public function warning($message, $params = null)
-    {
-        $this->_log($this->_standardStreamName(), LOG_WARNING, 'Warning', $message, $params);
-    }
-
-    public function fatal($message, $params = null)
-    {
-        $this->_log($this->_errorStreamName(), LOG_CRIT, 'Fatal', $message, $params);
+        }, $level, $message, $context);
     }
 }

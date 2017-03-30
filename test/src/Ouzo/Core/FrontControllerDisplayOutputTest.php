@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Config;
+use Ouzo\HeaderSender;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\ControllerTestCase;
@@ -35,7 +36,7 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
     protected function frontControllerBindings(InjectorConfig $config)
     {
         parent::frontControllerBindings($config);
-        $config->bind('\Ouzo\HeaderSender')->toInstance(Mock::create());
+        $config->bind(HeaderSender::class)->toInstance(Mock::create());
     }
 
     /**
@@ -44,13 +45,11 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
     public function shouldNotDisplayOutputBeforeHeadersAreSent()
     {
         //given
-        $self = $this;
-
         $obLevel = ob_get_level();
-        Mock::when($this->frontController->getHeaderSender())->send(Mock::any())->thenAnswer(function () use ($self, $obLevel) {
+        Mock::when($this->frontController->getHeaderSender())->send(Mock::any())->thenAnswer(function () use ($obLevel) {
             //if there's a nested buffer, nothing was sent to output
-            $self->assertTrue(ob_get_level() > $obLevel);
-            $self->expectOutputString('OUTPUT');
+            $this->assertTrue(ob_get_level() > $obLevel);
+            $this->expectOutputString('OUTPUT');
         });
 
         Route::allowAll('/sample', 'sample');

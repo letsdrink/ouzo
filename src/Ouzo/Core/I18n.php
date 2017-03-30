@@ -14,29 +14,45 @@ class I18n
 {
     const DEFAULT_LANGUAGE = 'en';
 
-    private static $_translator;
-    private static $_labels;
+    /** @var Translator */
+    private static $translator;
+    /** @var array|null */
+    private static $labels;
 
+    /**
+     * @param string $key
+     * @param array $params
+     * @param PluralizeOption|null $pluralize
+     * @return string
+     */
     public static function t($key, $params = [], PluralizeOption $pluralize = null)
     {
         if (!$key) {
             return '';
         }
-        if (!self::$_translator) {
-            self::$_translator = self::_getTranslator();
+        if (!self::$translator) {
+            self::$translator = self::_getTranslator();
         }
         if ($pluralize != null) {
-            return self::$_translator->translateWithChoice($key, $pluralize->getValue(), $params);
+            return self::$translator->translateWithChoice($key, $pluralize->getValue(), $params);
         }
-        return self::$_translator->translate($key, $params);
+        return self::$translator->translate($key, $params);
     }
 
-    public static function reset($translator = null)
+    /**
+     * @param Translator|null $translator
+     * @return void
+     */
+    public static function reset(Translator $translator = null)
     {
-        self::$_translator = $translator;
-        self::$_labels = null;
+        self::$translator = $translator;
+        self::$labels = null;
     }
 
+    /**
+     * @param string $key
+     * @return array
+     */
     public static function labels($key = '')
     {
         $labels = self::loadLabels();
@@ -44,31 +60,45 @@ class I18n
         return $key ? Arrays::getNestedValue($labels, $explodedKey) : $labels;
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
     public static function loadLabels()
     {
-        if (!self::$_labels) {
+        if (!self::$labels) {
             $language = self::getLanguage();
             $path = Path::join(ROOT_PATH, 'locales', $language . '.php');
             if (!Files::exists($path)) {
                 throw new Exception('Cannot find declared language file: ' . $language);
             }
             /** @noinspection PhpIncludeInspection */
-            self::$_labels = require($path);
+            self::$labels = require($path);
         }
-        return self::$_labels;
+        return self::$labels;
     }
 
+    /**
+     * @return Translator
+     */
     private static function _getTranslator()
     {
-        $_labels = self::loadLabels();
-        return new Translator(self::getLanguage(), $_labels);
+        $labels = self::loadLabels();
+        return new Translator(self::getLanguage(), $labels);
     }
 
+    /**
+     * @return string
+     */
     private static function getLanguage()
     {
         return Config::getValue('language') ?: I18n::DEFAULT_LANGUAGE;
     }
 
+    /**
+     * @param int $value
+     * @return PluralizeOption
+     */
     public static function pluralizeBasedOn($value)
     {
         return new PluralizeOption($value);

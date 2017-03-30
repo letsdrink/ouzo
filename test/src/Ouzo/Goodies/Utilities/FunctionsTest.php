@@ -273,4 +273,14 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         //then
         $this->assertFalse(Functions::call(Functions::notNull(), null));
     }
+
+    /**
+     * @test
+     */
+    public function shouldCheckIfStringIsEqualIgnoringCaseToValue()
+    {
+        $this->assertFalse(Functions::call(Functions::equalsIgnoreCase('value'), 'other'));
+        $this->assertTrue(Functions::call(Functions::equalsIgnoreCase('value'), 'VaLuE'));
+        $this->assertTrue(Functions::call(Functions::equalsIgnoreCase('VaLuE'), 'value'));
+    }
 }

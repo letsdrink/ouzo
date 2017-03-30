@@ -9,6 +9,10 @@ use PDO;
 
 class ParameterType
 {
+    /**
+     * @param int|bool $param
+     * @return int
+     */
     public static function getType($param)
     {
         if (is_int($param)) {

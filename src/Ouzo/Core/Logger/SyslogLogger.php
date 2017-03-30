@@ -6,11 +6,19 @@
 namespace Ouzo\Logger;
 
 
-class SyslogLogger extends AbstractLogger
+class SyslogLogger extends AbstractOuzoLogger
 {
-    public function __construct($name, $configuration)
+    const MAX_MESSAGE_SIZE = 1024;
+
+    /**
+     * @var SyslogLogProvider
+     */
+    private $syslogLogProvider;
+
+    public function __construct($name, $configuration, $syslogLogProvider = null)
     {
         parent::__construct($name, $configuration);
+        $this->syslogLogProvider = $syslogLogProvider ?: new SyslogLogProvider();
     }
 
     public function __destruct()
@@ -18,41 +26,32 @@ class SyslogLogger extends AbstractLogger
         closelog();
     }
 
-    private function _log($level, $levelName, $message, $params)
+    public function log($level, $message, array $context = [])
     {
-        $logger = $this->getLogger();
-        $this->log(function ($message) use ($logger, $level) {
-            if ($logger) {
-                openlog($logger['ident'], $logger['option'], $logger['facility']);
+        $loggerConfiguration = $this->getLoggerConfiguration();
+        $syslogLevel = LogLevelTranslator::toSyslogLevel($level);
+        $this->logWithFunction(function ($message) use ($loggerConfiguration, $syslogLevel) {
+            if ($loggerConfiguration) {
+                $this->syslogLogProvider->open($loggerConfiguration);
             }
-            syslog($level, $message);
-        }, $level, $levelName, $message, $params);
+            $this->logMessage($syslogLevel, $message);
+        }, $level, $message, $context);
     }
 
-    public function error($message, $params = null)
+    private function logMessage($level, $message)
     {
-        $this->_log(LOG_ERR, 'Error', $message, $params);
-    }
+        $messageLength = strlen($message);
+        if ($messageLength < self::MAX_MESSAGE_SIZE) {
+            $this->syslogLogProvider->log($level, $message);
+        } else {
+            $messageId = uniqid();
+            $multipartMessagePrefix = "Multipart $messageId [%d/%d] ";
 
-    public function info($message, $params = null)
-    {
-        $this->_log(LOG_INFO, 'Info', $message, $params);
-    }
-
-    public function debug($message, $params = null)
-    {
-        if ($this->isDebug()) {
-            $this->_log(LOG_DEBUG, 'Debug', $message, $params);
+            $parts = str_split($message, self::MAX_MESSAGE_SIZE - strlen($multipartMessagePrefix) - 10);
+            foreach ($parts as $idx => $part) {
+                $prefix = sprintf($multipartMessagePrefix, $idx + 1, sizeof($parts));
+                $this->syslogLogProvider->log($level, $prefix . $part);
+            }
         }
-    }
-
-    public function warning($message, $params = null)
-    {
-        $this->_log(LOG_WARNING, 'Warning', $message, $params);
-    }
-
-    public function fatal($message, $params = null)
-    {
-        $this->_log(LOG_CRIT, 'Fatal', $message, $params);
     }
 }

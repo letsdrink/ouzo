@@ -14,7 +14,7 @@ Returns true if array contains given element. Comparison is based on :ref:`Objec
 **Example:**
 ::
 
-    $result = Arrays::contains(array(1, 2, 3), 2);
+    $result = Arrays::contains([1, 2, 3], 2);
 
 **Result:** ``true``
 
@@ -27,7 +27,7 @@ Returns true if array contains all given elements. Comparison is based on :ref:`
 **Example:**
 ::
 
-    $result = Arrays::containsAll(array(1, 2, 3), array(1, 2));
+    $result = Arrays::containsAll([1, 2, 3], [1, 2]);
 
 **Result:** ``true``
 
@@ -59,7 +59,7 @@ Unlike flatten, concat does not merge arrays that are nested more that once.
 **Example:**
 ::
 
-    $result = Arrays::concat(array(array(1, 2), array(3, 4)));
+    $result = Arrays::concat([[1, 2], [3, 4]]);
 
 **Result:**
 ::
@@ -449,7 +449,7 @@ This method creates associative array using key and value functions on array ele
 
 ::
 
-    $users = array(new User('bob'), new User('john'));
+    $users = [new User('bob'), new User('john')];
     $usersByName = Arrays::toMap($users, function ($user) {
         return $user->name;
     });
@@ -646,8 +646,8 @@ Sets nested value.
 **Example:**
 ::
 
-    $array = array();
-    Arrays::setNestedValue($array, array('1', '2', '3'), 'value');
+    $array = [];
+    Arrays::setNestedValue($array, ['1', '2', '3'], 'value');
 
 Result:
 ::
@@ -877,8 +877,8 @@ Returns a recursive diff of two arrays
 **Example:**
 ::
 
-    $array1 = array('a' => array('b' => 'c', 'd' => 'e'), 'f');
-    $array2 = array('a' => array('b' => 'c'));
+    $array1 = ['a' => ['b' => 'c', 'd' => 'e'], 'f'];
+    $array2 = ['a' => ['b' => 'c']];
     $result = Arrays::recursiveDiff($array1, $array2);
 
 **Result:**
@@ -924,7 +924,7 @@ Checks if the given array is associative. An array is considered associative whe
 **Example:**
 ::
 
-    $result = Arrays::isAssociative(array(1 => 'b', 'a' => 2, 'abc'))
+    $result = Arrays::isAssociative([1 => 'b', 'a' => 2, 'abc'])
 
 **Result:** ``true``
 
@@ -939,7 +939,7 @@ Returns shuffled array with retained key association.
 **Example:**
 ::
 
-    $result = Arrays::shuffle(array(1 => 'a', 2 => 'b', 3 => 'c'));
+    $result = Arrays::shuffle([1 => 'a', 2 => 'b', 3 => 'c']);
 
 **Result:**
 ::

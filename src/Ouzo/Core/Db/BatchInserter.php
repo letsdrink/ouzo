@@ -14,66 +14,85 @@ use PDO;
 
 class BatchInserter
 {
-    /**
-     * @var Model[]
-     */
-    private $_models = [];
+    /** @var Model[] */
+    private $models = [];
 
+    /**
+     * @param Model $model
+     */
     public function add(Model $model)
     {
-        $this->_models[] = $model;
+        $this->models[] = $model;
     }
 
+    /**
+     * @return void
+     */
     public function execute()
     {
-        if (empty($this->_models)) {
+        if (empty($this->models)) {
             return;
         }
-        $this->_callBeforeSaveCallbacks();
+        $this->callBeforeSaveCallbacks();
 
-        $metaInstance = Arrays::first($this->_models);
+        $metaInstance = Arrays::first($this->models);
         $columns = $metaInstance->getFieldsWithoutPrimaryKey();
         $primaryKey = $metaInstance->getIdName();
         $table = $metaInstance->getTableName();
 
-        $sql = DialectFactory::create()->batchInsert($table, $primaryKey, $columns, count($this->_models));
-        $params = $this->_prepareParams($primaryKey);
+        $sql = DialectFactory::create()->batchInsert($table, $primaryKey, $columns, count($this->models));
+        $params = $this->prepareParams($primaryKey);
 
         $ids = Arrays::flatten(Db::getInstance()->query($sql, $params)->fetchAll(PDO::FETCH_NUM));
-        $this->_assignPrimaryKeys($primaryKey, $ids);
-        $this->_callAfterSaveCallbacks();
+        $this->assignPrimaryKeys($primaryKey, $ids);
+        $this->callAfterSaveCallbacks();
     }
 
-    private function _assignPrimaryKeys($primaryKey, $ids)
+    /**
+     * @param string $primaryKey
+     * @param array $ids
+     * @return void
+     */
+    private function assignPrimaryKeys($primaryKey, $ids)
     {
         if ($primaryKey) {
             $primaryKeysIterator = new ArrayIterator($ids);
-            foreach ($this->_models as $model) {
+            foreach ($this->models as $model) {
                 $model->$primaryKey = $primaryKeysIterator->current();
                 $primaryKeysIterator->next();
             }
         }
     }
 
-    public function _callBeforeSaveCallbacks()
+    /**
+     * @return void
+     */
+    public function callBeforeSaveCallbacks()
     {
-        foreach ($this->_models as $model) {
-            $model->_callBeforeSaveCallbacks();
+        foreach ($this->models as $model) {
+            $model->callBeforeSaveCallbacks();
         }
     }
 
-    public function _callAfterSaveCallbacks()
+    /**
+     * @return void
+     */
+    public function callAfterSaveCallbacks()
     {
-        foreach ($this->_models as $model) {
-            $model->_callAfterSaveCallbacks();
-            $model->_resetModifiedFields();
+        foreach ($this->models as $model) {
+            $model->callAfterSaveCallbacks();
+            $model->resetModifiedFields();
         }
     }
 
-    public function _prepareParams($primaryKey)
+    /**
+     * @param string $primaryKey
+     * @return array
+     */
+    public function prepareParams($primaryKey)
     {
         $allValues = [];
-        foreach ($this->_models as $model) {
+        foreach ($this->models as $model) {
             $attributes = $model->definedAttributes();
             unset($attributes[$primaryKey]);
             $values = array_values($attributes);

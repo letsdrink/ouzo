@@ -5,7 +5,9 @@ INCOMING
 --------
 Enhancements:
 * [ORM] Model implements Serializable and JsonSerializable interfaces (issue #203).
+* [ORM] Changed Model::deleteEach to use iterator instead of fetching all elements at once (issue #254).
 * [DI] Added constructor injection for arguments with types defined (issue #265).
+* [Utilities] Added equalsIgnoreCase to Functions and FluentFunctions (issue #263). 
 
 Release 1.6.1
 --------

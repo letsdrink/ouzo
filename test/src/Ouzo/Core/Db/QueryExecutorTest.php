@@ -89,7 +89,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
 
         //when
-        $executor->_buildQuery();
+        $executor->buildQuery();
 
         //then
         $this->assertEquals('SELECT * FROM table_name WHERE column = ?', $executor->getSql());
@@ -109,7 +109,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         $executor = QueryExecutor::prepare(Db::getInstance(), $query);
 
         //when
-        $executor->_buildQuery();
+        $executor->buildQuery();
 
         //then
         $this->assertEquals('SELECT count(*) FROM (SELECT a, count(*) c FROM table WHERE col = ? GROUP BY a) AS sub WHERE c = ?', $executor->getSql());

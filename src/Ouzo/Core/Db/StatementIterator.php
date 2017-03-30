@@ -12,8 +12,9 @@ use PDOStatement;
 
 class StatementIterator implements Iterator
 {
-
+    /** @var PDOStatement */
     private $statement;
+    /** @var IteratorIterator */
     private $iterator;
 
     public function __construct(PDOStatement $statement)
@@ -22,21 +23,33 @@ class StatementIterator implements Iterator
         $this->iterator = new IteratorIterator($statement);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function current()
     {
         return $this->iterator->current();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function next()
     {
         $this->iterator->next();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function key()
     {
         return $this->iterator->key();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function valid()
     {
         $valid = $this->iterator->valid();
@@ -46,11 +59,17 @@ class StatementIterator implements Iterator
         return $valid;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rewind()
     {
         $this->iterator->rewind();
     }
 
+    /**
+     * @return void
+     */
     public function closeCursor()
     {
         Logger::getLogger(__CLASS__)->info("Closing cursor");

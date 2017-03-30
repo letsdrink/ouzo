@@ -9,6 +9,11 @@ use Ouzo\Utilities\Arrays;
 
 class ColumnAliasHandler
 {
+    /**
+     * @param array $columns
+     * @param string $alias
+     * @return array
+     */
     public static function createSelectColumnsWithAliases($columns, $alias)
     {
         return Arrays::map($columns, function ($field) use ($alias) {

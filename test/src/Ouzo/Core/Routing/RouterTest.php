@@ -5,11 +5,13 @@
  */
 use Ouzo\Routing\Route;
 use Ouzo\Routing\Router;
+use Ouzo\Routing\RouterException;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri;
+use Ouzo\Uri\PathProvider;
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {
@@ -68,7 +70,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         CatchException::when($router)->findRoute();
 
         //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\Routing\RouterException');
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**
@@ -84,7 +86,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         CatchException::when($router)->findRoute();
 
         //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\Routing\RouterException');
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**
@@ -100,7 +102,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         CatchException::when($router)->findRoute();
 
         //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\Routing\RouterException');
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**
@@ -135,7 +137,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         CatchException::when($router)->findRoute();
 
         //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\Routing\RouterException');
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**
@@ -603,7 +605,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     private function _createRouter($method, $uri)
     {
         $_SERVER['REQUEST_METHOD'] = $method;
-        $pathMock = Mock::create('\Ouzo\Uri\PathProvider');
+        $pathMock = Mock::create(PathProvider::class);
         Mock::when($pathMock)->getPath()->thenReturn($uri);
         return new Router(new Uri($pathMock));
     }

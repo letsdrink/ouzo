@@ -10,6 +10,8 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Uri;
+use Ouzo\Uri\PathProvider;
+use Ouzo\Utilities\JsonDecodeException;
 
 class UriTest extends PHPUnit_Framework_TestCase
 {
@@ -21,7 +23,7 @@ class UriTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pathProviderMock = Mock::create('\Ouzo\Uri\PathProvider');
+        $this->pathProviderMock = Mock::create(PathProvider::class);
         $this->uri = new Uri($this->pathProviderMock);
     }
 
@@ -286,7 +288,7 @@ class UriTest extends PHPUnit_Framework_TestCase
         CatchException::when($this)->getRequestParameters('json://input');
 
         //then
-        CatchException::assertThat()->isInstanceOf('Ouzo\Utilities\JsonDecodeException');
+        CatchException::assertThat()->isInstanceOf(JsonDecodeException::class);
         StreamStub::unregister();
     }
 
@@ -404,7 +406,7 @@ class UriTest extends PHPUnit_Framework_TestCase
 
     private function _privateMethod($testMethod)
     {
-        $reflectionOfUri = new ReflectionMethod('\Ouzo\Uri', $testMethod);
+        $reflectionOfUri = new ReflectionMethod(Uri::class, $testMethod);
         $reflectionOfUri->setAccessible(true);
         return $reflectionOfUri;
     }

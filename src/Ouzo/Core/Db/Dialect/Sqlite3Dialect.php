@@ -13,27 +13,41 @@ use Ouzo\Utilities\Strings;
 
 class Sqlite3Dialect extends Dialect
 {
+    /**
+     * @inheritdoc
+     */
     public function getConnectionErrorCodes()
     {
         return [10, 11, 14];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getErrorCode($errorInfo)
     {
         return Arrays::getValue($errorInfo, 1);
     }
 
+    /**
+     * @inheritdoc
+     * @throws InvalidArgumentException
+     */
     public function update()
     {
-        if ($this->_query->aliasTable) {
+        if ($this->query->aliasTable) {
             throw new InvalidArgumentException("Alias in update query is not supported in sqlite3");
         }
         return parent::update();
     }
 
+    /**
+     * @inheritdoc
+     * @throws BadMethodCallException
+     */
     public function join()
     {
-        $any = Arrays::any($this->_query->joinClauses, function (JoinClause $joinClause) {
+        $any = Arrays::any($this->query->joinClauses, function (JoinClause $joinClause) {
             return Strings::equalsIgnoreCase($joinClause->type, 'RIGHT');
         });
         if ($any) {
@@ -42,36 +56,57 @@ class Sqlite3Dialect extends Dialect
         return parent::join();
     }
 
+    /**
+     * @inheritdoc
+     * @throws BadMethodCallException
+     */
     public function lockForUpdate()
     {
-        if ($this->_query->lockForUpdate) {
+        if ($this->query->lockForUpdate) {
             throw new BadMethodCallException('SELECT ... FOR UPDATE is not supported in sqlite3');
         }
     }
 
+    /**
+     * @inheritdoc
+     * @throws BadMethodCallException
+     */
     public function using()
     {
-        if ($this->_query->usingClauses) {
+        if ($this->query->usingClauses) {
             throw new BadMethodCallException('USING clause is not supported in sqlite3');
         }
     }
 
+    /**
+     * @inheritdoc
+     * @throws InvalidArgumentException
+     */
     public function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
         throw new InvalidArgumentException("Batch insert not supported in sqlite3");
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function insertEmptyRow()
     {
-        return "INSERT INTO {$this->_query->table} DEFAULT VALUES";
+        return "INSERT INTO {$this->query->table} DEFAULT VALUES";
     }
 
+    /**
+     * @inheritdoc
+     */
     public function regexpMatcher()
     {
         //needs package sqlite3-pcre to work correctly
         return 'REGEXP';
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function quote($word)
     {
         return '"' . $word . '"';

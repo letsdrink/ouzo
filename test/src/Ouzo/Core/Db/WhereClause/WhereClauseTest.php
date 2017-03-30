@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\WhereClause;
 
 use Ouzo\Db\Any;
@@ -19,7 +20,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = WhereClause::create(null);
 
         // then
-        $this->assertInstanceOf('\Ouzo\Db\WhereClause\EmptyWhereClause', $result);
+        $this->assertInstanceOf(EmptyWhereClause::class, $result);
     }
 
     /**
@@ -31,7 +32,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = WhereClause::create([]);
 
         // then
-        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertInstanceOf(ArrayWhereClause::class, $result);
     }
 
     /**
@@ -43,7 +44,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = WhereClause::create('');
 
         // then
-        $this->assertInstanceOf('\Ouzo\Db\WhereClause\SqlWhereClause', $result);
+        $this->assertInstanceOf(SqlWhereClause::class, $result);
     }
 
     /**
@@ -70,7 +71,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = WhereClause::create(Any::of(['a' => 'b', 'c' => 'd']));
 
         // then
-        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertInstanceOf(ArrayWhereClause::class, $result);
         $this->assertEquals(['0' => 'b', '1' => 'd'], $result->getParameters());
         $this->assertEquals('(a = ? OR c = ?)', $result->toSql());
     }
@@ -84,7 +85,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = WhereClause::create(['a' => [Restrictions::equalTo('b'), Restrictions::lessThan('c')]]);
 
         // then
-        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertInstanceOf(ArrayWhereClause::class, $result);
         $this->assertEquals(['0' => Restrictions::equalTo('b'), '1' => Restrictions::lessThan('c')], $result->getParameters());
         $this->assertEquals('(a = ? OR a < ?)', $result->toSql());
     }
@@ -98,7 +99,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         $result = WhereClause::create(Any::of(['a' => ['b', 'c']]));
 
         // then
-        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertInstanceOf(ArrayWhereClause::class, $result);
         $this->assertEquals(['0' => 'b', '1' => 'c'], $result->getParameters());
         $this->assertEquals('a IN (?, ?)', $result->toSql());
     }
@@ -116,7 +117,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // then
-        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertInstanceOf(ArrayWhereClause::class, $result);
         $this->assertEquals('(a = ? OR a < ?) AND b = ?', $result->toSql());
     }
 
@@ -131,7 +132,7 @@ class WhereClauseTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // then
-        $this->assertInstanceOf('\Ouzo\Db\WhereClause\ArrayWhereClause', $result);
+        $this->assertInstanceOf(ArrayWhereClause::class, $result);
         $this->assertEquals('a = ?', $result->toSql());
     }
 

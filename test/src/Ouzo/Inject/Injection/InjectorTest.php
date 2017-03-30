@@ -31,10 +31,10 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldCreateInstanceByName()
     {
         //when
-        $instance = $this->injector->getInstance('\ClassWithNoDep');
+        $instance = $this->injector->getInstance(ClassWithNoDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithNoDep', $instance);
+        $this->assertInstanceOf(ClassWithNoDep::class, $instance);
     }
 
     /**
@@ -44,16 +44,16 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     {
         //given
         $config = new InjectorConfig();
-        $config->bind('\ClassWithNoDep')->in(Scope::PROTOTYPE);
+        $config->bind(ClassWithNoDep::class)->in(Scope::PROTOTYPE);
         $injector = new Injector($config);
-        $instance1 = $injector->getInstance('\ClassWithNoDep');
+        $instance1 = $injector->getInstance(ClassWithNoDep::class);
 
         //when
-        $instance2 = $injector->getInstance('\ClassWithNoDep');
+        $instance2 = $injector->getInstance(ClassWithNoDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithNoDep', $instance1);
-        $this->assertInstanceOf('\ClassWithNoDep', $instance2);
+        $this->assertInstanceOf(ClassWithNoDep::class, $instance1);
+        $this->assertInstanceOf(ClassWithNoDep::class, $instance2);
         $this->assertNotSame($instance1, $instance2);
     }
 
@@ -64,16 +64,16 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     {
         //given
         $config = new InjectorConfig();
-        $config->bind('\ClassWithNoDep')->in(Scope::SINGLETON);
+        $config->bind(ClassWithNoDep::class)->in(Scope::SINGLETON);
         $injector = new Injector($config);
-        $instance1 = $injector->getInstance('\ClassWithNoDep');
+        $instance1 = $injector->getInstance(ClassWithNoDep::class);
 
         //when
-        $instance2 = $injector->getInstance('\ClassWithNoDep');
+        $instance2 = $injector->getInstance(ClassWithNoDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithNoDep', $instance1);
-        $this->assertInstanceOf('\ClassWithNoDep', $instance2);
+        $this->assertInstanceOf(ClassWithNoDep::class, $instance1);
+        $this->assertInstanceOf(ClassWithNoDep::class, $instance2);
         $this->assertSame($instance1, $instance2);
     }
 
@@ -83,11 +83,11 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldInjectDependency()
     {
         //when
-        $instance = $this->injector->getInstance('\ClassWithDep');
+        $instance = $this->injector->getInstance(ClassWithDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithDep', $instance);
-        $this->assertDependencyInjected('\ClassWithNoDep', $instance->myClass);
+        $this->assertInstanceOf(ClassWithDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
     /**
@@ -96,12 +96,12 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldInjectDeepDependency()
     {
         //when
-        $instance = $this->injector->getInstance('\ClassWithDeepDep');
+        $instance = $this->injector->getInstance(ClassWithDeepDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithDeepDep', $instance);
-        $this->assertDependencyInjected('\ClassWithDep', $instance->classWithDep);
-        $this->assertDependencyInjected('\ClassWithNoDep', $instance->classWithDep->myClass);
+        $this->assertInstanceOf(ClassWithDeepDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithDep::class, $instance->classWithDep);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->classWithDep->myClass);
     }
 
     /**
@@ -110,11 +110,11 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldInjectPrivateDependency()
     {
         //when
-        $instance = $this->injector->getInstance('\ClassWithPrivateDep');
+        $instance = $this->injector->getInstance(ClassWithPrivateDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithPrivateDep', $instance);
-        $this->assertDependencyInjected('\ClassWithNoDep', $instance->getMyClass());
+        $this->assertInstanceOf(ClassWithPrivateDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->getMyClass());
     }
 
     /**
@@ -124,15 +124,15 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     {
         // given
         $config = new InjectorConfig();
-        $config->bind('\ClassWithNoDep')->to('\SubClassWithNoDep');
+        $config->bind(ClassWithNoDep::class)->to(SubClassWithNoDep::class);
         $injector = new Injector($config);
 
         //when
-        $instance = $injector->getInstance('\ClassWithDep');
+        $instance = $injector->getInstance(ClassWithDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithDep', $instance);
-        $this->assertDependencyInjected('\SubClassWithNoDep', $instance->myClass);
+        $this->assertInstanceOf(ClassWithDep::class, $instance);
+        $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
     }
 
     /**
@@ -142,14 +142,14 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     {
         // given
         $config = new InjectorConfig();
-        $config->bind('\ClassWithNoDep')->to('\SubClassWithNoDep');
+        $config->bind(ClassWithNoDep::class)->to(SubClassWithNoDep::class);
         $injector = new Injector($config);
 
         //when
-        $instance = $injector->getInstance('\ClassWithNoDep');
+        $instance = $injector->getInstance(ClassWithNoDep::class);
 
         //then
-        $this->assertInstanceOf('\SubClassWithNoDep', $instance);
+        $this->assertInstanceOf(SubClassWithNoDep::class, $instance);
     }
 
     /**
@@ -161,11 +161,11 @@ class InjectorTest extends PHPUnit_Framework_TestCase
         $object = new ClassWithNoDep();
 
         $config = new InjectorConfig();
-        $config->bind('\ClassWithNoDep')->toInstance($object);
+        $config->bind(ClassWithNoDep::class)->toInstance($object);
         $injector = new Injector($config);
 
         //when
-        $instance = $injector->getInstance('\ClassWithNoDep');
+        $instance = $injector->getInstance(ClassWithNoDep::class);
 
         //then
         $this->assertSame($object, $instance);
@@ -177,10 +177,10 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldThrowExceptionWhenVarNotDefinedForInject()
     {
         //when
-        CatchException::when($this->injector)->getInstance('\ClassWithInvalidDep');
+        CatchException::when($this->injector)->getInstance(ClassWithInvalidDep::class);
 
         //then
-        CatchException::assertThat()->isInstanceOf('\Ouzo\Injection\InjectorException');
+        CatchException::assertThat()->isInstanceOf(InjectorException::class);
     }
 
     /**
@@ -189,11 +189,11 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldInjectNamedDependencyWhenNameWasNotBound()
     {
         //when
-        $instance = $this->injector->getInstance('\ClassWithNamedDep');
+        $instance = $this->injector->getInstance(ClassWithNamedDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithNamedDep', $instance);
-        $this->assertDependencyInjected('\ClassWithNoDep', $instance->myClass);
+        $this->assertInstanceOf(ClassWithNamedDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
     /**
@@ -203,15 +203,15 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     {
         // given
         $config = new InjectorConfig();
-        $config->bind('\ClassWithNoDep', 'my_dep');
+        $config->bind(ClassWithNoDep::class, 'my_dep');
         $injector = new Injector($config);
 
         //when
-        $instance = $injector->getInstance('\ClassWithNamedDep');
+        $instance = $injector->getInstance(ClassWithNamedDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithNamedDep', $instance);
-        $this->assertDependencyInjected('\ClassWithNoDep', $instance->myClass);
+        $this->assertInstanceOf(ClassWithNamedDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
     /**
@@ -221,16 +221,16 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     {
         // given
         $config = new InjectorConfig();
-        $config->bind('\ClassWithNoDep', 'my_dep')->to('\SubClassWithNoDep');
-        $config->bind('\ClassWithNoDep', 'other_dep');
+        $config->bind(ClassWithNoDep::class, 'my_dep')->to(SubClassWithNoDep::class);
+        $config->bind(ClassWithNoDep::class, 'other_dep');
         $injector = new Injector($config);
 
         //when
-        $instance = $injector->getInstance('\ClassWithNamedDep');
+        $instance = $injector->getInstance(ClassWithNamedDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithNamedDep', $instance);
-        $this->assertDependencyInjected('\SubClassWithNoDep', $instance->myClass);
+        $this->assertInstanceOf(ClassWithNamedDep::class, $instance);
+        $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
     }
 
     /**
@@ -239,10 +239,10 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldReturnInstanceByNameEvenWhenNameWasNotBound()
     {
         //when
-        $instance = $this->injector->getInstance('\ClassWithNoDep', 'some_name');
+        $instance = $this->injector->getInstance(ClassWithNoDep::class, 'some_name');
 
         //then
-        $this->assertInstanceOf('\ClassWithNoDep', $instance);
+        $this->assertInstanceOf(ClassWithNoDep::class, $instance);
     }
 
     /**
@@ -255,7 +255,7 @@ class InjectorTest extends PHPUnit_Framework_TestCase
         $injector = new Injector($config);
 
         //when
-        $instance = $injector->getInstance('\ClassWithInjectorDep');
+        $instance = $injector->getInstance(ClassWithInjectorDep::class);
 
         //then
         $this->assertSame($injector, $instance->injector);
@@ -271,11 +271,11 @@ class InjectorTest extends PHPUnit_Framework_TestCase
 
         $config = new InjectorConfig();
         $injector = new Injector($config);
-        $config->bind('\ClassWithNoDep')->toInstance($object);
+        $config->bind(ClassWithNoDep::class)->toInstance($object);
         //ControllerTestCase exposes injectorConfig and allows users to add their bindings after injector is created
 
         //when
-        $instance = $injector->getInstance('\ClassWithNoDep');
+        $instance = $injector->getInstance(ClassWithNoDep::class);
 
         //then
         $this->assertSame($object, $instance);
@@ -287,11 +287,11 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldInjectDependencyByConstructor()
     {
         //when
-        $instance = $this->injector->getInstance('\ClassWithConstructorDep');
+        $instance = $this->injector->getInstance(ClassWithConstructorDep::class);
 
         //then
-        $this->assertInstanceOf('\ClassWithConstructorDep', $instance);
-        $this->assertDependencyInjected('\ClassWithNoDep', $instance->myClass);
+        $this->assertInstanceOf(ClassWithConstructorDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
     /**
@@ -300,7 +300,7 @@ class InjectorTest extends PHPUnit_Framework_TestCase
     public function shouldNotInjectDependencyByConstructorWhenConstructorHasParameterWithoutType()
     {
         //when
-        CatchException::when($this->injector)->getInstance('\ClassWithConstructorDepWithoutType');
+        CatchException::when($this->injector)->getInstance(ClassWithConstructorDepWithoutType::class);
 
         //then
         CatchException::assertThat()->isInstanceOf(InjectorException::class);

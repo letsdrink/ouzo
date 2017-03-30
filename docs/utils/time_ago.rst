@@ -13,7 +13,7 @@ Additionally it returns array with parameters for the key e.g. ``timeAgo.yesterd
     $timeAgo = TimeAgo::create('2012-02-20 11:00');
 
     $timeAgo->getKey(); //timeAgo.todayAt
-    $timeAgo->getParams(); //array('label' => '11:00')
+    $timeAgo->getParams(); //['label' => '11:00']
 
 .. note::
 
@@ -33,7 +33,7 @@ timeAgo.minAgo
 ~~~~~~~~~~~~~~
 Returned when difference between current date and given date is *greater than 60 seconds* and *less or equal than 60 minutes*.
 
-**Params:** ``array('label' => $minutesAgo)``
+**Params:** ``['label' => $minutesAgo]``
 
 ----
 
@@ -41,7 +41,7 @@ timeAgo.todayAt
 ~~~~~~~~~~~~~~~
 Returned when *day is the same* and difference between current date and given date is *greater than 60 minutes* and *less or equal than 24 hours*.
 
-**Params:** ``array('label' => $date->format('H:i'))``
+**Params:** ``['label' => $date->format('H:i')]``
 
 ----
 
@@ -49,7 +49,7 @@ timeAgo.yesterdayAt
 ~~~~~~~~~~~~~~~~~~~
 Returned when *day is yesterday*.
 
-**Params:** ``array('label' => $date->format('H:i'))``
+**Params:** ``['label' => $date->format('H:i')]``
 
 ----
 
@@ -57,7 +57,7 @@ timeAgo.thisYear
 ~~~~~~~~~~~~~~~~
 Returned when *year is the same*.
 
-**Params:** ``array('day' => $date->format('j'), 'month' => 'timeAgo.month.' . $date->format('n'))``
+**Params:** ``['day' => $date->format('j'), 'month' => 'timeAgo.month.' . $date->format('n')]``
 
 .. note::
 

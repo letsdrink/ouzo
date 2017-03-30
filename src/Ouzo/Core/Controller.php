@@ -15,24 +15,38 @@ class Controller
 {
     /** @var View */
     public $view;
-
     /** @var Layout */
     public $layout;
-
+    /** @var array */
     public $before = [];
+    /** @var array */
     public $after = [];
+    /** @var string */
     public $currentController = '';
+    /** @var string */
     public $currentAction = '';
+    /** @var array */
     public $params;
 
-    private $_statusResponse = 'show';
-    private $_redirectLocation = '';
-    private $_fileData = [];
-    private $_headers = [];
-    private $_cookies = [];
-    private $_routeRule = null;
-    private $_keepMessage = false;
+    /** @var string */
+    private $statusResponse = 'show';
+    /** @var string */
+    private $redirectLocation = '';
+    /** @var array */
+    private $fileData = [];
+    /** @var array */
+    private $headers = [];
+    /** @var array */
+    private $cookies = [];
+    /** @var RouteRule|null */
+    private $routeRule = null;
+    /** @var bool */
+    private $keepMessage = false;
 
+    /**
+     * @param RouteRule $routeRule
+     * @return Controller
+     */
     public static function createInstance(RouteRule $routeRule)
     {
         $className = get_called_class();
@@ -42,9 +56,13 @@ class Controller
         return $controller;
     }
 
+    /**
+     * @param RouteRule $routeRule
+     * @return void
+     */
     public function initialize(RouteRule $routeRule)
     {
-        $this->_routeRule = $routeRule;
+        $this->routeRule = $routeRule;
         $uri = new Uri();
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
@@ -56,66 +74,111 @@ class Controller
         $this->params = $this->createParameters($routeRule, $uri);
     }
 
+    /**
+     * @param string $header
+     * @return void
+     */
     public function header($header)
     {
-        $this->_headers[] = $header;
+        $this->headers[] = $header;
     }
 
+    /**
+     * @param string $params
+     */
     public function setCookie($params)
     {
-        $this->_cookies[] = $params;
+        $this->cookies[] = $params;
     }
 
+    /**
+     * @return array
+     */
     public function getHeaders()
     {
-        return $this->_headers;
+        return $this->headers;
     }
 
+    /**
+     * @return array
+     */
     public function getNewCookies()
     {
-        return $this->_cookies;
+        return $this->cookies;
     }
 
+    /**
+     * @param string $url
+     * @param array $messages
+     * @return void
+     */
     public function redirect($url, $messages = [])
     {
         $url = trim($url);
         $this->notice($messages, false, $url);
 
-        $this->_redirectLocation = $url;
-        $this->_statusResponse = 'redirect';
+        $this->redirectLocation = $url;
+        $this->statusResponse = 'redirect';
     }
 
+    /**
+     * @param string $label
+     * @param string $mime
+     * @param string $path
+     * @param string $type
+     * @return void
+     */
     public function downloadFile($label, $mime, $path, $type = 'file')
     {
-        $this->_fileData = ['label' => $label, 'mime' => $mime, 'path' => $path];
-        $this->_statusResponse = $type;
+        $this->fileData = ['label' => $label, 'mime' => $mime, 'path' => $path];
+        $this->statusResponse = $type;
     }
 
+    /**
+     * @param string $redirectLocation
+     * @return void
+     */
     public function setRedirectLocation($redirectLocation)
     {
-        $this->_redirectLocation = $redirectLocation;
+        $this->redirectLocation = $redirectLocation;
     }
 
+    /**
+     * @param string $statusResponse
+     * @return void
+     */
     public function setStatusResponse($statusResponse)
     {
-        $this->_statusResponse = $statusResponse;
+        $this->statusResponse = $statusResponse;
     }
 
+    /**
+     * @return string
+     */
     public function getStatusResponse()
     {
-        return $this->_statusResponse;
+        return $this->statusResponse;
     }
 
+    /**
+     * @return string
+     */
     public function getRedirectLocation()
     {
-        return $this->_redirectLocation;
+        return $this->redirectLocation;
     }
 
+    /**
+     * @return array
+     */
     public function getFileData()
     {
-        return $this->_fileData;
+        return $this->fileData;
     }
 
+    /**
+     * @return void
+     */
     public function display()
     {
         $renderedView = $this->view->getRenderedView();
@@ -127,9 +190,12 @@ class Controller
         $this->_removeMessages();
     }
 
+    /**
+     * @return void
+     */
     private function _removeMessages()
     {
-        if (!$this->_keepMessage && Session::has('messages')) {
+        if (!$this->keepMessage && Session::has('messages')) {
             $messages = Arrays::filter(Session::get('messages'), function (Notice $notice) {
                 return !$notice->requestUrlMatches();
             });
@@ -137,22 +203,33 @@ class Controller
         }
     }
 
+    /**
+     * @param string|null $viewName
+     */
     public function renderAjaxView($viewName = null)
     {
         $view = $this->view->render($viewName ?: $this->getViewName());
         $this->layout->renderAjax($view);
     }
 
+    /**
+     * @param array $messages
+     * @param bool $keep
+     * @param string|null $url
+     */
     public function notice($messages, $keep = false, $url = null)
     {
         if (!empty($messages)) {
             $url = $url ? Uri::addPrefixIfNeeded($url) : null;
             $messages = $this->wrapAsNotices($messages, $url);
             Session::set('messages', $messages);
-            $this->_keepMessage = $keep;
+            $this->keepMessage = $keep;
         }
     }
 
+    /**
+     * @return string
+     */
     public function getTab()
     {
         $noController = Strings::remove(get_called_class(), 'Controller');
@@ -160,21 +237,37 @@ class Controller
         return Strings::camelCaseToUnderscore($noSlashes);
     }
 
+    /**
+     * @return bool
+     */
     public function isAjax()
     {
         return Uri::isAjax();
     }
 
+    /**
+     * @return null|RouteRule
+     */
     public function getRouteRule()
     {
-        return $this->_routeRule;
+        return $this->routeRule;
     }
 
+    /**
+     * @param string $name
+     * @param array $args
+     * @throws NoControllerActionException
+     */
     public function __call($name, $args)
     {
         throw new NoControllerActionException('No action [' . $name . '] defined in controller [' . get_called_class() . '].');
     }
 
+    /**
+     * @param array|string $messages
+     * @param string $url
+     * @return array
+     */
     private function wrapAsNotices($messages, $url)
     {
         $array = Arrays::toArray($messages);
@@ -183,6 +276,10 @@ class Controller
         });
     }
 
+    /**
+     * @param string $messages
+     * @return void
+     */
     private function saveMessagesWithEmptyCheck($messages)
     {
         if ($messages) {
@@ -192,11 +289,19 @@ class Controller
         }
     }
 
+    /**
+     * @return string
+     */
     private function getViewName()
     {
         return (ClassName::pathToFullyQualifiedName($this->currentController) . '/' . $this->currentAction) ?: '/';
     }
 
+    /**
+     * @param RouteRule $routeRule
+     * @param Uri $uri
+     * @return array
+     */
     private function createParameters(RouteRule $routeRule, Uri $uri)
     {
         $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
@@ -204,6 +309,9 @@ class Controller
         return array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
 
+    /**
+     * @return array
+     */
     public function getRequestHeaders()
     {
         $headers = Arrays::filterByKeys($_SERVER, Functions::startsWith('HTTP_'));

@@ -9,16 +9,25 @@ use Ouzo\Utilities\Arrays;
 
 class PostgresDialect extends Dialect
 {
+    /**
+     * @inheritdoc
+     */
     public function getConnectionErrorCodes()
     {
         return ['57000', '57014', '57P01', '57P02', '57P03'];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getErrorCode($errorInfo)
     {
         return Arrays::getValue($errorInfo, 0);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function batchInsert($table, $primaryKey, $columns, $batchSize)
     {
         $valueClause = '(' . implode(', ', array_fill(0, count($columns), '?')) . ')';
@@ -31,16 +40,25 @@ class PostgresDialect extends Dialect
         return $sql;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function insertEmptyRow()
     {
-        return "INSERT INTO {$this->_query->table} DEFAULT VALUES";
+        return "INSERT INTO {$this->query->table} DEFAULT VALUES";
     }
 
+    /**
+     * @inheritdoc
+     */
     public function regexpMatcher()
     {
         return '~';
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function quote($word)
     {
         return '"' . $word . '"';

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ouzo\ExceptionHandling;
 
 use Ouzo\PageNotFoundException;
@@ -13,7 +14,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         //given
         $pageNotFoundException = new PageNotFoundException();
-        ExceptionHandler::$errorRenderer = Mock::mock('Ouzo\ExceptionHandling\ErrorRenderer');
+        ExceptionHandler::$errorRenderer = Mock::mock(ErrorRenderer::class);
 
         //when
         ErrorHandler::exceptionHandler($pageNotFoundException);

@@ -15,22 +15,38 @@ class ModelDefinition
 {
     /** @var Db */
     public $db;
-
+    /** @var string */
     public $table;
+    /** @var string */
     public $sequence;
+    /** @var string */
     public $primaryKey;
+    /** @var array */
     public $fields;
-
     /** @var Relations */
     public $relations;
-
+    /** @var array */
     public $afterSaveCallbacks = [];
+    /** @var array */
     public $beforeSaveCallbacks = [];
+    /** @var array */
     public $defaults = [];
 
+    /** @var array */
     private static $cache = [];
 
-    public function __construct(Db $db, $table, $sequence, $primaryKey, $fields, $relations, array $afterSaveCallbacks, array $beforeSaveCallbacks, $defaults)
+    /**
+     * @param Db $db
+     * @param string $table
+     * @param string $sequence
+     * @param string $primaryKey
+     * @param string $fields
+     * @param Relations $relations
+     * @param array $afterSaveCallbacks
+     * @param array $beforeSaveCallbacks
+     * @param array $defaults
+     */
+    public function __construct(Db $db, $table, $sequence, $primaryKey, $fields, $relations, array $afterSaveCallbacks, array $beforeSaveCallbacks, array $defaults)
     {
         $this->db = $db;
         $this->table = $table;
@@ -43,25 +59,33 @@ class ModelDefinition
         $this->defaults = $defaults;
     }
 
+    /**
+     * @return void
+     */
     public static function resetCache()
     {
         self::$cache = [];
     }
 
     /**
-     * @param $class
-     * @param $params
+     * @param string $class
+     * @param array $params
      * @return ModelDefinition
      */
-    public static function get($class, $params)
+    public static function get($class, array $params)
     {
         if (!isset(self::$cache[$class])) {
-            self::$cache[$class] = self::_createDefinition($class, $params);
+            self::$cache[$class] = self::createDefinition($class, $params);
         }
         return self::$cache[$class];
     }
 
-    public function mergeWithDefaults($attributes, $fields)
+    /**
+     * @param array $attributes
+     * @param string $fields
+     * @return array
+     */
+    public function mergeWithDefaults(array $attributes, $fields)
     {
         if (empty($this->defaults)) {
             return $attributes;
@@ -77,6 +101,10 @@ class ModelDefinition
         return $attributes;
     }
 
+    /**
+     * @param string $class
+     * @return string
+     */
     private static function defaultTable($class)
     {
         $reflectionClass = new ReflectionClass($class);
@@ -84,17 +112,17 @@ class ModelDefinition
     }
 
     /**
-     * @param $class
-     * @param $params
+     * @param string $class
+     * @param array $params
      * @return ModelDefinition
      */
-    private static function _createDefinition($class, $params)
+    private static function createDefinition($class, array $params)
     {
         $table = Arrays::getValue($params, 'table') ?: self::defaultTable($class);
         $primaryKey = Arrays::getValue($params, 'primaryKey', 'id');
         $sequence = Arrays::getValue($params, 'sequence', "{$table}_{$primaryKey}_seq");
 
-        list($fields, $defaults) = self::_extractFieldsAndDefaults($params['fields']);
+        list($fields, $defaults) = self::extractFieldsAndDefaults($params['fields']);
 
         $relations = new Relations($class, $params, $primaryKey);
 
@@ -108,7 +136,11 @@ class ModelDefinition
         return new ModelDefinition($db, $table, $sequence, $primaryKey, $fields, $relations, $afterSaveCallbacks, $beforeSaveCallbacks, $defaults);
     }
 
-    private static function _extractFieldsAndDefaults($fields)
+    /**
+     * @param array $fields
+     * @return array
+     */
+    private static function extractFieldsAndDefaults(array $fields)
     {
         $newFields = [];
         $defaults = [];
