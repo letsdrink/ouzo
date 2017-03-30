@@ -107,6 +107,7 @@ class Route implements RouteInterface
         foreach ($methods as $method) {
             self::$routeKeys[$method . $uri] = true;
         }
+        RouteCompiler::addRoute(RouteTrie::trie(), $routeRule);
     }
 
     private static function existRouteRule($methods, $uri)
@@ -159,6 +160,7 @@ class Route implements RouteInterface
     {
         self::$routes = [];
         self::$routeKeys = [];
+        RouteTrie::clear();
     }
 }
 

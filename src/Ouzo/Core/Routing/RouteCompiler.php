@@ -16,12 +16,12 @@ class RouteCompiler
     {
         $trie = array();
         foreach ($routes as $route) {
-            $this->addRoute($trie, $route);
+            self::addRoute($trie, $route);
         }
         return $trie;
     }
 
-    private function addRoute(&$trie, RouteRule $route)
+    public static function addRoute(&$trie, RouteRule $route)
     {
         $uri = $route->getUri();
         $parts = array_filter(explode('/', $uri));

@@ -25,51 +25,78 @@ class RouteCompilerTest extends \PHPUnit_Framework_TestCase
         $trie = $routeCompiler->generateTrie(Route::getRoutes());
 
         //then
-        $this->assertEquals(array(
-            'GET' => array(
-                'customers' => array(
-                    '/' => 'customers#index',
-                    'fresh' => array(
-                        '/' => 'customers#fresh',
-                    ),
-                    ':id' => array(
-                        'edit' => array(
-                            '/' => 'customers#edit',
-                        ),
-                        '/' => 'customers#show',
-                    ),
-                ),
-            ),
-            'POST' => array(
-                'customers' => array(
-                    '/' => 'customers#create',
-                    'search' => array(
-                        '/' => 'customers#search'
-                    )
-                ),
-            ),
-            'PUT' => array(
-                'customers' => array(
-                    ':id' => array(
-                        '/' => 'customers#update',
-                    ),
-                ),
-            ),
-            'PATCH' => array(
-                'customers' => array(
-                    ':id' => array(
-                        '/' => 'customers#update',
-                    ),
-                ),
-            ),
-            'DELETE' => array(
-                'customers' => array(
-                    ':id' => array(
-                        '/' => 'customers#destroy',
-                    ),
-                ),
-            ),
-        ), $trie);
+        $this->assertEquals([
+            'GET' => [
+                'customers' => [
+                    '/' => [
+                        'action' => 'customers#index',
+                        'uri' => '/customers'
+                    ],
+                    'fresh' => [
+                        '/' => [
+                            'action' => 'customers#fresh',
+                            'uri' => '/customers/fresh'
+                        ]
+                    ],
+                    ':id' => [
+                        'edit' => [
+                            '/' => [
+                                'action' => 'customers#edit',
+                                'uri' => '/customers/:id/edit'
+                            ]
+                        ],
+                        '/' => [
+                            'action' => 'customers#show',
+                            'uri' => '/customers/:id'
+                        ]
+                    ],
+                ],
+            ],
+            'POST' => [
+                'customers' => [
+                    '/' => [
+                        'action' => 'customers#create',
+                        'uri' => '/customers'
+                    ],
+                    'search' => [
+                        '/' => [
+                            'action' => 'customers#search',
+                            'uri' => '/customers/search'
+                        ]
+                    ]
+                ],
+            ],
+            'PUT' => [
+                'customers' => [
+                    ':id' => [
+                        '/' => [
+                            'action' => 'customers#update',
+                            'uri' => '/customers/:id'
+                        ]
+                    ],
+                ],
+            ],
+            'PATCH' => [
+                'customers' => [
+                    ':id' => [
+                        '/' => [
+                            'action' => 'customers#update',
+                            'uri' => '/customers/:id'
+                        ]
+                    ],
+                ],
+            ],
+            'DELETE' => [
+                'customers' => [
+                    ':id' => [
+                        '/' => [
+                            'action' => 'customers#destroy',
+                            'uri' => '/customers/:id'
+                        ]
+                    ],
+                ],
+            ],
+        ], $trie);
     }
 
     /**
@@ -87,37 +114,39 @@ class RouteCompilerTest extends \PHPUnit_Framework_TestCase
         $trie = $routeCompiler->generateTrie(Route::getRoutes());
 
         //then
-        $this->assertEquals(array(
+        $this->assertEquals($trie, array(
             'GET' => array(
                 'customers' => array(
-                    '*' => 'customers'
+                    '*' => ['action' => 'customers', 'uri' => '/customers']
                 )
             ),
             'POST' => array(
                 'customers' => array(
-                    '*' => 'customers'
+                    '*' => ['action' => 'customers', 'uri' => '/customers']
                 )
             ),
             'PUT' => array(
                 'customers' => array(
-                    '*' => 'customers'
+                    '*' => ['action' => 'customers', 'uri' => '/customers']
                 )
             ),
             'PATCH' => array(
                 'customers' => array(
-                    '*' => 'customers'
+                    '*' => ['action' => 'customers', 'uri' => '/customers']
                 )
             ),
             'DELETE' => array(
                 'customers' => array(
-                    '*' => 'customers'
+                    '*' => ['action' => 'customers', 'uri' => '/customers']
                 )
             ),
             'OPTIONS' => array(
                 'customers' => array(
-                    '*' => 'customers'
+                    '*' => [
+                        'action' => 'customers', 'uri' => '/customers'
+                    ]
                 )
             )
-        ), $trie);
+        ));
     }
 }

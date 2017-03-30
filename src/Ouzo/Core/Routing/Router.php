@@ -38,27 +38,27 @@ class Router
 
     private function findRouteRule($path, $requestType)
     {
-        //$helperPath = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'CompiledRoutes.php');
-        $trie = \Helper\CompiledRoutes::trie();
-
-        $trie = $trie[$requestType];
+        $trie = RouteTrie::trie();
+        if (!isset($trie[$requestType])) {
+            return null;
+        }
 
         $parts = array_values(array_filter(explode('/', $path)));
 
         array_push($parts, '/');
 
-        $trie = $this->tryMatch($parts, 0, $trie);
-        if (!$trie) {
+        $matched = $this->tryMatch($parts, 0, $trie[$requestType]);
+        if (!$matched) {
             return null;
         }
 
-        $explode = explode('#', $trie['action']);
+        $explode = explode('#', $matched['action']);
         $controller = $explode[0];
         $action = null;
         if (count($explode) == 2) {
             $action = $explode[1];
         }
-        return new RouteRule($requestType, $trie['uri'], $controller, $action, $action !== NULL);
+        return new RouteRule($requestType, $matched['uri'], $controller, $action, $action !== NULL);
     }
 
     private function tryMatch($parts, $partIndex, $trie)
