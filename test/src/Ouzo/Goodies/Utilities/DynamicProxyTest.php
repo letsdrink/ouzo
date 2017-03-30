@@ -84,6 +84,14 @@ class ClassWithMethodThatTakesParamsByRef
     }
 }
 
+class ClassWithMethodThatTakesVararg
+{
+    public function fun1(...$vararg)
+    {
+    }
+}
+
+
 class TestMethodHandler
 {
     public $calls = [];
@@ -303,6 +311,23 @@ class DynamicProxyTest extends \PHPUnit_Framework_TestCase
         //when
         $testMethodHandler = new TestMethodHandler();
         $proxy = DynamicProxy::newInstance(ClassWithMethodThatTakesParamsByRef::class, $testMethodHandler);
+        $param = [];
+
+        //when
+        $proxy->fun1($param);
+
+        //then
+        $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateProxyForMethodWithVararg()
+    {
+        //when
+        $testMethodHandler = new TestMethodHandler();
+        $proxy = DynamicProxy::newInstance(ClassWithMethodThatTakesVararg::class, $testMethodHandler);
         $param = [];
 
         //when
