@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Console;
 
 use Ouzo\Injection\Injector;
@@ -58,11 +59,8 @@ class CommandsLoader
         foreach ($files as $file) {
             $className = pathinfo($file, PATHINFO_FILENAME);
             $class = $namespace . '\\' . $className;
-            if (class_exists($class)) {
-                $instance = $this->createInstance($class);
-                if ($instance instanceof Command) {
-                    $commands[] = $instance;
-                }
+            if ($this->isValidClass($class)) {
+                $commands[] = $this->createInstance($class);
             }
         }
         $this->application->addCommands($commands);
@@ -79,5 +77,14 @@ class CommandsLoader
             return $this->injector->getInstance($class);
         }
         return new $class();
+    }
+
+    /**
+     * @param $class
+     * @return bool
+     */
+    private function isValidClass($class)
+    {
+        return class_exists($class) && is_subclass_of($class, Command::class);
     }
 }
