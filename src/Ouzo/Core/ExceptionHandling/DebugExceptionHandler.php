@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\ExceptionHandling;
 
 use Ouzo\Response\ResponseTypeResolve;
@@ -25,5 +24,4 @@ class DebugExceptionHandler extends ExceptionHandler
         $isHtmlResponse = ResponseTypeResolve::resolve() == "text/html";
         return $isHtmlResponse && !Uri::isAjax();
     }
-
 }

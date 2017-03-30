@@ -17,7 +17,7 @@ use PDO;
 
 class ModelQueryBuilder
 {
-    CONST MODEL_QUERY_MARKER_COMMENT = 'orm:model';
+    const MODEL_QUERY_MARKER_COMMENT = 'orm:model';
 
     /** @var Db */
     private $db;
@@ -180,7 +180,7 @@ class ModelQueryBuilder
      * @param array $results
      * @return Model[]
      */
-    function _processResults($results)
+    public function _processResults($results)
     {
         $resultSetConverter = new ModelResultSetConverter($this->model, $this->getModelAliasOrTable(), $this->joinedModels, $this->relationsToFetch);
         $converted = $resultSetConverter->convert($results);

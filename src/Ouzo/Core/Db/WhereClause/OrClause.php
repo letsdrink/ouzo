@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Db\WhereClause;
 
-
 use Ouzo\Db\Dialect\DialectUtil;
 use Ouzo\Utilities\Arrays;
 

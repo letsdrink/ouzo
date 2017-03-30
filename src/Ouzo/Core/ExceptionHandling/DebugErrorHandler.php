@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\ExceptionHandling;
 
 use Whoops\Handler\PrettyPageHandler;

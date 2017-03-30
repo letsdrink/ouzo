@@ -34,7 +34,7 @@ class BatchLoadingSession
      */
     public static function isAllocated()
     {
-        return BatchLoadingSession::$currentSession !== NULL;
+        return BatchLoadingSession::$currentSession !== null;
     }
 
     /**

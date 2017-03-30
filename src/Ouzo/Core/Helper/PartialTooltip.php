@@ -1,7 +1,6 @@
 <?php
 namespace Ouzo\Helper;
 
-
 use Ouzo\Config;
 use Ouzo\Utilities\Strings;
 

@@ -1,7 +1,5 @@
 <?php
-
 namespace Ouzo\Logger;
-
 
 use Psr\Log\LogLevel;
 

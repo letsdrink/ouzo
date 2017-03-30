@@ -74,7 +74,7 @@ class ControllerUrl
     private static function mergeParams(array $params)
     {
         return '/' . Joiner::on('/')->map(function ($key, $value) {
-                return $key . '/' . $value;
-            })->join($params);
+            return $key . '/' . $value;
+        })->join($params);
     }
 }

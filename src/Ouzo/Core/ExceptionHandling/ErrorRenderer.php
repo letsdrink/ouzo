@@ -8,7 +8,6 @@ use Ouzo\ViewPathResolver;
 
 class ErrorRenderer
 {
-
     public function render(OuzoExceptionData $exceptionData, $viewName)
     {
         /** @noinspection PhpUnusedLocalVariableInspection */

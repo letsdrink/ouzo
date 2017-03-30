@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Logger;
 
-
 class SyslogLogger extends AbstractOuzoLogger
 {
     const MAX_MESSAGE_SIZE = 1024;

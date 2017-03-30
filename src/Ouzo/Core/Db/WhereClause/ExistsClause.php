@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Db\WhereClause;
 
-
 use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryBoundValuesExtractor;
