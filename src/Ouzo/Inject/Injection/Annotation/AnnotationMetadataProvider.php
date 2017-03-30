@@ -8,13 +8,13 @@ namespace Ouzo\Injection\Annotation;
 interface AnnotationMetadataProvider
 {
     /**
-     * @param $instance
+     * @param string $instance
      * @return mixed array that contains properties metadata: 'property_name' => ['className' => '\Class', 'name' => 'Name']
      */
     public function getMetadata($instance);
 
     /**
-     * @param $className string
+     * @param string $className
      * @return mixed array that contains ordered constructor arguments metadata: '0' => ['className' => '\Class', 'name' => 'Name']
      */
     public function getConstructorMetadata($className);

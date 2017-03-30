@@ -9,8 +9,15 @@ use BadMethodCallException;
 
 class InstanceRepository
 {
+    /** @var object[] */
     private $instances = [];
 
+    /**
+     * @param InstanceFactory $factory
+     * @param Binder $binder
+     * @return object
+     * @throws BadMethodCallException
+     */
     public function getInstance(InstanceFactory $factory, Binder $binder)
     {
         $instance = $binder->getInstance();
@@ -28,6 +35,11 @@ class InstanceRepository
         throw new BadMethodCallException("Unknown scope: $scope");
     }
 
+    /**
+     * @param InstanceFactory $factory
+     * @param $className
+     * @return object
+     */
     public function singletonInstance(InstanceFactory $factory, $className)
     {
         if (isset($this->instances[$className])) {

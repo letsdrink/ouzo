@@ -3,7 +3,6 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-
 namespace Ouzo\Injection\Annotation;
 
 use Ouzo\Injection\InjectorException;
@@ -12,6 +11,9 @@ use ReflectionClass;
 
 class DocCommentExtractor implements AnnotationMetadataProvider
 {
+    /**
+     * @inheritdoc
+     */
     public function getMetadata($instance)
     {
         $annotations = [];
@@ -32,6 +34,9 @@ class DocCommentExtractor implements AnnotationMetadataProvider
         return $annotations;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getConstructorMetadata($className)
     {
         $annotations = [];
@@ -52,6 +57,10 @@ class DocCommentExtractor implements AnnotationMetadataProvider
         return $annotations;
     }
 
+    /**
+     * @param string $doc
+     * @return string
+     */
     private function extractName($doc)
     {
         if (preg_match("#@Named\\(\"([A-Za-z0-9_]*)\"\\)#s", $doc, $matched)) {

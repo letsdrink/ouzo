@@ -11,15 +11,15 @@ use Ouzo\Utilities\Strings;
 
 class Injector
 {
-    /**
-     * @var InstanceRepository
-     */
+    /** @var InstanceRepository */
     private $repository;
-    /**
-     * @var InstanceFactory
-     */
+    /** @var InstanceFactory */
     private $factory;
 
+    /**
+     * @param InjectorConfig|null $config
+     * @param AnnotationMetadataProvider|null $provider
+     */
     public function __construct(InjectorConfig $config = null, AnnotationMetadataProvider $provider = null)
     {
         $config = $config ?: new InjectorConfig();
@@ -28,6 +28,11 @@ class Injector
         $this->repository = new InstanceRepository();
     }
 
+    /**
+     * @param string $className
+     * @param string $name
+     * @return object
+     */
     public function getInstance($className, $name = '')
     {
         $binder = $this->bindings->getBinder($className, $name);

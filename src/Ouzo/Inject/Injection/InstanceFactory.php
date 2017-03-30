@@ -3,7 +3,6 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-
 namespace Ouzo\Injection;
 
 use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
@@ -12,21 +11,26 @@ use ReflectionClass;
 
 class InstanceFactory
 {
-    /**
-     * @var Bindings
-     */
+    /** @var Bindings */
     private $bindings;
-    /**
-     * @var AnnotationMetadataProvider
-     */
+    /** @var AnnotationMetadataProvider */
     private $provider;
 
+    /**
+     * @param Bindings $bindings
+     * @param AnnotationMetadataProvider $provider
+     */
     public function __construct(Bindings $bindings, AnnotationMetadataProvider $provider)
     {
         $this->bindings = $bindings;
         $this->provider = $provider;
     }
 
+    /**
+     * @param InstanceRepository $repository
+     * @param string $className
+     * @return object
+     */
     public function createInstance(InstanceRepository $repository, $className)
     {
         $instance = $this->constructInstance($repository, $className);
@@ -34,6 +38,11 @@ class InstanceFactory
         return $instance;
     }
 
+    /**
+     * @param InstanceRepository $repository
+     * @param string $instance
+     * @return void
+     */
     private function injectDependencies(InstanceRepository $repository, $instance)
     {
         $annotations = $this->provider->getMetadata($instance);
@@ -49,6 +58,11 @@ class InstanceFactory
         }
     }
 
+    /**
+     * @param InstanceRepository $repository
+     * @param string $className
+     * @return object
+     */
     private function constructInstance(InstanceRepository $repository, $className)
     {
         $arguments = $this->getConstructorArguments($repository, $className);
@@ -59,6 +73,11 @@ class InstanceFactory
         return new $className;
     }
 
+    /**
+     * @param InstanceRepository $repository
+     * @param string $className
+     * @return array
+     */
     private function getConstructorArguments(InstanceRepository $repository, $className)
     {
         $annotations = $this->provider->getConstructorMetadata($className);
@@ -67,6 +86,11 @@ class InstanceFactory
         });
     }
 
+    /**
+     * @param InstanceRepository $repository
+     * @param array $annotation
+     * @return mixed
+     */
     private function getInstance(InstanceRepository $repository, $annotation)
     {
         $binder = $this->bindings->getBinder($annotation['className'], $annotation['name']);

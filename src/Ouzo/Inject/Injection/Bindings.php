@@ -8,9 +8,15 @@ namespace Ouzo\Injection;
 
 class Bindings
 {
+    /** @var InjectorConfig */
     private $config;
+    /** @var Binder */
     private $injectorBinder;
 
+    /**
+     * @param InjectorConfig $config
+     * @param object $injector
+     */
     public function __construct(InjectorConfig $config, $injector)
     {
         $this->config = $config;
@@ -19,8 +25,8 @@ class Bindings
     }
 
     /**
-     * @param $className
-     * @param $name
+     * @param string $className
+     * @param string $name
      * @return Binder
      */
     public function getBinder($className, $name)
