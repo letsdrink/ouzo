@@ -205,7 +205,7 @@ class ClockTest extends PHPUnit_Framework_TestCase
     public function shouldHandleDSTChange()
     {
         //given
-        $clock = Clock::at('2017-03-26 01:31:50');
+        $clock = Clock::at('2017-03-26 01:31:50')->withTimezone(new DateTimeZone('Europe/Warsaw'));
 
         //when
         $clock = $clock->plusHours(1);
@@ -220,7 +220,7 @@ class ClockTest extends PHPUnit_Framework_TestCase
     public function shouldHandleDSTChangeWhenAddingMultipleHours()
     {
         //given
-        $clock = Clock::at('2017-03-26 01:31:50');
+        $clock = Clock::at('2017-03-26 01:31:50')->withTimezone(new DateTimeZone('Europe/Warsaw'));
 
         //when
         $clock = $clock->plusHours(2);
