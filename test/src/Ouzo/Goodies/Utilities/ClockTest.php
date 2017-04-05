@@ -198,4 +198,34 @@ class ClockTest extends PHPUnit_Framework_TestCase
         Assert::that($dateTime->getTimezone())->isEqualTo(new DateTimeZone('Europe/Warsaw'));
         Assert::that($modifiedClock->toDateTime()->getTimezone())->isEqualTo(new DateTimeZone('UTC'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldHandleDSTChange()
+    {
+        //given
+        $clock = Clock::at('2017-03-26 01:31:50');
+
+        //when
+        $clock = $clock->plusHours(1);
+
+        //then
+        $this->assertEquals('2017-03-26 03:31:50', $clock->format());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandleDSTChangeWhenAddingMultipleHours()
+    {
+        //given
+        $clock = Clock::at('2017-03-26 01:31:50');
+
+        //when
+        $clock = $clock->plusHours(2);
+
+        //then
+        $this->assertEquals('2017-03-26 04:31:50', $clock->format());
+    }
 }
