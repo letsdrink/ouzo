@@ -228,4 +228,26 @@ class ClockTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals('2017-03-26 04:31:50', $clock->format());
     }
+
+    function monthChange()
+    {
+        return [
+            ['2017-01-01', 1, '2017-02-01'],
+            ['2017-01-27', 1, '2017-02-27'],
+            ['2017-01-28', 1, '2017-02-28'],
+            ['2017-01-29', 1, '2017-02-28'],
+            ['2017-01-30', 1, '2017-02-28'],
+            ['2017-01-31', 1, '2017-02-28'],
+            ['2017-12-31', 1, '2018-01-31']
+        ];
+    }
+
+    /**
+     * @dataProvider monthChange
+     * @test
+     */
+    public function shouldChangeMonthsProperly($date, $change, $expectedDate)
+    {
+        $this->assertEquals($expectedDate, Clock::at($date)->plusMonths($change)->format('Y-m-d'));
+    }
 }
