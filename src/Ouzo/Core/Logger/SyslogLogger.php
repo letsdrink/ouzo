@@ -3,7 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Logger;
+
+use Ouzo\Config;
 
 class SyslogLogger extends AbstractOuzoLogger
 {
@@ -40,17 +43,22 @@ class SyslogLogger extends AbstractOuzoLogger
     private function logMessage($level, $message)
     {
         $messageLength = strlen($message);
-        if ($messageLength < self::MAX_MESSAGE_SIZE) {
+        if ($messageLength < $this->getMaxMessageSize()) {
             $this->syslogLogProvider->log($level, $message);
         } else {
             $messageId = uniqid();
             $multipartMessagePrefix = "Multipart $messageId [%d/%d] ";
 
-            $parts = str_split($message, self::MAX_MESSAGE_SIZE - strlen($multipartMessagePrefix) - 10);
+            $parts = str_split($message, $this->getMaxMessageSize() - strlen($multipartMessagePrefix) - 10);
             foreach ($parts as $idx => $part) {
                 $prefix = sprintf($multipartMessagePrefix, $idx + 1, sizeof($parts));
                 $this->syslogLogProvider->log($level, $prefix . $part);
             }
         }
+    }
+
+    private function getMaxMessageSize()
+    {
+        return Config::getValue('logger', 'syslog', 'max_message_size', self::MAX_MESSAGE_SIZE);
     }
 }
