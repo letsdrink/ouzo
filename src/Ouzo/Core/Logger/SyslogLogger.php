@@ -59,6 +59,6 @@ class SyslogLogger extends AbstractOuzoLogger
 
     private function getMaxMessageSize()
     {
-        return Config::getValue('logger', 'syslog', 'max_message_size', self::MAX_MESSAGE_SIZE);
+        return Config::getValue('logger', 'syslog', 'max_message_size') ?: self::MAX_MESSAGE_SIZE;
     }
 }
