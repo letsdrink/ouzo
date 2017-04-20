@@ -1,9 +1,12 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+
 namespace Ouzo\ExceptionHandling;
 
-use Ouzo\Logger\Logger;
 use Ouzo\Response\ResponseTypeResolve;
-use Ouzo\Utilities\Objects;
 use Ouzo\ViewPathResolver;
 
 class ErrorRenderer
@@ -12,9 +15,6 @@ class ErrorRenderer
     {
         /** @noinspection PhpUnusedLocalVariableInspection */
         $errorMessage = $exceptionData->getMessage();
-        $errorTrace = $exceptionData->getStackTrace();
-        Logger::getLogger(__CLASS__)->error($exceptionData->getOriginalMessage());
-        Logger::getLogger(__CLASS__)->error(Objects::toString($errorTrace));
         $this->clearOutputBuffers();
         header($exceptionData->getHeader());
         $responseType = ResponseTypeResolve::resolve();

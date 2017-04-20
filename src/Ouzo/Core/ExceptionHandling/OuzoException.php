@@ -49,7 +49,7 @@ class OuzoException extends Exception
 
     public function asExceptionData()
     {
-        return new OuzoExceptionData($this->_httpCode, $this->_errors, $this->getTraceAsString(), $this->getHeaders());
+        return new OuzoExceptionData($this->_httpCode, $this->_errors, StackTrace::forException($this), $this->getHeaders());
     }
 
     public function getHeaders()

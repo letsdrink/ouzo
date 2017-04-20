@@ -3,8 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\ExceptionHandling;
 
+use Exception;
 use Ouzo\Config;
 use Ouzo\I18n;
 use Ouzo\UserException;
@@ -22,20 +24,12 @@ class Error
         $this->originalMessage = $originalMessage ?: $message;
     }
 
-    public static function forException($exception)
+    public static function forException(Exception $exception)
     {
-        if (Config::getValue('debug')) {
-            return new Error($exception->getCode(), self::_classNameAndMessage($exception));
-        }
-        if ($exception instanceof UserException) {
+        if ($exception instanceof UserException || Config::getValue('debug')) {
             return new Error($exception->getCode(), $exception->getMessage());
         }
         return new Error($exception->getCode(), I18n::t('exception.unknown'), $exception->getMessage());
-    }
-
-    private static function _classNameAndMessage($exception)
-    {
-        return get_class($exception) . ': ' . $exception->getMessage();
     }
 
     public function toArray()

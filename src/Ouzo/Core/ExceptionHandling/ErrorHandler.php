@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
@@ -24,9 +25,9 @@ class ErrorHandler
     public static function errorHandler($errorNumber, $errorString, $errorFile, $errorLine)
     {
         if (self::stopsExecution($errorNumber)) {
-            self::exceptionHandler(new ErrorException($errorString, $errorNumber, 0, $errorFile, $errorLine));
+            self::exceptionHandler(new ErrorException($errorString, $errorNumber, $errorNumber, $errorFile, $errorLine));
         } else {
-            throw new ErrorException($errorString, $errorNumber, 0, $errorFile, $errorLine);
+            throw new ErrorException($errorString, $errorNumber, $errorNumber, $errorFile, $errorLine);
         }
     }
 
@@ -55,12 +56,9 @@ class ErrorHandler
         $error = error_get_last();
 
         if (!ExceptionHandler::lastErrorHandled() && $error && $error['type'] & (E_ERROR | E_USER_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR)) {
-            static::getExceptionHandler()->handleExceptionData(new OuzoExceptionData(500, [new Error(0, $error['message'])], self::trace($error['file'], $error['line'])));
+            $stackTrace = new StackTrace($error['file'], $error['line']);
+            $exceptionData = new OuzoExceptionData(500, [new Error(0, $error['message'])], $stackTrace, [], null, $error['type']);
+            static::getExceptionHandler()->handleExceptionData($exceptionData);
         }
-    }
-
-    private static function trace($errorFile, $errorLine)
-    {
-        return "$errorFile:$errorLine";
     }
 }

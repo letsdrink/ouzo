@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+
 namespace Ouzo\ExceptionHandling;
 
 use Exception;
@@ -61,6 +66,7 @@ class ExceptionHandler
     protected function renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
     {
         try {
+            ExceptionLogger::newInstance($exceptionData)->log();
             $renderer = self::$errorRenderer ?: new ErrorRenderer();
             $renderer->render($exceptionData, $viewName);
             self::$errorHandled = true;

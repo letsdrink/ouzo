@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+
 namespace Ouzo\ExceptionHandling;
 
 use Whoops\Handler\PrettyPageHandler;
@@ -17,6 +22,7 @@ class DebugErrorHandler extends ErrorHandler
     {
         $run = new Run();
         $run->pushHandler(new PrettyPageHandler());
+        $run->pushHandler(new DebugErrorLogHandler());
         return $run;
     }
 
