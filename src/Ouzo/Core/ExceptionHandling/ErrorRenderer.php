@@ -16,7 +16,7 @@ class ErrorRenderer
         /** @noinspection PhpUnusedLocalVariableInspection */
         $errorMessage = $exceptionData->getMessage();
         /** @noinspection PhpUnusedLocalVariableInspection */
-        $errorTrace = $exceptionData->getStackTrace();
+        $errorTrace = $exceptionData->getStackTrace()->getTraceAsString();
 
         $this->clearOutputBuffers();
         header($exceptionData->getHeader());
