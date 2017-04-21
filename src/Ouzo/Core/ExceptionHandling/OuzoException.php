@@ -20,7 +20,7 @@ class OuzoException extends Exception
      * OuzoException constructor.
      * @param int $httpCode
      * @param string $message
-     * @param Error[]|\Error $errors
+     * @param Error[]|Error $errors
      * @param string[] $headers
      */
     public function __construct($httpCode, $message, $errors, $headers = [])

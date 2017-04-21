@@ -14,7 +14,7 @@ class InternalException extends OuzoException
     const HTTP_CODE = 500;
 
     /**
-     * @param Error[]|\Error $errors
+     * @param Error[]|Error $errors
      * @param string[] $headers
      */
     public function __construct($errors, $headers = [])
