@@ -25,19 +25,4 @@ class ErrorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Winter is coming!', $error->message);
     }
 
-    /**
-     * @test
-     */
-    public function shouldGetErrorWithClassForDebug()
-    {
-        //given
-        Config::overrideProperty('debug')->with(true);
-        $userException = new UserException('Winter is coming!');
-
-        //when
-        $error = Error::forException($userException);
-
-        //then
-        $this->assertEquals('Ouzo\UserException: Winter is coming!', $error->message);
-    }
 }
