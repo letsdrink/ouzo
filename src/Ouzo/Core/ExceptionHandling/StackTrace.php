@@ -6,6 +6,8 @@
 
 namespace Ouzo\ExceptionHandling;
 
+use Throwable;
+
 class StackTrace
 {
     private $file;
@@ -19,7 +21,11 @@ class StackTrace
         $this->trace = $trace;
     }
 
-    public static function forException(\Exception $exception)
+    /**
+     * @param Throwable $exception
+     * @return StackTrace
+     */
+    public static function forException($exception)
     {
         return new self($exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
     }

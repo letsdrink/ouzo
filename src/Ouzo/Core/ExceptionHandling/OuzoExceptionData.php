@@ -7,11 +7,12 @@
 namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
-use Exception;
 use Ouzo\Http\ResponseMapper;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
+use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
+use Throwable;
 
 class OuzoExceptionData
 {
@@ -38,7 +39,12 @@ class OuzoExceptionData
         $this->severity = $severity;
     }
 
-    public static function forException($httpCode, Exception $exception)
+    /**
+     * @param int $httpCode
+     * @param Throwable $exception
+     * @return OuzoExceptionData
+     */
+    public static function forException($httpCode, $exception)
     {
         $severity = ($exception instanceof ErrorException) ? $exception->getSeverity() : 0;
         return new OuzoExceptionData($httpCode, [Error::forException($exception)], StackTrace::forException($exception), [], get_class($exception), $severity);
@@ -102,5 +108,10 @@ class OuzoExceptionData
             }
         }
         return "E_UNKNOWN";
+    }
+
+    function __toString()
+    {
+        return __CLASS__ . Objects::toString(get_object_vars($this));
     }
 }

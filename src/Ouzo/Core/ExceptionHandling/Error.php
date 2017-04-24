@@ -6,10 +6,10 @@
 
 namespace Ouzo\ExceptionHandling;
 
-use Exception;
 use Ouzo\Config;
 use Ouzo\I18n;
 use Ouzo\UserException;
+use Throwable;
 
 class Error
 {
@@ -24,7 +24,8 @@ class Error
         $this->originalMessage = $originalMessage ?: $message;
     }
 
-    public static function forException(Exception $exception)
+    /** @param Throwable $exception */
+    public static function forException($exception)
     {
         if ($exception instanceof UserException || Config::getValue('debug')) {
             return new Error($exception->getCode(), $exception->getMessage());
