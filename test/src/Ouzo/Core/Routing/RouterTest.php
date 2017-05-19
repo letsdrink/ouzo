@@ -60,6 +60,24 @@ class RouterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldNotMatchSuffix()
+    {
+        //given
+        Route::allowAll('/tickets', 'tickets');
+        Route::get('/user/:id/tickets/all', 'User#posts');
+        $router = $this->_createRouter('GET', '/user/1/tickets/all');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $this->assertEquals('posts', $rule->getAction());
+        $this->assertEquals('User', $rule->getController());
+    }
+
+    /**
+     * @test
+     */
     public function shouldNotMatchControllerPrefixForAllowAll()
     {
         //given
