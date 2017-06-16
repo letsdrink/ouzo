@@ -68,27 +68,11 @@ class CsrfProtectorTest extends ControllerTestCase
     /**
      * @test
      */
-    public function shouldFailIfInvalidCsrfCookie()
-    {
-        //
-        $_SESSION = [];
-        $_COOKIE['csrftoken'] = 'invalid';
-
-        //when
-        CatchException::when($this)->post('/csrf_sample/modify', ['csrftoken' => CsrfProtector::getCsrfToken()]);
-
-        //then
-        CatchException::assertThat()->isInstanceOf(ForbiddenException::class);
-    }
-
-    /**
-     * @test
-     */
     public function shouldFailIfNoCsrfToken()
     {
         //given
         $_SESSION = [];
-        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
+        CsrfProtector::getCsrfToken();
 
         //when
         CatchException::when($this)->post('/csrf_sample/modify', []);
@@ -104,7 +88,7 @@ class CsrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = [];
-        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
+        CsrfProtector::getCsrfToken();
 
         //when
         CatchException::when($this)->post('/csrf_sample/modify', ['csrftoken' => 'invalid']);
@@ -120,7 +104,7 @@ class CsrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = [];
-        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
+        CsrfProtector::getCsrfToken();
         $_SERVER['HTTP_X_CSRFTOKEN'] = 'invalid';
 
         //when
@@ -137,7 +121,7 @@ class CsrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = [];
-        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
+        CsrfProtector::getCsrfToken();
         $_SERVER['HTTP_X_CSRFTOKEN'] = CsrfProtector::getCsrfToken();
 
         //when
@@ -154,7 +138,7 @@ class CsrfProtectorTest extends ControllerTestCase
     {
         //given
         $_SESSION = [];
-        $_COOKIE['csrftoken'] = CsrfProtector::getCsrfToken();
+        CsrfProtector::getCsrfToken();
 
         //when
         CatchException::when($this)->post('/csrf_sample/modify', ['csrftoken' => CsrfProtector::getCsrfToken()]);
@@ -173,22 +157,5 @@ class CsrfProtectorTest extends ControllerTestCase
 
         //then
         CatchException::assertThat()->notCaught();
-    }
-
-    /**
-     * @test
-     */
-    public function shouldSetCookie()
-    {
-        //when
-        $this->get('/csrf_sample/index');
-
-        //then
-        $this->assertHasCookie([
-            'name' => 'csrftoken',
-            'value' => CsrfProtector::getCsrfToken(),
-            'expire' => 0,
-            'path' => '/'
-        ]);
     }
 }

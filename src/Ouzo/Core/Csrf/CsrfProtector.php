@@ -28,15 +28,6 @@ class CsrfProtector
             }
             return true;
         };
-        $controller->after[] = function () use ($controller) {
-            $controller->setCookie([
-                'name' => 'csrftoken',
-                'value' => CsrfProtector::getCsrfToken(),
-                'expire' => 0,
-                'path' => '/'
-            ]);
-            return true;
-        };
     }
 
     /**
@@ -46,10 +37,6 @@ class CsrfProtector
     public static function validate()
     {
         $csrfToken = self::getCsrfToken();
-        if (!isset($_COOKIE['csrftoken']) || $_COOKIE['csrftoken'] != $csrfToken) {
-            self::_throwException();
-        }
-
         $headerToken = Arrays::getValue(RequestHeaders::all(), 'X-Csrftoken');
         $postToken = Arrays::getValue($_POST, 'csrftoken');
 
