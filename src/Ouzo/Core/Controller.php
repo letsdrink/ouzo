@@ -213,7 +213,7 @@ class Controller
     }
 
     /**
-     * @param array $messages
+     * @param array|string $messages
      * @param bool $keep
      * @param string|null $url
      */
