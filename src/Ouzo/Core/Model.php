@@ -119,6 +119,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
      */
     public function assignAttributes(array $attributes)
     {
+        unset($attributes[$this->modelDefinition->primaryKey]);
         $this->modifiedFields = array_merge($this->modifiedFields, array_keys($attributes));
         $this->attributes = array_merge($this->attributes, $this->filterAttributesPreserveNull($attributes));
     }
@@ -285,7 +286,6 @@ class Model extends Validatable implements Serializable, JsonSerializable
      */
     public function updateAttributesIfValid(array $attributes)
     {
-        $this->modifiedFields = array_merge($this->modifiedFields, array_keys($attributes));
         $this->assignAttributes($attributes);
         if ($this->isValid()) {
             $this->update();

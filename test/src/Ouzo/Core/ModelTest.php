@@ -960,4 +960,23 @@ class ModelTest extends DbTransactionalTestCase
         // then
         $this->assertEquals('{"name":"Sport"}', $json);
     }
+
+    /**
+     * @test
+     */
+    public function shouldNotAssignPrimaryKeyInAssignAttributes()
+    {
+        //given
+        $product1 = Product::create(['name' => 'Sport1']);
+        $product2 = Product::create(['name' => 'Sport2']);
+
+        $product1->assignAttributes(['id' => $product2->getId(), 'name' => 'modified']);
+
+        // when
+        $product1->update();
+
+        // then
+        $this->assertEquals('Sport2', $product2->reload()->name);
+        $this->assertEquals('modified', $product1->reload()->name);
+    }
 }
