@@ -117,7 +117,7 @@ function optionTag($value, $name, $current, $disabled)
     }
 
     $value = Strings::isNotBlank($value) ? ' value="' . $value . '" ' : ' value="" ';
-    return '<option' . $value . $attribute . '>' . $name . '</option>';
+    return '<option' . $value . $attribute . '>' . escapeText($name) . '</option>';
 }
 
 function passwordFieldTag($name, $value, array $attributes = [])
