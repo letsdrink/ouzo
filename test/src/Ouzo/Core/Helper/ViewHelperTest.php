@@ -246,7 +246,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
     public function shouldReturnNullWhenTypeIsNullInHtmlFileTag()
     {
         //when
-        $file = _getHtmlFileTag(null, null);
+        $file = Ouzo\Helper\ViewUtils::fileIncludeTag(null, null);
 
         //then
         $this->assertNull($file);

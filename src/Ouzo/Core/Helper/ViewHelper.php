@@ -48,7 +48,7 @@ function addFile(array $fileInfo = [], $stringToRemove = '')
         $url = $prefixSystem . $fileInfo['params']['url'] . $suffixCache;
         $url = Strings::remove($url, $stringToRemove);
 
-        return _getHtmlFileTag($fileInfo['type'], $url);
+        return Ouzo\Helper\ViewUtils::fileIncludeTag($fileInfo['type'], $url);
     }
     return null;
 }
