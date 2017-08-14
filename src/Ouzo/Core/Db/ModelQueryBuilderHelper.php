@@ -8,6 +8,8 @@ namespace Ouzo\Db;
 use InvalidArgumentException;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentFunctions;
+use Ouzo\Utilities\Functions;
 
 class ModelQueryBuilderHelper
 {
@@ -16,7 +18,7 @@ class ModelQueryBuilderHelper
      * @param string|Relation $relationSelector
      * @return Relation[]
      */
-    public static function extractRelations(Model $root, $relationSelector)
+    public static function extractRelations(Model $root, $relationSelector, $joins = [])
     {
         $relations = [];
         if ($relationSelector instanceof Relation) {
@@ -25,7 +27,7 @@ class ModelQueryBuilderHelper
             $relationNames = explode('->', $relationSelector);
             $model = $root;
             foreach ($relationNames as $name) {
-                $relation = $model->getRelation($name);
+                $relation = $model->hasRelation($name) ? $model->getRelation($name) : Arrays::find(Arrays::map($joins, Functions::extractExpression('getRelation()')), FluentFunctions::extractExpression('getName()')->equals($name));
                 $relations[] = $relation;
                 $model = $relation->getRelationModelObject();
             }

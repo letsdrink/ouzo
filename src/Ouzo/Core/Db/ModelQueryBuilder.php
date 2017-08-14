@@ -433,7 +433,7 @@ class ModelQueryBuilder
      */
     private function createModelJoins($relationSelector, $aliases, $type, $on)
     {
-        $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector);
+        $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector, $this->joinedModels);
         $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
         return ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases, $type, $on);
     }

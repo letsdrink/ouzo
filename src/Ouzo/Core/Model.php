@@ -89,7 +89,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
             return $this->attributes[$name];
         }
 
-        if ($this->modelDefinition->relations->hasRelation($name)) {
+        if ($this->hasRelation($name)) {
             $this->fetchRelation($name);
             return $this->attributes[$name];
         }
@@ -651,6 +651,15 @@ class Model extends Validatable implements Serializable, JsonSerializable
     public function get($names, $default = null)
     {
         return Objects::getValueRecursively($this, $names, $default);
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function hasRelation($name)
+    {
+        return $this->modelDefinition->relations->hasRelation($name);
     }
 
     /**

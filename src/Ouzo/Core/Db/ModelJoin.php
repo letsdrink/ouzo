@@ -46,6 +46,14 @@ class ModelJoin
     }
 
     /**
+     * @return Relation
+     */
+    public function getRelation()
+    {
+        return $this->relation;
+    }
+
+    /**
      * @return bool
      */
     public function storeField()
