@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Category;
 use Application\Model\Test\Manufacturer;
 use Application\Model\Test\Order;
@@ -375,14 +376,36 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //when
         $fetched = Product::join(Relation::inline([
-            'destinationField' => 'orderProduct',
+            'destinationField' => 'op',
             'class' => 'Test\OrderProduct',
             'foreignKey' => 'id_product',
             'localKey' => 'id'
         ]))->fetch();
 
         //then
-        $this->assertEquals($orderProduct, self::getNoLazy($fetched, 'orderProduct'));
+        $this->assertEquals($orderProduct, self::getNoLazy($fetched, 'op'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldJoinInlineRelationWithNestedRelations()
+    {
+        //given
+        $product = Product::create(['name' => 'sony']);
+        $order = Order::create(['id_order']);
+        OrderProduct::create(['id_product' => $product->getId(), 'id_order' => $order->getId()]);
+
+        //when
+        $fetched = Product::join(Relation::inline([
+            'destinationField' => 'op',
+            'class' => 'Test\OrderProduct',
+            'foreignKey' => 'id_product',
+            'localKey' => 'id'
+        ]))->join('op->order')->fetch();
+
+        //then
+        $this->assertEquals($order, self::getNoLazy($fetched, 'op')->order);
     }
 
     /**

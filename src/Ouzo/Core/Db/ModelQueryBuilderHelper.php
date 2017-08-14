@@ -3,11 +3,13 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\FluentFunctions;
 use Ouzo\Utilities\Functions;
 
@@ -16,6 +18,7 @@ class ModelQueryBuilderHelper
     /**
      * @param Model $root
      * @param string|Relation $relationSelector
+     * @param ModelJoin[] $joins
      * @return Relation[]
      */
     public static function extractRelations(Model $root, $relationSelector, $joins = [])
@@ -27,7 +30,7 @@ class ModelQueryBuilderHelper
             $relationNames = explode('->', $relationSelector);
             $model = $root;
             foreach ($relationNames as $name) {
-                $relation = $model->hasRelation($name) ? $model->getRelation($name) : Arrays::find(Arrays::map($joins, Functions::extractExpression('getRelation()')), FluentFunctions::extractExpression('getName()')->equals($name));
+                $relation = self::getRelation($model, $name, $joins);
                 $relations[] = $relation;
                 $model = $relation->getRelationModelObject();
             }
@@ -79,5 +82,24 @@ class ModelQueryBuilderHelper
             $result[] = $modelJoin;
         }
         return $result;
+    }
+
+    /**
+     * @param Model $model
+     * @param string $name
+     * @param ModelJoin[] $joins
+     * @return Relation|null
+     */
+    private static function getRelation($model, $name, $joins)
+    {
+        return $model->hasRelation($name) ? $model->getRelation($name) : self::getRelationForInlineJoin($name, $joins);
+    }
+
+    private static function getRelationForInlineJoin($name, $joins)
+    {
+        return FluentArray::from($joins)
+            ->map(Functions::extractExpression('getRelation()'))
+            ->filter(FluentFunctions::extractExpression('getName()')->equals($name))
+            ->firstOr(null);
     }
 }

@@ -319,7 +319,7 @@ class ModelQueryBuilder
     public function with($relationSelector)
     {
         if (!BatchLoadingSession::isAllocated()) {
-            $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector);
+            $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector, $this->joinedModels);
             $field = '';
 
             foreach ($relations as $relation) {
