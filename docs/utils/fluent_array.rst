@@ -25,6 +25,14 @@ Returns a FluentArray that wraps the given array.
 
 ----
 
+each
+~~~
+Applies function to each element of this FluentArray.
+
+**Parameters:** ``$function``
+
+----
+
 map
 ~~~
 Returns a FluentArray that applies function to each element of this FluentArray.

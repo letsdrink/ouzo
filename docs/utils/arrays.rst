@@ -228,6 +228,14 @@ Returns true if every element in array satisfies the predicate.
 
 ----
 
+each
+~~~~
+Applies function to each element of the array.
+
+**Parameters:** ``array $elements``, ``callable $function``
+
+----
+
 find
 ~~~~
 Finds first element in array that is matched by function. Returns null if element was not found.

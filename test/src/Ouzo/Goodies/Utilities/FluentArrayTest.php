@@ -298,4 +298,22 @@ class FluentArrayTest extends PHPUnit_Framework_TestCase
         //then
         $this->assertEquals([1, 2, 3, 4], $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldExecuteForEach()
+    {
+        //given
+        $array = [1 => 'a', 2 => 'b', 3 => 'c'];
+        $newArray = [];
+
+        //when
+        FluentArray::from($array)->each(function ($element) use (&$newArray) {
+            $newArray[] = $element;
+        });
+
+        //then
+        $this->assertEquals(['a' , 'b' , 'c' ], $newArray);
+    }
 }
