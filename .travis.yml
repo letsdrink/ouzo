@@ -35,7 +35,7 @@ install:
 
 before_script:
     - psql -c 'create database ouzo_test' -U postgres && psql -v ON_ERROR_STOP=1 -e -U postgres -f test/test-db/recreate_schema.sql ouzo_test
-    - mysql -u travis -e 'create database ouzo_test' && cat test/test-db/recreate_schema_mysql.sql | mysql -u travis ouzo_test
+    - mysql -e 'create database ouzo_test' && cat test/test-db/recreate_schema_mysql.sql | mysql ouzo_test
     - cat test/test-db/recreate_schema_sqlite3.sql | sqlite3 ouzo_test
     
 script:
