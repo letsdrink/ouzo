@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Utilities\Strings;
 
 class StringsTest extends PHPUnit_Framework_TestCase
@@ -65,6 +66,21 @@ class StringsTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('lannisters_always_pay_their_debts', $underscored);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertCamelCaseWithNumbersToUnderscore()
+    {
+        //given
+        $string = 'SomeComplicatedRfc222Name';
+
+        //when
+        $underscored = Strings::camelCaseToUnderscore($string);
+
+        //then
+        $this->assertEquals('some_complicated_rfc222_name', $underscored);
     }
 
     /**
