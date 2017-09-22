@@ -55,6 +55,7 @@ class ExceptionLogger
         if ($traceString) {
             $message .= "\nStack trace:\n$traceString";
         }
+        $message .= "\nREQUEST_METHOD = " . Arrays::getValue($_SERVER, 'REQUEST_METHOD');
         $message .= "\nSCRIPT_URI = " . Arrays::getValue($_SERVER, 'SCRIPT_URI');
         $message .= "\nREQUEST_URI = " . Arrays::getValue($_SERVER, 'REQUEST_URI');
         $message .= "\nREDIRECT_URL = " . Arrays::getValue($_SERVER, 'REDIRECT_URL');
