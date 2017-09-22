@@ -8,6 +8,8 @@ namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
 use Ouzo\Logger\Logger;
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Objects;
 
 class ExceptionLogger
 {
@@ -34,23 +36,35 @@ class ExceptionLogger
         $source = $trace->getFile() . ":" . $trace->getLine();
         $isErrorException = is_subclass_of($className, ErrorException::class);
 
-        $message = "[HTTP $httpCode] ";
+        $message = "Exception: $originalMessage";
+        $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
+        $message .= "\nHTTP status: $httpCode";
 
         if ($className && !$isErrorException) {
-            $message .= "Exception '$className' with message '$originalMessage'";
+            $message .= "\nException: $className\nMessage: $originalMessage";
         } else {
-            $message .= "Error '$originalMessage'";
+            $message .= "\nError: $originalMessage";
         }
 
         if ($this->exceptionData->getSeverity()) {
-            $message .= ", severity {$this->exceptionData->getSeverityAsString()}";
+            $message .= "\nSeverity: {$this->exceptionData->getSeverityAsString()}";
         }
 
-        $message .= " in $source.";
+        $message .= "\nLine: $source";
 
         if ($traceString) {
             $message .= "\nStack trace:\n$traceString";
         }
+        $message .= "\nSCRIPT_URI = " . Arrays::getValue($_SERVER, 'SCRIPT_URI');
+        $message .= "\nREQUEST_URI = " . Arrays::getValue($_SERVER, 'REQUEST_URI');
+        $message .= "\nREDIRECT_URL = " . Arrays::getValue($_SERVER, 'REDIRECT_URL');
+        if (!empty($_GET)) {
+            $message .= "\nGET = " . Objects::toString($_GET);
+        }
+        if (!empty($_POST)) {
+            $message .= "\nPOST = " . Objects::toString($_POST);
+        }
+        $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
 
         Logger::getLogger(__CLASS__)->error($message);
     }
