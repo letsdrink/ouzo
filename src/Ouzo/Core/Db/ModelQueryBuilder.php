@@ -82,7 +82,7 @@ class ModelQueryBuilder
     }
 
     /**
-     * @param string $columns
+     * @param string|array $columns
      * @return ModelQueryBuilder
      */
     public function order($columns)
