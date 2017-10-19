@@ -7,6 +7,7 @@
 namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
+use Exception;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
@@ -26,7 +27,18 @@ class ExceptionLogger
         return new self($exceptionData);
     }
 
+    public static function forException(Exception $exception, $httpCode = 500)
+    {
+        return new self(OuzoExceptionData::forException($httpCode, $exception));
+    }
+
     public function log()
+    {
+        $message = $this->getMessage();
+        Logger::getLogger(__CLASS__)->error($message);
+    }
+
+    public function getMessage()
     {
         $className = $this->exceptionData->getClassName();
         $originalMessage = $this->exceptionData->getOriginalMessage();
@@ -66,7 +78,6 @@ class ExceptionLogger
             $message .= "\nPOST = " . Objects::toString($_POST);
         }
         $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
-
-        Logger::getLogger(__CLASS__)->error($message);
+        return $message;
     }
 }
