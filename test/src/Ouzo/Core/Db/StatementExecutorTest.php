@@ -28,7 +28,6 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
         $this->dbMock = Mock::mock();
         Mock::when($this->pdoMock)->execute()->thenReturn(false);
         Mock::when($this->dbMock)->prepare('SELECT 1', [])->thenReturn($this->pdoMock);
-        Mock::when($this->dbMock)->errorInfo()->thenReturn([1, 3, 'Preparation error']);
     }
 
     /**
