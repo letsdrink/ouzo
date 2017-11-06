@@ -14,6 +14,7 @@ use Ouzo\DbConnectionException;
 use Ouzo\DbException;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
+use PDO;
 
 abstract class Dialect
 {
@@ -322,6 +323,14 @@ abstract class Dialect
      * @return string
      */
     abstract protected function insertEmptyRow();
+
+    /**
+     * @return array
+     */
+    public function getIteratorOptions()
+    {
+        return [PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL];
+    }
 
     /**
      * @param string $word

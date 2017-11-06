@@ -89,7 +89,7 @@ class QueryExecutor
     {
         $this->buildQuery();
         $statement = StatementExecutor::prepare($this->db->dbHandle, $this->sql, $this->boundValues, $this->query->options);
-        return $statement->fetchIterator();
+        return $statement->fetchIterator($this->adapter->getIteratorOptions());
     }
 
     /**

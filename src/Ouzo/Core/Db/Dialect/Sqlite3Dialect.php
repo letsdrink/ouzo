@@ -111,4 +111,14 @@ class Sqlite3Dialect extends Dialect
     {
         return '"' . $word . '"';
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getIteratorOptions()
+    {
+        return [];
+    }
+
+
 }

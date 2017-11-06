@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Logger\Logger;
@@ -116,12 +117,13 @@ class StatementExecutor
     }
 
     /**
+     * @param array $options
      * @return StatementIterator
      */
-    public function fetchIterator()
+    public function fetchIterator($options = [])
     {
-        return Stats::trace($this->humanizedSql, $this->boundValues, function () {
-            $pdoStatement = $this->_createPdoStatement([PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL]);
+        return Stats::trace($this->humanizedSql, $this->boundValues, function () use ($options) {
+            $pdoStatement = $this->_createPdoStatement($options);
             return new StatementIterator($pdoStatement);
         });
     }
