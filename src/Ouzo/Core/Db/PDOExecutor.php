@@ -16,9 +16,10 @@ abstract class PDOExecutor
      * @param string $sql
      * @param array $boundValues
      * @param string $queryString
+     * @param array $options
      * @return PDOStatement
      */
-    abstract public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString);
+    abstract public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString, $options = []);
 
     /**
      * @param array $options

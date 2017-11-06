@@ -10,7 +10,7 @@ class EmulatedPDOPreparedStatementExecutor extends PDOExecutor
     /**
      * @inheritdoc
      */
-    public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString)
+    public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString, $options = [])
     {
         $sql = PreparedStatementEmulator::substitute($sql, $boundValues);
 

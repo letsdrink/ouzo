@@ -121,19 +121,20 @@ class StatementExecutor
     public function fetchIterator()
     {
         return Stats::trace($this->humanizedSql, $this->boundValues, function () {
-            $pdoStatement = $this->_createPdoStatement();
+            $pdoStatement = $this->_createPdoStatement([PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL]);
             return new StatementIterator($pdoStatement);
         });
     }
 
     /**
+     * @param array $options
      * @return PDOStatement
      */
-    public function _createPdoStatement()
+    public function _createPdoStatement($options = [])
     {
         $sqlString = $this->humanizedSql . ' with params: ' . Objects::toString($this->boundValues);
         Logger::getLogger(__CLASS__)->info("Query: %s", [$sqlString]);
 
-        return $this->pdoExecutor->createPDOStatement($this->dbHandle, $this->sql, $this->boundValues, $sqlString);
+        return $this->pdoExecutor->createPDOStatement($this->dbHandle, $this->sql, $this->boundValues, $sqlString, $options);
     }
 }

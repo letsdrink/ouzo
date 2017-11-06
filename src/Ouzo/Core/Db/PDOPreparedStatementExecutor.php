@@ -12,9 +12,9 @@ class PDOPreparedStatementExecutor extends PDOExecutor
     /**
      * @inheritdoc
      */
-    public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString)
+    public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString, $options = [])
     {
-        $pdoStatement = $dbHandle->prepare($sql);
+        $pdoStatement = $dbHandle->prepare($sql, $options);
 
         if (!$pdoStatement) {
             throw PDOExceptionExtractor::getException($dbHandle->errorInfo(), $queryString);
