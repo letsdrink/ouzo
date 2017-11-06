@@ -27,7 +27,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
         $this->pdoMock = Mock::mock();
         $this->dbMock = Mock::mock();
         Mock::when($this->pdoMock)->execute()->thenReturn(false);
-        Mock::when($this->dbMock)->prepare('SELECT 1')->thenReturn($this->pdoMock);
+        Mock::when($this->dbMock)->prepare('SELECT 1', [])->thenReturn($this->pdoMock);
         Mock::when($this->dbMock)->errorInfo()->thenReturn([1, 3, 'Preparation error']);
     }
 
@@ -50,7 +50,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldThrowConnectionExceptionFromForMySQL()
+    public function shouldThrowConnectionExceptionForMySQL()
     {
         //given
         Config::overrideProperty('sql_dialect')->with(MySqlDialect::class);
@@ -68,7 +68,7 @@ class StatementExecutorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldThrowConnectionExceptionFromForPostgres()
+    public function shouldThrowConnectionExceptionForPostgres()
     {
         //given
         Config::overrideProperty('sql_dialect')->with(PostgresDialect::class);
