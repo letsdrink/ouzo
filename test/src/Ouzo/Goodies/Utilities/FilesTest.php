@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\StreamStub;
@@ -225,5 +226,36 @@ class FilesTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertFalse($deleteIfExists);
+    }
+
+
+    /**
+     * @test
+     */
+    public function shouldAssumeThatFileContainsClass()
+    {
+        //given
+        $filePath = __DIR__ . '/../../../../resources/TestClass.php';
+
+        //when
+        $result = Files::checkWhetherFileContainsClass($filePath);
+
+        //then
+        $this->assertEquals('TestClass', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAssumeThatFileDoesNotContainClass()
+    {
+        //given
+        $filePath = __DIR__ . '/../../../../resources/testScript.php';
+
+        //when
+        $result = Files::checkWhetherFileContainsClass($filePath);
+
+        //then
+        $this->assertFalse($result);
     }
 }
