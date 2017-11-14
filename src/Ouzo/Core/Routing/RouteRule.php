@@ -89,7 +89,7 @@ class RouteRule
             return true;
         }
         if (strstr($definedUri, ':') !== false) {
-            $replacedUri = preg_replace('#:[\w@]*#u', '[\w.\-~_%@ ]+', $definedUri);
+            $replacedUri = preg_replace('#:[\w@]*#u', '[\w.\-~_%@ \+]+', $definedUri);
             return preg_match('#^' . $replacedUri . '$#u', $uri);
         }
         if (!$this->action) {

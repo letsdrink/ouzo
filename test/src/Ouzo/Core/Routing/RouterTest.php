@@ -580,6 +580,24 @@ class RouterTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldParseParameterWithPlusChar()
+    {
+        //given
+        Route::get("/cabinets/:color/:order_id", "SummaryOrderedCorpuses#index");
+        $router = $this->_createRouter('GET', '/cabinets/white+black/18');
+
+        //when
+        $rule = $router->findRoute();
+
+        //then
+        $parameters = $rule->getParameters();
+        $this->assertEquals('white+black', $parameters['color']);
+        $this->assertEquals('18', $parameters['order_id']);
+    }
+
+    /**
+     * @test
+     */
     public function shouldParseParameterWithSpace()
     {
         //given
