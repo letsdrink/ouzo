@@ -5,6 +5,8 @@
  */
 namespace Ouzo;
 
+use Ouzo\Utilities\Arrays;
+
 class Notice
 {
     /** @var null|string */
@@ -52,6 +54,8 @@ class Notice
     private function getCurrentPath()
     {
         $uri = new Uri();
-        return $uri->getFullUrlWithPrefix();
+        $fullUrlWithPrefix = $uri->getFullUrlWithPrefix();
+        $parts = parse_url($fullUrlWithPrefix);
+        return Arrays::getValue($parts, 'path', $fullUrlWithPrefix);
     }
 }
