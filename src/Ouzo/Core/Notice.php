@@ -37,7 +37,7 @@ class Notice
      */
     public function requestUrlMatches()
     {
-        return $this->getUrl() == null || !strcmp(Uri::removePrefix($this->getCurrentPath()), Uri::removePrefix($this->getUrl()));
+        return $this->getUrl() == null || strcmp(Uri::removePrefix($this->getCurrentPath()), Uri::removePrefix($this->getUrl())) === 0;
     }
 
     /**
