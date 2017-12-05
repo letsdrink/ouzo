@@ -37,7 +37,7 @@ class Notice
      */
     public function requestUrlMatches()
     {
-        return $this->getUrl() == null || strcmp(Uri::removePrefix($this->getCurrentPath()), Uri::removePrefix($this->getUrl())) === 0;
+        return $this->getUrl() == null || strcmp(Uri::removePrefix($this->getCurrentPath()), Uri::removePrefix($this->getUrlWithoutQuery($this->getUrl()))) === 0;
     }
 
     /**
@@ -53,9 +53,17 @@ class Notice
      */
     private function getCurrentPath()
     {
-        $uri = new Uri();
-        $fullUrlWithPrefix = $uri->getFullUrlWithPrefix();
-        $parts = parse_url($fullUrlWithPrefix);
-        return Arrays::getValue($parts, 'path', $fullUrlWithPrefix);
+        $url = (new Uri())->getFullUrlWithPrefix();
+        return $this->getUrlWithoutQuery($url);
+    }
+
+    /**
+     * @param string $url
+     * @return string
+     */
+    private function getUrlWithoutQuery($url)
+    {
+        $parts = parse_url($url);
+        return Arrays::getValue($parts, 'path', $url);
     }
 }
