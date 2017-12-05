@@ -126,11 +126,12 @@ class Controller
      * @param string $mime
      * @param string $path
      * @param string $type
+     * @param string $data
      * @return void
      */
-    public function downloadFile($label, $mime, $path, $type = 'file')
+    public function downloadFile($label, $mime, $path, $type = 'file', $data = null)
     {
-        $this->fileData = ['label' => $label, 'mime' => $mime, 'path' => $path];
+        $this->fileData = ['label' => $label, 'mime' => $mime, 'path' => $path, 'data' => $data];
         $this->statusResponse = $type;
     }
 

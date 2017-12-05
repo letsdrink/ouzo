@@ -17,8 +17,14 @@ class DownloadHandler
     {
         header('Content-Type: ' . $fileData['mime']);
         header('Content-Disposition: attachment; filename="' . $fileData['label'] . '"');
-        header('Content-Length:' . filesize($fileData['path']));
-        readfile($fileData['path']);
+        $data = Arrays::getValue($fileData, 'data');
+        if ($data) {
+            header('Content-Length:' . sizeof($data));
+            echo $data;
+        } else {
+            header('Content-Length:' . filesize($fileData['path']));
+            readfile($fileData['path']);
+        }
     }
 
     /**
