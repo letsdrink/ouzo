@@ -7,6 +7,7 @@
 namespace Ouzo\ExceptionHandling;
 
 use Exception;
+use Ouzo\Config;
 use Ouzo\Routing\RouterException;
 use Ouzo\UserException;
 
@@ -72,9 +73,12 @@ class ExceptionHandler
             self::$errorHandled = true;
         } catch (Exception $e) {
             echo "Framework critical error. Exception thrown in exception handler.<br>\n";
-            echo "<hr>\n";
-            echo "Message: " . $e->getMessage() . "<br>\n";
-            echo "Trace: " . $e->getTraceAsString() . "<br>\n";
+            ExceptionLogger::forException($e)->log();
+            if (Config::getValue('debug')) {
+                echo "<hr>\n";
+                echo "Message: " . $e->getMessage() . "<br>\n";
+                echo "Trace: " . $e->getTraceAsString() . "<br>\n";
+            }
         }
     }
 }
