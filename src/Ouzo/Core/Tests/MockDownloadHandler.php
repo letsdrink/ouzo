@@ -10,9 +10,9 @@ use Ouzo\Utilities\Arrays;
 
 class MockDownloadHandler
 {
-    private $fileData;
+    private $fileData = [];
 
-    public function downloadFile($fileData)
+    public function downloadFile(array $fileData)
     {
         $this->fileData = $fileData;
         return $this;
