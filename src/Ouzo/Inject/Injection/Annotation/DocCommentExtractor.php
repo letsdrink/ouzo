@@ -20,7 +20,7 @@ class DocCommentExtractor implements AnnotationMetadataProvider
         $class = new ReflectionClass($instance);
         $properties = $class->getProperties();
         foreach ($properties as $property) {
-            $doc = $property->getDocComment();
+            $doc = $this->getDocCommentFrom($property);
             if (Strings::contains($doc, '@Inject')) {
                 if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {
                     $className = Strings::removePrefix($matched[1], "\\");
@@ -43,7 +43,7 @@ class DocCommentExtractor implements AnnotationMetadataProvider
         $instance = new ReflectionClass($className);
         $constructor = $instance->getConstructor();
         if ($constructor) {
-            $doc = $constructor->getDocComment();
+            $doc = $this->getDocCommentFrom($constructor);
             if (Strings::contains($doc, '@Inject')) {
                 $parameters = $constructor->getParameters();
                 foreach ($parameters as $parameter) {
@@ -55,6 +55,16 @@ class DocCommentExtractor implements AnnotationMetadataProvider
             }
         }
         return $annotations;
+    }
+
+    /**
+     * Override when required by PHP encoder
+     * @param Object $object
+     * @return string
+     */
+    protected function getDocCommentFrom($object)
+    {
+        return $object->getDocComment();
     }
 
     /**
