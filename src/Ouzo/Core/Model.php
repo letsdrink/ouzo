@@ -198,7 +198,6 @@ class Model extends Validatable implements Serializable, JsonSerializable
         }
 
         $this->callAfterSaveCallbacks();
-
         $this->resetModifiedFields();
 
         return $lastInsertedId;
@@ -221,6 +220,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
         }
 
         $this->callAfterSaveCallbacks();
+        $this->resetModifiedFields();
     }
 
     /**
@@ -627,6 +627,8 @@ class Model extends Validatable implements Serializable, JsonSerializable
     public function reload()
     {
         $this->attributes = $this->findById($this->getId())->attributes;
+        $this->resetModifiedFields();
+
         return $this;
     }
 
