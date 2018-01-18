@@ -256,7 +256,7 @@ Note that **foreignKey** and **referencedColumn** mean different things dependin
 
 Let's see an example.
 
-We have products that are assigned to exactly one category, and categories that can have multiple products.
+Lets assume that we have products that are assigned to exactly one category, and categories that can have multiple products.
 
 ::
 
@@ -273,8 +273,11 @@ We have products that are assigned to exactly one category, and categories that 
         }
     }
 
-``foreignKey`` in ``Category`` specifies column in ``Product`` that references the ``categories`` table.
-Parameter ``referencedColumn`` was omitted so the Category's primary key will be used by default.
+for ``hasMany`` and ``hasOne`` relations:
+In the described relations one should look at the relation from the perspective of the ``Category`` table.
+``foreignKey`` means the column name in the Product table, which will be used to connect the ``Category`` table and ``Product`` table.
+The connection will be made using the primary key from the ``Category`` table (because the ``referencedColumn`` parameter has not been defined)
+and the ``category_id`` column from the ``Product`` table
 
 ::
 
@@ -291,8 +294,33 @@ Parameter ``referencedColumn`` was omitted so the Category's primary key will be
         }
     }
 
-``foreignKey`` in ``Product`` specifies column in ``Product`` that references the ``categories`` table.
-Parameter ``referencedColumn`` was omitted so again the Category's primary key will be used.
+for ``belongsTo`` relation:
+in this case, look at the relationship from the perspective of the ``Category`` table.
+``foreignKey`` refers to the ``Product`` table and means that the connection will be made using the ``category_id`` column in the ``Product`` table
+and the primary key in the ``Category`` table (because the ``referencedColumn`` parameter has not been defined).
+
+::
+
+    class Category extends Model
+    {
+        public function __construct($attributes = [])
+        {
+            parent::__construct([
+                'hasMany' => [
+                     'products' => ['class' => 'Product', 'foreignKey' => 'category_id', 'referencedColumn' => 'custom_category_id']
+                ],
+                'attributes' => $attributes,
+                'fields' => ['name']]);
+        }
+    }
+
+using a custom column name in the base table:
+this case is similar to the first case, with the difference that the main key from the ``Category`` table will not be used here,
+but the ``custom_category_id`` column will be used instead.
+This will connect the ``Category`` and ``Product`` tables by using the ``custom_category_id`` column from the ``Category`` table
+and the ``category_id`` column from the ``Product`` table.
+
+::
 
 Inline Relation
 ---------------
