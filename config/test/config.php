@@ -17,13 +17,13 @@ if ($db == 'mysql') {
     $config['db']['dsn'] = 'sqlite:ouzo_test';
 } else {
     $config['sql_dialect'] = PostgresDialect::class;
-    $config['db']['user'] = 'postgres';
-    $config['db']['pass'] = '';
+    $config['db']['user'] = 'ouzo_user';
+    $config['db']['pass'] = 'password';
     $config['db']['driver'] = 'pgsql';
-    $config['db']['host'] = '127.0.0.1';
+    $config['db']['host'] = '172.17.0.3';
     $config['db']['port'] = '5432';
 }
-$config['db']['dbname'] = 'ouzo_test';
+$config['db']['dbname'] = 'ouzo';
 
 $config['global']['prefix_system'] = '';
 $config['global']['suffix_cache'] = '1234';
