@@ -23,7 +23,7 @@ if ($db == 'mysql') {
     $config['db']['host'] = '172.17.0.3';
     $config['db']['port'] = '5432';
 }
-$config['db']['dbname'] = 'ouzo';
+$config['db']['dbname'] = 'ouzo_test';
 
 $config['global']['prefix_system'] = '';
 $config['global']['suffix_cache'] = '1234';

@@ -1,5 +1,5 @@
 DOCKER_DB_NAME="ouzo-postgres"
 DOCKER_WEB_NAME="ouzo-dev"
-DB_NAME="ouzo"
+DB_NAME="ouzo_test"
 DB_USER="ouzo_user"
 DB_PASSWORD="password"
