@@ -207,7 +207,6 @@ class ControllerTest extends ControllerTestCase
 
         // then
         $this->assertRenderedContent()->isEqualTo(null);
-        ob_end_clean();
     }
 
     /**
