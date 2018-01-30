@@ -35,7 +35,11 @@ install:
     - travis_retry composer install
 
 before_script:
-    - psql -c "CREATE USER ouzo_user WITH PASSWORD 'password'" -U postgres && psql -c 'create database ouzo_test OWNER ouzo_user' -U postgres && psql -v ON_ERROR_STOP=1 -e -U ouzo_user -f test/test-db/recreate_schema.sql ouzo_test
+    - psql -c "CREATE USER ouzo_user WITH PASSWORD 'password';" -U postgres
+    - psql -c 'CREATE database ouzo_test;' -U postgres
+    - psql -c "GRANT ALL PRIVILEGES ON DATABASE "ouzo_test" to ouzo_user;" -U postgres
+    - psql -c 'ALTER DATABASE ouzo_test OWNER TO ouzo_user' -U postgres
+    - psql -v ON_ERROR_STOP=1 -e -U ouzo_user -f test/test-db/recreate_schema.sql ouzo_test
     - mysql -u travis -e 'create database ouzo_test' && cat test/test-db/recreate_schema_mysql.sql | mysql -u travis ouzo_test
     - cat test/test-db/recreate_schema_sqlite3.sql | sqlite3 ouzo_test
     
