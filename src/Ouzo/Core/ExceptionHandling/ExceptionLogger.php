@@ -41,7 +41,7 @@ class ExceptionLogger
     public function getMessage()
     {
         $className = $this->exceptionData->getClassName();
-        $originalMessage = $this->exceptionData->getOriginalMessage();
+        $originalMessage = $this->exceptionData->getOriginalMessageWithCodes();
         $httpCode = $this->exceptionData->getHttpCode();
         $trace = $this->exceptionData->getStackTrace();
         $traceString = $trace->getTraceAsString();

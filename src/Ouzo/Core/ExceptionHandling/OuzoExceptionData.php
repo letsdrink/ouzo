@@ -89,6 +89,13 @@ class OuzoExceptionData
         })->join($this->errors);
     }
 
+    public function getOriginalMessageWithCodes()
+    {
+        return Joiner::on(', ')->map(function ($key, $value) {
+            return $value->originalMessage . " (code: " . $value->code . ")";
+        })->join($this->errors);
+    }
+
     public function getClassName()
     {
         return $this->className;
