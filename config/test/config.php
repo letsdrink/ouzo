@@ -18,7 +18,7 @@ if ($db == 'mysql') {
 } else {
     $config['sql_dialect'] = PostgresDialect::class;
     $config['db']['user'] = 'ouzo_user';
-    $config['db']['pass'] = '';
+    $config['db']['pass'] = 'password';
     $config['db']['driver'] = 'pgsql';
     $config['db']['host'] = '172.17.0.3';
     $config['db']['port'] = '5432';
