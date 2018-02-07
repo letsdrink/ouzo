@@ -17,8 +17,8 @@ if ($db == 'mysql') {
     $config['db']['dsn'] = 'sqlite:ouzo_test';
 } else {
     $config['sql_dialect'] = PostgresDialect::class;
-    $config['db']['user'] = 'postgres';
-    $config['db']['pass'] = '';
+    $config['db']['user'] = 'ouzo_user';
+    $config['db']['pass'] = 'password';
     $config['db']['driver'] = 'pgsql';
     $config['db']['host'] = '127.0.0.1';
     $config['db']['port'] = '5432';

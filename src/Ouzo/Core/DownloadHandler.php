@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Utilities\Arrays;
@@ -19,7 +20,7 @@ class DownloadHandler
         header('Content-Disposition: attachment; filename="' . $fileData['label'] . '"');
         $data = Arrays::getValue($fileData, 'data');
         if ($data) {
-            header('Content-Length:' . sizeof($data));
+            header('Content-Length:' . strlen($data));
             echo $data;
         } else {
             header('Content-Length:' . filesize($fileData['path']));

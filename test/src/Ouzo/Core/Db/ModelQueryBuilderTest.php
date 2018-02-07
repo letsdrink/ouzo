@@ -804,7 +804,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(['name' => 'c', 'description' => 'bob']);
 
         //when
-        $result = Product::selectDistinct('description')->fetchAll();
+        $result = Product::selectDistinct('description')->order('description')->fetchAll();
 
         //then
         $this->assertCount(2, $result);

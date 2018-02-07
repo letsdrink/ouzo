@@ -11,6 +11,7 @@ use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
 use Ouzo\Routing\Router;
 use Ouzo\Utilities\Functions;
+use Throwable;
 
 class FrontController
 {
@@ -101,7 +102,10 @@ class FrontController
         try {
             ob_start();
             $this->invokeControllerMethods();
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            ob_end_clean();
+            throw $e;
+        } catch (Exception $e){
             ob_end_clean();
             throw $e;
         }
