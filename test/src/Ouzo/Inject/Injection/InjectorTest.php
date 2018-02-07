@@ -306,6 +306,19 @@ class InjectorTest extends PHPUnit_Framework_TestCase
         CatchException::assertThat()->isInstanceOf(InjectorException::class);
     }
 
+    /**
+     * @test
+     */
+    public function shouldInjectParentPrivateField()
+    {
+        //when
+        $instance = $this->injector->getInstance(SubClassOfClassWithPrivateDep::class);
+
+        //then
+        $this->assertInstanceOf(SubClassOfClassWithPrivateDep::class, $instance);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->getMyClass());
+    }
+
     private function assertDependencyInjected($className, $instance)
     {
         $this->assertNotNull($instance, 'Dependency was not injected.');

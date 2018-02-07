@@ -14,12 +14,14 @@ class DocCommentExtractor implements AnnotationMetadataProvider
     /**
      * @inheritdoc
      */
-    public function getMetadata($instance)
+    public function getMetadata(ReflectionClass $class, $privateMethodsOnly = false)
     {
         $annotations = [];
-        $class = new ReflectionClass($instance);
         $properties = $class->getProperties();
         foreach ($properties as $property) {
+            if ($privateMethodsOnly && !$property->isPrivate()) {
+                break;
+            }
             $doc = $property->getDocComment();
             if (Strings::contains($doc, '@Inject')) {
                 if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {

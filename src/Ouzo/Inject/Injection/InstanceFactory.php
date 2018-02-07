@@ -41,12 +41,17 @@ class InstanceFactory
     /**
      * @param InstanceRepository $repository
      * @param string $instance
+     * @param ReflectionClass $class
      * @return void
      */
-    private function injectDependencies(InstanceRepository $repository, $instance)
+    private function injectDependencies(InstanceRepository $repository, $instance, ReflectionClass $class = null)
     {
-        $annotations = $this->provider->getMetadata($instance);
-        $class = new ReflectionClass($instance);
+        $parent = true;
+        if ($class == null) {
+            $class = new ReflectionClass($instance);
+            $parent = false;
+        }
+        $annotations = $this->provider->getMetadata($class, $parent);
         $properties = $class->getProperties();
         foreach ($properties as $property) {
             $annotation = Arrays::getValue($annotations, $property->getName());
@@ -55,6 +60,10 @@ class InstanceFactory
                 $property->setAccessible(true);
                 $property->setValue($instance, $dependencyInstance);
             }
+        }
+        $parentClass = $class->getParentClass();
+        if ($parentClass) {
+            $this->injectDependencies($repository, $instance, $parentClass);
         }
     }
 

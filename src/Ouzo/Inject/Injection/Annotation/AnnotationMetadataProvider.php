@@ -5,13 +5,16 @@
  */
 namespace Ouzo\Injection\Annotation;
 
+use ReflectionClass;
+
 interface AnnotationMetadataProvider
 {
     /**
-     * @param string $instance
+     * @param ReflectionClass $class
+     * @param bool $privateMethodsOnly
      * @return mixed array that contains properties metadata: 'property_name' => ['className' => '\Class', 'name' => 'Name']
      */
-    public function getMetadata($instance);
+    public function getMetadata(ReflectionClass $class, $privateMethodsOnly = false);
 
     /**
      * @param string $className
