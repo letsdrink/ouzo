@@ -3,25 +3,26 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Injection\Annotation;
 
 use Ouzo\Injection\InjectorException;
 use Ouzo\Utilities\Strings;
 use ReflectionClass;
+use ReflectionProperty;
 
 class DocCommentExtractor implements AnnotationMetadataProvider
 {
+    const ALL_PROPERTIES = ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED;
+
     /**
      * @inheritdoc
      */
-    public function getMetadata(ReflectionClass $class, $privateMethodsOnly = false)
+    public function getMetadata(ReflectionClass $class, $privatePropertiesOnly = false)
     {
         $annotations = [];
-        $properties = $class->getProperties();
+        $properties = $class->getProperties($privatePropertiesOnly ? ReflectionProperty::IS_PRIVATE : self::ALL_PROPERTIES);
         foreach ($properties as $property) {
-            if ($privateMethodsOnly && !$property->isPrivate()) {
-                break;
-            }
             $doc = $this->getDocCommentFrom($property);
             if (Strings::contains($doc, '@Inject')) {
                 if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {

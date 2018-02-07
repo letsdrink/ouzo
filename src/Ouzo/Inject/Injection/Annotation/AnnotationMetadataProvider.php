@@ -11,10 +11,10 @@ interface AnnotationMetadataProvider
 {
     /**
      * @param ReflectionClass $class
-     * @param bool $privateMethodsOnly
+     * @param bool $privatePropertiesOnly
      * @return mixed array that contains properties metadata: 'property_name' => ['className' => '\Class', 'name' => 'Name']
      */
-    public function getMetadata(ReflectionClass $class, $privateMethodsOnly = false);
+    public function getMetadata(ReflectionClass $class, $privatePropertiesOnly = false);
 
     /**
      * @param string $className
