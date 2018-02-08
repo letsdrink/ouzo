@@ -246,6 +246,36 @@ Sample usage
     //then
     CatchException::assertThat()->isInstanceOf("FooException");
 
+
+Another example with catching errors in constructor:
+
+::
+
+    //given
+    class Color {
+        public function __construct($firstParam, $secondParam, $thirdParam){
+            throw new Exception();
+        }
+    }
+
+    class ColorTest extends TestCase{
+        /**
+        * @test
+        */
+        public function testConstructor(){
+            //given
+            $params =["firstParam", ["secondParam"], 3];
+
+            //when
+            CatchException::inConstructor(Color::class, $params);
+
+            //then
+            CatchException::assertThat()->isInstanceOf(Exception::class);
+        }
+    }
+
+
+
 Assertions
 ----------
 
