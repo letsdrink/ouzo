@@ -21,13 +21,13 @@ use Ouzo\Api\MultipleNsController;
 use Ouzo\Injection\Injector;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Tests\CatchException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 class SimpleTestController extends Controller
 {
 }
 
-class ControllerFactoryTest extends PHPUnit_Framework_TestCase
+class ControllerFactoryTest extends TestCase
 {
     private $injector;
 
@@ -77,7 +77,8 @@ class ControllerFactoryTest extends PHPUnit_Framework_TestCase
 
         //then
         CatchException::assertThat()->isInstanceOf(ControllerNotFoundException::class);
-        CatchException::assertThat()->hasMessage('Controller [NotExists] for URI [/simple_test/action] does not exist!');
+        CatchException::assertThat()
+            ->hasMessage('Controller [NotExists] for URI [/simple_test/action] does not exist!');
     }
 
     /**

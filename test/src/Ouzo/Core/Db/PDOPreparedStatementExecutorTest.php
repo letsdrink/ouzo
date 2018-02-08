@@ -3,12 +3,14 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db\PDOPreparedStatementExecutor;
 use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use PHPUnit\Framework\TestCase;
 
-class PDOPreparedStatementExecutorTest extends PHPUnit_Framework_TestCase
+class PDOPreparedStatementExecutorTest extends TestCase
 {
     /**
      * @var PDOStatement

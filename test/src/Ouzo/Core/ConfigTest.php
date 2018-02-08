@@ -3,9 +3,11 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Files;
+use PHPUnit\Framework\TestCase;
 
 class SampleConfig
 {
@@ -30,7 +32,7 @@ class PrivateGetConfigMethod
     }
 }
 
-class ConfigTest extends PHPUnit_Framework_TestCase
+class ConfigTest extends TestCase
 {
     public static function setUpBeforeClass()
     {

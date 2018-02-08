@@ -6,7 +6,9 @@
 use Ouzo\ContentType;
 use Ouzo\Response\ResponseTypeResolve;
 
-class ResponseTypeResolveTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ResponseTypeResolveTest extends TestCase
 {
     /**
      * @test

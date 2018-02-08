@@ -9,7 +9,9 @@ use Ouzo\Tools\Model\Template\DatabaseColumn;
 use Ouzo\Tools\Model\Template\Dialect\PostgresDialect;
 use PHPUnit_Framework_TestCase;
 
-class PostgresDialectTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class PostgresDialectTest extends TestCase
 {
     /**
      * @test

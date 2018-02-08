@@ -5,7 +5,9 @@
  */
 use Ouzo\Utilities\ArrayContainFunctions;
 
-class ArrayContainFunctionsTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ArrayContainFunctionsTest extends TestCase
 {
     /**
      * @test

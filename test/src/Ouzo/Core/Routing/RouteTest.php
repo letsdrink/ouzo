@@ -3,12 +3,15 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Routing\GroupedRoute;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
+use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\TestCase;
 
-class RouteTest extends PHPUnit_Framework_TestCase
+class RouteTest extends TestCase
 {
     protected function setUp()
     {
@@ -169,41 +172,35 @@ class RouteTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldThrowExceptionIfNoActionInGetMethod()
     {
         //when
-        try {
-            Route::get('/user/save', 'User');
-            $this->fail();
-        } catch (InvalidArgumentException $exception) {
-        }
+        CatchException::when(new Route())->get('/user/save', 'User');
+        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldThrowExceptionIfNoActionInPostMethod()
     {
         //when
-        try {
-            Route::post('/user/save', 'User');
-            $this->fail();
-        } catch (InvalidArgumentException $exception) {
-        }
+        CatchException::when(new Route())->post('/user/save', 'User');
+        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldThrowExceptionIfNoActionInAnyMethod()
     {
         //when
-        try {
-            Route::any('/user/save', 'User');
-            $this->fail();
-        } catch (InvalidArgumentException $exception) {
-        }
+        CatchException::when(new Route())->any('/user/save', 'User');
+        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
     /**

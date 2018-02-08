@@ -28,7 +28,9 @@ class CallableWrapper
     }
 }
 
-class ComparatorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ComparatorTest extends TestCase
 {
     /**
      * @test

@@ -21,7 +21,7 @@ class ModelAssertTest extends DbTransactionalTestCase
 
         CatchException::when(Assert::thatModel($product))->hasSameAttributesAs($category);
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
     }
 
     /**
@@ -34,7 +34,7 @@ class ModelAssertTest extends DbTransactionalTestCase
 
         CatchException::when(Assert::thatModel($product))->hasSameAttributesAs($otherProduct);
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
     }
 
     /**
@@ -67,7 +67,7 @@ class ModelAssertTest extends DbTransactionalTestCase
         CatchException::when(Assert::thatModel($product))->isEqualTo($otherProduct);
 
         //then
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
     }
 
     /**

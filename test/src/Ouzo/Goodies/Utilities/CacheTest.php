@@ -5,7 +5,9 @@
  */
 use Ouzo\Utilities\Cache;
 
-class CacheTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class CacheTest extends TestCase
 {
     public static $call_count = 0;
 

@@ -7,7 +7,9 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\Suppliers;
 
-class SuppliersTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class SuppliersTest extends TestCase
 {
     /**
      * @test

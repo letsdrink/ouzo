@@ -5,7 +5,9 @@
  */
 use Ouzo\Uri\PathProvider;
 
-class PathProviderTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class PathProviderTest extends TestCase
 {
     /**
      * @test

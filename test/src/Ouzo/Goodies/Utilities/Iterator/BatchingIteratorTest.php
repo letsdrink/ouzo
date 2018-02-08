@@ -4,7 +4,9 @@ namespace Ouzo\Utilities\Iterator;
 use ArrayIterator;
 use PHPUnit_Framework_TestCase;
 
-class BatchingIteratorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class BatchingIteratorTest extends TestCase
 {
     /**
      * @test

@@ -9,7 +9,9 @@ namespace Ouzo\Db\WhereClause;
 use Ouzo\Db\Any;
 use Ouzo\Restrictions;
 
-class WhereClauseTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class WhereClauseTest extends TestCase
 {
     /**
      * @test

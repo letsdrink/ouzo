@@ -7,7 +7,9 @@ use Ouzo\Routing\Route;
 use Ouzo\Uri\UriHelperGenerator;
 use Ouzo\Utilities\Path;
 
-class UriHelperGeneratorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class UriHelperGeneratorTest extends TestCase
 {
     protected function setUp()
     {

@@ -6,7 +6,9 @@
 use Ouzo\Config;
 use Ouzo\View\PhtmlRenderer;
 
-class PhtmlRendererTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class PhtmlRendererTest extends TestCase
 {
     public function setUp()
     {

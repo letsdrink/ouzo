@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Category;
 use Application\Model\Test\ModelWithoutPrimaryKey;
 use Application\Model\Test\ModelWithoutSequence;
@@ -181,6 +182,7 @@ class ModelTest extends DbTransactionalTestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldFailIfModelWithGivenIdDoesNotExists()
     {
@@ -188,12 +190,8 @@ class ModelTest extends DbTransactionalTestCase
         $invalidId = 345345345;
 
         //when
-        try {
-            Product::findById($invalidId);
-            $this->fail();
-        } // then
-        catch (DbException $e) {
-        }
+        CatchException::when(new Product())->findById($invalidId);
+        CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
     /**
@@ -490,7 +488,8 @@ class ModelTest extends DbTransactionalTestCase
         $string = $product->inspect();
 
         //then
-        Assert::thatString($string)->isEqualTo('Application\Model\Test\Product[<name> => "Sport", <id> => ' . $product->id . ']');
+        Assert::thatString($string)
+            ->isEqualTo('Application\Model\Test\Product[<name> => "Sport", <id> => ' . $product->id . ']');
     }
 
     /**
@@ -555,18 +554,15 @@ class ModelTest extends DbTransactionalTestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldThrowExceptionIfNoRelation()
     {
         $model = new Model(['fields' => ['field1']]);
 
         //when
-        try {
-            $model->getRelation('invalid');
-            $this->fail();
-        } //then
-        catch (InvalidArgumentException $e) {
-        }
+        CatchException::when($model)->getRelation('invalid');
+        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
     /**
@@ -761,9 +757,12 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldThrowExceptionIfInvalidSequence()
     {
         //given
-        $model = new Model(['table' => 'products', 'primaryKey' => 'id', 'fields' => ['name'], 'sequence' => 'invalid_seq', 'attributes' => [
-            'name' => 'name'
-        ]]);
+        $model = new Model([
+            'table' => 'products', 'primaryKey' => 'id', 'fields' => ['name'], 'sequence' => 'invalid_seq',
+            'attributes' => [
+                'name' => 'name'
+            ]
+        ]);
 
         //when
         CatchException::when($model)->insert();

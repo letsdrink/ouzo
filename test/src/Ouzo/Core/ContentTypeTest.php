@@ -3,9 +3,11 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\ContentType;
 
-class ContentTypeTest extends PHPUnit_Framework_TestCase
+use Ouzo\ContentType;
+use PHPUnit\Framework\TestCase;
+
+class ContentTypeTest extends TestCase
 {
     /**
      * @test

@@ -10,10 +10,11 @@ use Ouzo\Config;
 use Ouzo\Db\Dialect\Dialect;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 
-class GeneratorTest extends PHPUnit_Framework_TestCase
+class GeneratorTest extends TestCase
 {
     public function setUp()
     {
@@ -85,12 +86,15 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
 
         //then
         $this->assertEquals('id', $dialectAdapter->primaryKey());
-        Assert::thatArray($dialectAdapter->columns())->onProperty('name')->containsOnly('id', 'id_category', 'name', 'description', 'sale', 'id_manufacturer');
+        Assert::thatArray($dialectAdapter->columns())
+            ->onProperty('name')
+            ->containsOnly('id', 'id_category', 'name', 'description', 'sale', 'id_manufacturer');
         Assert::thatArray($dialectAdapter->columns())->onProperty('type')->contains('string', 'string', 'int', 'int');
     }
 
     /**
      * @test
+     * @throws \Exception
      */
     public function shouldThrowExceptionWhenDialectAdapterNotExists()
     {
@@ -98,13 +102,10 @@ class GeneratorTest extends PHPUnit_Framework_TestCase
         Config::overrideProperty('sql_dialect')->with(MyImagineDialect::class);
 
         //when
-        try {
-            new Generator('order_products');
-            $this->fail();
-        } catch (GeneratorException $e) {
-        }
+        CatchException::inConstructor(Generator::class, ['order_products']);
 
         //then
+        CatchException::assertThat()->isInstanceOf(GeneratorException::class);
         Config::revertProperty('sql_dialect');
     }
 

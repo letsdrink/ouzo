@@ -5,7 +5,9 @@
  */
 use Ouzo\Http\ResponseMapper;
 
-class ResponseMapperTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ResponseMapperTest extends TestCase
 {
     /**
      * @test

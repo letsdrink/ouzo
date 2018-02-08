@@ -4,7 +4,9 @@ namespace Ouzo\ExceptionHandling;
 
 use Ouzo\Tests\Assert;
 
-class OuzoExceptionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class OuzoExceptionTest extends TestCase
 {
     /**
      * @test

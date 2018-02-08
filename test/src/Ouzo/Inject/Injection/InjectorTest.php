@@ -11,7 +11,9 @@ use Ouzo\Injection\Scope;
 use Ouzo\Tests\CatchException;
 
 
-class InjectorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class InjectorTest extends TestCase
 {
 
     /**

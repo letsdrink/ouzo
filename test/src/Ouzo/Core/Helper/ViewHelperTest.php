@@ -7,7 +7,9 @@ use Ouzo\Config;
 
 require_once ROOT_PATH . 'src/Ouzo/Core/Helper/ViewHelper.php';
 
-class ViewHelperTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ViewHelperTest extends TestCase
 {
     /**
      * @test

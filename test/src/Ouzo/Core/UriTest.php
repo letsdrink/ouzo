@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\ContentType;
 use Ouzo\Tests\ArrayAssert;
@@ -12,8 +13,9 @@ use Ouzo\Tests\StreamStub;
 use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\JsonDecodeException;
+use PHPUnit\Framework\TestCase;
 
-class UriTest extends PHPUnit_Framework_TestCase
+class UriTest extends TestCase
 {
     /**
      * @var Uri

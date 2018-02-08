@@ -3,9 +3,11 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Functions;
 
@@ -159,6 +161,7 @@ class ExtractorTest extends DbTransactionalTestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldThrowExceptionIfNoOperationGiven()
     {
@@ -166,12 +169,10 @@ class ExtractorTest extends DbTransactionalTestCase
         $function = Functions::extract();
 
         //when
-        try {
-            Functions::call($function, new Product());
-            $this->fail();
-        } //then
-        catch (InvalidArgumentException $e) {
-        }
+        CatchException::when(new Functions())->call($function, new Product());
+
+        //then
+        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
     /**

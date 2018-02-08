@@ -466,6 +466,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     /**
      * @test
      * @group sqlite3
+     * @throws \Ouzo\Exception\ValidationException
+     * @throws Exception
      */
     public function shouldThrowExceptionRightJoinWithOtherTable()
     {
@@ -487,6 +489,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
     /**
      * @test
+     * @throws \Ouzo\Exception\ValidationException
      */
     public function shouldLeftJoinWithOtherTable()
     {
@@ -622,6 +625,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
     /**
      * @test
+     * @throws \Ouzo\Exception\ValidationException
+     * @throws Exception
      */
     public function shouldThrowExceptionIfMultipleValuesForHasOne()
     {
@@ -632,12 +637,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
-        try {
-            Product::where()->with('orderProduct')->fetchAll();
-            $this->fail();
-        } //then
-        catch (DbException $e) {
-        }
+        CatchException::when((new Product())::where()->with('orderProduct'))->fetchAll();
+        CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
     /**
@@ -666,7 +667,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //given
         $category = Category::create(['name' => 'phones']);
         $samsung = Manufacturer::create(['name' => 'samsung']);
-        $product = Product::create(['name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $samsung->getId()]);
+        $product = Product::create([
+            'name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $samsung->getId()
+        ]);
         Product::create(['name' => 'samsung', 'id_category' => $category->getId()]);
 
         //when
@@ -727,7 +730,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         $tablets = Category::create(['name' => 'tablets']);
         $samsung = Manufacturer::create(['name' => 'samsung']);
-        Product::create(['name' => 'best ever samsung', 'id_category' => $tablets->id, 'id_manufacturer' => $samsung->id]);
+        Product::create([
+            'name' => 'best ever samsung', 'id_category' => $tablets->id, 'id_manufacturer' => $samsung->id
+        ]);
 
         //when
         $categories = Category::where()
@@ -1133,7 +1138,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->where('op.id_order is null')
             ->where([
                 'p.name' => 'Reno',
-                'c.name' => 'cars'])
+                'c.name' => 'cars'
+            ])
             ->fetch();
 
         //then
@@ -1173,7 +1179,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //given
         $category = Category::create(['name' => 'phones']);
         $manufacturer = Manufacturer::create(['name' => 'sony']);
-        $product = Product::create(['name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id]);
+        $product = Product::create([
+            'name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id
+        ]);
         OrderProduct::create(['id_product' => $product->getId()]);
 
         Stats::reset();
@@ -1198,7 +1206,9 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         //given
         $category = Category::create(['name' => 'phones']);
         $manufacturer = Manufacturer::create(['name' => 'sony']);
-        $product = Product::create(['name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id]);
+        $product = Product::create([
+            'name' => 'sony', 'id_category' => $category->getId(), 'id_manufacturer' => $manufacturer->id
+        ]);
         OrderProduct::create(['id_product' => $product->getId()]);
 
         Stats::reset();
@@ -1435,8 +1445,12 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     {
         //given
         $category = Category::create(['name' => 'shop']);
-        $product1 = Product::create(['name' => 'notebook', 'description' => 'notebook desc', 'id_category' => $category->getId()]);
-        $product2 = Product::create(['name' => 'tablet', 'description' => 'tablet desc', 'id_category' => $category->getId()]);
+        $product1 = Product::create([
+            'name' => 'notebook', 'description' => 'notebook desc', 'id_category' => $category->getId()
+        ]);
+        $product2 = Product::create([
+            'name' => 'tablet', 'description' => 'tablet desc', 'id_category' => $category->getId()
+        ]);
         Product::create(['name' => 'pc', 'description' => 'pc desc']);
 
         //when

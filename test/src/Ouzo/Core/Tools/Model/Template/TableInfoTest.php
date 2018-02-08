@@ -9,7 +9,9 @@ use Ouzo\Tools\Model\Template\DatabaseColumn;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Tools\Model\Template\TableInfo;
 
-class TableInfoTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class TableInfoTest extends TestCase
 {
     /**
      * @test

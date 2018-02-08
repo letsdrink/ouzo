@@ -19,7 +19,9 @@ class DummyRenderer implements ViewRenderer
     }
 }
 
-class ViewRendererFactoryTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ViewRendererFactoryTest extends TestCase
 {
     /**
      * @test

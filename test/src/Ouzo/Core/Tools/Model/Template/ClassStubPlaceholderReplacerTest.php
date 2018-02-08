@@ -9,7 +9,9 @@ use Ouzo\Tools\Model\Template\ClassStubPlaceholderReplacer;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Tools\Model\Template\TableInfo;
 
-class ClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ClassStubPlaceholderReplacerTest extends TestCase
 {
     /**
      * @test

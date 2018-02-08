@@ -13,7 +13,9 @@ use Ouzo\Utilities\FileNotFoundException;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
-class FilesTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class FilesTest extends TestCase
 {
     /**
      * @test

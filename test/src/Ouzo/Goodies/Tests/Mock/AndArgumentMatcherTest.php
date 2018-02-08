@@ -3,7 +3,9 @@
 namespace Ouzo\Tests\Mock;
 
 
-class AndArgumentMatcherTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class AndArgumentMatcherTest extends TestCase
 {
     /**
      * @test

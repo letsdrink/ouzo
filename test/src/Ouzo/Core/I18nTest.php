@@ -3,11 +3,13 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\I18n;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\TestCase;
 
-class I18nTest extends \PHPUnit_Framework_TestCase
+class I18nTest extends TestCase
 {
     /**
      * @tearDown

@@ -3,10 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Session;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\TestCase;
 
-class SessionTest extends PHPUnit_Framework_TestCase
+class SessionTest extends TestCase
 {
     protected function setUp()
     {
@@ -57,7 +59,8 @@ class SessionTest extends PHPUnit_Framework_TestCase
             ->containsKeyAndValue([
                 'key1' => 'value1',
                 'key2' => 'value2',
-                'key3' => 'value3']);
+                'key3' => 'value3'
+            ]);
     }
 
     /**

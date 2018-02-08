@@ -8,7 +8,9 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Tests\GeneralAssert;
 use Ouzo\Tests\Mock\Mock;
 
-class GeneralAssertTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class GeneralAssertTest extends TestCase
 {
     /**
      * @test
@@ -53,7 +55,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(GeneralAssert::that($instance))->isInstanceOf($name);
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
     }
 
     /**
@@ -115,7 +117,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(GeneralAssert::that($notNull))->isNull();
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
     }
 
     /**
@@ -125,7 +127,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(GeneralAssert::that(null))->isNotNull();
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
     }
 
     /**
@@ -147,7 +149,7 @@ class GeneralAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(GeneralAssert::that(null))->isEqualTo($notNull);
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
     }
 }
 

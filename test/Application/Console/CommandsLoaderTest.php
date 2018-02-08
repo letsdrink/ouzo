@@ -5,9 +5,10 @@ namespace Ouzo\Console;
 use Ouzo\Injection\Injector;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Path;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 
-class CommandsLoaderTest extends \PHPUnit_Framework_TestCase
+class CommandsLoaderTest extends TestCase
 {
     private $testCommandsPath;
 

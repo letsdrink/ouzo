@@ -3,13 +3,15 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db\Any;
 use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
+use PHPUnit\Framework\TestCase;
 
-class PostgresDialectTest extends PHPUnit_Framework_TestCase
+class PostgresDialectTest extends TestCase
 {
     /**
      * @var PostgresDialect

@@ -18,7 +18,9 @@ class MyOptionalClass
     }
 }
 
-class OptionalTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class OptionalTest extends TestCase
 {
     /**
      * @test

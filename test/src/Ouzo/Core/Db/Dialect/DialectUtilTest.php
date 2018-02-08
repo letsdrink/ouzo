@@ -3,12 +3,14 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db\Dialect\DialectUtil;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\TestCase;
 
-class DialectUtilTest extends PHPUnit_Framework_TestCase
+class DialectUtilTest extends TestCase
 {
     /**
      * @test
@@ -22,7 +24,8 @@ class DialectUtilTest extends PHPUnit_Framework_TestCase
         $buildJoinQueryPart = DialectUtil::buildJoinQueryPart($joinClause);
 
         //then
-        Assert::thatString($buildJoinQueryPart)->isEqualTo('LEFT JOIN products AS p ON p.id = order_products.product_id AND p.active = true');
+        Assert::thatString($buildJoinQueryPart)
+            ->isEqualTo('LEFT JOIN products AS p ON p.id = order_products.product_id AND p.active = true');
     }
 
     /**
@@ -31,7 +34,9 @@ class DialectUtilTest extends PHPUnit_Framework_TestCase
     public function shouldNotReplaceWhenTableNameIsPartOfOtherTableName()
     {
         //given
-        $onClauses = [WhereClause::create('products.active = true'), WhereClause::create('order_products.active = true')];
+        $onClauses = [
+            WhereClause::create('products.active = true'), WhereClause::create('order_products.active = true')
+        ];
         $joinClause = new JoinClause('products', 'id', 'product_id', 'order_products', 'p', 'LEFT', $onClauses);
 
         //when

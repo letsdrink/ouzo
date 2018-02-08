@@ -9,7 +9,9 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Clock;
 use Psr\Log\LoggerInterface;
 
-class SyslogLoggerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SyslogLoggerTest extends TestCase
 {
     /**
      * @var LoggerInterface

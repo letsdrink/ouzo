@@ -10,7 +10,9 @@ use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\Functions;
 
-class ArraysTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ArraysTest extends TestCase
 {
     /**
      * @test
@@ -862,7 +864,7 @@ class ArraysTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException PHPUnit_Framework_Error_Deprecated
+     * @expectedException \PHPUnit\Framework\Error\Deprecated
      * @expectedExceptionMessage Use Arrays::removeNestedKey instead
      */
     public function shouldThrowDeprecatedExceptionWhenUseRemoveNestedValue()

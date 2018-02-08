@@ -3,12 +3,16 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Relations;
 
-class RelationsTest extends \PHPUnit_Framework_TestCase
+use Ouzo\Relations;
+use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\TestCase;
+
+class RelationsTest extends TestCase
 {
     /**
      * @test
+     * @throws Exception
      */
     public function shouldThrowExceptionIfDuplicatedRelation()
     {
@@ -21,11 +25,9 @@ class RelationsTest extends \PHPUnit_Framework_TestCase
         ];
 
         //when
-        try {
-            new Relations("class", $params, "id");
-            $this->fail();
-        } //then
-        catch (InvalidArgumentException $e) {
-        }
+        CatchException::inConstructor(Relations::class, ["class", $params, "id"]);
+
+        //then
+        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 }

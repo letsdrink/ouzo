@@ -3,10 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\ControllerUrl;
+use PHPUnit\Framework\TestCase;
 
-class ControllerUrlTest extends PHPUnit_Framework_TestCase
+class ControllerUrlTest extends TestCase
 {
     /**
      * @test

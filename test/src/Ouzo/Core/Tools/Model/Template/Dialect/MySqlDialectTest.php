@@ -8,7 +8,9 @@ namespace Ouzo\Core\Tools\Model\Template;
 use Ouzo\Tools\Model\Template\Dialect\MySqlDialect;
 use PHPUnit_Framework_TestCase;
 
-class MySqlDialectTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class MySqlDialectTest extends TestCase
 {
     /**
      * @test

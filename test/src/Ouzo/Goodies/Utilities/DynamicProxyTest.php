@@ -113,7 +113,9 @@ interface StaticTestInterface
     public static function fun1(TestClass $p1);
 }
 
-class DynamicProxyTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class DynamicProxyTest extends TestCase
 {
     /**
      * @test

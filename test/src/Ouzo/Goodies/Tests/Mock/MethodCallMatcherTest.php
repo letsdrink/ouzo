@@ -18,7 +18,9 @@ class TestClass
     }
 }
 
-class MethodCallMatcherTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class MethodCallMatcherTest extends TestCase
 {
     /**
      * @test

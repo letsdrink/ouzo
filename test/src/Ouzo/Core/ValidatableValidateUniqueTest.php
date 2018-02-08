@@ -3,7 +3,9 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Validatable;
+use PHPUnit\Framework\TestCase;
 
 class UniquenessValidatable extends Validatable
 {
@@ -22,7 +24,7 @@ class UniquenessValidatable extends Validatable
 }
 
 
-class ValidatableValidateUniqueTest extends PHPUnit_Framework_TestCase
+class ValidatableValidateUniqueTest extends TestCase
 {
     /**
      * @test

@@ -9,7 +9,9 @@ use Ouzo\Tools\Controller\Template\ControllerGenerator;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 
-class ControllerGeneratorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ControllerGeneratorTest extends TestCase
 {
     private $controllerPath;
 

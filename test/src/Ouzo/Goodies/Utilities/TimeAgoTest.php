@@ -6,7 +6,9 @@
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\TimeAgo;
 
-class TimeAgoTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TimeAgoTest extends TestCase
 {
     public function dates()
     {

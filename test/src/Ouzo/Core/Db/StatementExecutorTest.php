@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\Db\Dialect\MySqlDialect;
 use Ouzo\Db\Dialect\PostgresDialect;
@@ -11,8 +12,9 @@ use Ouzo\DbConnectionException;
 use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use PHPUnit\Framework\TestCase;
 
-class StatementExecutorTest extends \PHPUnit_Framework_TestCase
+class StatementExecutorTest extends TestCase
 {
     /**
      * @var PDOStatement

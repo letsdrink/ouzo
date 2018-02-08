@@ -3,12 +3,14 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db\Stats;
 use Ouzo\FrontController;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\TestCase;
 
-class StatsTest extends PHPUnit_Framework_TestCase
+class StatsTest extends TestCase
 {
     protected function setUp()
     {
@@ -81,7 +83,9 @@ class StatsTest extends PHPUnit_Framework_TestCase
         $queries = Arrays::first(Stats::queries());
 
         //then
-        ArrayAssert::that($queries['request_params'][0])->hasSize(2)->containsKeyAndValue(['param1' => 1, 'param2' => 2]);
+        ArrayAssert::that($queries['request_params'][0])->hasSize(2)->containsKeyAndValue([
+            'param1' => 1, 'param2' => 2
+        ]);
     }
 
     private function _createTraceRequest($request)

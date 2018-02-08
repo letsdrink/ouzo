@@ -6,7 +6,9 @@
 use Ouzo\Restriction\Between;
 use Ouzo\Restrictions;
 
-class BetweenRestrictionTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class BetweenRestrictionTest extends TestCase
 {
     /**
      * @test

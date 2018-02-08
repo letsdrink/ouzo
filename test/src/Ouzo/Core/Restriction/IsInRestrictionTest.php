@@ -1,7 +1,9 @@
 <?php
 use Ouzo\Restrictions;
 
-class IsInRestrictionTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class IsInRestrictionTest extends TestCase
 {
     /**
      * @test

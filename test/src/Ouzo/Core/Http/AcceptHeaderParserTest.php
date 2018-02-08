@@ -5,7 +5,9 @@
  */
 use Ouzo\Http\AcceptHeaderParser;
 
-class AcceptHeaderParserTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class AcceptHeaderParserTest extends TestCase
 {
     /**
      * @test

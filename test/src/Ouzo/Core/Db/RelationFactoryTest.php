@@ -6,7 +6,9 @@
 
 use Ouzo\Db\RelationFactory;
 
-class RelationFactoryTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class RelationFactoryTest extends TestCase
 {
     /**
      * @test

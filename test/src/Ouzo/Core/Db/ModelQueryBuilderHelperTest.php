@@ -3,13 +3,15 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\OrderProduct;
 use Ouzo\Db\ModelQueryBuilderHelper;
 use Ouzo\Db\Relation;
 use Ouzo\Db\RelationWithAlias;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\TestCase;
 
-class ModelQueryBuilderHelperTest extends \PHPUnit_Framework_TestCase
+class ModelQueryBuilderHelperTest extends TestCase
 {
     /**
      * @test
@@ -93,7 +95,9 @@ class ModelQueryBuilderHelperTest extends \PHPUnit_Framework_TestCase
         $relation2 = new Relation('relation2', 'Test\OrderProduct', 'id', 'id_product', false);
 
         //when
-        $relationToAlias = ModelQueryBuilderHelper::associateRelationsWithAliases([$relation1, $relation2], ['relation2' => 'r2']);
+        $relationToAlias = ModelQueryBuilderHelper::associateRelationsWithAliases([
+            $relation1, $relation2
+        ], ['relation2' => 'r2']);
 
         //then
         Assert::thatArray($relationToAlias)->containsExactly(

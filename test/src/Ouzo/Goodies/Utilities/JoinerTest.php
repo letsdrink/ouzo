@@ -5,7 +5,9 @@
  */
 use Ouzo\Utilities\Joiner;
 
-class JoinerTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class JoinerTest extends TestCase
 {
     public function arrayJoinedWithSeparator()
     {

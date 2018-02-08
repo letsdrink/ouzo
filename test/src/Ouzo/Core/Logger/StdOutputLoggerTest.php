@@ -10,7 +10,9 @@ use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
 use Psr\Log\LoggerInterface;
 
-class StdOutputLoggerTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class StdOutputLoggerTest extends TestCase
 {
     /**
      * @var LoggerInterface

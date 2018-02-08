@@ -8,7 +8,9 @@ use Ouzo\Tools\Controller\Template\ViewGenerator;
 use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\Path;
 
-class ViewGeneratorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ViewGeneratorTest extends TestCase
 {
     private $path;
 

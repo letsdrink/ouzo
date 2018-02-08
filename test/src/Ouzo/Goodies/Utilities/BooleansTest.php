@@ -6,7 +6,9 @@
 use Ouzo\Utilities\Booleans;
 use Ouzo\Utilities\Objects;
 
-class BooleansTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class BooleansTest extends TestCase
 {
     /**
      * @test

@@ -7,7 +7,9 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tools\Model\Template\ClassStub;
 use Ouzo\Tools\Model\Template\DatabaseColumn;
 
-class ClassStubTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ClassStubTest extends TestCase
 {
     /**
      * @test

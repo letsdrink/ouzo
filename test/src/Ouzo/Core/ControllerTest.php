@@ -115,6 +115,7 @@ class ControllerTest extends ControllerTestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldReturnClassNameInUnderscoreAsDefaultTab()
     {

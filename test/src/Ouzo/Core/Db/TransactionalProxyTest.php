@@ -5,7 +5,8 @@
  */
 use Ouzo\Db;
 
-class TransactionalProxyTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+class TransactionalProxyTest extends TestCase
 {
     public $transactionStatus;
 

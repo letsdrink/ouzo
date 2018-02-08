@@ -3,7 +3,9 @@ use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\Directory;
 use Ouzo\Utilities\Path;
 
-class DirectoryTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class DirectoryTest extends TestCase
 {
     private $directory;
 

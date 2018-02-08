@@ -9,7 +9,9 @@ use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\Dialect\Sqlite3Dialect;
 use Ouzo\Restrictions;
 
-class RegexpRestrictionTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class RegexpRestrictionTest extends TestCase
 {
     protected function tearDown()
     {

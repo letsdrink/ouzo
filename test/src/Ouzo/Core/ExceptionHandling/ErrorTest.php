@@ -7,7 +7,9 @@ use Ouzo\Config;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\UserException;
 
-class ErrorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ErrorTest extends TestCase
 {
     /**
      * @test

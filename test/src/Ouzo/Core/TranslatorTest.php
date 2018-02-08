@@ -3,10 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\Translator;
+use PHPUnit\Framework\TestCase;
 
-class TranslatorTest extends PHPUnit_Framework_TestCase
+class TranslatorTest extends TestCase
 {
     /**
      * @test

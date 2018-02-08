@@ -3,10 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\QueryHumanizer;
+use PHPUnit\Framework\TestCase;
 
-class QueryHumanizerTest extends \PHPUnit_Framework_TestCase
+class QueryHumanizerTest extends TestCase
 {
     /**
      * @test

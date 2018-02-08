@@ -9,7 +9,9 @@ use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 use PHPUnit_Framework_TestCase;
 
-class JsUriHelperGeneratorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class JsUriHelperGeneratorTest extends TestCase
 {
     private $path;
 

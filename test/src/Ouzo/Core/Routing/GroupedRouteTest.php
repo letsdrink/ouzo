@@ -7,7 +7,9 @@ use Ouzo\Routing\Route;
 use Ouzo\Routing\GroupedRoute;
 use Ouzo\Tests\Assert;
 
-class GroupedRouteTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class GroupedRouteTest extends TestCase
 {
     protected function setUp()
     {

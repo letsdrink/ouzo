@@ -12,7 +12,9 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentFunctions;
 
-class FluentIteratorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class FluentIteratorTest extends TestCase
 {
     /**
      * @test

@@ -53,6 +53,7 @@ class FrontControllerTest extends ControllerTestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldThrowExceptionIfNoRouteFound()
     {
@@ -60,11 +61,8 @@ class FrontControllerTest extends ControllerTestCase
         Route::post('/sample/save', 'sample#save');
 
         //when
-        try {
-            $this->get('/sample/save');
-            $this->fail();
-        } catch (RouterException $e) {
-        }
+        CatchException::when($this)->get('/sample/save');
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**
@@ -146,6 +144,7 @@ class FrontControllerTest extends ControllerTestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldRouteRestFreshWithIncorrectMethod()
     {
@@ -156,7 +155,7 @@ class FrontControllerTest extends ControllerTestCase
         CatchException::when($this)->post('/restful/fresh', []);
 
         //then
-        CatchException::assertThat();
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**
@@ -206,6 +205,7 @@ class FrontControllerTest extends ControllerTestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldRouteRestShowWithIncorrectMethod()
     {
@@ -216,7 +216,7 @@ class FrontControllerTest extends ControllerTestCase
         CatchException::when($this)->post('/restful/12', []);
 
         //then
-        CatchException::assertThat();
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**
@@ -236,6 +236,7 @@ class FrontControllerTest extends ControllerTestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function shouldRouteRestEditWithIncorrectMethod()
     {
@@ -243,10 +244,10 @@ class FrontControllerTest extends ControllerTestCase
         Route::resource('restful');
 
         //when
-        CatchException::when($this)->post('/restful/12/edit');
+        CatchException::when($this)->post('/restful/12/edit', []);
 
         //then
-        CatchException::assertThat();
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**

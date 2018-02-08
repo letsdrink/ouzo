@@ -6,7 +6,9 @@
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Clock;
 
-class ClockTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ClockTest extends TestCase
 {
     /**
      * @test

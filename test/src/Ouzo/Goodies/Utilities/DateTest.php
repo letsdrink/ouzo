@@ -6,7 +6,9 @@
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\Date;
 
-class DateTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DateTest extends TestCase
 {
     /**
      * @test

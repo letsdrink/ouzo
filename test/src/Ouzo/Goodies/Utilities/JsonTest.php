@@ -3,12 +3,15 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\ArrayAssert;
+use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
 use Ouzo\Utilities\JsonEncodeException;
+use PHPUnit\Framework\TestCase;
 
-class JsonTest extends PHPUnit_Framework_TestCase
+class JsonTest extends TestCase
 {
     /**
      * @test
@@ -101,27 +104,29 @@ class JsonTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider validJson
      * @param string $validJson
+     * @throws Throwable
      */
     public function shouldNotThrowOnInvalidJson($validJson)
     {
-        // when
-        Json::decode($validJson);
+        //when
+        CatchException::when(new Json())->decode($validJson);
+        //then
+        CatchException::assertThat()->notCaught();
     }
 
     /**
      * @test
      * @dataProvider invalidJson
      * @param string $invalidJson
+     * @throws Exception
      */
     public function shouldThrowOnInvalidJson($invalidJson)
     {
-        // when
-        try {
-            Json::decode($invalidJson);
-            $this->assertTrue(false);
-        } // then
-        catch (JsonDecodeException $e) {
-        }
+        //when
+        CatchException::when(new Json())->decode($invalidJson);
+
+        //then
+        CatchException::assertThat()->isInstanceOf(JsonDecodeException::class);
     }
 
     /**

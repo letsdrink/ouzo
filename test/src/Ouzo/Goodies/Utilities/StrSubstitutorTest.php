@@ -5,7 +5,9 @@
  */
 use Ouzo\Utilities\StrSubstitutor;
 
-class StrSubstitutorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class StrSubstitutorTest extends TestCase
 {
     /**
      * @test

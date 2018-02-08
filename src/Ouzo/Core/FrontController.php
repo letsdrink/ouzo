@@ -76,6 +76,7 @@ class FrontController
     /**
      * @return void
      * @throws Exception
+     * @throws Throwable
      */
     public function init()
     {
@@ -102,10 +103,10 @@ class FrontController
         try {
             ob_start();
             $this->invokeControllerMethods();
-        } catch (Throwable $e) {
+        } catch (Exception $e){
             ob_end_clean();
             throw $e;
-        } catch (Exception $e){
+        } catch (Throwable $e) {
             ob_end_clean();
             throw $e;
         }

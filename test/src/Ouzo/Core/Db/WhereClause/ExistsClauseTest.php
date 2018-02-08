@@ -9,7 +9,9 @@ namespace Ouzo\Db\WhereClause;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 
-class ExistsClauseTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ExistsClauseTest extends TestCase
 {
     /**
      * @test

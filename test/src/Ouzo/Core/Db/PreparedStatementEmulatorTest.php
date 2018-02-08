@@ -3,11 +3,13 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db;
 use Ouzo\Db\PreparedStatementEmulator;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\TestCase;
 
-class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
+class PreparedStatementEmulatorTest extends TestCase
 {
     /**
      * @test
@@ -86,7 +88,8 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
         $result = PreparedStatementEmulator::substitute($sql, $params);
 
         //then
-        Assert::thatString($result)->isEqualTo("select * from users where name = 'bob?' and age = '26' and  surname = 'smith?'");
+        Assert::thatString($result)
+            ->isEqualTo("select * from users where name = 'bob?' and age = '26' and  surname = 'smith?'");
     }
 
     /**
@@ -102,6 +105,7 @@ class PreparedStatementEmulatorTest extends \PHPUnit_Framework_TestCase
         $result = PreparedStatementEmulator::substitute($sql, [$param]);
 
         //then
-        Assert::thatString($result)->isEqualTo("select * from users where surname = " . Db::getInstance()->dbHandle->quote($param));
+        Assert::thatString($result)
+            ->isEqualTo("select * from users where surname = " . Db::getInstance()->dbHandle->quote($param));
     }
 }

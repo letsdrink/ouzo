@@ -6,7 +6,9 @@
 use Ouzo\Tests\Assert;
 use Ouzo\Tools\Controller\Template\ActionGenerator;
 
-class ActionGeneratorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ActionGeneratorTest extends TestCase
 {
     /**
      * @test

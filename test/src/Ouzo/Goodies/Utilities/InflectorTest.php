@@ -5,7 +5,9 @@
  */
 use Ouzo\Utilities\Inflector;
 
-class InflectorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class InflectorTest extends TestCase
 {
     protected function tearDown()
     {

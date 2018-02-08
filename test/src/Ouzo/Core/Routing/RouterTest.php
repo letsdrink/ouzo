@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Routing\Route;
 use Ouzo\Routing\Router;
 use Ouzo\Routing\RouterException;
@@ -12,8 +13,9 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
+use PHPUnit\Framework\TestCase;
 
-class RouterTest extends PHPUnit_Framework_TestCase
+class RouterTest extends TestCase
 {
     protected function setUp()
     {
@@ -248,7 +250,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         CatchException::when($router)->findRoute();
 
         //then
-        CatchException::assertThat();
+        CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
     /**

@@ -6,7 +6,9 @@
 namespace Ouzo\Utilities\Iterator;
 
 
-class UnbatchingIteratorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class UnbatchingIteratorTest extends TestCase
 {
     /**
      * @test

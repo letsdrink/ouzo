@@ -3,10 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\TranslatableTimeAgo;
 use Ouzo\Utilities\Clock;
+use PHPUnit\Framework\TestCase;
 
-class TranslatableTimeAgoTest extends PHPUnit_Framework_TestCase
+class TranslatableTimeAgoTest extends TestCase
 {
     public function dates()
     {

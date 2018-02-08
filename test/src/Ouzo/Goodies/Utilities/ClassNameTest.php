@@ -5,7 +5,9 @@
  */
 use Ouzo\Utilities\ClassName;
 
-class ClassNameTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ClassNameTest extends TestCase
 {
     /**
      * @test

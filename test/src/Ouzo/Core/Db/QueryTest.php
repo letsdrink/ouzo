@@ -8,7 +8,9 @@ use Ouzo\Db\QueryType;
 use Ouzo\Db\WhereClause\ArrayWhereClause;
 use Ouzo\Utilities\Arrays;
 
-class QueryTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class QueryTest extends TestCase
 {
     /**
      * @test

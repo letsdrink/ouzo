@@ -5,7 +5,9 @@
  */
 use Ouzo\Restrictions;
 
-class LessThanRestrictionTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class LessThanRestrictionTest extends TestCase
 {
     /**
      * @test

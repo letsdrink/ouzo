@@ -7,7 +7,9 @@
 use Ouzo\Tests\BooleanAssert;
 use Ouzo\Tests\CatchException;
 
-class BooleanAssertTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class BooleanAssertTest extends TestCase
 {
     /**
      * @test
@@ -82,7 +84,7 @@ class BooleanAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(BooleanAssert::that($notTrue))->isTrue();
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
     }
 
     /**
@@ -94,6 +96,6 @@ class BooleanAssertTest extends PHPUnit_Framework_TestCase
     {
         CatchException::when(BooleanAssert::that($notFalse))->isFalse();
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
     }
 }

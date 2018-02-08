@@ -8,7 +8,9 @@ namespace Ouzo\Utilities;
 use Application\Model\Test\Product;
 use stdClass;
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class FunctionsTest extends TestCase
 {
     /**
      * @test

@@ -10,7 +10,9 @@ use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
-class FluentArrayTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class FluentArrayTest extends TestCase
 {
     /**
      * @test

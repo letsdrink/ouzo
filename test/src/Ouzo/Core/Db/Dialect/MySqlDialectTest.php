@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Product;
 use Ouzo\Config;
 use Ouzo\Db\BatchInserter;
@@ -11,8 +12,9 @@ use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\TestCase;
 
-class MySqlDialectTest extends PHPUnit_Framework_TestCase
+class MySqlDialectTest extends TestCase
 {
     /**
      * @var MySqlDialect

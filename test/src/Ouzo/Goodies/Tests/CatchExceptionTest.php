@@ -17,7 +17,9 @@ class MyClass
     }
 }
 
-class CatchExceptionTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class CatchExceptionTest extends TestCase
 {
     /**
      * @test

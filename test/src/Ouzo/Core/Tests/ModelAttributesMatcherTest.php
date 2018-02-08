@@ -8,7 +8,9 @@
 use Application\Model\Test\Product;
 use Ouzo\Tests\ModelAttributesMatcher;
 
-class ModelAttributesMatcherTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase; 
+
+class ModelAttributesMatcherTest extends TestCase
 {
     /**
      * @test

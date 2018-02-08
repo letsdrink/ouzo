@@ -6,7 +6,9 @@
 use Ouzo\Tests\Assert;
 use Ouzo\Tools\Controller\Template\ControllerGenerator;
 
-class ControllerClassStubPlaceholderReplacerTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ControllerClassStubPlaceholderReplacerTest extends TestCase
 {
     /**
      * @test
