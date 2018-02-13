@@ -637,7 +637,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         OrderProduct::create(['id_product' => $product->getId()]);
 
         //when
-        CatchException::when((new Product())::where()->with('orderProduct'))->fetchAll();
+        CatchException::when((new Product())->where()->with('orderProduct'))->fetchAll();
         CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
