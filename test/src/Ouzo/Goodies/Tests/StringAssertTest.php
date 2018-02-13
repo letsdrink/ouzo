@@ -17,7 +17,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo"))->matches('/Fro\d+/');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -43,7 +43,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo12"))->isEqualToIgnoringCase('frodo');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -61,7 +61,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo"))->contains('invalid');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -79,7 +79,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo"))->startsWith('invalid');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -97,7 +97,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo"))->endsWith('invalid');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -115,7 +115,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo"))->hasSize(7);
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -133,7 +133,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo"))->doesNotContain('od');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -151,7 +151,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo"))->isEqualTo('od');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -169,7 +169,7 @@ class StringAssertTest extends TestCase
     {
         CatchException::when(Assert::thatString("Frodo"))->isNotEqualTo('Frodo');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**

@@ -71,7 +71,7 @@ class ArrayAssertTest extends TestCase
 
         CatchException::when(Assert::thatArray([$object])->onProperty('prop'))->contains(1);
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -234,7 +234,7 @@ class ArrayAssertTest extends TestCase
 
         CatchException::when(Assert::thatArray($photos)->onMethod('getPhotoName'))->contains('photo3');
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -264,7 +264,7 @@ class ArrayAssertTest extends TestCase
     {
         $array = ['ccc', 'aaa'];
         CatchException::when(Assert::thatArray($array))->isEqualTo('ddd', 'ccc');
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -274,7 +274,7 @@ class ArrayAssertTest extends TestCase
     {
         $array = ['ccc', 'aaa', 'bbb', 'ccc', 'ddd'];
         CatchException::when(Assert::thatArray($array))->containsSequence('ddd', 'ccc');
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -284,7 +284,7 @@ class ArrayAssertTest extends TestCase
     {
         $array = ['ccc', 'aaa', 'bbb', 'ccc', 'ddd'];
         CatchException::when(Assert::thatArray($array))->containsSequence('aaa', 'ddd');
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -294,7 +294,7 @@ class ArrayAssertTest extends TestCase
     {
         $array = ['ccc', 'aaa', 'bbb', 'ccc', 'ddd'];
         CatchException::when(Assert::thatArray($array))->containsSequence('ccc', 'aaa', 'bbb', 'ccc', 'ddd', 'zzz');
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -303,7 +303,7 @@ class ArrayAssertTest extends TestCase
     public function excludesShouldThrowExceptionWhenFoundInArray()
     {
         CatchException::when(Assert::thatArray(['1', '2', '3', '4']))->excludes('7', '8', '4');
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     /**
@@ -365,7 +365,7 @@ class ArrayAssertTest extends TestCase
         CatchException::when(Assert::thatArray($obj)->onProperty('property1'))->contains('prop3');
 
         //then
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException')
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException')
             ->hasMessage('Cannot find expected ["prop3"] in actual ["prop1", "prop2"]');
     }
 
@@ -445,7 +445,7 @@ class ArrayAssertTest extends TestCase
         $array = array_shift($args);
 
         call_user_func_array([CatchException::when(Assert::thatArray($array)), $method], $args);
-        CatchException::assertThat()->isInstanceOf('PHPUnit\Framework\ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
     }
 
     private function _assertNotContains()

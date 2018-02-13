@@ -864,7 +864,7 @@ class ArraysTest extends TestCase
 
     /**
      * @test
-     * @expectedException \PHPUnit\Framework\Error\Deprecated
+     * @expectedException \PHPUnit_Framework_Error_Deprecated
      * @expectedExceptionMessage Use Arrays::removeNestedKey instead
      */
     public function shouldThrowDeprecatedExceptionWhenUseRemoveNestedValue()

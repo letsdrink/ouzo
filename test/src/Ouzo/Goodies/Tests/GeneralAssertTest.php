@@ -55,7 +55,7 @@ class GeneralAssertTest extends TestCase
     {
         CatchException::when(GeneralAssert::that($instance))->isInstanceOf($name);
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 
     /**
@@ -117,7 +117,7 @@ class GeneralAssertTest extends TestCase
     {
         CatchException::when(GeneralAssert::that($notNull))->isNull();
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 
     /**
@@ -127,7 +127,7 @@ class GeneralAssertTest extends TestCase
     {
         CatchException::when(GeneralAssert::that(null))->isNotNull();
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 
     /**
@@ -149,7 +149,7 @@ class GeneralAssertTest extends TestCase
     {
         CatchException::when(GeneralAssert::that(null))->isEqualTo($notNull);
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 }
 

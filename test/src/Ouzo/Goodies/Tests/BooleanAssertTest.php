@@ -79,23 +79,25 @@ class BooleanAssertTest extends TestCase
      * @test
      * @dataProvider notTrue
      * @param $notTrue
+     * @throws Exception
      */
     public function shouldNotBeTrue($notTrue)
     {
         CatchException::when(BooleanAssert::that($notTrue))->isTrue();
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 
     /**
      * @test
      * @dataProvider notFalse
      * @param $notFalse
+     * @throws Exception
      */
     public function shouldNotBeFalse($notFalse)
     {
         CatchException::when(BooleanAssert::that($notFalse))->isFalse();
 
-        CatchException::assertThat()->isInstanceOf(PHPUnit\Framework\ExpectationFailedException::class);
+        CatchException::assertThat()->isInstanceOf(PHPUnit_Framework_ExpectationFailedException::class);
     }
 }

@@ -105,7 +105,7 @@ class MockTest extends TestCase
         CatchException::when(Mock::verify($mock))->method();
 
         //then
-        CatchException::assertThat()->isInstanceOf("PHPUnit\Framework\ExpectationFailedException");
+        CatchException::assertThat()->isInstanceOf("PHPUnit_Framework_ExpectationFailedException");
     }
 
     /**
@@ -138,7 +138,7 @@ class MockTest extends TestCase
             Mock::verify($mock)->neverReceived()->method(1);
             $this->fail('expected failure');
         } //then
-        catch (PHPUnit\Framework\ExpectationFailedException $e) {
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1)', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(1) is never called', $e->getComparisonFailure()->getExpected());
         }
@@ -158,7 +158,7 @@ class MockTest extends TestCase
             Mock::verify($mock)->neverReceived()->method(Mock::anyArgList());
             $this->fail();
         } //then
-        catch (PHPUnit\Framework\ExpectationFailedException $e) {
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1)', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(any arguments) is never called', $e->getComparisonFailure()->getExpected());
         }
@@ -179,7 +179,7 @@ class MockTest extends TestCase
             Mock::verify($mock)->method(1, 2);
             $this->fail();
         } //then
-        catch (PHPUnit\Framework\ExpectationFailedException $e) {
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1), method2(1)', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(1, 2)', $e->getComparisonFailure()->getExpected());
         }
@@ -199,7 +199,7 @@ class MockTest extends TestCase
             Mock::verify($mock)->method(1, 2);
             $this->fail();
         } //then
-        catch (PHPUnit\Framework\ExpectationFailedException $e) {
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method(1, null, [1, 2], MockTestClass {})', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(1, 2)', $e->getComparisonFailure()->getExpected());
         }
@@ -613,7 +613,7 @@ class MockTest extends TestCase
             Mock::verify($mock)->method(Mock::argThat()->extractField('name')->startsWith('matching'));
             $this->fail('Expected failure');
         } //then
-        catch (\PHPUnit\Framework\ExpectationFailedException $e) {
+        catch (\PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method("something else")', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method(argThat()->extractField("name")->startsWith("matching"))', $e->getComparisonFailure()
                 ->getExpected());
@@ -672,7 +672,7 @@ class MockTest extends TestCase
             });
             $this->fail();
         } //then
-        catch (PHPUnit\Framework\ExpectationFailedException $e) {
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('method2()', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method1()', $e->getComparisonFailure()->getExpected());
         }
@@ -694,7 +694,7 @@ class MockTest extends TestCase
             });
             $this->fail();
         } //then
-        catch (PHPUnit\Framework\ExpectationFailedException $e) {
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals('no interactions', $e->getComparisonFailure()->getActual());
             $this->assertEquals('method1()', $e->getComparisonFailure()->getExpected());
         }
