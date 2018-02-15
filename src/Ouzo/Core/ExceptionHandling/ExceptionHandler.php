@@ -14,7 +14,15 @@ use Ouzo\UserException;
 class ExceptionHandler
 {
     private static $errorHandled = false;
+    private static $isCli = false;
     public static $errorRenderer = null;
+
+    public static function setupErrorRenderer()
+    {
+        global $argv;
+        self::$isCli = isset($argv[0]);
+        self::$errorRenderer = self::$isCli ? new CliErrorRenderer() : new ErrorRenderer();
+    }
 
     public function handleException($exception)
     {
@@ -60,7 +68,9 @@ class ExceptionHandler
 
     private function renderUserError($exception)
     {
-        header("Contains-Error-Message: User");
+        if (!self::$isCli) {
+            header("Contains-Error-Message: User");
+        }
         $this->renderError($exception, 'user_exception');
     }
 
@@ -82,3 +92,5 @@ class ExceptionHandler
         }
     }
 }
+
+ExceptionHandler::setupErrorRenderer();
