@@ -37,7 +37,7 @@
   },
   "require": {
     "d11wtq/boris": "1.0.8",
-    "symfony/console": "v3.2.*",
+    "symfony/console": "^3.4",
     "filp/whoops": "2.1.*",
     "psr/log": "^1.0"
   },
