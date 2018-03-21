@@ -8,9 +8,11 @@ namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
 use Exception;
+use Ouzo\ContentType;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
+use Ouzo\Utilities\Strings;
 
 class ExceptionLogger
 {
@@ -76,6 +78,11 @@ class ExceptionLogger
         }
         if (!empty($_POST)) {
             $message .= "\nPOST = " . Objects::toString($_POST);
+        }
+        if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
+            $jsonBody = stream_get_contents(fopen('php://input', 'r'));
+            $jsonBodyAbbrev = Strings::abbreviate($jsonBody, 1024 * 20);
+            $message .= "\nJSON BODY = '$jsonBodyAbbrev'";
         }
         $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
         return $message;
