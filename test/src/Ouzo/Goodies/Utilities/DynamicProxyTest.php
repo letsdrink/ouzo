@@ -76,7 +76,6 @@ abstract class ClassWithAbstractMethod
     abstract public function fun2();
 }
 
-
 class ClassWithMethodThatTakesParamsByRef
 {
     public function fun1(array &$p1)
@@ -90,7 +89,6 @@ class ClassWithMethodThatTakesVararg
     {
     }
 }
-
 
 class TestMethodHandler
 {
@@ -113,7 +111,11 @@ interface StaticTestInterface
     public static function fun1(TestClass $p1);
 }
 
-use PHPUnit\Framework\TestCase; 
+if (version_compare('7.1.0', PHP_VERSION, '<=')) {
+    include __DIR__ . '/DynamicProxyClassesFor71.php';
+}
+
+use PHPUnit\Framework\TestCase;
 
 class DynamicProxyTest extends TestCase
 {
@@ -338,4 +340,43 @@ class DynamicProxyTest extends TestCase
         //then
         $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCreateProxyForMethodWithPrimitiveTypes()
+    {
+        if (version_compare('7.1.0', PHP_VERSION, '>')) {
+            $this->markTestSkipped("Test only for PHP 7.1+");
+        }
+        //given
+        $testMethodHandler = new TestMethodHandler();
+        $proxy = DynamicProxy::newInstance(ClassWithMethodThatTakesPrimitives::class, $testMethodHandler);
+
+        //when
+        $proxy->fun1(1, [], new TestClass());
+
+        //then
+        $this->assertEquals([['fun1', [1, [], new TestClass()]]], $testMethodHandler->calls);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateProxyForMethodWithReturnType()
+    {
+        if (version_compare('7.1.0', PHP_VERSION, '>')) {
+            $this->markTestSkipped("Test only for PHP 7.1+");
+        }
+        //given
+        $testMethodHandler = new TestMethodHandler();
+        $proxy = DynamicProxy::newInstance(ClassWithMethodThatReturnType::class, $testMethodHandler);
+
+        //when
+        $proxy->fun1(1);
+
+        //then
+        $this->assertEquals([['fun1', [1]]], $testMethodHandler->calls);
+    }
+
 }
