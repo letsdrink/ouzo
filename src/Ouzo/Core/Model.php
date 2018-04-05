@@ -185,22 +185,9 @@ class Model extends Validatable implements Serializable, JsonSerializable
      */
     public function insert()
     {
-        $this->callBeforeSaveCallbacks();
-
-        $primaryKey = $this->modelDefinition->primaryKey;
-        $attributes = $this->filterAttributesPreserveNull($this->attributes);
-
-        $query = Query::insert($attributes)->into($this->modelDefinition->table);
-        $lastInsertedId = QueryExecutor::prepare($this->modelDefinition->db, $query)->insert($this->modelDefinition->sequence);
-
-        if ($primaryKey && $this->modelDefinition->sequence) {
-            $this->$primaryKey = $lastInsertedId;
-        }
-
-        $this->callAfterSaveCallbacks();
-        $this->resetModifiedFields();
-
-        return $lastInsertedId;
+        return $this->doInsert(function ($attributes) {
+            return Query::insert($attributes)->into($this->modelDefinition->table);
+        });
     }
 
     /**
@@ -209,15 +196,26 @@ class Model extends Validatable implements Serializable, JsonSerializable
      */
     public function upsert(array $onConflictAttributes = [])
     {
+        return $this->doInsert(function ($attributes) use ($onConflictAttributes) {
+            if (empty($onConflictAttributes)) {
+                $onConflictAttributes = [$this->getIdName()];
+            }
+            return Query::upsert($attributes)->onConflict($onConflictAttributes)->table($this->modelDefinition->table);
+        });
+    }
+
+    /**
+     * @return int|null
+     */
+    private function doInsert($callback)
+    {
         $this->callBeforeSaveCallbacks();
 
         $primaryKey = $this->modelDefinition->primaryKey;
         $attributes = $this->filterAttributesPreserveNull($this->attributes);
 
-        if (empty($onConflictAttributes)) {
-            $onConflictAttributes = [$this->getIdName()];
-        }
-        $query = Query::upsert($attributes)->onConflict($onConflictAttributes)->table($this->modelDefinition->table);
+        $query = $callback($attributes);
+
         $lastInsertedId = QueryExecutor::prepare($this->modelDefinition->db, $query)->insert($this->modelDefinition->sequence);
 
         if ($primaryKey && $this->modelDefinition->sequence) {
