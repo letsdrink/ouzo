@@ -980,6 +980,7 @@ class ModelTest extends DbTransactionalTestCase
     }
 
     /**
+     * @group non-sqlite3
      * @test
      */
     public function createOrUpdateShouldInsertProductWhenNotExist()
@@ -993,6 +994,7 @@ class ModelTest extends DbTransactionalTestCase
     }
 
     /**
+     * @group non-sqlite3
      * @test
      */
     public function createOrUpdateShouldUpdateProductWhenOneAlreadyExists()
@@ -1009,6 +1011,7 @@ class ModelTest extends DbTransactionalTestCase
     }
 
     /**
+     * @group non-sqlite3
      * @test
      */
     public function upsertShouldReturnIdOnInsert()
@@ -1024,6 +1027,7 @@ class ModelTest extends DbTransactionalTestCase
     }
 
     /**
+     * @group non-sqlite3
      * @test
      */
     public function upsertShouldReturnIdOnUpdate()
