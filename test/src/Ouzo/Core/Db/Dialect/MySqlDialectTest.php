@@ -19,12 +19,12 @@ class MySqlDialectTest extends TestCase
     /**
      * @var MySqlDialect
      */
-    private $_dialect;
+    private $dialect;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->_dialect = new MySqlDialect();
+        $this->dialect = new MySqlDialect();
     }
 
     /**
@@ -37,7 +37,7 @@ class MySqlDialectTest extends TestCase
         $query->table = 'products';
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products', $sql);
@@ -54,7 +54,7 @@ class MySqlDialectTest extends TestCase
         $query->aliasTable = 'p';
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products AS p', $sql);
@@ -71,7 +71,7 @@ class MySqlDialectTest extends TestCase
         $query->table = 'products';
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('DELETE FROM products', $sql);
@@ -89,7 +89,7 @@ class MySqlDialectTest extends TestCase
         $query->addUsing(new JoinClause('categories', 'id_category', 'id', 'products', 'c', 'USING', []));
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('DELETE FROM products USING products INNER JOIN categories AS c WHERE (c.id_category = products.id)', $sql);
@@ -106,7 +106,7 @@ class MySqlDialectTest extends TestCase
         $query->table = 'products';
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT count(*) FROM products', $sql);
@@ -123,7 +123,7 @@ class MySqlDialectTest extends TestCase
         $query->selectColumns = ['id', 'name'];
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT id, name FROM products', $sql);
@@ -140,7 +140,7 @@ class MySqlDialectTest extends TestCase
         $query->order = 'id asc';
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products ORDER BY id asc', $sql);
@@ -157,7 +157,7 @@ class MySqlDialectTest extends TestCase
         $query->order = ['id asc', 'name desc'];
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products ORDER BY id asc, name desc', $sql);
@@ -174,7 +174,7 @@ class MySqlDialectTest extends TestCase
         $query->limit = 10;
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products LIMIT ?', $sql);
@@ -191,7 +191,7 @@ class MySqlDialectTest extends TestCase
             ->groupBy('category');
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT category, count(*) FROM products GROUP BY category', $sql);
@@ -208,7 +208,7 @@ class MySqlDialectTest extends TestCase
         $query->offset = 10;
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products OFFSET ?', $sql);
@@ -225,7 +225,7 @@ class MySqlDialectTest extends TestCase
         $query->where('name = ?');
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products WHERE name = ?', $sql);
@@ -242,7 +242,7 @@ class MySqlDialectTest extends TestCase
         $query->where(['name' => 'bob', 'id' => '1']);
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ?', $sql);
@@ -259,7 +259,7 @@ class MySqlDialectTest extends TestCase
         $query->where(['name' => ['james', 'bob']]);
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products WHERE name IN (?, ?)', $sql);
@@ -276,7 +276,7 @@ class MySqlDialectTest extends TestCase
         $query->join('categories', 'id_category', 'id_category');
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category', $sql);
@@ -294,7 +294,7 @@ class MySqlDialectTest extends TestCase
         $query->where('id = ?', 1);
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ?', $sql);
@@ -312,7 +312,7 @@ class MySqlDialectTest extends TestCase
         $query->where('id = ?', 1);
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products WHERE id = ?', $sql);
@@ -332,7 +332,7 @@ class MySqlDialectTest extends TestCase
             ->where('id = ?', 1);
 
         //when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         //then
         $expected = 'SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category LEFT JOIN orders ON orders.id = products.id_product WHERE id = ?';
@@ -353,7 +353,7 @@ class MySqlDialectTest extends TestCase
             ->where('id = ?', 1);
 
         //when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         //then
         $expected = 'SELECT * FROM products LEFT JOIN categories AS c ON c.id_category = products.id_category LEFT JOIN orders AS o ON o.id = products.id_product WHERE id = ?';
@@ -371,7 +371,7 @@ class MySqlDialectTest extends TestCase
         $query->lockForUpdate = true;
 
         // when
-        $sql = $this->_dialect->buildQuery($query);
+        $sql = $this->dialect->buildQuery($query);
 
         // then
         $this->assertEquals('SELECT * FROM products FOR UPDATE', $sql);
@@ -396,5 +396,24 @@ class MySqlDialectTest extends TestCase
             ->hasMessage("Batch insert not supported in mysql")
             ->isInstanceOf('InvalidArgumentException');
         Config::overrideProperty('sql_dialect')->with($previous);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBuildUpsertQuery()
+    {
+        //given
+        $query = new Query();
+        $query->table = 'products';
+        $query->type = QueryType::$UPSERT;
+        $query->updateAttributes = ['col1' => 'val1', 'col2' => 'val2'];
+        $query->onConflictAttributes = ['col3', 'col4'];
+
+        //when
+        $sql = $this->dialect->buildQuery($query);
+
+        //then
+        $this->assertEquals("INSERT INTO products (col1, col2) VALUES (?, ?) ON DUPLICATE KEY UPDATE col1 = ?, col2 = ?", $sql);
     }
 }

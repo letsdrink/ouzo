@@ -80,4 +80,13 @@ class MySqlDialect extends Dialect
     {
         return '`' . $word . '`';
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function onConflictUpdate()
+    {
+        $attributes = DialectUtil::buildAttributesPartForUpdate($this->query->updateAttributes);
+        return " ON DUPLICATE KEY UPDATE {$attributes}";
+    }
 }

@@ -49,6 +49,11 @@ class QueryBoundValuesExtractor
         foreach ($query->whereClauses as $whereClause) {
             $this->addBindValuesFromWhereClause($whereClause);
         }
+
+        if ($query->onConflictAttributes) {
+            $this->addBindValue(array_values($query->updateAttributes));
+        }
+
         if ($query->limit !== null) {
             $this->addBindValue($query->limit);
         }

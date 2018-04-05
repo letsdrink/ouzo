@@ -209,4 +209,9 @@ class MyImagineDialect extends Dialect
     {
         return $word;
     }
+
+    public function onConflictUpdate()
+    {
+        return '';
+    }
 }

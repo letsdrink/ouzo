@@ -7,6 +7,7 @@ Enhancements:
 * [ORM] Model implements Serializable and JsonSerializable interfaces (issue #203).
 * [ORM] Changed Model::deleteEach to use iterator instead of fetching all elements at once (issue #254).
 * [ORM] Fixed fetchIterator to properly use cursor underneath.
+* [ORM] Implemented upsert functionality (Model::createOrUpdate).
 * [DI] Added constructor injection for arguments with types defined (issue #265).
 * [DI] Implemented injection of private fields for parent class.
 * [Utilities] Added equalsIgnoreCase to Functions and FluentFunctions (issue #263).

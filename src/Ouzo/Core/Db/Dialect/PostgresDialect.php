@@ -63,4 +63,15 @@ class PostgresDialect extends Dialect
     {
         return '"' . $word . '"';
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function onConflictUpdate()
+    {
+        $attributes = DialectUtil::buildAttributesPartForUpdate($this->query->updateAttributes);
+        $onConflictAttributes = $this->query->onConflictAttributes;
+        $joinedColumns = implode(', ', $onConflictAttributes);
+        return " ON CONFLICT ({$joinedColumns}) DO UPDATE SET {$attributes}";
+    }
 }

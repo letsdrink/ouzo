@@ -978,4 +978,64 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Sport2', $product2->reload()->name);
         $this->assertEquals('modified', $product1->reload()->name);
     }
+
+    /**
+     * @test
+     */
+    public function createOrUpdateShouldInsertProductWhenNotExist()
+    {
+        //when
+        $result = Product::createOrUpdate(['name' => 'Tech']);
+
+        //then
+        $product = Product::findById($result->getId());
+        $this->assertEquals('Tech', $product->name);
+    }
+
+    /**
+     * @test
+     */
+    public function createOrUpdateShouldUpdateProductWhenOneAlreadyExists()
+    {
+        //given
+        $product = Product::create(['name' => 'Tech']);
+
+        //when
+        Product::createOrUpdate(['id' => $product->getId(), 'name' => 'new name']);
+
+        //then
+        $product->reload();
+        $this->assertEquals('new name', $product->name);
+    }
+
+    /**
+     * @test
+     */
+    public function upsertShouldReturnIdOnInsert()
+    {
+        //given
+        $product = new Product(['name' => 'Tech']);
+
+        //when
+        $id = $product->upsert();
+
+        //then
+        $this->assertNotNull($id);
+    }
+
+    /**
+     * @test
+     */
+    public function upsertShouldReturnIdOnUpdate()
+    {
+        //given
+        $product = Product::create(['name' => 'Tech']);
+        $product->name = 'new name';
+
+        //when
+        $id = $product->upsert();
+
+        //then
+        $this->assertNotNull($id);
+    }
 }

@@ -121,4 +121,11 @@ class Sqlite3Dialect extends Dialect
     }
 
 
+    /**
+     * @return string
+     */
+    public function onConflictUpdate()
+    {
+        throw new BadMethodCallException('UPSERT is not supported in sqlite3');
+    }
 }

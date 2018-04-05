@@ -447,6 +447,25 @@ class PostgresDialectTest extends TestCase
     /**
      * @test
      */
+    public function shouldBuildUpsertQuery()
+    {
+        //given
+        $query = new Query();
+        $query->table = 'products';
+        $query->type = QueryType::$UPSERT;
+        $query->updateAttributes = ['col1' => 'val1', 'col2' => 'val2'];
+        $query->onConflictAttributes = ['col3', 'col4'];
+
+        //when
+        $sql = $this->dialect->buildQuery($query);
+
+        //then
+        $this->assertEquals("INSERT INTO products (col1, col2) VALUES (?, ?) ON CONFLICT (col3, col4) DO UPDATE SET col1 = ?, col2 = ?", $sql);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnSelectDistinctFrom()
     {
         // given

@@ -31,6 +31,8 @@ class Query
     public $offset;
     /** @var array */
     public $updateAttributes = [];
+    /** @var array */
+    public $onConflictAttributes = [];
     /** @var WhereClause[] */
     public $whereClauses = [];
     /** @var JoinClause[] */
@@ -81,6 +83,15 @@ class Query
     public static function update($attributes)
     {
         return Query::newInstance(QueryType::$UPDATE)->attributes($attributes);
+    }
+
+    /**
+     * @param array $attributes
+     * @return Query
+     */
+    public static function upsert($attributes)
+    {
+        return Query::newInstance(QueryType::$UPSERT)->attributes($attributes);
     }
 
     /**
@@ -265,6 +276,16 @@ class Query
     public function comment($comment)
     {
         $this->comment = $comment;
+        return $this;
+    }
+
+    /**
+     * @param array $onConflictAttributes
+     * @return $this
+     */
+    public function onConflict(array $onConflictAttributes = [])
+    {
+        $this->onConflictAttributes = $onConflictAttributes;
         return $this;
     }
 

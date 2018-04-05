@@ -12,4 +12,5 @@ class QueryType
     public static $DELETE = 3;
     public static $UPDATE = 4;
     public static $INSERT = 5;
+    public static $UPSERT = 6;
 }

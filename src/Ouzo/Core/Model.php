@@ -204,6 +204,33 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
+     * @param array $onConflictAttributes
+     * @return int|null
+     */
+    public function upsert(array $onConflictAttributes = [])
+    {
+        $this->callBeforeSaveCallbacks();
+
+        $primaryKey = $this->modelDefinition->primaryKey;
+        $attributes = $this->filterAttributesPreserveNull($this->attributes);
+
+        if (empty($onConflictAttributes)) {
+            $onConflictAttributes = [$this->getIdName()];
+        }
+        $query = Query::upsert($attributes)->onConflict($onConflictAttributes)->table($this->modelDefinition->table);
+        $lastInsertedId = QueryExecutor::prepare($this->modelDefinition->db, $query)->insert($this->modelDefinition->sequence);
+
+        if ($primaryKey && $this->modelDefinition->sequence) {
+            $this->$primaryKey = $lastInsertedId;
+        }
+
+        $this->callAfterSaveCallbacks();
+        $this->resetModifiedFields();
+
+        return $lastInsertedId;
+    }
+
+    /**
      * @return void
      */
     public function update()
@@ -603,6 +630,22 @@ class Model extends Validatable implements Serializable, JsonSerializable
         $instance = static::newInstance($attributes);
         if ($instance->isValid()) {
             $instance->insert();
+            return $instance;
+        }
+        throw new ValidationException($instance->getErrorObjects());
+    }
+
+    /**
+     * @param $attributes
+     * @param $onConflictAttributes
+     * @throws ValidationException
+     * @return static
+     */
+    public static function createOrUpdate(array $attributes = [], array $onConflictAttributes = [])
+    {
+        $instance = static::newInstance($attributes);
+        if ($instance->isValid()) {
+            $instance->upsert($onConflictAttributes);
             return $instance;
         }
         throw new ValidationException($instance->getErrorObjects());

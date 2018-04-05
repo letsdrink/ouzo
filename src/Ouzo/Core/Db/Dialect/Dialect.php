@@ -69,6 +69,11 @@ abstract class Dialect
     /**
      * @return string
      */
+    abstract public function onConflictUpdate();
+
+    /**
+     * @return string
+     */
     public function delete()
     {
         return "DELETE";
@@ -218,6 +223,9 @@ abstract class Dialect
             $sql .= $this->where();
         } elseif ($query->type == QueryType::$INSERT) {
             $sql .= $this->insert();
+        } elseif ($query->type == QueryType::$UPSERT) {
+            $sql .= $this->insert();
+            $sql .= $this->onConflictUpdate();
         } elseif ($query->type == QueryType::$DELETE) {
             $sql .= $this->delete();
             $sql .= $this->from();
