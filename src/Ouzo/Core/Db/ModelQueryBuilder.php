@@ -130,7 +130,6 @@ class ModelQueryBuilder
         return intval(Arrays::firstOrNull(Arrays::toArray($value)));
     }
 
-
     /**
      * @return void
      */
@@ -332,9 +331,9 @@ class ModelQueryBuilder
     }
 
     /**
-     * @param string $relationToFetch
+     * @param RelationToFetch $relationToFetch
      */
-    private function addRelationToFetch($relationToFetch)
+    private function addRelationToFetch(RelationToFetch $relationToFetch)
     {
         if (!$this->isAlreadyAddedToFetch($relationToFetch)) {
             $this->relationsToFetch[] = $relationToFetch;
