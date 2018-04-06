@@ -191,16 +191,16 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param array $onConflictAttributes
+     * @param array $upsertConflictColumns
      * @return int|null
      */
-    public function upsert(array $onConflictAttributes = [])
+    public function upsert(array $upsertConflictColumns = [])
     {
-        return $this->doInsert(function ($attributes) use ($onConflictAttributes) {
-            if (empty($onConflictAttributes)) {
-                $onConflictAttributes = [$this->getIdName()];
+        return $this->doInsert(function ($attributes) use ($upsertConflictColumns) {
+            if (empty($upsertConflictColumns)) {
+                $upsertConflictColumns = [$this->getIdName()];
             }
-            return Query::upsert($attributes)->onConflict($onConflictAttributes)->table($this->modelDefinition->table);
+            return Query::upsert($attributes)->onConflict($upsertConflictColumns)->table($this->modelDefinition->table);
         });
     }
 
@@ -635,15 +635,15 @@ class Model extends Validatable implements Serializable, JsonSerializable
 
     /**
      * @param $attributes
-     * @param $onConflictAttributes
+     * @param $upsertConflictColumns
      * @throws ValidationException
      * @return static
      */
-    public static function createOrUpdate(array $attributes = [], array $onConflictAttributes = [])
+    public static function createOrUpdate(array $attributes = [], array $upsertConflictColumns = [])
     {
         $instance = static::newInstance($attributes);
         if ($instance->isValid()) {
-            $instance->upsert($onConflictAttributes);
+            $instance->upsert($upsertConflictColumns);
             return $instance;
         }
         throw new ValidationException($instance->getErrorObjects());

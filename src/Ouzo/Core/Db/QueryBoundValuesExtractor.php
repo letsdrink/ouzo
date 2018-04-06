@@ -50,7 +50,7 @@ class QueryBoundValuesExtractor
             $this->addBindValuesFromWhereClause($whereClause);
         }
 
-        if ($query->onConflictAttributes) {
+        if ($query->type == QueryType::$UPSERT) {
             $this->addBindValue(array_values($query->updateAttributes));
         }
 

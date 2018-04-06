@@ -70,8 +70,8 @@ class PostgresDialect extends Dialect
     public function onConflictUpdate()
     {
         $attributes = DialectUtil::buildAttributesPartForUpdate($this->query->updateAttributes);
-        $onConflictAttributes = $this->query->onConflictAttributes;
-        $joinedColumns = implode(', ', $onConflictAttributes);
+        $upsertConflictColumns = $this->query->upsertConflictColumns;
+        $joinedColumns = implode(', ', $upsertConflictColumns);
         return " ON CONFLICT ({$joinedColumns}) DO UPDATE SET {$attributes}";
     }
 }

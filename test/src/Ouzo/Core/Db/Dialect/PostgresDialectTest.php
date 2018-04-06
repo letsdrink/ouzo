@@ -454,7 +454,7 @@ class PostgresDialectTest extends TestCase
         $query->table = 'products';
         $query->type = QueryType::$UPSERT;
         $query->updateAttributes = ['col1' => 'val1', 'col2' => 'val2'];
-        $query->onConflictAttributes = ['col3', 'col4'];
+        $query->upsertConflictColumns = ['col3', 'col4'];
 
         //when
         $sql = $this->dialect->buildQuery($query);

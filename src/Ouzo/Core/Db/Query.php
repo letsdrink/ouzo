@@ -32,7 +32,7 @@ class Query
     /** @var array */
     public $updateAttributes = [];
     /** @var array */
-    public $onConflictAttributes = [];
+    public $upsertConflictColumns = [];
     /** @var WhereClause[] */
     public $whereClauses = [];
     /** @var JoinClause[] */
@@ -280,12 +280,12 @@ class Query
     }
 
     /**
-     * @param array $onConflictAttributes
+     * @param array $upsertConflictColumns
      * @return $this
      */
-    public function onConflict(array $onConflictAttributes = [])
+    public function onConflict(array $upsertConflictColumns = [])
     {
-        $this->onConflictAttributes = $onConflictAttributes;
+        $this->upsertConflictColumns = $upsertConflictColumns;
         return $this;
     }
 
