@@ -508,7 +508,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param string $params
+     * @param string|array $params
      * @param array $values
      * @return ModelQueryBuilder
      */
