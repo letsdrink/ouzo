@@ -71,7 +71,7 @@ class ModelQueryBuilder
     }
 
     /**
-     * @param string $where
+     * @param string|array $where
      * @param array $values
      * @return ModelQueryBuilder
      */
