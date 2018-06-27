@@ -528,7 +528,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
-     * @param string $where
+     * @param string|array $where
      * @param null|array $bindValues
      * @return int
      */
