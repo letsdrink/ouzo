@@ -20,7 +20,7 @@ if ($db == 'mysql') {
     $config['db']['user'] = 'ouzo_user';
     $config['db']['pass'] = 'password';
     $config['db']['driver'] = 'pgsql';
-    $config['db']['host'] = '172.17.0.3';
+    $config['db']['host'] = '127.0.0.1';
     $config['db']['port'] = '5432';
 }
 $config['db']['dbname'] = 'ouzo_test';
