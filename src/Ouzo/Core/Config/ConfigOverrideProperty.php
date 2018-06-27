@@ -21,7 +21,7 @@ class ConfigOverrideProperty
     }
 
     /**
-     * @param string $value
+     * @param string|array $value
      * @return void
      */
     public function with($value)
