@@ -9,9 +9,8 @@ use Ouzo\Injection\InjectorConfig;
 use Ouzo\Injection\InjectorException;
 use Ouzo\Injection\Scope;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\TestCase;
 
-
-use PHPUnit\Framework\TestCase; 
 
 class InjectorTest extends TestCase
 {
@@ -104,6 +103,43 @@ class InjectorTest extends TestCase
         $this->assertInstanceOf(ClassWithDeepDep::class, $instance);
         $this->assertDependencyInjected(ClassWithDep::class, $instance->classWithDep);
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->classWithDep->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectDependencyByConstructorBoundToOtherClass()
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->bind(ClassWithNoDep::class)->to(SubClassWithNoDep::class);
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance(ClassWithConstructorDep::class);
+
+        //then
+        $this->assertInstanceOf(ClassWithConstructorDep::class, $instance);
+        $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectNamedDependencyByConstructorBoundToOtherClass()
+    {
+        // given
+        $config = new InjectorConfig();
+        $config->bind(ClassWithNoDep::class, 'my_dep')->to(SubClassWithNoDep::class);
+        $config->bind(ClassWithNoDep::class, 'other_dep')->to(ClassWithNoDep::class);
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance(ClassWithNamedConstructorDep::class);
+
+        //then
+        $this->assertInstanceOf(ClassWithNamedConstructorDep::class, $instance);
+        $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
     }
 
     /**

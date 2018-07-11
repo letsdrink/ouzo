@@ -53,7 +53,8 @@ class DocCommentExtractor implements AnnotationMetadataProvider
                     if (!$parameter->getClass()) {
                         throw new InjectorException("Cannot @Inject by constructor for class $className. All arguments should have types defined.");
                     }
-                    $annotations[] = ['name' => $parameter->getName(), 'className' => $parameter->getClass()->getName()];
+                    $name = $this->extractName($doc);
+                    $annotations[$parameter->getName()] = ['name' => $name, 'className' => $parameter->getClass()->getName()];
                 }
             }
         }
