@@ -33,7 +33,8 @@ class Bootstrap
     public function __construct(EnvironmentSetter $environmentSetter = null)
     {
         error_reporting(E_ALL);
-        ($environmentSetter ?: new EnvironmentSetter('prod'))->set();
+        $environmentSetter = $environmentSetter ?: new EnvironmentSetter('prod');
+        $environmentSetter->set();
     }
 
     /**
