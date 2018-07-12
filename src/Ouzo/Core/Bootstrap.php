@@ -38,7 +38,7 @@ class Bootstrap
     }
 
     /**
-     * @param string $config
+     * @param object $config
      * @return $this
      */
     public function addConfig($config)
@@ -130,6 +130,7 @@ class Bootstrap
     private function createInjector()
     {
         $injectorConfig = $this->injectorConfig ?: new InjectorConfig();
+
         return $this->injector ?: new Injector($injectorConfig);
     }
 }
