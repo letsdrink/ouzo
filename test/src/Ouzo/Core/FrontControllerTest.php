@@ -29,7 +29,6 @@ class FrontControllerTest extends ControllerTestCase
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');
         Config::clearProperty('debug');
-        Config::clearProperty('callback', 'afterControllerInit');
     }
 
     /**
@@ -420,8 +419,9 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldCallbackInvokeAfterInit()
     {
         //given
-        $callback = [$this, '_afterInitCallback'];
-        Config::overrideProperty('callback', 'afterControllerInit')->with($callback);
+        $middlewareRepository = new MiddlewareRepository();
+        $middlewareRepository->add(new ExceptionThrowMiddleware());
+        $this->injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
         Route::get('/sample/save', 'sample#save');
 
         //when

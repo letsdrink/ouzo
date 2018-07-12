@@ -53,7 +53,6 @@ class BootstrapTest extends TestCase
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');
         Config::clearProperty('debug');
-        Config::clearProperty('callback', 'afterControllerInit');
     }
 
     /**

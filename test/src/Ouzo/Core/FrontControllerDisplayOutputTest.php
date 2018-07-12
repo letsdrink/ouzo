@@ -25,7 +25,6 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');
         Config::clearProperty('debug');
-        Config::clearProperty('callback', 'afterControllerInit');
     }
 
     protected function frontControllerBindings(InjectorConfig $config)

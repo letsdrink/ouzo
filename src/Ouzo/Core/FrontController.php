@@ -12,7 +12,6 @@ use Ouzo\Request\RequestContext;
 use Ouzo\Request\RequestContextFactory;
 use Ouzo\Request\RequestExecutor;
 use Ouzo\Utilities\Chain\ChainExecutor;
-use Ouzo\Utilities\Functions;
 use Throwable;
 
 class FrontController
@@ -60,20 +59,15 @@ class FrontController
     public function init()
     {
         $this->requestContext = $this->requestContextFactory->create();
+
         $chainExecutor = new ChainExecutor();
+        $chainExecutor->addAll($this->middlewareRepository->getInterceptors());
 
         $this->sessionInitializer->startSession();
 
         try {
             ob_start();
 
-            //todo remove?
-            $afterInitCallback = Config::getValue('callback', 'afterControllerInit');
-            if ($afterInitCallback) {
-                Functions::call($afterInitCallback, []);
-            }
-
-            $chainExecutor->addAll($this->middlewareRepository->getInterceptors());
             $chainExecutor->execute($this->requestContext, function (RequestContext $requestContext) {
                 $this->requestExecutor->execute($requestContext);
             });
@@ -84,6 +78,7 @@ class FrontController
             ob_end_clean();
             throw $e;
         }
+
         ob_end_flush();
     }
 
