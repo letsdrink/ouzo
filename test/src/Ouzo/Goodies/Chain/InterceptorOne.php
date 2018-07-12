@@ -9,8 +9,8 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class InterceptorOne implements Interceptor
 {
-    public function handle($param, Chain $chain)
+    public function handle($param, Chain $next)
     {
-        return $chain->proceed($param . '1');
+        return $next->proceed($param . '1');
     }
 }

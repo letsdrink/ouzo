@@ -3,10 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Controller;
 use Ouzo\ControllerFactory;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Routing\Route;
+use Ouzo\Routing\RouteRule;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Utilities\Arrays;
 
@@ -39,9 +41,9 @@ class SampleController extends Controller
     }
 }
 
-class MockControllerFactory
+class MockControllerFactory extends ControllerFactory
 {
-    public function createController()
+    public function createController(RouteRule $routeRule)
     {
         $routeRule = Arrays::first(Route::getRoutes());
         return SampleController::createInstance($routeRule);

@@ -13,15 +13,10 @@ use Ouzo\Tests\Mock\Mock;
 
 class FrontControllerDisplayOutputTest extends ControllerTestCase
 {
-    public function __construct()
-    {
-        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
-        parent::__construct();
-    }
-
     public function setUp()
     {
         parent::setUp();
+        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         Route::clear();
     }
 
@@ -36,7 +31,7 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
     protected function frontControllerBindings(InjectorConfig $config)
     {
         parent::frontControllerBindings($config);
-        $config->bind(HeaderSender::class)->toInstance(Mock::create());
+        $config->bind(HeaderSender::class)->toInstance(Mock::create(HeaderSender::class));
     }
 
     /**
@@ -45,17 +40,19 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
     public function shouldNotDisplayOutputBeforeHeadersAreSent()
     {
         //given
+        Route::allowAll('/sample', 'sample');
+
+        $_SERVER['REQUEST_URI'] = '/sample/action';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $this->initFrontController();
         $obLevel = ob_get_level();
-        Mock::when($this->frontController->getHeaderSender())->send(Mock::any())->thenAnswer(function () use ($obLevel) {
+
+        //when
+        Mock::when($this->frontController->getRequestExecutor()->getHeaderSender())->send(Mock::any())->thenAnswer(function () use ($obLevel) {
             //if there's a nested buffer, nothing was sent to output
             $this->assertTrue(ob_get_level() > $obLevel);
             $this->expectOutputString('OUTPUT');
         });
-
-        Route::allowAll('/sample', 'sample');
-
-        //when
-        $this->get('/sample/action');
 
         //then no exceptions
     }

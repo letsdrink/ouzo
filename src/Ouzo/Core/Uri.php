@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Uri\PathProvider;
@@ -124,7 +125,8 @@ class Uri
 
     public static function getRequestType()
     {
-        return Arrays::getValue($_POST, '_method', $_SERVER['REQUEST_METHOD']);
+        $default = Arrays::getValue($_SERVER, 'REQUEST_METHOD', 'GET');
+        return Arrays::getValue($_POST, '_method', $default);
     }
 
     public static function getRequestParameters($stream = 'php://input')

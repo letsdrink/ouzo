@@ -6,6 +6,7 @@
 
 use Ouzo\Config;
 use Ouzo\Db\Stats;
+use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouterException;
 use Ouzo\Session;
@@ -16,15 +17,10 @@ use Ouzo\Utilities\Arrays;
 
 class FrontControllerTest extends ControllerTestCase
 {
-    public function __construct()
-    {
-        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
-        parent::__construct();
-    }
-
     public function setUp()
     {
         parent::setUp();
+        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         Route::clear();
     }
 
@@ -467,6 +463,26 @@ class FrontControllerTest extends ControllerTestCase
 
         //then
         $this->assertNotEmpty(Session::get('stats_queries'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddSomeExampleFieldIntoRequestObject()
+    {
+        //given
+        Route::get('/sample/save', 'sample#save');
+        $middlewareRepository = new MiddlewareRepository();
+        $middlewareRepository->add(new SampleMiddleware());
+
+        $this->injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
+
+        //when
+        $this->get('/sample/save');
+
+        //then
+        $this->assertEquals('SampleMiddleware', $this->requestContext()->forTestPurposesOnly);
+        $this->assertRenderedContent()->isEqualTo('save');
     }
 
     public function _afterInitCallback()

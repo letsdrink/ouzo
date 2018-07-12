@@ -6,9 +6,10 @@
 
 namespace Ouzo\Tests;
 
+use Ouzo\DownloadHandler;
 use Ouzo\Utilities\Arrays;
 
-class MockDownloadHandler
+class MockDownloadHandler extends DownloadHandler
 {
     private $fileData = [];
 

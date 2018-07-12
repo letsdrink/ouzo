@@ -30,15 +30,10 @@ class AuthSampleController extends Controller
 
 class AuthBasicControllerTest extends ControllerTestCase
 {
-    public function __construct()
-    {
-        Config::overrideProperty('namespace', 'controller')->with('\\');
-        parent::__construct();
-    }
-
     public function setUp()
     {
         parent::setUp();
+        Config::overrideProperty('namespace', 'controller')->with('\\');
         Route::$validate = false;
         Route::allowAll('/auth_sample', 'auth_sample');
     }

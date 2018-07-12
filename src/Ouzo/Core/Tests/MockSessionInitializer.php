@@ -3,9 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
-class MockSessionInitializer
+use Ouzo\SessionInitializer;
+
+class MockSessionInitializer extends SessionInitializer
 {
     public function startSession()
     {

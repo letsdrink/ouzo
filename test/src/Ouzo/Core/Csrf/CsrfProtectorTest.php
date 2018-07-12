@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\Csrf\CsrfProtector;
@@ -33,15 +34,10 @@ class CsrfSampleController extends Controller
 
 class CsrfProtectorTest extends ControllerTestCase
 {
-    public function __construct()
-    {
-        Config::overrideProperty('namespace', 'controller')->with('\\');
-        parent::__construct();
-    }
-
     public function setUp()
     {
         parent::setUp();
+        Config::overrideProperty('namespace', 'controller')->with('\\');
         Route::$validate = false;
         Route::allowAll('/csrf_sample', 'csrf_sample');
     }

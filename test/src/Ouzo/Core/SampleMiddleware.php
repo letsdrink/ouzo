@@ -7,10 +7,12 @@
 use Ouzo\Utilities\Chain\Chain;
 use Ouzo\Utilities\Chain\Interceptor;
 
-class InterceptorTwo implements Interceptor
+class SampleMiddleware implements Interceptor
 {
-    public function handle($param, Chain $next)
+    /** @inheritdoc */
+    public function handle($request, Chain $next)
     {
-        return $next->proceed($param . '2');
+        $request->forTestPurposesOnly = 'SampleMiddleware';
+        return $next->proceed($request);
     }
 }

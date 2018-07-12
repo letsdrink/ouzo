@@ -4,11 +4,11 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-namespace Ouzo\Utilities\Chain;
+namespace Ouzo\Middleware;
 
-use Closure;
+use Ouzo\Utilities\Chain\Interceptor;
 
-class ChainExecutor
+class MiddlewareRepository
 {
     /** @var Interceptor[] */
     private $interceptors = [];
@@ -20,6 +20,7 @@ class ChainExecutor
     public function add(Interceptor $interceptor)
     {
         $this->interceptors[] = $interceptor;
+
         return $this;
     }
 
@@ -29,26 +30,14 @@ class ChainExecutor
      */
     public function addAll(array $interceptors)
     {
-        foreach ($interceptors as $interceptor) {
-            $this->add($interceptor);
-        }
+        $this->interceptors = array_merge($this->interceptors, $interceptors);
+
         return $this;
     }
 
-    /**
-     * @param mixed $param
-     * @param Closure $function
-     * @return mixed
-     */
-    public function execute($param, Closure $function)
+    /** @return Interceptor[] */
+    public function getInterceptors()
     {
-        $chain = new InvocationChain($function);
-
-        $interceptors = array_reverse($this->interceptors);
-        foreach ($interceptors as $interceptor) {
-            $chain = new ChainHandler($chain, $interceptor);
-        }
-
-        return $chain->proceed($param);
+        return $this->interceptors;
     }
 }

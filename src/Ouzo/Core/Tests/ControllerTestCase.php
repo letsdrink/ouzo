@@ -22,55 +22,53 @@ use Ouzo\Utilities\Strings;
 
 class ControllerTestCase extends DbTransactionalTestCase
 {
-    /**
-     * @var InjectorConfig
-     */
+    /** @var InjectorConfig */
     protected $injectorConfig;
-    /**
-     * @var FrontController
-     */
+    /** @var FrontController */
     protected $frontController;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct()
     {
-        parent::__construct($name, $data, $dataName);
-
         $this->injectorConfig = new InjectorConfig();
-        $this->frontControllerBindings($this->injectorConfig);
-        $injector = new Injector($this->injectorConfig);
-        $this->frontController = $injector->getInstance(FrontController::class);
+        parent::__construct();
     }
 
-    private static function _prefixSystem()
+    public function tearDown()
+    {
+        parent::tearDown();
+        FrontController::$requestId = null;
+    }
+
+    private static function prefixSystem()
     {
         return Config::getValue('global', 'prefix_system');
     }
 
     public function get($url, $data = null)
     {
-        $url = $this->_appendParamsToUrl($url, $data);
-        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
+        $url = $this->appendParamsToUrl($url, $data);
+        $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
+        $_GET = $this->parseUrlParams($_SERVER['REQUEST_URI']);
 
-        $this->_initFrontController();
+        $this->initFrontController();
     }
 
-    private function _appendParamsToUrl($url, $data)
+    private function appendParamsToUrl($url, $data)
     {
         if ($data) {
-            $conjunction = $this->_urlHasParams($url) ? "&" : "?";
+            $conjunction = $this->urlHasParams($url) ? "&" : "?";
             return $url . $conjunction . http_build_query($data);
         }
         return $url;
     }
 
-    private function _urlHasParams($url)
+    private function urlHasParams($url)
     {
-        return count($this->_parseUrlParams($url)) > 0;
+        return count($this->parseUrlParams($url)) > 0;
     }
 
-    private function _parseUrlParams($url)
+    private function parseUrlParams($url)
     {
         $urlComponents = parse_url($url);
         $query = Arrays::getValue($urlComponents, 'query', '');
@@ -78,56 +76,60 @@ class ControllerTestCase extends DbTransactionalTestCase
         return $array;
     }
 
-    private function _initFrontController()
+    protected function initFrontController()
     {
+        $this->frontControllerBindings($this->injectorConfig);
+        $injector = new Injector($this->injectorConfig);
+        $this->frontController = $injector->getInstance(FrontController::class);
+
         $this->frontController->init();
     }
 
     public function post($url, $data)
     {
-        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
+        $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = $data;
-        $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
+        $_GET = $this->parseUrlParams($_SERVER['REQUEST_URI']);
 
-        $this->_initFrontController();
+        $this->initFrontController();
     }
 
     public function put($url, $data)
     {
-        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
+        $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = array_merge($data, ['_method' => 'PUT']);
-        $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
-        $this->_initFrontController();
+        $_GET = $this->parseUrlParams($_SERVER['REQUEST_URI']);
+        $this->initFrontController();
     }
 
     public function patch($url)
     {
-        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
+        $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['_method'] = 'PATCH';
-        $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
-        $this->_initFrontController();
+        $_GET = $this->parseUrlParams($_SERVER['REQUEST_URI']);
+        $this->initFrontController();
     }
 
     public function delete($url)
     {
-        $_SERVER['REQUEST_URI'] = self::_prefixSystem() . $url;
+        $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['_method'] = 'DELETE';
-        $_GET = $this->_parseUrlParams($_SERVER['REQUEST_URI']);
-        $this->_initFrontController();
+        $_GET = $this->parseUrlParams($_SERVER['REQUEST_URI']);
+        $this->initFrontController();
     }
 
     public function assertRedirectsTo($path)
     {
-        $this->assertEquals($this->_removePrefix($path), $this->_removePrefix($this->frontController->getRedirectHandler()->getLocation()));
+        $this->assertEquals($this->removePrefix($path), $this->removePrefix($this->frontController->getRequestExecutor()->getRedirectHandler()->getLocation()));
     }
 
-    private function _removePrefix($string)
+    private function removePrefix($string)
     {
-        return Strings::removePrefix($string, self::_prefixSystem());
+        return Strings::removePrefix($string, self::prefixSystem());
     }
 
     public function assertRenders($viewName)
@@ -149,7 +151,7 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertDownloadsFile($file)
     {
-        $this->assertEquals($file, $this->frontController->getDownloadHandler()->getFileName());
+        $this->assertEquals($file, $this->frontController->getRequestExecutor()->getDownloadHandler()->getFileName());
     }
 
     public function assertAssignsValue($variable, $value)
@@ -187,13 +189,13 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertHasCookie($cookieAttributes)
     {
-        $actual = $this->frontController->getCookiesSetter()->getCookies();
+        $actual = $this->frontController->getRequestExecutor()->getCookiesSetter()->getCookies();
         Assert::thatArray($actual)->contains($cookieAttributes);
     }
 
     public function getResponseHeaders()
     {
-        return $this->frontController->getHeaderSender()->getHeaders();
+        return $this->frontController->getRequestExecutor()->getHeaderSender()->getHeaders();
     }
 
     public function getActualContent()

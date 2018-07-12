@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\NoControllerActionException;
@@ -95,15 +96,10 @@ class SimpleTestController extends Controller
 
 class ControllerTest extends ControllerTestCase
 {
-    public function __construct()
-    {
-        Config::overrideProperty('namespace', 'controller')->with('\\');
-        parent::__construct();
-    }
-
     public function setUp()
     {
         parent::setUp();
+        Config::overrideProperty('namespace', 'controller')->with('\\');
         Route::clear();
     }
 

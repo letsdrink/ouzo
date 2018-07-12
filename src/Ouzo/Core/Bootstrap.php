@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Config\ConfigRepository;
@@ -10,7 +11,12 @@ use Ouzo\ExceptionHandling\DebugErrorHandler;
 use Ouzo\ExceptionHandling\ErrorHandler;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
+use Ouzo\Middleware\LogRequest;
+use Ouzo\Middleware\MiddlewareRepository;
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Chain\Interceptor;
 use Ouzo\Utilities\Files;
+use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Path;
 
 class Bootstrap
@@ -21,11 +27,13 @@ class Bootstrap
     private $injector;
     /** @var InjectorConfig */
     private $injectorConfig;
+    /** @var Interceptor[] */
+    private $interceptors;
 
-    public function __construct()
+    public function __construct(EnvironmentSetter $environmentSetter = null)
     {
         error_reporting(E_ALL);
-        putenv('environment=prod');
+        ($environmentSetter ?: new EnvironmentSetter('prod'))->set();
     }
 
     /**
@@ -35,6 +43,7 @@ class Bootstrap
     public function addConfig($config)
     {
         $this->configRepository = Config::registerConfig($config);
+
         return $this;
     }
 
@@ -45,6 +54,7 @@ class Bootstrap
     public function withInjector(Injector $injector)
     {
         $this->injector = $injector;
+
         return $this;
     }
 
@@ -55,12 +65,22 @@ class Bootstrap
     public function withInjectorConfig(InjectorConfig $config)
     {
         $this->injectorConfig = $config;
+
         return $this;
     }
 
     /**
-     * @return void
+     * @param Interceptor $interceptors
+     * @return $this
      */
+    public function withMiddleware(...$interceptors)
+    {
+        $this->interceptors = Arrays::filter($interceptors, Functions::isInstanceOf(Interceptor::class));
+
+        return $this;
+    }
+
+    /** @return FrontController */
     public function runApplication()
     {
         if ($this->configRepository) {
@@ -68,14 +88,13 @@ class Bootstrap
         }
 
         $this->registerErrorHandlers();
-
         $this->includeRoutes();
-        $this->createFrontController()->init();
+        $frontController = $this->createFrontController();
+        $frontController->init();
+        return $frontController;
     }
 
-    /**
-     * @return void
-     */
+    /** @return void */
     private function registerErrorHandlers()
     {
         if (Config::getValue('debug')) {
@@ -86,21 +105,24 @@ class Bootstrap
         $handler->register();
     }
 
-    /**
-     * @return void
-     */
+    /** @return void */
     private function includeRoutes()
     {
         $routesPath = Path::join(ROOT_PATH, 'config', 'routes.php');
         Files::loadIfExists($routesPath);
     }
 
-    /**
-     * @return FrontController
-     */
+    /** @return FrontController */
     private function createFrontController()
     {
-        $injector = $this->injector ?: new Injector($this->injectorConfig);
+        $middlewareRepository = new MiddlewareRepository();
+        $middlewareRepository->add(new LogRequest());
+        $middlewareRepository->addAll($this->interceptors);
+
+        $injectorConfig = $this->injectorConfig ?: new InjectorConfig();
+        $injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
+
+        $injector = $this->injector ?: new Injector($injectorConfig);
         return $injector->getInstance(FrontController::class);
     }
 }

@@ -3,9 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
-class MockHeaderSender
+use Ouzo\HeaderSender;
+
+class MockHeaderSender extends HeaderSender
 {
     private $_headers;
 

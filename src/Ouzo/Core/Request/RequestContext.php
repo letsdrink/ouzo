@@ -3,30 +3,34 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Request;
 
 class RequestContext
 {
     private $currentController;
-    private $currentControllerObject;
+    private $currentAction;
+    private $controllerObject;
+
+    public function __construct($controller, $action, $controllerObject)
+    {
+        $this->currentController = $controller;
+        $this->currentAction = $action;
+        $this->controllerObject = $controllerObject;
+    }
 
     public function getCurrentController()
     {
         return $this->currentController;
     }
 
-    public function setCurrentController($currentController)
-    {
-        $this->currentController = $currentController;
-    }
-
     public function getCurrentControllerObject()
     {
-        return $this->currentControllerObject;
+        return $this->controllerObject;
     }
 
-    public function setCurrentControllerObject($currentControllerObject)
+    public function getCurrentAction()
     {
-        $this->currentControllerObject = $currentControllerObject;
+        return $this->currentAction;
     }
 }
