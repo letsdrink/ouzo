@@ -27,10 +27,10 @@ class ControllerTestCase extends DbTransactionalTestCase
     /** @var FrontController */
     protected $frontController;
 
-    public function __construct()
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         $this->injectorConfig = new InjectorConfig();
-        parent::__construct();
+        parent::__construct($name, $data, $dataName);
     }
 
     public function tearDown()
