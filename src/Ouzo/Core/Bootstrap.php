@@ -120,10 +120,16 @@ class Bootstrap
         $middlewareRepository->add(new LogRequest());
         $middlewareRepository->addAll($this->interceptors);
 
-        $injectorConfig = $this->injectorConfig ?: new InjectorConfig();
-        $injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
+        $injector = $this->createInjector();
+        $injector->getInjectorConfig()
+            ->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
 
-        $injector = $this->injector ?: new Injector($injectorConfig);
         return $injector->getInstance(FrontController::class);
+    }
+
+    private function createInjector()
+    {
+        $injectorConfig = $this->injectorConfig ?: new InjectorConfig();
+        return $this->injector ?: new Injector($injectorConfig);
     }
 }
