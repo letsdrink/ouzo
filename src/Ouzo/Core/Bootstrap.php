@@ -28,7 +28,7 @@ class Bootstrap
     /** @var InjectorConfig */
     private $injectorConfig;
     /** @var Interceptor[] */
-    private $interceptors;
+    private $interceptors = [];
 
     public function __construct(EnvironmentSetter $environmentSetter = null)
     {
