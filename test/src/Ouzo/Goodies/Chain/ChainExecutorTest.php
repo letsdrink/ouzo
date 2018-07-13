@@ -27,4 +27,22 @@ class ChainExecutorTest extends TestCase
         //then
         $this->assertEquals('12 execution', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldExecuteBeforeAndAfterInterceptor()
+    {
+        //given
+        $chainExecutor = new ChainExecutor();
+        $chainExecutor->add(new BeforeAfterInterceptor());
+
+        //when
+        $result = $chainExecutor->execute('', function ($param) {
+            return $param . ' execution ';
+        });
+
+        //then
+        $this->assertEquals('before execution after', $result);
+    }
 }
