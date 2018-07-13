@@ -11,8 +11,8 @@ use Ouzo\ExceptionHandling\DebugErrorHandler;
 use Ouzo\ExceptionHandling\ErrorHandler;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
-use Ouzo\Middleware\Interceptor\LogRequest;
 use Ouzo\Middleware\Interceptor\DefaultRequestId;
+use Ouzo\Middleware\Interceptor\LogRequest;
 use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Chain\Interceptor;
@@ -30,6 +30,8 @@ class Bootstrap
     private $injectorConfig;
     /** @var Interceptor[] */
     private $interceptors = [];
+    /** @var bool */
+    private $overrideMiddleware = false;
 
     public function __construct(EnvironmentSetter $environmentSetter = null)
     {
@@ -82,6 +84,18 @@ class Bootstrap
         return $this;
     }
 
+    /**
+     * @param Interceptor $interceptors
+     * @return $this
+     */
+    public function overrideMiddleware(...$interceptors)
+    {
+        $this->interceptors = Arrays::filter($interceptors, Functions::isInstanceOf(Interceptor::class));
+        $this->overrideMiddleware = true;
+
+        return $this;
+    }
+
     /** @return FrontController */
     public function runApplication()
     {
@@ -91,8 +105,10 @@ class Bootstrap
 
         $this->registerErrorHandlers();
         $this->includeRoutes();
+
         $frontController = $this->createFrontController();
         $frontController->init();
+
         return $frontController;
     }
 
@@ -117,11 +133,7 @@ class Bootstrap
     /** @return FrontController */
     private function createFrontController()
     {
-        $middlewareRepository = new MiddlewareRepository();
-        $middlewareRepository
-            ->add(new DefaultRequestId())
-            ->add(new LogRequest())
-            ->addAll($this->interceptors);
+        $middlewareRepository = $this->createMiddlewareRepository();
 
         $injector = $this->createInjector();
         $injector->getInjectorConfig()
@@ -130,10 +142,26 @@ class Bootstrap
         return $injector->getInstance(FrontController::class);
     }
 
+    /** @return Injector */
     private function createInjector()
     {
         $injectorConfig = $this->injectorConfig ?: new InjectorConfig();
 
         return $this->injector ?: new Injector($injectorConfig);
+    }
+
+    /** @return MiddlewareRepository */
+    private function createMiddlewareRepository()
+    {
+        $middlewareRepository = new MiddlewareRepository();
+
+        if (!$this->overrideMiddleware) {
+            $middlewareRepository
+                ->add(new DefaultRequestId())
+                ->add(new LogRequest());
+        }
+        $middlewareRepository->addAll($this->interceptors);
+
+        return $middlewareRepository;
     }
 }

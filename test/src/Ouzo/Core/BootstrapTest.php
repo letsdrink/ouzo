@@ -26,7 +26,10 @@ use PHPUnit\Framework\TestCase;
 
 class BootstrapTest extends TestCase
 {
+    /** @var InjectorConfig */
     private $config;
+    /** @var Bootstrap */
+    private $bootstrap;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -46,6 +49,10 @@ class BootstrapTest extends TestCase
         parent::setUp();
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         Route::clear();
+
+        Route::get('/', 'sample#save');
+        $this->bootstrap = new Bootstrap(new EnvironmentSetter('test'));
+        $this->bootstrap->withInjectorConfig($this->config);
     }
 
     public function tearDown()
@@ -60,19 +67,28 @@ class BootstrapTest extends TestCase
      */
     public function shouldBindMiddlewareWithInterceptors()
     {
-        //given
-        Route::get('/', 'sample#save');
-
-        $bootstrap = new Bootstrap(new EnvironmentSetter('test'));
-        $bootstrap
-            ->withInjectorConfig($this->config)
-            ->withMiddleware(new SampleMiddleware());
-
         //when
-        $frontController = $bootstrap->runApplication();
+        $frontController = $this->bootstrap
+            ->withMiddleware(new SampleMiddleware())
+            ->runApplication();
 
         //then
         $interceptors = $frontController->getMiddlewareRepository()->getInterceptors();
         Assert::thatArray($interceptors)->isNotEmpty();
+    }
+
+    /**
+     * @test
+     */
+    public function shouldOverrideMiddleware()
+    {
+        //when
+        $frontController = $this->bootstrap
+            ->overrideMiddleware(new SampleMiddleware())
+            ->runApplication();
+
+        //then
+        $interceptors = $frontController->getMiddlewareRepository()->getInterceptors();
+        Assert::thatArray($interceptors)->hasSize(1);
     }
 }
