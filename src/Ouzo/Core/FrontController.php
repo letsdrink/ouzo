@@ -27,8 +27,6 @@ class FrontController
     private $middlewareRepository;
     /** @var RequestExecutor */
     private $requestExecutor;
-    /** @var array */
-    private $defaults;
     /** @var RequestContext */
     private $requestContext;
 
@@ -46,8 +44,6 @@ class FrontController
         $this->requestContextFactory = $requestContextFactory;
         $this->middlewareRepository = $middlewareRepository;
         $this->requestExecutor = $requestExecutor;
-
-        $this->defaults = Config::getValue('global');
     }
 
     /**
