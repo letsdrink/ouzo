@@ -11,7 +11,8 @@ use Ouzo\ExceptionHandling\DebugErrorHandler;
 use Ouzo\ExceptionHandling\ErrorHandler;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
-use Ouzo\Middleware\LogRequest;
+use Ouzo\Middleware\Interceptor\LogRequest;
+use Ouzo\Middleware\Interceptor\DefaultRequestId;
 use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Chain\Interceptor;
@@ -117,8 +118,10 @@ class Bootstrap
     private function createFrontController()
     {
         $middlewareRepository = new MiddlewareRepository();
-        $middlewareRepository->add(new LogRequest());
-        $middlewareRepository->addAll($this->interceptors);
+        $middlewareRepository
+            ->add(new DefaultRequestId())
+            ->add(new LogRequest())
+            ->addAll($this->interceptors);
 
         $injector = $this->createInjector();
         $injector->getInjectorConfig()

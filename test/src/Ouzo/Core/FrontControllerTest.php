@@ -6,6 +6,8 @@
 
 use Ouzo\Config;
 use Ouzo\Db\Stats;
+use Ouzo\FrontController;
+use Ouzo\Middleware\Interceptor\DefaultRequestId;
 use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouterException;
@@ -483,6 +485,25 @@ class FrontControllerTest extends ControllerTestCase
         //then
         $this->assertEquals('SampleMiddleware', $this->requestContext()->forTestPurposesOnly);
         $this->assertRenderedContent()->isEqualTo('save');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldSetRequestIdUsingMiddleware()
+    {
+        //given
+        Route::get('/sample/save', 'sample#save');
+        $middlewareRepository = new MiddlewareRepository();
+        $middlewareRepository->add(new DefaultRequestId());
+
+        $this->injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
+
+        //when
+        $this->get('/sample/save');
+
+        //then
+        $this->assertNotNull(FrontController::$requestId);
     }
 
     public function _afterInitCallback()

@@ -17,7 +17,7 @@ use Throwable;
 class FrontController
 {
     /** @var string */
-    public static $requestId;
+    public static $requestId = null;
 
     /** @var SessionInitializer */
     private $sessionInitializer;
@@ -47,7 +47,6 @@ class FrontController
         $this->middlewareRepository = $middlewareRepository;
         $this->requestExecutor = $requestExecutor;
 
-        self::$requestId = uniqid();
         $this->defaults = Config::getValue('global');
     }
 
