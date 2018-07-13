@@ -864,8 +864,6 @@ class ArraysTest extends TestCase
 
     /**
      * @test
-     * @expectedException \PHPUnit_Framework_Error_Deprecated
-     * @expectedExceptionMessage Use Arrays::removeNestedKey instead
      */
     public function shouldThrowDeprecatedExceptionWhenUseRemoveNestedValue()
     {
@@ -873,8 +871,12 @@ class ArraysTest extends TestCase
         $array = ['1' => ['2' => ['3' => 'value']]];
 
         //when
-        /** @noinspection PhpDeprecationInspection */
-        Arrays::removeNestedValue($array, ['1', '2']);
+        try {
+            /** @noinspection PhpDeprecationInspection */
+            Arrays::removeNestedValue($array, ['1', '2']);
+        } catch (Exception $e) {//then
+            $this->assertEquals('Use Arrays::removeNestedKey instead', $e->getMessage());
+        }
     }
 
     /**
