@@ -8,6 +8,7 @@ use Ouzo\Config;
 use Ouzo\Db\Stats;
 use Ouzo\FrontController;
 use Ouzo\Middleware\Interceptor\DefaultRequestId;
+use Ouzo\Middleware\Interceptor\PushRequestWithQueriesToSession;
 use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouterException;
@@ -390,6 +391,9 @@ class FrontControllerTest extends ControllerTestCase
     {
         //given
         Config::overrideProperty('debug')->with(true);
+        $middlewareRepository = new MiddlewareRepository();
+        $middlewareRepository->add(new PushRequestWithQueriesToSession());
+        $this->injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
         Route::resource('restful');
         $this->get('/restful?param=1');
 
@@ -457,6 +461,9 @@ class FrontControllerTest extends ControllerTestCase
     {
         //given
         Config::overrideProperty('debug')->with(true);
+        $middlewareRepository = new MiddlewareRepository();
+        $middlewareRepository->add(new PushRequestWithQueriesToSession());
+        $this->injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
         Session::remove('stats_queries');
         Route::get('/sample/save', 'sample#save');
 
