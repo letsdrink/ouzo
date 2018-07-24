@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use RuntimeException;
@@ -28,6 +29,11 @@ class Session
     public static function create()
     {
         return new SessionObject();
+    }
+
+    public static function isStarted()
+    {
+        return isset($_SESSION);
     }
 
     public static function startSession()

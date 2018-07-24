@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Routing\RouteRule;
@@ -196,7 +197,7 @@ class Controller
      */
     private function _removeMessages()
     {
-        if (!$this->keepMessage && Session::has('messages')) {
+        if (!$this->keepMessage && Session::isStarted() && Session::has('messages')) {
             $messages = Arrays::filter(Session::get('messages'), function (Notice $notice) {
                 return !$notice->requestUrlMatches();
             });
