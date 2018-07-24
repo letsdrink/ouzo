@@ -13,6 +13,7 @@ use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Middleware\Interceptor\DefaultRequestId;
 use Ouzo\Middleware\Interceptor\LogRequest;
+use Ouzo\Middleware\Interceptor\SessionStarter;
 use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Chain\Interceptor;
@@ -133,11 +134,11 @@ class Bootstrap
     /** @return FrontController */
     private function createFrontController()
     {
-        $middlewareRepository = $this->createMiddlewareRepository();
-
         $injector = $this->createInjector();
+        $middlewareRepository = $this->createMiddlewareRepository($injector);
         $injector->getInjectorConfig()
             ->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
+
 
         return $injector->getInstance(FrontController::class);
     }
@@ -151,14 +152,21 @@ class Bootstrap
     }
 
     /** @return MiddlewareRepository */
-    private function createMiddlewareRepository()
+    private function createMiddlewareRepository(Injector $injector)
     {
         $middlewareRepository = new MiddlewareRepository();
 
         if (!$this->overrideMiddleware) {
+            /** @var SessionStarter $sessionStarter */
+            $sessionStarter = $injector->getInstance(SessionStarter::class);
+            /** @var DefaultRequestId $defaultRequestId */
+            $defaultRequestId = $injector->getInstance(DefaultRequestId::class);
+            /** @var LogRequest $logRequest */
+            $logRequest = $injector->getInstance(LogRequest::class);
             $middlewareRepository
-                ->add(new DefaultRequestId())
-                ->add(new LogRequest());
+                ->add($sessionStarter)
+                ->add($defaultRequestId)
+                ->add($logRequest);
         }
         $middlewareRepository->addAll($this->interceptors);
 

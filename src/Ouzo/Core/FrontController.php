@@ -19,8 +19,6 @@ class FrontController
     /** @var string */
     public static $requestId = null;
 
-    /** @var SessionInitializer */
-    private $sessionInitializer;
     /** @var RequestContextFactory */
     private $requestContextFactory;
     /** @var MiddlewareRepository */
@@ -34,13 +32,11 @@ class FrontController
      * @Inject
      */
     public function __construct(
-        SessionInitializer $sessionInitializer,
         RequestContextFactory $requestContextFactory,
         MiddlewareRepository $middlewareRepository,
         RequestExecutor $requestExecutor
     )
     {
-        $this->sessionInitializer = $sessionInitializer;
         $this->requestContextFactory = $requestContextFactory;
         $this->middlewareRepository = $middlewareRepository;
         $this->requestExecutor = $requestExecutor;
@@ -58,8 +54,6 @@ class FrontController
         $chainExecutor = new ChainExecutor();
         $chainExecutor->addAll($this->middlewareRepository->getInterceptors());
 
-        $this->sessionInitializer->startSession();
-
         try {
             ob_start();
 
@@ -75,12 +69,6 @@ class FrontController
         }
 
         ob_end_flush();
-    }
-
-    /** @return SessionInitializer */
-    public function getSessionInitializer()
-    {
-        return $this->sessionInitializer;
     }
 
     /** @return RequestContext */

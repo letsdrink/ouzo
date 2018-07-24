@@ -11,17 +11,17 @@ use Ouzo\DownloadHandler;
 use Ouzo\EnvironmentSetter;
 use Ouzo\HeaderSender;
 use Ouzo\Injection\InjectorConfig;
+use Ouzo\Middleware\Interceptor\SessionStarter;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
 use Ouzo\Routing\Route;
-use Ouzo\SessionInitializer;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\MockCookiesSetter;
 use Ouzo\Tests\MockDownloadHandler;
 use Ouzo\Tests\MockHeaderSender;
 use Ouzo\Tests\MockOutputDisplayer;
 use Ouzo\Tests\MockRedirectHandler;
-use Ouzo\Tests\MockSessionInitializer;
+use Ouzo\Tests\MockSessionStarterInterceptor;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapTest extends TestCase
@@ -40,7 +40,7 @@ class BootstrapTest extends TestCase
         $this->config->bind(HeaderSender::class)->toInstance(new MockHeaderSender());
         $this->config->bind(CookiesSetter::class)->toInstance(new MockCookiesSetter());
         $this->config->bind(RedirectHandler::class)->toInstance(new MockRedirectHandler());
-        $this->config->bind(SessionInitializer::class)->toInstance(new MockSessionInitializer());
+        $this->config->bind(SessionStarter::class)->toInstance(new MockSessionStarterInterceptor());
         $this->config->bind(DownloadHandler::class)->toInstance(new MockDownloadHandler());
     }
 
@@ -84,11 +84,11 @@ class BootstrapTest extends TestCase
     {
         //when
         $frontController = $this->bootstrap
-            ->overrideMiddleware(new SampleMiddleware())
+            ->overrideMiddleware(new SampleMiddleware(),new MockSessionStarterInterceptor())
             ->runApplication();
 
         //then
         $interceptors = $frontController->getMiddlewareRepository()->getInterceptors();
-        Assert::thatArray($interceptors)->hasSize(1);
+        Assert::thatArray($interceptors)->hasSize(2);
     }
 }

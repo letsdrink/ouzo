@@ -15,7 +15,6 @@ use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
-use Ouzo\SessionInitializer;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\Strings;
@@ -29,6 +28,8 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
+        $mockSessionInitializer = new MockSessionInitializer();
+        $mockSessionInitializer->startSession();
         $this->injectorConfig = new InjectorConfig();
         parent::__construct($name, $data, $dataName);
     }
@@ -124,7 +125,9 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRedirectsTo($path)
     {
-        $this->assertEquals($this->removePrefix($path), $this->removePrefix($this->frontController->getRequestExecutor()->getRedirectHandler()->getLocation()));
+        $this->assertEquals($this->removePrefix($path), $this->removePrefix($this->frontController->getRequestExecutor()
+            ->getRedirectHandler()
+            ->getLocation()));
     }
 
     private function removePrefix($string)
@@ -209,7 +212,6 @@ class ControllerTestCase extends DbTransactionalTestCase
         $config->bind(HeaderSender::class)->toInstance(new MockHeaderSender());
         $config->bind(CookiesSetter::class)->toInstance(new MockCookiesSetter());
         $config->bind(RedirectHandler::class)->toInstance(new MockRedirectHandler());
-        $config->bind(SessionInitializer::class)->toInstance(new MockSessionInitializer());
         $config->bind(DownloadHandler::class)->toInstance(new MockDownloadHandler());
     }
 

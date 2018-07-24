@@ -15,7 +15,6 @@ class SampleController extends Controller
 {
     public function action()
     {
-        echo "OUTPUT";
         $this->header('Location : http://foo.com');
     }
 
