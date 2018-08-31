@@ -16,6 +16,8 @@ use Ouzo\Utilities\Strings;
 
 class ExceptionLogger
 {
+    const PASSWORD_PLACEHOLDER = '***';
+
     /** @var OuzoExceptionData */
     private $exceptionData;
 
@@ -74,10 +76,10 @@ class ExceptionLogger
         $message .= "\nREQUEST_URI = " . Arrays::getValue($_SERVER, 'REQUEST_URI');
         $message .= "\nREDIRECT_URL = " . Arrays::getValue($_SERVER, 'REDIRECT_URL');
         if (!empty($_GET)) {
-            $message .= "\nGET = " . Objects::toString($_GET);
+            $message .= "\nGET = " . self::sanitize($_GET);
         }
         if (!empty($_POST)) {
-            $message .= "\nPOST = " . Objects::toString($_POST);
+            $message .= "\nPOST = " . self::sanitize($_POST);
         }
         if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
             $jsonBody = stream_get_contents(fopen('php://input', 'r'));
@@ -86,5 +88,13 @@ class ExceptionLogger
         }
         $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
         return $message;
+    }
+
+    public static function sanitize(array $array)
+    {
+        if (isset($array['password'])) {
+            $array['password'] = self::PASSWORD_PLACEHOLDER;
+        }
+        return Objects::toString($array);
     }
 }
