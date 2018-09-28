@@ -1,10 +1,9 @@
 <?php
+
 namespace Ouzo\Utilities\Iterator;
 
 use ArrayIterator;
-use PHPUnit_Framework_TestCase;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class BatchingIteratorTest extends TestCase
 {
@@ -76,5 +75,24 @@ class BatchingIteratorTest extends TestCase
 
         //then
         $this->assertEquals([['a', 'b'], ['c', 'd']], iterator_to_array($batchIterator));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPreserveKeysInChunk()
+    {
+        //given
+        $array = [1, 2, 3, 4];
+        $batchIterator = new BatchingIterator(new ArrayIterator($array), 2, BatchingIterator:: OPTION_PRESERVER_KEYS);
+        $result = [];
+
+        //when
+        foreach ($batchIterator as $key => $value) {
+            $result[$key] = $value;
+        }
+
+        //then
+        $this->assertEquals([[1, 2], [2 => 3, 3 => 4]], $result);
     }
 }
