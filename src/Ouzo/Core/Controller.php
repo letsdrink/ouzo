@@ -14,6 +14,9 @@ use Ouzo\Utilities\Strings;
 
 class Controller
 {
+    /** @var string */
+    public static $stream = 'php://input';
+
     /** @var View */
     public $view;
     /** @var Layout */
@@ -28,9 +31,6 @@ class Controller
     public $currentAction = '';
     /** @var array */
     public $params;
-
-    /** @var string */
-    protected $stream = 'php://input';
 
     /** @var string */
     private $statusResponse = 'show';
@@ -310,7 +310,7 @@ class Controller
     private function createParameters(RouteRule $routeRule, Uri $uri)
     {
         $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
-        $requestParameters = Uri::getRequestParameters($this->stream);
+        $requestParameters = Uri::getRequestParameters(static::$stream);
         return array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
 

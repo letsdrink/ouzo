@@ -21,8 +21,6 @@ use Ouzo\View\ViewException;
 
 class SimpleTestController extends Controller
 {
-    protected $stream = 'json://input';
-
     public function download()
     {
         $this->downloadFile('file.txt', 'text/plain', '/tmp/file.txt');
@@ -536,6 +534,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldReadParametersFromStream()
     {
         //given
+        SimpleTestController::$stream = 'json://input';
         Route::allowAll('/simple_test', 'simple_test');
         StreamStub::$body = '{"key":"value"}';
         ContentType::set('application/json');
