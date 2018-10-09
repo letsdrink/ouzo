@@ -102,6 +102,7 @@ class ControllerTest extends ControllerTestCase
     {
         parent::setUp();
         StreamStub::register('json');
+        SimpleTestController::$stream = 'json://input';
         Config::overrideProperty('namespace', 'controller')->with('\\');
         Route::clear();
     }
@@ -110,6 +111,7 @@ class ControllerTest extends ControllerTestCase
     {
         parent::tearDown();
         StreamStub::unregister();
+        SimpleTestController::$stream = 'php://input';
         Config::clearProperty('namespace', 'controller');
     }
 
