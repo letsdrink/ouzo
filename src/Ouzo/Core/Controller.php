@@ -30,6 +30,9 @@ class Controller
     public $params;
 
     /** @var string */
+    protected $stream = 'php://input';
+
+    /** @var string */
     private $statusResponse = 'show';
     /** @var string */
     private $redirectLocation = '';
@@ -307,7 +310,7 @@ class Controller
     private function createParameters(RouteRule $routeRule, Uri $uri)
     {
         $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
-        $requestParameters = Uri::getRequestParameters();
+        $requestParameters = Uri::getRequestParameters($this->stream);
         return array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
 

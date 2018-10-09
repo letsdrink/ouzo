@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Config;
+use Ouzo\ContentType;
 use Ouzo\Controller;
 use Ouzo\NoControllerActionException;
 use Ouzo\Notice;
@@ -14,11 +15,14 @@ use Ouzo\Session;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
+use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Arrays;
 use Ouzo\View\ViewException;
 
 class SimpleTestController extends Controller
 {
+    protected $stream = 'json://input';
+
     public function download()
     {
         $this->downloadFile('file.txt', 'text/plain', '/tmp/file.txt');
@@ -99,6 +103,7 @@ class ControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
+        StreamStub::register('json');
         Config::overrideProperty('namespace', 'controller')->with('\\');
         Route::clear();
     }
@@ -106,6 +111,7 @@ class ControllerTest extends ControllerTestCase
     public function tearDown()
     {
         parent::tearDown();
+        StreamStub::unregister();
         Config::clearProperty('namespace', 'controller');
     }
 
@@ -522,5 +528,22 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertEquals('ONLY OUTPUT', $this->getActualContent());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReadParametersFromStream()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+        StreamStub::$body = '{"key":"value"}';
+        ContentType::set('application/json');
+
+        //when
+        $this->post('/simple_test/params', []);
+
+        //then
+        $this->assertEquals(['key' => 'value'], $this->getAssigned('params'));
     }
 }
