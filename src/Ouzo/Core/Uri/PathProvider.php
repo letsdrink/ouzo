@@ -7,7 +7,7 @@ namespace Ouzo\Uri;
 
 use Ouzo\Utilities\Arrays;
 
-class PathProvider
+class PathProvider implements PathProviderInterface
 {
     public function getPath()
     {
