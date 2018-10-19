@@ -80,6 +80,15 @@ class Query
      * @param array $attributes
      * @return Query
      */
+    public static function insertOrDoNoting($attributes)
+    {
+        return Query::newInstance(QueryType::$INSERT_OR_DO_NOTHING)->attributes($attributes);
+    }
+
+    /**
+     * @param array $attributes
+     * @return Query
+     */
     public static function update($attributes)
     {
         return Query::newInstance(QueryType::$UPDATE)->attributes($attributes);

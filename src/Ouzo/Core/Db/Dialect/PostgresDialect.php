@@ -74,4 +74,12 @@ class PostgresDialect extends Dialect
         $joinedColumns = implode(', ', $upsertConflictColumns);
         return " ON CONFLICT ({$joinedColumns}) DO UPDATE SET {$attributes}";
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function onConflictDoNothing()
+    {
+        return " ON CONFLICT DO NOTHING";
+    }
 }

@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS manufacturers CASCADE;
 CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
   id_parent INTEGER REFERENCES categories,
-  name        TEXT
+  name        TEXT UNIQUE
 );
 
 CREATE TABLE manufacturers (

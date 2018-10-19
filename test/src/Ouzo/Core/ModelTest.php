@@ -635,12 +635,12 @@ class ModelTest extends DbTransactionalTestCase
     public function shouldJoinMultipleModels()
     {
         //given
-        $category1 = Category::create(['name' => 'phones']);
+        $category1 = Category::create(['name' => 'category1']);
         $product1 = Product::create(['name' => 'sony', 'id_category' => $category1->getId()]);
         $order1 = Order::create(['name' => 'order#1']);
         OrderProduct::create(['id_order' => $order1->getId(), 'id_product' => $product1->getId()]);
 
-        $category2 = Category::create(['name' => 'phones']);
+        $category2 = Category::create(['name' => 'category2']);
         $product2 = Product::create(['name' => 'sony', 'id_category' => $category2->getId()]);
         $order2 = Order::create(['name' => 'order#2']);
         OrderProduct::create(['id_order' => $order2->getId(), 'id_product' => $product2->getId()]);
@@ -656,7 +656,7 @@ class ModelTest extends DbTransactionalTestCase
         $find = Arrays::first($orderProducts);
         $this->assertEquals('order#1', $find->order->name);
         $this->assertEquals('sony', $find->product->name);
-        $this->assertEquals('phones', $find->product->category->name);
+        $this->assertEquals('category1', $find->product->category->name);
     }
 
     /**
@@ -1041,5 +1041,23 @@ class ModelTest extends DbTransactionalTestCase
 
         //then
         $this->assertNotNull($id);
+    }
+
+    /**
+     * @group postgres
+     * @test
+     */
+    public function shouldInsertOrDoNothing()
+    {
+        //given
+        $category = Category::create(['name' => 'Tech']);
+
+        //when
+        $newCategory = new Category();
+        $newCategory->name = 'Tech';
+        $insertOrDoNothing = $newCategory->insertOrDoNothing();
+
+        //then
+        $this->assertEquals($category->getId() + 1, $insertOrDoNothing);
     }
 }

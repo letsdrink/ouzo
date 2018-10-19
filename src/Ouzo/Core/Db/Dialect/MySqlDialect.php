@@ -89,4 +89,12 @@ class MySqlDialect extends Dialect
         $attributes = DialectUtil::buildAttributesPartForUpdate($this->query->updateAttributes);
         return " ON DUPLICATE KEY UPDATE {$attributes}";
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function onConflictDoNothing()
+    {
+        throw new InvalidArgumentException("On conflict do nothing is not supported in mysql");
+    }
 }

@@ -191,6 +191,16 @@ class Model extends Validatable implements Serializable, JsonSerializable
     }
 
     /**
+     * @return int|null
+     */
+    public function insertOrDoNothing()
+    {
+        return $this->doInsert(function ($attributes) {
+            return Query::insertOrDoNoting($attributes)->into($this->modelDefinition->table);
+        });
+    }
+
+    /**
      * @param array $upsertConflictColumns
      * @return int|null
      */

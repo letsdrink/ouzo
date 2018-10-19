@@ -13,4 +13,5 @@ class QueryType
     public static $UPDATE = 4;
     public static $INSERT = 5;
     public static $UPSERT = 6;
+    public static $INSERT_OR_DO_NOTHING = 7;
 }

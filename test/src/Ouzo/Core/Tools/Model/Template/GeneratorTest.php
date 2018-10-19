@@ -214,4 +214,9 @@ class MyImagineDialect extends Dialect
     {
         return '';
     }
+
+    public function onConflictDoNothing()
+    {
+        return '';
+    }
 }

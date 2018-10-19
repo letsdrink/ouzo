@@ -701,8 +701,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     public function shouldFetchRelationThroughOtherRelation()
     {
         //given
-        $cars = Category::create(['name' => 'phones']);
-        $vans = Category::create(['name' => 'phones', 'id_parent' => $cars->getId()]);
+        $cars = Category::create(['name' => 'cars']);
+        $vans = Category::create(['name' => 'vans', 'id_parent' => $cars->getId()]);
 
         $product = Product::create(['name' => 'Reno', 'id_category' => $vans->getId()]);
         OrderProduct::create(['id_product' => $product->getId()]);
