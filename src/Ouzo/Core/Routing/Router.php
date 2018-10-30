@@ -16,9 +16,15 @@ class Router
      */
     private $uri;
 
+    /**
+     * @var String
+     */
+    private $path;
+
     public function __construct(Uri $uri)
     {
         $this->uri = $uri;
+        $this->path = $this->uri->getPathWithoutPrefix();
     }
 
     /**
@@ -27,27 +33,25 @@ class Router
      */
     public function findRoute()
     {
-        $path = $this->uri->getPathWithoutPrefix();
         $requestType = Uri::getRequestType();
-        $rule = $this->findRouteRuleForMethod($path, $requestType);
+        $rule = $this->findRouteRuleForMethod($requestType);
         if (!$rule) {
-            throw new RouterException('No route rule found for HTTP method [' . $requestType . '] and URI [' . $path . ']');
+            throw new RouterException('No route rule found for HTTP method [' . $requestType . '] and URI [' . $this->path . ']');
         }
         return $rule;
     }
 
     /**
-     * @param $path
      * @param $requestType
      * @return null|RouteRule
      */
-    public function findRouteRuleForMethod($path, $requestType)
+    public function findRouteRuleForMethod($requestType)
     {
-        $routeRule = Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($path, $requestType) {
-            return $rule->matches($path, $requestType);
+        $routeRule = Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($requestType) {
+            return $rule->matches($this->path, $requestType);
         });
         if ($routeRule) {
-            $routeRule->setParameters($path);
+            $routeRule->setParameters($this->path);
         }
         return $routeRule;
     }
