@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Routing;
 
 use Ouzo\Uri;
@@ -28,23 +29,26 @@ class Router
     {
         $path = $this->uri->getPathWithoutPrefix();
         $requestType = Uri::getRequestType();
-        $rule = $this->findRouteRule($path, $requestType);
+        $rule = $this->findRouteRuleForMethod($path, $requestType);
         if (!$rule) {
             throw new RouterException('No route rule found for HTTP method [' . $requestType . '] and URI [' . $path . ']');
         }
-        $rule->setParameters($path);
         return $rule;
     }
 
     /**
      * @param $path
      * @param $requestType
-     * @return RouteRule
+     * @return null|RouteRule
      */
-    private function findRouteRule($path, $requestType)
+    public function findRouteRuleForMethod($path, $requestType)
     {
-        return Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($path, $requestType) {
+        $routeRule = Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($path, $requestType) {
             return $rule->matches($path, $requestType);
         });
+        if ($routeRule) {
+            $routeRule->setParameters($path);
+        }
+        return $routeRule;
     }
 }
