@@ -45,7 +45,7 @@ class SampleController extends Controller
 
 class MockControllerFactory extends ControllerFactory
 {
-    public function createController(RouteRule $routeRule)
+    public function createController(RouteRule $routeRule, RequestParameters $requestParameters)
     {
         $routeRule = Arrays::first(Route::getRoutes());
         return SampleController::createInstance($routeRule, Mock::create(RequestParameters::class));
