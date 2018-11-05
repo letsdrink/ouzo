@@ -20,7 +20,7 @@ class RoutingService
         $this->routeRule = $router->findRoute();
     }
 
-    public function getUri(): Uri
+    public function getUri()
     {
         return $this->uri;
     }
