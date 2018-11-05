@@ -11,10 +11,12 @@ use Ouzo\ExceptionHandling\DebugErrorHandler;
 use Ouzo\ExceptionHandling\ErrorHandler;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
+use Ouzo\Injection\Scope;
 use Ouzo\Middleware\Interceptor\DefaultRequestId;
 use Ouzo\Middleware\Interceptor\LogRequest;
 use Ouzo\Middleware\Interceptor\SessionStarter;
 use Ouzo\Middleware\MiddlewareRepository;
+use Ouzo\Request\RoutingService;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Chain\Interceptor;
 use Ouzo\Utilities\Files;
@@ -136,9 +138,9 @@ class Bootstrap
     {
         $injector = $this->createInjector();
         $middlewareRepository = $this->createMiddlewareRepository($injector);
-        $injector->getInjectorConfig()
-            ->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
-
+        $config = $injector->getInjectorConfig();
+        $config->bind(RoutingService::class)->in(Scope::SINGLETON);
+        $config->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
 
         return $injector->getInstance(FrontController::class);
     }

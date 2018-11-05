@@ -19,8 +19,11 @@ namespace Ouzo;
 
 use Ouzo\Api\MultipleNsController;
 use Ouzo\Injection\Injector;
+use Ouzo\Request\RequestParameters;
+use Ouzo\Request\RoutingService;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Tests\CatchException;
+use Ouzo\Tests\Mock\Mock;
 use PHPUnit\Framework\TestCase;
 
 class SimpleTestController extends Controller
@@ -50,14 +53,19 @@ class ControllerFactoryTest extends TestCase
     public function shouldResolveAction()
     {
         //given
-        $routeRule = new RouteRule('GET', '/simple_test/action1', 'simple_test', 'action1', false);
-        $factory = $this->injector->getInstance(ControllerFactory::class);
+        $routingService = Mock::create(RoutingService::class);
 
         $config = Config::getValue('global');
         $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/simple_test/action1";
+        Mock::when($routingService)->getUri()->thenReturn(new Uri());
+
+        $routeRule = new RouteRule('GET', '/simple_test/action1', 'simple_test', 'action1', false);
+        Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
+
+        $factory = $this->injector->getInstance(ControllerFactory::class);
 
         //when
-        $currentController = $factory->createController($routeRule);
+        $currentController = $factory->createController($routeRule, new RequestParameters($routingService));
 
         //then
         $this->assertEquals('action1', $currentController->currentAction);
@@ -69,11 +77,16 @@ class ControllerFactoryTest extends TestCase
     public function shouldThrowExceptionWhenControllerNotFound()
     {
         //given
+        $routingService = Mock::create(RoutingService::class);
+        Mock::when($routingService)->getUri()->thenReturn(new Uri());
+
         $routeRule = new RouteRule('GET', '/simple_test/action', 'not_exists', 'action', false);
+        Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
+
         $factory = $this->injector->getInstance(ControllerFactory::class);
 
         //when
-        CatchException::when($factory)->createController($routeRule);
+        CatchException::when($factory)->createController($routeRule, new RequestParameters($routingService));
 
         //then
         CatchException::assertThat()->isInstanceOf(ControllerNotFoundException::class);
@@ -87,11 +100,16 @@ class ControllerFactoryTest extends TestCase
     public function shouldResolveControllerWithNamespace()
     {
         //given
+        $routingService = Mock::create(RoutingService::class);
+        Mock::when($routingService)->getUri()->thenReturn(new Uri());
+
         $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', 'api/multiple_ns', 'test_action', true);
+        Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
+
         $factory = $this->injector->getInstance(ControllerFactory::class);
 
         //when
-        $currentController = $factory->createController($routeRule);
+        $currentController = $factory->createController($routeRule, new RequestParameters($routingService));
 
         //then
         $this->assertInstanceOf(MultipleNsController::class, $currentController);

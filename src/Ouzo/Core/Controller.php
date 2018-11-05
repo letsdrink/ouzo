@@ -6,6 +6,7 @@
 
 namespace Ouzo;
 
+use Ouzo\Request\RequestParameters;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\ClassName;
@@ -49,22 +50,24 @@ class Controller
 
     /**
      * @param RouteRule $routeRule
+     * @param RequestParameters $requestParameters
      * @return Controller
      */
-    public static function createInstance(RouteRule $routeRule)
+    public static function createInstance(RouteRule $routeRule, RequestParameters $requestParameters)
     {
         $className = get_called_class();
         /** @var $controller Controller */
         $controller = new $className();
-        $controller->initialize($routeRule);
+        $controller->initialize($routeRule, $requestParameters);
         return $controller;
     }
 
     /**
      * @param RouteRule $routeRule
+     * @param RequestParameters $requestParameters
      * @return void
      */
-    public function initialize(RouteRule $routeRule)
+    public function initialize(RouteRule $routeRule, RequestParameters $requestParameters)
     {
         $this->routeRule = $routeRule;
         $uri = new Uri();
@@ -75,7 +78,7 @@ class Controller
 
         $this->view = new View($viewName);
         $this->layout = new Layout($this->view);
-        $this->params = $this->createParameters($routeRule, $uri);
+        $this->params = $requestParameters->get(static::$stream);
     }
 
     /**
@@ -300,18 +303,6 @@ class Controller
     private function getViewName()
     {
         return (ClassName::pathToFullyQualifiedName($this->currentController) . '/' . $this->currentAction) ?: '/';
-    }
-
-    /**
-     * @param RouteRule $routeRule
-     * @param Uri $uri
-     * @return array
-     */
-    private function createParameters(RouteRule $routeRule, Uri $uri)
-    {
-        $parameters = $routeRule->getParameters() ? $routeRule->getParameters() : $uri->getParams();
-        $requestParameters = Uri::getRequestParameters(static::$stream);
-        return array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
 
     /**
