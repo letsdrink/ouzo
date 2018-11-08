@@ -81,6 +81,7 @@ class InstanceRepository
             throw new InjectorException("Factory class $factoryClassName does not implemented \Ouzo\Injection\Factory interface.");
         }
         $factoryBinder = $this->bindings->getBinder($factoryClassName);
+        /** @var Factory $factoryObject */
         $factoryObject = $this->getInstance($factory, $factoryBinder);
         return $factoryObject->create();
     }
