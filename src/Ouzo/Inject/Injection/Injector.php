@@ -29,7 +29,7 @@ class Injector
         $this->injectorConfig = $config ?: new InjectorConfig();
         $this->bindings = new Bindings($this->injectorConfig, $this);
         $this->factory = new InstanceFactory($this->bindings, $provider ?: new DocCommentExtractor());
-        $this->repository = new InstanceRepository();
+        $this->repository = new InstanceRepository($this->bindings);
     }
 
     /** @return InjectorConfig */

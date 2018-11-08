@@ -36,6 +36,13 @@ $config = new InjectorConfig();
 $config->bind('\MyClass')->toInstance(new MyClass());
 ```
 
+Binding through factory class (`Factory` interface has to be implemented):
+
+```php
+$config = new InjectorConfig();
+$config->bind('\MyClass')->throughFactory('\MyClassFactory');
+```
+
 Auto-wiring dependencies (with @Inject):
 
 ```php

@@ -357,6 +357,59 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->getMyClass());
     }
 
+    /**
+     * @test
+     */
+    public function shouldInjectThroughFactoryDependency()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ClassFactory::class);
+
+        //when
+        $instance = $injector->getInstance(ClassWithThroughDep::class);
+
+        //then
+        $this->assertInstanceOf(ClassWithThroughDep::class, $instance);
+        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectThroughFactoryDependencyWhenInterfaceIsNotImplemented()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ClassWithNoDep::class);
+
+        //when
+        CatchException::when($injector)->getInstance(ClassWithThroughDep::class);
+
+        //then
+        CatchException::assertThat()->isInstanceOf(InjectorException::class);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectNamedThroughFactoryDependency()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class, 'through_dep')->throughFactory(ClassFactory::class);
+
+        //when
+        $instance = $injector->getInstance(ClassWithNamedThroughDep::class);
+
+        //then
+        $this->assertInstanceOf(ClassWithNamedThroughDep::class, $instance);
+        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance->myClass);
+    }
+
     private function assertDependencyInjected($className, $instance)
     {
         $this->assertNotNull($instance, 'Dependency was not injected.');

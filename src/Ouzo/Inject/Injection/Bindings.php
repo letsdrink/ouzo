@@ -29,7 +29,7 @@ class Bindings
      * @param string $name
      * @return Binder
      */
-    public function getBinder($className, $name)
+    public function getBinder($className, $name = '')
     {
         if ($className == Injector::class) {
             return $this->injectorBinder;

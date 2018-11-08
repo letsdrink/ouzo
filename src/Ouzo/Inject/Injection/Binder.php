@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Injection;
 
 class Binder
@@ -17,6 +18,8 @@ class Binder
     private $instance;
     /** @var string */
     private $name;
+    /** @var string */
+    private $factoryClassName;
 
     /**
      * @param string $className
@@ -45,6 +48,16 @@ class Binder
     public function to($boundClassName)
     {
         $this->boundClassName = $boundClassName;
+        return $this;
+    }
+
+    /**
+     * @param string $factoryClassName
+     * @return $this
+     */
+    public function throughFactory($factoryClassName)
+    {
+        $this->factoryClassName = $factoryClassName;
         return $this;
     }
 
@@ -96,5 +109,13 @@ class Binder
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFactoryClassName()
+    {
+        return $this->factoryClassName;
     }
 }
