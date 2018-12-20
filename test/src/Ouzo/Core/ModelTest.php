@@ -67,6 +67,26 @@ class ModelTest extends DbTransactionalTestCase
     /**
      * @test
      */
+    public function shouldPersistModelWithSpecifiedPrimaryKeyValue()
+    {
+        //given
+        $product = new Product();
+        $product->id = 123;
+        $product->name = 'Sport';
+
+        //when
+        $id = $product->insert();
+
+        //then
+        $this->assertEquals(123, $id);
+
+        $actual = Product::findById($id);
+        $this->assertEquals('Sport', $actual->name);
+    }
+
+    /**
+     * @test
+     */
     public function shouldFilterConstructorData()
     {
         //given

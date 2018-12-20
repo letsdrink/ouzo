@@ -226,10 +226,15 @@ class Model extends Validatable implements Serializable, JsonSerializable
 
         $query = $callback($attributes);
 
-        $lastInsertedId = QueryExecutor::prepare($this->modelDefinition->db, $query)->insert($this->modelDefinition->sequence);
+        $sequence = $primaryKey && $this->$primaryKey !== null ? null : $this->modelDefinition->sequence;
+        $lastInsertedId = QueryExecutor::prepare($this->modelDefinition->db, $query)->insert($sequence);
 
-        if ($primaryKey && $this->modelDefinition->sequence) {
-            $this->$primaryKey = $lastInsertedId;
+        if ($primaryKey) {
+            if ($sequence) {
+                $this->$primaryKey = $lastInsertedId;
+            } else {
+                $lastInsertedId = $this->$primaryKey;
+            }
         }
 
         $this->callAfterSaveCallbacks();

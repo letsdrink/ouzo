@@ -8,6 +8,7 @@ Enhancements:
 * [ORM] Changed Model::deleteEach to use iterator instead of fetching all elements at once (issue #254).
 * [ORM] Fixed fetchIterator to properly use cursor underneath.
 * [ORM] Implemented upsert functionality (Model::createOrUpdate).
+* [ORM] Fixed using primary key value when given as an attribute, instead of using sequence.
 * [DI] Added constructor injection for arguments with types defined (issue #265).
 * [DI] Implemented injection of private fields for parent class.
 * [DI] Implemented injection through factory class.

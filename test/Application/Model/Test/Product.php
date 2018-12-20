@@ -8,6 +8,7 @@ namespace Application\Model\Test;
 use Ouzo\Model;
 
 /**
+ * @property int id
  * @property string description
  * @property string name
  * @property Category category
