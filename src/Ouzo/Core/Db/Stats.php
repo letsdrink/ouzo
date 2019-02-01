@@ -9,6 +9,7 @@ use Ouzo\Config;
 use Ouzo\FrontController;
 use Ouzo\Session;
 use Ouzo\Uri;
+use Ouzo\Utilities\ScriptExecutionContext;
 
 class Stats
 {
@@ -47,7 +48,8 @@ class Stats
      */
     public static function trace($query, $params, $function)
     {
-        if (Config::getValue('debug')) {
+        $traceEnabled = Config::getValue('debug') && false === ScriptExecutionContext::isConsole();
+        if ($traceEnabled) {
             return self::traceNoCheck($query, $params, $function);
         }
         return $function();
