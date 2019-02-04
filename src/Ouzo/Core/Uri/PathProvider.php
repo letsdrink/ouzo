@@ -11,6 +11,11 @@ class PathProvider implements PathProviderInterface
 {
     public function getPath()
     {
-        return Arrays::getValue($_SERVER, 'REQUEST_URI', '/');
+        $uri = Arrays::getValue($_SERVER, 'REDIRECT_URL');
+        if (!$uri) {
+            return Arrays::getValue($_SERVER, 'REQUEST_URI', '/');
+        }
+        $queryString = Arrays::getValue($_SERVER, 'REDIRECT_QUERY_STRING');
+        return $queryString ? $uri . '?' . $queryString : $uri;
     }
 }
