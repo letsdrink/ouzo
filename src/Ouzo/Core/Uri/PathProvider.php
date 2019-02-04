@@ -11,6 +11,6 @@ class PathProvider implements PathProviderInterface
 {
     public function getPath()
     {
-        return Arrays::getValue($_SERVER, 'REQUEST_URI');
+        return Arrays::getValue($_SERVER, 'REQUEST_URI', '/');
     }
 }

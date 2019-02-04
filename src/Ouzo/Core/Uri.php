@@ -74,7 +74,7 @@ class Uri
         if (preg_match('#.+/$#', $path)) {
             $path = rtrim($path, '/');
         }
-        return $path ?: '/';
+        return $path;
     }
 
     public function getParam($param)
