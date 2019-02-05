@@ -6,10 +6,8 @@
 
 namespace Ouzo\Request;
 
-use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\CookiesSetter;
-use Ouzo\Db\Stats;
 use Ouzo\DownloadHandler;
 use Ouzo\HeaderSender;
 use Ouzo\OutputDisplayer;
@@ -134,8 +132,6 @@ class RequestExecutor
         $currentAction = $controller->currentAction;
 
         call_user_func_array([$controller, $currentAction], $controller->getRouteRule()->getParameters());
-
-        $this->logRequestIfDebugEnabled($controller);
     }
 
     /**
@@ -200,17 +196,6 @@ class RequestExecutor
     private function isRedirect(Controller $controller)
     {
         return in_array($controller->getStatusResponse(), ['redirect', 'redirectOld']);
-    }
-
-    /**
-     * @param Controller $controller
-     * @return void
-     */
-    private function logRequestIfDebugEnabled(Controller $controller)
-    {
-        if (Config::getValue('debug')) {
-            Stats::traceHttpRequest($controller->params);
-        }
     }
 
     /**

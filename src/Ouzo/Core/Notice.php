@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Utilities\Arrays;
@@ -33,11 +34,12 @@ class Notice
     }
 
     /**
+     * @param Uri $uri
      * @return bool
      */
-    public function requestUrlMatches()
+    public function requestUrlMatches(Uri $uri)
     {
-        return $this->getUrl() == null || strcmp(Uri::removePrefix($this->getCurrentPath()), Uri::removePrefix($this->getUrlWithoutQuery($this->getUrl()))) === 0;
+        return $this->getUrl() == null || strcmp(Uri::removePrefix($this->getCurrentPath($uri)), Uri::removePrefix($this->getUrlWithoutQuery($this->getUrl()))) === 0;
     }
 
     /**
@@ -49,11 +51,12 @@ class Notice
     }
 
     /**
+     * @param Uri $uri
      * @return string
      */
-    private function getCurrentPath()
+    private function getCurrentPath(Uri $uri)
     {
-        $url = (new Uri())->getFullUrlWithPrefix();
+        $url = $uri->getFullUrlWithPrefix();
         return $this->getUrlWithoutQuery($url);
     }
 

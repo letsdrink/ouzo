@@ -27,4 +27,12 @@ class RequestParameters
         $requestParameters = Uri::getRequestParameters($stream);
         return array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
+
+    /**
+     * @return RoutingService
+     */
+    public function getRoutingService()
+    {
+        return $this->routingService;
+    }
 }

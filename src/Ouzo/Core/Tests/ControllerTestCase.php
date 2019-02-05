@@ -15,6 +15,9 @@ use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
+use Ouzo\Stats\SessionStats;
+use Ouzo\Uri\PathProvider;
+use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\Strings;
@@ -125,9 +128,9 @@ class ControllerTestCase extends DbTransactionalTestCase
 
     public function assertRedirectsTo($path)
     {
-        $this->assertEquals($this->removePrefix($path), $this->removePrefix($this->frontController->getRequestExecutor()
-            ->getRedirectHandler()
-            ->getLocation()));
+        $expected = $this->removePrefix($path);
+        $actual = $this->removePrefix($this->frontController->getRequestExecutor()->getRedirectHandler()->getLocation());
+        $this->assertEquals($expected, $actual);
     }
 
     private function removePrefix($string)
@@ -213,6 +216,7 @@ class ControllerTestCase extends DbTransactionalTestCase
         $config->bind(CookiesSetter::class)->toInstance(new MockCookiesSetter());
         $config->bind(RedirectHandler::class)->toInstance(new MockRedirectHandler());
         $config->bind(DownloadHandler::class)->toInstance(new MockDownloadHandler());
+        $config->bind(PathProviderInterface::class)->toInstance(new PathProvider());
     }
 
     protected function requestContext()

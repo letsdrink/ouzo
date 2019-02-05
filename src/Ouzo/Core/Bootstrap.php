@@ -16,7 +16,11 @@ use Ouzo\Middleware\Interceptor\DefaultRequestId;
 use Ouzo\Middleware\Interceptor\LogRequest;
 use Ouzo\Middleware\Interceptor\SessionStarter;
 use Ouzo\Middleware\MiddlewareRepository;
+use Ouzo\Request\RequestContext;
+use Ouzo\Request\RequestContextFactory;
 use Ouzo\Request\RoutingService;
+use Ouzo\Uri\PathProvider;
+use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Chain\Interceptor;
 use Ouzo\Utilities\Files;
@@ -140,6 +144,7 @@ class Bootstrap
         $middlewareRepository = $this->createMiddlewareRepository($injector);
         $config = $injector->getInjectorConfig();
         $config->bind(RoutingService::class)->in(Scope::SINGLETON);
+        $config->bind(PathProviderInterface::class)->to(PathProvider::class)->in(Scope::SINGLETON);
         $config->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
 
         return $injector->getInstance(FrontController::class);

@@ -36,7 +36,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
 
         //then
         Assert::thatArray($products)->extracting('category->id')->containsExactly($category->id, $category->id);
-        $this->assertEquals(2, Stats::getNumberOfQueries());
+        $this->assertCount(2, Stats::$queries);
     }
 
     /**
@@ -58,7 +58,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
 
         //then
         Assert::thatArray($products)->hasSize(2);
-        $this->assertEquals(1, Stats::getNumberOfQueries());
+        $this->assertCount(1, Stats::$queries);
     }
 
     /**

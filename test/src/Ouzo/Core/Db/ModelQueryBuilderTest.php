@@ -746,7 +746,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->flatten()
             ->map(Functions::extract()->manufacturer->name)->toArray())->containsOnly('sony', 'samsung');
 
-        $this->assertEquals(0, Stats::getNumberOfQueries()); //no lazily loaded relations
+        $this->assertCount(0, Stats::$queries); //no lazily loaded relations
     }
 
     /**
@@ -1195,7 +1195,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product->id, $orderProduct->product->id);
         $this->assertEquals($category, $orderProduct->product->category);
         $this->assertEquals($manufacturer, $orderProduct->product->manufacturer);
-        $this->assertEquals(1, Stats::getNumberOfQueries());
+        $this->assertCount(1, Stats::$queries);
     }
 
     /**
@@ -1223,7 +1223,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product->id, $orderProduct->product->id);
         $this->assertEquals($category, $orderProduct->product->category);
         $this->assertEquals($manufacturer, $orderProduct->product->manufacturer);
-        $this->assertEquals(4, Stats::getNumberOfQueries());
+        $this->assertCount(4, Stats::$queries);
     }
 
     /**
@@ -1260,7 +1260,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //then
         $this->assertNull($orderProduct);
-        $this->assertEquals(0, Stats::getNumberOfQueries());
+        $this->assertCount(0, Stats::$queries);
     }
 
     /**
@@ -1488,6 +1488,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::create(['name' => '1', 'id_category' => Category::create(['name' => 'cat1'])->getId()]);
         Product::create(['name' => '2', 'id_category' => Category::create(['name' => 'cat2'])->getId()]);
         Product::create(['name' => '3', 'id_category' => Category::create(['name' => 'cat3'])->getId()]);
+
         Stats::reset();
 
         //when
@@ -1495,7 +1496,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
         //then
         Assert::thatArray(iterator_to_array($results))->extracting('name')->containsExactly('1', '2', '3');
-        $this->assertEquals(3, Stats::getNumberOfQueries());
+        $this->assertCount(3, Stats::$queries);
     }
 
     /**

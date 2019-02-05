@@ -8,6 +8,7 @@ namespace Ouzo;
 
 use Ouzo\Request\RequestParameters;
 use Ouzo\Routing\RouteRule;
+use Ouzo\Stats\SessionStats;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\ClassName;
 use Ouzo\Utilities\Functions;
@@ -45,34 +46,41 @@ class Controller
     private $cookies = [];
     /** @var RouteRule|null */
     private $routeRule = null;
+    /** @var Uri */
+    private $uri;
     /** @var bool */
     private $keepMessage = false;
+    /** @var SessionStats */
+    private $sessionStats;
 
     /**
      * @param RouteRule $routeRule
      * @param RequestParameters $requestParameters
+     * @param SessionStats $sessionStats
      * @return Controller
      */
-    public static function createInstance(RouteRule $routeRule, RequestParameters $requestParameters)
+    public static function createInstance(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats)
     {
         $className = get_called_class();
         /** @var $controller Controller */
         $controller = new $className();
-        $controller->initialize($routeRule, $requestParameters);
+        $controller->initialize($routeRule, $requestParameters, $sessionStats);
         return $controller;
     }
 
     /**
      * @param RouteRule $routeRule
      * @param RequestParameters $requestParameters
+     * @param SessionStats $sessionStats
      * @return void
      */
-    public function initialize(RouteRule $routeRule, RequestParameters $requestParameters)
+    public function initialize(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats)
     {
         $this->routeRule = $routeRule;
-        $uri = new Uri();
+        $this->sessionStats = $sessionStats;
+        $this->uri = $requestParameters->getRoutingService()->getUri();
         $this->currentController = $routeRule->getController();
-        $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $uri->getAction();
+        $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $this->uri->getAction();
 
         $viewName = $this->getViewName();
 
@@ -205,7 +213,7 @@ class Controller
     {
         if (!$this->keepMessage && Session::isStarted() && Session::has('messages')) {
             $messages = Arrays::filter(Session::get('messages'), function (Notice $notice) {
-                return !$notice->requestUrlMatches();
+                return !$notice->requestUrlMatches($this->uri);
             });
             $this->saveMessagesWithEmptyCheck($messages);
         }
@@ -259,6 +267,22 @@ class Controller
     public function getRouteRule()
     {
         return $this->routeRule;
+    }
+
+    /**
+     * @return SessionStats
+     */
+    public function getSessionStats()
+    {
+        return $this->sessionStats;
+    }
+
+    /**
+     * @return Uri
+     */
+    public function getUri()
+    {
+        return $this->uri;
     }
 
     /**

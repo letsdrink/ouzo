@@ -10,14 +10,18 @@ use Ouzo\Controller;
 use Ouzo\NoControllerActionException;
 use Ouzo\Notice;
 use Ouzo\Request\RequestParameters;
+use Ouzo\Request\RoutingService;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Session;
+use Ouzo\Stats\SessionStats;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\StreamStub;
+use Ouzo\Uri;
+use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
 use Ouzo\View\ViewException;
 
@@ -475,7 +479,16 @@ class ControllerTest extends ControllerTestCase
         //given
         Config::overridePropertyArray(['global', 'prefix_system'], 'prefix');
         $_SESSION = [];
-        $controller = Controller::createInstance(new RouteRule('', '', '', '', false), Mock::create(RequestParameters::class));
+
+        $routingService = Mock::create(RoutingService::class);
+        Mock::when($routingService)->getUri()->thenReturn(new Uri(new PathProvider()));
+
+        $requestParameters = Mock::create(RequestParameters::class);
+        Mock::when($requestParameters)->getRoutingService()->thenReturn($routingService);
+
+        $sessionStats = Mock::create(SessionStats::class);
+
+        $controller = Controller::createInstance(new RouteRule('', '', '', '', false), $requestParameters, $sessionStats);
 
         //when
         $controller->notice('hello');

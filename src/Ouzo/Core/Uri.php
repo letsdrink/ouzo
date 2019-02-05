@@ -6,23 +6,26 @@
 
 namespace Ouzo;
 
-use Ouzo\Uri\PathProvider;
+use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\Strings;
 
 class Uri
 {
-    private $_pathProvider;
+    private $pathProvider;
 
-    public function __construct($pathProvider = null)
+    /**
+     * @Inject
+     */
+    public function __construct(PathProviderInterface $pathProvider)
     {
-        $this->_pathProvider = $pathProvider == null ? new PathProvider() : $pathProvider;
+        $this->pathProvider = $pathProvider;
     }
 
     public function getParams()
     {
-        $path = $this->_pathProvider->getPath();
+        $path = $this->pathProvider->getPath();
         $pathElements = $this->_parsePath($path, 3);
         return $this->_splitParamsKeyValueMap($pathElements);
     }
@@ -58,7 +61,7 @@ class Uri
 
     public function getPath()
     {
-        $parseUrl = parse_url($this->_pathProvider->getPath(), PHP_URL_PATH) ?: '/';
+        $parseUrl = parse_url($this->pathProvider->getPath(), PHP_URL_PATH) ?: '/';
         return $this->_removeDuplicatedSlashes($parseUrl);
     }
 
@@ -85,7 +88,7 @@ class Uri
 
     public function getRawController()
     {
-        $path = $this->_pathProvider->getPath();
+        $path = $this->pathProvider->getPath();
         $pathElements = $this->_parsePath($path);
         return Arrays::firstOrNull($pathElements);
     }
@@ -98,7 +101,7 @@ class Uri
 
     public function getAction()
     {
-        $path = $this->_pathProvider->getPath();
+        $path = $this->pathProvider->getPath();
         $pathElements = $this->_parsePath($path);
         return Arrays::getValue($pathElements, 1);
     }
@@ -115,7 +118,7 @@ class Uri
 
     public function getFullUrlWithPrefix()
     {
-        return $this->_pathProvider->getPath();
+        return $this->pathProvider->getPath();
     }
 
     public static function isAjax()

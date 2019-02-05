@@ -22,8 +22,10 @@ use Ouzo\Injection\Injector;
 use Ouzo\Request\RequestParameters;
 use Ouzo\Request\RoutingService;
 use Ouzo\Routing\RouteRule;
+use Ouzo\Stats\SessionStats;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Uri\PathProvider;
 use PHPUnit\Framework\TestCase;
 
 class SimpleTestController extends Controller
@@ -33,12 +35,15 @@ class SimpleTestController extends Controller
 class ControllerFactoryTest extends TestCase
 {
     private $injector;
+    /** @var Uri */
+    private $uri;
 
     public function setUp()
     {
         parent::setUp();
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         $this->injector = new Injector();
+        $this->uri = new Uri(new PathProvider());
     }
 
     public function tearDown()
@@ -57,15 +62,18 @@ class ControllerFactoryTest extends TestCase
 
         $config = Config::getValue('global');
         $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/simple_test/action1";
-        Mock::when($routingService)->getUri()->thenReturn(new Uri());
+        Mock::when($routingService)->getUri()->thenReturn($this->uri);
 
         $routeRule = new RouteRule('GET', '/simple_test/action1', 'simple_test', 'action1', false);
         Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
 
+        $sessionStats = Mock::create(SessionStats::class);
+
+        /** @var ControllerFactory $factory */
         $factory = $this->injector->getInstance(ControllerFactory::class);
 
         //when
-        $currentController = $factory->createController($routeRule, new RequestParameters($routingService));
+        $currentController = $factory->createController($routeRule, new RequestParameters($routingService), $sessionStats);
 
         //then
         $this->assertEquals('action1', $currentController->currentAction);
@@ -78,15 +86,17 @@ class ControllerFactoryTest extends TestCase
     {
         //given
         $routingService = Mock::create(RoutingService::class);
-        Mock::when($routingService)->getUri()->thenReturn(new Uri());
+        Mock::when($routingService)->getUri()->thenReturn($this->uri);
 
         $routeRule = new RouteRule('GET', '/simple_test/action', 'not_exists', 'action', false);
         Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
 
+        $sessionStats = Mock::create(SessionStats::class);
+
         $factory = $this->injector->getInstance(ControllerFactory::class);
 
         //when
-        CatchException::when($factory)->createController($routeRule, new RequestParameters($routingService));
+        CatchException::when($factory)->createController($routeRule, new RequestParameters($routingService), $sessionStats);
 
         //then
         CatchException::assertThat()->isInstanceOf(ControllerNotFoundException::class);
@@ -101,15 +111,18 @@ class ControllerFactoryTest extends TestCase
     {
         //given
         $routingService = Mock::create(RoutingService::class);
-        Mock::when($routingService)->getUri()->thenReturn(new Uri());
+        Mock::when($routingService)->getUri()->thenReturn($this->uri);
 
         $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', 'api/multiple_ns', 'test_action', true);
         Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
 
+        $sessionStats = Mock::create(SessionStats::class);
+
+        /** @var ControllerFactory $factory */
         $factory = $this->injector->getInstance(ControllerFactory::class);
 
         //when
-        $currentController = $factory->createController($routeRule, new RequestParameters($routingService));
+        $currentController = $factory->createController($routeRule, new RequestParameters($routingService), $sessionStats);
 
         //then
         $this->assertInstanceOf(MultipleNsController::class, $currentController);

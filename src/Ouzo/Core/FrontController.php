@@ -11,6 +11,7 @@ use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Request\RequestContext;
 use Ouzo\Request\RequestContextFactory;
 use Ouzo\Request\RequestExecutor;
+use Ouzo\Stats\SessionStats;
 use Ouzo\Utilities\Chain\ChainExecutor;
 use Throwable;
 
@@ -25,6 +26,8 @@ class FrontController
     private $middlewareRepository;
     /** @var RequestExecutor */
     private $requestExecutor;
+    /** @var SessionStats */
+    private $sessionStats;
     /** @var RequestContext */
     private $requestContext;
 
@@ -34,12 +37,14 @@ class FrontController
     public function __construct(
         RequestContextFactory $requestContextFactory,
         MiddlewareRepository $middlewareRepository,
-        RequestExecutor $requestExecutor
+        RequestExecutor $requestExecutor,
+        SessionStats $sessionStats
     )
     {
         $this->requestContextFactory = $requestContextFactory;
         $this->middlewareRepository = $middlewareRepository;
         $this->requestExecutor = $requestExecutor;
+        $this->sessionStats = $sessionStats;
     }
 
     /**
@@ -66,6 +71,8 @@ class FrontController
         } catch (Throwable $e) {
             ob_end_clean();
             throw $e;
+        } finally {
+            $this->sessionStats->save($this->requestContext);
         }
 
         ob_end_flush();

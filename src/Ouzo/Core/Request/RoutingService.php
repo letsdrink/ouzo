@@ -17,9 +17,12 @@ class RoutingService
     /** @var RouteRule */
     private $routeRule;
 
-    public function __construct()
+    /**
+     * @Inject
+     */
+    public function __construct(Uri $uri)
     {
-        $this->uri = new Uri();
+        $this->uri = $uri;
         $router = new Router($this->uri);
         $this->routeRule = $router->findRoute();
     }

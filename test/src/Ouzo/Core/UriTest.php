@@ -116,7 +116,7 @@ class UriTest extends TestCase
 
         //when
         $paramsExpected = ['user', 'add', 'id', '5', 'name', 'john'];
-        $callMethod = $reflectionOfUri->invoke(new Uri(), '/user/add/id/5/name/john');
+        $callMethod = $reflectionOfUri->invoke(new Uri(new PathProvider()), '/user/add/id/5/name/john');
 
         //then
         $this->assertEquals($paramsExpected, $callMethod);
@@ -132,7 +132,7 @@ class UriTest extends TestCase
 
         //when
         $paramsExpected = ['user', 'add', 'id/5/name/john'];
-        $callMethod = $reflectionOfUri->invoke(new Uri(), '/user/add/id/5/name/john', 3);
+        $callMethod = $reflectionOfUri->invoke(new Uri(new PathProvider()), '/user/add/id/5/name/john', 3);
 
         //then
         $this->assertEquals($paramsExpected, $callMethod);

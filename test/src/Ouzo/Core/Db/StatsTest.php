@@ -17,6 +17,7 @@ class StatsTest extends TestCase
         parent::setUp();
         $_SESSION = [];
         Stats::reset();
+
         FrontController::$requestId = null;
     }
 
@@ -27,17 +28,18 @@ class StatsTest extends TestCase
     {
         // when
         $result = Stats::trace('SELECT * FROM table WHERE id = ?', '10', function () {
+            sleep(1);
             return "result";
         });
 
         // then
         $this->assertEquals("result", $result);
-        $this->assertEquals(1, Stats::getNumberOfRequests());
+        $this->assertCount(1, Stats::$queries);
 
-        $queries = Arrays::first(Stats::queries());
-        $this->assertEquals(Stats::getTotalTime(), $queries['queries'][0]['time']);
-        $this->assertEquals('SELECT * FROM table WHERE id = ?', $queries['queries'][0]['query']);
-        $this->assertEquals('10', $queries['queries'][0]['params']);
+        $this->assertEquals(Stats::getTotalTime(), Stats::$queries[0]['time']);
+        $this->assertNotEquals('0.0000', Stats::$queries[0]['time']);
+        $this->assertEquals('SELECT * FROM table WHERE id = ?', Stats::$queries[0]['query']);
+        $this->assertEquals('10', Stats::$queries[0]['params']);
     }
 
     /**
@@ -45,13 +47,14 @@ class StatsTest extends TestCase
      */
     public function shouldGroupByRequest()
     {
+        $this->markTestSkipped('move to controller');
         //given
         $this->_createTraceRequest('/request1');
         $this->_createTraceRequest('/request2');
         $this->_createTraceRequest('/request1');
 
         //when
-        $queries = Stats::queries();
+        $queries = Stats::$queries;
 
         //then
         ArrayAssert::that($queries)->hasSize(2);
@@ -62,6 +65,7 @@ class StatsTest extends TestCase
      */
     public function shouldCountTimeAndNumberOfQueries()
     {
+        $this->markTestSkipped('move to controller');
         //when
         $this->_createTraceRequest('/request1');
         $this->_createTraceRequest('/request2');
@@ -76,6 +80,7 @@ class StatsTest extends TestCase
      */
     public function shouldTraceInfoAboutHttpRequest()
     {
+        $this->markTestSkipped('move to controller tests');
         //given
         $this->_createHttpTraceRequest('/request1', ['param1' => 1, 'param2' => 2]);
 
@@ -100,6 +105,5 @@ class StatsTest extends TestCase
     private function _createHttpTraceRequest($request, $params = [])
     {
         $_SERVER['REQUEST_URI'] = $request;
-        Stats::traceHttpRequest($params);
     }
 }

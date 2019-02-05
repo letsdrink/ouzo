@@ -8,10 +8,14 @@ use Ouzo\Controller;
 use Ouzo\ControllerFactory;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Request\RequestParameters;
+use Ouzo\Request\RoutingService;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
+use Ouzo\Stats\SessionStats;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Uri;
+use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
 
 class SampleControllerException extends Exception
@@ -48,7 +52,16 @@ class MockControllerFactory extends ControllerFactory
     public function createController(RouteRule $routeRule, RequestParameters $requestParameters)
     {
         $routeRule = Arrays::first(Route::getRoutes());
-        return SampleController::createInstance($routeRule, Mock::create(RequestParameters::class));
+
+        $routingService = Mock::create(RoutingService::class);
+        Mock::when($routingService)->getUri()->thenReturn(new Uri(new PathProvider()));
+
+        $requestParametersMock = Mock::create(RequestParameters::class);
+        Mock::when($requestParametersMock)->getRoutingService()->thenReturn($routingService);
+
+        $sessionStats = Mock::create(SessionStats::class);
+
+        return SampleController::createInstance($routeRule, $requestParametersMock, $sessionStats);
     }
 }
 
