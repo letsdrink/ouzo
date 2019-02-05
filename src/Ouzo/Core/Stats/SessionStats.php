@@ -43,7 +43,9 @@ class SessionStats
         $controller = $requestContext->getCurrentControllerObject();
 
         Session::push('stats_queries', $requestDetails, 'request_params', $controller->params);
-        Session::push('stats_queries', $requestDetails, 'queries', Stats::$queries);
+        foreach (Stats::$queries as $query) {
+            Session::push('stats_queries', $requestDetails, 'queries', $query);
+        }
 
         Stats::reset();
 
