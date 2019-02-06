@@ -7,6 +7,7 @@
 use Ouzo\Config;
 use Ouzo\ContentType;
 use Ouzo\Controller;
+use Ouzo\Db\Stats;
 use Ouzo\NoControllerActionException;
 use Ouzo\Notice;
 use Ouzo\Request\RequestParameters;
@@ -99,6 +100,13 @@ class SimpleTestController extends Controller
     {
         $this->layout->renderAjax("Param1: $user Param2: $page");
         $this->layout->unsetLayout();
+    }
+
+    public function tracing()
+    {
+        Stats::trace('select * form table', [], function () {
+            usleep(800);
+        });
     }
 }
 
@@ -561,5 +569,57 @@ class ControllerTest extends ControllerTestCase
 
         //then
         $this->assertEquals(['key' => 'value'], $this->getAssigned('params'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCountTimeAndNumberOfQueries()
+    {
+        //given
+        Route::get('/simple_test/tracing', 'simple_test#tracing');
+
+        //when
+        $this->get('/simple_test/tracing');
+        $this->get('/simple_test/tracing');
+
+        //then
+        $this->assertCount(2, $_SESSION['stats_queries']['/simple_test/tracing#']['queries']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldTraceInfoAboutHttpRequest()
+    {
+        //given
+        Route::get('/simple_test/tracing', 'simple_test#tracing');
+
+        //when
+        $this->get('/simple_test/tracing', ['param1' => 'value1', 'param2' => 'value2']);
+
+        //then
+        Assert::thatArray($_SESSION['stats_queries']['/simple_test/tracing#']['request_params'][0])
+            ->containsKeyAndValue(['param1' => 'value1', 'param2' => 'value2']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGroupStatsByRequest()
+    {
+        //given
+        Route::allowAll('/simple_test', 'simple_test');
+
+        //when
+        $this->get('/simple_test/tracing', ['param1' => 'value1', 'param2' => 'value2']);
+        $this->post('/simple_test/params', []);
+        $this->get('/simple_test/tracing', ['param3' => 'value3', 'param4' => 'value4']);
+
+        //then
+        $queries = $_SESSION['stats_queries'];
+        Assert::thatArray($queries)->hasSize(2);
+        Assert::thatArray($queries['/simple_test/tracing#']['request_params'])->hasSize(2);
+        Assert::thatArray($queries['/simple_test/params#']['request_params'])->hasSize(1);
     }
 }

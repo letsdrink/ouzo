@@ -49,7 +49,7 @@ class SampleController extends Controller
 
 class MockControllerFactory extends ControllerFactory
 {
-    public function createController(RouteRule $routeRule, RequestParameters $requestParameters)
+    public function createController(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats)
     {
         $routeRule = Arrays::first(Route::getRoutes());
 
