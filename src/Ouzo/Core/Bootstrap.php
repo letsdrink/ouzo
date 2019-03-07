@@ -6,6 +6,7 @@
 
 namespace Ouzo;
 
+use Closure;
 use Ouzo\Config\ConfigRepository;
 use Ouzo\ExceptionHandling\DebugErrorHandler;
 use Ouzo\ExceptionHandling\ErrorHandler;
@@ -16,8 +17,6 @@ use Ouzo\Middleware\Interceptor\DefaultRequestId;
 use Ouzo\Middleware\Interceptor\LogRequest;
 use Ouzo\Middleware\Interceptor\SessionStarter;
 use Ouzo\Middleware\MiddlewareRepository;
-use Ouzo\Request\RequestContext;
-use Ouzo\Request\RequestContextFactory;
 use Ouzo\Request\RoutingService;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Uri\PathProviderInterface;
@@ -35,6 +34,8 @@ class Bootstrap
     private $injector;
     /** @var InjectorConfig */
     private $injectorConfig;
+    /** @var Closure */
+    private $injectorCallback = null;
     /** @var Interceptor[] */
     private $interceptors = [];
     /** @var bool */
@@ -81,6 +82,17 @@ class Bootstrap
     }
 
     /**
+     * @param Closure $callback
+     * @return $this
+     */
+    public function configureInjector(Closure $callback)
+    {
+        $this->injectorCallback = $callback;
+
+        return $this;
+    }
+
+    /**
      * @param Interceptor $interceptors
      * @return $this
      */
@@ -113,7 +125,10 @@ class Bootstrap
         $this->registerErrorHandlers();
         $this->includeRoutes();
 
-        $frontController = $this->createFrontController();
+        $injector = $this->setupInjector();
+
+        /** @var FrontController $frontController */
+        $frontController = $injector->getInstance(FrontController::class);
         $frontController->init();
 
         return $frontController;
@@ -137,17 +152,23 @@ class Bootstrap
         Files::loadIfExists($routesPath);
     }
 
-    /** @return FrontController */
-    private function createFrontController()
+    /** @return Injector */
+    public function setupInjector()
     {
         $injector = $this->createInjector();
+
         $middlewareRepository = $this->createMiddlewareRepository($injector);
+
         $config = $injector->getInjectorConfig();
         $config->bind(RoutingService::class)->in(Scope::SINGLETON);
         $config->bind(PathProviderInterface::class)->to(PathProvider::class)->in(Scope::SINGLETON);
         $config->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
 
-        return $injector->getInstance(FrontController::class);
+        if ($this->injectorCallback !== null) {
+            call_user_func($this->injectorCallback, $injector);
+        }
+
+        return $injector;
     }
 
     /** @return Injector */

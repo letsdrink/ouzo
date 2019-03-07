@@ -15,7 +15,6 @@ use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
-use Ouzo\Stats\SessionStats;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Arrays;

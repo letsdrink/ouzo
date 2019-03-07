@@ -162,7 +162,7 @@ class DateTest extends TestCase
         $begin = Date::endOfDay($date);
 
         //then
-        $this->assertEquals('2013-09-09 23:59:59.9999', $begin);
+        $this->assertEquals('2013-09-09 23:59:59.999', $begin);
     }
 
     /**
@@ -177,7 +177,7 @@ class DateTest extends TestCase
         $end = Date::endOfDay($date);
 
         //then
-        $this->assertEquals('2013-09-09 23:59:59.9999', $end);
+        $this->assertEquals('2013-09-09 23:59:59.999', $end);
     }
 
     /**
