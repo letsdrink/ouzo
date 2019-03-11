@@ -43,6 +43,7 @@ Start with `5 minutes tutorial`_, read about project structure and then dive dee
    utils/clock
    utils/joiner
    utils/time_ago
+   utils/to_string_builder
 
 .. toctree::
    :maxdepth: 2
