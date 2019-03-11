@@ -14,6 +14,7 @@ Enhancements:
 * [DI] Implemented injection through factory class.
 * [Utilities] Added equalsIgnoreCase to Functions and FluentFunctions (issue #263).
 * [Utilities] Fixed Clock to support DST changes when adding hours, minutes or seconds.
+* [Utilities] Added ToStringBuilder in the apache-commons style.
 
 Release 1.6.1
 --------
