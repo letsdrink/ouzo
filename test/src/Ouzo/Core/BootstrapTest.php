@@ -15,9 +15,8 @@ use Ouzo\Middleware\Interceptor\SessionStarter;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
 use Ouzo\Routing\Route;
-use Ouzo\Stats\SessionStats;
 use Ouzo\Tests\Assert;
-use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\CatchException;
 use Ouzo\Tests\MockCookiesSetter;
 use Ouzo\Tests\MockDownloadHandler;
 use Ouzo\Tests\MockHeaderSender;
@@ -71,7 +70,7 @@ class BootstrapTest extends TestCase
     {
         //when
         $frontController = $this->bootstrap
-            ->withMiddleware(new SampleMiddleware())
+            ->withMiddleware(SampleMiddleware::class)
             ->runApplication();
 
         //then
@@ -86,11 +85,23 @@ class BootstrapTest extends TestCase
     {
         //when
         $frontController = $this->bootstrap
-            ->overrideMiddleware(new SampleMiddleware(),new MockSessionStarterInterceptor())
+            ->overrideMiddleware(SampleMiddleware::class, MockSessionStarterInterceptor::class)
             ->runApplication();
 
         //then
         $interceptors = $frontController->getMiddlewareRepository()->getInterceptors();
         Assert::thatArray($interceptors)->hasSize(2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionWhenMiddlewareClassNotImplementingInterceptorInterface()
+    {
+        //when
+        CatchException::when($this->bootstrap->withMiddleware(stdClass::class))->runApplication();
+
+        //then
+        CatchException::assertThat()->hasMessage('stdClass class is not implementing Interceptor interface');
     }
 }

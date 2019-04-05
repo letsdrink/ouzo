@@ -7,6 +7,7 @@
 namespace Ouzo;
 
 use Closure;
+use InvalidArgumentException;
 use Ouzo\Config\ConfigRepository;
 use Ouzo\ExceptionHandling\DebugErrorHandler;
 use Ouzo\ExceptionHandling\ErrorHandler;
@@ -23,7 +24,6 @@ use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Chain\Interceptor;
 use Ouzo\Utilities\Files;
-use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Path;
 
 class Bootstrap
@@ -36,7 +36,7 @@ class Bootstrap
     private $injectorConfig;
     /** @var Closure */
     private $injectorCallback = null;
-    /** @var Interceptor[] */
+    /** @var string[] */
     private $interceptors = [];
     /** @var bool */
     private $overrideMiddleware = false;
@@ -93,23 +93,23 @@ class Bootstrap
     }
 
     /**
-     * @param Interceptor $interceptors
+     * @param string[] $interceptors
      * @return $this
      */
     public function withMiddleware(...$interceptors)
     {
-        $this->interceptors = Arrays::filter($interceptors, Functions::isInstanceOf(Interceptor::class));
+        $this->interceptors = $interceptors;
 
         return $this;
     }
 
     /**
-     * @param Interceptor $interceptors
+     * @param string[] $interceptors
      * @return $this
      */
     public function overrideMiddleware(...$interceptors)
     {
-        $this->interceptors = Arrays::filter($interceptors, Functions::isInstanceOf(Interceptor::class));
+        $this->interceptors = $interceptors;
         $this->overrideMiddleware = true;
 
         return $this;
@@ -196,8 +196,21 @@ class Bootstrap
                 ->add($defaultRequestId)
                 ->add($logRequest);
         }
-        $middlewareRepository->addAll($this->interceptors);
+
+        $interceptors = Arrays::map($this->interceptors, $this->createInterceptor($injector));
+        $middlewareRepository->addAll($interceptors);
 
         return $middlewareRepository;
+    }
+
+    private function createInterceptor(Injector $injector)
+    {
+        return function ($interceptor) use ($injector) {
+            $instance = $injector->getInstance($interceptor);
+            if (!$instance instanceof Interceptor) {
+                throw new InvalidArgumentException("{$interceptor} class is not implementing Interceptor interface");
+            }
+            return $instance;
+        };
     }
 }
