@@ -94,7 +94,12 @@ class InstanceRepository
         return $this->createInstanceThroughFactoryAsPrototype($factory, $factoryClassName);
     }
 
-    private function createInstanceThroughFactoryAsPrototype(InstanceFactory $factory, string $factoryClassName)
+    /**
+     * @param InstanceFactory $factory
+     * @param string $factoryClassName
+     * @return mixed
+     */
+    private function createInstanceThroughFactoryAsPrototype(InstanceFactory $factory, $factoryClassName)
     {
         $factoryBinder = $this->bindings->getBinder($factoryClassName);
         /** @var Factory $factoryObject */
