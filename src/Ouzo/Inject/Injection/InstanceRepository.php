@@ -12,6 +12,8 @@ class InstanceRepository
 {
     /** @var object[] */
     private $instances = [];
+    /** @var object[] */
+    private $factoryInstances = [];
 
     /** @var Bindings */
     private $bindings;
@@ -40,7 +42,7 @@ class InstanceRepository
 
         $factoryClassName = $binder->getFactoryClassName();
         if ($factoryClassName) {
-            return $this->createInstanceThroughFactory($factory, $factoryClassName);
+            return $this->createInstanceThroughFactory($factory, $binder);
         }
 
         $className = $binder->getBoundClassName() ?: $binder->getClassName();
@@ -71,18 +73,35 @@ class InstanceRepository
 
     /**
      * @param InstanceFactory $factory
-     * @param $factoryClassName
+     * @param Binder $binder
      * @return mixed
      * @throws InjectorException
      */
-    private function createInstanceThroughFactory(InstanceFactory $factory, $factoryClassName)
+    private function createInstanceThroughFactory(InstanceFactory $factory, Binder $binder)
     {
+        $factoryClassName = $binder->getFactoryClassName();
+
         if (!in_array(Factory::class, class_implements($factoryClassName))) {
             throw new InjectorException("Factory class $factoryClassName does not implemented \Ouzo\Injection\Factory interface.");
         }
+
+        if ($binder->getScope() == Scope::SINGLETON) {
+            if (isset($this->factoryInstances[$factoryClassName])) {
+                return $this->factoryInstances[$factoryClassName];
+            }
+        }
+
+        return $this->createInstanceThroughFactoryAsPrototype($factory, $factoryClassName);
+    }
+
+    private function createInstanceThroughFactoryAsPrototype(InstanceFactory $factory, string $factoryClassName)
+    {
         $factoryBinder = $this->bindings->getBinder($factoryClassName);
         /** @var Factory $factoryObject */
         $factoryObject = $this->getInstance($factory, $factoryBinder);
-        return $factoryObject->create();
+        $object = $factoryObject->create();
+        $this->factoryInstances[$factoryClassName] = $object;
+
+        return $object;
     }
 }

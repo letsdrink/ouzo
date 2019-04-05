@@ -410,6 +410,47 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance->myClass);
     }
 
+    /**
+     * @test
+     */
+    public function shouldInjectThroughFactoryInSingletonScope()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ClassFactory::class)->in(Scope::SINGLETON);
+
+        //when
+        $instance1 = $injector->getInstance(ClassWithNoDep::class);
+        $instance2 = $injector->getInstance(ClassWithNoDep::class);
+
+        //then
+        $this->assertSame($instance1, $instance2);
+        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance1);
+        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance2);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectThroughFactoryInSingletonScopeAndStillBeAbleToCreateProperFactoryClass()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ClassFactory::class)->in(Scope::SINGLETON);
+        $config->bind(ClassFactory::class)->in(Scope::SINGLETON);
+
+        //when
+        $instance1 = $injector->getInstance(ClassWithNoDep::class);
+        $instance2 = $injector->getInstance(ClassFactory::class);
+
+        //then
+        $this->assertNotSame($instance1, $instance2);
+        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance1);
+        $this->assertDependencyInjected(ClassFactory::class, $instance2);
+    }
+
     private function assertDependencyInjected($className, $instance)
     {
         $this->assertNotNull($instance, 'Dependency was not injected.');
