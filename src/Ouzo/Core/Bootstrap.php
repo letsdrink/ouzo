@@ -157,11 +157,11 @@ class Bootstrap
     {
         $injector = $this->createInjector();
 
-        $middlewareRepository = $this->createMiddlewareRepository($injector);
-
         $config = $injector->getInjectorConfig();
         $config->bind(RoutingService::class)->in(Scope::SINGLETON);
         $config->bind(PathProviderInterface::class)->to(PathProvider::class)->in(Scope::SINGLETON);
+
+        $middlewareRepository = $this->createMiddlewareRepository($injector);
         $config->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
 
         if ($this->injectorCallback !== null) {
