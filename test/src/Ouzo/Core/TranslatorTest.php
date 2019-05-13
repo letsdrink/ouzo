@@ -29,6 +29,22 @@ class TranslatorTest extends TestCase
     /**
      * @test
      */
+    public function shouldTranslateSimpleKeyWhenValueIsEmpty()
+    {
+        //given
+        $labels = ['key' => ''];
+        $translator = new Translator('en', $labels);
+
+        //when
+        $translation = $translator->translate('key');
+
+        //then
+        $this->assertEquals('', $translation);
+    }
+
+    /**
+     * @test
+     */
     public function shouldSubstituteParams()
     {
         //given

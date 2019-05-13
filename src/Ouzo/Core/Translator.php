@@ -24,7 +24,7 @@ class Translator
     public function translate($key, $params = [])
     {
         $explodedKey = explode('.', $key);
-        $translation = Arrays::getNestedValue($this->_labels, $explodedKey) ?: $key;
+        $translation = Arrays::getNestedValue($this->_labels, $explodedKey) ?? $key;
         return $this->localize(Strings::sprintAssoc($translation, $params));
     }
 
