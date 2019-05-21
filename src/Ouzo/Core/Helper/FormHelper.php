@@ -93,7 +93,7 @@ function checkboxTag($name, $value, $checked, array $attributes = [])
     return $workaround . '<input type="checkbox" value="' . $value . '" ' . $attr . ' ' . ($checked ? 'checked' : '') . '/>';
 }
 
-function selectTag($name, array $items = [], $value, array $attributes = [], $promptOption = null)
+function selectTag($name, array $items = [], $value = null, array $attributes = [], $promptOption = null)
 {
     $value = Arrays::toArray($value);
     $attr = _prepareAttributes($attributes, ['name' => $name]);
