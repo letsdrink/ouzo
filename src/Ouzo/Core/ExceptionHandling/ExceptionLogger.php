@@ -19,6 +19,7 @@ class ExceptionLogger
     const PASSWORD_PLACEHOLDER = '***';
     const UNAUTHORIZED = '401';
     const NOT_FOUND = '404';
+
     /** @var OuzoExceptionData */
     private $exceptionData;
 
