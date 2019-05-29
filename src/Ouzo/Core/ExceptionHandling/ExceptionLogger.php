@@ -17,7 +17,8 @@ use Ouzo\Utilities\Strings;
 class ExceptionLogger
 {
     const PASSWORD_PLACEHOLDER = '***';
-
+    const UNAUTHORIZED = '401';
+    const NOT_FOUND = '404';
     /** @var OuzoExceptionData */
     private $exceptionData;
 
@@ -52,42 +53,48 @@ class ExceptionLogger
         $source = $trace->getFile() . ":" . $trace->getLine();
         $isErrorException = is_subclass_of($className, ErrorException::class);
 
-        $message = "Exception: $originalMessage";
-        $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
-        $message .= "\nHTTP status: $httpCode";
-
-        if ($className && !$isErrorException) {
-            $message .= "\nException: $className\nMessage: $originalMessage";
+        if (in_array($httpCode, [self::UNAUTHORIZED, self::NOT_FOUND])) {
+            $method = Arrays::getValue($_SERVER, 'REQUEST_METHOD');
+            $uri = Arrays::getValue($_SERVER, 'SCRIPT_URI');
+            return "$httpCode Exception [$method $uri]: $originalMessage";
         } else {
-            $message .= "\nError: $originalMessage";
-        }
+            $message = "Exception: $originalMessage";
+            $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
+            $message .= "\nHTTP status: $httpCode";
 
-        if ($this->exceptionData->getSeverity()) {
-            $message .= "\nSeverity: {$this->exceptionData->getSeverityAsString()}";
-        }
+            if ($className && !$isErrorException) {
+                $message .= "\nException: $className\nMessage: $originalMessage";
+            } else {
+                $message .= "\nError: $originalMessage";
+            }
 
-        $message .= "\nLine: $source";
+            if ($this->exceptionData->getSeverity()) {
+                $message .= "\nSeverity: {$this->exceptionData->getSeverityAsString()}";
+            }
 
-        if ($traceString) {
-            $message .= "\nStack trace:\n$traceString";
+            $message .= "\nLine: $source";
+
+            if ($traceString) {
+                $message .= "\nStack trace:\n$traceString";
+            }
+            $message .= "\nREQUEST_METHOD = " . Arrays::getValue($_SERVER, 'REQUEST_METHOD');
+            $message .= "\nSCRIPT_URI = " . Arrays::getValue($_SERVER, 'SCRIPT_URI');
+            $message .= "\nREQUEST_URI = " . Arrays::getValue($_SERVER, 'REQUEST_URI');
+            $message .= "\nREDIRECT_URL = " . Arrays::getValue($_SERVER, 'REDIRECT_URL');
+            if (!empty($_GET)) {
+                $message .= "\nGET = " . self::sanitize($_GET);
+            }
+            if (!empty($_POST)) {
+                $message .= "\nPOST = " . self::sanitize($_POST);
+            }
+            if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
+                $jsonBody = stream_get_contents(fopen('php://input', 'r'));
+                $jsonBodyAbbrev = Strings::abbreviate($jsonBody, 1024 * 20);
+                $message .= "\nJSON BODY = '$jsonBodyAbbrev'";
+            }
+            $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
+            return $message;
         }
-        $message .= "\nREQUEST_METHOD = " . Arrays::getValue($_SERVER, 'REQUEST_METHOD');
-        $message .= "\nSCRIPT_URI = " . Arrays::getValue($_SERVER, 'SCRIPT_URI');
-        $message .= "\nREQUEST_URI = " . Arrays::getValue($_SERVER, 'REQUEST_URI');
-        $message .= "\nREDIRECT_URL = " . Arrays::getValue($_SERVER, 'REDIRECT_URL');
-        if (!empty($_GET)) {
-            $message .= "\nGET = " . self::sanitize($_GET);
-        }
-        if (!empty($_POST)) {
-            $message .= "\nPOST = " . self::sanitize($_POST);
-        }
-        if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
-            $jsonBody = stream_get_contents(fopen('php://input', 'r'));
-            $jsonBodyAbbrev = Strings::abbreviate($jsonBody, 1024 * 20);
-            $message .= "\nJSON BODY = '$jsonBodyAbbrev'";
-        }
-        $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
-        return $message;
     }
 
     public static function sanitize(array $array)
