@@ -1,4 +1,4 @@
-![Ouzo Framework](http://ouzoframework.org/img/logo.png)
+![Ouzo Framework](https://raw.githubusercontent.com/letsdrink/ouzo-website/master/img/logo.png)
 
 Ouzo is a PHP MVC framework with built-in ORM and util libraries. PHP 5.6 or later is required.
 
