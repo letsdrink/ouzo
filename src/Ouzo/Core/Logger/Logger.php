@@ -40,6 +40,15 @@ class Logger
         return $logger;
     }
 
+    /**
+     * @param $name
+     * @param string $configuration
+     */
+    public static function clearLogger($name, $configuration = 'default')
+    {
+        Arrays::removeNestedKey(self::$loggers, [$name, $configuration]);
+    }
+
     private static function loadLogger($name, $configuration)
     {
         $logger = Config::getValue('logger', $configuration);
