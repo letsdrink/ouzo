@@ -43,4 +43,8 @@ class RequestHeaders
         }
         return self::$headers;
     }
+
+    public static function clearCache() {
+        self::$headers = null;
+    }
 }
