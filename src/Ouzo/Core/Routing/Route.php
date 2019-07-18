@@ -142,6 +142,14 @@ class Route implements RouteInterface
         return self::$routes;
     }
 
+    /**
+     * @param RouteRule[] $routes
+     */
+    public static function setRoutes($routes)
+    {
+        self::$routes = $routes;
+    }
+
     public static function getRoutesForController($controller)
     {
         return Arrays::filter(self::getRoutes(), function (RouteRule $route) use ($controller) {

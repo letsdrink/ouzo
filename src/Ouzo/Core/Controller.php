@@ -6,6 +6,7 @@
 
 namespace Ouzo;
 
+use Ouzo\Request\RequestHeaders;
 use Ouzo\Request\RequestParameters;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Stats\SessionStats;
@@ -334,9 +335,6 @@ class Controller
      */
     public function getRequestHeaders()
     {
-        $headers = Arrays::filterByKeys($_SERVER, Functions::startsWith('HTTP_'));
-        return Arrays::mapKeys($headers, function ($key) {
-            return str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
-        });
+        return RequestHeaders::all();
     }
 }
