@@ -15,6 +15,7 @@ use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
+use Ouzo\Request\RequestHeaders;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Arrays;
@@ -40,6 +41,7 @@ class ControllerTestCase extends DbTransactionalTestCase
     {
         parent::tearDown();
         FrontController::$requestId = null;
+        RequestHeaders::clearCache();
     }
 
     private static function prefixSystem()
