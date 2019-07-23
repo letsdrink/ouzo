@@ -451,6 +451,43 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassFactory::class, $instance2);
     }
 
+    /**
+     * @test
+     */
+    public function shouldInjectMultipleNamedDependenciesIntoConstructor()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class, 'my_dep')->to(SubClassWithNoDep::class);
+        $config->bind(ClassWithPrivateDep::class, 'my_second_dep')->to(SubClassOfClassWithPrivateDep::class);
+
+        //when
+        $instance = $injector->getInstance(ClassWithNamedConstructorMultipleDep::class);
+
+        //then
+        $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
+        $this->assertDependencyInjected(SubClassOfClassWithPrivateDep::class, $instance->secondClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectOneNamedDependencyIntoDefinedConstructorParameter()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind(ClassWithPrivateDep::class, 'my_second_dep')->to(SubClassOfClassWithPrivateDep::class);
+
+        //when
+        $instance = $injector->getInstance(ClassWithNamedConstructorSingleNamedDep::class);
+
+        //then
+        $this->assertDependencyInjected(ClassWithPrivateDep::class, $instance->myClass);
+        $this->assertDependencyInjected(SubClassOfClassWithPrivateDep::class, $instance->secondClass);
+    }
+
     private function assertDependencyInjected($className, $instance)
     {
         $this->assertNotNull($instance, 'Dependency was not injected.');
