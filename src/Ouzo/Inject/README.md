@@ -76,6 +76,28 @@ class MyClass
 }
 ```
 
+For named binding in constructor use:
+
+```php
+class MyClass
+{
+    private $otherClass;
+    private $andAnotherClass;
+
+    /**
+     * @Inject
+     * @Named("oterClass=some_name,andAnotherClass=new_named")
+     */
+    public function __construct(OtherClass $otherClass, AndAnotherClass $andAnotherClass)
+    {
+        $this->otherClass = $otherClass;
+        $this->andAnotherClass = $andAnotherClass;
+    }
+}
+```
+
+You can named any constructor argument using parameter name.
+
 Constructor injection (requires arguments types):
 
 ```php
