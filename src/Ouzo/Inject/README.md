@@ -86,7 +86,7 @@ class MyClass
 
     /**
      * @Inject
-     * @Named("oterClass=some_name,andAnotherClass=new_named")
+     * @Named("otherClass=some_name,andAnotherClass=new_named")
      */
     public function __construct(OtherClass $otherClass, AndAnotherClass $andAnotherClass)
     {
