@@ -760,6 +760,21 @@ class ArraysTest extends TestCase
     /**
      * @test
      */
+    public function getNestedValueShouldReturnNullWhenZeroKeyNotFound()
+    {
+        //given
+        $array = ['1' => ['2' => ['3' => 'value']]];
+
+        //when
+        $value = Arrays::getNestedValue($array, ['1', '2', '3', '0']);
+
+        //then
+        $this->assertNull($value);
+    }
+
+    /**
+     * @test
+     */
     public function getNestedValueShouldReturnEmptyValue()
     {
         //given
