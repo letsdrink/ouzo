@@ -843,6 +843,10 @@ class Arrays
             if (!$array) {
                 return $array;
             }
+
+            if (!is_array($array) && self::last($keys) !== $key) {
+                return null;
+            }
         }
         return $array;
     }
@@ -886,6 +890,10 @@ class Arrays
         if (count($keys) == 0) {
             unset($array[$key]);
         } elseif (isset($array[$key])) {
+            if (!is_array($array[$key])) {
+                return;
+            }
+
             self::removeNestedKey($array[$key], $keys, $removeEmptyParents);
             if ($removeEmptyParents && empty($array[$key])) {
                 unset($array[$key]);
@@ -924,7 +932,7 @@ class Arrays
     public static function hasNestedKey(array $array, array $keys, $flags = null)
     {
         foreach ($keys as $key) {
-            if (!array_key_exists($key, $array) || (!($flags & self::TREAT_NULL_AS_VALUE) && !isset($array[$key]))) {
+            if (!is_array($array) || !array_key_exists($key, $array) || (!($flags & self::TREAT_NULL_AS_VALUE) && !isset($array[$key]))) {
                 return false;
             }
             $array = self::getValue($array, $key);

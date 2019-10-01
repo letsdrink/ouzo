@@ -760,6 +760,51 @@ class ArraysTest extends TestCase
     /**
      * @test
      */
+    public function getNestedValueShouldReturnNullWhenZeroStringKeyNotFound()
+    {
+        //given
+        $array = ['1' => ['2' => ['3' => 'value']]];
+
+        //when
+        $value = Arrays::getNestedValue($array, ['1', '2', '3', '0']);
+
+        //then
+        $this->assertNull($value);
+    }
+
+    /**
+     * @test
+     */
+    public function getNestedValueShouldReturnNullWhenZeroIntKeyNotFound()
+    {
+        //given
+        $array = ['1' => ['2' => ['3' => 'value']]];
+
+        //when
+        $value = Arrays::getNestedValue($array, ['1', '2', '3', 0]);
+
+        //then
+        $this->assertNull($value);
+    }
+
+    /**
+     * @test
+     */
+    public function getNestedValueShouldReturnNullWhenMultipleStringZeroKeysNotFound()
+    {
+        //given
+        $array = ['1' => ['2' => ['3' => 'value']]];
+
+        //when
+        $value = Arrays::getNestedValue($array, ['1', '2', '3', '0', '0', '0']);
+
+        //then
+        $this->assertNull($value);
+    }
+
+    /**
+     * @test
+     */
     public function getNestedValueShouldReturnEmptyValue()
     {
         //given
@@ -860,6 +905,21 @@ class ArraysTest extends TestCase
 
         //then
         $this->assertEquals(['1' => null], $array);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotChangeInputArrayWhenKeyNotFound()
+    {
+        //given
+        $array = ['1' => ['2' => ['3' => 'value']]];
+
+        //when
+        Arrays::removeNestedKey($array, ['1', '2', '3', '0']);
+
+        //then
+        $this->assertEquals(['1' => ['2' => ['3' => 'value']]], $array);
     }
 
     /**
@@ -979,6 +1039,21 @@ class ArraysTest extends TestCase
 
         //when
         $value = Arrays::hasNestedKey($array, ['1', '2', '3']);
+
+        //then
+        $this->assertFalse($value);
+    }
+
+    /**
+     * @test
+     */
+    public function hasNestedKeyShouldReturnFalseWhenKeyStringZeroDoesNotExist()
+    {
+        //given
+        $array = ['1' => ['2' => ['3' => 'value']]];
+
+        //when
+        $value = Arrays::hasNestedKey($array, ['1', '2', '3', '0']);
 
         //then
         $this->assertFalse($value);
