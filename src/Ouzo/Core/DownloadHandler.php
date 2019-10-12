@@ -16,6 +16,8 @@ class DownloadHandler
      */
     public function downloadFile(array $fileData)
     {
+        clearstatcache();
+
         header('Content-Type: ' . $fileData['mime']);
         header('Content-Disposition: attachment; filename="' . $fileData['label'] . '"');
         $data = Arrays::getValue($fileData, 'data');
@@ -34,6 +36,8 @@ class DownloadHandler
      */
     public function streamMediaFile(array $fileData)
     {
+        clearstatcache();
+
         $location = $fileData['path'];
         $filename = $fileData['label'];
         $mimeType = Arrays::getValue($fileData, 'mime', 'application/octet-stream');
