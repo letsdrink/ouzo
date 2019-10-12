@@ -16,8 +16,6 @@ class DownloadHandler
      */
     public function downloadFile(array $fileData)
     {
-        clearstatcache();
-
         header('Content-Type: ' . $fileData['mime']);
         header('Content-Disposition: attachment; filename="' . $fileData['label'] . '"');
         $data = Arrays::getValue($fileData, 'data');
@@ -25,6 +23,7 @@ class DownloadHandler
             header('Content-Length:' . strlen($data));
             echo $data;
         } else {
+            clearstatcache(true, $fileData['path']);
             header('Content-Length:' . filesize($fileData['path']));
             readfile($fileData['path']);
         }
@@ -36,11 +35,11 @@ class DownloadHandler
      */
     public function streamMediaFile(array $fileData)
     {
-        clearstatcache();
-
         $location = $fileData['path'];
         $filename = $fileData['label'];
         $mimeType = Arrays::getValue($fileData, 'mime', 'application/octet-stream');
+
+        clearstatcache(true, $location);
 
         if (!file_exists($location)) {
             header("HTTP/1.1 404 Not Found");
