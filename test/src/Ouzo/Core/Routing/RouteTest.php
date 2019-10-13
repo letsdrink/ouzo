@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Route::clear();

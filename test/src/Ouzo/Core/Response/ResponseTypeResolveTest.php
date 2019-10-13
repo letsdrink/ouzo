@@ -79,6 +79,7 @@ class ResponseTypeResolveTest extends TestCase
     {
         //given
         $_SERVER['HTTP_ACCEPT'] = null;
+        $_SERVER['CONTENT_TYPE'] = null;
         ContentType::set(null);
 
         //when

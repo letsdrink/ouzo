@@ -67,7 +67,7 @@ class MockControllerFactory extends ControllerFactory
 
 class BeforeFilterTest extends ControllerTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Route::clear();

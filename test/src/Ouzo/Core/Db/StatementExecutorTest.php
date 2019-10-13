@@ -22,7 +22,7 @@ class StatementExecutorTest extends TestCase
     private $pdoMock;
     private $dbMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

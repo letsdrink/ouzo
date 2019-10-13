@@ -33,28 +33,31 @@ class ViewHelperTest extends TestCase
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionForInvalidArguments()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         url(['action' => 'show', 'extraParams' => ['id' => 3]]);
     }
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionForEmptyParams()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         url([]);
     }
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionForEmptyString()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         url("");
     }
 

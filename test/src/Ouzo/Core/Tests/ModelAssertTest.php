@@ -8,6 +8,7 @@ use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\ExpectationFailedException;
 
 class ModelAssertTest extends DbTransactionalTestCase
 {
@@ -21,7 +22,7 @@ class ModelAssertTest extends DbTransactionalTestCase
 
         CatchException::when(Assert::thatModel($product))->hasSameAttributesAs($category);
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
     /**
@@ -34,7 +35,7 @@ class ModelAssertTest extends DbTransactionalTestCase
 
         CatchException::when(Assert::thatModel($product))->hasSameAttributesAs($otherProduct);
 
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
     /**
@@ -67,7 +68,7 @@ class ModelAssertTest extends DbTransactionalTestCase
         CatchException::when(Assert::thatModel($product))->isEqualTo($otherProduct);
 
         //then
-        CatchException::assertThat()->isInstanceOf('PHPUnit_Framework_ExpectationFailedException');
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
     /**

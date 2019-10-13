@@ -1,7 +1,7 @@
 {
   "config": {
     "platform": {
-      "php": "5.6"
+      "php": "7.2"
     }
   },
   "name": "letsdrink/ouzo",
@@ -36,15 +36,15 @@
     "classmap": ["test/"]
   },
   "require": {
-    "d11wtq/boris": "1.0.8",
-    "symfony/console": "^3.4",
-    "filp/whoops": "2.1.*",
+    "symfony/console": "^4.3",
+    "symfony/event-dispatcher": "^4.3",
+    "filp/whoops": "2.5.*",
     "psr/log": "^1.0",
     "ocramius/proxy-manager": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.*",
-    "satooshi/php-coveralls": "1.0.1"
+    "phpunit/phpunit": "8.4.*",
+    "php-coveralls/php-coveralls": "^2.1"
   },
   "replace": {
     "letsdrink/ouzo-goodies": "self.version",

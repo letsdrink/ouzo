@@ -9,7 +9,7 @@ use Ouzo\Tests\DbTransactionalTestCase;
 
 class DbFunctionTest extends DbTransactionalTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $driver = Config::getValue('db', 'driver');
         if ($driver == 'sqlite') {

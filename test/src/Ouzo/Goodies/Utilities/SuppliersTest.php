@@ -73,7 +73,7 @@ class SuppliersTest extends TestCase
         $this->assertEquals('Jack', $result5);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         Clock::freeze();

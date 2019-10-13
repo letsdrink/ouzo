@@ -21,7 +21,7 @@ use Ouzo\Utilities\Arrays;
 
 class ModelTest extends DbTransactionalTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         ModelDefinition::resetCache();
@@ -29,19 +29,21 @@ class ModelTest extends DbTransactionalTestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function shouldThrowExceptionWhenTableEmptyInPrepareParameters()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Model(['table' => '']);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function shouldThrowExceptionWhenFieldsEmptyInPrepareParameters()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Model(['table' => 't_example', 'fields' => '']);
     }
 

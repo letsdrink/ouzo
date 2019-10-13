@@ -14,20 +14,21 @@ class QueryExecutorTest extends DbTransactionalTestCase
 {
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionIfNoQueryObjectGiven()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         QueryExecutor::prepare(Db::getInstance(), null);
     }
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionIfNoDbGiven()
     {
         // given
+        $this->expectException(InvalidArgumentException::class);
         $query = Query::select()->from('table_name');
 
         // when
@@ -36,11 +37,11 @@ class QueryExecutorTest extends DbTransactionalTestCase
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function shouldThrowExceptionIfNoTableNameGiven()
     {
         // given
+        $this->expectException(InvalidArgumentException::class);
         $query = new Query();
 
         // when

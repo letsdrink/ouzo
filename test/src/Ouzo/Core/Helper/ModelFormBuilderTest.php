@@ -10,7 +10,7 @@ use Ouzo\View;
 
 class ModelFormBuilderTest extends DbTransactionalTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         new View('test');
@@ -30,7 +30,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         $html = $formBuilder->textField('name');
 
         //then
-        $this->assertContains('class="error"', $html);
+        $this->assertStringContainsString('class="error"', $html);
     }
 
     /**
@@ -47,7 +47,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         $html = $formBuilder->textField('name', ['class' => 'class1 class2']);
 
         //then
-        $this->assertContains('class="class1 class2 error"', $html);
+        $this->assertStringContainsString('class="class1 class2 error"', $html);
     }
 
     /**
@@ -63,7 +63,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         $html = $formBuilder->textField('name');
 
         //then
-        $this->assertNotContains('class="', $html);
+        $this->assertStringNotContainsString('class="', $html);
     }
 
     /**

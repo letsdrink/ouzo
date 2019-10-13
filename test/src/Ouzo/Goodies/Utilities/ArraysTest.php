@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
@@ -144,28 +145,22 @@ class ArraysTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function shouldThrowExceptionWhenElementsAreEmptyInLast()
     {
-        //given
-        $array = [];
+        $this->expectException(InvalidArgumentException::class);
 
-        //when
-        Arrays::last($array);
+        Arrays::last([]);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function shouldThrowExceptionWhenElementsAreEmptyInFirst()
     {
-        //given
-        $array = [];
+        $this->expectException(InvalidArgumentException::class);
 
-        //when
-        Arrays::first($array);
+        Arrays::first([]);
     }
 
     /**

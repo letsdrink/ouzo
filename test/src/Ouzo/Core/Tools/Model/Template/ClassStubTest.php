@@ -23,8 +23,8 @@ class ClassStubTest extends TestCase
         $classStub->replacePlaceholders(['class' => 'TestClassName', 'fields' => 'fieldA, fieldB']);
 
         //then
-        $this->assertContains('TestClassName', $classStub->contents());
-        $this->assertContains('fieldA, fieldB', $classStub->contents());
+        $this->assertStringContainsString('TestClassName', $classStub->contents());
+        $this->assertStringContainsString('fieldA, fieldB', $classStub->contents());
     }
 
     /**
@@ -39,7 +39,7 @@ class ClassStubTest extends TestCase
         $classStub->addColumn(new DatabaseColumn('test_field', 'string'));
 
         //then
-        $this->assertContains('test_field', $classStub->contents());
+        $this->assertStringContainsString('test_field', $classStub->contents());
     }
 
     /**
@@ -85,7 +85,7 @@ class ClassStubTest extends TestCase
             ->addColumn(new DatabaseColumn('field9', 'string'));
 
         //then
-        $this->assertContains("'field7', \n", $classStub->getFieldsAsString());
+        $this->assertStringContainsString("'field7', \n", $classStub->getFieldsAsString());
     }
 
     /**

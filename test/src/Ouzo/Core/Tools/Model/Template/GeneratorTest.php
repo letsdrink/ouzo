@@ -16,7 +16,7 @@ use ReflectionClass;
 
 class GeneratorTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $driver = Config::getValue('db', 'driver');
         if ($driver == 'sqlite') {
@@ -156,8 +156,8 @@ class GeneratorTest extends TestCase
         $template = $generator->templateContents();
 
         //then
-        $this->assertContains('class Product extends Model', $template);
-        $this->assertContains('string description', $template);
+        $this->assertStringContainsString('class Product extends Model', $template);
+        $this->assertStringContainsString('string description', $template);
     }
 
     /**

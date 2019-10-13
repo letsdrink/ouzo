@@ -11,7 +11,7 @@ class CacheTest extends TestCase
 {
     public static $call_count = 0;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Cache::clear();

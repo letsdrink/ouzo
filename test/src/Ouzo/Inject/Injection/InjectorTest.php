@@ -20,7 +20,7 @@ class InjectorTest extends TestCase
      */
     private $injector;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->injector = new Injector();

@@ -9,7 +9,7 @@ use Ouzo\Tests\DbTransactionalTestCase;
 
 class BatchLoadingSessionTest extends DbTransactionalTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $_SESSION = [];

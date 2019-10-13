@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class DbTransactionalTestCase extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         Cache::clear();
         if (Db::getInstance()->isConnected()) {
@@ -21,7 +21,7 @@ class DbTransactionalTestCase extends TestCase
         }
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Cache::clear();
         if (Db::getInstance()->isConnected()) {

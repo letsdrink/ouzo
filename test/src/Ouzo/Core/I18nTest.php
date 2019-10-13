@@ -14,7 +14,7 @@ class I18nTest extends TestCase
     /**
      * @tearDown
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         I18n::reset();
     }
@@ -22,7 +22,7 @@ class I18nTest extends TestCase
     /**
      * @tearDown
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Config::clearProperty('language');
         I18n::reset();

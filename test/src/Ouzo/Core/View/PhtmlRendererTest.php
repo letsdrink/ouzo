@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
 
 class PhtmlRendererTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Config::overrideProperty('path', 'view')->with('test\src\Ouzo\Core\View');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         Config::revertProperty('path', 'view');

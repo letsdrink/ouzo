@@ -9,7 +9,7 @@ class DirectoryTest extends TestCase
 {
     private $directory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->directory = Path::joinWithTemp('directory_class');
         mkdir($this->directory, 0777, true);
@@ -17,7 +17,7 @@ class DirectoryTest extends TestCase
         file_put_contents(Path::join($this->directory, 'file2.txt'), 'some new file');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         DeleteDirectory::recursive($this->directory);
     }

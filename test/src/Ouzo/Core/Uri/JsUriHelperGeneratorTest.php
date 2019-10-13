@@ -15,7 +15,7 @@ class JsUriHelperGeneratorTest extends TestCase
 {
     private $path;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Route::clear();
@@ -23,7 +23,7 @@ class JsUriHelperGeneratorTest extends TestCase
         Config::overrideProperty("global", "prefix_system")->with("/app");
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Config::revertProperty("global", "prefix_system");
         if (Files::exists($this->path)) {

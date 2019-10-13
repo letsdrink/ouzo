@@ -17,7 +17,7 @@ class TestModel extends Model
 
 class ModelDefaultMappingTest extends DbTransactionalTestCase
 {
-    public  function setUp()
+    public  function setUp(): void
     {
         parent::setUp();
         ModelDefinition::resetCache();

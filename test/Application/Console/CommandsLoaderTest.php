@@ -12,7 +12,7 @@ class CommandsLoaderTest extends TestCase
 {
     private $testCommandsPath;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->testCommandsPath = Path::join(ROOT_PATH, "test", "resources", "commands");

@@ -38,7 +38,7 @@ class CallbackTestModel extends Model
 
 class ModelCallbackTest extends DbTransactionalTestCase
 {
-    public  function setUp()
+    public  function setUp(): void
     {
         parent::setUp();
         ModelDefinition::resetCache();

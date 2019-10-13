@@ -23,10 +23,14 @@ class UriTest extends TestCase
     private $uri;
     private $pathProviderMock;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $this->pathProviderMock = Mock::create(PathProvider::class);
         $this->uri = new Uri($this->pathProviderMock);
+        unset($_SERVER['HTTPS']);
+        unset($_SERVER['HTTP_X_REQUESTED_WITH']);
+        unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
     }
 
     /**

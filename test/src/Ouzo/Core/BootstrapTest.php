@@ -45,7 +45,7 @@ class BootstrapTest extends TestCase
         $this->config->bind(DownloadHandler::class)->toInstance(new MockDownloadHandler());
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
@@ -54,9 +54,13 @@ class BootstrapTest extends TestCase
         Route::get('/', 'sample#save');
         $this->bootstrap = new Bootstrap(new EnvironmentSetter('test'));
         $this->bootstrap->withInjectorConfig($this->config);
+
+        unset($_SERVER['REDIRECT_URL']);
+        unset($_SERVER['REQUEST_URI']);
+        unset($_SERVER['REDIRECT_QUERY_STRING']);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');

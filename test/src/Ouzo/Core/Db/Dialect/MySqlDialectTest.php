@@ -21,7 +21,7 @@ class MySqlDialectTest extends TestCase
      */
     private $dialect;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->dialect = new MySqlDialect();

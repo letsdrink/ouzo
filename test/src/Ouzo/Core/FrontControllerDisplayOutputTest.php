@@ -13,14 +13,14 @@ use Ouzo\Tests\Mock\Mock;
 
 class FrontControllerDisplayOutputTest extends ControllerTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         Route::clear();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');
@@ -53,6 +53,7 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
             $this->expectOutputString('OUTPUT');
         });
 
-        //then no exceptions
+        //then
+        $this->expectNotToPerformAssertions();
     }
 }

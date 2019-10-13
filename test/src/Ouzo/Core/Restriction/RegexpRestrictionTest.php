@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class RegexpRestrictionTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         Config::revertProperty('sql_dialect');

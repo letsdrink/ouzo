@@ -22,14 +22,14 @@ class SyslogLoggerTest extends TestCase
      */
     private $syslogLogProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->syslogLogProvider = Mock::create(SyslogLogProvider::class);
         $this->logger = new SyslogLogger('TEST', 'default', $this->syslogLogProvider);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Config::clearProperty('logger', 'default', 'minimal_levels');
         parent::tearDown();

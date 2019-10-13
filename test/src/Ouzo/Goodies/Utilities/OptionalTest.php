@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\FluentFunctions;
@@ -18,7 +19,7 @@ class MyOptionalClass
     }
 }
 
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class OptionalTest extends TestCase
 {
@@ -202,10 +203,11 @@ class OptionalTest extends TestCase
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function ofShouldThrowExceptionOnNull()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         Optional::of(null);
     }
 

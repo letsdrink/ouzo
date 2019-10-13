@@ -96,7 +96,7 @@ class ToStringBuilderTest extends TestCase
     /** @var ToStringBuilderClass */
     private $toStringBuilderClass;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

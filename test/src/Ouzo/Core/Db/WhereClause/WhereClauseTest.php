@@ -6,6 +6,7 @@
 
 namespace Ouzo\Db\WhereClause;
 
+use InvalidArgumentException;
 use Ouzo\Db\Any;
 use Ouzo\Restrictions;
 
@@ -165,10 +166,11 @@ class WhereClauseTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function shouldFailForNotSupportedParameter()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         WhereClause::create(1);
     }
 }

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class GroupedRouteTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Route::clear();

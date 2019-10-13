@@ -15,13 +15,13 @@ class ControllerGeneratorTest extends TestCase
 {
     private $controllerPath;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->controllerPath = Path::joinWithTemp('UsersController.php');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (Files::exists($this->controllerPath)) {
             Files::delete($this->controllerPath);

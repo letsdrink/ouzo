@@ -112,7 +112,7 @@ class SimpleTestController extends Controller
 
 class ControllerTest extends ControllerTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         StreamStub::register('json');
@@ -121,7 +121,7 @@ class ControllerTest extends ControllerTestCase
         Route::clear();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         StreamStub::unregister();

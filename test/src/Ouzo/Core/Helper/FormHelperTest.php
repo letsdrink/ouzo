@@ -10,7 +10,7 @@ use Ouzo\View;
 
 class FormHelperTest extends DbTransactionalTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         new View('test');
@@ -83,8 +83,8 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals('<input type="text" id="product_name" name="product[name]" value="name &quot;&lt;&amp;"/>', $textField1);
-        $this->assertContains('id="id_new"', $textField2);
-        $this->assertContains('style="color: red;"', $textField3);
+        $this->assertStringContainsString('id="id_new"', $textField2);
+        $this->assertStringContainsString('style="color: red;"', $textField3);
     }
 
     /**
@@ -103,8 +103,8 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals('<textarea id="product_name" name="product[name]">name</textarea>', $textArea1);
-        $this->assertContains('id="id_new"', $textField2);
-        $this->assertContains('rows="12" cols="10" style="color: red;"', $textField3);
+        $this->assertStringContainsString('id="id_new"', $textField2);
+        $this->assertStringContainsString('rows="12" cols="10" style="color: red;"', $textField3);
     }
 
     /**
@@ -126,7 +126,7 @@ class FormHelperTest extends DbTransactionalTestCase
             '<select id="product_id_category" name="product[id_category]"><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>',
             $selectField1
         );
-        $this->assertContains('id="id_new"', $selectField2);
+        $this->assertStringContainsString('id="id_new"', $selectField2);
     }
 
     /**
@@ -221,8 +221,8 @@ class FormHelperTest extends DbTransactionalTestCase
         $form = formTag('/users/add', $method);
 
         //then
-        $this->assertContains('method="POST"', $form);
-        $this->assertContains('name="_method" value="' . $method . '"', $form);
+        $this->assertStringContainsString('method="POST"', $form);
+        $this->assertStringContainsString('name="_method" value="' . $method . '"', $form);
     }
 
     /**
@@ -236,8 +236,8 @@ class FormHelperTest extends DbTransactionalTestCase
         $form = formTag('/users/add', $method);
 
         //then
-        $this->assertContains('method="' . $method . '"', $form);
-        $this->assertNotContains('value="' . $method . '" name="_method"', $form);
+        $this->assertStringContainsString('method="' . $method . '"', $form);
+        $this->assertStringNotContainsString('value="' . $method . '" name="_method"', $form);
     }
 
     /**

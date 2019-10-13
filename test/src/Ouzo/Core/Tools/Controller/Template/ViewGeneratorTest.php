@@ -14,13 +14,13 @@ class ViewGeneratorTest extends TestCase
 {
     private $path;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->path = Path::joinWithTemp('users');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         DeleteDirectory::recursive($this->path);
         parent::tearDown();

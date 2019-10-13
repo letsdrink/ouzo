@@ -34,7 +34,7 @@ class PrivateGetConfigMethod
 
 class ConfigTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $_SESSION['config']['debug'] = false;
         $_SESSION['config']['language'] = 'pl';
@@ -42,7 +42,7 @@ class ConfigTest extends TestCase
         $_SESSION['config']['global']['prefix_system'] = '/sample';
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         Config::overrideProperty('debug')->with(true);
         Config::overrideProperty('language')->with('en');
@@ -239,10 +239,11 @@ TEMPLATE;
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function revertOnNonExistingKeyShouldThrowException()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         Config::revertProperty('key', 'does', 'not', 'exist');
     }
 
@@ -293,34 +294,34 @@ TEMPLATE;
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Custom config must be a object
      */
     public function shouldThrowExceptionWhenConfigMethodIsNotAnObject()
     {
-        //when
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Custom config must be a object');
+
         Config::registerConfig('config');
     }
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Custom config object must have getConfig method
      */
     public function shouldThrowExceptionWhenTryToAddCustomConfigWithoutGetConfigMethod()
     {
-        //when
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Custom config object must have getConfig method');
+
         Config::registerConfig(new NoGetConfigMethod());
     }
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Custom config method getConfig must be public
      */
     public function shouldThrowExceptionWhenTryToAddCustomConfigWhenGetConfigMethodIsNotPublic()
     {
-        //when
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Custom config method getConfig must be public');
+
         Config::registerConfig(new PrivateGetConfigMethod());
     }
 }

@@ -13,10 +13,24 @@ use PHPUnit\Framework\TestCase;
 class RequestHeadersTest extends TestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         RequestHeaders::clearCache();
+        unset($_SERVER['HTTP_ACCEPT']);
+        unset($_SERVER['HTTP_ACCEPT_CHARSET']);
+        unset($_SERVER['HTTP_ACCEPT_ENCODING']);
+        unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        unset($_SERVER['HTTP_CACHE_CONTROL']);
+        unset($_SERVER['HTTP_CONNECTION']);
+        unset($_SERVER['HTTP_COOKIE']);
+        unset($_SERVER['HTTP_HOST']);
+        unset($_SERVER['HTTP_USER_AGENT']);
+        unset($_SERVER['HTTP_CLIENT_IP']);
+        unset($_SERVER['REMOTE_ADDR']);
+        unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+        unset($_SERVER['HTTP_REFERER']);
+        unset($_SERVER['HTTP_X_CSRFTOKEN']);
     }
 
     /**

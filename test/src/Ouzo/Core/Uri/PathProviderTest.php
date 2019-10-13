@@ -3,12 +3,22 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Uri\PathProvider;
 
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class PathProviderTest extends TestCase
 {
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        unset($_SERVER['REDIRECT_URL']);
+        unset($_SERVER['REDIRECT_QUERY_STRING']);
+        unset($_SERVER['REQUEST_URI']);
+    }
+
     /**
      * @test
      */

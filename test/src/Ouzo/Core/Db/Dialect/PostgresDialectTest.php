@@ -18,7 +18,7 @@ class PostgresDialectTest extends TestCase
      */
     private $dialect;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dialect = new PostgresDialect();
     }

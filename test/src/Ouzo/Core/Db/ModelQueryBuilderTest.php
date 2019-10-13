@@ -28,7 +28,7 @@ use Ouzo\Utilities\Functions;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $_SESSION = [];
@@ -951,10 +951,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
     /**
      * @test
-     * @expectedException \Ouzo\DbException
      */
     public function shouldThrowExceptionOnInvalidQuery()
     {
+        $this->expectException(DbException::class);
+
         Product::select('non existing column')->where()->fetchAll();
     }
 
@@ -1333,10 +1334,11 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
     /**
      * @test
-     * @expectedException \Ouzo\DbException
      */
     public function shouldThrowExceptionForGroupByWithoutSelect()
     {
+        $this->expectException(DbException::class);
+
         Product::where()->groupBy('id_category');
     }
 

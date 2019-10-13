@@ -19,7 +19,7 @@ class StdOutputLoggerTest extends TestCase
      */
     private $logger;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Clock::freeze('2014-01-01 11:11:11');
@@ -27,7 +27,7 @@ class StdOutputLoggerTest extends TestCase
         $this->logger = new StdOutputLogger('TEST', 'default', 'test');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Config::clearProperty('logger', 'default', 'minimal_levels');
         StreamStub::unregister();

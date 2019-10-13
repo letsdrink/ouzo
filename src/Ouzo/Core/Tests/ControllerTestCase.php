@@ -37,7 +37,29 @@ class ControllerTestCase extends DbTransactionalTestCase
         parent::__construct($name, $data, $dataName);
     }
 
-    public function tearDown()
+    public function setUp(): void
+    {
+        parent::setUp();
+        $_GET = [];
+        $_POST = [];
+        $_SESSION = [];
+        $_REQUEST = [];
+        $_ENV = [];
+        $_FILES = [];
+        $_COOKIE = [];
+        unset($_SERVER['REDIRECT_URL']);
+        unset($_SERVER['REQUEST_URI']);
+        unset($_SERVER['REDIRECT_QUERY_STRING']);
+        unset($_SERVER['HTTP_ACCEPT']);
+        unset($_SERVER['HTTP_CLIENT_IP']);
+        unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+        unset($_SERVER['HTTP_X_REQUESTED_WITH']);
+        unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
+        unset($_SERVER['HTTPS']);
+        unset($_SERVER['REMOTE_ADDR']);
+    }
+
+    public function tearDown(): void
     {
         parent::tearDown();
         FrontController::$requestId = null;

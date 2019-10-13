@@ -18,14 +18,14 @@ use Ouzo\Utilities\Arrays;
 
 class FrontControllerTest extends ControllerTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         Route::clear();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');

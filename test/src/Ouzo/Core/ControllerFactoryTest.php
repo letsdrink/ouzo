@@ -38,7 +38,7 @@ class ControllerFactoryTest extends TestCase
     /** @var Uri */
     private $uri;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
@@ -46,7 +46,7 @@ class ControllerFactoryTest extends TestCase
         $this->uri = new Uri(new PathProvider());
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         Config::clearProperty('namespace', 'controller');

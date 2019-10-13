@@ -9,7 +9,7 @@ class ModelOrderedRelationTest extends DbTransactionalTestCase
 {
     private $_category;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->_category = Category::create(['name' => 'sony']);
