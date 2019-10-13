@@ -2,12 +2,11 @@ dist: trusty
 language: php
 
 php:
-    - 5.6
     - 7.0
     - 7.1
     - 7.2
     - 7.3
-    - hhvm
+    - nightly
 
 env:
     - db=postgres
@@ -17,10 +16,7 @@ env:
 matrix:
     fast_finish: true
     allow_failures:
-        - php: hhvm
-    exclude:
-      - php: hhvm
-        env: db=postgres
+        - php: nightly
 
 addons:
     postgresql: "9.5"
