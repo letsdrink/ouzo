@@ -12,6 +12,7 @@ Enhancements:
 * [DI] Added constructor injection for arguments with types defined (issue #265).
 * [DI] Implemented injection of private fields for parent class.
 * [DI] Implemented injection through factory class.
+* [DI] Implemented lazy loading for singleton classes.
 * [Utilities] Added equalsIgnoreCase to Functions and FluentFunctions (issue #263).
 * [Utilities] Fixed Clock to support DST changes when adding hours, minutes or seconds.
 * [Utilities] Added ToStringBuilder in the apache-commons style.

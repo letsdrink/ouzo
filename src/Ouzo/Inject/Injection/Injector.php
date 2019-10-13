@@ -8,6 +8,7 @@ namespace Ouzo\Injection;
 
 use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
 use Ouzo\Injection\Annotation\DocCommentExtractor;
+use Ouzo\Injection\Creator\EagerInstanceCreator;
 
 class Injector
 {
@@ -28,7 +29,12 @@ class Injector
     {
         $this->injectorConfig = $config ?: new InjectorConfig();
         $this->bindings = new Bindings($this->injectorConfig, $this);
-        $this->factory = new InstanceFactory($this->bindings, $provider ?: new DocCommentExtractor());
+        $this->factory = new InstanceFactory(
+            $this->bindings,
+            $provider ?: new DocCommentExtractor(),
+            new EagerInstanceCreator(),
+            $this->injectorConfig->getLazyInstanceCreator()
+        );
         $this->repository = new InstanceRepository($this->bindings);
     }
 

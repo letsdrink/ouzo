@@ -81,6 +81,23 @@ class InjectorTest extends TestCase
     /**
      * @test
      */
+    public function shouldCreateEagerSingleton()
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->bind(ClassWithNoDep::class)->asEagerSingleton();
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance(ClassWithNoDep::class);
+
+        //then
+        $this->assertInstanceOf(ClassWithNoDep::class, $instance);
+    }
+
+    /**
+     * @test
+     */
     public function shouldInjectDependency()
     {
         //when

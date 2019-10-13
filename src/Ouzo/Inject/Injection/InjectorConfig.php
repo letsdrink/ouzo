@@ -5,12 +5,16 @@
  */
 namespace Ouzo\Injection;
 
+use Ouzo\Injection\Creator\EagerInstanceCreator;
+use Ouzo\Injection\Creator\InstanceCreator;
 use Ouzo\Utilities\Arrays;
 
 class InjectorConfig
 {
     /** @var Binder[] */
     private $binders = [];
+    /** @var InstanceCreator */
+    private $lazyInstanceCreator;
 
     /**
      * @param string $className
@@ -43,5 +47,21 @@ class InjectorConfig
     {
         $binder = Arrays::getValue($this->binders, $className . '_' . $name);
         return $binder ?: new Binder($className, $name);
+    }
+
+    /**
+     * @param InstanceCreator $lazyInstanceCreator
+     */
+    public function setLazyInstanceCreator(InstanceCreator $lazyInstanceCreator)
+    {
+        $this->lazyInstanceCreator = $lazyInstanceCreator;
+    }
+
+    /**
+     * @return InstanceCreator
+     */
+    public function getLazyInstanceCreator()
+    {
+        return $this->lazyInstanceCreator ?: new EagerInstanceCreator();
     }
 }

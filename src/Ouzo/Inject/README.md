@@ -114,3 +114,20 @@ class MyClass
     }
 }
 ```
+
+By default all singletons will be lazy loaded IF lazy loading is enabled in configuration.
+Enabling it with ProxyManager (https://github.com/Ocramius/ProxyManager) implementation:
+
+```php
+$lazyCreator = new ProxyManagerInstanceCreator(new Configuration())
+
+$config = new InjectorConfig();
+$config->setLazyInstanceCreator($lazyCreator);
+```
+
+If you want your singletons to be loaded eagerly use `asEagerSingleton` method:
+
+```php
+$config = new InjectorConfig();
+$config->bind('\MyClass')->asEagerSingleton();
+```

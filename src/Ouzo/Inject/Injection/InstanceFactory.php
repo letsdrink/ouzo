@@ -3,9 +3,11 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Injection;
 
 use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
+use Ouzo\Injection\Creator\InstanceCreator;
 use Ouzo\Utilities\Arrays;
 use ReflectionClass;
 
@@ -15,25 +17,37 @@ class InstanceFactory
     private $bindings;
     /** @var AnnotationMetadataProvider */
     private $provider;
+    /** @var InstanceCreator */
+    private $eagerInstanceCreator;
+    /** @var InstanceCreator */
+    private $lazyInstanceCreator;
 
     /**
      * @param Bindings $bindings
      * @param AnnotationMetadataProvider $provider
+     * @param InstanceCreator $eagerInstanceCreator
+     * @param InstanceCreator $lazyInstanceCreator
      */
-    public function __construct(Bindings $bindings, AnnotationMetadataProvider $provider)
+    public function __construct(Bindings $bindings,
+                                AnnotationMetadataProvider $provider,
+                                InstanceCreator $eagerInstanceCreator,
+                                InstanceCreator $lazyInstanceCreator)
     {
         $this->bindings = $bindings;
         $this->provider = $provider;
+        $this->eagerInstanceCreator = $eagerInstanceCreator;
+        $this->lazyInstanceCreator = $lazyInstanceCreator;
     }
 
     /**
      * @param InstanceRepository $repository
      * @param string $className
+     * @param bool $eager
      * @return object
      */
-    public function createInstance(InstanceRepository $repository, $className)
+    public function createInstance(InstanceRepository $repository, $className, $eager = true)
     {
-        $instance = $this->constructInstance($repository, $className);
+        $instance = $this->constructInstance($repository, $className, $eager);
         $this->injectDependencies($repository, $instance);
         return $instance;
     }
@@ -70,16 +84,16 @@ class InstanceFactory
     /**
      * @param InstanceRepository $repository
      * @param string $className
+     * @param bool $eager
      * @return object
      */
-    private function constructInstance(InstanceRepository $repository, $className)
+    private function constructInstance(InstanceRepository $repository, $className, $eager = true)
     {
         $arguments = $this->getConstructorArguments($repository, $className);
-        if ($arguments) {
-            $class = new ReflectionClass($className);
-            return $class->newInstanceArgs($arguments);
+        if ($eager) {
+            return $this->eagerInstanceCreator->create($className, $arguments);
         }
-        return new $className;
+        return $this->lazyInstanceCreator->create($className, $arguments);
     }
 
     /**

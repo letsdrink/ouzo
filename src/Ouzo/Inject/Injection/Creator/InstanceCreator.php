@@ -4,9 +4,10 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-namespace Ouzo\Injection;
+namespace Ouzo\Injection\Creator;
 
-interface Factory
+
+interface InstanceCreator
 {
-    public function create();
+    public function create($className, $arguments);
 }

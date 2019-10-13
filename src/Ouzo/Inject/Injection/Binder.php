@@ -20,6 +20,8 @@ class Binder
     private $name;
     /** @var string */
     private $factoryClassName;
+    /** @var boolean */
+    private $eager = false;
 
     /**
      * @param string $className
@@ -38,6 +40,16 @@ class Binder
     public function in($scope)
     {
         $this->scope = $scope;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function asEagerSingleton()
+    {
+        $this->scope = Scope::SINGLETON;
+        $this->eager = true;
         return $this;
     }
 
@@ -117,5 +129,13 @@ class Binder
     public function getFactoryClassName()
     {
         return $this->factoryClassName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEager()
+    {
+        return $this->eager;
     }
 }

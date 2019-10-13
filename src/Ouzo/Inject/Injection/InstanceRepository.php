@@ -14,7 +14,6 @@ class InstanceRepository
     private $instances = [];
     /** @var object[] */
     private $factoryInstances = [];
-
     /** @var Bindings */
     private $bindings;
 
@@ -48,7 +47,7 @@ class InstanceRepository
         $className = $binder->getBoundClassName() ?: $binder->getClassName();
         $scope = $binder->getScope();
         if ($scope == Scope::SINGLETON) {
-            return $this->singletonInstance($factory, $className);
+            return $this->singletonInstance($factory, $className, $binder->isEager());
         }
         if ($scope == Scope::PROTOTYPE) {
             return $factory->createInstance($this, $className);
@@ -59,14 +58,15 @@ class InstanceRepository
     /**
      * @param InstanceFactory $factory
      * @param $className
+     * @param bool $eager
      * @return object
      */
-    public function singletonInstance(InstanceFactory $factory, $className)
+    public function singletonInstance(InstanceFactory $factory, $className, $eager)
     {
         if (isset($this->instances[$className])) {
             return $this->instances[$className];
         }
-        $instance = $factory->createInstance($this, $className);
+        $instance = $factory->createInstance($this, $className, $eager);
         $this->instances[$className] = $instance;
         return $instance;
     }
