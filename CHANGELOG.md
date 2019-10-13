@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-INCOMING
+Release 1.7.0
 --------
 Enhancements:
 * [ORM] Model implements Serializable and JsonSerializable interfaces (issue #203).
@@ -12,10 +12,17 @@ Enhancements:
 * [DI] Added constructor injection for arguments with types defined (issue #265).
 * [DI] Implemented injection of private fields for parent class.
 * [DI] Implemented injection through factory class.
+* [DI] Implemented named parameters for constructor injection.
 * [DI] Implemented lazy loading for singleton classes.
+* [DI] Added module loader.
 * [Utilities] Added equalsIgnoreCase to Functions and FluentFunctions (issue #263).
-* [Utilities] Fixed Clock to support DST changes when adding hours, minutes or seconds.
 * [Utilities] Added ToStringBuilder in the apache-commons style.
+
+Bug fixes:
+* [Utilities] Fixed Clock to support DST changes when adding hours, minutes or seconds.
+* [Utilities] Fixed Arrays::getNestedValue when keys lead to non-existing element with scalar parent.
+* [MVC] Added clearstatcache before downloading files.
+* [Tests] Fixed handling of null return type for mock objects.
 
 Release 1.6.1
 --------
