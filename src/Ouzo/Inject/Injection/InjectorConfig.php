@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Injection;
 
 use Ouzo\Injection\Creator\EagerInstanceCreator;
@@ -15,6 +16,13 @@ class InjectorConfig
     private $binders = [];
     /** @var InstanceCreator */
     private $lazyInstanceCreator;
+    /** @var InstanceCreator */
+    private $eagerInstanceCreator;
+
+    public function __construct()
+    {
+        $this->lazyInstanceCreator = $this->eagerInstanceCreator = new EagerInstanceCreator();
+    }
 
     /**
      * @param string $className
@@ -58,10 +66,26 @@ class InjectorConfig
     }
 
     /**
+     * @param InstanceCreator $eagerInstanceCreator
+     */
+    public function setEagerInstanceCreator(InstanceCreator $eagerInstanceCreator)
+    {
+        $this->eagerInstanceCreator = $eagerInstanceCreator;
+    }
+
+    /**
      * @return InstanceCreator
      */
     public function getLazyInstanceCreator()
     {
-        return $this->lazyInstanceCreator ?: new EagerInstanceCreator();
+        return $this->lazyInstanceCreator;
+    }
+
+    /**
+     * @return InstanceCreator
+     */
+    public function getEagerInstanceCreator()
+    {
+        return $this->eagerInstanceCreator;
     }
 }

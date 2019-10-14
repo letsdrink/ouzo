@@ -91,7 +91,7 @@ class InstanceFactory
      */
     private function constructInstance(InstanceRepository $repository, $className, $eager = true)
     {
-        if ($eager) {
+        if ($eager || $this->lazyInstanceCreator === $this->eagerInstanceCreator) {
             $arguments = $this->getConstructorArguments($repository, $className);
             return $this->eagerInstanceCreator->create($className, $arguments, $repository, $this);
         }
