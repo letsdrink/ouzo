@@ -48,7 +48,9 @@ class InstanceFactory
     public function createInstance(InstanceRepository $repository, $className, $eager = true)
     {
         $instance = $this->constructInstance($repository, $className, $eager);
-        $this->injectDependencies($repository, $instance);
+        if ($eager) {
+            $this->injectDependencies($repository, $instance);
+        }
         return $instance;
     }
 
@@ -89,11 +91,11 @@ class InstanceFactory
      */
     private function constructInstance(InstanceRepository $repository, $className, $eager = true)
     {
-        $arguments = $this->getConstructorArguments($repository, $className);
         if ($eager) {
-            return $this->eagerInstanceCreator->create($className, $arguments);
+            $arguments = $this->getConstructorArguments($repository, $className);
+            return $this->eagerInstanceCreator->create($className, $arguments, $repository, $this);
         }
-        return $this->lazyInstanceCreator->create($className, $arguments);
+        return $this->lazyInstanceCreator->create($className, null, $repository, $this);
     }
 
     /**

@@ -7,8 +7,12 @@
 namespace Ouzo\Injection\Creator;
 
 
+use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
+use Ouzo\Injection\Bindings;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
+use Ouzo\Injection\InstanceFactory;
+use Ouzo\Injection\InstanceRepository;
 use Ouzo\Injection\Scope;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
@@ -25,10 +29,10 @@ class ProxyManagerInstanceCreatorTest extends TestCase
     {
         // given
         self::$constructorInvoked = false;
-        $creator = new ProxyManagerInstanceCreator(new Configuration());
+        $injector = $this->createInjector();
 
         //when
-        $instance = $creator->create(ProxyManagerTestClass::class, null);
+        $instance = $injector->getInstance(ProxyManagerTestClass::class);
 
         //then
         $this->assertInstanceOf(ProxyManagerTestClass::class, $instance);
@@ -42,8 +46,8 @@ class ProxyManagerInstanceCreatorTest extends TestCase
     {
         // given
         self::$constructorInvoked = false;
-        $creator = new ProxyManagerInstanceCreator(new Configuration());
-        $instance = $creator->create(ProxyManagerTestClass::class, null);
+        $injector = $this->createInjector();
+        $instance = $injector->getInstance(ProxyManagerTestClass::class);
 
         //when
         unset($instance->field);
@@ -55,14 +59,11 @@ class ProxyManagerInstanceCreatorTest extends TestCase
     /**
      * @test
      */
-    public function shouldLazyCreateInstanceViaInjector()
+    public function shouldLazyCreateMultipleInstances()
     {
         //given
         self::$constructorInvoked = false;
-        $config = new InjectorConfig();
-        $config->setLazyInstanceCreator(new ProxyManagerInstanceCreator(new Configuration()));
-        $config->bind(ProxyManagerTestClass::class)->in(Scope::SINGLETON);
-        $injector = new Injector($config);
+        $injector = $this->createInjector();
         $instance1 = $injector->getInstance(ProxyManagerTestClass::class);
 
         //when
@@ -73,5 +74,13 @@ class ProxyManagerInstanceCreatorTest extends TestCase
         $this->assertInstanceOf(ProxyManagerTestClass::class, $instance2);
         $this->assertSame($instance1, $instance2);
         $this->assertFalse(self::$constructorInvoked);
+    }
+
+    private function createInjector(): Injector
+    {
+        $config = new InjectorConfig();
+        $config->setLazyInstanceCreator(new ProxyManagerInstanceCreator(new Configuration()));
+        $config->bind(ProxyManagerTestClass::class)->in(Scope::SINGLETON);
+        return new Injector($config);
     }
 }

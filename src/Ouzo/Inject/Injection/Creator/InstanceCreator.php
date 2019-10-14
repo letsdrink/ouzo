@@ -7,7 +7,10 @@
 namespace Ouzo\Injection\Creator;
 
 
+use Ouzo\Injection\InstanceFactory;
+use Ouzo\Injection\InstanceRepository;
+
 interface InstanceCreator
 {
-    public function create($className, $arguments);
+    public function create(string $className, array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory);
 }

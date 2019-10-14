@@ -7,11 +7,13 @@
 namespace Ouzo\Injection\Creator;
 
 
+use Ouzo\Injection\InstanceFactory;
+use Ouzo\Injection\InstanceRepository;
 use ReflectionClass;
 
 class EagerInstanceCreator implements InstanceCreator
 {
-    public function create($className, $arguments)
+    public function create(string $className, array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory)
     {
         if ($arguments) {
             $class = new ReflectionClass($className);
