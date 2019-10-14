@@ -13,7 +13,7 @@ use ReflectionClass;
 
 class EagerInstanceCreator implements InstanceCreator
 {
-    public function create(string $className, array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory)
+    public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory)
     {
         if ($arguments) {
             $class = new ReflectionClass($className);

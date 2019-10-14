@@ -23,7 +23,7 @@ class ProxyManagerInstanceCreator implements InstanceCreator
         $this->factory = new LazyLoadingValueHolderFactory($configuration);
     }
 
-    public function create(string $className, array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory)
+    public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory)
     {
         return $this->factory->createProxy(
             $className,

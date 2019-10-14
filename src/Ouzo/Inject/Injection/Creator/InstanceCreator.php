@@ -12,5 +12,5 @@ use Ouzo\Injection\InstanceRepository;
 
 interface InstanceCreator
 {
-    public function create(string $className, array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory);
+    public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory);
 }
