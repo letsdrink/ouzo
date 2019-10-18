@@ -161,14 +161,22 @@ class RouteRule
 
     private function prepareResourceControllerName()
     {
-        $parts = explode('_', $this->controller);
-        if (in_array($this->action, ['index', 'create'])) {
-            $suffix = array_pop($parts);
-        } else {
-            $suffix = Inflector::singularize(array_pop($parts));
+        $controllerParts = explode('/', $this->controller);
+        $result = [];
+
+        foreach ($controllerParts as $controllerPart) {
+            $parts = explode('_', $controllerPart);
+            if (in_array($this->action, ['index', 'create'])) {
+                $suffix = array_pop($parts);
+            } else {
+                $suffix = Inflector::singularize(array_pop($parts));
+            }
+            array_push($parts, $suffix);
+            $result[] = implode('_', $parts);
         }
-        $parts[] = $suffix;
-        return implode('_', $parts);
+
+        rsort($result);
+        return implode('_', $result);
     }
 
     private function getNameToNonRest()
@@ -178,8 +186,7 @@ class RouteRule
 
     private function handleNestedResource()
     {
-        $controller = $this->controller;
-        $parts = explode('/', $controller);
+        $parts = explode('/', $this->controller);
         rsort($parts);
         return implode('_', $parts);
     }

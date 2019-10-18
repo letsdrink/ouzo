@@ -410,6 +410,38 @@ class RouteTest extends TestCase
     /**
      * @test
      */
+    public function shouldGenerateNameForNestedRoute()
+    {
+        //given
+        Route::post('/users/save', 'admin/users#saveMyUser');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        $this->assertEquals('saveMyUserUsersAdminPath', $routes[0]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateNameForNestedResourceRoute()
+    {
+        //given
+        Route::resource('admin/users');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        Assert::thatArray($routes)
+            ->onMethod('getName')
+            ->contains('usersAdminPath', 'freshUserAdminPath', 'editUserAdminPath', 'userAdminPath');
+    }
+
+    /**
+     * @test
+     */
     public function shouldAddPutRoute()
     {
         //given
