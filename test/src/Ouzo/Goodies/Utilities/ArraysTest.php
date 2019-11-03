@@ -1306,4 +1306,24 @@ class ArraysTest extends TestCase
     {
         $this->assertEmpty(Arrays::shuffle([]));
     }
+
+    /**
+     * @test
+     */
+    public function shouldGetDuplicates()
+    {
+        $this->assertEquals(['a', 'b', 'd'], Arrays::getDuplicates(['1', 'a', 'b', 'c', 'd', 'b', 'b', 'd', 'b', 'd', 'a']));
+        $this->assertEmpty(Arrays::getDuplicates(['a', 'b', 'c']));
+        $this->assertEmpty(Arrays::getDuplicates([]));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetDuplicatesAssoc()
+    {
+        $this->assertEquals([2 => 'a', 3 => 'b', 6 => 'c'], Arrays::getDuplicatesAssoc(['1', '2', 'a', 'b', '3', 'b', 'c', 'b', 'c', 'b', 'c', 'a']));
+        $this->assertEmpty(Arrays::getDuplicatesAssoc(['a', 'b', 'c']));
+        $this->assertEmpty(Arrays::getDuplicatesAssoc([]));
+    }
 }

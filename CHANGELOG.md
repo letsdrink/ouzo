@@ -6,6 +6,10 @@ INCOMING
 
 Support for PHP 5.6 is dropped. Minimal PHP version required is 7.2.
 
+Enhancements:
+* [Utilities] Added `Arrays.getDuplicates()`, `Arrays.getDuplicatesAssoc()`.
+* [Utilities] Added `FluentArray.getDuplicates()`, `FluentArray.getDuplicatesAssoc()`.
+
 Release 1.7.0
 --------
 Enhancements:

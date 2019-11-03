@@ -970,9 +970,55 @@ Returns a random element from the given array.
 **Example:**
 ::
 
-    $array = ['john', 'city', 'small'[;
+    $array = ['john', 'city', 'small'];
     $rand = Arrays::randElement($array);
 
 **Result:** *rand element from array*
 
 ----
+
+getDuplicates
+~~~~~~~~~~~~~
+Returns only duplicated values from an array, based on the first duplicate found.
+
+**Parameters:** ``array $elements``
+
+**Example:**
+::
+
+    $array = ['a', 'b', 'd', 'c', 'b', 'b', 'c', 'b', 'c', 'a'];
+    $duplicates = Arrays::getDuplicatesAssoc($array);
+
+**Result:**
+::
+
+  Array
+  (
+      [0] => a
+      [1] => b
+      [2] => c
+  )
+
+----
+
+getDuplicatesAssoc
+~~~~~~~~~~~~~~~~~~~
+Returns only duplicated values from an array, preserving key-value pairs, based on the first duplicate found.
+
+**Parameters:** ``array $elements``
+
+**Example:**
+::
+
+    $array = ['1', '2', 'a', 'b', '3', 'b', 'c', 'b', 'c', 'b', 'c', 'a'];
+    $duplicates = Arrays::getDuplicatesAssoc($array);
+
+**Result:**
+::
+
+  Array
+  (
+      [2] => a
+      [3] => b
+      [6] => c
+  )
