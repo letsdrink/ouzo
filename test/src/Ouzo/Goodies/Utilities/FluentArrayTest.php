@@ -10,7 +10,7 @@ use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class FluentArrayTest extends TestCase
 {
@@ -317,5 +317,35 @@ class FluentArrayTest extends TestCase
 
         //then
         $this->assertEquals(['a' , 'b' , 'c' ], $newArray);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetDuplicates()
+    {
+        //given
+        $array = ['a', 'b', 'c', 'b', 'c', 'b'];
+
+        //when
+        $result = FluentArray::from($array)->getDuplicates()->toArray();
+
+        //then
+        $this->assertEquals(['b', 'c'], $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetDuplicatesAssoc()
+    {
+        //given
+        $array = ['a', 'b', 'd', 'c', 'b', 'c', 'b'];
+
+        //when
+        $result = FluentArray::from($array)->getDuplicatesAssoc()->toArray();
+
+        //then
+        $this->assertEquals([1 => 'b', 3 => 'c'], $result);
     }
 }
