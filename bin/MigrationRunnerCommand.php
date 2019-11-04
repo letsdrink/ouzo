@@ -1,0 +1,223 @@
+<?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+
+namespace Command;
+
+use Exception;
+use Ouzo\Config;
+use Ouzo\Db;
+use Ouzo\Db\TransactionalProxy;
+use Ouzo\Migration;
+use Ouzo\MigrationFailedException;
+use Ouzo\SchemaMigration;
+use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Clock;
+use Ouzo\Utilities\Functions;
+use Ouzo\Utilities\Objects;
+use Ouzo\Utilities\Strings;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+
+class MigrationRunnerCommand extends Command
+{
+    /* @var InputInterface */
+    private $input;
+    /* @var OutputInterface */
+    private $output;
+    /* @var bool */
+    private $commitEarly;
+    /* @var bool */
+    private $force;
+    /* @var bool */
+    private $init;
+    /* @var string */
+    private $dir;
+    /* @var bool */
+    private $reset;
+
+    public function configure()
+    {
+        $this->setName('migration:run')
+            ->addOption('commit_early', 'c', InputOption::VALUE_NONE, 'Commit after each migration')
+            ->addOption('reset', 'r', InputOption::VALUE_NONE, 'Remove all previous migrations')
+            ->addOption('init', 'i', InputOption::VALUE_NONE, 'Add schema_migrations table')
+            ->addOption('dir', 'd', InputOption::VALUE_REQUIRED, 'Directories with migrations (separated by comma)')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force confirmation');
+    }
+
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->input = $input;
+        $this->output = $output;
+        $this->commitEarly = $this->input->getOption('commit_early') ? true : false;
+        $this->force = $this->input->getOption('force') ? true : false;
+        $this->init = $this->input->getOption('init') ? true : false;
+        $this->dir = $this->input->getOption('dir') ?: '';
+        $this->reset = $this->input->getOption('reset') ? true : false;
+
+        $this->migrate();
+    }
+
+    private function migrate()
+    {
+        $dbname = Config::getValue('db', 'dbname');
+
+        $this->output->writeln('=======================================================');
+        $this->output->writeln(" Database: " . $dbname);
+        $this->output->writeln("  Commit early = " . Objects::toString($this->commitEarly));
+        $this->output->writeln("  Directory = " . $this->dir);
+        $this->output->writeln("  Initialize = " . Objects::toString($this->commitEarly));
+        $this->output->writeln("  Force = " . Objects::toString($this->init));
+        $this->output->writeln("  Reset = " . Objects::toString($this->reset));
+        $this->output->writeln('=======================================================');
+        $this->output->writeln('');
+
+        $db = $this->connectToDatabase($dbname);
+        $this->initMigrations($db);
+        $this->resetMigrations();
+
+        $this->output->writeln("\nMigrations to apply:");
+        $migrations = $this->loadMigrations();
+        $this->output->writeln('');
+
+        if (empty($migrations)) {
+            $this->output->writeln('None. Bye!');
+            return 0;
+        }
+
+        if (!$this->force) {
+            $helper = $this->getHelper('question');
+            $question = new ConfirmationQuestion('Do you want to continue? [y/n] ', false);
+            $question->setMaxAttempts(1);
+            if (!$helper->ask($this->input, $this->output, $question)) {
+                $this->output->writeln('What a bummer. Bye!');
+                return 0;
+            }
+        }
+
+        try {
+            $self = $this->commitEarly ? $this : TransactionalProxy::newInstance($this);
+            $self->runAll($db, $migrations);
+            $this->output->writeln("\n\n<info>That's all. Bye!</info>");
+            return 0;
+        } catch (MigrationFailedException $ex) {
+            $this->output->writeln("\n<error>Error</error>");
+            $this->output->writeln("Could not apply migration {$ex->getClassName()} version {$ex->getVersion()}: {$ex->getMessage()}");
+            $this->output->writeln($ex->getPrevious()->getTraceAsString());
+            return 1;
+        }
+    }
+
+    public function runAll(Db $db, array $migrations): void
+    {
+        $progressBar = $this->createProgressBar(count($migrations));
+
+        foreach ($migrations as $migration) {
+            list($className, $version) = $migration;
+            $progressBar->setMessage("[$version] $className");
+            try {
+                $db->runInTransaction(function () use ($className, $version, $db) {
+                    $this->runSingleMigration($db, $className, $version);
+                });
+            } catch (Exception $ex) {
+                throw new MigrationFailedException($ex, $className, $version);
+            }
+            $progressBar->advance();
+        }
+
+        $progressBar->finish();
+    }
+
+    private function runSingleMigration(Db $db, $className, $version): void
+    {
+        /** @var Migration $migration */
+        $migration = new $className;
+        $migration->run($db);
+        SchemaMigration::create(['version' => $version, 'applied_at' => Clock::nowAsString()]);
+    }
+
+    private function loadMigrations(): array
+    {
+        $versions = Arrays::map(SchemaMigration::all(), Functions::extract()->version);
+
+        $migrations = [];
+        $dirs = explode(',', $this->dir);
+        foreach ($dirs as $dir) {
+            $migrations = array_merge($migrations, $this->loadMigrationsFromDir($dir, $versions));
+        }
+        return $migrations;
+    }
+
+    private function createProgressBar(int $max): ProgressBar
+    {
+        ProgressBar::setFormatDefinition(
+            'normal',
+            "<info>Applying migration</info> <fg=cyan>%message%</>\n%current%/%max% [%bar%] %percent:3s%%"
+        );
+        $progress = new ProgressBar($this->output, $max);
+        $progress->setMessage('');
+        $progress->start();
+        return $progress;
+    }
+
+    private function initMigrations(Db $db): void
+    {
+        if ($this->init) {
+            $this->output->write("<info>Initializing migrations... </info>");
+            $db->execute("CREATE TABLE schema_migrations(
+                id SERIAL PRIMARY KEY,
+                version TEXT,
+                applied_at TIMESTAMP
+            )");
+            $this->output->writeln('<comment>DONE</comment>');
+        }
+    }
+
+    private function connectToDatabase($dbname): Db
+    {
+        $this->output->write("<info>Connecting to db {$dbname}... </info>");
+        $db = Db::getInstance();
+        $this->output->writeln('<comment>DONE</comment>');
+        return $db;
+    }
+
+    private function loadMigrationsFromDir(string $dir, array $versions): array
+    {
+        if (empty($dir)) {
+            return [];
+        }
+        if (!file_exists($dir)) {
+            throw new Exception("Migration directory `{$dir}` does not exist.");
+        }
+        $migrations = [];
+        $files = scandir($dir, 0);
+        for ($i = 2; $i < count($files); $i++) {
+            $file = $files[$i];
+            $path = $dir . '/' . $file;
+            $version = substr($file, 0, strpos($file, '_'));
+            if (is_file($path) && !in_array($version, $versions)) {
+                include_once($path);
+                $className = Strings::removeSuffix(substr($file, strpos($file, '_') + 1), '.php');
+                $this->output->writeln(" [$version] $className");
+                $migrations[] = [$className, $version];
+            }
+        }
+        return $migrations;
+    }
+
+    private function resetMigrations(): void
+    {
+        if ($this->reset) {
+            $this->output->write("<info>Removing all migrations... </info>");
+            SchemaMigration::where()->deleteAll();
+            $this->output->writeln('<comment>DONE</comment>');
+        }
+    }
+}

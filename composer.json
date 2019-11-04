@@ -27,7 +27,8 @@
       "Ouzo\\": [
         "src/Ouzo/Core",
         "src/Ouzo/Goodies",
-        "src/Ouzo/Inject"
+        "src/Ouzo/Inject",
+        "src/Ouzo/Migrations"
       ],
       "Command\\": "bin/"
     }
