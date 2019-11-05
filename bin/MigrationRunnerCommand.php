@@ -56,6 +56,7 @@ class MigrationRunnerCommand extends Command
             ->addOption('db_pass', 'S', InputOption::VALUE_REQUIRED, 'Database password')
             ->addOption('db_host', 'H', InputOption::VALUE_REQUIRED, 'Database host')
             ->addOption('db_port', 'P', InputOption::VALUE_REQUIRED, 'Database port')
+            ->addOption('db_driver', 'D', InputOption::VALUE_REQUIRED, 'Database driver')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force confirmation');
     }
 
@@ -73,6 +74,7 @@ class MigrationRunnerCommand extends Command
         $this->dbConfig['pass'] = $this->input->getOption('db_pass') ?: Config::getValue('db', 'pass');
         $this->dbConfig['host'] = $this->input->getOption('db_host') ?: Config::getValue('db', 'host');
         $this->dbConfig['port'] = $this->input->getOption('db_port') ?: Config::getValue('db', 'port');
+        $this->dbConfig['driver'] = $this->input->getOption('db_driver') ?: Config::getValue('db', 'driver');
 
         $this->migrate();
     }
@@ -200,8 +202,9 @@ class MigrationRunnerCommand extends Command
     private function connectToDatabase(): Db
     {
         $dbConfig = Objects::toString($this->dbConfig);
+        $db = new Db(false);
         $this->output->write("<info>Connecting to db {$dbConfig}... </info>");
-        $db = Db::getInstance();
+        $db->connectDb($this->dbConfig);
         $this->output->writeln('<comment>DONE</comment>');
         return $db;
     }
