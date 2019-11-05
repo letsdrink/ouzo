@@ -37,10 +37,12 @@ class MigrationRunnerCommand extends Command
     private $force;
     /* @var bool */
     private $init;
-    /* @var string */
-    private $dir;
+    /* @var string[] */
+    private $dirs;
     /* @var bool */
     private $reset;
+    /* @var array */
+    private $dbConfig = [];
 
     public function configure()
     {
@@ -48,7 +50,12 @@ class MigrationRunnerCommand extends Command
             ->addOption('commit_early', 'c', InputOption::VALUE_NONE, 'Commit after each migration')
             ->addOption('reset', 'r', InputOption::VALUE_NONE, 'Remove all previous migrations')
             ->addOption('init', 'i', InputOption::VALUE_NONE, 'Add schema_migrations table')
-            ->addOption('dir', 'd', InputOption::VALUE_REQUIRED, 'Directories with migrations (separated by comma)')
+            ->addOption('dir', 'd', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Directories with migrations (separated by comma)')
+            ->addOption('db_name', 'N', InputOption::VALUE_REQUIRED, 'Database name')
+            ->addOption('db_user', 'U', InputOption::VALUE_REQUIRED, 'Database user')
+            ->addOption('db_pass', 'S', InputOption::VALUE_REQUIRED, 'Database password')
+            ->addOption('db_host', 'H', InputOption::VALUE_REQUIRED, 'Database host')
+            ->addOption('db_port', 'P', InputOption::VALUE_REQUIRED, 'Database port')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force confirmation');
     }
 
@@ -56,30 +63,35 @@ class MigrationRunnerCommand extends Command
     {
         $this->input = $input;
         $this->output = $output;
-        $this->commitEarly = $this->input->getOption('commit_early') ? true : false;
-        $this->force = $this->input->getOption('force') ? true : false;
-        $this->init = $this->input->getOption('init') ? true : false;
-        $this->dir = $this->input->getOption('dir') ?: '';
-        $this->reset = $this->input->getOption('reset') ? true : false;
+        $this->commitEarly = $this->input->getOption('commit_early');
+        $this->force = $this->input->getOption('force');
+        $this->init = $this->input->getOption('init');
+        $this->dirs = $this->input->getOption('dir') ?: ['.'];
+        $this->reset = $this->input->getOption('reset');
+        $this->dbConfig['dbname'] = $this->input->getOption('db_name') ?: Config::getValue('db', 'dbname');
+        $this->dbConfig['user'] = $this->input->getOption('db_user') ?: Config::getValue('db', 'user');
+        $this->dbConfig['pass'] = $this->input->getOption('db_pass') ?: Config::getValue('db', 'pass');
+        $this->dbConfig['host'] = $this->input->getOption('db_host') ?: Config::getValue('db', 'host');
+        $this->dbConfig['port'] = $this->input->getOption('db_port') ?: Config::getValue('db', 'port');
 
         $this->migrate();
     }
 
     private function migrate()
     {
-        $dbname = Config::getValue('db', 'dbname');
+        Config::overrideProperty('db')->with($this->dbConfig);
 
         $this->output->writeln('=======================================================');
-        $this->output->writeln(" Database: " . $dbname);
+        $this->output->writeln("  Database = " . Objects::toString($this->dbConfig));
         $this->output->writeln("  Commit early = " . Objects::toString($this->commitEarly));
-        $this->output->writeln("  Directory = " . $this->dir);
+        $this->output->writeln("  Directory = " . Objects::toString($this->dirs));
         $this->output->writeln("  Initialize = " . Objects::toString($this->commitEarly));
         $this->output->writeln("  Force = " . Objects::toString($this->init));
         $this->output->writeln("  Reset = " . Objects::toString($this->reset));
         $this->output->writeln('=======================================================');
         $this->output->writeln('');
 
-        $db = $this->connectToDatabase($dbname);
+        $db = $this->connectToDatabase();
         $this->initMigrations($db);
         $this->resetMigrations();
 
@@ -148,8 +160,7 @@ class MigrationRunnerCommand extends Command
         $versions = Arrays::map(SchemaMigration::all(), Functions::extract()->version);
 
         $migrations = [];
-        $dirs = explode(',', $this->dir);
-        foreach ($dirs as $dir) {
+        foreach ($this->dirs as $dir) {
             $migrations = array_merge($migrations, $this->loadMigrationsFromDir($dir, $versions));
         }
         return $migrations;
@@ -171,6 +182,9 @@ class MigrationRunnerCommand extends Command
     {
         if ($this->init) {
             $this->output->write("<info>Initializing migrations... </info>");
+            if ($this->reset) {
+                $db->execute("DROP TABLE IF EXISTS schema_migrations CASCADE");
+            }
             $db->execute("CREATE TABLE schema_migrations(
                 id SERIAL PRIMARY KEY,
                 version TEXT,
@@ -180,9 +194,10 @@ class MigrationRunnerCommand extends Command
         }
     }
 
-    private function connectToDatabase($dbname): Db
+    private function connectToDatabase(): Db
     {
-        $this->output->write("<info>Connecting to db {$dbname}... </info>");
+        $dbConfig = Objects::toString($this->dbConfig);
+        $this->output->write("<info>Connecting to db {$dbConfig}... </info>");
         $db = Db::getInstance();
         $this->output->writeln('<comment>DONE</comment>');
         return $db;
@@ -200,13 +215,15 @@ class MigrationRunnerCommand extends Command
         $files = scandir($dir, 0);
         for ($i = 2; $i < count($files); $i++) {
             $file = $files[$i];
-            $path = $dir . '/' . $file;
-            $version = substr($file, 0, strpos($file, '_'));
-            if (is_file($path) && !in_array($version, $versions)) {
-                include_once($path);
-                $className = Strings::removeSuffix(substr($file, strpos($file, '_') + 1), '.php');
-                $this->output->writeln(" [$version] $className");
-                $migrations[] = [$className, $version];
+            if (preg_match('/[0-9]{9,}_.+\.php/', $file)) {
+                $path = $dir . '/' . $file;
+                $version = substr($file, 0, strpos($file, '_'));
+                if (is_file($path) && !in_array($version, $versions)) {
+                    include_once($path);
+                    $className = Strings::removeSuffix(substr($file, strpos($file, '_') + 1), '.php');
+                    $this->output->writeln(" [$version] $className");
+                    $migrations[] = [$className, $version];
+                }
             }
         }
         return $migrations;
