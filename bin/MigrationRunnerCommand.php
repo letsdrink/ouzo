@@ -131,8 +131,7 @@ class MigrationRunnerCommand extends Command
     {
         $progressBar = $this->createProgressBar(count($migrations));
 
-        foreach ($migrations as $migration) {
-            list($className, $version) = $migration;
+        foreach ($migrations as $version => $className) {
             $progressBar->setMessage("[$version] $className");
             try {
                 $db->runInTransaction(function () use ($className, $version, $db) {
@@ -161,7 +160,11 @@ class MigrationRunnerCommand extends Command
 
         $migrations = [];
         foreach ($this->dirs as $dir) {
-            $migrations = array_merge($migrations, $this->loadMigrationsFromDir($dir, $versions));
+            $migrations = array_replace($migrations, $this->loadMigrationsFromDir($dir, $versions));
+        }
+        ksort($migrations, SORT_STRING | SORT_ASC);
+        foreach ($migrations as $version => $className) {
+            $this->output->writeln(" [$version] $className");
         }
         return $migrations;
     }
@@ -221,8 +224,7 @@ class MigrationRunnerCommand extends Command
                 if (is_file($path) && !in_array($version, $versions)) {
                     include_once($path);
                     $className = Strings::removeSuffix(substr($file, strpos($file, '_') + 1), '.php');
-                    $this->output->writeln(" [$version] $className");
-                    $migrations[] = [$className, $version];
+                    $migrations[$version] = $className;
                 }
             }
         }
