@@ -9,6 +9,7 @@ namespace Command;
 use Exception;
 use Ouzo\Config;
 use Ouzo\Db;
+use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\TransactionalProxy;
 use Ouzo\Migration;
 use Ouzo\MigrationFailedException;
@@ -206,6 +207,8 @@ class MigrationRunnerCommand extends Command
         $db = new Db(false);
         $this->output->write("<info>Connecting to db {$dbConfig}... </info>");
         $db->connectDb($this->dbConfig);
+        SchemaMigration::$db = $db;
+        ModelDefinition::resetCache();
         $this->output->writeln('<comment>DONE</comment>');
         return $db;
     }

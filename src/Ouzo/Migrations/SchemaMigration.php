@@ -8,9 +8,12 @@ namespace Ouzo;
 
 class SchemaMigration extends Model
 {
+    public static $db;
+
     public function __construct($attributes = [])
     {
         parent::__construct([
+            'db' => self::$db,
             'attributes' => $attributes,
             'fields' => ['version', 'applied_at']]);
     }
