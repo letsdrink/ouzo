@@ -135,6 +135,7 @@ class MigrationRunnerCommand extends Command
 
         foreach ($migrations as $version => $className) {
             $progressBar->setMessage("[$version] $className");
+            $progressBar->display();
             try {
                 $db->runInTransaction(function () use ($className, $version, $db) {
                     $this->runSingleMigration($db, $className, $version);
