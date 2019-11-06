@@ -48,7 +48,7 @@ class MigrationSqlImporterCommand extends Command
         $files = $this->input->getArgument('files');
 
         $dbConfig = Objects::toString($this->dbConfig);
-        $this->output->writeln("Databae: {$dbConfig}");
+        $this->output->writeln("Database: {$dbConfig}");
         foreach ($files as $file) {
             $this->import($file);
         }
