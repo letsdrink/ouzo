@@ -38,7 +38,7 @@ class MigrationGeneratorCommand extends Command
         $clock = Clock::now();
         $date = $clock->format('Ymd');
         $time = $clock->getTimestamp();
-        $path = "{$dir}{$date}{$time}_{$name}Migration.php";
+        $path = "{$dir}{$date}{$time}_{$name}.php";
 
         $this->output->writeln("Migration file name: <info>{$path}</info>");
 
