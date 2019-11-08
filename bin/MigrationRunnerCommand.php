@@ -89,7 +89,7 @@ class MigrationRunnerCommand extends Command
         $this->output->writeln('=======================================================');
         $this->output->writeln('');
 
-        $initializer = new MigrationInitializer($this->output);
+        $initializer = new MigrationInitializer($this->output, $this->dbConfig);
         $loader = new MigrationLoader();
         $runner = new MigrationRunner();
 

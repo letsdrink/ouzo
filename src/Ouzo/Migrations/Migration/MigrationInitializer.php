@@ -8,17 +8,19 @@ namespace Ouzo\Migration;
 
 use Ouzo\Db;
 use Ouzo\Db\ModelDefinition;
-use Ouzo\Utilities\Objects;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationInitializer
 {
     /* @var OutputInterface */
     private $output;
+    /* @var MigrationDbConfig */
+    private $dbConfig;
 
-    public function __construct(OutputInterface $output)
+    public function __construct(OutputInterface $output, MigrationDbConfig $dbConfig)
     {
         $this->output = $output;
+        $this->dbConfig = $dbConfig;
     }
 
     public function initMigrations(Db $db): void
@@ -41,10 +43,9 @@ class MigrationInitializer
 
     public function connectToDatabase(): Db
     {
-        $dbConfig = Objects::toString($this->dbConfig);
         $db = new Db(false);
-        $this->output->write("<info>Connecting to db {$dbConfig}... </info>");
-        $db->connectDb($this->dbConfig);
+        $this->output->write("<info>Connecting to db {$this->dbConfig}... </info>");
+        $db->connectDb($this->dbConfig->toArray());
         SchemaMigration::$db = $db;
         ModelDefinition::resetCache();
         $this->output->writeln('<comment>DONE</comment>');

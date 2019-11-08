@@ -23,10 +23,23 @@ class MigrationImporter
         $this->dbConfig = $dbConfig;
     }
 
+    public function importAll(array $files)
+    {
+        foreach ($files as $file) {
+            $this->import($file);
+        }
+    }
+
     public function import($file): void
     {
         $this->output->write("<info>Importing file {$file}... </info>");
-        $command = "psql -e -U {$this->dbConfig->getUser()} -h {$this->dbConfig->getHost()} -p {$this->dbConfig->getPort()} -f {$file} {$this->dbConfig->getDbName()} 2>&1";
+
+        $user = $this->dbConfig->getUser();
+        $host = $this->dbConfig->getHost();
+        $port = $this->dbConfig->getPort();
+        $dbName = $this->dbConfig->getDbName();
+
+        $command = "psql -e -U {$user} -h {$host} -p {$port} -f {$file} {$dbName} 2>&1";
         exec($command, $output, $returnStatus);
 
         if ($returnStatus) {
@@ -36,12 +49,5 @@ class MigrationImporter
         }
 
         $this->output->writeln('<comment>DONE</comment>');
-    }
-
-    public function importAll(array $files)
-    {
-        foreach ($files as $file) {
-            $this->import($file);
-        }
     }
 }

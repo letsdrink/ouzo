@@ -13,6 +13,8 @@ use Ouzo\Utilities\Strings;
 
 class MigrationLoader
 {
+    private const MIGRATION_FILE_MASK = '/[0-9]{9,}_.+\.php/';
+
     public function loadMigrations(array $dirs): array
     {
         $versions = Arrays::map(SchemaMigration::all(), Functions::extract()->version);
@@ -25,7 +27,7 @@ class MigrationLoader
         return $migrations;
     }
 
-    private function loadMigrationsFromDir(string $dir, array $versions): array
+    public function loadMigrationsFromDir(string $dir, array $versions): array
     {
         if (empty($dir)) {
             return [];
@@ -37,7 +39,7 @@ class MigrationLoader
         $files = scandir($dir, 0);
         for ($i = 2; $i < count($files); $i++) {
             $file = $files[$i];
-            if (preg_match('/[0-9]{9,}_.+\.php/', $file)) {
+            if (preg_match('' . self::MIGRATION_FILE_MASK . '', $file)) {
                 $path = $dir . '/' . $file;
                 $version = substr($file, 0, strpos($file, '_'));
                 if (is_file($path) && !in_array($version, $versions)) {
