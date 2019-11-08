@@ -6,20 +6,15 @@
 
 namespace Command;
 
-use Exception;
 use Ouzo\Config;
-use Ouzo\Db;
-use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\TransactionalProxy;
-use Ouzo\Migration;
-use Ouzo\MigrationFailedException;
-use Ouzo\MigrationProgressBar;
-use Ouzo\SchemaMigration;
-use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Clock;
-use Ouzo\Utilities\Functions;
+use Ouzo\Migration\MigrationDbConfig;
+use Ouzo\Migration\MigrationFailedException;
+use Ouzo\Migration\MigrationInitializer;
+use Ouzo\Migration\MigrationLoader;
+use Ouzo\Migration\MigrationProgressBar;
+use Ouzo\Migration\MigrationRunner;
 use Ouzo\Utilities\Objects;
-use Ouzo\Utilities\Strings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -42,8 +37,8 @@ class MigrationRunnerCommand extends Command
     private $dirs;
     /* @var bool */
     private $reset;
-    /* @var array */
-    private $dbConfig = [];
+    /* @var MigrationDbConfig */
+    private $dbConfig;
     /* @var bool */
     private $noAnimations;
 
@@ -74,22 +69,17 @@ class MigrationRunnerCommand extends Command
         $this->dirs = $this->input->getOption('dir') ?: ['.'];
         $this->reset = $this->input->getOption('reset');
         $this->noAnimations = $this->input->getOption('no_animations');
-        $this->dbConfig['dbname'] = $this->input->getOption('db_name') ?: Config::getValue('db', 'dbname');
-        $this->dbConfig['user'] = $this->input->getOption('db_user') ?: Config::getValue('db', 'user');
-        $this->dbConfig['pass'] = $this->input->getOption('db_pass') ?: Config::getValue('db', 'pass');
-        $this->dbConfig['host'] = $this->input->getOption('db_host') ?: Config::getValue('db', 'host');
-        $this->dbConfig['port'] = $this->input->getOption('db_port') ?: Config::getValue('db', 'port');
-        $this->dbConfig['driver'] = $this->input->getOption('db_driver') ?: Config::getValue('db', 'driver');
+        $this->dbConfig = new MigrationDbConfig($input);
 
         $this->migrate();
     }
 
     private function migrate()
     {
-        Config::overrideProperty('db')->with($this->dbConfig);
+        Config::overrideProperty('db')->with($this->dbConfig->toArray());
 
         $this->output->writeln('=======================================================');
-        $this->output->writeln("  Database = " . Objects::toString($this->dbConfig));
+        $this->output->writeln("  Database = " . $this->dbConfig);
         $this->output->writeln("  Commit early = " . Objects::toString($this->commitEarly));
         $this->output->writeln("  Directory = " . Objects::toString($this->dirs));
         $this->output->writeln("  Initialize = " . Objects::toString($this->commitEarly));
@@ -99,12 +89,26 @@ class MigrationRunnerCommand extends Command
         $this->output->writeln('=======================================================');
         $this->output->writeln('');
 
-        $db = $this->connectToDatabase();
-        $this->initMigrations($db);
-        $this->resetMigrations();
+        $initializer = new MigrationInitializer($this->output);
+        $loader = new MigrationLoader();
+        $runner = new MigrationRunner();
+
+        $db = $initializer->connectToDatabase();
+        if ($this->init && $this->reset) {
+            $initializer->dropMigrations($db);
+        }
+        if ($this->init) {
+            $initializer->initMigrations($db);
+        }
+        if ($this->reset) {
+            $initializer->resetMigrations();
+        }
 
         $this->output->writeln("\nMigrations to apply:");
-        $migrations = $this->loadMigrations();
+        $migrations = ($loader)->loadMigrations($this->dirs);
+        foreach ($migrations as $version => $className) {
+            $this->output->writeln(" [$version] $className");
+        }
         $this->output->writeln('');
 
         if (empty($migrations)) {
@@ -122,9 +126,10 @@ class MigrationRunnerCommand extends Command
             }
         }
 
+        $progressBar = $this->createProgressBar(count($migrations));
         try {
-            $self = $this->commitEarly ? $this : TransactionalProxy::newInstance($this);
-            $self->runAll($db, $migrations);
+            $runner = $this->commitEarly ? $runner : TransactionalProxy::newInstance($runner);
+            $runner->runAll($db, $progressBar, $migrations);
             $this->output->writeln("\n\n<info>That's all. Bye!</info>");
             return 0;
         } catch (MigrationFailedException $ex) {
@@ -135,112 +140,8 @@ class MigrationRunnerCommand extends Command
         }
     }
 
-    public function runAll(Db $db, array $migrations): void
-    {
-        $progressBar = $this->createProgressBar(count($migrations));
-
-        foreach ($migrations as $version => $className) {
-            $progressBar->displayMessage("[$version] $className");
-            try {
-                $db->runInTransaction(function () use ($className, $version, $db) {
-                    $this->runSingleMigration($db, $className, $version);
-                });
-            } catch (Exception $ex) {
-                throw new MigrationFailedException($ex, $className, $version);
-            }
-            $progressBar->advance();
-        }
-
-        $progressBar->finish();
-    }
-
-    private function runSingleMigration(Db $db, $className, $version): void
-    {
-        /** @var Migration $migration */
-        $migration = new $className;
-        $migration->run($db);
-        SchemaMigration::create(['version' => $version, 'applied_at' => Clock::nowAsString()]);
-    }
-
-    private function loadMigrations(): array
-    {
-        $versions = Arrays::map(SchemaMigration::all(), Functions::extract()->version);
-
-        $migrations = [];
-        foreach ($this->dirs as $dir) {
-            $migrations = array_replace($migrations, $this->loadMigrationsFromDir($dir, $versions));
-        }
-        ksort($migrations, SORT_STRING | SORT_ASC);
-        foreach ($migrations as $version => $className) {
-            $this->output->writeln(" [$version] $className");
-        }
-        return $migrations;
-    }
-
     private function createProgressBar(int $max): MigrationProgressBar
     {
         return $this->noAnimations ? MigrationProgressBar::empty() : MigrationProgressBar::create($this->output, $max);
-    }
-
-    private function initMigrations(Db $db): void
-    {
-        if ($this->init) {
-            $this->output->write("<info>Initializing migrations... </info>");
-            if ($this->reset) {
-                $db->execute("DROP TABLE IF EXISTS schema_migrations CASCADE");
-            }
-            $db->execute("CREATE TABLE schema_migrations(
-                id SERIAL PRIMARY KEY,
-                version TEXT,
-                applied_at TIMESTAMP
-            )");
-            $this->output->writeln('<comment>DONE</comment>');
-        }
-    }
-
-    private function connectToDatabase(): Db
-    {
-        $dbConfig = Objects::toString($this->dbConfig);
-        $db = new Db(false);
-        $this->output->write("<info>Connecting to db {$dbConfig}... </info>");
-        $db->connectDb($this->dbConfig);
-        SchemaMigration::$db = $db;
-        ModelDefinition::resetCache();
-        $this->output->writeln('<comment>DONE</comment>');
-        return $db;
-    }
-
-    private function loadMigrationsFromDir(string $dir, array $versions): array
-    {
-        if (empty($dir)) {
-            return [];
-        }
-        if (!file_exists($dir)) {
-            throw new Exception("Migration directory `{$dir}` does not exist.");
-        }
-        $migrations = [];
-        $files = scandir($dir, 0);
-        for ($i = 2; $i < count($files); $i++) {
-            $file = $files[$i];
-            if (preg_match('/[0-9]{9,}_.+\.php/', $file)) {
-                $path = $dir . '/' . $file;
-                $version = substr($file, 0, strpos($file, '_'));
-                if (is_file($path) && !in_array($version, $versions)) {
-                    include_once($path);
-                    $className = Strings::removeSuffix(substr($file, strpos($file, '_') + 1), '.php');
-                    $migrations[$version] = $className;
-                }
-            }
-        }
-        return $migrations;
-    }
-
-    private function resetMigrations(): void
-    {
-        if ($this->reset) {
-            $this->output->write("<info>Removing all migrations... </info>");
-            SchemaMigration::where()->deleteAll();
-            $this->output->writeln('<comment>DONE</comment>');
-        }
     }
 }

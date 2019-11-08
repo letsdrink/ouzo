@@ -4,7 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-namespace Ouzo;
+namespace Ouzo\Migration;
 
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
