@@ -8,6 +8,7 @@ namespace Command;
 
 use Ouzo\Config;
 use Ouzo\Db\TransactionalProxy;
+use Ouzo\Migration\MigrationCommandHelper;
 use Ouzo\Migration\MigrationDbConfig;
 use Ouzo\Migration\MigrationFailedException;
 use Ouzo\Migration\MigrationInitializer;
@@ -44,17 +45,12 @@ class MigrationRunnerCommand extends Command
 
     public function configure()
     {
-        $this->setName('migration:run')
+        MigrationCommandHelper::addDbOptions($this)
+            ->setName('migration:run')
             ->addOption('commit_early', 'c', InputOption::VALUE_NONE, 'Commit after each migration')
             ->addOption('reset', 'r', InputOption::VALUE_NONE, 'Remove all previous migrations')
             ->addOption('init', 'i', InputOption::VALUE_NONE, 'Add schema_migrations table')
             ->addOption('dir', 'd', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Directories with migrations (separated by comma)')
-            ->addOption('db_name', 'N', InputOption::VALUE_REQUIRED, 'Database name')
-            ->addOption('db_user', 'U', InputOption::VALUE_REQUIRED, 'Database user')
-            ->addOption('db_pass', 'S', InputOption::VALUE_REQUIRED, 'Database password')
-            ->addOption('db_host', 'H', InputOption::VALUE_REQUIRED, 'Database host')
-            ->addOption('db_port', 'P', InputOption::VALUE_REQUIRED, 'Database port')
-            ->addOption('db_driver', 'D', InputOption::VALUE_REQUIRED, 'Database driver')
             ->addOption('no_animations', 'a', InputOption::VALUE_NONE, 'Disable animations (e.g. progress bar)')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force confirmation');
     }
