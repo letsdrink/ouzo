@@ -13,6 +13,7 @@ use Ouzo\Db\ModelDefinition;
 use Ouzo\Db\TransactionalProxy;
 use Ouzo\Migration;
 use Ouzo\MigrationFailedException;
+use Ouzo\MigrationProgressBar;
 use Ouzo\SchemaMigration;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Clock;
@@ -20,7 +21,6 @@ use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,6 +44,8 @@ class MigrationRunnerCommand extends Command
     private $reset;
     /* @var array */
     private $dbConfig = [];
+    /* @var bool */
+    private $noAnimations;
 
     public function configure()
     {
@@ -58,6 +60,7 @@ class MigrationRunnerCommand extends Command
             ->addOption('db_host', 'H', InputOption::VALUE_REQUIRED, 'Database host')
             ->addOption('db_port', 'P', InputOption::VALUE_REQUIRED, 'Database port')
             ->addOption('db_driver', 'D', InputOption::VALUE_REQUIRED, 'Database driver')
+            ->addOption('no_animations', 'a', InputOption::VALUE_NONE, 'Disable animations (e.g. progress bar)')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force confirmation');
     }
 
@@ -70,6 +73,7 @@ class MigrationRunnerCommand extends Command
         $this->init = $this->input->getOption('init');
         $this->dirs = $this->input->getOption('dir') ?: ['.'];
         $this->reset = $this->input->getOption('reset');
+        $this->noAnimations = $this->input->getOption('no_animations');
         $this->dbConfig['dbname'] = $this->input->getOption('db_name') ?: Config::getValue('db', 'dbname');
         $this->dbConfig['user'] = $this->input->getOption('db_user') ?: Config::getValue('db', 'user');
         $this->dbConfig['pass'] = $this->input->getOption('db_pass') ?: Config::getValue('db', 'pass');
@@ -91,6 +95,7 @@ class MigrationRunnerCommand extends Command
         $this->output->writeln("  Initialize = " . Objects::toString($this->commitEarly));
         $this->output->writeln("  Force = " . Objects::toString($this->init));
         $this->output->writeln("  Reset = " . Objects::toString($this->reset));
+        $this->output->writeln("  No animations = " . Objects::toString($this->noAnimations));
         $this->output->writeln('=======================================================');
         $this->output->writeln('');
 
@@ -135,8 +140,7 @@ class MigrationRunnerCommand extends Command
         $progressBar = $this->createProgressBar(count($migrations));
 
         foreach ($migrations as $version => $className) {
-            $progressBar->setMessage("[$version] $className");
-            $progressBar->display();
+            $progressBar->displayMessage("[$version] $className");
             try {
                 $db->runInTransaction(function () use ($className, $version, $db) {
                     $this->runSingleMigration($db, $className, $version);
@@ -173,16 +177,9 @@ class MigrationRunnerCommand extends Command
         return $migrations;
     }
 
-    private function createProgressBar(int $max): ProgressBar
+    private function createProgressBar(int $max): MigrationProgressBar
     {
-        ProgressBar::setFormatDefinition(
-            'normal',
-            "<info>Applying migration</info> <fg=cyan>%message%</>\n%current%/%max% [%bar%] %percent:3s%%"
-        );
-        $progress = new ProgressBar($this->output, $max);
-        $progress->setMessage('');
-        $progress->start();
-        return $progress;
+        return $this->noAnimations ? MigrationProgressBar::empty() : MigrationProgressBar::create($this->output, $max);
     }
 
     private function initMigrations(Db $db): void
