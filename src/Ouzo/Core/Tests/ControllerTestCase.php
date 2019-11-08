@@ -22,7 +22,7 @@ use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\Strings;
 
-class ControllerTestCase extends DbTransactionalTestCase
+abstract class ControllerTestCase extends DbTransactionalTestCase
 {
     /** @var InjectorConfig */
     protected $injectorConfig;
