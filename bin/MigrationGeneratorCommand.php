@@ -45,7 +45,7 @@ class MigrationGeneratorCommand extends Command
 <?php
 
 use Ouzo\Db;
-use Ouzo\Migration;
+use Ouzo\Migration\Migration;
 
 class {$name} extends Migration
 {
