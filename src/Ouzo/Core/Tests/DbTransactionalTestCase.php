@@ -10,7 +10,7 @@ use Ouzo\Db;
 use Ouzo\Utilities\Cache;
 use PHPUnit\Framework\TestCase;
 
-class DbTransactionalTestCase extends TestCase
+abstract class DbTransactionalTestCase extends TestCase
 {
     public function setUp(): void
     {
