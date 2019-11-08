@@ -46,7 +46,7 @@ class MigrationDbConfig
 
     public function __toString(): string
     {
-        return Objects::toString($this);
+        return Objects::toString($this->dbConfig);
     }
 
     public function toArray(): array
