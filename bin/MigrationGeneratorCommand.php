@@ -36,9 +36,8 @@ class MigrationGeneratorCommand extends Command
         $dir = $this->input->getArgument('dir');
         $dir = $dir ? $dir . '/' : '';
         $clock = Clock::now();
-        $date = $clock->format('Ymd');
-        $time = $clock->getTimestamp();
-        $path = "{$dir}{$date}{$time}_{$name}.php";
+        $date = $clock->format('YmdHis');
+        $path = "{$dir}{$date}_{$name}.php";
 
         $this->output->writeln("Migration file name: <info>{$path}</info>");
 
@@ -48,7 +47,7 @@ class MigrationGeneratorCommand extends Command
 use Ouzo\Db;
 use Ouzo\Migration;
 
-class {$name}Migration extends Migration
+class {$name} extends Migration
 {
 
     public function run(Db \$db)
