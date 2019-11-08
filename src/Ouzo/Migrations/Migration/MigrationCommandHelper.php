@@ -11,7 +11,6 @@ use Symfony\Component\Console\Input\InputOption;
 
 class MigrationCommandHelper
 {
-
     public static function addDbOptions(Command $command): Command
     {
         return $command->addOption('db_name', 'N', InputOption::VALUE_REQUIRED, 'Database name')
