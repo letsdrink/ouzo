@@ -101,7 +101,7 @@ class MigrationRunnerCommand extends Command
         }
 
         $this->output->writeln("\nMigrations to apply:");
-        $migrations = ($loader)->loadMigrations($this->dirs);
+        $migrations = $loader->loadMigrations($this->dirs);
         foreach ($migrations as $version => $className) {
             $this->output->writeln(" [$version] $className");
         }
