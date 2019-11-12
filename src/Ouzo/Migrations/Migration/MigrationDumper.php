@@ -47,7 +47,7 @@ class MigrationDumper
         $dbName = $this->dbConfig->getDbName();
         $options = $type === 'SCHEMA' ? '--schema-only' : '--data-only';
 
-        $command = "pg_dump -U {$user} -h {$host} -p {$port} -f {$file} ${options} {$dbName} 2>&1";
+        $command = "pg_dump -t 'public.*' -U {$user} -h {$host} -p {$port} -f {$file} ${options} {$dbName} 2>&1";
         $this->commandExecutor->execute($command);
 
         $this->output->writeln('<comment>DONE</comment>');
