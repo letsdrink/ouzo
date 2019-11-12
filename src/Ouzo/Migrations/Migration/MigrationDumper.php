@@ -8,8 +8,11 @@ namespace Ouzo\Migration;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrationImporter
+class MigrationDumper
 {
+    private const SCHEMA = 'SCHEMA';
+    private const DATA = 'DATA';
+
     /* @var OutputInterface */
     private $output;
     /* @var MigrationDbConfig */
@@ -24,23 +27,27 @@ class MigrationImporter
         $this->commandExecutor = $commandExecutor;
     }
 
-    public function importAll(array $files)
+    public function dumpSchema($file): void
     {
-        foreach ($files as $file) {
-            $this->import($file);
-        }
+        $this->dump($file, self::SCHEMA);
     }
 
-    public function import($file): void
+    public function dumpData($file): void
     {
-        $this->output->write("<info>Importing file {$file}... </info>");
+        $this->dump($file, self::DATA);
+    }
+
+    public function dump($file, $type): void
+    {
+        $this->output->write("<info>Dumping {$type} to {$file}... </info>");
 
         $user = $this->dbConfig->getUser();
         $host = $this->dbConfig->getHost();
         $port = $this->dbConfig->getPort();
         $dbName = $this->dbConfig->getDbName();
+        $options = $type === 'SCHEMA' ? '--schema-only' : '--data-only';
 
-        $command = "psql -e -U {$user} -h {$host} -p {$port} -f {$file} {$dbName} 2>&1";
+        $command = "pg_dump -U {$user} -h {$host} -p {$port} -f {$file} ${options} {$dbName} 2>&1";
         $this->commandExecutor->execute($command);
 
         $this->output->writeln('<comment>DONE</comment>');
