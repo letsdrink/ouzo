@@ -9,6 +9,7 @@ namespace Command;
 use Ouzo\Config;
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\Path;
+use Ouzo\Utilities\Strings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,6 +39,7 @@ class MigrationGeneratorCommand extends Command
 
         $pathFromConfig = Config::getValue('migrations', 'dir');
 
+        $name = Strings::underscoreToCamelCase($name);
         $dir = $dir ?: Path::join(ROOT_PATH, $pathFromConfig);
         $clock = Clock::now();
         $date = $clock->format('YmdHis');
