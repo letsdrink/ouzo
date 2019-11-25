@@ -16,6 +16,7 @@ use Ouzo\Migration\MigrationLoader;
 use Ouzo\Migration\MigrationProgressBar;
 use Ouzo\Migration\MigrationRunner;
 use Ouzo\Utilities\Objects;
+use Ouzo\Utilities\Path;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -73,6 +74,11 @@ class MigrationRunnerCommand extends Command
     private function migrate()
     {
         Config::overrideProperty('db')->with($this->dbConfig->toArray());
+
+        $pathFromConfig = Config::getValue('migrations', 'dir');
+        if ($pathFromConfig) {
+            $this->dirs[] = Path::join(ROOT_PATH, $pathFromConfig);
+        }
 
         $this->output->writeln('=======================================================');
         $this->output->writeln("  Database = " . $this->dbConfig);
