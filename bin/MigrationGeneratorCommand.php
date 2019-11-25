@@ -6,8 +6,9 @@
 
 namespace Command;
 
-
+use Ouzo\Config;
 use Ouzo\Utilities\Clock;
+use Ouzo\Utilities\Path;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,10 +35,15 @@ class MigrationGeneratorCommand extends Command
 
         $name = $this->input->getArgument('name');
         $dir = $this->input->getArgument('dir');
-        $dir = $dir ? $dir . '/' : '';
+
+        $pathFromConfig = Config::getValue('migrations', 'dir');
+
+        $dir = $dir ?: Path::join(ROOT_PATH, $pathFromConfig);
         $clock = Clock::now();
         $date = $clock->format('YmdHis');
-        $path = "{$dir}{$date}_{$name}.php";
+
+        $filename = "{$date}_{$name}.php";
+        $path = Path::join($dir, $filename);
 
         $this->output->writeln("Migration file name: <info>{$path}</info>");
 
@@ -49,12 +55,12 @@ use Ouzo\Migration\Migration;
 
 class {$name} extends Migration
 {
-
     public function run(Db \$db)
     {
         \$db->execute("SELECT 1");
     }
-}        
+}
+
 MIGRATION;
 
         file_put_contents($path, $data);
