@@ -101,6 +101,14 @@ class TestMethodHandler
     }
 }
 
+class NullReturningTestMethodHandler
+{
+    public function __call($name, $arguments)
+    {
+        return null;
+    }
+}
+
 interface TestInterface
 {
     public function fun1(TestClass $p1);
@@ -379,4 +387,19 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun1', [1]]], $testMethodHandler->calls);
     }
 
+    /**
+     * @test
+     */
+    public function shouldNotCastNull()
+    {
+        //given
+        $testMethodHandler = new NullReturningTestMethodHandler();
+        $proxy = DynamicProxy::newInstance(ClassWithNullReturningMethod::class, $testMethodHandler);
+
+        //when
+        $result = $proxy->fun1(1);
+
+        //then
+        $this->assertNull($result);
+    }
 }

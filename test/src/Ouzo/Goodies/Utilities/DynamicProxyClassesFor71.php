@@ -17,3 +17,10 @@ class ClassWithMethodThatReturnType
     }
 }
 
+class ClassWithNullReturningMethod
+{
+    public function fun1(int $p1): ?string
+    {
+        return null;
+    }
+}
