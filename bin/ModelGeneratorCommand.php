@@ -45,6 +45,8 @@ class ModelGeneratorCommand extends Command
         $this->input = $input;
         $this->output = $output;
         $this->generateModel();
+
+        return 0;
     }
 
     public function fail($message, $exitCode = 1)

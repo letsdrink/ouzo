@@ -36,5 +36,7 @@ class MigrationDumperCommand extends Command
         $dumper = new MigrationDumper($output, $dbConfig, new MigrationCommandExecutor());
         $dumper->dumpSchema($schemaFile);
         $dumper->dumpData($dataFile);
+
+        return 0;
     }
 }

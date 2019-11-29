@@ -33,5 +33,7 @@ class MigrationSqlImporterCommand extends Command
 
         $importer = new MigrationImporter($output, $dbConfig, new MigrationCommandExecutor());
         $importer->importAll($files);
+
+        return 0;
     }
 }

@@ -36,6 +36,8 @@ class ControllerGeneratorCommand extends Command
         $this->input = $input;
         $this->output = $output;
         $this->generate();
+
+        return 0;
     }
 
     private function generate()

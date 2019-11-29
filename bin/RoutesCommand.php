@@ -60,6 +60,8 @@ class RoutesCommand extends Command
                 $this->all();
             }
         }
+
+        return 0;
     }
 
     private function runSelectedGenerators($selectedGeneratedOptions, $generateOptionFunctionMap)

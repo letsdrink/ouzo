@@ -68,5 +68,7 @@ MIGRATION;
         file_put_contents($path, $data);
 
         $this->output->writeln("<comment>Generating...</comment> <info>DONE</info>");
+
+        return 0;
     }
 }
