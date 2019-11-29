@@ -68,7 +68,7 @@ class MigrationRunnerCommand extends Command
         $this->noAnimations = $this->input->getOption('no_animations');
         $this->dbConfig = new MigrationDbConfig($input);
 
-        $this->migrate();
+        return $this->migrate();
     }
 
     private function migrate()
