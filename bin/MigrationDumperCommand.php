@@ -6,26 +6,24 @@
 
 namespace Command;
 
+use Ouzo\Migration\MigrationCommand;
 use Ouzo\Migration\MigrationCommandExecutor;
-use Ouzo\Migration\MigrationCommandHelper;
 use Ouzo\Migration\MigrationDbConfig;
 use Ouzo\Migration\MigrationDumper;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrationDumperCommand extends Command
+class MigrationDumperCommand extends MigrationCommand
 {
-    public function configure()
+    public function configureCommand()
     {
-        MigrationCommandHelper::addDbOptions($this)
-            ->setName('migration:dump')
+        $this->setName('migration:dump')
             ->addArgument('schema_file', InputArgument::REQUIRED, 'Schema output file')
             ->addArgument('data_file', InputArgument::REQUIRED, 'Data output file');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function executeCommand(InputInterface $input, OutputInterface $output)
     {
         $dbConfig = new MigrationDbConfig($input);
         $schemaFile = $input->getArgument('schema_file');

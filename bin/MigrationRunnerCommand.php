@@ -8,7 +8,7 @@ namespace Command;
 
 use Ouzo\Config;
 use Ouzo\Db\TransactionalProxy;
-use Ouzo\Migration\MigrationCommandHelper;
+use Ouzo\Migration\MigrationCommand;
 use Ouzo\Migration\MigrationDbConfig;
 use Ouzo\Migration\MigrationFailedException;
 use Ouzo\Migration\MigrationInitializer;
@@ -17,13 +17,12 @@ use Ouzo\Migration\MigrationProgressBar;
 use Ouzo\Migration\MigrationRunner;
 use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Path;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class MigrationRunnerCommand extends Command
+class MigrationRunnerCommand extends MigrationCommand
 {
     /* @var InputInterface */
     private $input;
@@ -44,10 +43,9 @@ class MigrationRunnerCommand extends Command
     /* @var bool */
     private $noAnimations;
 
-    public function configure()
+    public function configureCommand()
     {
-        MigrationCommandHelper::addDbOptions($this)
-            ->setName('migration:run')
+        $this->setName('migration:run')
             ->addOption('commit_early', 'c', InputOption::VALUE_NONE, 'Commit after each migration')
             ->addOption('reset', 'r', InputOption::VALUE_NONE, 'Remove all previous migrations')
             ->addOption('init', 'i', InputOption::VALUE_NONE, 'Add schema_migrations table')
@@ -56,7 +54,7 @@ class MigrationRunnerCommand extends Command
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force confirmation');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function executeCommand(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $this->output = $output;
@@ -71,7 +69,7 @@ class MigrationRunnerCommand extends Command
         return $this->migrate();
     }
 
-    private function migrate()
+    private function migrate(): int
     {
         Config::overrideProperty('db')->with($this->dbConfig->toArray());
 

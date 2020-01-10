@@ -6,25 +6,23 @@
 
 namespace Command;
 
+use Ouzo\Migration\MigrationCommand;
 use Ouzo\Migration\MigrationCommandExecutor;
-use Ouzo\Migration\MigrationCommandHelper;
 use Ouzo\Migration\MigrationDbConfig;
 use Ouzo\Migration\MigrationImporter;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrationSqlImporterCommand extends Command
+class MigrationSqlImporterCommand extends MigrationCommand
 {
-    public function configure()
+    public function configureCommand()
     {
-        MigrationCommandHelper::addDbOptions($this)
-            ->setName('migration:sql_import')
+        $this->setName('migration:sql_import')
             ->addArgument('files', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'SQL file to import');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function executeCommand(InputInterface $input, OutputInterface $output)
     {
         $dbConfig = new MigrationDbConfig($input);
         $files = $input->getArgument('files');
