@@ -6,22 +6,21 @@
 
 namespace Ouzo\Migration;
 
+use Ouzo\Db;
+use PDO;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationImporter
 {
     /* @var OutputInterface */
     private $output;
-    /* @var MigrationDbConfig */
-    private $dbConfig;
-    /* @var MigrationCommandExecutor */
-    private $commandExecutor;
+    /* @var Db */
+    private $db;
 
-    public function __construct(OutputInterface $output, MigrationDbConfig $dbConfig, MigrationCommandExecutor $commandExecutor)
+    public function __construct(OutputInterface $output, Db $db)
     {
         $this->output = $output;
-        $this->dbConfig = $dbConfig;
-        $this->commandExecutor = $commandExecutor;
+        $this->db = $db;
     }
 
     public function importAll(array $files)
@@ -35,14 +34,15 @@ class MigrationImporter
     {
         $this->output->write("<info>Importing file {$file}... </info>");
 
-        $user = $this->dbConfig->getUser();
-        $host = $this->dbConfig->getHost();
-        $port = $this->dbConfig->getPort();
-        $dbName = $this->dbConfig->getDbName();
-
-        $command = "psql -e -U {$user} -h {$host} -p {$port} -f {$file} {$dbName} 2>&1";
-        $this->commandExecutor->execute($command);
+        $body = file_get_contents($file);
+        $this->execute($body);
 
         $this->output->writeln('<comment>DONE</comment>');
+    }
+
+    private function execute(string $body): void
+    {
+        $this->db->dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->db->dbHandle->exec($body);
     }
 }

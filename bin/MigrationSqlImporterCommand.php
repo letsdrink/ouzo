@@ -7,9 +7,9 @@
 namespace Command;
 
 use Ouzo\Migration\MigrationCommand;
-use Ouzo\Migration\MigrationCommandExecutor;
 use Ouzo\Migration\MigrationDbConfig;
 use Ouzo\Migration\MigrationImporter;
+use Ouzo\Migration\MigrationInitializer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,7 +29,9 @@ class MigrationSqlImporterCommand extends MigrationCommand
 
         $output->writeln("Database: {$dbConfig}");
 
-        $importer = new MigrationImporter($output, $dbConfig, new MigrationCommandExecutor());
+        $initializer = new MigrationInitializer($output, $dbConfig);
+        $db = $initializer->connectToDatabase();
+        $importer = new MigrationImporter($output, $db);
         $importer->importAll($files);
 
         return 0;
