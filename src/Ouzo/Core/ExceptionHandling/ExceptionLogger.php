@@ -90,7 +90,7 @@ class ExceptionLogger
             }
             if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
                 $jsonBody = stream_get_contents(fopen('php://input', 'r'));
-                $jsonBody = preg_replace("/\"password\"\s*:\s*\".*\"/", "\"password\":\"***\"", $jsonBody);
+                $jsonBody = preg_replace('/"password"\s*:\s*".*"/', '"password":"***"', $jsonBody);
                 $jsonBodyAbbrev = Strings::abbreviate($jsonBody, 1024 * 20);
                 $message .= "\nJSON BODY = '$jsonBodyAbbrev'";
             }
