@@ -7,7 +7,7 @@
 namespace Command;
 
 use Ouzo\Config;
-use Ouzo\Db\TransactionalProxy;
+use Ouzo\Db;
 use Ouzo\Migration\MigrationCommand;
 use Ouzo\Migration\MigrationDbConfig;
 use Ouzo\Migration\MigrationFailedException;
@@ -107,6 +107,9 @@ class MigrationRunnerCommand extends MigrationCommand
 
         $db = $initializer->connectToDatabase();
         $importer = new MigrationImporter($this->output, $db);
+        if (!$this->commitEarly) {
+            $db->beginTransaction();
+        }
         if ($this->filesBefore) {
             $importer->importAll($this->filesBefore);
         }
@@ -135,6 +138,9 @@ class MigrationRunnerCommand extends MigrationCommand
                 $question = new ConfirmationQuestion('Do you want to continue? [y/n] ', false);
                 $question->setMaxAttempts(1);
                 if (!$helper->ask($this->input, $this->output, $question)) {
+                    if (!$this->commitEarly) {
+                        $db->rollbackTransaction();
+                    }
                     $this->output->writeln('What a bummer. Bye!');
                     return 0;
                 }
@@ -142,19 +148,24 @@ class MigrationRunnerCommand extends MigrationCommand
 
             $progressBar = $this->createProgressBar(count($migrations));
             try {
-                $runner = $this->commitEarly ? $runner : TransactionalProxy::newInstance($runner);
                 $runner->runAll($db, $progressBar, $migrations);
                 $this->output->writeln("\n\n<info>All migrations were applied successfully.</info>");
             } catch (MigrationFailedException $ex) {
                 $this->output->writeln("\n<error>Error</error>");
                 $this->output->writeln("Could not apply migration {$ex->getClassName()} version {$ex->getVersion()}: {$ex->getMessage()}");
                 $this->output->writeln($ex->getPrevious()->getTraceAsString());
+                if (!$this->commitEarly) {
+                    $db->rollbackTransaction();
+                }
                 return 1;
             }
         }
 
         if ($this->filesAfter) {
             $importer->importAll($this->filesAfter);
+        }
+        if (!$this->commitEarly) {
+            $db->commitTransaction();
         }
         $this->output->writeln("\n\n<info>That's all. Bye!</info>");
         return 0;
@@ -163,5 +174,10 @@ class MigrationRunnerCommand extends MigrationCommand
     private function createProgressBar(int $max): MigrationProgressBar
     {
         return $this->noAnimations ? MigrationProgressBar::empty() : MigrationProgressBar::create($this->output, $max);
+    }
+
+    public function runMigrations(Db $db, MigrationProgressBar $progressBar, MigrationRunner $runner, array $migrations): void
+    {
+        $runner->runAll($db, $progressBar, $migrations);
     }
 }
