@@ -6,7 +6,7 @@
 
 namespace Ouzo\Injection\Creator;
 
-
+use Ouzo\Injection\Factory;
 use Ouzo\Injection\InstanceFactory;
 use Ouzo\Injection\InstanceRepository;
 use ProxyManager\Configuration;
@@ -23,12 +23,24 @@ class ProxyManagerInstanceCreator implements InstanceCreator
         $this->factory = new LazyLoadingValueHolderFactory($configuration);
     }
 
-    public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory)
+    public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory): object
     {
         return $this->factory->createProxy(
             $className,
             function (&$wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer) use ($className, $repository, $instanceFactory) {
                 $wrappedObject = $instanceFactory->createInstance($repository, $className);
+                $initializer = null;
+                return true;
+            }
+        );
+    }
+
+    public function createThroughFactory(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory, Factory $factory): object
+    {
+        return $this->factory->createProxy(
+            $className,
+            function (&$wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer) use ($className, $repository, $instanceFactory, $factory) {
+                $wrappedObject = $instanceFactory->createInstanceThroughFactory($repository, $className, $factory);
                 $initializer = null;
                 return true;
             }

@@ -22,16 +22,12 @@ class InstanceFactory
     /** @var InstanceCreator */
     private $lazyInstanceCreator;
 
-    /**
-     * @param Bindings $bindings
-     * @param AnnotationMetadataProvider $provider
-     * @param InstanceCreator $eagerInstanceCreator
-     * @param InstanceCreator $lazyInstanceCreator
-     */
-    public function __construct(Bindings $bindings,
-                                AnnotationMetadataProvider $provider,
-                                InstanceCreator $eagerInstanceCreator,
-                                InstanceCreator $lazyInstanceCreator)
+    public function __construct(
+        Bindings $bindings,
+        AnnotationMetadataProvider $provider,
+        InstanceCreator $eagerInstanceCreator,
+        InstanceCreator $lazyInstanceCreator
+    )
     {
         $this->bindings = $bindings;
         $this->provider = $provider;
@@ -39,28 +35,26 @@ class InstanceFactory
         $this->lazyInstanceCreator = $lazyInstanceCreator;
     }
 
-    /**
-     * @param InstanceRepository $repository
-     * @param string $className
-     * @param bool $eager
-     * @return object
-     */
-    public function createInstance(InstanceRepository $repository, $className, $eager = true)
+    public function createInstance(InstanceRepository $repository, string $className, bool $eager = true): object
     {
         $instance = $this->constructInstance($repository, $className, $eager);
         if ($eager) {
             $this->injectDependencies($repository, $instance);
         }
+
         return $instance;
     }
 
-    /**
-     * @param InstanceRepository $repository
-     * @param string $instance
-     * @param ReflectionClass $class
-     * @return void
-     */
-    private function injectDependencies(InstanceRepository $repository, $instance, ReflectionClass $class = null)
+    public function createInstanceThroughFactory(InstanceRepository $repository, string $className, Factory $factory, bool $eager = true): object
+    {
+        if ($eager || $this->lazyInstanceCreator === $this->eagerInstanceCreator) {
+            return $this->eagerInstanceCreator->createThroughFactory($className, null, $repository, $this, $factory);
+        }
+
+        return $this->lazyInstanceCreator->createThroughFactory($className, null, $repository, $this, $factory);
+    }
+
+    private function injectDependencies(InstanceRepository $repository, object $instance, ReflectionClass $class = null): void
     {
         $parent = true;
         if ($class == null) {
@@ -83,13 +77,7 @@ class InstanceFactory
         }
     }
 
-    /**
-     * @param InstanceRepository $repository
-     * @param string $className
-     * @param bool $eager
-     * @return object
-     */
-    private function constructInstance(InstanceRepository $repository, $className, $eager = true)
+    private function constructInstance(InstanceRepository $repository, string $className, bool $eager = true): object
     {
         if ($eager || $this->lazyInstanceCreator === $this->eagerInstanceCreator) {
             $arguments = $this->getConstructorArguments($repository, $className);
@@ -98,12 +86,7 @@ class InstanceFactory
         return $this->lazyInstanceCreator->create($className, null, $repository, $this);
     }
 
-    /**
-     * @param InstanceRepository $repository
-     * @param string $className
-     * @return array
-     */
-    private function getConstructorArguments(InstanceRepository $repository, $className)
+    private function getConstructorArguments(InstanceRepository $repository, string $className): array
     {
         $annotations = $this->provider->getConstructorMetadata($className);
         return Arrays::map($annotations, function ($annotation) use ($repository) {
@@ -111,12 +94,7 @@ class InstanceFactory
         });
     }
 
-    /**
-     * @param InstanceRepository $repository
-     * @param array $annotation
-     * @return mixed
-     */
-    private function getInstance(InstanceRepository $repository, $annotation)
+    private function getInstance(InstanceRepository $repository, array $annotation): object
     {
         $binder = $this->bindings->getBinder($annotation['className'], $annotation['name']);
         return $repository->getInstance($this, $binder);

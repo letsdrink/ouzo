@@ -17,34 +17,25 @@ class InstanceRepository
     /** @var Bindings */
     private $bindings;
 
-    /**
-     * @param Bindings $bindings
-     */
     public function __construct(Bindings $bindings)
     {
         $this->bindings = $bindings;
     }
 
-    /**
-     * @param InstanceFactory $factory
-     * @param Binder $binder
-     * @return object
-     * @throws BadMethodCallException
-     * @throws InjectorException
-     */
-    public function getInstance(InstanceFactory $factory, Binder $binder)
+    public function getInstance(InstanceFactory $factory, Binder $binder): object
     {
         $instance = $binder->getInstance();
         if ($instance) {
             return $instance;
         }
 
+        $className = $binder->getBoundClassName() ?: $binder->getClassName();
+
         $factoryClassName = $binder->getFactoryClassName();
         if ($factoryClassName) {
-            return $this->createInstanceThroughFactory($factory, $binder);
+            return $this->createInstanceThroughFactory($factory, $className, $binder);
         }
 
-        $className = $binder->getBoundClassName() ?: $binder->getClassName();
         $scope = $binder->getScope();
         if ($scope == Scope::SINGLETON) {
             return $this->singletonInstance($factory, $className, $binder->isEager());
@@ -55,13 +46,7 @@ class InstanceRepository
         throw new BadMethodCallException("Unknown scope: $scope");
     }
 
-    /**
-     * @param InstanceFactory $factory
-     * @param $className
-     * @param bool $eager
-     * @return object
-     */
-    public function singletonInstance(InstanceFactory $factory, $className, $eager)
+    public function singletonInstance(InstanceFactory $factory, string $className, bool $eager): object
     {
         if (isset($this->instances[$className])) {
             return $this->instances[$className];
@@ -71,13 +56,7 @@ class InstanceRepository
         return $instance;
     }
 
-    /**
-     * @param InstanceFactory $factory
-     * @param Binder $binder
-     * @return mixed
-     * @throws InjectorException
-     */
-    private function createInstanceThroughFactory(InstanceFactory $factory, Binder $binder)
+    private function createInstanceThroughFactory(InstanceFactory $factory, string $className, Binder $binder): object
     {
         $factoryClassName = $binder->getFactoryClassName();
 
@@ -91,20 +70,15 @@ class InstanceRepository
             }
         }
 
-        return $this->createInstanceThroughFactoryAsPrototype($factory, $factoryClassName);
+        return $this->createInstanceThroughFactoryAsPrototype($factory, $factoryClassName, $className, $binder->isEager());
     }
 
-    /**
-     * @param InstanceFactory $factory
-     * @param string $factoryClassName
-     * @return mixed
-     */
-    private function createInstanceThroughFactoryAsPrototype(InstanceFactory $factory, $factoryClassName)
+    private function createInstanceThroughFactoryAsPrototype(InstanceFactory $factory, string $factoryClassName, string $className, bool $eager = true): object
     {
         $factoryBinder = $this->bindings->getBinder($factoryClassName);
         /** @var Factory $factoryObject */
         $factoryObject = $this->getInstance($factory, $factoryBinder);
-        $object = $factoryObject->create();
+        $object = $factory->createInstanceThroughFactory($this, $className, $factoryObject, $eager);
         $this->factoryInstances[$factoryClassName] = $object;
 
         return $object;

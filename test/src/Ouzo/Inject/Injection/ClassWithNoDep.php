@@ -6,5 +6,7 @@
 
 class ClassWithNoDep
 {
-
+    public function someMethod()
+    {
+    }
 }

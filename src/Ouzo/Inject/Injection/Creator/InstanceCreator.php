@@ -6,11 +6,13 @@
 
 namespace Ouzo\Injection\Creator;
 
-
+use Ouzo\Injection\Factory;
 use Ouzo\Injection\InstanceFactory;
 use Ouzo\Injection\InstanceRepository;
 
 interface InstanceCreator
 {
-    public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory);
+    public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory): object;
+
+    public function createThroughFactory(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory, Factory $factory): object;
 }

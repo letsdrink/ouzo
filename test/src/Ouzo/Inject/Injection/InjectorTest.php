@@ -4,17 +4,18 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
+use Ouzo\Injection\Creator\ProxyManagerInstanceCreator;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Injection\InjectorException;
 use Ouzo\Injection\Scope;
 use Ouzo\Tests\CatchException;
 use PHPUnit\Framework\TestCase;
-
+use ProxyManager\Configuration;
+use ProxyManager\Proxy\VirtualProxyInterface;
 
 class InjectorTest extends TestCase
 {
-
     /**
      * @var Injector
      */
@@ -466,6 +467,100 @@ class InjectorTest extends TestCase
         $this->assertNotSame($instance1, $instance2);
         $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance1);
         $this->assertDependencyInjected(ClassFactory::class, $instance2);
+    }
+
+    /**
+     * @test
+     */
+    public function injectThroughFactoryShouldBeCreatedEagerly()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ExceptionThrowingClassFactory::class);
+
+        //when
+        CatchException::when($injector)->getInstance(ClassWithThroughDep::class);
+
+        //then
+        CatchException::assertThat()->hasMessage('Should never be invoked! It means lazy is not working.');
+    }
+
+    /**
+     * @test
+     */
+    public function injectThroughFactoryShouldBeCreatedAsLazy()
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->setLazyInstanceCreator(new ProxyManagerInstanceCreator(new Configuration()));
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ExceptionThrowingClassFactory::class);
+
+        //when
+        $instance = $injector->getInstance(ClassWithThroughDep::class);
+
+        //then
+        $this->assertInstanceOf(ClassWithThroughDep::class, $instance);
+        $this->assertInstanceOf(VirtualProxyInterface::class, $instance->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function injectThroughFactoryShouldBeCreatedAsLazyInSingletonScope()
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->setLazyInstanceCreator(new ProxyManagerInstanceCreator(new Configuration()));
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ExceptionThrowingClassFactory::class)->in(Scope::SINGLETON);
+
+        //when
+        $instance1 = $injector->getInstance(ClassWithThroughDep::class);
+        $instance2 = $injector->getInstance(ClassWithThroughDep::class);
+
+        //then
+        $this->assertSame($instance1->myClass, $instance2->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function injectThroughFactoryShouldBeCreatedAsLazyInPrototypeScope()
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->setLazyInstanceCreator(new ProxyManagerInstanceCreator(new Configuration()));
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ExceptionThrowingClassFactory::class);
+
+        //when
+        $instance1 = $injector->getInstance(ClassWithThroughDep::class);
+        $instance2 = $injector->getInstance(ClassWithThroughDep::class);
+
+        //then
+        $this->assertNotSame($instance1->myClass, $instance2->myClass);
+    }
+
+    /**
+     * @test
+     */
+    public function injectThroughFactoryShouldBeCreatedAsLazyAndCreatedWhenMethodOnProxyIsInvoked()
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->setLazyInstanceCreator(new ProxyManagerInstanceCreator(new Configuration()));
+        $injector = new Injector($config);
+        $config->bind(ClassWithNoDep::class)->throughFactory(ExceptionThrowingClassFactory::class);
+
+        $instance = $injector->getInstance(ClassWithThroughDep::class);
+
+        //when
+        CatchException::when($instance->myClass)->someMethod();
+
+        //then
+        CatchException::assertThat()->hasMessage('Should never be invoked! It means lazy is not working.');
     }
 
     /**
