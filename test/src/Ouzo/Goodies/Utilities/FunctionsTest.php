@@ -307,4 +307,26 @@ class FunctionsTest extends TestCase
         $this->assertFalse(Functions::call(Functions::notEmpty(), []));
         $this->assertFalse(Functions::call(Functions::notEmpty(), null));
     }
+
+    /**
+     * @test
+     */
+    public function shouldBeBlank()
+    {
+        // then
+        $this->assertFalse(Functions::call(Functions::isBlank(), 'Not blank'));
+        $this->assertTrue(Functions::call(Functions::isBlank(), '  '));
+        $this->assertTrue(Functions::call(Functions::isBlank(), ''));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotBeBlank()
+    {
+        // then
+        $this->assertTrue(Functions::call(Functions::notBlank(), 'Not blank'));
+        $this->assertFalse(Functions::call(Functions::notBlank(), '  '));
+        $this->assertFalse(Functions::call(Functions::notBlank(), ''));
+    }
 }
