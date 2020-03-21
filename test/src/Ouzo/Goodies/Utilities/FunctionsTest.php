@@ -285,4 +285,48 @@ class FunctionsTest extends TestCase
         $this->assertTrue(Functions::call(Functions::equalsIgnoreCase('value'), 'VaLuE'));
         $this->assertTrue(Functions::call(Functions::equalsIgnoreCase('VaLuE'), 'value'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldBeEmpty()
+    {
+        // then
+        $this->assertFalse(Functions::call(Functions::isEmpty(), ['The Lannisters send their regards']));
+        $this->assertTrue(Functions::call(Functions::isEmpty(), []));
+        $this->assertTrue(Functions::call(Functions::isEmpty(), null));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotBeEmpty()
+    {
+        // then
+        $this->assertTrue(Functions::call(Functions::notEmpty(), ['The Lannisters send their regards']));
+        $this->assertFalse(Functions::call(Functions::notEmpty(), []));
+        $this->assertFalse(Functions::call(Functions::notEmpty(), null));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBeBlank()
+    {
+        // then
+        $this->assertFalse(Functions::call(Functions::isBlank(), 'Not blank'));
+        $this->assertTrue(Functions::call(Functions::isBlank(), '  '));
+        $this->assertTrue(Functions::call(Functions::isBlank(), ''));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotBeBlank()
+    {
+        // then
+        $this->assertTrue(Functions::call(Functions::notBlank(), 'Not blank'));
+        $this->assertFalse(Functions::call(Functions::notBlank(), '  '));
+        $this->assertFalse(Functions::call(Functions::notBlank(), ''));
+    }
 }
