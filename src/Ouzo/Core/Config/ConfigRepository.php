@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Config;
 
 use InvalidArgumentException;
@@ -34,9 +35,10 @@ class ConfigRepository
     public function load()
     {
         $configEnv = $this->getConfigEnv();
+        $defaultConfigEnv = $this->getDefaultConfigEnv();
         $configCustom = $this->getConfigCustom();
         $configSession = $this->getConfigFromSession();
-        return array_replace_recursive($configEnv, $configCustom, $configSession);
+        return array_replace_recursive($defaultConfigEnv, $configEnv, $configCustom, $configSession);
     }
 
     /**
@@ -45,11 +47,16 @@ class ConfigRepository
     private function getConfigEnv()
     {
         $configPath = Path::join(ROOT_PATH, 'config', getenv('environment'), 'config.php');
-        if (file_exists($configPath)) {
-            /** @noinspection PhpIncludeInspection */
-            return require($configPath);
-        }
-        return [];
+        return $this->getConfigEnvFromPath($configPath);
+    }
+
+    /**
+     * @return array
+     */
+    private function getDefaultConfigEnv()
+    {
+        $configPath = Path::join(ROOT_PATH, 'config', 'config.php');
+        return $this->getConfigEnvFromPath($configPath);
     }
 
     /**
@@ -87,8 +94,8 @@ class ConfigRepository
 
     /**
      * @param array $keys
-     * @throws InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
      */
     public function revertProperty($keys)
     {
@@ -134,5 +141,14 @@ class ConfigRepository
     public function addCustomConfig($customConfig)
     {
         $this->customConfigs[] = $customConfig;
+    }
+
+    private function getConfigEnvFromPath($configPath)
+    {
+        if (file_exists($configPath)) {
+            /** @noinspection PhpIncludeInspection */
+            return require($configPath);
+        }
+        return [];
     }
 }
