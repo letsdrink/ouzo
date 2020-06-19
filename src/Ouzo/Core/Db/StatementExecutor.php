@@ -6,6 +6,7 @@
 
 namespace Ouzo\Db;
 
+use Ouzo\Logger\Backtrace;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Objects;
 use PDO;
@@ -135,7 +136,7 @@ class StatementExecutor
     public function _createPdoStatement($options = [])
     {
         $sqlString = $this->humanizedSql . ' with params: ' . Objects::toString($this->boundValues);
-        Logger::getLogger(__CLASS__)->info("Query: %s", [$sqlString]);
+        Logger::getLogger(Backtrace::getCallingClass())->info("Query: %s", [$sqlString]);
 
         return $this->pdoExecutor->createPDOStatement($this->dbHandle, $this->sql, $this->boundValues, $sqlString, $options);
     }
