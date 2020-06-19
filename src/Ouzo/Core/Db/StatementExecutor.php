@@ -136,7 +136,8 @@ class StatementExecutor
     public function _createPdoStatement($options = [])
     {
         $sqlString = $this->humanizedSql . ' with params: ' . Objects::toString($this->boundValues);
-        Logger::getLogger(Backtrace::getCallingClass())->info("Query: %s", [$sqlString]);
+        $callingClass = Backtrace::getCallingClass();
+        Logger::getLogger(__CLASS__)->info("From: %s Query: %s", [$callingClass, $sqlString]);
 
         return $this->pdoExecutor->createPDOStatement($this->dbHandle, $this->sql, $this->boundValues, $sqlString, $options);
     }
