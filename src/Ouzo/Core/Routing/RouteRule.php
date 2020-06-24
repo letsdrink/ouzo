@@ -161,7 +161,7 @@ class RouteRule
 
     private function prepareResourceControllerName()
     {
-        $controllerParts = explode('/', $this->controller);
+        $controllerParts = $this->getControllerParts();
         $result = [];
 
         foreach ($controllerParts as $controllerPart) {
@@ -186,8 +186,16 @@ class RouteRule
 
     private function handleNestedResource()
     {
-        $parts = explode('/', $this->controller);
+        $parts = $this->getControllerParts();
         rsort($parts);
         return implode('_', $parts);
+    }
+
+    private function getControllerParts()
+    {
+        $parts = explode('\\', str_ireplace('controller', '', $this->controller));
+        $controllerName = Strings::camelCaseToUnderscore(array_pop($parts));
+        $parts[] = $controllerName;
+        return array_filter($parts);
     }
 }

@@ -3,7 +3,6 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\Exception\UnauthorizedException;
 use Ouzo\Extension\AuthBasicExtension;
@@ -33,16 +32,14 @@ class AuthBasicControllerTest extends ControllerTestCase
     public function setUp(): void
     {
         parent::setUp();
-        Config::overrideProperty('namespace', 'controller')->with('\\');
         Route::$validate = false;
-        Route::allowAll('/auth_sample', 'auth_sample');
+        Route::allowAll('/auth_sample', AuthSampleController::class);
     }
 
     public function tearDown(): void
     {
         Route::$validate = true;
         parent::tearDown();
-        Config::clearProperty('namespace', 'controller');
     }
 
     /**

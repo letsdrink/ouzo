@@ -88,7 +88,7 @@ class BeforeFilterTest extends ControllerTestCase
         //given
         SampleController::$beforeActionResult = false;
         SampleController::$actionCalled = false;
-        Route::any('/sample/action', 'sample#action');
+        Route::any('/sample/action', SampleController::class, 'action');
 
         //when
         $this->get('/sample/action');
@@ -105,7 +105,7 @@ class BeforeFilterTest extends ControllerTestCase
         //given
         SampleController::$beforeActionResult = true;
         SampleController::$actionCalled = false;
-        Route::any('/sample/action', 'sample#action');
+        Route::any('/sample/action', SampleController::class, 'action');
 
         //when
         $this->get('/sample/action');
@@ -126,7 +126,7 @@ class BeforeFilterTest extends ControllerTestCase
             return true;
         };
 
-        Route::any('/sample/action', 'sample#action');
+        Route::any('/sample/action', SampleController::class, 'action');
 
         //when
         $this->get('/sample/action');

@@ -3,11 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Routing\Route;
 use Ouzo\Routing\GroupedRoute;
 use Ouzo\Tests\Assert;
 
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class GroupedRouteTest extends TestCase
 {
@@ -24,8 +25,8 @@ class GroupedRouteTest extends TestCase
     public function shouldAddGetRoute()
     {
         //given
-        GroupedRoute::get('/user/index', 'User#index');
-        GroupedRoute::get('/user/show/id/:id', 'User#show');
+        GroupedRoute::get('/user/index', 'GroupedRouteController', 'index');
+        GroupedRoute::get('/user/show/id/:id', 'GroupedRouteController', 'show');
 
         //when
         $routes = Route::getRoutes();
@@ -42,8 +43,8 @@ class GroupedRouteTest extends TestCase
     public function shouldAddPostRoute()
     {
         //given
-        GroupedRoute::post('/user/save', 'User#save');
-        GroupedRoute::post('/user/update/id/:id', 'User#update');
+        GroupedRoute::post('/user/save', 'GroupedRouteController', 'save');
+        GroupedRoute::post('/user/update/id/:id', 'GroupedRouteController', 'update');
 
         //when
         $routes = Route::getRoutes();
@@ -60,8 +61,8 @@ class GroupedRouteTest extends TestCase
     public function shouldAddAnyRoute()
     {
         //given
-        GroupedRoute::any('/user/save', 'User#save');
-        GroupedRoute::any('/user/update/id/:id', 'User#update');
+        GroupedRoute::any('/user/save', 'GroupedRouteController', 'save');
+        GroupedRoute::any('/user/update/id/:id', 'GroupedRouteController', 'update');
 
         //when
         $routes = Route::getRoutes();
@@ -78,7 +79,7 @@ class GroupedRouteTest extends TestCase
     public function shouldAddDeleteRoute()
     {
         //given
-        GroupedRoute::any('/user/delete/:id', 'User#delete');
+        GroupedRoute::any('/user/delete/:id', 'GroupedRouteController', 'delete');
 
         //when
         $routes = Route::getRoutes();
@@ -95,7 +96,7 @@ class GroupedRouteTest extends TestCase
     public function shouldCreateRouteForResource()
     {
         //given
-        GroupedRoute::resource('users');
+        GroupedRoute::resource('GroupedRouteController', 'users');
 
         //when
         $routes = Route::getRoutes();

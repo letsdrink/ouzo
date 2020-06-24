@@ -4,7 +4,6 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\Csrf\CsrfProtector;
 use Ouzo\Exception\ForbiddenException;
@@ -37,16 +36,14 @@ class CsrfProtectorTest extends ControllerTestCase
     public function setUp(): void
     {
         parent::setUp();
-        Config::overrideProperty('namespace', 'controller')->with('\\');
         Route::$validate = false;
-        Route::allowAll('/csrf_sample', 'csrf_sample');
+        Route::allowAll('/csrf_sample', CsrfSampleController::class);
     }
 
     public function tearDown(): void
     {
         Route::$validate = true;
         parent::tearDown();
-        Config::clearProperty('namespace', 'controller');
     }
 
     /**

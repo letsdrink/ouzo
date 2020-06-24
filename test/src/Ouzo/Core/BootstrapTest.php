@@ -6,6 +6,7 @@
 
 use Ouzo\Bootstrap;
 use Ouzo\Config;
+use Ouzo\Controller;
 use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
 use Ouzo\EnvironmentSetter;
@@ -24,6 +25,15 @@ use Ouzo\Tests\MockOutputDisplayer;
 use Ouzo\Tests\MockRedirectHandler;
 use Ouzo\Tests\MockSessionStarterInterceptor;
 use PHPUnit\Framework\TestCase;
+
+class BootstrapSampleController extends Controller
+{
+    public function index()
+    {
+        $this->layout->renderAjax('index');
+        $this->layout->unsetLayout();
+    }
+}
 
 class BootstrapTest extends TestCase
 {
@@ -48,10 +58,9 @@ class BootstrapTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         Route::clear();
 
-        Route::get('/', 'sample#save');
+        Route::get('/', BootstrapSampleController::class, 'index');
         $this->bootstrap = new Bootstrap(new EnvironmentSetter('test'));
         $this->bootstrap->withInjectorConfig($this->config);
 
@@ -63,7 +72,6 @@ class BootstrapTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        Config::clearProperty('namespace', 'controller');
         Config::clearProperty('debug');
     }
 

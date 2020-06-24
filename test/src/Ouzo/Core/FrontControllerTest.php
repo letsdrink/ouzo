@@ -4,12 +4,15 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
+use Ouzo\Api\SomeController;
 use Ouzo\Config;
 use Ouzo\FrontController;
 use Ouzo\Middleware\Interceptor\DefaultRequestId;
 use Ouzo\Middleware\MiddlewareRepository;
+use Ouzo\RestfulController;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouterException;
+use Ouzo\SampleFrontController;
 use Ouzo\Session;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\CatchException;
@@ -21,14 +24,12 @@ class FrontControllerTest extends ControllerTestCase
     public function setUp(): void
     {
         parent::setUp();
-        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         Route::clear();
     }
 
     public function tearDown(): void
     {
         parent::tearDown();
-        Config::clearProperty('namespace', 'controller');
         Config::clearProperty('debug');
     }
 
@@ -38,7 +39,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldCheckRouteGetIfRequestValid()
     {
         //given
-        Route::get('/sample/save', 'sample#save');
+        Route::get('/sample/save', SampleFrontController::class, 'save');
 
         //when
         $this->get('/sample/save');
@@ -54,7 +55,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldThrowExceptionIfNoRouteFound()
     {
         //given
-        Route::post('/sample/save', 'sample#save');
+        Route::post('/sample/save', SampleFrontController::class, 'save');
 
         //when
         CatchException::when($this)->get('/sample/save');
@@ -67,7 +68,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldExceptActionInAllAllow()
     {
         //given
-        Route::allowAll('/sample', 'sample', ['except' => ['except']]);
+        Route::allowAll('/sample', SampleFrontController::class, ['except' => ['except']]);
 
         //when
         try {
@@ -84,7 +85,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteWithQueryString()
     {
         //given
-        Route::get('/sample/save', 'sample#save');
+        Route::get('/sample/save', SampleFrontController::class, 'save');
 
         //when
         $this->get('/sample/save?hash=1235');
@@ -99,7 +100,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestIndexWithCorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->get('/restful');
@@ -114,7 +115,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestIndexWithIncorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->post('/restful', []);
@@ -129,7 +130,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestFreshWithCorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->get('/restful/fresh');
@@ -145,7 +146,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestFreshWithIncorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         CatchException::when($this)->post('/restful/fresh', []);
@@ -160,7 +161,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestCreateWithCorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->post('/restful', []);
@@ -175,7 +176,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestCreateWithIncorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->get('/restful');
@@ -190,7 +191,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestShowWithCorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->get('/restful/12', []);
@@ -206,7 +207,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestShowWithIncorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         CatchException::when($this)->post('/restful/12', []);
@@ -221,7 +222,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestEditWithCorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->get('/restful/12/edit', []);
@@ -237,7 +238,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestEditWithIncorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         CatchException::when($this)->post('/restful/12/edit', []);
@@ -252,7 +253,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestPutWithCorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->put('/restful/12', []);
@@ -267,7 +268,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestPutWithIncorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->get('/restful/12');
@@ -282,7 +283,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestPatchWithCorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->patch('/restful/12');
@@ -297,7 +298,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestPatchWithIncorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->get('/restful/12');
@@ -312,7 +313,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestDeleteWithCorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->delete('/restful/12');
@@ -327,7 +328,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteRestDeleteWithIncorrectMethod()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
 
         //when
         $this->patch('/restful/12');
@@ -342,7 +343,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRemoveDuplicatedPrefixFromUrlWhenExists()
     {
         //given
-        Route::post('/sample/redirect_to', 'sample#redirect_to');
+        Route::post('/sample/redirect_to', SampleFrontController::class, 'redirect_to');
 
         //when
         $this->post('/sample/redirect_to', []);
@@ -357,7 +358,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldRouteToRoot()
     {
         //given
-        Route::get('/', 'sample#index');
+        Route::get('/', SampleFrontController::class, 'index');
 
         //when
         $this->get('/');
@@ -372,14 +373,14 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldGetCurrentRequestContextController()
     {
         //given
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
         $this->get('/restful');
 
         //when
         $currentController = $this->requestContext()->getCurrentController();
 
         //then
-        $this->assertEquals('restful', $currentController);
+        $this->assertEquals(RestfulController::class, $currentController);
     }
 
     /**
@@ -389,7 +390,7 @@ class FrontControllerTest extends ControllerTestCase
     {
         //given
         Config::overrideProperty('debug')->with(true);
-        Route::resource('restful');
+        Route::resource(RestfulController::class, 'restful');
         $this->get('/restful?param=1');
 
         //when
@@ -405,7 +406,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldHandleControllerInNamespace()
     {
         //given
-        Route::get('/api/some/action', 'api/some#action');
+        Route::get('/api/some/action', SomeController::class, 'action');
 
         //when
         $this->get('/api/some/action');
@@ -423,7 +424,7 @@ class FrontControllerTest extends ControllerTestCase
         $middlewareRepository = new MiddlewareRepository();
         $middlewareRepository->add(new ExceptionThrowMiddleware());
         $this->injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
-        Route::get('/sample/save', 'sample#save');
+        Route::get('/sample/save', SampleFrontController::class, 'save');
 
         //when
         CatchException::when($this)->get('/sample/save');
@@ -440,7 +441,7 @@ class FrontControllerTest extends ControllerTestCase
         //given
         Config::overrideProperty('debug')->with(false);
         Session::remove('stats_queries');
-        Route::get('/sample/save', 'sample#save');
+        Route::get('/sample/save', SampleFrontController::class, 'save');
 
         //when
         $this->get('/sample/save');
@@ -457,7 +458,7 @@ class FrontControllerTest extends ControllerTestCase
         //given
         Config::overrideProperty('debug')->with(true);
         Session::remove('stats_queries');
-        Route::get('/sample/save', 'sample#save');
+        Route::get('/sample/save', SampleFrontController::class, 'save');
 
         //when
         $this->get('/sample/save');
@@ -472,7 +473,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldAddSomeExampleFieldIntoRequestObject()
     {
         //given
-        Route::get('/sample/save', 'sample#save');
+        Route::get('/sample/save', SampleFrontController::class, 'save');
         $middlewareRepository = new MiddlewareRepository();
         $middlewareRepository->add(new SampleMiddleware());
 
@@ -492,7 +493,7 @@ class FrontControllerTest extends ControllerTestCase
     public function shouldSetRequestIdUsingMiddleware()
     {
         //given
-        Route::get('/sample/save', 'sample#save');
+        Route::get('/sample/save', SampleFrontController::class, 'save');
         $middlewareRepository = new MiddlewareRepository();
         $middlewareRepository->add(new DefaultRequestId());
 

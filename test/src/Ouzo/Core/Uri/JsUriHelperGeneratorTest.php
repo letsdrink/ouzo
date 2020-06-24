@@ -7,9 +7,8 @@ use Ouzo\Routing\Route;
 use Ouzo\Uri\JsUriHelperGenerator;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
-use PHPUnit_Framework_TestCase;
 
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class JsUriHelperGeneratorTest extends TestCase
 {
@@ -38,7 +37,7 @@ class JsUriHelperGeneratorTest extends TestCase
     public function shouldGenerateUriHelperForGet()
     {
         //given
-        Route::get('/users/show_item', 'users#show_item');
+        Route::get('/users/show_item', 'Controller\\UsersController', 'show_item');
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();
@@ -64,7 +63,7 @@ EXPECTED;
     public function shouldGenerateUriHelperForPost()
     {
         //given
-        Route::post('/users/save', 'users#save');
+        Route::post('/users/save', 'Controller\\UsersController', 'save');
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();
@@ -90,7 +89,7 @@ FUNCT;
     public function shouldGenerateUriHelperForAny()
     {
         //given
-        Route::any('/users/get_duplicated', 'users#get_duplicated');
+        Route::any('/users/get_duplicated', 'Controller\\UsersController', 'get_duplicated');
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();
@@ -116,7 +115,7 @@ FUNCT;
     public function shouldGenerateUriHelperWhenMultipleBindParameters()
     {
         //given
-        Route::get('/users/show/id/:id/call_id/:call_id', 'users#show');
+        Route::get('/users/show/id/:id/call_id/:call_id', 'Controller\\UsersController', 'show');
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();
@@ -144,7 +143,7 @@ FUNCT;
     public function shouldGenerateUriHelperForCustomRouteName()
     {
         //given
-        Route::get('/users/show_item', 'users#show_item', ['as' => 'user_item']);
+        Route::get('/users/show_item', 'Controller\\UsersController', 'show_item', ['as' => 'user_item']);
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();
@@ -170,7 +169,7 @@ FUNCT;
     public function shouldGenerateUriHelperForResource()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();
@@ -210,7 +209,7 @@ FUNCT;
     public function shouldGenerateCorrectNestedResources()
     {
         //given
-        Route::get('/api/users/:id/orders', 'api/users#orders');
+        Route::get('/api/users/:id/orders', 'Controller\\Api\\UsersController', 'orders');
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();
@@ -237,7 +236,7 @@ FUNCT;
     public function shouldSaveGeneratedUriHelperInFile()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $generator = JsUriHelperGenerator::generate();
 
         //when
@@ -254,7 +253,7 @@ FUNCT;
     public function shouldNotGenerateCorrectAllowAllResource()
     {
         //given
-        Route::allowAll('/api', 'api');
+        Route::allowAll('/api', 'Controller\\Api\\UsersController');
 
         //when
         $generated = JsUriHelperGenerator::generate()->getGeneratedFunctions();

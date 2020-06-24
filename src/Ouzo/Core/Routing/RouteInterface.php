@@ -7,15 +7,15 @@ namespace Ouzo\Routing;
 
 interface RouteInterface
 {
-    public static function get($uri, $action, array $options = []);
+    public static function get($uri, $controller, $action, array $options = []);
 
-    public static function post($uri, $action, array $options = []);
+    public static function post($uri, $controller, $action, array $options = []);
 
-    public static function put($uri, $action, array $options = []);
+    public static function put($uri, $controller, $action, array $options = []);
 
-    public static function delete($uri, $action, array $options = []);
+    public static function delete($uri, $controller, $action, array $options = []);
 
-    public static function any($uri, $action, array $options = []);
+    public static function any($uri, $controller, $action, array $options = []);
 
-    public static function resource($controller);
+    public static function resource($controller, $uriPrefix);
 }

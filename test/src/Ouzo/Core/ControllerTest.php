@@ -117,7 +117,6 @@ class ControllerTest extends ControllerTestCase
         parent::setUp();
         StreamStub::register('json');
         SimpleTestController::$stream = 'json://input';
-        Config::overrideProperty('namespace', 'controller')->with('\\');
         Route::clear();
     }
 
@@ -126,7 +125,6 @@ class ControllerTest extends ControllerTestCase
         parent::tearDown();
         StreamStub::unregister();
         SimpleTestController::$stream = 'php://input';
-        Config::clearProperty('namespace', 'controller');
     }
 
     /**
@@ -185,7 +183,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldDownloadFile()
     {
         //given
-        Route::get('/simple_test/download', 'simple_test#download');
+        Route::get('/simple_test/download', SimpleTestController::class, 'download');
 
         //when
         $this->get('/simple_test/download');
@@ -200,7 +198,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldPassUrlParametersToControllerAction()
     {
         // given
-        Route::get('/simple_test/receive_params/:user/:page', 'simple_test#receive_params');
+        Route::get('/simple_test/receive_params/:user/:page', SimpleTestController::class, 'receive_params');
 
         // when
         $this->get('/simple_test/receive_params/Cersei/about-us');
@@ -215,7 +213,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldPassOnlyUrlParametersNotPostOrGet()
     {
         // given
-        Route::post('/simple_test2/receive_params/:user', 'simple_test#receive_params');
+        Route::post('/simple_test2/receive_params/:user', SimpleTestController::class, 'receive_params');
 
         // when
         CatchException::when($this)->post('/simple_test2/receive_params/Cersei', [
@@ -232,7 +230,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldThrowExceptionIfMethodDoesNotExist()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         CatchException::when($this)->get('/simple_test/invalid');
@@ -247,7 +245,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldParseQueryString()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         $this->get('/simple_test/params?p1=v1&p2=v2');
@@ -262,7 +260,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldAppendParamsToUrlWithoutParams()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $data = [
             'p1' => 'v1',
             'p2' => 'v2'
@@ -281,7 +279,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldAppendParamsToUrlWithParams()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $data = [
             'p2' => 'v2',
             'p3' => 'v3'
@@ -301,7 +299,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldParseQueryStringWithNestedParams()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         $this->get('/simple_test/params?p1=v1&id[]=1&id[]=2&id[]=3');
@@ -320,7 +318,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldParseQueryStringIfParamHasNoValue()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         $this->get('/simple_test/params?p1');
@@ -335,7 +333,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldSetEmptyParamsIfNoParameters()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         $this->get('/simple_test/params');
@@ -350,7 +348,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldKeepNoticeToNextRequest()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $this->get('/simple_test/keep');
 
         //when
@@ -366,7 +364,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldNotKeepNoticeToNextRequest()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $this->get('/simple_test/do_not_keep');
 
         //when
@@ -382,7 +380,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldKeepNoticeToFirstUrlVisit()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $this->get('/simple_test/keep_set_url');
 
         //when
@@ -398,7 +396,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldRemoveNoticeOnFirstUrlVisit()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $this->get('/simple_test/keep_set_url');
 
         //when
@@ -415,7 +413,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldCheckIsHeaderIsCorrectly()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         $this->get('/simple_test/check_http_header');
@@ -430,7 +428,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldRemoveNoticeIfShortUrlMatches()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $this->get('/simple_test/add_notice_for_short_url');
 
         //when
@@ -449,7 +447,7 @@ class ControllerTest extends ControllerTestCase
         //given
         Config::overrideProperty('global', 'prefix_system')->with('prefix');
 
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $this->get('/simple_test/add_notice_for_full_url');
 
         //when
@@ -468,7 +466,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldNotRemoveNoticeIfUrlDoesNotMatch()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $this->get('/simple_test/add_notice_for_short_url');
 
         //when
@@ -513,7 +511,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldRenderAjaxViewWithoutViewName()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         CatchException::when($this)->get('/simple_test/empty_view_name');
@@ -528,7 +526,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldRemoveNoticeIfUrlIsWithQueryPath()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         $this->get('/simple_test/notice_with_query?data=some-data');
 
         //when
@@ -544,7 +542,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldGetStringOutput()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         $this->get('/simple_test/string_output');
@@ -560,7 +558,7 @@ class ControllerTest extends ControllerTestCase
     {
         //given
         SimpleTestController::$stream = 'json://input';
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
         StreamStub::$body = '{"key":"value"}';
         ContentType::set('application/json');
 
@@ -577,7 +575,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldCountTimeAndNumberOfQueries()
     {
         //given
-        Route::get('/simple_test/tracing', 'simple_test#tracing');
+        Route::get('/simple_test/tracing', SimpleTestController::class, 'tracing');
 
         //when
         $this->get('/simple_test/tracing');
@@ -593,7 +591,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldTraceInfoAboutHttpRequest()
     {
         //given
-        Route::get('/simple_test/tracing', 'simple_test#tracing');
+        Route::get('/simple_test/tracing', SimpleTestController::class, 'tracing');
 
         //when
         $this->get('/simple_test/tracing', ['param1' => 'value1', 'param2' => 'value2']);
@@ -609,7 +607,7 @@ class ControllerTest extends ControllerTestCase
     public function shouldGroupStatsByRequest()
     {
         //given
-        Route::allowAll('/simple_test', 'simple_test');
+        Route::allowAll('/simple_test', SimpleTestController::class);
 
         //when
         $this->get('/simple_test/tracing', ['param1' => 'value1', 'param2' => 'value2']);

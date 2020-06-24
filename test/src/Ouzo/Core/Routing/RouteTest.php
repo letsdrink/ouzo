@@ -25,8 +25,8 @@ class RouteTest extends TestCase
     public function shouldAddGetRoute()
     {
         //given
-        Route::get('/user/index', 'User#index');
-        Route::get('/user/show/id/:id', 'User#show');
+        Route::get('/user/index', 'Controller\\UsersController', 'index');
+        Route::get('/user/show/id/:id', 'Controller\\UsersController', 'show');
 
         //when
         $routes = Route::getRoutes();
@@ -41,14 +41,14 @@ class RouteTest extends TestCase
     public function shouldReturnCorrectRouteRule()
     {
         //given
-        Route::get('/user/index', 'User#index');
+        Route::get('/user/index', 'Controller\\UsersController', 'index');
 
         //when
         $route = Arrays::first(Route::getRoutes());
 
         //then
         $this->assertEquals('/user/index', $route->getUri());
-        $this->assertEquals('User', $route->getController());
+        $this->assertEquals('Controller\\UsersController', $route->getController());
         $this->assertEquals('index', $route->getAction());
     }
 
@@ -58,8 +58,8 @@ class RouteTest extends TestCase
     public function shouldAddPostRoute()
     {
         //given
-        Route::post('/user/save', 'User#save');
-        Route::post('/user/update/id/:id', 'User#update');
+        Route::post('/user/save', 'Controller\\UsersController', 'save');
+        Route::post('/user/update/id/:id', 'Controller\\UsersController', 'update');
 
         //when
         $routes = Route::getRoutes();
@@ -74,8 +74,8 @@ class RouteTest extends TestCase
     public function shouldAddAnyRoute()
     {
         //given
-        Route::any('/user/save', 'User#save');
-        Route::any('/user/update/id/:id', 'User#update');
+        Route::any('/user/save', 'Controller\\UsersController', 'save');
+        Route::any('/user/update/id/:id', 'Controller\\UsersController', 'update');
 
         //when
         $routes = Route::getRoutes();
@@ -90,12 +90,12 @@ class RouteTest extends TestCase
     public function shouldSearchRouteForController()
     {
         //given
-        Route::any('/user/save', 'User#save');
-        Route::any('/user/update/id/:id', 'User#update');
-        Route::any('/photo/index', 'Photo#index');
+        Route::any('/user/save', 'Controller\\UsersController', 'save');
+        Route::any('/user/update/id/:id', 'Controller\\UsersController', 'update');
+        Route::any('/photo/index', 'Controller\\Admin\\UsersController', 'index');
 
         //when
-        $controllerRoutes = Route::getRoutesForController('user');
+        $controllerRoutes = Route::getRoutesForController('Controller\\UsersController');
 
         //then
         $this->assertCount(2, $controllerRoutes);
@@ -108,8 +108,8 @@ class RouteTest extends TestCase
     public function shouldReturnEmptyArrayIfNoRoutesForController()
     {
         //given
-        Route::any('/user/save', 'User#save');
-        Route::any('/user/update/id/:id', 'User#update');
+        Route::any('/user/save', 'Controller\\UsersController', 'save');
+        Route::any('/user/update/id/:id', 'Controller\\UsersController', 'update');
 
         //when
         $controllerRoutes = Route::getRoutesForController('photo');
@@ -124,11 +124,11 @@ class RouteTest extends TestCase
     public function shouldThrowExceptionForDuplicatedRules()
     {
         //given
-        Route::get('/user/save', 'User#save_one');
+        Route::get('/user/save', 'Controller\\UsersController', 'save_one');
 
         //when
         try {
-            Route::get('/user/save', 'User#save_two');
+            Route::get('/user/save', 'Controller\\UsersController', 'save_two');
             $this->fail();
         } catch (InvalidArgumentException $exception) {
         }
@@ -145,8 +145,8 @@ class RouteTest extends TestCase
     public function shouldDefineMultipleRulesWithDifferentTypes()
     {
         //given
-        Route::get('/user/save', 'User#save');
-        Route::post('/user/save', 'User#save');
+        Route::get('/user/save', 'Controller\\UsersController', 'save');
+        Route::post('/user/save', 'Controller\\UsersController', 'save');
 
         //when
         $routes = Route::getRoutes();
@@ -161,7 +161,7 @@ class RouteTest extends TestCase
     public function shouldCreateRouteForResource()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
 
         //when
         $routes = Route::getRoutes();
@@ -177,7 +177,7 @@ class RouteTest extends TestCase
     public function shouldThrowExceptionIfNoActionInGetMethod()
     {
         //when
-        CatchException::when(new Route())->get('/user/save', 'User');
+        CatchException::when(new Route())->get('/user/save', 'Controller\\UsersController', null);
         CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
@@ -188,7 +188,7 @@ class RouteTest extends TestCase
     public function shouldThrowExceptionIfNoActionInPostMethod()
     {
         //when
-        CatchException::when(new Route())->post('/user/save', 'User');
+        CatchException::when(new Route())->post('/user/save', 'Controller\\UsersController', null);
         CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
@@ -199,7 +199,7 @@ class RouteTest extends TestCase
     public function shouldThrowExceptionIfNoActionInAnyMethod()
     {
         //when
-        CatchException::when(new Route())->any('/user/save', 'User');
+        CatchException::when(new Route())->any('/user/save', 'Controller\\UsersController', null);
         CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
@@ -209,14 +209,14 @@ class RouteTest extends TestCase
     public function shouldRouteForAllowingAllActionsInController()
     {
         //given
-        Route::allowAll('/users', 'users');
+        Route::allowAll('/users', 'Controller\\UsersController');
 
         //when
         $routes = Route::getRoutes();
 
         //then
         $this->assertCount(1, $routes);
-        $this->assertEquals('users', $routes[0]->getController());
+        $this->assertEquals('Controller\\UsersController', $routes[0]->getController());
         $this->assertNull($routes[0]->getAction());
     }
 
@@ -227,8 +227,8 @@ class RouteTest extends TestCase
     {
         //given
         Route::$validate = false;
-        Route::get('/users/index', 'users#index');
-        Route::get('/users/index', 'users#index');
+        Route::get('/users/index', 'Controller\\UsersController', 'index');
+        Route::get('/users/index', 'Controller\\UsersController', 'index');
         Route::$validate = true;
 
         //when
@@ -244,7 +244,7 @@ class RouteTest extends TestCase
     public function shouldSetRuleNameToGetMethod()
     {
         //given
-        Route::get('/users/index', 'users#index');
+        Route::get('/users/index', 'Controller\\UsersController', 'index');
 
         //when
         $routes = Route::getRoutes();
@@ -259,7 +259,7 @@ class RouteTest extends TestCase
     public function shouldSetCustomRuleNameToGetMethod()
     {
         //given
-        Route::get('/users/index', 'users#index', ['as' => 'all_users']);
+        Route::get('/users/index', 'Controller\\UsersController', 'index', ['as' => 'all_users']);
 
         //when
         $routes = Route::getRoutes();
@@ -274,7 +274,7 @@ class RouteTest extends TestCase
     public function shouldSetRuleNameToPostMethod()
     {
         //given
-        Route::post('/users/save', 'users#save');
+        Route::post('/users/save', 'Controller\\UsersController', 'save');
 
         //when
         $routes = Route::getRoutes();
@@ -289,7 +289,7 @@ class RouteTest extends TestCase
     public function shouldSetCustomRuleNameToPostMethod()
     {
         //given
-        Route::post('/users/save', 'users#save', ['as' => 'add_user']);
+        Route::post('/users/save', 'Controller\\UsersController', 'save', ['as' => 'add_user']);
 
         //when
         $routes = Route::getRoutes();
@@ -304,7 +304,7 @@ class RouteTest extends TestCase
     public function shouldSetRuleNameToAnyMethod()
     {
         //given
-        Route::any('/users/add', 'users#add');
+        Route::any('/users/add', 'Controller\\UsersController', 'add');
 
         //when
         $routes = Route::getRoutes();
@@ -319,7 +319,7 @@ class RouteTest extends TestCase
     public function shouldSetCustomRuleNameToAnyMethod()
     {
         //given
-        Route::any('/users/add', 'users#add', ['as' => 'create_user']);
+        Route::any('/users/add', 'Controller\\UsersController', 'add', ['as' => 'create_user']);
 
         //when
         $routes = Route::getRoutes();
@@ -334,7 +334,7 @@ class RouteTest extends TestCase
     public function shouldNotSetRuleNameToAllowAllMethod()
     {
         //given
-        Route::allowAll('/users', 'users');
+        Route::allowAll('/users', 'Controller\\UsersController');
 
         //when
         $routes = Route::getRoutes();
@@ -349,7 +349,7 @@ class RouteTest extends TestCase
     public function shouldNotSetCustomRuleNameToAllowAllMethod()
     {
         //given
-        Route::allowAll('/users', 'users', ['as' => 'custom']);
+        Route::allowAll('/users', 'Controller\\UsersController', ['as' => 'custom']);
 
         //when
         $routes = Route::getRoutes();
@@ -364,7 +364,7 @@ class RouteTest extends TestCase
     public function shouldSetRulesNameToResourceMethod()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
 
         //when
         $routes = Route::getRoutes();
@@ -381,7 +381,7 @@ class RouteTest extends TestCase
     public function shouldSetRuleNameForMultipartControllerNames()
     {
         //given
-        Route::resource('big_feet');
+        Route::resource('Controller\\BigFeetController', 'big_feet');
 
         //when
         $routes = Route::getRoutes();
@@ -398,7 +398,7 @@ class RouteTest extends TestCase
     public function shouldSetRuleNameForMultipartCamelcaseAction()
     {
         //given
-        Route::post('/users/save', 'users#saveMyUser');
+        Route::post('/users/save', 'Controller\\UsersController', 'saveMyUser');
 
         //when
         $routes = Route::getRoutes();
@@ -413,7 +413,7 @@ class RouteTest extends TestCase
     public function shouldGenerateNameForNestedRoute()
     {
         //given
-        Route::post('/users/save', 'admin/users#saveMyUser');
+        Route::post('/users/save', 'Controller\\Admin\\UsersController', 'saveMyUser');
 
         //when
         $routes = Route::getRoutes();
@@ -428,7 +428,7 @@ class RouteTest extends TestCase
     public function shouldGenerateNameForNestedResourceRoute()
     {
         //given
-        Route::resource('admin/users');
+        Route::resource('Controller\\Admin\\UsersController', 'admin/users');
 
         //when
         $routes = Route::getRoutes();
@@ -445,13 +445,13 @@ class RouteTest extends TestCase
     public function shouldAddPutRoute()
     {
         //given
-        Route::put('/users/save', 'users#save');
+        Route::put('/users/save', 'Controller\\UsersController', 'save');
 
         //when
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('users', $routes[0]->getController());
+        $this->assertEquals('Controller\\UsersController', $routes[0]->getController());
         $this->assertEquals('save', $routes[0]->getAction());
     }
 
@@ -461,13 +461,13 @@ class RouteTest extends TestCase
     public function shouldAddDeleteRoute()
     {
         //given
-        Route::delete('/users/:id/delete', 'users#delete');
+        Route::delete('/users/:id/delete', 'Controller\\UsersController', 'delete');
 
         //when
         $routes = Route::getRoutes();
 
         //then
-        $this->assertEquals('users', $routes[0]->getController());
+        $this->assertEquals('Controller\\UsersController', $routes[0]->getController());
         $this->assertEquals('delete', $routes[0]->getAction());
     }
 
@@ -478,7 +478,7 @@ class RouteTest extends TestCase
     {
         //given
         Route::group('api', function () {
-            GroupedRoute::post('/users/:id/archive', 'users#archive');
+            GroupedRoute::post('/users/:id/archive', 'Controller\\UsersController', 'archive');
         });
 
         //when
@@ -488,7 +488,7 @@ class RouteTest extends TestCase
         $this->assertCount(1, $routes);
         $this->assertEquals('/api/users/:id/archive', $routes[0]->getUri());
         $this->assertEquals('archive', $routes[0]->getAction());
-        $this->assertEquals('api/users', $routes[0]->getController());
+        $this->assertEquals('Controller\\UsersController', $routes[0]->getController());
         $this->assertEquals('POST', $routes[0]->getMethod());
     }
 
@@ -498,8 +498,8 @@ class RouteTest extends TestCase
     public function shouldAddAllowAll()
     {
         //given
-        Route::get('/user', 'User#index');
-        Route::allowAll('/user', 'User');
+        Route::get('/user', 'Controller\\UsersController', 'index');
+        Route::allowAll('/user', 'Controller\\UsersController');
 
         //when
         $routes = Route::getRoutes();
@@ -514,7 +514,7 @@ class RouteTest extends TestCase
     public function shouldAddOptions()
     {
         //given
-        Route::options('/user', 'User#options');
+        Route::options('/user', 'Controller\\UsersController', 'options');
 
         //when
         $routes = Route::getRoutes();

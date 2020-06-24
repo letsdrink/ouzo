@@ -8,11 +8,11 @@ namespace Ouzo;
 
 use Exception;
 
-class SampleControllerException extends Exception
+class SampleFrontControllerException extends Exception
 {
 }
 
-class SampleController extends Controller
+class SampleFrontController extends Controller
 {
     public function action()
     {

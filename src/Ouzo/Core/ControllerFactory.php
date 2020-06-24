@@ -6,26 +6,18 @@
 
 namespace Ouzo;
 
+use LogicException;
 use Ouzo\Request\RequestParameters;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Stats\SessionStats;
-use Ouzo\Utilities\ClassName;
 
 class ControllerFactory
 {
-    /** @var array */
-    private $controllerNamespaces;
-
     /**
      * @Inject
      * @var \Ouzo\Injection\Injector
      */
     private $injector;
-
-    public function __construct()
-    {
-        $this->controllerNamespaces = AutoloadNamespaces::getControllerNamespace();
-    }
 
     /**
      * @param RouteRule $routeRule
@@ -36,14 +28,14 @@ class ControllerFactory
      */
     public function createController(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats)
     {
-        $controllerName = ClassName::pathToFullyQualifiedName($routeRule->getController());
-        foreach ($this->controllerNamespaces as $controllerNamespace) {
-            $controller = $controllerNamespace . $controllerName . "Controller";
-            if (class_exists($controller)) {
-                return $this->getInstance($routeRule, $controller, $requestParameters, $sessionStats);
-            }
+        $controller = $routeRule->getController();
+        if (!class_exists($controller)) {
+            throw new ControllerNotFoundException('Controller [' . $controller . '] for URI [' . $routeRule->getUri() . '] does not exist!');
         }
-        throw new ControllerNotFoundException('Controller [' . $controllerName . '] for URI [' . $routeRule->getUri() . '] does not exist!');
+        if (!is_subclass_of($controller, Controller::class)) {
+            throw new LogicException($controller . ' is not a subclass of ' . Controller::class);
+        }
+        return $this->getInstance($routeRule, $controller, $requestParameters, $sessionStats);
     }
 
     /**

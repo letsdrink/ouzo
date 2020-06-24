@@ -29,7 +29,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteGet()
     {
         //given
-        Route::get('/user/index', 'User#index');
+        Route::get('/user/index', 'Controller\\UserController', 'index');
         $router = $this->_createRouter('GET', '/user/index');
 
         //when
@@ -38,7 +38,7 @@ class RouterTest extends TestCase
         //then
         $this->assertEquals('/user/index', $rule->getUri());
         $this->assertEquals('GET', $rule->getMethod());
-        $this->assertEquals('User', $rule->getController());
+        $this->assertEquals('Controller\\UserController', $rule->getController());
         $this->assertEquals('index', $rule->getAction());
     }
 
@@ -48,8 +48,8 @@ class RouterTest extends TestCase
     public function shouldNotMatchOnlyPrefixForGet()
     {
         //given
-        Route::get('/user/:id', 'User#show');
-        Route::get('/user/:id/posts', 'User#posts');
+        Route::get('/user/:id', 'Controller\\UserController', 'show');
+        Route::get('/user/:id/posts', 'Controller\\UserController', 'posts');
         $router = $this->_createRouter('GET', '/user/1/posts');
 
         //when
@@ -65,8 +65,8 @@ class RouterTest extends TestCase
     public function shouldNotMatchSuffix()
     {
         //given
-        Route::allowAll('/tickets', 'tickets');
-        Route::get('/user/:id/tickets/all', 'User#posts');
+        Route::allowAll('/tickets', 'Controller\\TicketsController');
+        Route::get('/user/:id/tickets/all', 'User', 'posts');
         $router = $this->_createRouter('GET', '/user/1/tickets/all');
 
         //when
@@ -83,7 +83,7 @@ class RouterTest extends TestCase
     public function shouldNotMatchControllerPrefixForAllowAll()
     {
         //given
-        Route::allowAll('/user', 'User');
+        Route::allowAll('/user', 'Controller\\UserController');
         $router = $this->_createRouter('GET', '/userInvalid/index');
 
         //when
@@ -99,7 +99,7 @@ class RouterTest extends TestCase
     public function shouldNotFindRouteIfRequestMethodIsInvalid()
     {
         //given
-        Route::get('/user/index', 'User#index');
+        Route::get('/user/index', 'Controller\\UserController', 'index');
         $router = $this->_createRouter('POST', '/user/index');
 
         //when
@@ -115,7 +115,7 @@ class RouterTest extends TestCase
     public function shouldNotFindRouteIfRequestIsDifferentFromDeclaration()
     {
         //given
-        Route::get('/user/index', 'User#index');
+        Route::get('/user/index', 'Controller\\UserController', 'index');
         $router = $this->_createRouter('GET', '/user/indexxx');
 
         //when
@@ -131,7 +131,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteWithPlaceholderValue()
     {
         //given
-        Route::get('/user/show/id/:id', 'User#show');
+        Route::get('/user/show/id/:id', 'Controller\\UserController', 'show');
         $router = $this->_createRouter('GET', '/user/show/id/12');
 
         //when
@@ -140,7 +140,7 @@ class RouterTest extends TestCase
         //then
         $this->assertEquals('/user/show/id/:id', $rule->getUri());
         $this->assertEquals('GET', $rule->getMethod());
-        $this->assertEquals('User', $rule->getController());
+        $this->assertEquals('Controller\\UserController', $rule->getController());
         $this->assertEquals('show', $rule->getAction());
     }
 
@@ -150,7 +150,7 @@ class RouterTest extends TestCase
     public function shouldNotFindRouteWhenRequestAndDefinitionIsNotEqualWithPlaceholder()
     {
         //given
-        Route::get('/user/show/id/:id', 'User#show');
+        Route::get('/user/show/id/:id', 'Controller\\UserController', 'show');
         $router = $this->_createRouter('GET', '/user/show/id/12/surname/smith');
 
         //when
@@ -166,7 +166,7 @@ class RouterTest extends TestCase
     public function shouldFindRoutePost()
     {
         //given
-        Route::post('/user/save', 'User#save');
+        Route::post('/user/save', 'Controller\\UserController', 'save');
         $router = $this->_createRouter('POST', '/user/save');
 
         //when
@@ -175,7 +175,7 @@ class RouterTest extends TestCase
         //then
         $this->assertEquals('/user/save', $rule->getUri());
         $this->assertEquals('POST', $rule->getMethod());
-        $this->assertEquals('User', $rule->getController());
+        $this->assertEquals('Controller\\UserController', $rule->getController());
         $this->assertEquals('save', $rule->getAction());
     }
 
@@ -187,7 +187,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteAny($method)
     {
         //given
-        Route::any('/user/save', 'User#save');
+        Route::any('/user/save', 'Controller\\UserController', 'save');
         $router = $this->_createRouter($method, '/user/save');
 
         //when
@@ -196,7 +196,7 @@ class RouterTest extends TestCase
         //then
         $this->assertEquals('/user/save', $rule->getUri());
         $this->assertContains($method, $rule->getMethod());
-        $this->assertEquals('User', $rule->getController());
+        $this->assertEquals('Controller\\UserController', $rule->getController());
         $this->assertEquals('save', $rule->getAction());
     }
 
@@ -209,7 +209,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteResource($method, $uri)
     {
         //given
-        Route::resource('albums');
+        Route::resource('Controller\\AlbumsController', 'albums');
         $router = $this->_createRouter($method, $uri);
 
         //when
@@ -217,7 +217,7 @@ class RouterTest extends TestCase
 
         //then
         $this->assertEquals($method, $rule->getMethod());
-        $this->assertEquals('albums', $rule->getController());
+        $this->assertEquals('Controller\\AlbumsController', $rule->getController());
     }
 
     /**
@@ -226,7 +226,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteForAllInController()
     {
         //given
-        Route::allowAll('/users', 'users');
+        Route::allowAll('/users', 'Controller\\UsersController');
         $router = $this->_createRouter('GET', '/users/select_for_user');
 
         //when
@@ -234,7 +234,7 @@ class RouterTest extends TestCase
 
         //then
         $this->assertFalse($rule->isActionRequired());
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
     }
 
     /**
@@ -243,7 +243,7 @@ class RouterTest extends TestCase
     public function shouldNotFindRouteWhenExceptAction()
     {
         //given
-        Route::allowAll('/users', 'users', ['except' => ['add']]);
+        Route::allowAll('/users', 'Controller\\UsersController', ['except' => ['add']]);
         $router = $this->_createRouter('GET', '/users/add');
 
         //when
@@ -259,8 +259,8 @@ class RouterTest extends TestCase
     public function shouldFindRouteWhenDeclaredAnIsInExcept()
     {
         //given
-        Route::get('/users/add', 'users#add');
-        Route::allowAll('/users', 'users', ['except' => ['add']]);
+        Route::get('/users/add', 'Controller\\UsersController', 'add');
+        Route::allowAll('/users', 'Controller\\UsersController', ['except' => ['add']]);
         $router = $this->_createRouter('GET', '/users/add');
 
         //when
@@ -270,7 +270,7 @@ class RouterTest extends TestCase
         $this->assertNotEmpty($rule);
         $this->assertEquals('GET', $rule->getMethod());
         $this->assertEquals('add', $rule->getAction());
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
     }
 
     /**
@@ -279,7 +279,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteAndGetParamsFromPath()
     {
         //given
-        Route::get('/users/show/id/:id/call_id/:call_id', 'users#show');
+        Route::get('/users/show/id/:id/call_id/:call_id', 'Controller\\UsersController', 'show');
         $router = $this->_createRouter('GET', '/users/show/id/1/call_id/2');
 
         //when
@@ -295,14 +295,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRestIndex()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('GET', '/users');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('index', $rule->getAction());
         $this->assertEmpty($rule->getParameters());
     }
@@ -313,14 +313,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRestNew()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('GET', '/users/fresh');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('fresh', $rule->getAction());
         $this->assertEmpty($rule->getParameters());
     }
@@ -331,14 +331,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRestCreate()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('POST', '/users');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('create', $rule->getAction());
         $this->assertEmpty($rule->getParameters());
     }
@@ -349,14 +349,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRestShow()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('GET', '/users/12');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('show', $rule->getAction());
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
@@ -367,14 +367,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRestEdit()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('GET', '/users/12/edit');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('edit', $rule->getAction());
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
@@ -385,14 +385,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRestUpdatePut()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('PUT', '/users/12');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('update', $rule->getAction());
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
@@ -403,14 +403,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRestUpdatePatch()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('PATCH', '/users/12');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('update', $rule->getAction());
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
@@ -421,14 +421,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRestDestroy()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('DELETE', '/users/12');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('destroy', $rule->getAction());
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
@@ -439,14 +439,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteRuleWithDefaultRoute()
     {
         //given
-        Route::resource('users');
+        Route::resource('Controller\\UsersController', 'users');
         $router = $this->_createRouter('GET', '/users/');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('users', $rule->getController());
+        $this->assertEquals('Controller\\UsersController', $rule->getController());
         $this->assertEquals('index', $rule->getAction());
     }
 
@@ -456,7 +456,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteWithSpecialCharactersInParameter()
     {
         //given
-        Route::get('/resources/:file', 'resources#server');
+        Route::get('/resources/:file', 'resources', 'server');
         $router = $this->_createRouter('GET', '/resources/file_name.js');
 
         //when
@@ -474,14 +474,14 @@ class RouterTest extends TestCase
     public function shouldFindRouteWithNamespace()
     {
         //given
-        Route::post('/api/users/:id/archive', 'api/users#archive');
+        Route::post('/api/users/:id/archive', 'Controller\\Api\\UsersController', 'archive');
         $router = $this->_createRouter('POST', '/api/users/12/archive');
 
         //when
         $rule = $router->findRoute();
 
         //then
-        $this->assertEquals('api/users', $rule->getController());
+        $this->assertEquals('Controller\\Api\\UsersController', $rule->getController());
         $this->assertEquals('archive', $rule->getAction());
         ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(['id' => '12']);
     }
@@ -492,7 +492,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteRulePut()
     {
         //given
-        Route::put('/user/index', 'user#index');
+        Route::put('/user/index', 'Controller\\UserController', 'index');
         $router = $this->_createRouter('PUT', '/user/index');
 
         //when
@@ -501,7 +501,7 @@ class RouterTest extends TestCase
         //then
         $this->assertEquals('/user/index', $rule->getUri());
         $this->assertEquals('PUT', $rule->getMethod());
-        $this->assertEquals('user', $rule->getController());
+        $this->assertEquals('Controller\\UserController', $rule->getController());
         $this->assertEquals('index', $rule->getAction());
     }
 
@@ -511,7 +511,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteRuleDelete()
     {
         //given
-        Route::delete('/user/:id/delete', 'user#delete');
+        Route::delete('/user/:id/delete', 'Controller\\UserController', 'delete');
         $router = $this->_createRouter('DELETE', '/user/12/delete');
 
         //when
@@ -520,7 +520,7 @@ class RouterTest extends TestCase
         //then
         $this->assertEquals('/user/:id/delete', $rule->getUri());
         $this->assertEquals('DELETE', $rule->getMethod());
-        $this->assertEquals('user', $rule->getController());
+        $this->assertEquals('Controller\\UserController', $rule->getController());
         $this->assertEquals('delete', $rule->getAction());
         Assert::thatArray($rule->getParameters())->hasSize(1)->containsKeyAndValue(['id' => 12]);
     }
@@ -531,7 +531,7 @@ class RouterTest extends TestCase
     public function shouldFindRouteRuleUtf8()
     {
         //given
-        Route::post('/api/agents/:login/free', 'api/agents#free');
+        Route::post('/api/agents/:login/free', 'Controller\\Api\\AgentsController', 'free');
         $router = $this->_createRouter('POST', '/api/agents/userπ/free');
 
         //when
@@ -540,7 +540,7 @@ class RouterTest extends TestCase
         //then
         $this->assertEquals('/api/agents/:login/free', $rule->getUri());
         $this->assertEquals('POST', $rule->getMethod());
-        $this->assertEquals('api/agents', $rule->getController());
+        $this->assertEquals('Controller\\Api\\AgentsController', $rule->getController());
         $this->assertEquals('free', $rule->getAction());
     }
 
@@ -550,7 +550,7 @@ class RouterTest extends TestCase
     public function shouldParseParameterWithAtChar()
     {
         //given
-        Route::get('/api/agents/:email', 'api/agents#show');
+        Route::get('/api/agents/:email', 'Controller\\Api\\AgentsController', 'show');
         $router = $this->_createRouter('GET', '/api/agents/john.doe@foo.bar');
 
         //when
@@ -567,7 +567,7 @@ class RouterTest extends TestCase
     public function shouldParseParameterWithPercentChar()
     {
         //given
-        Route::get("/cabinets/:color/:order_id", "SummaryOrderedCorpuses#index");
+        Route::get("/cabinets/:color/:order_id", "Controller\\SummaryOrderedCorpuses", 'index');
         $router = $this->_createRouter('GET', '/cabinets/Bia%C5%82y%20101/18');
 
         //when
@@ -585,7 +585,7 @@ class RouterTest extends TestCase
     public function shouldParseParameterWithPlusChar()
     {
         //given
-        Route::get("/cabinets/:color/:order_id", "SummaryOrderedCorpuses#index");
+        Route::get("/cabinets/:color/:order_id", "Controller\\SummaryOrderedCorpuses", 'index');
         $router = $this->_createRouter('GET', '/cabinets/white+black/18');
 
         //when
@@ -603,7 +603,7 @@ class RouterTest extends TestCase
     public function shouldParseParameterWithSpace()
     {
         //given
-        Route::get("/cabinets/:color/:order_id", "SummaryOrderedCorpuses#index");
+        Route::get("/cabinets/:color/:order_id", "Controller\\SummaryOrderedCorpuses", 'index');
         $router = $this->_createRouter('GET', '/cabinets/Biały 101/18');
 
         //when

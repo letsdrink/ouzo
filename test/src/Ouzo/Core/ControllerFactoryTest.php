@@ -32,6 +32,11 @@ class SimpleTestController extends Controller
 {
 }
 
+class IncorrectController
+{
+
+}
+
 class ControllerFactoryTest extends TestCase
 {
     private $injector;
@@ -41,7 +46,6 @@ class ControllerFactoryTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         $this->injector = new Injector();
         $this->uri = new Uri(new PathProvider());
     }
@@ -49,7 +53,6 @@ class ControllerFactoryTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        Config::clearProperty('namespace', 'controller');
     }
 
     /**
@@ -64,7 +67,7 @@ class ControllerFactoryTest extends TestCase
         $_SERVER['REQUEST_URI'] = "{$config['prefix_system']}/simple_test/action1";
         Mock::when($routingService)->getUri()->thenReturn($this->uri);
 
-        $routeRule = new RouteRule('GET', '/simple_test/action1', 'simple_test', 'action1', false);
+        $routeRule = new RouteRule('GET', '/simple_test/action1', SimpleTestController::class, 'action1', false);
         Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
 
         $sessionStats = Mock::create(SessionStats::class);
@@ -88,7 +91,7 @@ class ControllerFactoryTest extends TestCase
         $routingService = Mock::create(RoutingService::class);
         Mock::when($routingService)->getUri()->thenReturn($this->uri);
 
-        $routeRule = new RouteRule('GET', '/simple_test/action', 'not_exists', 'action', false);
+        $routeRule = new RouteRule('GET', '/simple_test/action', 'NotExists', 'action', false);
         Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
 
         $sessionStats = Mock::create(SessionStats::class);
@@ -107,13 +110,38 @@ class ControllerFactoryTest extends TestCase
     /**
      * @test
      */
+    public function shouldThrowExceptionWhenControllerIsNotSubclassOfOuzoController()
+    {
+        //given
+        $routingService = Mock::create(RoutingService::class);
+        Mock::when($routingService)->getUri()->thenReturn($this->uri);
+
+        $routeRule = new RouteRule('GET', '/simple_test/action', IncorrectController::class, 'action', false);
+        Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
+
+        $sessionStats = Mock::create(SessionStats::class);
+
+        $factory = $this->injector->getInstance(ControllerFactory::class);
+
+        //when
+        CatchException::when($factory)->createController($routeRule, new RequestParameters($routingService), $sessionStats);
+
+        //then
+        CatchException::assertThat()->isInstanceOf(\LogicException::class);
+        CatchException::assertThat()
+            ->hasMessage(IncorrectController::class . ' is not a subclass of Ouzo\Controller');
+    }
+
+    /**
+     * @test
+     */
     public function shouldResolveControllerWithNamespace()
     {
         //given
         $routingService = Mock::create(RoutingService::class);
         Mock::when($routingService)->getUri()->thenReturn($this->uri);
 
-        $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', 'api/multiple_ns', 'test_action', true);
+        $routeRule = new RouteRule('GET', '/api/multiple_ns/test_action', MultipleNsController::class, 'test_action', true);
         Mock::when($routingService)->getRouteRule()->thenReturn($routeRule);
 
         $sessionStats = Mock::create(SessionStats::class);

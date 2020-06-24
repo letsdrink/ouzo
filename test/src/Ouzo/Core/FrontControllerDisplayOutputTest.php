@@ -16,14 +16,12 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
     public function setUp(): void
     {
         parent::setUp();
-        Config::overrideProperty('namespace', 'controller')->with('\\Ouzo\\');
         Route::clear();
     }
 
     public function tearDown(): void
     {
         parent::tearDown();
-        Config::clearProperty('namespace', 'controller');
         Config::clearProperty('debug');
     }
 
@@ -39,7 +37,7 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
     public function shouldNotDisplayOutputBeforeHeadersAreSent()
     {
         //given
-        Route::allowAll('/sample', 'sample');
+        Route::allowAll('/sample', SampleController::class);
 
         $_SERVER['REQUEST_URI'] = '/sample/action';
         $_SERVER['REQUEST_METHOD'] = 'GET';

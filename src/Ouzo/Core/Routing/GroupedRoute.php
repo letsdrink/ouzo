@@ -14,43 +14,38 @@ class GroupedRoute implements RouteInterface
         self::$name = $name;
     }
 
-    public static function get($uri, $action, array $options = [])
+    public static function get($uri, $controller, $action, array $options = [])
     {
-        Route::get(self::uri($uri), self::action($action), $options);
+        Route::get(self::uri($uri), $controller, $action, $options);
     }
 
-    public static function post($uri, $action, array $options = [])
+    public static function post($uri, $controller, $action, array $options = [])
     {
-        Route::post(self::uri($uri), self::action($action), $options);
+        Route::post(self::uri($uri), $controller, $action, $options);
     }
 
-    public static function put($uri, $action, array $options = [])
+    public static function put($uri, $controller, $action, array $options = [])
     {
-        Route::put(self::uri($uri), self::action($action), $options);
+        Route::put(self::uri($uri), $controller, $action, $options);
     }
 
-    public static function delete($uri, $action, array $options = [])
+    public static function delete($uri, $controller, $action, array $options = [])
     {
-        Route::delete(self::uri($uri), self::action($action), $options);
+        Route::delete(self::uri($uri), $controller, $action, $options);
     }
 
-    public static function any($uri, $action, array $options = [])
+    public static function any($uri, $controller, $action, array $options = [])
     {
-        Route::any(self::uri($uri), self::action($action), $options);
+        Route::any(self::uri($uri), $controller, $action, $options);
     }
 
-    public static function resource($controller)
+    public static function resource($controller, $uriPrefix)
     {
-        Route::resource(self::uri($controller));
+        Route::resource($controller, self::uri($uriPrefix));
     }
 
     private static function uri($uri)
     {
         return '/' . self::$name . '/' . ltrim($uri, '/');
-    }
-
-    private static function action($action)
-    {
-        return self::$name . '/' . $action;
     }
 }

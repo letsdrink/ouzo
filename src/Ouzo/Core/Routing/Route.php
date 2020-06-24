@@ -40,54 +40,54 @@ class Route implements RouteInterface
     private static $routes = [];
     private static $routeKeys = [];
 
-    public static function get($uri, $action, array $options = [])
+    public static function get($uri, $controller, $action, array $options = [])
     {
-        self::addRoute('GET', $uri, $action, true, $options);
+        self::addRoute('GET', $uri, $controller, $action, true, $options);
     }
 
-    public static function post($uri, $action, array $options = [])
+    public static function post($uri, $controller, $action, array $options = [])
     {
-        self::addRoute('POST', $uri, $action, true, $options);
+        self::addRoute('POST', $uri, $controller, $action, true, $options);
     }
 
-    public static function put($uri, $action, array $options = [])
+    public static function put($uri, $controller, $action, array $options = [])
     {
-        self::addRoute('PUT', $uri, $action, true, $options);
+        self::addRoute('PUT', $uri, $controller, $action, true, $options);
     }
 
-    public static function delete($uri, $action, array $options = [])
+    public static function delete($uri, $controller, $action, array $options = [])
     {
-        self::addRoute('DELETE', $uri, $action, true, $options);
+        self::addRoute('DELETE', $uri, $controller, $action, true, $options);
     }
 
-    public static function options($uri, $action, array $options = [])
+    public static function options($uri, $controller, $action, array $options = [])
     {
-        self::addRoute('OPTIONS', $uri, $action, true, $options);
+        self::addRoute('OPTIONS', $uri, $controller, $action, true, $options);
     }
 
-    public static function any($uri, $action, array $options = [])
+    public static function any($uri, $controller, $action, array $options = [])
     {
-        self::addRoute(self::$methods, $uri, $action, true, $options);
+        self::addRoute(self::$methods, $uri, $controller, $action, true, $options);
     }
 
-    public static function resource($controller)
+    public static function resource($controller, $uriPrefix)
     {
-        self::addResourceRoute($controller, 'GET', '', 'index');
-        self::addResourceRoute($controller, 'GET', '/fresh', 'fresh');
-        self::addResourceRoute($controller, 'GET', '/:id/edit', 'edit');
-        self::addResourceRoute($controller, 'GET', '/:id', 'show');
-        self::addResourceRoute($controller, 'POST', '', 'create');
-        self::addResourceRoute($controller, 'PUT', '/:id', 'update');
-        self::addResourceRoute($controller, 'PATCH', '/:id', 'update');
-        self::addResourceRoute($controller, 'DELETE', '/:id', 'destroy');
+        self::addResourceRoute($controller, $uriPrefix, 'GET', '', 'index');
+        self::addResourceRoute($controller, $uriPrefix, 'GET', '/fresh', 'fresh');
+        self::addResourceRoute($controller, $uriPrefix, 'GET', '/:id/edit', 'edit');
+        self::addResourceRoute($controller, $uriPrefix, 'GET', '/:id', 'show');
+        self::addResourceRoute($controller, $uriPrefix, 'POST', '', 'create');
+        self::addResourceRoute($controller, $uriPrefix, 'PUT', '/:id', 'update');
+        self::addResourceRoute($controller, $uriPrefix, 'PATCH', '/:id', 'update');
+        self::addResourceRoute($controller, $uriPrefix, 'DELETE', '/:id', 'destroy');
     }
 
     public static function allowAll($uri, $controller, $options = [])
     {
-        self::addRoute(self::$methods, $uri, $controller, false, $options);
+        self::addRoute(self::$methods, $uri, $controller, null, false, $options);
     }
 
-    private static function addRoute($method, $uri, $action, $requireAction = true, $options = [], $isResource = false)
+    private static function addRoute($method, $uri, $controller, $action = null, $requireAction = true, $options = [], $isResource = false)
     {
         $methods = Arrays::toArray($method);
         if (self::$isDebug && $requireAction && self::$validate && self::existRouteRule($methods, $uri)) {
@@ -95,11 +95,7 @@ class Route implements RouteInterface
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
 
-        $elements = explode('#', $action);
-        $controller = Arrays::first($elements);
-        $actionToRule = Arrays::getValue($elements, 1);
-
-        $routeRule = new RouteRule($method, $uri, $controller, $actionToRule, $requireAction, $options, $isResource);
+        $routeRule = new RouteRule($method, $uri, $controller, $action, $requireAction, $options, $isResource);
         if ($routeRule->hasRequiredAction()) {
             throw new InvalidArgumentException('Route rule ' . $uri . ' required action');
         }
@@ -117,21 +113,15 @@ class Route implements RouteInterface
         });
     }
 
-    private static function addResourceRoute($controller, $method, $uriSuffix, $action)
+    private static function addResourceRoute($controller, $uriPrefix, $method, $uriSuffix, $action)
     {
-        $uri = self::createRouteUri($controller, $uriSuffix);
-        $routeAction = self::createRouteAction($controller, $action);
-        self::addRoute($method, $uri, $routeAction, true, [], true);
+        $uri = self::createRouteUri($uriPrefix, $uriSuffix);
+        self::addRoute($method, $uri, $controller, $action, true, [], true);
     }
 
-    private static function createRouteUri($action, $suffix = '')
+    private static function createRouteUri($prefix, $suffix = '')
     {
-        return '/' . ltrim($action, '/') . $suffix;
-    }
-
-    private static function createRouteAction($controller, $action)
-    {
-        return $controller . '#' . $action;
+        return '/' . ltrim($prefix, '/') . $suffix;
     }
 
     /**
