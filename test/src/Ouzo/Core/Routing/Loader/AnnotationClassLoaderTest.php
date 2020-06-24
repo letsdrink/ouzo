@@ -27,7 +27,7 @@ class AnnotationClassLoaderTest extends TestCase
     public function shouldThrowExceptionWhenClassNonExists()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->loader->load('ClassThatDoesNotExist');
+        $this->loader->load(['ClassThatDoesNotExist']);
     }
 
     /**
@@ -35,7 +35,7 @@ class AnnotationClassLoaderTest extends TestCase
      */
     public function shouldNotLoadAnyRouteMetadata()
     {
-        $routes = $this->loader->load(FooClass::class);
+        $routes = $this->loader->load([FooClass::class]);
 
         $this->assertEquals(0, $routes->count());
     }
@@ -45,7 +45,7 @@ class AnnotationClassLoaderTest extends TestCase
      */
     public function shouldLoadRouteMetadata()
     {
-        $routes = $this->loader->load(SimpleController::class);
+        $routes = $this->loader->load([SimpleController::class]);
 
         $this->assertEquals(1, $routes->count());
         Assert::thatArray($routes->toArray())->containsExactly(
@@ -58,7 +58,7 @@ class AnnotationClassLoaderTest extends TestCase
      */
     public function shouldLoadRouteMetadataFromSingleMethod()
     {
-        $routes = $this->loader->load(MultipleMethods::class);
+        $routes = $this->loader->load([MultipleMethods::class]);
 
         $this->assertEquals(2, $routes->count());
         Assert::thatArray($routes->toArray())->containsExactly(
@@ -72,7 +72,7 @@ class AnnotationClassLoaderTest extends TestCase
      */
     public function shouldLoadRouteMetadataFromManyMethods()
     {
-        $routes = $this->loader->load(CrudController::class);
+        $routes = $this->loader->load([CrudController::class]);
 
         $this->assertEquals(4, $routes->count());
         Assert::thatArray($routes->toArray())->containsExactly(

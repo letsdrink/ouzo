@@ -19,6 +19,11 @@ class RouteMetadataCollection
         }
     }
 
+    public function addCollection(RouteMetadataCollection $collection)
+    {
+        $this->elements = array_merge($this->elements, $collection->toArray());
+    }
+
     public function count()
     {
         return count($this->elements);

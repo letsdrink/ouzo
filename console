@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 use Ouzo\Console\CommandsLoader;
+use Ouzo\Injection\Injector;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 use Symfony\Component\Console\Application;
@@ -14,5 +15,6 @@ require 'vendor/autoload.php';
 Files::loadIfExists(ROOT_PATH . 'test/Application/config/routes.php');
 
 $app = new Application();
-CommandsLoader::forApplication($app)->registerCommandsFromPath(Path::join(ROOT_PATH, "bin"), "\\Command");
+CommandsLoader::forApplicationAndInjector($app, new Injector())
+    ->registerCommandsFromPath(Path::join(ROOT_PATH, "bin"), "\\Command");
 $app->run();

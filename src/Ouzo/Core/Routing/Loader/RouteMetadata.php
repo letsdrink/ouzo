@@ -4,9 +4,16 @@ namespace Ouzo\Routing\Loader;
 
 class RouteMetadata
 {
+    /** @var string */
     private $uri;
+
+    /** @var string */
     private $method;
+
+    /** @var string */
     private $className;
+
+    /** @var string */
     private $classMethod;
 
     public function __construct(string $uri, string $method, string $className, string $classMethod)

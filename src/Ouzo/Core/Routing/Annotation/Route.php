@@ -6,9 +6,15 @@ use BadMethodCallException;
 
 abstract class Route
 {
+    /** @var string */
     private $path;
+
+    /** @var string[] */
     private $methods = [];
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data)
     {
         if (isset($data['value'])) {
@@ -25,22 +31,34 @@ abstract class Route
         }
     }
 
-    public function getPath()
+    /**
+     * @return string
+     */
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function setPath($path)
+    /**
+     * @param string $path
+     */
+    public function setPath(string $path)
     {
         $this->path = $path;
     }
 
-    public function getMethods()
+    /**
+     * @return string[]
+     */
+    public function getMethods(): array
     {
         return $this->methods;
     }
 
-    public function setMethods($methods)
+    /**
+     * @param string[] $methods
+     */
+    public function setMethods(array $methods)
     {
         $this->methods = $methods;
     }

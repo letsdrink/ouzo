@@ -25,7 +25,7 @@ class RouteMetadataCollectionTest extends TestCase
         $collection2 = new RouteMetadataCollection();
 
         //when
-        $collection2->addRouteMetadata(...$collection1->toArray());
+        $collection2->addCollection($collection1);
 
         //then
         $this->assertEquals(2, $collection2->count());

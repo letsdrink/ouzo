@@ -2,43 +2,58 @@
 
 namespace Ouzo\Routing\Loader;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
 use Ouzo\Routing\Annotation\Route;
 use ReflectionClass;
 use ReflectionMethod;
 
-class AnnotationClassLoader
+class AnnotationClassLoader implements Loader
 {
+    /** @var Reader */
     private $reader;
-    private $routeMetadataCollection;
 
-    public function __construct(Reader $reader)
+    /**
+     * @Inject
+     * @param AnnotationReader $reader
+     */
+    public function __construct(AnnotationReader $reader)
     {
         $this->reader = $reader;
-        $this->routeMetadataCollection = new RouteMetadataCollection();
     }
 
-    public function load(string $class): RouteMetadataCollection
+    /**
+     * @param array $classes
+     * @return RouteMetadataCollection
+     * @throws \ReflectionException
+     */
+    public function load(array $classes): RouteMetadataCollection
     {
-        if (!class_exists($class)) {
-            throw new InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
+        $collection = new RouteMetadataCollection();
+        foreach ($classes as $class) {
+            if (!class_exists($class)) {
+                throw new InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
+            }
+
+            $reflectionClass = new ReflectionClass($class);
+            $this->addRouteMetadata($collection, $reflectionClass);
         }
-
-        $reflectionClass = new ReflectionClass($class);
-        $this->addRouteMetadata($reflectionClass);
-
-        return $this->routeMetadataCollection;
+        return $collection;
     }
 
-    private function addRouteMetadata(ReflectionClass $reflectionClass)
+    /**
+     * @param RouteMetadataCollection $collection
+     * @param ReflectionClass $reflectionClass
+     */
+    private function addRouteMetadata(RouteMetadataCollection $collection, ReflectionClass $reflectionClass): void
     {
         foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {
             $methodAnnotations = $this->reader->getMethodAnnotations($reflectionMethod);
             foreach ($methodAnnotations as $methodAnnotation) {
                 if ($methodAnnotation instanceof Route) {
                     foreach ($methodAnnotation->getMethods() as $method) {
-                        $this->routeMetadataCollection->addRouteMetadata(new RouteMetadata(
+                        $collection->addRouteMetadata(new RouteMetadata(
                             $methodAnnotation->getPath(),
                             $method,
                             $reflectionClass->getName(),

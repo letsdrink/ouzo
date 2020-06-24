@@ -68,9 +68,10 @@ class AnnotationDirectoryLoaderTest extends TestCase
         $this->loader->load([__DIR__ . '/../Fixtures/Annotation']);
 
         Mock::verify($this->annotationClassLoader)->neverReceived()->load(FooBar::class);
-        Mock::verify($this->annotationClassLoader)->load(CrudController::class);
-        Mock::verify($this->annotationClassLoader)->load(FooClass::class);
-        Mock::verify($this->annotationClassLoader)->load(MultipleMethods::class);
-        Mock::verify($this->annotationClassLoader)->load(SimpleController::class);
+        Mock::verify($this->annotationClassLoader)
+            ->load([CrudController::class])
+            ->load([FooClass::class])
+            ->load([MultipleMethods::class])
+            ->load([SimpleController::class]);
     }
 }

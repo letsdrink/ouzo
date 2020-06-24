@@ -6,6 +6,7 @@
 namespace Command;
 
 use Ouzo\ApplicationPaths;
+use Ouzo\Config;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\JsUriHelperGenerator;
@@ -29,6 +30,12 @@ class RoutesCommand extends Command
      */
     private $output;
 
+    /**
+     * @Inject
+     * @var \Ouzo\Routing\Generator\RouteFileGenerator
+     */
+    private $routeFileGenerator;
+
     public function configure()
     {
         $this->setName('ouzo:routes')
@@ -51,6 +58,7 @@ class RoutesCommand extends Command
         $selectedOptions = array_filter($input->getOptions());
         $selectedGeneratedOptions = array_intersect(array_keys($selectedOptions), array_keys($generateOptionFunctionMap));
 
+        $this->generateRoutes();
         if (sizeof($selectedGeneratedOptions)) {
             $this->runSelectedGenerators($selectedGeneratedOptions, $generateOptionFunctionMap);
         } else {
@@ -62,6 +70,13 @@ class RoutesCommand extends Command
         }
 
         return 0;
+    }
+
+    private function generateRoutes()
+    {
+        $destination = Config::getValue('app', 'routes', 'destination') ?? Path::join(ROOT_PATH, 'config', 'generated_routes.php');
+        $resources = Config::getValue('app', 'routes', 'resources') ?? [];
+        $this->routeFileGenerator->generate($destination, $resources);
     }
 
     private function runSelectedGenerators($selectedGeneratedOptions, $generateOptionFunctionMap)

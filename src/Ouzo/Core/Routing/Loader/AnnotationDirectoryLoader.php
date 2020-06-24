@@ -10,34 +10,45 @@ use RecursiveRegexIterator;
 use ReflectionClass;
 use RegexIterator;
 
-class AnnotationDirectoryLoader
+class AnnotationDirectoryLoader implements Loader
 {
     private $loader;
-    private $routeMetadataCollection;
 
+    /**
+     * @Inject
+     * @param AnnotationClassLoader $loader
+     */
     public function __construct(AnnotationClassLoader $loader)
     {
         $this->loader = $loader;
-        $this->routeMetadataCollection = new RouteMetadataCollection();
     }
 
+    /**
+     * @param string[] $paths
+     * @return RouteMetadataCollection
+     */
     public function load(array $paths = []): RouteMetadataCollection
     {
-        $includedFiles = $this->includeFiles($this->resolvePaths($paths));
+        $collection = new RouteMetadataCollection();
+        $files = $this->resolveFiles($this->resolvePaths($paths));
         $declared = get_declared_classes();
 
         foreach ($declared as $className) {
             $reflectionClass = new ReflectionClass($className);
             $sourceFile = $reflectionClass->getFileName();
 
-            if (in_array($sourceFile, $includedFiles, true)) {
-                $this->routeMetadataCollection->addRouteMetadata(...$this->loader->load($className)->toArray());
+            if (in_array($sourceFile, $files, true)) {
+                $collection->addCollection($this->loader->load([$className]));
             }
         }
 
-        return $this->routeMetadataCollection;
+        return $collection;
     }
 
+    /**
+     * @param string[] $paths
+     * @return string[]
+     */
     public function resolvePaths(array $paths): array
     {
         $resolvedPaths = [];
@@ -52,11 +63,14 @@ class AnnotationDirectoryLoader
                 throw new InvalidArgumentException(sprintf('Directory "%s" does not exist.', $path));
             }
         }
-
         return $resolvedPaths;
     }
 
-    private function includeFiles(array $paths): array
+    /**
+     * @param string[] $paths
+     * @return string[]
+     */
+    private function resolveFiles(array $paths): array
     {
         $includedFiles = [];
         foreach ($paths as $path) {
@@ -70,11 +84,7 @@ class AnnotationDirectoryLoader
             );
 
             foreach ($files as $file) {
-                $sourceFile = realpath($file[0]);
-
-                require_once $sourceFile;
-
-                $includedFiles[] = $sourceFile;
+                $includedFiles[] = realpath($file[0]);
             }
         }
         return $includedFiles;
