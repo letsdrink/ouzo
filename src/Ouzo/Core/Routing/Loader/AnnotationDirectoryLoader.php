@@ -84,7 +84,9 @@ class AnnotationDirectoryLoader implements Loader
             );
 
             foreach ($files as $file) {
-                $includedFiles[] = realpath($file[0]);
+                $sourceFile = realpath($file[0]);
+                require_once $sourceFile;
+                $includedFiles[] = $sourceFile;
             }
         }
         return $includedFiles;
