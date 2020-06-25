@@ -11,8 +11,6 @@ use Ouzo\Request\RequestParameters;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Stats\SessionStats;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\ClassName;
-use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Strings;
 
 class Controller
@@ -286,6 +284,11 @@ class Controller
         return $this->uri;
     }
 
+    public function getCurrentControllerName()
+    {
+        return Strings::camelCaseToUnderscore($this->routeRule->getControllerName());
+    }
+
     /**
      * @param string $name
      * @param array $args
@@ -327,7 +330,7 @@ class Controller
      */
     private function getViewName()
     {
-        return (ClassName::pathToFullyQualifiedName($this->currentController) . '/' . $this->currentAction) ?: '/';
+        return ($this->routeRule->getControllerName() . '/' . $this->currentAction) ?: '/';
     }
 
     /**

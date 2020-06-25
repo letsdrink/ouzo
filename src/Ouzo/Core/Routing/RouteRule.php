@@ -132,6 +132,12 @@ class RouteRule
         return $this->parameters;
     }
 
+    public function getControllerName()
+    {
+        $name = implode('', $this->getControllerParts());
+        return Strings::underscoreToCamelCase($name);
+    }
+
     public function getName()
     {
         $name = Arrays::getValue($this->options, 'as', $this->prepareRuleName());
