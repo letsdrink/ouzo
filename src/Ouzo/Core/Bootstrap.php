@@ -7,7 +7,6 @@
 namespace Ouzo;
 
 use Closure;
-use Doctrine\Common\Annotations\AnnotationReader;
 use InvalidArgumentException;
 use Ouzo\Config\ConfigRepository;
 use Ouzo\ExceptionHandling\DebugErrorHandler;
@@ -45,7 +44,6 @@ class Bootstrap
     public function __construct(EnvironmentSetter $environmentSetter = null)
     {
         error_reporting(E_ALL);
-        AnnotationReader::addGlobalIgnoredName('Inject');
         $environmentSetter = $environmentSetter ?: new EnvironmentSetter('prod');
         $environmentSetter->set();
     }

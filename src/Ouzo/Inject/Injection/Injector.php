@@ -6,6 +6,7 @@
 
 namespace Ouzo\Injection;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
 use Ouzo\Injection\Annotation\DocCommentExtractor;
 
@@ -26,6 +27,7 @@ class Injector
      */
     public function __construct(InjectorConfig $config = null, AnnotationMetadataProvider $provider = null)
     {
+        AnnotationReader::addGlobalIgnoredName('Inject');
         $this->injectorConfig = $config ?: new InjectorConfig();
         $this->bindings = new Bindings($this->injectorConfig, $this);
         $this->factory = new InstanceFactory(
