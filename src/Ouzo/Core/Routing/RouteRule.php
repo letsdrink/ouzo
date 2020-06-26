@@ -201,6 +201,7 @@ class RouteRule
     {
         $parts = explode('\\', str_ireplace('controller', '', $this->controller));
         $controllerName = Strings::camelCaseToUnderscore(array_pop($parts));
+        $parts = Arrays::map($parts, 'strtolower');
         $parts[] = $controllerName;
         return array_filter($parts);
     }
