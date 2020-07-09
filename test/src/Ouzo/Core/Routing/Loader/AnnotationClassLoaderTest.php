@@ -2,6 +2,7 @@
 
 use Application\Model\Test\CrudController;
 use Application\Model\Test\FooClass;
+use Application\Model\Test\GlobalController;
 use Application\Model\Test\MultipleMethods;
 use Application\Model\Test\SimpleController;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -80,6 +81,20 @@ class AnnotationClassLoaderTest extends TestCase
             new RouteMetadata('/read', 'GET', CrudController::class, 'get'),
             new RouteMetadata('/update', 'PUT', CrudController::class, 'put'),
             new RouteMetadata('/delete', 'DELETE', CrudController::class, 'delete')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLoadRouteMetadataWithGlobalUriPrefix()
+    {
+        $routes = $this->loader->load([GlobalController::class]);
+
+        $this->assertEquals(2, $routes->count());
+        Assert::thatArray($routes->toArray())->containsExactly(
+            new RouteMetadata('/prefix/', 'GET', GlobalController::class, 'index'),
+            new RouteMetadata('/prefix/action', 'POST', GlobalController::class, 'action')
         );
     }
 }

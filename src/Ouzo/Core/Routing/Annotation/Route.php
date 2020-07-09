@@ -4,7 +4,11 @@ namespace Ouzo\Routing\Annotation;
 
 use BadMethodCallException;
 
-abstract class Route
+/**
+ * @Annotation
+ * @Target({"CLASS"})
+ */
+class Route
 {
     /** @var string */
     private $path;

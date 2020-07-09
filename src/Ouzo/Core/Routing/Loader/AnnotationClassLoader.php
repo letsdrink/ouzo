@@ -48,13 +48,18 @@ class AnnotationClassLoader implements Loader
      */
     private function addRouteMetadata(RouteMetadataCollection $collection, ReflectionClass $reflectionClass): void
     {
+        $uriPrefix = '';
+        if ($annotation = $this->reader->getClassAnnotation($reflectionClass, Route::class)) {
+            $uriPrefix = $annotation->getPath();
+        }
+
         foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {
             $methodAnnotations = $this->reader->getMethodAnnotations($reflectionMethod);
             foreach ($methodAnnotations as $methodAnnotation) {
                 if ($methodAnnotation instanceof Route) {
                     foreach ($methodAnnotation->getMethods() as $method) {
                         $collection->addRouteMetadata(new RouteMetadata(
-                            $methodAnnotation->getPath(),
+                            $uriPrefix . $methodAnnotation->getPath(),
                             $method,
                             $reflectionClass->getName(),
                             $reflectionMethod->getName()
