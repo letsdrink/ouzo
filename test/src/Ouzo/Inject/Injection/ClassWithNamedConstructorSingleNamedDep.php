@@ -1,5 +1,8 @@
 <?php
 
+use Ouzo\Injection\Annotation\Inject;
+use Ouzo\Injection\Annotation\Named;
+
 class ClassWithNamedConstructorSingleNamedDep
 {
     public $myClass;

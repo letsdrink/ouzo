@@ -6,6 +6,7 @@
 
 namespace Ouzo;
 
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Json;

@@ -4,13 +4,12 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-use Ouzo\Injection\Annotation\Inject;
+namespace Ouzo\Injection\Annotation;
 
-class ClassWithThroughDep
+/**
+ * @Annotation
+ * @Target({"ALL"})
+ */
+class Named
 {
-    /**
-     * @Inject
-     * @var \ClassWithNoDep
-     */
-    public $myClass;
 }

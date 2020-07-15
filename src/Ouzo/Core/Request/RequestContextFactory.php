@@ -7,6 +7,7 @@
 namespace Ouzo\Request;
 
 use Ouzo\ControllerFactory;
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Injection\Factory;
 use Ouzo\Stats\SessionStats;
 

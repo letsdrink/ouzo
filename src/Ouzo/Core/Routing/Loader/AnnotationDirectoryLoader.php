@@ -4,6 +4,7 @@ namespace Ouzo\Routing\Loader;
 
 use FilesystemIterator;
 use InvalidArgumentException;
+use Ouzo\Injection\Annotation\Inject;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;

@@ -7,6 +7,7 @@
 namespace Ouzo;
 
 use Exception;
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Request\RequestContext;
 use Ouzo\Request\RequestContextFactory;

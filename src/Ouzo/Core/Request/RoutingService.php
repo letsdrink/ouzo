@@ -6,6 +6,7 @@
 
 namespace Ouzo\Request;
 
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Routing\Router;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri;

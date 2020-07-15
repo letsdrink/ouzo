@@ -7,6 +7,7 @@
 namespace Ouzo;
 
 use LogicException;
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Request\RequestParameters;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Stats\SessionStats;

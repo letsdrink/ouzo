@@ -2,6 +2,7 @@
 
 namespace Ouzo\Routing\Generator;
 
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Routing\Loader\AnnotationDirectoryLoader;
 use Ouzo\Routing\Loader\Loader;
 use Ouzo\Routing\Loader\RouteMetadataCollection;

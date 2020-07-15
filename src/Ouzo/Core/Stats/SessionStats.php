@@ -9,6 +9,7 @@ namespace Ouzo\Stats;
 use Ouzo\Config;
 use Ouzo\Db\Stats;
 use Ouzo\FrontController;
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Request\RequestContext;
 use Ouzo\Session;
 use Ouzo\Uri;

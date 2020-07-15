@@ -10,6 +10,7 @@ use Ouzo\Controller;
 use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
 use Ouzo\HeaderSender;
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
 use Ouzo\Uri;

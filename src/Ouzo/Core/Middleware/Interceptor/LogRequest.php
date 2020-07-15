@@ -6,10 +6,10 @@
 
 namespace Ouzo\Middleware\Interceptor;
 
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Logger\Logger;
 use Ouzo\Request\RequestContext;
 use Ouzo\Uri;
-use Ouzo\Uri\PathProvider;
 use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Chain\Chain;
 use Ouzo\Utilities\Chain\Interceptor;

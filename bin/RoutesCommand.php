@@ -7,6 +7,7 @@ namespace Command;
 
 use Ouzo\ApplicationPaths;
 use Ouzo\Config;
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\JsUriHelperGenerator;
