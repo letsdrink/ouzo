@@ -31,4 +31,31 @@ class RouteMetadataCollectionTest extends TestCase
         $this->assertEquals(2, $collection2->count());
     }
 
+    /**
+     * @test
+     */
+    public function shouldPutRoutesWithParametersToEndOfArray()
+    {
+        //given
+        $collection = new RouteMetadataCollection([
+            new RouteMetadata('/a', '', '', ''),
+            new RouteMetadata('/test2', '', '', ''),
+            new RouteMetadata('/a/:id', '', '', ''),
+            new RouteMetadata('/b/:id', '', '', ''),
+            new RouteMetadata('/test/:id', '', '', ''),
+            new RouteMetadata('/test', '', '', ''),
+        ]);
+
+        //when
+        $elements = $collection->routesWithParametersToBottom()->toArray();
+
+        //then
+        $this->assertEquals('/a', $elements[0]->getUri());
+        $this->assertEquals('/test2', $elements[1]->getUri());
+        $this->assertEquals('/test', $elements[2]->getUri());
+        $this->assertEquals('/a/:id', $elements[3]->getUri());
+        $this->assertEquals('/b/:id', $elements[4]->getUri());
+        $this->assertEquals('/test/:id', $elements[5]->getUri());
+    }
+
 }

@@ -44,5 +44,9 @@ class RouteMetadata
         return $this->classMethod;
     }
 
+    public function hasParameters(): bool
+    {
+        return strpos($this->getUri(), ':') !== false;
+    }
 
 }

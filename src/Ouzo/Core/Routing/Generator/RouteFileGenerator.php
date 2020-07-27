@@ -42,8 +42,9 @@ class RouteFileGenerator
         $template = "";
         $template .= "<?php\n\n";
         $template .= "use Ouzo\Routing\Route;\n\n";
+        $routesMetadata = $routesMetadata->routesWithParametersToBottom()->toArray();
 
-        foreach ($routesMetadata->toArray() as $routeMetadata) {
+        foreach ($routesMetadata as $routeMetadata) {
             $template .= sprintf(
                 "Route::%s('%s', '%s', '%s');\n",
                 strtolower($routeMetadata->getMethod()),
