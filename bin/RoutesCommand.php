@@ -10,6 +10,7 @@ use Ouzo\Config;
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
+use Ouzo\Uri\Es6UriHelperGenerator;
 use Ouzo\Uri\JsUriHelperGenerator;
 use Ouzo\Uri\UriHelperGenerator;
 use Ouzo\Utilities\Arrays;
@@ -44,7 +45,8 @@ class RoutesCommand extends Command
             ->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'Path for JS helper generated file', Path::join(ROOT_PATH, 'public'))
             ->addOption('generate-all', 'a', InputOption::VALUE_NONE)
             ->addOption('generate-php', 'g', InputOption::VALUE_NONE)
-            ->addOption('generate-js', 'j', InputOption::VALUE_NONE);
+            ->addOption('generate-js', 'j', InputOption::VALUE_NONE)
+            ->addOption('generate-es6', 'e', InputOption::VALUE_NONE);
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -54,6 +56,7 @@ class RoutesCommand extends Command
         $generateOptionFunctionMap = [
             "generate-php" => "generatePhpHelper",
             "generate-js" => "generateJsHelper",
+            "generate-es6" => "generateEs6Helper",
             "generate-all" => "generateAllHelpers",
         ];
         $selectedOptions = array_filter($input->getOptions());
@@ -93,6 +96,7 @@ class RoutesCommand extends Command
     {
         $this->generatePhpHelper();
         $this->generateJsHelper();
+        $this->generateEs6Helper();
     }
 
     private function generatePhpHelper()
@@ -109,6 +113,15 @@ class RoutesCommand extends Command
         $routesJSHelperPath = Path::join($routesJSHelperPath, 'generated_uri_helper.js');
         if (JsUriHelperGenerator::generate()->saveToFile($routesJSHelperPath) !== false) {
             $this->output->writeln("File with JS uri helpers is generated in <info>$routesJSHelperPath</info>");
+        }
+    }
+
+    private function generateEs6Helper()
+    {
+        $routesEs6HelperPath = $this->input->getOption('path');
+        $routesEs6HelperPath = Path::join($routesEs6HelperPath, 'generatedUriHelper.js');
+        if (Es6UriHelperGenerator::generate()->saveToFile($routesEs6HelperPath) !== false) {
+            $this->output->writeln("File with ES6 uri helpers is generated in <info>$routesEs6HelperPath</info>");
         }
     }
 
