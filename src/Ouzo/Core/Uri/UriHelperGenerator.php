@@ -71,7 +71,13 @@ function checkParameter(\$parameter)
 
         $checkParametersStatement = $this->_createCheckParameters($parameters);
 
+        $controller = '\\' . $routeRule->getController();
+        $action = $routeRule->getAction();
+
         $function = <<<FUNCTION
+/**
+ * @see {$controller}::{$action}()
+ */
 function $name($parametersString)
 {
 {$checkParametersStatement}return "$url";

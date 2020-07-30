@@ -80,7 +80,9 @@ class RoutesCommand extends Command
     {
         $destination = Config::getValue('app', 'routes', 'destination') ?? Path::join(ROOT_PATH, 'config', 'generated_routes.php');
         $resources = Config::getValue('app', 'routes', 'resources') ?? [];
-        $this->routeFileGenerator->generate($destination, $resources);
+        if ($this->routeFileGenerator->generate($destination, $resources) !== false) {
+            $this->output->writeln("File with routes is generated in <info>$destination</info>");
+        }
     }
 
     private function runSelectedGenerators($selectedGeneratedOptions, $generateOptionFunctionMap)
@@ -120,7 +122,7 @@ class RoutesCommand extends Command
     {
         $routesEs6HelperPath = Config::getValue('path', 'helper-es6') ?? Path::join(ROOT_PATH, 'public');
         $routesEs6HelperPath = Path::join($routesEs6HelperPath, 'generatedUriHelper.js');
-        if (Es6UriHelperGenerator::generate()->saveToFile($routesEs6HelperPath) !== false) {
+        if (UriHelperGenerator::generate()->saveToFile($routesEs6HelperPath) !== false) {
             $this->output->writeln("File with ES6 uri helpers is generated in <info>$routesEs6HelperPath</info>");
         }
     }
