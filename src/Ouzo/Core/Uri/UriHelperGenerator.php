@@ -9,25 +9,13 @@ namespace Ouzo\Uri;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Joiner;
-use Ouzo\Utilities\Strings;
+use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Functions;
 
 class UriHelperGenerator
 {
-    const INDENT = '    ';
-    /**
-     * RouteRule[]
-     */
-    private $_routes;
-    private $_generatedFunctions = "<?php
-class GeneratedUriHelper {
-    
-%{INDENT}private static function checkParameter(\$parameter)
-%{INDENT}{
-%{INDENT}%{INDENT}if (!isset(\$parameter)) {
-%{INDENT}%{INDENT}%{INDENT}throw new \\InvalidArgumentException(\"Missing parameters\");
-%{INDENT}%{INDENT}}
-%{INDENT}}\n\n";
+    /** RouteRule[] */
+    private $routes;
 
     /**
      * @return UriHelperGenerator
@@ -39,103 +27,58 @@ class GeneratedUriHelper {
 
     public function __construct($routes)
     {
-        $this->_routes = $routes;
-        $this->_generateFunctions();
+        $this->routes = $routes;
     }
 
-    private function _generateFunctions()
+    public function getGeneratedFunctions(): string
     {
         $namesAlreadyGenerated = [];
-        $globalFunctions = "";
-        foreach ($this->_routes as $route) {
+        $globalFunctions = [];
+        $methods = [];
+        foreach ($this->routes as $route) {
             if (!in_array($route->getName(), $namesAlreadyGenerated)) {
-                list($method, $function) = $this->_createFunctionAndMethod($route);
-                $this->_generatedFunctions .= $method;
-                $globalFunctions .= $function;
+                list($methods[], $globalFunctions[]) = $this->createFunctionAndMethod($route);
             }
             $namesAlreadyGenerated[] = $route->getName();
         }
 
-        $names = Joiner::on(",\n%{INDENT}%{INDENT}")->skipNulls()->mapValues(function ($value) {
-            return "'$value'";
-        })->join($namesAlreadyGenerated);
+        $names = FluentArray::from($namesAlreadyGenerated)
+            ->unique()
+            ->filter(Functions::notEmpty())
+            ->map(Functions::surroundWith("'"))
+            ->toArray();
+        $namesList = implode(",\n", $names);
+        $methodsList = implode("\n", $methods);
+        $globalFunctionsList = implode("\n", $globalFunctions);
 
-        $this->_generatedFunctions .= "%{INDENT}public static function allGeneratedUriNames()
-%{INDENT}{
-%{INDENT}%{INDENT}return array(" . $names . ");
-%{INDENT}}
-}\n\n";
-
-        $this->_generatedFunctions .= $globalFunctions;
-        $this->_generatedFunctions .= "function allGeneratedUriNames()
-{
-%{INDENT}return GeneratedUriHelper::allGeneratedUriNames();
-}
-\n\n";
+        return UriGeneratorTemplates::replaceTemplate($namesList, $methodsList, $globalFunctionsList);
     }
 
-    private function _createFunctionAndMethod(RouteRule $routeRule)
+    private function createFunctionAndMethod(RouteRule $routeRule): array
     {
         $name = $routeRule->getName();
         $uri = $routeRule->getUri();
-        $parameters = $this->_prepareParameters($uri);
-
+        $parameters = $this->prepareParameterList($uri);
         $url = $this->getUrl($routeRule, $uri);
-        $parametersString = implode(', ', $parameters);
-
-        $checkParametersStatement = $this->_createCheckParameters($parameters);
-
         $controller = '\\' . $routeRule->getController();
         $action = $routeRule->getAction();
 
-        $method = <<<METHOD
-%{INDENT}/**
-%{INDENT} * @see {$controller}::{$action}()
-%{INDENT} */
-%{INDENT}public static function $name($parametersString)
-%{INDENT}{
-{$checkParametersStatement}%{INDENT}return "$url";
-%{INDENT}}\n\n
-METHOD;
+        $method = UriGeneratorTemplates::method($controller, $action, $name, $parameters, $url);
+        $function = UriGeneratorTemplates::function($controller, $action, $name, $parameters, $url);
 
-        $function = <<<FUNCTION
-/**
- * @see {$controller}::{$action}()
- */
-function $name($parametersString)
-{
-%{INDENT}return GeneratedUriHelper::$name($parametersString);
-}\n\n
-FUNCTION;
         if ($name) {
             return [$method, $function];
         }
         return ['', ''];
     }
 
-    private function _createCheckParameters($parameters)
-    {
-        if ($parameters) {
-            $checkFunctionParameters = Arrays::map($parameters, function ($element) {
-                return "%{INDENT}%{INDENT}GeneratedUriHelper::checkParameter($element);";
-            });
-            return implode("\n", $checkFunctionParameters) . "\n%{INDENT}";
-        }
-        return "%{INDENT}";
-    }
-
-    private function _prepareParameters($uri)
+    private function prepareParameterList($uri): array
     {
         preg_match_all('#:(\w+)#', $uri, $matches);
         $parameters = Arrays::getValue($matches, 1, []);
         return Arrays::map($parameters, function ($parameter) {
             return '$' . $parameter;
         });
-    }
-
-    public function getGeneratedFunctions()
-    {
-        return trim(Strings::sprintAssoc($this->_generatedFunctions, ['INDENT' => self::INDENT]));
     }
 
     public function saveToFile($file)

@@ -1,0 +1,116 @@
+<?php
+
+namespace Ouzo\Uri;
+
+use Ouzo\Utilities\Arrays;
+
+class UriGeneratorTemplates
+{
+    public static function replaceTemplate(string $namesList, string $methodsList, string $globalFunctionsList)
+    {
+        $template = UriGeneratorTemplates::classTemplate();
+        $template = self::replace($template, "METHODS", $methodsList);
+        $template = self::replace($template, "URI_NAMES", $namesList);
+        return self::replace($template, "GLOBAL_FUNCTIONS", $globalFunctionsList);
+    }
+
+    private static function replace(string $template, string $pattern, string $replacement)
+    {
+        return str_replace(["/*{{$pattern}}*/", "%{{$pattern}}"], $replacement, $template);
+    }
+
+    public static function method(string $controller, $action, string $name, array $parameters, string $url)
+    {
+        $template = UriGeneratorTemplates::methodTemplate();
+        return self::generateFunction($template, $controller, $action, $name, $parameters, $url);
+    }
+
+    public static function function (string $controller, $action, string $name, array $parameters, string $url)
+    {
+        $template = UriGeneratorTemplates::functionTemplate();
+        return self::generateFunction($template, $controller, $action, $name, $parameters, $url);
+    }
+
+    private static function generateFunction(string $template, string $controller, $action, string $name, array $parameters, string $url)
+    {
+        $checkParametersStatement = self::generateCheckStatement($parameters);
+        $template = self::replace($template, "CONTROLLER", $controller);
+        $template = self::replace($template, "ACTION", $action);
+        $template = self::replace($template, "NAME", $name);
+        $template = self::replace($template, "CHECK_PARAMETERS", $checkParametersStatement);
+        $template = self::replace($template, "PARAMS", implode(", ", $parameters));
+        return self::replace($template, "URI", $url);
+    }
+
+    private static function generateCheckStatement(array $parameters)
+    {
+        $checkParameters = Arrays::map($parameters, function ($param) {
+            return self::checkParameterTemplate($param);
+        });
+        return implode("", $checkParameters);
+    }
+
+    private static function classTemplate(): string
+    {
+        return /** @lang InjectablePHP */ <<<'TEMPLATE'
+<?php
+class GeneratedUriHelper {
+    
+    private static function validateParameter($parameter)
+    {
+        if (!isset($parameter)) {
+            throw new \InvalidArgumentException("Missing parameters");
+        }
+    }
+    
+/*{METHODS}*/
+    
+    public static function allGeneratedUriNames() 
+    {
+        return [/*{URI_NAMES}*/];
+    }
+}
+
+/*{GLOBAL_FUNCTIONS}*/
+
+function allGeneratedUriNames() 
+{
+    return GeneratedUriHelper::allGeneratedUriNames();
+}
+TEMPLATE;
+    }
+
+    private static function methodTemplate(): string
+    {
+        return <<<'TEMPLATE'
+    /**
+     * @see %{CONTROLLER}::%{ACTION}()
+     */
+    public static function %{NAME}(%{PARAMS}) 
+    {
+        %{CHECK_PARAMETERS}return "%{URI}";
+    }
+TEMPLATE;
+    }
+
+    private static function functionTemplate()
+    {
+        return <<<'TEMPLATE'
+/**
+ * @see %{CONTROLLER}::%{ACTION}()
+ */
+function %{NAME}(%{PARAMS}) 
+{
+    return GeneratedUriHelper::%{NAME}(%{PARAMS});
+}
+TEMPLATE;
+    }
+
+    private static function checkParameterTemplate($param): string
+    {
+        return <<<TEMPLATE
+        GeneratedUriHelper::validateParameter($param);
+        
+TEMPLATE;
+    }
+}
