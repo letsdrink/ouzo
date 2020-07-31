@@ -6,7 +6,7 @@ use Ouzo\Utilities\Arrays;
 
 class UriGeneratorTemplates
 {
-    public static function replaceTemplate(string $namesList, string $methodsList, string $globalFunctionsList)
+    public static function replaceTemplate(string $namesList, string $methodsList, string $globalFunctionsList): string
     {
         $template = UriGeneratorTemplates::classTemplate();
         $template = self::replace($template, "METHODS", $methodsList);
@@ -14,24 +14,24 @@ class UriGeneratorTemplates
         return self::replace($template, "GLOBAL_FUNCTIONS", $globalFunctionsList);
     }
 
-    private static function replace(string $template, string $pattern, string $replacement)
+    private static function replace(string $template, string $pattern, ?string $replacement): string
     {
         return str_replace(["/*{{$pattern}}*/", "%{{$pattern}}"], $replacement, $template);
     }
 
-    public static function method(string $controller, $action, string $name, array $parameters, string $url)
+    public static function method(string $controller, $action, string $name, array $parameters, string $url): string
     {
         $template = UriGeneratorTemplates::methodTemplate();
         return self::generateFunction($template, $controller, $action, $name, $parameters, $url);
     }
 
-    public static function function (string $controller, $action, string $name, array $parameters, string $url)
+    public static function function (string $controller, $action, string $name, array $parameters, string $url): string
     {
         $template = UriGeneratorTemplates::functionTemplate();
         return self::generateFunction($template, $controller, $action, $name, $parameters, $url);
     }
 
-    private static function generateFunction(string $template, string $controller, $action, string $name, array $parameters, string $url)
+    private static function generateFunction(string $template, string $controller, $action, ?string $name, array $parameters, string $url): string
     {
         $checkParametersStatement = self::generateCheckStatement($parameters);
         $template = self::replace($template, "CONTROLLER", $controller);
@@ -42,7 +42,7 @@ class UriGeneratorTemplates
         return self::replace($template, "URI", $url);
     }
 
-    private static function generateCheckStatement(array $parameters)
+    private static function generateCheckStatement(array $parameters): string
     {
         $checkParameters = Arrays::map($parameters, function ($param) {
             return self::checkParameterTemplate($param);
@@ -90,10 +90,11 @@ TEMPLATE;
     {
         %{CHECK_PARAMETERS}return "%{URI}";
     }
+    
 TEMPLATE;
     }
 
-    private static function functionTemplate()
+    private static function functionTemplate(): string
     {
         return <<<'TEMPLATE'
 /**
@@ -103,13 +104,14 @@ function %{NAME}(%{PARAMS})
 {
     return GeneratedUriHelper::%{NAME}(%{PARAMS});
 }
+
 TEMPLATE;
     }
 
     private static function checkParameterTemplate($param): string
     {
         return <<<TEMPLATE
-        GeneratedUriHelper::validateParameter($param);
+GeneratedUriHelper::validateParameter($param);
         
 TEMPLATE;
     }
