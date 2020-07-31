@@ -3,10 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Routing\Route;
 use Ouzo\Uri\UriHelperGenerator;
 use Ouzo\Utilities\Path;
-
 use PHPUnit\Framework\TestCase;
 
 class UriHelperGeneratorTest extends TestCase
@@ -29,23 +29,43 @@ class UriHelperGeneratorTest extends TestCase
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<FUNCT
+        //
+        $expected = <<<'FUNCT'
 <?php
-function checkParameter(\$parameter)
-{
-    if (!isset(\$parameter)) {
-        throw new \InvalidArgumentException("Missing parameters");
+class GeneratedUriHelper {
+    
+    private static function checkParameter($parameter)
+    {
+        if (!isset($parameter)) {
+            throw new \InvalidArgumentException("Missing parameters");
+        }
+    }
+
+    /**
+     * @see \Controller\UsersController::show_item()
+     */
+    public static function showItemUsersPath()
+    {
+        return "/users/show_item";
+    }
+
+    public static function allGeneratedUriNames()
+    {
+        return array('showItemUsersPath');
     }
 }
 
+/**
+ * @see \Controller\UsersController::show_item()
+ */
 function showItemUsersPath()
 {
-    return "/users/show_item";
+    return GeneratedUriHelper::showItemUsersPath();
 }
 
 function allGeneratedUriNames()
 {
-    return array('showItemUsersPath');
+    return GeneratedUriHelper::allGeneratedUriNames();
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -63,23 +83,42 @@ FUNCT;
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<FUNCT
+        $expected = <<<'FUNCT'
 <?php
-function checkParameter(\$parameter)
-{
-    if (!isset(\$parameter)) {
-        throw new \InvalidArgumentException("Missing parameters");
+class GeneratedUriHelper {
+    
+    private static function checkParameter($parameter)
+    {
+        if (!isset($parameter)) {
+            throw new \InvalidArgumentException("Missing parameters");
+        }
+    }
+
+    /**
+     * @see \Controller\UsersController::save()
+     */
+    public static function saveUsersPath()
+    {
+        return "/users/save";
+    }
+
+    public static function allGeneratedUriNames()
+    {
+        return array('saveUsersPath');
     }
 }
 
+/**
+ * @see \Controller\UsersController::save()
+ */
 function saveUsersPath()
 {
-    return "/users/save";
+    return GeneratedUriHelper::saveUsersPath();
 }
 
 function allGeneratedUriNames()
 {
-    return array('saveUsersPath');
+    return GeneratedUriHelper::allGeneratedUriNames();
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -97,23 +136,42 @@ FUNCT;
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<FUNCT
+        $expected = <<<'FUNCT'
 <?php
-function checkParameter(\$parameter)
-{
-    if (!isset(\$parameter)) {
-        throw new \InvalidArgumentException("Missing parameters");
+class GeneratedUriHelper {
+    
+    private static function checkParameter($parameter)
+    {
+        if (!isset($parameter)) {
+            throw new \InvalidArgumentException("Missing parameters");
+        }
+    }
+
+    /**
+     * @see \Controller\UsersController::get_duplicated()
+     */
+    public static function getDuplicatedUsersPath()
+    {
+        return "/users/get_duplicated";
+    }
+
+    public static function allGeneratedUriNames()
+    {
+        return array('getDuplicatedUsersPath');
     }
 }
 
+/**
+ * @see \Controller\UsersController::get_duplicated()
+ */
 function getDuplicatedUsersPath()
 {
-    return "/users/get_duplicated";
+    return GeneratedUriHelper::getDuplicatedUsersPath();
 }
 
 function allGeneratedUriNames()
 {
-    return array('getDuplicatedUsersPath');
+    return GeneratedUriHelper::allGeneratedUriNames();
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -131,25 +189,44 @@ FUNCT;
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<FUNCT
+        $expected = <<<'FUNCT'
 <?php
-function checkParameter(\$parameter)
-{
-    if (!isset(\$parameter)) {
-        throw new \InvalidArgumentException("Missing parameters");
+class GeneratedUriHelper {
+    
+    private static function checkParameter($parameter)
+    {
+        if (!isset($parameter)) {
+            throw new \InvalidArgumentException("Missing parameters");
+        }
+    }
+
+    /**
+     * @see \Controller\UsersController::show()
+     */
+    public static function showUsersPath($id, $call_id)
+    {
+        GeneratedUriHelper::checkParameter($id);
+        GeneratedUriHelper::checkParameter($call_id);
+        return "/users/show/id/$id/call_id/$call_id";
+    }
+
+    public static function allGeneratedUriNames()
+    {
+        return array('showUsersPath');
     }
 }
 
-function showUsersPath(\$id, \$call_id)
+/**
+ * @see \Controller\UsersController::show()
+ */
+function showUsersPath($id, $call_id)
 {
-    checkParameter(\$id);
-    checkParameter(\$call_id);
-    return "/users/show/id/\$id/call_id/\$call_id";
+    return GeneratedUriHelper::showUsersPath($id, $call_id);
 }
 
 function allGeneratedUriNames()
 {
-    return array('showUsersPath');
+    return GeneratedUriHelper::allGeneratedUriNames();
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -167,23 +244,42 @@ FUNCT;
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<FUNCT
+        $expected = <<<'FUNCT'
 <?php
-function checkParameter(\$parameter)
-{
-    if (!isset(\$parameter)) {
-        throw new \InvalidArgumentException("Missing parameters");
+class GeneratedUriHelper {
+    
+    private static function checkParameter($parameter)
+    {
+        if (!isset($parameter)) {
+            throw new \InvalidArgumentException("Missing parameters");
+        }
+    }
+
+    /**
+     * @see \Controller\UsersController::show_item()
+     */
+    public static function userItemPath()
+    {
+        return "/users/show_item";
+    }
+
+    public static function allGeneratedUriNames()
+    {
+        return array('userItemPath');
     }
 }
 
+/**
+ * @see \Controller\UsersController::show_item()
+ */
 function userItemPath()
 {
-    return "/users/show_item";
+    return GeneratedUriHelper::userItemPath();
 }
 
 function allGeneratedUriNames()
 {
-    return array('userItemPath');
+    return GeneratedUriHelper::allGeneratedUriNames();
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -201,40 +297,54 @@ FUNCT;
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<FUNCT
+        $expected = <<<'FUNCT'
 <?php
-function checkParameter(\$parameter)
-{
-    if (!isset(\$parameter)) {
-        throw new \InvalidArgumentException("Missing parameters");
+class GeneratedUriHelper {
+    
+    private static function checkParameter($parameter)
+    {
+        if (!isset($parameter)) {
+            throw new \InvalidArgumentException("Missing parameters");
+        }
     }
-}
 
-function usersPath()
-{
-    return "/users";
-}
+    /**
+     * @see \Controller\UsersController::index()
+     */
+    public static function usersPath()
+    {
+        return "/users";
+    }
 
-function freshUserPath()
-{
-    return "/users/fresh";
-}
+    /**
+     * @see \Controller\UsersController::fresh()
+     */
+    public static function freshUserPath()
+    {
+        return "/users/fresh";
+    }
 
-function editUserPath(\$id)
-{
-    checkParameter(\$id);
-    return "/users/\$id/edit";
-}
+    /**
+     * @see \Controller\UsersController::edit()
+     */
+    public static function editUserPath($id)
+    {
+        GeneratedUriHelper::checkParameter($id);
+        return "/users/$id/edit";
+    }
 
-function userPath(\$id)
-{
-    checkParameter(\$id);
-    return "/users/\$id";
-}
+    /**
+     * @see \Controller\UsersController::show()
+     */
+    public static function userPath($id)
+    {
+        GeneratedUriHelper::checkParameter($id);
+        return "/users/$id";
+    }
 
-function allGeneratedUriNames()
-{
-    return array('usersPath',
+    public static function allGeneratedUriNames()
+    {
+        return array('usersPath',
         'freshUserPath',
         'editUserPath',
         'userPath',
@@ -242,6 +352,44 @@ function allGeneratedUriNames()
         'userPath',
         'userPath',
         'userPath');
+    }
+}
+
+/**
+ * @see \Controller\UsersController::index()
+ */
+function usersPath()
+{
+    return GeneratedUriHelper::usersPath();
+}
+
+/**
+ * @see \Controller\UsersController::fresh()
+ */
+function freshUserPath()
+{
+    return GeneratedUriHelper::freshUserPath();
+}
+
+/**
+ * @see \Controller\UsersController::edit()
+ */
+function editUserPath($id)
+{
+    return GeneratedUriHelper::editUserPath($id);
+}
+
+/**
+ * @see \Controller\UsersController::show()
+ */
+function userPath($id)
+{
+    return GeneratedUriHelper::userPath($id);
+}
+
+function allGeneratedUriNames()
+{
+    return GeneratedUriHelper::allGeneratedUriNames();
 }
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -279,24 +427,43 @@ FUNCT;
         $generated = UriHelperGenerator::generate()->getGeneratedFunctions();
 
         //then
-        $expected = <<<FUNCT
+        $expected = <<<'FUNCT'
 <?php
-function checkParameter(\$parameter)
-{
-    if (!isset(\$parameter)) {
-        throw new \InvalidArgumentException("Missing parameters");
+class GeneratedUriHelper {
+    
+    private static function checkParameter($parameter)
+    {
+        if (!isset($parameter)) {
+            throw new \InvalidArgumentException("Missing parameters");
+        }
+    }
+
+    /**
+     * @see \Controller\Api\UsersController::orders()
+     */
+    public static function ordersUsersApiPath($id)
+    {
+        GeneratedUriHelper::checkParameter($id);
+        return "/api/users/$id/orders";
+    }
+
+    public static function allGeneratedUriNames()
+    {
+        return array('ordersUsersApiPath');
     }
 }
 
-function ordersUsersApiPath(\$id)
+/**
+ * @see \Controller\Api\UsersController::orders()
+ */
+function ordersUsersApiPath($id)
 {
-    checkParameter(\$id);
-    return "/api/users/\$id/orders";
+    return GeneratedUriHelper::ordersUsersApiPath($id);
 }
 
 function allGeneratedUriNames()
 {
-    return array('ordersUsersApiPath');
+    return GeneratedUriHelper::allGeneratedUriNames();
 }
 FUNCT;
         $this->assertEquals($expected, $generated);

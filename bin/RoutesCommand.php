@@ -122,7 +122,7 @@ class RoutesCommand extends Command
     {
         $routesEs6HelperPath = Config::getValue('path', 'helper-es6') ?? Path::join(ROOT_PATH, 'public');
         $routesEs6HelperPath = Path::join($routesEs6HelperPath, 'generatedUriHelper.js');
-        if (UriHelperGenerator::generate()->saveToFile($routesEs6HelperPath) !== false) {
+        if (Es6UriHelperGenerator::generate()->saveToFile($routesEs6HelperPath) !== false) {
             $this->output->writeln("File with ES6 uri helpers is generated in <info>$routesEs6HelperPath</info>");
         }
     }

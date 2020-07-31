@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Uri;
 
 use Ouzo\Routing\Route;
@@ -19,12 +20,14 @@ class UriHelperGenerator
      */
     private $_routes;
     private $_generatedFunctions = "<?php
-function checkParameter(\$parameter)
-{
-%{INDENT}if (!isset(\$parameter)) {
-%{INDENT}%{INDENT}throw new \\InvalidArgumentException(\"Missing parameters\");
-%{INDENT}}
-}\n\n";
+class GeneratedUriHelper {
+    
+%{INDENT}private static function checkParameter(\$parameter)
+%{INDENT}{
+%{INDENT}%{INDENT}if (!isset(\$parameter)) {
+%{INDENT}%{INDENT}%{INDENT}throw new \\InvalidArgumentException(\"Missing parameters\");
+%{INDENT}%{INDENT}}
+%{INDENT}}\n\n";
 
     /**
      * @return UriHelperGenerator
@@ -43,9 +46,12 @@ function checkParameter(\$parameter)
     private function _generateFunctions()
     {
         $namesAlreadyGenerated = [];
+        $globalFunctions = "";
         foreach ($this->_routes as $route) {
             if (!in_array($route->getName(), $namesAlreadyGenerated)) {
-                $this->_generatedFunctions .= $this->_createFunction($route);
+                list($method, $function) = $this->_createFunctionAndMethod($route);
+                $this->_generatedFunctions .= $method;
+                $globalFunctions .= $function;
             }
             $namesAlreadyGenerated[] = $route->getName();
         }
@@ -54,13 +60,21 @@ function checkParameter(\$parameter)
             return "'$value'";
         })->join($namesAlreadyGenerated);
 
+        $this->_generatedFunctions .= "%{INDENT}public static function allGeneratedUriNames()
+%{INDENT}{
+%{INDENT}%{INDENT}return array(" . $names . ");
+%{INDENT}}
+}\n\n";
+
+        $this->_generatedFunctions .= $globalFunctions;
         $this->_generatedFunctions .= "function allGeneratedUriNames()
 {
-%{INDENT}return array(" . $names . ");
-}\n\n";
+%{INDENT}return GeneratedUriHelper::allGeneratedUriNames();
+}
+\n\n";
     }
 
-    private function _createFunction(RouteRule $routeRule)
+    private function _createFunctionAndMethod(RouteRule $routeRule)
     {
         $name = $routeRule->getName();
         $uri = $routeRule->getUri();
@@ -74,23 +88,36 @@ function checkParameter(\$parameter)
         $controller = '\\' . $routeRule->getController();
         $action = $routeRule->getAction();
 
+        $method = <<<METHOD
+%{INDENT}/**
+%{INDENT} * @see {$controller}::{$action}()
+%{INDENT} */
+%{INDENT}public static function $name($parametersString)
+%{INDENT}{
+{$checkParametersStatement}%{INDENT}return "$url";
+%{INDENT}}\n\n
+METHOD;
+
         $function = <<<FUNCTION
 /**
  * @see {$controller}::{$action}()
  */
 function $name($parametersString)
 {
-{$checkParametersStatement}return "$url";
+%{INDENT}return GeneratedUriHelper::$name($parametersString);
 }\n\n
 FUNCTION;
-        return $name ? $function : '';
+        if ($name) {
+            return [$method, $function];
+        }
+        return ['', ''];
     }
 
     private function _createCheckParameters($parameters)
     {
         if ($parameters) {
             $checkFunctionParameters = Arrays::map($parameters, function ($element) {
-                return "%{INDENT}checkParameter($element);";
+                return "%{INDENT}%{INDENT}GeneratedUriHelper::checkParameter($element);";
             });
             return implode("\n", $checkFunctionParameters) . "\n%{INDENT}";
         }
