@@ -64,7 +64,6 @@ class GeneratedUriHelper {
     }
     
 /*{METHODS}*/
-    
     public static function allGeneratedUriNames() 
     {
         return [/*{URI_NAMES}*/];
@@ -72,7 +71,6 @@ class GeneratedUriHelper {
 }
 
 /*{GLOBAL_FUNCTIONS}*/
-
 function allGeneratedUriNames() 
 {
     return GeneratedUriHelper::allGeneratedUriNames();
