@@ -88,6 +88,21 @@ class StringsTest extends TestCase
     /**
      * @test
      */
+    public function shouldConvertCamelCaseWithOneLetterWordsToUnderscore()
+    {
+        //given
+        $string = 'WhatIsOAuth';
+
+        //when
+        $underscored = Strings::camelCaseToUnderscore($string);
+
+        //then
+        $this->assertEquals('what_is_o_auth', $underscored);
+    }
+
+    /**
+     * @test
+     */
     public function shouldRemovePrefix()
     {
         //given
