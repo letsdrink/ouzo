@@ -2,7 +2,8 @@
 
 namespace Ouzo\Routing\Loader;
 
-use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Comparator;
+use Ouzo\Utilities\FluentArray;
 
 class RouteMetadataCollection
 {
@@ -31,15 +32,22 @@ class RouteMetadataCollection
         return count($this->elements);
     }
 
-    public function routesWithParametersToBottom(): self
+    public function sort(): self
     {
-        $elementsWithoutParameters = Arrays::filter($this->elements, function (RouteMetadata $route) {
-            return !$route->hasParameters();
-        });
-        $elementsWithParameters = Arrays::filter($this->elements, function (RouteMetadata $route) {
-            return $route->hasParameters();
-        });
-        $this->elements =  array_values(array_merge($elementsWithoutParameters, $elementsWithParameters));
+        $elementsWithoutParameters = FluentArray::from($this->elements)
+            ->filter(function (RouteMetadata $route) {
+                return !$route->hasParameters();
+            })
+            ->sort(Comparator::compareBy('getUri()'))
+            ->toArray();
+
+        $elementsWithParameters = FluentArray::from($this->elements)
+            ->filter(function (RouteMetadata $route) {
+                return $route->hasParameters();
+            })
+            ->sort(Comparator::compareBy('getUri()'))
+            ->toArray();
+        $this->elements = array_values(array_merge($elementsWithoutParameters, $elementsWithParameters));
         return $this;
     }
 
