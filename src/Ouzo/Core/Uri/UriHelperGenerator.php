@@ -25,7 +25,6 @@ class UriHelperGenerator
     {
         $routes = Arrays::sort(Route::getRoutes(), Comparator::compareBy('getUri()'));
         return new self($routes);
-        //return new self($routes);
     }
 
     public function __construct($routes)
