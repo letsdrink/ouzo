@@ -186,8 +186,9 @@ function usersPath() {
     return "/app/users";
 }
 
-function freshUserPath() {
-    return "/app/users/fresh";
+function userPath(id) {
+    checkParameter(id);
+    return "/app/users/" + id + "";
 }
 
 function editUserPath(id) {
@@ -195,9 +196,8 @@ function editUserPath(id) {
     return "/app/users/" + id + "/edit";
 }
 
-function userPath(id) {
-    checkParameter(id);
-    return "/app/users/" + id + "";
+function freshUserPath() {
+    return "/app/users/fresh";
 }\n
 FUNCT;
         $this->assertEquals($expected, $generated);

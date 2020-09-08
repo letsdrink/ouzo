@@ -317,11 +317,12 @@ class GeneratedUriHelper {
     }
     
     /**
-     * @see \Controller\UsersController::fresh()
+     * @see \Controller\UsersController::show()
      */
-    public static function freshUserPath() 
+    public static function userPath($id) 
     {
-        return "/users/fresh";
+        GeneratedUriHelper::validateParameter($id);
+        return "/users/$id";
     }
     
     /**
@@ -334,20 +335,19 @@ class GeneratedUriHelper {
     }
     
     /**
-     * @see \Controller\UsersController::show()
+     * @see \Controller\UsersController::fresh()
      */
-    public static function userPath($id) 
+    public static function freshUserPath() 
     {
-        GeneratedUriHelper::validateParameter($id);
-        return "/users/$id";
+        return "/users/fresh";
     }
     
     public static function allGeneratedUriNames() 
     {
         return ['usersPath',
-'freshUserPath',
+'userPath',
 'editUserPath',
-'userPath'];
+'freshUserPath'];
     }
 }
 
@@ -360,11 +360,11 @@ function usersPath()
 }
 
 /**
- * @see \Controller\UsersController::fresh()
+ * @see \Controller\UsersController::show()
  */
-function freshUserPath() 
+function userPath($id) 
 {
-    return GeneratedUriHelper::freshUserPath();
+    return GeneratedUriHelper::userPath($id);
 }
 
 /**
@@ -376,11 +376,11 @@ function editUserPath($id)
 }
 
 /**
- * @see \Controller\UsersController::show()
+ * @see \Controller\UsersController::fresh()
  */
-function userPath($id) 
+function freshUserPath() 
 {
-    return GeneratedUriHelper::userPath($id);
+    return GeneratedUriHelper::freshUserPath();
 }
 
 function allGeneratedUriNames() 

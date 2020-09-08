@@ -8,6 +8,7 @@ namespace Ouzo\Uri;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Comparator;
 
 class JsUriHelperGenerator
 {
@@ -20,7 +21,7 @@ class JsUriHelperGenerator
 
     public function __construct()
     {
-        $this->routeRules = $routes = Route::getRoutes();
+        $this->routeRules = $routes = Arrays::sort(Route::getRoutes(), Comparator::compareBy('getUri()'));
         $this->generatedFunctions .= 'function checkParameter(parameter) {
 ' . self::INDENT . 'if (parameter === null) {
 ' . self::INDENT . self::INDENT . 'throw new Error("Uri helper: Missing parameters");

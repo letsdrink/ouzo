@@ -9,6 +9,7 @@ namespace Ouzo\Uri;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
@@ -22,7 +23,9 @@ class UriHelperGenerator
      */
     public static function generate()
     {
-        return new self(Route::getRoutes());
+        $routes = Arrays::sort(Route::getRoutes(), Comparator::compareBy('getUri()'));
+        return new self($routes);
+        //return new self($routes);
     }
 
     public function __construct($routes)
