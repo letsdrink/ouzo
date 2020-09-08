@@ -61,4 +61,25 @@ class RouteMetadataCollectionTest extends TestCase
         $this->assertEquals('/b/:id', $elements[6]->getUri());
         $this->assertEquals('/test/:id', $elements[7]->getUri());
     }
+
+    /**
+     * @test
+     */
+    public function shouldSortRoutesWithTheSameUrisAndDifferentMethods()
+    {
+        //given
+        $collection = new RouteMetadataCollection([
+            new RouteMetadata('/test', 'POST', '', ''),
+            new RouteMetadata('/test', 'GET', '', ''),
+        ]);
+
+        //when
+        $elements = $collection->sort()->toArray();
+
+        //then
+        $this->assertEquals('/test', $elements[0]->getUri());
+        $this->assertEquals('GET', $elements[0]->getMethod());
+        $this->assertEquals('/test', $elements[1]->getUri());
+        $this->assertEquals('POST', $elements[1]->getMethod());
+    }
 }

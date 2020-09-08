@@ -38,14 +38,14 @@ class RouteMetadataCollection
             ->filter(function (RouteMetadata $route) {
                 return !$route->hasParameters();
             })
-            ->sort(Comparator::compareBy('getUri()'))
+            ->sort(Comparator::compareBy('getUri()', 'getMethod()'))
             ->toArray();
 
         $elementsWithParameters = FluentArray::from($this->elements)
             ->filter(function (RouteMetadata $route) {
                 return $route->hasParameters();
             })
-            ->sort(Comparator::compareBy('getUri()'))
+            ->sort(Comparator::compareBy('getUri()', 'getMethod()'))
             ->toArray();
         $this->elements = array_values(array_merge($elementsWithoutParameters, $elementsWithParameters));
         return $this;
