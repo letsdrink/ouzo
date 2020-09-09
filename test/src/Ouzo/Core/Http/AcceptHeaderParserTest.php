@@ -3,9 +3,9 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Http\AcceptHeaderParser;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Http\AcceptHeaderParser;
+use PHPUnit\Framework\TestCase;
 
 class AcceptHeaderParserTest extends TestCase
 {
@@ -25,6 +25,44 @@ class AcceptHeaderParserTest extends TestCase
             'text/html' => 0.7,
             '*/*' => 0.5,
             'text/*' => 0.3
+        ], $parsed);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldParseAcceptHeaderWithNoSubtype()
+    {
+        //given
+        $accept = 'text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2';
+
+        //when
+        $parsed = AcceptHeaderParser::parse($accept);
+
+        //then
+        $this->assertEquals([
+            'text/html' => null,
+            'image/gif' => null,
+            'image/jpeg' => null,
+            '*/*' => 0.2,
+            '*' => 0.2
+        ], $parsed);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldParseInvalidContentType()
+    {
+        //given
+        $accept = 'invalid';
+
+        //when
+        $parsed = AcceptHeaderParser::parse($accept);
+
+        //then
+        $this->assertEquals([
+            'invalid' => null
         ], $parsed);
     }
 

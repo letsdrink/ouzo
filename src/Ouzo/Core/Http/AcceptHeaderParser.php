@@ -20,13 +20,13 @@ class AcceptHeaderParser
             $media = Arrays::first($elements);
             $params = array_slice($elements, 1);
 
-            list($type, $subtype) = Arrays::map(explode('/', $media), Functions::trim());
+            list($type, $subtype) = self::getTypeAndSubtype($media);
             $q = Arrays::getValue(self::extractParams($params), 'q');
             $array[] = ['type' => $type, 'subtype' => $subtype, 'q' => $q];
         }
         usort($array, [AcceptHeaderParser::class, '_compare']);
         return Arrays::toMap($array, function ($input) {
-            return $input['type'] . '/' . $input['subtype'];
+            return $input['subtype'] ? $input['type'] . '/' . $input['subtype'] : $input['type'];
         }, function ($input) {
             return $input['q'];
         });
@@ -66,5 +66,14 @@ class AcceptHeaderParser
             $params[$name] = $value;
         }
         return $params;
+    }
+
+    private static function getTypeAndSubtype($media): array
+    {
+        $result = Arrays::map(explode('/', $media), Functions::trim());
+        return [
+            Arrays::getValue($result, 0),
+            Arrays::getValue($result, 1)
+        ];
     }
 }
