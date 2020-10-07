@@ -47,6 +47,8 @@ class MigrationRunnerCommand extends MigrationCommand
     private $filesBefore;
     /* @var string[] */
     private $filesAfter;
+    /** @var bool */
+    private $list;
 
     public function configureCommand()
     {
@@ -54,6 +56,7 @@ class MigrationRunnerCommand extends MigrationCommand
             ->addOption('commit_early', 'c', InputOption::VALUE_NONE, 'Commit after each migration')
             ->addOption('reset', 'r', InputOption::VALUE_NONE, 'Remove all previous migrations')
             ->addOption('init', 'i', InputOption::VALUE_NONE, 'Add schema_migrations table')
+            ->addOption('list', 'l', InputOption::VALUE_NONE, 'List migrations to apply')
             ->addOption('dir', 'd', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Directories with migrations (separated by comma)', ['.'])
             ->addOption('no_animations', 'a', InputOption::VALUE_NONE, 'Disable animations (e.g. progress bar)')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force confirmation')
@@ -71,6 +74,7 @@ class MigrationRunnerCommand extends MigrationCommand
         $this->init = $this->input->getOption('init');
         $this->dirs = $this->input->getOption('dir');
         $this->reset = $this->input->getOption('reset');
+        $this->list = $this->input->getOption('list');
         $this->noAnimations = $this->input->getOption('no_animations');
         $this->filesBefore = $this->input->getOption('files_before');
         $this->filesAfter = $this->input->getOption('files_after');
@@ -123,10 +127,17 @@ class MigrationRunnerCommand extends MigrationCommand
             $initializer->resetMigrations();
         }
 
-        $this->output->writeln("\nMigrations to apply:");
         $migrations = $loader->loadMigrations($this->dirs);
+        $size = sizeof($migrations);
+        $this->output->writeln("\nMigrations to apply ($size):");
+        $index = 1;
         foreach ($migrations as $version => $className) {
-            $this->output->writeln(" [$version] $className");
+            $this->output->writeln(" $index. [<info>$version</info>] $className");
+            $index++;
+        }
+
+        if ($this->list) {
+            return 0;
         }
 
         if (empty($migrations)) {
