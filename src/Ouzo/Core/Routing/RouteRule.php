@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Routing;
 
 use Ouzo\Utilities\Arrays;
@@ -199,7 +200,11 @@ class RouteRule
 
     private function getControllerParts()
     {
-        $parts = explode('\\', str_ireplace('controller', '', $this->controller));
+        $parts = explode('\\', $this->controller);
+        $parts = Arrays::map($parts, function ($part) {
+            $part = Strings::removeSuffix($part, "Controller");
+            return Strings::removeSuffix($part, "Application");
+        });
         $controllerName = Strings::camelCaseToUnderscore(array_pop($parts));
         $parts = Arrays::map($parts, 'strtolower');
         $parts[] = $controllerName;
