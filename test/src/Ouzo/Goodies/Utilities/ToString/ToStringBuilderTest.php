@@ -201,16 +201,16 @@ class ToStringBuilderTest extends TestCase
         $toString = $this->toStringBuilderClass->__toString();
 
         //then
-        $expected = 'Some\Test\Ns\ToStringBuilderClass[
-  name=jon
-  age=91
-  smoking=true
-  tags={tag1,tag2,another tag}
-  customFields={field1=value1,field2=value2}
-  nullable=<null>
-  classWithoutToString=Some\Test\Ns\ClassWithoutToString
-  classWithToString=Some\Test\Ns\ClassWithToString[string=some new string]
-]';
+        $expected = 'Some\Test\Ns\ToStringBuilderClass[' . PHP_EOL .
+            '  name=jon' . PHP_EOL .
+            '  age=91' . PHP_EOL .
+            '  smoking=true' . PHP_EOL .
+            '  tags={tag1,tag2,another tag}' . PHP_EOL .
+            '  customFields={field1=value1,field2=value2}' . PHP_EOL .
+            '  nullable=<null>' . PHP_EOL .
+            '  classWithoutToString=Some\Test\Ns\ClassWithoutToString' . PHP_EOL .
+            '  classWithToString=Some\Test\Ns\ClassWithToString[string=some new string]' . PHP_EOL .
+            ']';
         $this->assertEquals($expected, $toString);
     }
 }
