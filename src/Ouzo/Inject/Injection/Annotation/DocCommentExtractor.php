@@ -26,12 +26,9 @@ class DocCommentExtractor implements AnnotationMetadataProvider
         foreach ($properties as $property) {
             $doc = $this->getDocCommentFrom($property);
             if (Strings::contains($doc, '@Inject')) {
-                $className = $this->extractClass($doc, $property);
+                $className = $this->extractClass($class, $doc, $property);
                 $name = $this->extractNamed($doc);
                 $annotations[$property->getName()] = ['name' => $name, 'className' => $className];
-                if (is_null($className)) {
-                    throw new InjectorException('Cannot @Inject dependency - missing type. Use typed property or @var doc comment for property $' . $property->getName() . ' in class ' . $class->getName() . '.');
-                }
             }
         }
         return $annotations;
@@ -86,7 +83,7 @@ class DocCommentExtractor implements AnnotationMetadataProvider
         return '';
     }
 
-    private function extractClass(string $doc, ReflectionProperty $property): ?string
+    private function extractClass(ReflectionClass $class, string $doc, ReflectionProperty $property): string
     {
         if ($property->hasType()) {
             return $property->getType()->getName();
@@ -94,7 +91,7 @@ class DocCommentExtractor implements AnnotationMetadataProvider
         if (preg_match("#@var ([\\\\A-Za-z0-9]*)#s", $doc, $matched)) {
             return Strings::removePrefix($matched[1], "\\");
         }
-        return null;
+        throw new InjectorException('Cannot @Inject dependency - missing type. Use typed property or @var doc comment for property $' . $property->getName() . ' in class ' . $class->getName() . '.');
     }
 
     /**
