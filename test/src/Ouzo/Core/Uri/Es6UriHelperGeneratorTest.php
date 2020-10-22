@@ -52,7 +52,7 @@ const checkParameters = (...args) => {
     })
 }
 
-const showItemUsersPath = () => '/app/users/show_item'
+export const showItemUsersPath = () => '/app/users/show_item'
 
 EXPECTED;
         $this->assertEquals($expected, $generated);
@@ -79,7 +79,7 @@ const checkParameters = (...args) => {
     })
 }
 
-const saveUsersPath = () => '/app/users/save'
+export const saveUsersPath = () => '/app/users/save'
 
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -106,7 +106,7 @@ const checkParameters = (...args) => {
     })
 }
 
-const getDuplicatedUsersPath = () => '/app/users/get_duplicated'
+export const getDuplicatedUsersPath = () => '/app/users/get_duplicated'
 
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -133,7 +133,7 @@ const checkParameters = (...args) => {
     })
 }
 
-const showUsersPath = (id, call_id) => {
+export const showUsersPath = (id, call_id) => {
     checkParameters(id, call_id)
     return '/app/users/show/id/' + id + '/call_id/' + call_id
 }
@@ -163,7 +163,7 @@ const checkParameters = (...args) => {
     })
 }
 
-const userItemPath = () => '/app/users/show_item'
+export const userItemPath = () => '/app/users/show_item'
 
 FUNCT;
         $this->assertEquals($expected, $generated);
@@ -190,16 +190,16 @@ const checkParameters = (...args) => {
     })
 }
 
-const usersPath = () => '/app/users'
+export const usersPath = () => '/app/users'
 
-const freshUserPath = () => '/app/users/fresh'
+export const freshUserPath = () => '/app/users/fresh'
 
-const editUserPath = (id) => {
+export const editUserPath = (id) => {
     checkParameters(id)
     return '/app/users/' + id + '/edit'
 }
 
-const userPath = (id) => {
+export const userPath = (id) => {
     checkParameters(id)
     return '/app/users/' + id
 }
@@ -229,7 +229,7 @@ const checkParameters = (...args) => {
     })
 }
 
-const ordersUsersApiPath = (id) => {
+export const ordersUsersApiPath = (id) => {
     checkParameters(id)
     return '/app/api/users/' + id + '/orders'
 }

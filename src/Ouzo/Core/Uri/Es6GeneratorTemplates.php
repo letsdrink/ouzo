@@ -40,14 +40,14 @@ TEMPLATE;
     private static function funcWithoutArgs()
     {
         return /** @lang ECMAScript 6 */ <<<'TEMPLATE'
-const NAME_REPLACEMENT = () => 'RETURN_REPLACEMENT'
+export const NAME_REPLACEMENT = () => 'RETURN_REPLACEMENT'
 TEMPLATE;
     }
 
     private static function functionWithArgs()
     {
         return /** @lang ECMAScript 6 */ <<<'TEMPLATE'
-const NAME_REPLACEMENT = (ARGS_REPLACEMENT) => {
+export const NAME_REPLACEMENT = (ARGS_REPLACEMENT) => {
     checkParameters(ARGS_REPLACEMENT)
     return 'RETURN_REPLACEMENT'
 }
