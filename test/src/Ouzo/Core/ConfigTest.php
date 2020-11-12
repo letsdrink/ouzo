@@ -57,10 +57,10 @@ class ConfigTest extends TestCase
      */
     public function shouldReturnNullForMissingSections()
     {
-        //when
+        // when
         $section = Config::getValue('missing');
 
-        //then
+        // then
         $this->assertNull($section);
     }
 
@@ -69,14 +69,14 @@ class ConfigTest extends TestCase
      */
     public function shouldReadSampleConfig()
     {
-        //given
+        // given
         $configRepository = Config::registerConfig(new SampleConfig);
         $configRepository->reload();
 
-        //when
+        // when
         $value = Config::getValue('default');
 
-        //then
+        // then
         $this->assertEquals('SampleAuth', $value['auth']);
     }
 
@@ -85,13 +85,13 @@ class ConfigTest extends TestCase
      */
     public function shouldReturnConfigValue()
     {
-        //given
+        // given
         Config::registerConfig(new SampleConfig);
 
-        //when
+        // when
         $value = Config::getValue('default');
 
-        //then
+        // then
         $this->assertEquals('SampleAuth', $value['auth']);
     }
 
@@ -100,13 +100,13 @@ class ConfigTest extends TestCase
      */
     public function shouldReturnNestedConfigValue()
     {
-        //given
+        // given
         Config::registerConfig(new SampleConfig);
 
-        //when
+        // when
         $value = Config::getValue('default', 'auth');
 
-        //then
+        // then
         $this->assertEquals('SampleAuth', $value);
     }
 
@@ -115,16 +115,16 @@ class ConfigTest extends TestCase
      */
     public function shouldReadSampleConfigFromFile()
     {
-        //given
+        // given
         $this->_createSampleConfigFile();
         include_once '/tmp/SampleConfigFile.php';
         $configRepository = Config::registerConfig(new SampleConfigFile());
         $configRepository->reload();
 
-        //when
+        // when
         $value = Config::getValue('default');
 
-        //then
+        // then
         $this->assertEquals('SampleAuthFile', $value['auth']);
     }
 
@@ -133,7 +133,7 @@ class ConfigTest extends TestCase
      */
     public function shouldReadMultipleSampleConfigs()
     {
-        //given
+        // given
         $this->_createSampleConfigFile();
         /** @noinspection PhpIncludeInspection */
         include_once '/tmp/SampleConfigFile.php';
@@ -141,10 +141,10 @@ class ConfigTest extends TestCase
         Config::registerConfig(new SampleConfigFile);
         Config::registerConfig(new SampleConfig)->reload();
 
-        //when
+        // when
         $value = Config::getValue('default');
 
-        //then
+        // then
         $this->assertEquals('file', $value['file']);
         $this->assertEquals('class', $value['class']);
     }
@@ -242,8 +242,10 @@ TEMPLATE;
      */
     public function revertOnNonExistingKeyShouldThrowException()
     {
+        // then
         $this->expectException(InvalidArgumentException::class);
 
+        // when
         Config::revertProperty('key', 'does', 'not', 'exist');
     }
 
@@ -271,10 +273,10 @@ TEMPLATE;
         // given
         Config::overrideProperty('key')->with('value');
 
-        //when
+        // when
         $values = Config::all();
 
-        //then
+        // then
         $this->assertEquals('value', $values['key']);
         Config::clearProperty('key'); // cleanup
     }
@@ -284,10 +286,10 @@ TEMPLATE;
      */
     public function shouldOverrideConfigPropertyBySession()
     {
-        //when
+        // when
         $values = Config::all();
 
-        //then
+        // then
         Assert::thatArray($values)->containsKeyAndValue(['debug' => false, 'language' => 'pl', 'custom' => 'value']);
         Assert::thatArray($values['global'])->contains('/sample');
     }
@@ -297,9 +299,11 @@ TEMPLATE;
      */
     public function shouldThrowExceptionWhenConfigMethodIsNotAnObject()
     {
+        // then
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Custom config must be a object');
 
+        // when
         Config::registerConfig('config');
     }
 
@@ -308,9 +312,11 @@ TEMPLATE;
      */
     public function shouldThrowExceptionWhenTryToAddCustomConfigWithoutGetConfigMethod()
     {
+        // then
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Custom config object must have getConfig method');
 
+        // when
         Config::registerConfig(new NoGetConfigMethod());
     }
 
@@ -319,9 +325,11 @@ TEMPLATE;
      */
     public function shouldThrowExceptionWhenTryToAddCustomConfigWhenGetConfigMethodIsNotPublic()
     {
+        // then
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Custom config method getConfig must be public');
 
+        // when
         Config::registerConfig(new PrivateGetConfigMethod());
     }
 }
