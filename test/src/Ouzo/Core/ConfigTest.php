@@ -53,9 +53,6 @@ class ConfigTest extends TestCase
         Config::overrideProperty('debug')->with(true);
         Config::overrideProperty('language')->with('en');
         Config::overridePropertyArray(['global', 'prefix_system'], '');
-        if (Files::exists('/tmp/SampleConfigFile.php')) {
-            unlink('/tmp/SampleConfigFile.php');
-        }
     }
 
     /**
@@ -118,57 +115,18 @@ class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function shouldReadSampleConfigFromFile()
-    {
-        // given
-        $this->_createSampleConfigFile();
-        include_once '/tmp/SampleConfigFile.php';
-        $configRepository = Config::registerConfig(new SampleConfigFile());
-        $configRepository->reload();
-
-        // when
-        $value = Config::getValue('default');
-
-        // then
-        $this->assertEquals('SampleAuthFile', $value['auth']);
-    }
-
-    /**
-     * @test
-     */
     public function shouldReadMultipleSampleConfigs()
     {
         // given
-        $this->_createSampleConfigFile();
-        /** @noinspection PhpIncludeInspection */
-        include_once '/tmp/SampleConfigFile.php';
-        /** @noinspection PhpUndefinedClassInspection */
-        Config::registerConfig(new SampleConfigFile);
         Config::registerConfig(new SampleConfig(['lorem' => 'ipsum']))->reload();
+        Config::registerConfig(new SampleConfig(['dolor' => 'emet']))->reload();
 
         // when
         $value = Config::getValue('default');
 
         // then
-        $this->assertEquals('file', $value['file']);
         $this->assertEquals('ipsum', $value['lorem']);
-    }
-
-    private function _createSampleConfigFile()
-    {
-        $classTemplate = <<<'TEMPLATE'
-<?php
-class SampleConfigFile
-{
-    public function getConfig()
-    {
-        $config['default']['auth'] = 'SampleAuthFile';
-        $config['default']['file'] = 'file';
-        return $config;
-    }
-}
-TEMPLATE;
-        file_put_contents('/tmp/SampleConfigFile.php', $classTemplate);
+        $this->assertEquals('emet', $value['dolor']);
     }
 
     /**
