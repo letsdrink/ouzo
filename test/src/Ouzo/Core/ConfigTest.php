@@ -11,11 +11,17 @@ use PHPUnit\Framework\TestCase;
 
 class SampleConfig
 {
-    public function getConfig()
+    /** @var array */
+    private $values;
+
+    public function __construct(array $values)
     {
-        $config['default']['auth'] = 'SampleAuth';
-        $config['default']['class'] = 'class';
-        return $config;
+        $this->values = $values;
+    }
+
+    public function getConfig(): array
+    {
+        return ['default' => $this->values];
     }
 }
 
@@ -70,14 +76,13 @@ class ConfigTest extends TestCase
     public function shouldReadSampleConfig()
     {
         // given
-        $configRepository = Config::registerConfig(new SampleConfig);
-        $configRepository->reload();
+        Config::registerConfig(new SampleConfig(['foo' => 'bar']))->reload();
 
         // when
         $value = Config::getValue('default');
 
         // then
-        $this->assertEquals('SampleAuth', $value['auth']);
+        $this->assertEquals('bar', $value['foo']);
     }
 
     /**
@@ -86,13 +91,13 @@ class ConfigTest extends TestCase
     public function shouldReturnConfigValue()
     {
         // given
-        Config::registerConfig(new SampleConfig);
+        Config::registerConfig(new SampleConfig(['cat' => 'dog']))->reload();
 
         // when
         $value = Config::getValue('default');
 
         // then
-        $this->assertEquals('SampleAuth', $value['auth']);
+        $this->assertEquals('dog', $value['cat']);
     }
 
     /**
@@ -101,13 +106,13 @@ class ConfigTest extends TestCase
     public function shouldReturnNestedConfigValue()
     {
         // given
-        Config::registerConfig(new SampleConfig);
+        Config::registerConfig(new SampleConfig(['frodo' => 'bilbo']))->reload();
 
         // when
-        $value = Config::getValue('default', 'auth');
+        $value = Config::getValue('default', 'frodo');
 
         // then
-        $this->assertEquals('SampleAuth', $value);
+        $this->assertEquals('bilbo', $value);
     }
 
     /**
@@ -139,14 +144,14 @@ class ConfigTest extends TestCase
         include_once '/tmp/SampleConfigFile.php';
         /** @noinspection PhpUndefinedClassInspection */
         Config::registerConfig(new SampleConfigFile);
-        Config::registerConfig(new SampleConfig)->reload();
+        Config::registerConfig(new SampleConfig(['lorem' => 'ipsum']))->reload();
 
         // when
         $value = Config::getValue('default');
 
         // then
         $this->assertEquals('file', $value['file']);
-        $this->assertEquals('class', $value['class']);
+        $this->assertEquals('ipsum', $value['lorem']);
     }
 
     private function _createSampleConfigFile()
