@@ -139,7 +139,7 @@ class ConfigTest extends TestCase
         include_once '/tmp/SampleConfigFile.php';
         /** @noinspection PhpUndefinedClassInspection */
         Config::registerConfig(new SampleConfigFile);
-        Config::registerConfig(new SampleConfig);
+        Config::registerConfig(new SampleConfig)->reload();
 
         //when
         $value = Config::getValue('default');
