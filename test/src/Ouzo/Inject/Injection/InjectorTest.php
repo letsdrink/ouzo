@@ -4,6 +4,7 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
+use Application\MyNamespace\ClassWithNamespace;
 use Ouzo\Injection\Creator\ProxyManagerInstanceCreator;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
@@ -598,6 +599,23 @@ class InjectorTest extends TestCase
         //then
         $this->assertDependencyInjected(ClassWithPrivateDep::class, $instance->myClass);
         $this->assertDependencyInjected(SubClassOfClassWithPrivateDep::class, $instance->secondClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectFieldDependencyWithoutFQN()
+    {
+        //given
+        $config = new InjectorConfig();
+        $injector = new Injector($config);
+
+        //when
+        $instance = $injector->getInstance(ClassWithTypedProperty::class);
+
+        //then
+        $this->assertDependencyInjected(ClassWithNamespace::class, $instance->myClass);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->mySecondClass);
     }
 
     private function assertDependencyInjected($className, $instance)

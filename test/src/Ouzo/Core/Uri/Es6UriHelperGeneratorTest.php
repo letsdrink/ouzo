@@ -44,15 +44,16 @@ class Es6UriHelperGeneratorTest extends TestCase
 
         //then
         $expected = <<<EXPECTED
-const checkParameter = (parameter) => {
-    if (typeof parameter !== 'string' && typeof parameter !== 'number') {
-        throw new Error("Uri helper: Bad parameters");
-    }
-};
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
 
-export const showItemUsersPath = () => {
-    return "/app/users/show_item";
-};\n
+export const showItemUsersPath = () => '/app/users/show_item'
+
 EXPECTED;
         $this->assertEquals($expected, $generated);
     }
@@ -70,15 +71,16 @@ EXPECTED;
 
         //then
         $expected = <<<FUNCT
-const checkParameter = (parameter) => {
-    if (typeof parameter !== 'string' && typeof parameter !== 'number') {
-        throw new Error("Uri helper: Bad parameters");
-    }
-};
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
 
-export const saveUsersPath = () => {
-    return "/app/users/save";
-};\n
+export const saveUsersPath = () => '/app/users/save'
+
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -96,15 +98,16 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
-const checkParameter = (parameter) => {
-    if (typeof parameter !== 'string' && typeof parameter !== 'number') {
-        throw new Error("Uri helper: Bad parameters");
-    }
-};
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
 
-export const getDuplicatedUsersPath = () => {
-    return "/app/users/get_duplicated";
-};\n
+export const getDuplicatedUsersPath = () => '/app/users/get_duplicated'
+
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -122,17 +125,19 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
-const checkParameter = (parameter) => {
-    if (typeof parameter !== 'string' && typeof parameter !== 'number') {
-        throw new Error("Uri helper: Bad parameters");
-    }
-};
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
 
 export const showUsersPath = (id, call_id) => {
-    checkParameter(id);
-    checkParameter(call_id);
-    return "/app/users/show/id/" + id + "/call_id/" + call_id + "";
-};\n
+    checkParameters(id, call_id)
+    return '/app/users/show/id/' + id + '/call_id/' + call_id
+}
+
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -150,15 +155,16 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
-const checkParameter = (parameter) => {
-    if (typeof parameter !== 'string' && typeof parameter !== 'number') {
-        throw new Error("Uri helper: Bad parameters");
-    }
-};
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
 
-export const userItemPath = () => {
-    return "/app/users/show_item";
-};\n
+export const userItemPath = () => '/app/users/show_item'
+
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -176,29 +182,28 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
-const checkParameter = (parameter) => {
-    if (typeof parameter !== 'string' && typeof parameter !== 'number') {
-        throw new Error("Uri helper: Bad parameters");
-    }
-};
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
 
-export const usersPath = () => {
-    return "/app/users";
-};
+export const usersPath = () => '/app/users'
 
-export const freshUserPath = () => {
-    return "/app/users/fresh";
-};
+export const freshUserPath = () => '/app/users/fresh'
 
 export const editUserPath = (id) => {
-    checkParameter(id);
-    return "/app/users/" + id + "/edit";
-};
+    checkParameters(id)
+    return '/app/users/' + id + '/edit'
+}
 
 export const userPath = (id) => {
-    checkParameter(id);
-    return "/app/users/" + id + "";
-};\n
+    checkParameters(id)
+    return '/app/users/' + id
+}
+
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -216,16 +221,19 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
-const checkParameter = (parameter) => {
-    if (typeof parameter !== 'string' && typeof parameter !== 'number') {
-        throw new Error("Uri helper: Bad parameters");
-    }
-};
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
 
 export const ordersUsersApiPath = (id) => {
-    checkParameter(id);
-    return "/app/api/users/" + id + "/orders";
-};\n
+    checkParameters(id)
+    return '/app/api/users/' + id + '/orders'
+}
+
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
@@ -260,11 +268,14 @@ FUNCT;
 
         //then
         $expected = <<<FUNCT
-const checkParameter = (parameter) => {
-    if (typeof parameter !== 'string' && typeof parameter !== 'number') {
-        throw new Error("Uri helper: Bad parameters");
-    }
-};\n
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
+
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
