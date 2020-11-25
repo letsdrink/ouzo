@@ -3,12 +3,15 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Routing;
 
 use InvalidArgumentException;
 use Ouzo\Config;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Routes define URLs mapping to controllers and actions.
@@ -95,6 +98,10 @@ class Route implements RouteInterface
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
 
+        if (self::$isDebug) {
+            self::validateMethod($method, $uri, $controller, $action);
+        }
+
         $routeRule = new RouteRule($method, $uri, $controller, $action, $requireAction, $options, $isResource);
         if ($routeRule->hasRequiredAction()) {
             throw new InvalidArgumentException('Route rule ' . $uri . ' required action');
@@ -157,6 +164,17 @@ class Route implements RouteInterface
     {
         self::$routes = [];
         self::$routeKeys = [];
+    }
+
+    private static function validateMethod($method, $uri, $controller, $action)
+    {
+        if ($action) {
+            $controllerReflection = new ReflectionClass($controller);
+            $methods = $controllerReflection->getMethods(ReflectionMethod::IS_PUBLIC);
+            if (!Arrays::keyExists($methods, $action)) {
+                throw new RouterException("Public method '$controller::$action()' missing. Route: '$method $uri'.");
+            }
+        }
     }
 }
 
