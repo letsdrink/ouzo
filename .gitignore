@@ -1,3 +1,8 @@
+# Project
 .idea/
 vendor/
+
+# PhpUnit
 .phpunit.result.cache
+build/logs/clover.xml
+build/cov/coverage.cov
