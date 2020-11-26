@@ -171,7 +171,7 @@ class Route implements RouteInterface
         if ($action) {
             $controllerReflection = new ReflectionClass($controller);
             $reflectionMethods = $controllerReflection->getMethods(ReflectionMethod::IS_PUBLIC);
-            if (!Arrays::keyExists($reflectionMethods, $action)) {
+            if (!Arrays::any($reflectionMethods, fn($method) => $method->name === $action)) {
                 $methods = implode('|', Arrays::toArray($methodOrMethods)); // Route::any() passes string[]
                 throw new RouterException("Public method '$controller::$action()' missing. Route: '$methods $uri'.");
             }
