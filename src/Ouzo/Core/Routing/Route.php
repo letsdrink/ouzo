@@ -166,13 +166,14 @@ class Route implements RouteInterface
         self::$routeKeys = [];
     }
 
-    private static function validateMethod($method, $uri, $controller, $action)
+    private static function validateMethod($methodOrMethods, string $uri, $controller, $action)
     {
         if ($action) {
             $controllerReflection = new ReflectionClass($controller);
-            $methods = $controllerReflection->getMethods(ReflectionMethod::IS_PUBLIC);
-            if (!Arrays::keyExists($methods, $action)) {
-                throw new RouterException("Public method '$controller::$action()' missing. Route: '$method $uri'.");
+            $reflectionMethods = $controllerReflection->getMethods(ReflectionMethod::IS_PUBLIC);
+            if (!Arrays::keyExists($reflectionMethods, $action)) {
+                $methods = implode('|', Arrays::toArray($methodOrMethods)); // Route::any() passes string[]
+                throw new RouterException("Public method '$controller::$action()' missing. Route: '$methods $uri'.");
             }
         }
     }
