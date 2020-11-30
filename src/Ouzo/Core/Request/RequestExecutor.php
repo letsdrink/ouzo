@@ -14,6 +14,7 @@ use Ouzo\Injection\Annotation\Inject;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
 use Ouzo\Uri;
+use ReflectionClass;
 
 class RequestExecutor
 {
@@ -27,6 +28,8 @@ class RequestExecutor
     private $downloadHandler;
     /** @var OutputDisplayer */
     private $outputDisplayer;
+    /** @var RequestParameterDeserializer */
+    private $requestParameterDeserializer;
 
     /**
      * @Inject
@@ -36,7 +39,8 @@ class RequestExecutor
         CookiesSetter $cookiesSetter,
         RedirectHandler $redirectHandler,
         DownloadHandler $downloadHandler,
-        OutputDisplayer $outputDisplayer
+        OutputDisplayer $outputDisplayer,
+        RequestParameterDeserializer $requestParameterSerializer
     )
     {
         $this->headerSender = $headerSender;
@@ -44,6 +48,7 @@ class RequestExecutor
         $this->redirectHandler = $redirectHandler;
         $this->downloadHandler = $downloadHandler;
         $this->outputDisplayer = $outputDisplayer;
+        $this->requestParameterDeserializer = $requestParameterSerializer;
     }
 
     /**
@@ -132,7 +137,8 @@ class RequestExecutor
     {
         $currentAction = $controller->currentAction;
 
-        call_user_func_array([$controller, $currentAction], $controller->getRouteRule()->getParameters());
+        $parameters = $this->getParameters($controller, $currentAction);
+        call_user_func_array([$controller, $currentAction], $parameters);
     }
 
     /**
@@ -219,5 +225,21 @@ class RequestExecutor
     private function redirect($url)
     {
         $this->redirectHandler->redirect(Uri::addPrefixIfNeeded($url));
+    }
+
+    private function getParameters(Controller $controller, string $currentAction): array
+    {
+        $deserializedParameters = [];
+
+        $class = new ReflectionClass($controller);
+        $method = $class->getMethod($currentAction);
+        foreach ($method->getParameters() as $parameter) {
+            $type = $parameter->getType();
+            if (!$type->isBuiltin()) {
+                $deserializedParameters[] = $this->requestParameterDeserializer->arrayToObject($controller->params, $type->getName());
+            }
+        }
+
+        return array_merge($controller->getRouteRule()->getParameters(), $deserializedParameters);
     }
 }
