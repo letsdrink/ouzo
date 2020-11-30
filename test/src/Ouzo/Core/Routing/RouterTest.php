@@ -21,6 +21,7 @@ class RouterTest extends TestCase
     {
         parent::setUp();
         Route::clear();
+        Route::$isDebug = false;
     }
 
     /**

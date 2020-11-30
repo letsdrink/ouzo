@@ -98,7 +98,7 @@ class Route implements RouteInterface
             throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
         }
 
-        if (self::$isDebug) {
+        if (self::$isDebug && !$isResource) {
             self::validateMethod($method, $uri, $controller, $action);
         }
 

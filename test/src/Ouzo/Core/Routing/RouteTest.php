@@ -539,4 +539,20 @@ class RouteTest extends TestCase
         $this->assertCount(1, $routes);
         $this->assertEquals('OPTIONS', $routes[0]->getMethod());
     }
+
+    /**
+     * @test
+     */
+    public function shouldSkipActionValidationForResource()
+    {
+        //given
+        Route::$isDebug = true;
+        Route::resource(UsersMockController::class, 'users');
+
+        //when
+        $routes = Route::getRoutes();
+
+        //then
+        Assert::thatArray($routes)->hasSize(8);
+    }
 }
