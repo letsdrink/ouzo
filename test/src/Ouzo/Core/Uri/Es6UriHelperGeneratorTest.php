@@ -20,6 +20,7 @@ class Es6UriHelperGeneratorTest extends TestCase
         Route::clear();
         $this->path = Path::joinWithTemp(uniqid() . '_generatedUriHelper.js');
         Config::overrideProperty("global", "prefix_system")->with("/app");
+        Route::$isDebug = false;
     }
 
     protected function tearDown(): void

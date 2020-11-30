@@ -10,6 +10,7 @@ RUN apt-get update \
     && docker-php-ext-enable xdebug \
     && echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "alias migrate-test='(cd /var/www/html/; export environment=test; ./db.sh db:migrate)'" >> /etc/bash.bashrc \
     && echo "alias migrate-prod='(cd /var/www/html/; export environment=prod; ./db.sh db:migrate)'" >> /etc/bash.bashrc \
     && apt-get clean && apt-get -y autoremove \

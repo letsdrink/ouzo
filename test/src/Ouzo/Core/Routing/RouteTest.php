@@ -17,6 +17,7 @@ class RouteTest extends TestCase
     {
         parent::setUp();
         Route::clear();
+        Route::$isDebug = false;
     }
 
     /**
