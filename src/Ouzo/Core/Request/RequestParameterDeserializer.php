@@ -7,7 +7,12 @@
 namespace Ouzo\Request;
 
 
-interface RequestParameterDeserializer
+use Exception;
+
+class RequestParameterDeserializer
 {
-    function arrayToObject(array $params, string $type): object;
+    public function arrayToObject(array $params, string $type): object
+    {
+        throw new Exception('Provide request parameter deserializer implementation if you want to use this feature');
+    }
 }
