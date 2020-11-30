@@ -17,6 +17,7 @@ class GroupedRouteTest extends TestCase
         parent::setUp();
         Route::clear();
         GroupedRoute::setGroupName('api');
+        Route::$isDebug = false;
     }
 
     /**

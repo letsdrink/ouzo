@@ -31,7 +31,7 @@ class FilesTest extends TestCase
 
         //then
         $this->assertTrue($isDeleted);
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
     }
 
     /**
@@ -64,7 +64,7 @@ class FilesTest extends TestCase
 
         //then
         $this->assertTrue($isMoved);
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
         $this->assertFileExists($newPath);
         Files::delete($newPath);
     }
@@ -215,7 +215,7 @@ class FilesTest extends TestCase
 
         //then
         $this->assertTrue($isDeleted);
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
     }
 
     /**

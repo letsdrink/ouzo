@@ -61,7 +61,7 @@ class ClassStubTest extends TestCase
             ->addPlaceholderReplacement('table_sequence', 'table_sequence');
 
         //then
-        $this->assertNotRegExp('/{(\w*)}/', $classStub->contents());
+        $this->assertDoesNotMatchRegularExpression('/{(\w*)}/', $classStub->contents());
     }
 
     /**
