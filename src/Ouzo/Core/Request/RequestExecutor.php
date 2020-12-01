@@ -235,7 +235,7 @@ class RequestExecutor
         $method = $class->getMethod($currentAction);
         foreach ($method->getParameters() as $parameter) {
             $type = $parameter->getType();
-            if (!$type->isBuiltin()) {
+            if ($type && !$type->isBuiltin()) {
                 $deserializedParameters[] = $this->requestParameterDeserializer->arrayToObject($controller->params, $type->getName());
             }
         }
