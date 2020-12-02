@@ -46,10 +46,10 @@ class RouteFileGenerator
 
         foreach ($routesMetadata as $routeMetadata) {
             $template .= sprintf(
-                "Route::%s('%s', '%s', '%s');\n",
+                "Route::%s('%s', %s, '%s');\n",
                 strtolower($routeMetadata->getMethod()),
                 $routeMetadata->getUri(),
-                $routeMetadata->getClassName(),
+                $routeMetadata->getClassNameReference(),
                 $routeMetadata->getClassMethod()
             );
         }

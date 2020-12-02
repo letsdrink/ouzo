@@ -39,6 +39,11 @@ class RouteMetadata
         return $this->className;
     }
 
+    public function getClassNameReference(): string
+    {
+        return "\\{$this->className}::class";
+    }
+    
     public function getClassMethod(): string
     {
         return $this->classMethod;
