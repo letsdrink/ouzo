@@ -236,7 +236,6 @@ class RequestExecutor
 
     private function getActionParameters(Controller $controller, string $currentAction): array
     {
-        $deserializedParameters = [];
         $class = new ReflectionClass($controller);
         if ($class->hasMethod($currentAction)) {
             return FluentArray::from($class->getMethod($currentAction)->getParameters())
@@ -246,6 +245,6 @@ class RequestExecutor
                 })
                 ->toArray();
         }
-        return $deserializedParameters;
+        return [];
     }
 }
