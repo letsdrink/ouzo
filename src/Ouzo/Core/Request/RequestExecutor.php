@@ -14,6 +14,7 @@ use Ouzo\Injection\Annotation\Inject;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
 use Ouzo\Uri;
+use Ouzo\Utilities\FluentArray;
 use ReflectionClass;
 
 class RequestExecutor
@@ -229,17 +230,22 @@ class RequestExecutor
 
     private function getParameters(Controller $controller, string $currentAction): array
     {
-        $deserializedParameters = [];
-
-        $class = new ReflectionClass($controller);
-        $method = $class->getMethod($currentAction);
-        foreach ($method->getParameters() as $parameter) {
-            $type = $parameter->getType();
-            if ($type && !$type->isBuiltin()) {
-                $deserializedParameters[] = $this->requestParameterDeserializer->arrayToObject($controller->params, $type->getName());
-            }
-        }
-
+        $deserializedParameters = $this->getActionParameters($controller, $currentAction);
         return array_merge($controller->getRouteRule()->getParameters(), $deserializedParameters);
+    }
+
+    private function getActionParameters(Controller $controller, string $currentAction): array
+    {
+        $deserializedParameters = [];
+        $class = new ReflectionClass($controller);
+        if ($class->hasMethod($currentAction)) {
+            return FluentArray::from($class->getMethod($currentAction)->getParameters())
+                ->filter(fn($param) => $param->getType() && !$param->getType()->isBuiltin())
+                ->map(function ($param) use ($controller) {
+                    return $this->requestParameterDeserializer->arrayToObject($controller->params, $param->getType()->getName());
+                })
+                ->toArray();
+        }
+        return $deserializedParameters;
     }
 }
