@@ -304,7 +304,7 @@ const checkParameters = (...args: UriParam[]): void => {
     })
 }
 
-export const showUsersPath = (id: UriParam, call_id: UriParam): void => {
+export const showUsersPath = (id: UriParam, call_id: UriParam): string => {
     checkParameters(id, call_id)
     return '/app/users/show/id/' + id + '/call_id/' + call_id
 }

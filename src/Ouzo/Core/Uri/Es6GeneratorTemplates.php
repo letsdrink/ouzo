@@ -124,7 +124,7 @@ TEMPLATE;
     private function functionWithArgsTs()
     {
         return /** @lang TypeScript */ <<<'TEMPLATE'
-export const NAME_REPLACEMENT = (ARGS_DEFINITION_REPLACEMENT): void => {
+export const NAME_REPLACEMENT = (ARGS_DEFINITION_REPLACEMENT): string => {
     checkParameters(ARGS_REPLACEMENT)
     return 'RETURN_REPLACEMENT'
 }
