@@ -280,4 +280,36 @@ const checkParameters = (...args) => {
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateUriHelperWhenMultipleBindParametersTs()
+    {
+        //given
+        Route::get('/users/show/id/:id/call_id/:call_id', 'Controller\\UsersController', 'show');
+
+        //when
+        $generated = Es6UriHelperGenerator::generate('ts')->getGeneratedFunctions();
+
+        //then
+        $expected = <<<FUNCT
+type UriParam = string | number
+
+const checkParameters = (...args: UriParam[]): void => {
+    args.forEach((arg: UriParam) => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
+
+export const showUsersPath = (id: UriParam, call_id: UriParam): void => {
+    checkParameters(id, call_id)
+    return '/app/users/show/id/' + id + '/call_id/' + call_id
+}
+
+FUNCT;
+        $this->assertEquals($expected, $generated);
+    }
 }

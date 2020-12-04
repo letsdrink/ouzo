@@ -17,12 +17,16 @@ class Es6UriHelperGenerator
 
     /** @var RouteRule[] */
     public $routeRules;
+    private string $format;
+    private Es6GeneratorTemplates $templates;
 
-    public function __construct()
+    public function __construct(string $format)
     {
+        $this->templates = new Es6GeneratorTemplates($format);
         $this->routeRules = $routes = Route::getRoutes();
-        $this->generatedParts[] = Es6GeneratorTemplates::checkParametersTemplate();
+        $this->generatedParts[] = $this->templates->checkParametersTemplate();
         $this->generateFunctions();
+        $this->format = $format;
     }
 
     private function generateFunctions()
@@ -43,7 +47,7 @@ class Es6UriHelperGenerator
         $name = $routeRule->getName();
         $parameters = $this->prepareParameters($uri);
         if ($name) {
-            $function = Es6GeneratorTemplates::getFunction($name, $parameters, "$applicationPrefix$uriWithVariables");
+            $function = $this->templates->getFunction($name, $parameters, "$applicationPrefix$uriWithVariables");
             return Strings::remove($function, " + ''");
         }
         return '';
@@ -65,8 +69,8 @@ class Es6UriHelperGenerator
         return file_put_contents($path, $this->getGeneratedFunctions());
     }
 
-    public static function generate()
+    public static function generate(string $format = 'js')
     {
-        return new self();
+        return new self($format);
     }
 }

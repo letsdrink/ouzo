@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Command;
 
 use Ouzo\ApplicationPaths;
@@ -120,9 +121,11 @@ class RoutesCommand extends Command
 
     private function generateEs6Helper()
     {
-        $routesEs6HelperPath = Config::getValue('path', 'helper-es6') ?? Path::join(ROOT_PATH, 'public');
-        $routesEs6HelperPath = Path::join($routesEs6HelperPath, 'generatedUriHelper.js');
-        if (Es6UriHelperGenerator::generate()->saveToFile($routesEs6HelperPath) !== false) {
+        $config = Config::getValue('app', 'routes', 'helper-es6') ?: [];
+        $path = Arrays::getValue($config, 'path') ?? Path::join(ROOT_PATH, 'public');
+        $format = Arrays::getValue($config, 'format') ?: 'js';
+        $routesEs6HelperPath = Path::join($path, 'generatedUriHelper.' . $format);
+        if (Es6UriHelperGenerator::generate($format)->saveToFile($routesEs6HelperPath) !== false) {
             $this->output->writeln("File with ES6 uri helpers is generated in <info>$routesEs6HelperPath</info>");
         }
     }
