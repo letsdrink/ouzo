@@ -258,7 +258,7 @@ class RequestExecutor
     {
         $violations = [];
         foreach ($params as $param) {
-            array_push($violations, $this->requestParameterValidator->validate($param));
+            array_merge($violations, $this->requestParameterValidator->validate($param));
         }
         if ($violations) {
             throw new ValidationException(Arrays::map($violations, fn($violation) => new Error(0, $violation)));
