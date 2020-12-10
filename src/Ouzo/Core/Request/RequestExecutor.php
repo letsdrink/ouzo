@@ -9,11 +9,14 @@ namespace Ouzo\Request;
 use Ouzo\Controller;
 use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
+use Ouzo\Exception\ValidationException;
+use Ouzo\ExceptionHandling\Error;
 use Ouzo\HeaderSender;
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
 use Ouzo\Uri;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use ReflectionClass;
 
@@ -31,6 +34,8 @@ class RequestExecutor
     private $outputDisplayer;
     /** @var RequestParameterDeserializer */
     private $requestParameterDeserializer;
+    /** @var RequestParameterValidator */
+    private $requestParameterValidator;
 
     /**
      * @Inject
@@ -41,7 +46,8 @@ class RequestExecutor
         RedirectHandler $redirectHandler,
         DownloadHandler $downloadHandler,
         OutputDisplayer $outputDisplayer,
-        RequestParameterDeserializer $requestParameterSerializer
+        RequestParameterDeserializer $requestParameterSerializer,
+        RequestParameterValidator $requestParameterValidator
     )
     {
         $this->headerSender = $headerSender;
@@ -50,6 +56,7 @@ class RequestExecutor
         $this->downloadHandler = $downloadHandler;
         $this->outputDisplayer = $outputDisplayer;
         $this->requestParameterDeserializer = $requestParameterSerializer;
+        $this->requestParameterValidator = $requestParameterValidator;
     }
 
     /**
@@ -231,6 +238,7 @@ class RequestExecutor
     private function getParameters(Controller $controller, string $currentAction): array
     {
         $deserializedParameters = $this->getActionParameters($controller, $currentAction);
+        $this->validateRequestParameters($deserializedParameters);
         return array_merge($controller->getRouteRule()->getParameters(), $deserializedParameters);
     }
 
@@ -240,11 +248,20 @@ class RequestExecutor
         if ($class->hasMethod($currentAction)) {
             return FluentArray::from($class->getMethod($currentAction)->getParameters())
                 ->filter(fn($param) => $param->getType() && !$param->getType()->isBuiltin())
-                ->map(function ($param) use ($controller) {
-                    return $this->requestParameterDeserializer->arrayToObject($controller->params, $param->getType()->getName());
-                })
+                ->map(fn($param) => $this->requestParameterDeserializer->arrayToObject($controller->params, $param->getType()->getName()))
                 ->toArray();
         }
         return [];
+    }
+
+    private function validateRequestParameters(array $params): void
+    {
+        $violations = [];
+        foreach ($params as $param) {
+            array_push($violations, $this->requestParameterValidator->validate($param));
+        }
+        if ($violations) {
+            throw new ValidationException(Arrays::map($violations, fn($violation) => new Error(0, $violation)));
+        }
     }
 }
