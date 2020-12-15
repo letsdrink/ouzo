@@ -280,10 +280,8 @@ class RequestExecutor
         $responseCode = Arrays::getValue($controller->getRouteRule()->getOptions(), 'code');
         if (!is_null($responseCode)) {
             $controller->header(ResponseMapper::getMessageWithHttpProtocol($responseCode));
-        } else if (!is_null($result) && $controller->getRouteRule()->getMethod() !== 'DELETE') {
+        } else if (!is_null($result)) {
             $controller->header(ResponseMapper::getMessageWithHttpProtocol(200));
-        } else if ($controller->getRouteRule()->getMethod() === 'DELETE') {
-            $controller->header(ResponseMapper::getMessageWithHttpProtocol(204));
         }
     }
 }
