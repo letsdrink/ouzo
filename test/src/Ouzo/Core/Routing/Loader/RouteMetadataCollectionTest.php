@@ -2,6 +2,7 @@
 
 use Ouzo\Routing\Loader\RouteMetadata;
 use Ouzo\Routing\Loader\RouteMetadataCollection;
+use Ouzo\Tests\Assert;
 use PHPUnit\Framework\TestCase;
 
 class RouteMetadataCollectionTest extends TestCase
@@ -15,8 +16,8 @@ class RouteMetadataCollectionTest extends TestCase
         $collection1 = new RouteMetadataCollection();
 
         //when
-        $collection1->addRouteMetadata(new RouteMetadata('', '', '', ''));
-        $collection1->addRouteMetadata(new RouteMetadata('', '', '', ''));
+        $collection1->addRouteMetadata(new RouteMetadata('', '', '', '', null));
+        $collection1->addRouteMetadata(new RouteMetadata('', '', '', '', null));
 
         //then
         $this->assertEquals(2, $collection1->count());
@@ -38,28 +39,30 @@ class RouteMetadataCollectionTest extends TestCase
     {
         //given
         $collection = new RouteMetadataCollection([
-            new RouteMetadata('/test2', '', '', ''),
-            new RouteMetadata('/a', '', '', ''),
-            new RouteMetadata('/a/:id', '', '', ''),
-            new RouteMetadata('/test/:id', '', '', ''),
-            new RouteMetadata('/b/:id', '', '', ''),
-            new RouteMetadata('/test', '', '', ''),
-            new RouteMetadata('/a/b', '', '', ''),
-            new RouteMetadata('/a/:id/b', '', '', ''),
+            new RouteMetadata('/test2', '', '', '', null),
+            new RouteMetadata('/a', '', '', '', null),
+            new RouteMetadata('/a/:id', '', '', '', null),
+            new RouteMetadata('/test/:id', '', '', '', null),
+            new RouteMetadata('/b/:id', '', '', '', null),
+            new RouteMetadata('/test', '', '', '', null),
+            new RouteMetadata('/a/b', '', '', '', null),
+            new RouteMetadata('/a/:id/b', '', '', '', null),
         ]);
 
         //when
         $elements = $collection->sort()->toArray();
 
         //then
-        $this->assertEquals('/a', $elements[0]->getUri());
-        $this->assertEquals('/a/b', $elements[1]->getUri());
-        $this->assertEquals('/test', $elements[2]->getUri());
-        $this->assertEquals('/test2', $elements[3]->getUri());
-        $this->assertEquals('/a/:id', $elements[4]->getUri());
-        $this->assertEquals('/a/:id/b', $elements[5]->getUri());
-        $this->assertEquals('/b/:id', $elements[6]->getUri());
-        $this->assertEquals('/test/:id', $elements[7]->getUri());
+        Assert::thatArray($elements)->onMethod('getUri')->containsExactly(
+            '/a',
+            '/a/b',
+            '/test',
+            '/test2',
+            '/a/:id',
+            '/a/:id/b',
+            '/b/:id',
+            '/test/:id',
+        );
     }
 
     /**
@@ -69,17 +72,15 @@ class RouteMetadataCollectionTest extends TestCase
     {
         //given
         $collection = new RouteMetadataCollection([
-            new RouteMetadata('/test', 'POST', '', ''),
-            new RouteMetadata('/test', 'GET', '', ''),
+            new RouteMetadata('/test', 'POST', '', '', null),
+            new RouteMetadata('/test', 'GET', '', '', null),
         ]);
 
         //when
         $elements = $collection->sort()->toArray();
 
         //then
-        $this->assertEquals('/test', $elements[0]->getUri());
-        $this->assertEquals('GET', $elements[0]->getMethod());
-        $this->assertEquals('/test', $elements[1]->getUri());
-        $this->assertEquals('POST', $elements[1]->getMethod());
+        Assert::thatArray($elements)->onMethod('getUri')->containsExactly('/test', '/test');
+        Assert::thatArray($elements)->onMethod('getMethod')->containsExactly('GET', 'POST');
     }
 }
