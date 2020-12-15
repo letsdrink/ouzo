@@ -73,7 +73,7 @@ class RequestExecutor
 
         if ($this->invokeBeforeMethods($controller)) {
             $result = $this->invokeAction($controller);
-            $this->setResponseCode($controller);
+            $this->setResponseCode($controller, $result);
             $this->serializeAndRenderJsonResponse($controller, $result);
             $this->invokeAfterMethods($controller);
         }
@@ -275,10 +275,13 @@ class RequestExecutor
         }
     }
 
-    private function setResponseCode(Controller $controller): void
+    private function setResponseCode(Controller $controller, $result): void
     {
         $responseCode = Arrays::getValue($controller->getRouteRule()->getOptions(), 'code');
-        if ($responseCode) {
+        if (!is_null($responseCode)) {
+            $controller->header(ResponseMapper::getMessageWithHttpProtocol($responseCode));
+        } else if (!is_null($result)) {
+            $responseCode = $controller->getRouteRule()->getMethod() === 'DELETE' ? 204 : 200;
             $controller->header(ResponseMapper::getMessageWithHttpProtocol($responseCode));
         }
     }

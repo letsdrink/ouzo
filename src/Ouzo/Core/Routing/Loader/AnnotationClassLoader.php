@@ -64,7 +64,7 @@ class AnnotationClassLoader implements Loader
                             $method,
                             $reflectionClass->getName(),
                             $reflectionMethod->getName(),
-                            $methodAnnotation->getResponseCode() ?: 200
+                            $methodAnnotation->getResponseCode()
                         ));
                     }
                 }
