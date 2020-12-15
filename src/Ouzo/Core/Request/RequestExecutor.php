@@ -32,8 +32,8 @@ class RequestExecutor
     private $downloadHandler;
     /** @var OutputDisplayer */
     private $outputDisplayer;
-    /** @var RequestParameterDeserializer */
-    private $requestParameterDeserializer;
+    /** @var RequestParameterSerializer */
+    private $requestParameterSerializer;
     /** @var RequestParameterValidator */
     private $requestParameterValidator;
 
@@ -46,7 +46,7 @@ class RequestExecutor
         RedirectHandler $redirectHandler,
         DownloadHandler $downloadHandler,
         OutputDisplayer $outputDisplayer,
-        RequestParameterDeserializer $requestParameterSerializer,
+        RequestParameterSerializer $requestParameterSerializer,
         RequestParameterValidator $requestParameterValidator
     )
     {
@@ -55,7 +55,7 @@ class RequestExecutor
         $this->redirectHandler = $redirectHandler;
         $this->downloadHandler = $downloadHandler;
         $this->outputDisplayer = $outputDisplayer;
-        $this->requestParameterDeserializer = $requestParameterSerializer;
+        $this->requestParameterSerializer = $requestParameterSerializer;
         $this->requestParameterValidator = $requestParameterValidator;
     }
 
@@ -71,7 +71,8 @@ class RequestExecutor
         $this->invokeInit($controller);
 
         if ($this->invokeBeforeMethods($controller)) {
-            $this->invokeAction($controller);
+            $result = $this->invokeAction($controller);
+            $this->serializeAndRenderJsonResponse($controller, $result);
             $this->invokeAfterMethods($controller);
         }
 
@@ -141,12 +142,12 @@ class RequestExecutor
      * @param Controller $controller
      * @return void
      */
-    private function invokeAction(Controller $controller)
+    private function invokeAction(Controller $controller): ?object
     {
         $currentAction = $controller->currentAction;
 
         $parameters = $this->getParameters($controller, $currentAction);
-        call_user_func_array([$controller, $currentAction], $parameters);
+        return call_user_func_array([$controller, $currentAction], $parameters);
     }
 
     /**
@@ -248,7 +249,7 @@ class RequestExecutor
         if ($class->hasMethod($currentAction)) {
             return FluentArray::from($class->getMethod($currentAction)->getParameters())
                 ->filter(fn($param) => $param->getType() && !$param->getType()->isBuiltin())
-                ->map(fn($param) => $this->requestParameterDeserializer->arrayToObject($controller->params, $param->getType()->getName()))
+                ->map(fn($param) => $this->requestParameterSerializer->arrayToObject($controller->params, $param->getType()->getName()))
                 ->toArray();
         }
         return [];
@@ -262,6 +263,14 @@ class RequestExecutor
         }
         if ($violations) {
             throw new ValidationException(Arrays::map($violations, fn($violation) => new Error(0, $violation)));
+        }
+    }
+
+    private function serializeAndRenderJsonResponse(Controller $controller, ?object $result): void
+    {
+        if (!is_null($result)) {
+            $json = $this->requestParameterSerializer->objectToJson($result);
+            $controller->layout->renderAjax($json);
         }
     }
 }
