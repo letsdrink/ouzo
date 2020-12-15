@@ -16,7 +16,7 @@ class RequestParameterSerializer
         throw new Exception('Provide request parameter serializer implementation if you want to use this feature');
     }
 
-    public function objectToJson(object $data): string
+    public function objectToJson($data): string
     {
         throw new Exception('Provide request parameter serializer implementation if you want to use this feature');
     }

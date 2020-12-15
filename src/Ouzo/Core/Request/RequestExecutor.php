@@ -140,9 +140,8 @@ class RequestExecutor
 
     /**
      * @param Controller $controller
-     * @return void
      */
-    private function invokeAction(Controller $controller): ?object
+    private function invokeAction(Controller $controller)
     {
         $currentAction = $controller->currentAction;
 
@@ -266,7 +265,7 @@ class RequestExecutor
         }
     }
 
-    private function serializeAndRenderJsonResponse(Controller $controller, ?object $result): void
+    private function serializeAndRenderJsonResponse(Controller $controller, $result): void
     {
         if (!is_null($result)) {
             $json = $this->requestParameterSerializer->objectToJson($result);
