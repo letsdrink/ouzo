@@ -16,6 +16,9 @@ class Route
     /** @var string[] */
     private $methods = [];
 
+    /** @var int */
+    private $responseCode;
+
     /**
      * @param array $data
      */
@@ -65,5 +68,15 @@ class Route
     public function setMethods(array $methods)
     {
         $this->methods = $methods;
+    }
+
+    public function getResponseCode(): ?int
+    {
+        return $this->responseCode;
+    }
+
+    public function setResponseCode(?int $responseCode): void
+    {
+        $this->responseCode = $responseCode;
     }
 }

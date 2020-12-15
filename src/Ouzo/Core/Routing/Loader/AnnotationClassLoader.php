@@ -5,6 +5,7 @@ namespace Ouzo\Routing\Loader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
+use Ouzo\Request\Annotation\ResponseCode;
 use Ouzo\Routing\Annotation\Route;
 use ReflectionClass;
 use ReflectionMethod;
@@ -62,7 +63,8 @@ class AnnotationClassLoader implements Loader
                             $uriPrefix . $methodAnnotation->getPath(),
                             $method,
                             $reflectionClass->getName(),
-                            $reflectionMethod->getName()
+                            $reflectionMethod->getName(),
+                            $methodAnnotation->getResponseCode() ?: 200
                         ));
                     }
                 }

@@ -16,12 +16,16 @@ class RouteMetadata
     /** @var string */
     private $classMethod;
 
-    public function __construct(string $uri, string $method, string $className, string $classMethod)
+    /** @var int */
+    private $responseCode;
+
+    public function __construct(string $uri, string $method, string $className, string $classMethod, int $responseCode)
     {
         $this->uri = $uri;
         $this->method = $method;
         $this->className = $className;
         $this->classMethod = $classMethod;
+        $this->responseCode = $responseCode;
     }
 
     public function getUri(): string
@@ -54,4 +58,8 @@ class RouteMetadata
         return strpos($this->getUri(), ':') !== false;
     }
 
+    public function getResponseCode(): int
+    {
+        return $this->responseCode;
+    }
 }

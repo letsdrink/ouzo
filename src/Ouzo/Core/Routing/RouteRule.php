@@ -210,4 +210,9 @@ class RouteRule
         $parts[] = $controllerName;
         return array_filter($parts);
     }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
 }

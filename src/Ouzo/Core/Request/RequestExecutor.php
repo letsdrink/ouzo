@@ -12,6 +12,7 @@ use Ouzo\DownloadHandler;
 use Ouzo\Exception\ValidationException;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\HeaderSender;
+use Ouzo\Http\ResponseMapper;
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
@@ -72,6 +73,7 @@ class RequestExecutor
 
         if ($this->invokeBeforeMethods($controller)) {
             $result = $this->invokeAction($controller);
+            $this->setResponseCode($controller);
             $this->serializeAndRenderJsonResponse($controller, $result);
             $this->invokeAfterMethods($controller);
         }
@@ -270,6 +272,14 @@ class RequestExecutor
         if (!is_null($result)) {
             $json = $this->requestParameterSerializer->objectToJson($result);
             $controller->layout->renderAjax($json);
+        }
+    }
+
+    private function setResponseCode(Controller $controller): void
+    {
+        $responseCode = Arrays::getValue($controller->getRouteRule()->getOptions(), 'code');
+        if ($responseCode) {
+            $controller->header(ResponseMapper::getMessageWithHttpProtocol($responseCode));
         }
     }
 }
