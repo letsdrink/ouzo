@@ -34,9 +34,12 @@
     }
   },
   "autoload-dev": {
-    "classmap": ["test/"]
+    "classmap": [
+      "test/"
+    ]
   },
   "require": {
+    "ext-json": "*",
     "symfony/console": "^5.1",
     "symfony/event-dispatcher": "^5.1",
     "filp/whoops": "2.8.*",
