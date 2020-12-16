@@ -285,22 +285,4 @@ class RequestExecutor
             $controller->header(ResponseMapper::getMessageWithHttpProtocol(200));
         }
     }
-
-    private function serializeAndRenderJsonResponse(Controller $controller, $result): void
-    {
-        if (!is_null($result)) {
-            $json = $this->requestParameterSerializer->objectToJson($result);
-            $controller->layout->renderAjax($json);
-        }
-    }
-
-    private function setResponseCode(Controller $controller, $result): void
-    {
-        $responseCode = Arrays::getValue($controller->getRouteRule()->getOptions(), 'code');
-        if (!is_null($responseCode)) {
-            $controller->header(ResponseMapper::getMessageWithHttpProtocol($responseCode));
-        } else if (!is_null($result)) {
-            $controller->header(ResponseMapper::getMessageWithHttpProtocol(200));
-        }
-    }
 }
