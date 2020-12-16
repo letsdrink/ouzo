@@ -11,6 +11,7 @@ use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
 use Ouzo\Exception\ValidationException;
 use Ouzo\ExceptionHandling\Error;
+use Ouzo\ExceptionHandling\ValidationError;
 use Ouzo\HeaderSender;
 use Ouzo\Http\ResponseMapper;
 use Ouzo\Injection\Annotation\Inject;
@@ -263,7 +264,25 @@ class RequestExecutor
             $violations = array_merge($violations, $this->requestParameterValidator->validate($param));
         }
         if ($violations) {
-            throw new ValidationException(Arrays::map($violations, fn($violation) => new Error(0, $violation)));
+            throw new ValidationException($violations);
+        }
+    }
+
+    private function serializeAndRenderJsonResponse(Controller $controller, $result): void
+    {
+        if (!is_null($result)) {
+            $json = $this->requestParameterSerializer->objectToJson($result);
+            $controller->layout->renderAjax($json);
+        }
+    }
+
+    private function setResponseCode(Controller $controller, $result): void
+    {
+        $responseCode = Arrays::getValue($controller->getRouteRule()->getOptions(), 'code');
+        if (!is_null($responseCode)) {
+            $controller->header(ResponseMapper::getMessageWithHttpProtocol($responseCode));
+        } else if (!is_null($result)) {
+            $controller->header(ResponseMapper::getMessageWithHttpProtocol(200));
         }
     }
 

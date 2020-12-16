@@ -8,11 +8,12 @@ namespace Ouzo\Request;
 
 
 use Exception;
+use Ouzo\ExceptionHandling\ValidationError;
 
 class RequestParameterValidator
 {
     /**
-     * @return string[]
+     * @return ValidationError[]
      */
     public function validate(object $object): array
     {

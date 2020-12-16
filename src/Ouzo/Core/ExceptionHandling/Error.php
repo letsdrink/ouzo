@@ -16,12 +16,14 @@ class Error
     public $code;
     public $message;
     public $originalMessage;
+    private $field;
 
-    public function __construct($code, $message, $originalMessage = null)
+    public function __construct($code, $message, $originalMessage = null, $field = null)
     {
         $this->code = $code;
         $this->message = $message;
         $this->originalMessage = $originalMessage ?: $message;
+        $this->field = $field;
     }
 
     /** @param Throwable $exception */
@@ -35,7 +37,11 @@ class Error
 
     public function toArray()
     {
-        return ['message' => $this->message, 'code' => $this->code];
+        $array = ['message' => $this->message, 'code' => $this->code];
+        if ($this->field) {
+            $array['field'] = $this->field;
+        }
+        return $array;
     }
 
     public static function getByCode($code, $params = [], $prefix = 'errors.')
@@ -52,5 +58,10 @@ class Error
     public function getCode()
     {
         return $this->code;
+    }
+
+    public function getField()
+    {
+        return $this->field;
     }
 }
