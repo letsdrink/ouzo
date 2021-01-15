@@ -159,6 +159,23 @@ class ObjectsTest extends TestCase
     /**
      * @test
      */
+    public function shouldGetFieldNamed0()
+    {
+        //given
+        $object = new stdClass();
+        $field = '0';
+        $object->$field = 'value';
+
+        //when
+        $result = Objects::getValueRecursively($object, '0');
+
+        //then
+        $this->assertSame('value', $result);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnObjectIfEmptyField()
     {
         //given
@@ -378,12 +395,12 @@ class ObjectsTest extends TestCase
     {
         //given
         $array = [
-            'id' => 123,
+            'id'   => 123,
             'name' => 'John',
             'info' => [
                 'account' => [
                     'number' => '2343-de',
-                    'info' => 'some info about account'
+                    'info'   => 'some info about account'
                 ]
             ]
         ];
@@ -406,8 +423,8 @@ class ObjectsTest extends TestCase
         $this->assertFalse(Objects::equal(null, '0'));
         $this->assertFalse(Objects::equal(null, false));
         $this->assertFalse(Objects::equal(null, 'false'));
-        $this->assertFalse(Objects::equal(null , ''));
-        $this->assertFalse(Objects::equal(null , []));
+        $this->assertFalse(Objects::equal(null, ''));
+        $this->assertFalse(Objects::equal(null, []));
         $this->assertFalse(Objects::equal(null, new stdClass()));
     }
 
