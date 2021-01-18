@@ -3,7 +3,9 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Utilities\Objects;
+use PHPUnit\Framework\TestCase;
 
 class ClassImplementingToString
 {
@@ -27,8 +29,6 @@ class ClassWithProperty
         /** @noinspection PhpUnusedPrivateFieldInspection */
         $privateProperty = 'private value';
 }
-
-use PHPUnit\Framework\TestCase;
 
 class ObjectsTest extends TestCase
 {
@@ -551,5 +551,24 @@ class ObjectsTest extends TestCase
         $this->assertTrue(Objects::equal($a, $a));
         $this->assertTrue(Objects::equal($a, $c));
         $this->assertFalse(Objects::equal($a, new stdClass()));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHandle0InSelector()
+    {
+        //given
+        $a = new stdClass();
+        $a->var = [
+            0 => 'a',
+            1 => 'b'
+        ];
+
+        //when
+        $value = Objects::getValueRecursively($a, 'var->0');
+
+        //then
+        $this->assertEquals('a', $value);
     }
 }
