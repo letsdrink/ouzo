@@ -4,12 +4,12 @@ CHANGELOG
 INCOMING
 --------
 
-Support for PHP 5.6 is dropped. Minimal PHP version required is 7.2.
+Support for PHP 5.6 is dropped. Minimal PHP version required is 7.4.
 
 Enhancements:
 * [Utilities] Added `Arrays.getDuplicates()`, `Arrays.getDuplicatesAssoc()`.
 * [Utilities] Added `FluentArray.getDuplicates()`, `FluentArray.getDuplicatesAssoc()`.
-* [Core] Added database migration tools (migrate:run and migrate:generate).
+* [Core] Added database migration tools (`migrate:run` and `migrate:generate`).
 
 Release 1.7.0
 --------
