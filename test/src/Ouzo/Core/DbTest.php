@@ -3,7 +3,9 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db;
+use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Tests\Mock\Mock;
@@ -77,5 +79,33 @@ class DbTest extends DbTransactionalTestCase
         Mock::verify($dbHandle)->beginTransaction();
         Mock::verify($dbHandle)->neverReceived()->commitTransaction();
         Mock::verify($dbHandle)->rollBack();
+    }
+
+    /**
+     * @test
+     */
+    public function runThrowWhenPdoCommitFailed()
+    {
+        // given
+        Db::getInstance()->enableTransactions();
+        $dbHandle = Mock::mock();
+        Mock::when($dbHandle)->commit()->thenReturn(false);
+        Mock::when($dbHandle)->errorInfo()->thenReturn([
+            '10A1',
+            11,
+            'Failed to commit - query timeout'
+        ]);
+
+        $db = new Db(false);
+        $db->dbHandle = $dbHandle;
+
+        //when
+        CatchException::when($db)->runInTransaction([new Sample(), 'callMethod']);
+
+        //then
+        CatchException::assertThat()
+            ->isInstanceOf(DbException::class)
+            ->hasCode(11)
+            ->hasMessage("Pdo method 'commit' failed. Message: 'Failed to commit - query timeout'. Code: '11'. SqlState code: '10A1'");
     }
 }

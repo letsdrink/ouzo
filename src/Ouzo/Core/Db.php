@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Exception;
@@ -123,7 +124,7 @@ class Db
                 $this->commitTransaction();
                 return $result;
             } catch (Exception $e) {
-                $this->rollbackTransaction();
+                $this->rollbackTransactionSilently();
                 throw $e;
             }
         }
@@ -137,7 +138,7 @@ class Db
     {
         if (self::$transactionsEnabled) {
             $this->startedTransaction = true;
-            $this->dbHandle->beginTransaction();
+            $this->invokePdo('beginTransaction');
         }
     }
 
@@ -147,7 +148,7 @@ class Db
     public function commitTransaction()
     {
         if (self::$transactionsEnabled) {
-            $this->dbHandle->commit();
+            $this->invokePdo('commit');
             $this->startedTransaction = false;
         }
     }
@@ -158,8 +159,35 @@ class Db
     public function rollbackTransaction()
     {
         if (self::$transactionsEnabled) {
-            $this->dbHandle->rollBack();
+            $this->invokePdo('rollBack');
             $this->startedTransaction = false;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function rollbackTransactionSilently()
+    {
+        try {
+            $this->rollbackTransaction();
+        } catch (Exception $e) {
+        }
+    }
+
+    /**
+     * @param $method
+     * @return void
+     */
+    private function invokePdo($method)
+    {
+        $result = call_user_func([$this->dbHandle, $method]);
+        if ($result === false) {
+            $info = $this->dbHandle->errorInfo();
+            $sqlState = Arrays::getValue($info, 0);
+            $code = Arrays::getValue($info, 1);
+            $message = Arrays::getValue($info, 2);
+            throw new DbException("Pdo method '$method' failed. Message: '$message'. Code: '$code'. SqlState code: '$sqlState'", $code);
         }
     }
 
