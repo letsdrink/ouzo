@@ -21,10 +21,10 @@ function url($params)
     return ControllerUrl::createUrl($params);
 }
 
-function renderWidget($widgetName)
+function renderWidget($widgetName, $attributes = [])
 {
     $className = ucfirst($widgetName);
-    $viewWidget = new View($className . '/' . $widgetName);
+    $viewWidget = new View($className . '/' . $widgetName, $attributes);
 
     $classLoad = AutoloadNamespaces::getWidgetNamespace() . $className;
     $widget = new $classLoad($viewWidget);
