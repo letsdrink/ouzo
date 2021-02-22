@@ -2,6 +2,7 @@ language: php
 
 php:
     - 7.4.1
+    - 8.0.0
     - nightly
 
 env:
@@ -13,6 +14,7 @@ matrix:
     fast_finish: true
     allow_failures:
         - php: nightly
+        - php: 8.0.0
 
 services:
     - mysql

@@ -32,7 +32,7 @@ class AcceptHeaderParser
         });
     }
 
-    public static function _compare($a, $b)
+    public static function _compare($a, $b): int
     {
         $a_q = floatval(Arrays::getValue($a, 'q', 1));
         $b_q = floatval(Arrays::getValue($b, 'q', 1));
@@ -42,20 +42,19 @@ class AcceptHeaderParser
             } else {
                 return self::_compareSubType($a['subtype'], $b['subtype']);
             }
-        } else {
-            return $a_q < $b_q;
         }
+        return $a_q < $b_q ? 1 : -1;
     }
 
-    public static function _compareSubType($a, $b)
+    public static function _compareSubType($a, $b): int
     {
         if ($a === '*' && $b !== '*') {
             return 1;
-        } elseif ($b === '*' && $a !== '*') {
-            return -1;
-        } else {
-            return 0;
         }
+        if ($b === '*' && $a !== '*') {
+            return -1;
+        }
+        return 0;
     }
 
     private static function extractParams($elements)

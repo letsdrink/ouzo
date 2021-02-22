@@ -6,12 +6,11 @@
 
 namespace Ouzo\Request;
 
+use Exception;
 use Ouzo\Controller;
 use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
 use Ouzo\Exception\ValidationException;
-use Ouzo\ExceptionHandling\Error;
-use Ouzo\ExceptionHandling\ValidationError;
 use Ouzo\HeaderSender;
 use Ouzo\Http\ResponseMapper;
 use Ouzo\Injection\Annotation\Inject;
@@ -20,6 +19,7 @@ use Ouzo\RedirectHandler;
 use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
+use Ouzo\Utilities\Objects;
 use ReflectionClass;
 
 class RequestExecutor
@@ -149,7 +149,14 @@ class RequestExecutor
         $currentAction = $controller->currentAction;
 
         $parameters = $this->getParameters($controller, $currentAction);
-        return call_user_func_array([$controller, $currentAction], $parameters);
+        $numberOfParameters = (new ReflectionClass($controller))->getMethod($currentAction)->getNumberOfParameters();
+        if ($numberOfParameters > 0) {
+            if ($numberOfParameters > sizeof($parameters)) {
+                throw new Exception("Invalid number of parameters. Expected: {$numberOfParameters}, but was: " . Objects::toString($parameters));
+            }
+            return call_user_func_array([$controller, $currentAction], array_values($parameters));
+        }
+        return $controller->$currentAction();
     }
 
     /**
