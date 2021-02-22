@@ -14,6 +14,7 @@ use Ouzo\Exception\ValidationException;
 use Ouzo\HeaderSender;
 use Ouzo\Http\ResponseMapper;
 use Ouzo\Injection\Annotation\Inject;
+use Ouzo\NoControllerActionException;
 use Ouzo\OutputDisplayer;
 use Ouzo\RedirectHandler;
 use Ouzo\Uri;
@@ -149,7 +150,11 @@ class RequestExecutor
         $currentAction = $controller->currentAction;
 
         $parameters = $this->getParameters($controller, $currentAction);
-        $numberOfParameters = (new ReflectionClass($controller))->getMethod($currentAction)->getNumberOfParameters();
+        $controllerClass = new ReflectionClass($controller);
+        if (!$controllerClass->hasMethod($currentAction)) {
+            throw new NoControllerActionException("No action [{$currentAction}] defined in controller [{$controller->getCurrentControllerName()}].");
+        }
+        $numberOfParameters = $controllerClass->getMethod($currentAction)->getNumberOfParameters();
         if ($numberOfParameters > 0) {
             if ($numberOfParameters > sizeof($parameters)) {
                 throw new Exception("Invalid number of parameters. Expected: {$numberOfParameters}, but was: " . Objects::toString($parameters));
