@@ -50,7 +50,7 @@ class DocCommentExtractor implements AnnotationMetadataProvider
                 $namedMap = $this->extractNamedMap($parameters, $doc);
                 foreach ($parameters as $parameter) {
                     $type = $parameter->getType();
-                    if (!is_null($type) || !($type instanceof ReflectionNamedType)) {
+                    if (is_null($type) || !($type instanceof ReflectionNamedType)) {
                         throw new InjectorException("Cannot @Inject by constructor for class $className. All arguments should have types defined (but not union types!).");
                     }
                     $parameterName = $parameter->getName();
