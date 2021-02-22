@@ -10,6 +10,7 @@ use Ouzo\Injection\InjectorException;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 use ReflectionClass;
+use ReflectionNamedType;
 use ReflectionProperty;
 
 class DocCommentExtractor implements AnnotationMetadataProvider
@@ -48,13 +49,14 @@ class DocCommentExtractor implements AnnotationMetadataProvider
                 $parameters = $constructor->getParameters();
                 $namedMap = $this->extractNamedMap($parameters, $doc);
                 foreach ($parameters as $parameter) {
-                    if (!$parameter->getClass()) {
-                        throw new InjectorException("Cannot @Inject by constructor for class $className. All arguments should have types defined.");
+                    $type = $parameter->getType();
+                    if (!$type || !($type instanceof ReflectionNamedType)) {
+                        throw new InjectorException("Cannot @Inject by constructor for class $className. All arguments should have types defined (but not union types!).");
                     }
                     $parameterName = $parameter->getName();
                     $name = Arrays::getValue($namedMap, $parameterName, '');
 
-                    $annotations[$parameterName] = ['name' => $name, 'className' => $parameter->getClass()->getName()];
+                    $annotations[$parameterName] = ['name' => $name, 'className' => $type->getName()];
                 }
             }
         }
