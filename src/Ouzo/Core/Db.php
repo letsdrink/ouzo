@@ -12,6 +12,8 @@ use Ouzo\Db\StatementExecutor;
 use Ouzo\Db\TransactionalProxy;
 use Ouzo\Utilities\Arrays;
 use PDO;
+use PDOException;
+
 
 class Db
 {
@@ -233,11 +235,16 @@ class Db
      */
     public function lastInsertId($sequence)
     {
-        $lastInsertId = $this->dbHandle->lastInsertId($sequence);
-        if (!$lastInsertId) {
-            throw PDOExceptionExtractor::getException($this->dbHandle->errorInfo(), "Cannot get sequence value: $sequence");
+        try {
+            $lastInsertId = $this->dbHandle->lastInsertId($sequence);
+            if (!$lastInsertId) {
+                throw PDOExceptionExtractor::getException($this->dbHandle->errorInfo(), "Cannot get sequence value: {$sequence}");
+            }
+            return $lastInsertId;
+        } catch (PDOException $exception) {
+            $errorInfo = [$exception->getCode(), $exception->getCode(), $exception->getMessage()];
+            throw PDOExceptionExtractor::getException($errorInfo, "Cannot get sequence value: {$sequence}");
         }
-        return $lastInsertId;
     }
 
     /**
