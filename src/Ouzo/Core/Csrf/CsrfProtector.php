@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Csrf;
 
 use Ouzo\Controller;
@@ -16,11 +17,7 @@ use Ouzo\Utilities\Arrays;
 
 class CsrfProtector
 {
-    /**
-     * @param Controller $controller
-     * @return void
-     */
-    public static function protect(Controller $controller)
+    public static function protect(Controller $controller): void
     {
         $controller->before[] = function () {
             if (CsrfProtector::isMethodProtected(Uri::getRequestType())) {
@@ -30,34 +27,23 @@ class CsrfProtector
         };
     }
 
-    /**
-     * @throws ForbiddenException
-     * @return void
-     */
-    public static function validate()
+    public static function validate(): void
     {
         $csrfToken = self::getCsrfToken();
         $headerToken = Arrays::getValue(RequestHeaders::all(), 'X-Csrftoken');
         $postToken = Arrays::getValue($_POST, 'csrftoken');
 
         if ($headerToken != $csrfToken && $postToken != $csrfToken) {
-            self::_throwException();
+            self::throwException();
         }
     }
 
-    /**
-     * @param string $method
-     * @return bool
-     */
-    public static function isMethodProtected($method)
+    public static function isMethodProtected(string $method): bool
     {
         return !in_array($method, ['GET', 'HEAD', 'OPTIONS', 'TRACE']);
     }
 
-    /**
-     * @return string
-     */
-    public static function getCsrfToken()
+    public static function getCsrfToken(): string
     {
         if (Session::has('csrftoken')) {
             return Session::get('csrftoken');
@@ -67,10 +53,7 @@ class CsrfProtector
         return $token;
     }
 
-    /**
-     * @return bool|string
-     */
-    private static function generateCsrfToken()
+    private static function generateCsrfToken(): string
     {
         $length = 32;
         $bytes = openssl_random_pseudo_bytes(($length + 1) / 2);
@@ -78,11 +61,7 @@ class CsrfProtector
         return substr(base64_encode($hex), 0, $length);
     }
 
-    /**
-     * @throws ForbiddenException
-     * @return void
-     */
-    private static function _throwException()
+    private static function throwException(): void
     {
         throw new ForbiddenException(new Error(defined('UNAUTHORIZED') ? UNAUTHORIZED : 0, I18n::t('exception.forbidden')));
     }

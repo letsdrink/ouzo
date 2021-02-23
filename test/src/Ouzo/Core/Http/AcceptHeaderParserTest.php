@@ -89,10 +89,10 @@ class AcceptHeaderParserTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnEmptyArrayForNull()
+    public function shouldReturnEmptyArrayForEmptyString()
     {
         //when
-        $parsed = AcceptHeaderParser::parse(null);
+        $parsed = AcceptHeaderParser::parse('');
 
         //then
         $this->assertEmpty($parsed);

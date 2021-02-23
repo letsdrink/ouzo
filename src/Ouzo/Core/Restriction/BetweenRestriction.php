@@ -3,35 +3,29 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Restriction;
 
 class BetweenRestriction extends Restriction
 {
-    private $value1;
-    private $value2;
-    private $betweenMode;
-
-    public function __construct($value1, $value2, $betweenMode)
+    public function __construct(
+        private mixed $value1,
+        private mixed $value2,
+        private int $betweenMode)
     {
-        $this->value1 = $value1;
-        $this->value2 = $value2;
-        $this->betweenMode = $betweenMode;
     }
 
-    public function toSql($fieldName)
+    public function toSql(string $fieldName): string
     {
-        switch ($this->betweenMode) {
-            case Between::EXCLUSIVE:
-                return '(' . $fieldName . ' > ? AND ' . $fieldName . ' < ?)';
-            case Between::LEFT_EXCLUSIVE:
-                return '(' . $fieldName . ' > ? AND ' . $fieldName . ' <= ?)';
-            case Between::RIGHT_EXCLUSIVE:
-                return '(' . $fieldName . ' >= ? AND ' . $fieldName . ' < ?)';
-        }
-        return '(' . $fieldName . ' >= ? AND ' . $fieldName . ' <= ?)';
+        return match ($this->betweenMode) {
+            Between::EXCLUSIVE => "({$fieldName} > ? AND {$fieldName} < ?)",
+            Between::LEFT_EXCLUSIVE => "({$fieldName} > ? AND {$fieldName} <= ?)",
+            Between::RIGHT_EXCLUSIVE => "({$fieldName} >= ? AND {$fieldName} < ?)",
+            default => "({$fieldName} >= ? AND {$fieldName} <= ?)"
+        };
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         return [$this->value1, $this->value2];
     }

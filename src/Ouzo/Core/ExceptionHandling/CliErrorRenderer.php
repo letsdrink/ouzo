@@ -7,7 +7,7 @@ use Ouzo\Utilities\Objects;
 
 class CliErrorRenderer
 {
-    public function render(OuzoExceptionData $exceptionData, $viewName = null)
+    public function render(OuzoExceptionData $exceptionData): void
     {
         global $argv;
         $className = $exceptionData->getClassName();

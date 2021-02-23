@@ -9,7 +9,7 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class InterceptorOne implements Interceptor
 {
-    public function handle($param, Chain $next)
+    public function handle(mixed $param, Chain $next): mixed
     {
         return $next->proceed($param . '1');
     }

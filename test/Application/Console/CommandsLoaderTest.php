@@ -26,7 +26,7 @@ class CommandsLoaderTest extends TestCase
     {
         //given
         $application = Mock::mock(Application::class);
-        $loader = CommandsLoader::forApplication($application);
+        $loader = CommandsLoader::forApplicationAndInjector($application, new Injector());
 
         //when
         $loader->registerCommandsFromPath($this->testCommandsPath);

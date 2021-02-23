@@ -11,14 +11,14 @@ use Whoops\Run;
 
 class DebugErrorHandler extends ErrorHandler
 {
-    public function register()
+    public function register(): void
     {
         set_exception_handler([__CLASS__, 'exceptionHandler']);
         set_error_handler([__CLASS__, 'errorHandler']);
         register_shutdown_function([__CLASS__, 'shutdownHandler']);
     }
 
-    protected static function getRun()
+    protected static function getRun(): Run
     {
         $run = new Run();
         $run->pushHandler(new PrettyPageHandler());
@@ -26,20 +26,17 @@ class DebugErrorHandler extends ErrorHandler
         return $run;
     }
 
-    /**
-     * @return ExceptionHandler
-     */
-    protected static function getExceptionHandler()
+    protected static function getExceptionHandler(): ExceptionHandler
     {
         return new DebugExceptionHandler();
     }
 
-    public static function errorHandler($errorNumber, $errorString, $errorFile, $errorLine)
+    public static function errorHandler($errorNumber, $errorString, $errorFile, $errorLine): void
     {
         self::getRun()->handleError($errorNumber, $errorString, $errorFile, $errorLine);
     }
 
-    public static function shutdownHandler()
+    public static function shutdownHandler(): void
     {
         self::getRun()->handleShutdown();
     }

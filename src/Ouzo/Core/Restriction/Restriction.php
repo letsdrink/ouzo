@@ -7,7 +7,7 @@ namespace Ouzo\Restriction;
 
 abstract class Restriction
 {
-    abstract public function toSql($fieldName);
+    abstract public function toSql(string $fieldName): string;
 
-    abstract public function getValues();
+    abstract public function getValues(): array;
 }

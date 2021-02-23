@@ -9,7 +9,7 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class ExceptionThrowMiddleware implements Interceptor
 {
-    public function handle($param, Chain $next)
+    public function handle(mixed $param, Chain $next): mixed
     {
         throw new Exception("afterInitCallback");
     }

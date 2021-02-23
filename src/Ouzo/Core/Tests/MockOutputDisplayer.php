@@ -10,7 +10,7 @@ use Ouzo\OutputDisplayer;
 
 class MockOutputDisplayer extends OutputDisplayer
 {
-    public function display($content)
+    public function display(string $content): void
     {
         echo '';
     }

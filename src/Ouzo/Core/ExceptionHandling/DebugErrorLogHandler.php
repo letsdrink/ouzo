@@ -10,7 +10,7 @@ use Whoops\Handler\Handler;
 
 class DebugErrorLogHandler extends Handler
 {
-    public function handle()
+    public function handle(): ?int
     {
         $exception = $this->getInspector()->getException();
         $ouzoExceptionData = OuzoExceptionData::forException(500, $exception);

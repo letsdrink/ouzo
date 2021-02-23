@@ -27,7 +27,7 @@ class IsNotInRestrictionTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnNullForEmptyArray()
+    public function shouldReturnEmptyStringForEmptyArray()
     {
         //given
         $restriction = Restrictions::isNotIn([]);
@@ -36,6 +36,6 @@ class IsNotInRestrictionTest extends TestCase
         $sql = $restriction->toSql('category_id');
 
         //then
-        $this->assertNull($sql);
+        $this->assertEmpty($sql);
     }
 }

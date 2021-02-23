@@ -13,33 +13,19 @@ use Ouzo\Stats\SessionStats;
 
 class RequestContextFactory implements Factory
 {
-    /** @var RoutingService */
-    private $routingService;
-    /** @var RequestParameters */
-    private $requestParameters;
-    /** @var ControllerFactory */
-    private $controllerFactory;
-    /** @var SessionStats */
-    private $sessionStats;
-
     /**
      * @Inject
      */
     public function __construct(
-        RoutingService $routingService,
-        RequestParameters $requestParameters,
-        ControllerFactory $controllerFactory,
-        SessionStats $sessionStats
+        private RoutingService $routingService,
+        private RequestParameters $requestParameters,
+        private ControllerFactory $controllerFactory,
+        private SessionStats $sessionStats
     )
     {
-        $this->routingService = $routingService;
-        $this->requestParameters = $requestParameters;
-        $this->controllerFactory = $controllerFactory;
-        $this->sessionStats = $sessionStats;
     }
 
-    /** @return RequestContext */
-    public function create()
+    public function create(): RequestContext
     {
         $controller = $this->routingService->getController();
         $action = $this->routingService->getAction();

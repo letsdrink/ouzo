@@ -5,7 +5,7 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class BeforeAfterInterceptor implements Interceptor
 {
-    public function handle($param, Chain $next)
+    public function handle(mixed $param, Chain $next): string
     {
         $param .= 'before';
         $chain = $next->proceed($param);

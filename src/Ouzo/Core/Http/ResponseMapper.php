@@ -10,7 +10,7 @@ use Ouzo\Utilities\Strings;
 
 class ResponseMapper
 {
-    protected static $_messages = [
+    protected static array $_messages = [
         //Informational 1xx
         100 => '100 Continue',
         101 => '101 Switching Protocols',

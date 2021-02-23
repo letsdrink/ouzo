@@ -13,12 +13,12 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class DefaultRequestId implements Interceptor
 {
-    /**
-     * @param RequestContext $requestContext
-     * @param Chain $next
-     * @return Chain
-     */
-    public function handle($requestContext, Chain $next)
+    public function handle(mixed $param, Chain $next): mixed
+    {
+        return $this->handleRequestContext($param, $next);
+    }
+
+    private function handleRequestContext(RequestContext $requestContext, Chain $next): mixed
     {
         $id = uniqid();
         if (FrontController::$requestId === null) {

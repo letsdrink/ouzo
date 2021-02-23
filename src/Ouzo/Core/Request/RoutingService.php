@@ -13,10 +13,8 @@ use Ouzo\Uri;
 
 class RoutingService
 {
-    /** @var Uri */
-    private $uri;
-    /** @var RouteRule */
-    private $routeRule;
+    private Uri $uri;
+    private RouteRule $routeRule;
 
     /**
      * @Inject
@@ -28,22 +26,22 @@ class RoutingService
         $this->routeRule = $router->findRoute();
     }
 
-    public function getUri()
+    public function getUri(): Uri
     {
         return $this->uri;
     }
 
-    public function getController()
+    public function getController(): string
     {
         return $this->routeRule->getController();
     }
 
-    public function getAction()
+    public function getAction(): string
     {
         return $this->routeRule->isActionRequired() ? $this->routeRule->getAction() : $this->uri->getAction();
     }
 
-    public function getRouteRule()
+    public function getRouteRule(): RouteRule
     {
         return $this->routeRule;
     }

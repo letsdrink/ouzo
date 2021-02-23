@@ -11,7 +11,7 @@ use Ouzo\Utilities\Functions;
 
 class AcceptHeaderParser
 {
-    public static function parse($data)
+    public static function parse(string $data): array
     {
         $array = [];
         $items = Arrays::filterNotBlank(explode(',', $data));
@@ -20,7 +20,7 @@ class AcceptHeaderParser
             $media = Arrays::first($elements);
             $params = array_slice($elements, 1);
 
-            list($type, $subtype) = self::getTypeAndSubtype($media);
+            [$type, $subtype] = self::getTypeAndSubtype($media);
             $q = Arrays::getValue(self::extractParams($params), 'q');
             $array[] = ['type' => $type, 'subtype' => $subtype, 'q' => $q];
         }

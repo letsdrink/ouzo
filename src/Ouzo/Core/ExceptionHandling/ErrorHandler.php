@@ -10,19 +10,19 @@ use ErrorException;
 
 class ErrorHandler
 {
-    public function register()
+    public function register(): void
     {
         set_exception_handler([__CLASS__, 'exceptionHandler']);
         set_error_handler([__CLASS__, 'errorHandler']);
         register_shutdown_function([__CLASS__, 'shutdownHandler']);
     }
 
-    public static function exceptionHandler($exception)
+    public static function exceptionHandler($exception): void
     {
         static::getExceptionHandler()->handleException($exception);
     }
 
-    public static function errorHandler($errorNumber, $errorString, $errorFile, $errorLine)
+    public static function errorHandler($errorNumber, $errorString, $errorFile, $errorLine): void
     {
         if (self::stopsExecution($errorNumber)) {
             self::exceptionHandler(new ErrorException($errorString, $errorNumber, $errorNumber, $errorFile, $errorLine));
@@ -31,27 +31,20 @@ class ErrorHandler
         }
     }
 
-    public static function stopsExecution($errno)
+    public static function stopsExecution($errno): bool
     {
-        switch ($errno) {
-            case E_ERROR:
-            case E_CORE_ERROR:
-            case E_COMPILE_ERROR:
-            case E_USER_ERROR:
-                return true;
-        }
-        return false;
+        return match ($errno) {
+            E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR => true,
+            default => false
+        };
     }
 
-    /**
-     * @return ExceptionHandler
-     */
-    protected static function getExceptionHandler()
+    protected static function getExceptionHandler(): ExceptionHandler
     {
         return new ExceptionHandler();
     }
 
-    public static function shutdownHandler()
+    public static function shutdownHandler(): void
     {
         $error = error_get_last();
 
