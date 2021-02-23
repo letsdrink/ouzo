@@ -151,15 +151,14 @@ class RequestExecutor
 
         $parameters = $this->getParameters($controller, $currentAction);
         $controllerClass = new ReflectionClass($controller);
-        if (!$controllerClass->hasMethod($currentAction)) {
-            throw new NoControllerActionException("No action [{$currentAction}] defined in controller [{$controller->getCurrentControllerName()}].");
-        }
-        $numberOfParameters = $controllerClass->getMethod($currentAction)->getNumberOfParameters();
-        if ($numberOfParameters > 0) {
-            if ($numberOfParameters > sizeof($parameters)) {
-                throw new Exception("Invalid number of parameters. Expected: {$numberOfParameters}, but was: " . Objects::toString($parameters));
+        if ($controllerClass->hasMethod($currentAction)) {
+            $numberOfParameters = $controllerClass->getMethod($currentAction)->getNumberOfParameters();
+            if ($numberOfParameters > 0) {
+                if ($numberOfParameters > sizeof($parameters)) {
+                    throw new Exception("Invalid number of parameters. Expected: {$numberOfParameters}, but was: " . Objects::toString($parameters));
+                }
+                return call_user_func_array([$controller, $currentAction], array_values($parameters));
             }
-            return call_user_func_array([$controller, $currentAction], array_values($parameters));
         }
         return $controller->$currentAction();
     }
