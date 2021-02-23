@@ -34,7 +34,7 @@ class JoinClause
      * @param string $type
      * @param WhereClause $onClauses
      */
-    public function __construct($joinTable, $joinColumn, $joinedColumn, $joinedColumnTable, $alias = null, $type = 'LEFT', $onClauses)
+    public function __construct($joinTable, $joinColumn, $joinedColumn, $joinedColumnTable, $alias = null, $type = 'LEFT', $onClauses = null)
     {
         $this->joinTable = $joinTable;
         $this->joinColumn = $joinColumn;
