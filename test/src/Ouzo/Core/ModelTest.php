@@ -787,6 +787,7 @@ class ModelTest extends DbTransactionalTestCase
         ]);
 
         //when
+        $model->insert();
         CatchException::when($model)->insert();
 
         //then
