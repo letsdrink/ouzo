@@ -21,14 +21,11 @@ class TransactionalProxy
 
     public function __call(string $name, array $arguments): mixed
     {
-        $object = $this->object;
-        return Db::getInstance()->runInTransaction(fn() => call_user_func_array([$object, $name], $arguments));
+        return Db::getInstance()->runInTransaction(fn() => $this->object->$name(...$arguments));
     }
 
-    public function __invoke(): mixed
+    public function __invoke(mixed ...$arguments): mixed
     {
-        $function = $this->object;
-        $arguments = func_get_args();
-        return Db::getInstance()->runInTransaction(fn() => call_user_func_array($function, $arguments));
+        return Db::getInstance()->runInTransaction(fn() => ($this->object)(...$arguments));
     }
 }

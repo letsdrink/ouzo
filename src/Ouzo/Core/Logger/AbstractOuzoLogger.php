@@ -41,7 +41,7 @@ abstract class AbstractOuzoLogger extends AbstractLogger
         if ($ouzoLevel <= $minimalLevel) {
             $message = $this->messageFormatter->format($this->name, $level, $message);
             if (!empty($params)) {
-                $message = call_user_func_array('sprintf', array_merge([$message], $params));
+                $message = sprintf($message, ...$params);
             }
             $writeToLogFunction($message);
         }
