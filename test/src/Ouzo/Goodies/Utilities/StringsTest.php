@@ -468,6 +468,37 @@ class StringsTest extends TestCase
     /**
      * @test
      */
+    public function shouldAbbreviateStringToWholeWord()
+    {
+        //given
+        $string = 'ouzo is great';
+
+        //when
+        $abbreviated = Strings::abbreviate($string, 5, true);
+
+        //then
+        $this->assertEquals("ouzo ...", $abbreviated);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAbbreviateStringToWholeWordAfterSecondWord()
+    {
+        //given
+        $string = 'ouzo is great';
+
+        //when
+        $abbreviated = Strings::abbreviate($string, 9, true);
+
+        //then
+        $this->assertEquals("ouzo is ...", $abbreviated);
+    }
+
+
+    /**
+     * @test
+     */
     public function shouldConvertEntitiesWithUtfChars()
     {
         //given
