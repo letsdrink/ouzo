@@ -6,6 +6,7 @@
 
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use Ouzo\Tests\CatchExceptionAssert;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -67,12 +68,12 @@ class ArrayAssertTest extends TestCase
      */
     public function shouldNotContainElementOpProperty()
     {
+        //given
         $object = new stdClass();
         $object->prop = 2;
 
-        CatchException::when(Assert::thatArray([$object])->onProperty('prop'))->contains(1);
-
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+        //when
+        $this->assertNot(fn() => Assert::thatArray([$object])->onProperty('prop')->contains(1));
     }
 
     /**
@@ -80,11 +81,11 @@ class ArrayAssertTest extends TestCase
      */
     public function containsShouldThrowException()
     {
-        $this->_assertNotContains([null], '1');
-        $this->_assertNotContains(['string'], '1');
-        $this->_assertNotContains([['1', '2']], '3');
-        $this->_assertNotContains([['1', '2']], '1', '3');
-        $this->_assertNotContains([['1', '2']], '1', '2', '3');
+        $this->assertNot(fn() => Assert::thatArray([null])->contains('1'));
+        $this->assertNot(fn() => Assert::thatArray(['string'])->contains('1'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->contains('3'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->contains('1', '3'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->contains('1', '2', '3'));
     }
 
     /**
@@ -102,9 +103,9 @@ class ArrayAssertTest extends TestCase
      */
     public function hasSizeShouldThrowException()
     {
-        $this->_assertNotHasSize([], 1);
-        $this->_assertNotHasSize(['1'], 2);
-        $this->_assertNotHasSize(['1', '2'], 0);
+        $this->assertNot(fn() => Assert::thatArray([])->hasSize(1));
+        $this->assertNot(fn() => Assert::thatArray(['1'])->hasSize(2));
+        $this->assertNot(fn() => Assert::thatArray(['1', '2'])->hasSize(0));
     }
 
     /**
@@ -120,8 +121,7 @@ class ArrayAssertTest extends TestCase
      */
     public function isEmptyShouldThrowException()
     {
-        $this->_assertNotIsEmpty(['1']);
-        $this->_assertNotIsEmpty(['1', '2']);
+        $this->assertNot(fn() => Assert::thatArray(['1', '2'])->isEmpty());
     }
 
     /**
@@ -138,7 +138,7 @@ class ArrayAssertTest extends TestCase
      */
     public function isNotEmptyShouldThrowException()
     {
-        $this->_assertNotIsNotEmpty([]);
+        $this->assertNot(fn() => Assert::thatArray([])->isNotEmpty());
     }
 
     /**
@@ -156,14 +156,14 @@ class ArrayAssertTest extends TestCase
      */
     public function containsOnlyShouldThrowException()
     {
-        $this->_assertNotContainsOnly([null], '1');
-        $this->_assertNotContainsOnly(['string'], '1');
-        $this->_assertNotContainsOnly([['1', '2']], '3');
-        $this->_assertNotContainsOnly([['1', '2']], '1', '3');
-        $this->_assertNotContainsOnly([['1', '2']], '1', '2', '3');
-        $this->_assertNotContainsOnly([['1', '2']], '1');
-        $this->_assertNotContainsOnly([['1', '2', '3']], '1');
-        $this->_assertNotContainsOnly([['1', '2', '3']], '1', '2');
+        $this->assertNot(fn() => Assert::thatArray([null])->containsOnly('1'));
+        $this->assertNot(fn() => Assert::thatArray(['string'])->containsOnly('1'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->containsOnly('3'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->containsOnly('1', '3'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->containsOnly('1', '2', '3'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->containsOnly('1'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2', '3']])->containsOnly('1'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2', '3']])->containsOnly('1', '2'));
     }
 
     /**
@@ -180,15 +180,15 @@ class ArrayAssertTest extends TestCase
      */
     public function containsExactlyShouldThrowException()
     {
-        $this->_assertNotContainsExactly([null], '1');
-        $this->_assertNotContainsExactly(['string'], '1');
-        $this->_assertNotContainsExactly([['1', '2']], '3');
-        $this->_assertNotContainsExactly([['1', '2']], '1', '3');
-        $this->_assertNotContainsExactly([['1', '2']], '1', '2', '3');
-        $this->_assertNotContainsExactly([['1', '2']], '1');
-        $this->_assertNotContainsExactly([['1', '2', '3']], '1');
-        $this->_assertNotContainsExactly([['1', '2', '3']], '1', '2');
-        $this->_assertNotContainsExactly([['1', '2', '3']], '3', '1', '2');
+        $this->assertNot(fn() => Assert::thatArray([null])->containsExactly('1'));
+        $this->assertNot(fn() => Assert::thatArray(['string'])->containsExactly('1'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->containsExactly('3'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->containsExactly('1', '3'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->containsExactly('1', '2', '3'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2']])->containsExactly('1'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2', '3']])->containsExactly('1'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2', '3']])->containsExactly('1', '2'));
+        $this->assertNot(fn() => Assert::thatArray([['1', '2', '3']])->containsExactly('3', '1', '2'));
     }
 
     /**
@@ -196,7 +196,10 @@ class ArrayAssertTest extends TestCase
      */
     public function containsKeyAndValueShouldAssertThatArrayContainsKeyValues()
     {
+        //given
         $array = ['id' => 123, 'name' => 'john', 'surname' => 'smith'];
+
+        //when
         Assert::thatArray($array)->containsKeyAndValue(['id' => 123, 'name' => 'john']);
     }
 
@@ -205,13 +208,12 @@ class ArrayAssertTest extends TestCase
      */
     public function containsKeyAndValueShouldThrowException()
     {
-        $array = ['id' => 123, 'name' => 'john', 'surname' => 'smith'];
-        $this->_assertNotContainsKeyAndValue($array,
-            ['id' => 12]
-        );
-        $this->_assertNotContainsKeyAndValue($array,
-            ['id' => 123, 'name' => 'john', 'surname' => 'smith', 'new_key' => 'new_value']
-        );
+        //given
+        $haystack = ['id' => 123, 'name' => 'john', 'surname' => 'smith'];
+
+        //then
+        $this->assertNot(fn() => Assert::thatArray($haystack)->containsKeyAndValue(['id' => 12]));
+        $this->assertNot(fn() => Assert::thatArray($haystack)->containsKeyAndValue(['id' => 123, 'name' => 'john', 'surname' => 'smith', 'new_key' => 'new_value']));
     }
 
     /**
@@ -233,9 +235,7 @@ class ArrayAssertTest extends TestCase
         $photos[] = new Photo('photo1');
         $photos[] = new Photo('photo2');
 
-        CatchException::when(Assert::thatArray($photos)->onMethod('getPhotoName'))->contains('photo3');
-
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+        $this->assertNot(fn() => Assert::thatArray($photos)->onMethod('getPhotoName')->contains('photo3'));
     }
 
     /**
@@ -254,8 +254,7 @@ class ArrayAssertTest extends TestCase
      */
     public function isEqualToShouldPassForEqualArrays()
     {
-        $array = ['ccc', 'aaa'];
-        Assert::thatArray($array)->isEqualTo(['ccc', 'aaa']);
+        Assert::thatArray(['ccc', 'aaa'])->isEqualTo(['ccc', 'aaa']);
     }
 
     /**
@@ -263,9 +262,7 @@ class ArrayAssertTest extends TestCase
      */
     public function isEqualToShouldThrowExceptionForDifferentArrays()
     {
-        $array = ['ccc', 'aaa'];
-        CatchException::when(Assert::thatArray($array))->isEqualTo('ddd', 'ccc');
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+        $this->assertNot(fn() => Assert::thatArray(['ccc', 'aaa'])->isEqualTo(['ddd', 'ccc']));
     }
 
     /**
@@ -273,9 +270,7 @@ class ArrayAssertTest extends TestCase
      */
     public function containsShouldThrowExceptionWhenOrderIsIncorrect()
     {
-        $array = ['ccc', 'aaa', 'bbb', 'ccc', 'ddd'];
-        CatchException::when(Assert::thatArray($array))->containsSequence('ddd', 'ccc');
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+        $this->assertNot(fn() => Assert::thatArray(['ccc', 'aaa', 'bbb', 'ccc', 'ddd'])->containsSequence('ddd', 'ccc'));
     }
 
     /**
@@ -283,9 +278,7 @@ class ArrayAssertTest extends TestCase
      */
     public function containsShouldThrowExceptionWhenIsNotSequence()
     {
-        $array = ['ccc', 'aaa', 'bbb', 'ccc', 'ddd'];
-        CatchException::when(Assert::thatArray($array))->containsSequence('aaa', 'ddd');
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+        $this->assertNot(fn() => Assert::thatArray(['ccc', 'aaa', 'bbb', 'ccc', 'ddd'])->containsSequence('aaa', 'ddd'));
     }
 
     /**
@@ -293,9 +286,11 @@ class ArrayAssertTest extends TestCase
      */
     public function containsShouldThrowExceptionWhenPassTooManyParameters()
     {
-        $array = ['ccc', 'aaa', 'bbb', 'ccc', 'ddd'];
-        CatchException::when(Assert::thatArray($array))->containsSequence('ccc', 'aaa', 'bbb', 'ccc', 'ddd', 'zzz');
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+        //given
+        $haystack = ['ccc', 'aaa', 'bbb', 'ccc', 'ddd'];
+
+        //then
+        $this->assertNot(fn() => Assert::thatArray($haystack)->containsSequence('ccc', 'aaa', 'bbb', 'ccc', 'ddd', 'zzz'));
     }
 
     /**
@@ -303,8 +298,7 @@ class ArrayAssertTest extends TestCase
      */
     public function excludesShouldThrowExceptionWhenFoundInArray()
     {
-        CatchException::when(Assert::thatArray(['1', '2', '3', '4']))->excludes('7', '8', '4');
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+        $this->assertNot(fn() => Assert::thatArray(['1', '2', '3', '4'])->excludes('7', '8', '4'));
     }
 
     /**
@@ -363,10 +357,7 @@ class ArrayAssertTest extends TestCase
         $obj[1]->property1 = 'prop2';
 
         //when
-        CatchException::when(Assert::thatArray($obj)->onProperty('property1'))->contains('prop3');
-
-        //then
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class)
+        $this->assertNot(fn() => Assert::thatArray($obj)->onProperty('property1')->contains('prop3'))
             ->hasMessage('Cannot find expected ["prop3"] in actual ["prop1", "prop2"]');
     }
 
@@ -390,7 +381,7 @@ class ArrayAssertTest extends TestCase
         ];
 
         //then
-        $expected = [
+        Assert::thatArray($array)->hasEqualKeysRecursively([
             'customer' => [
                 'name' => 'New name',
                 'phone' => '45456456',
@@ -401,8 +392,7 @@ class ArrayAssertTest extends TestCase
                     '2wsx' => 'EVV'
                 ]
             ]
-        ];
-        Assert::thatArray($array)->hasEqualKeysRecursively($expected);
+        ]);
     }
 
     /**
@@ -421,9 +411,11 @@ class ArrayAssertTest extends TestCase
      */
     public function shouldAssertUsingExtractingForSingleSelector()
     {
+        //given
         $photos[] = new Photo('photo1', 'd1');
         $photos[] = new Photo('photo2', 'd2');
 
+        //then
         Assert::thatArray($photos)->extracting('_data')->contains('d1', 'd2');
     }
 
@@ -439,48 +431,13 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($actual)->keys()->contains('14', '15');
     }
 
-    private function _assertNot()
+    private function assertNot(Closure $closure): CatchExceptionAssert
     {
-        $args = func_get_args();
-        $method = array_shift($args);
-        $array = array_shift($args);
-
-        call_user_func_array([CatchException::when(Assert::thatArray($array)), $method], $args);
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
-    }
-
-    private function _assertNotContains()
-    {
-        call_user_func_array([$this, '_assertNot'], array_merge(['contains'], func_get_args()));
-    }
-
-    private function _assertNotContainsOnly()
-    {
-        call_user_func_array([$this, '_assertNot'], array_merge(['containsOnly'], func_get_args()));
-    }
-
-    private function _assertNotContainsExactly()
-    {
-        call_user_func_array([$this, '_assertNot'], array_merge(['containsExactly'], func_get_args()));
-    }
-
-    private function _assertNotIsEmpty()
-    {
-        call_user_func_array([$this, '_assertNot'], array_merge(['isEmpty'], func_get_args()));
-    }
-
-    private function _assertNotIsNotEmpty()
-    {
-        call_user_func_array([$this, '_assertNot'], array_merge(['isNotEmpty'], func_get_args()));
-    }
-
-    private function _assertNotHasSize()
-    {
-        call_user_func_array([$this, '_assertNot'], array_merge(['hasSize'], func_get_args()));
-    }
-
-    private function _assertNotContainsKeyAndValue()
-    {
-        call_user_func_array([$this, '_assertNot'], array_merge(['containsKeyAndValue'], func_get_args()));
+        try {
+            $closure();
+        } catch (Throwable $throwable) {
+            return (new CatchExceptionAssert($throwable))->isInstanceOf(ExpectationFailedException::class);
+        }
+        return new CatchExceptionAssert(null);
     }
 }
