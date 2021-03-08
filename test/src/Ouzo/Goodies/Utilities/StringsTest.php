@@ -474,25 +474,25 @@ class StringsTest extends TestCase
         $string = 'ouzo is great';
 
         //when
-        $abbreviated = Strings::abbreviate($string, 5, true);
+        $abbreviated = Strings::abbreviate($string, 7, true);
 
         //then
-        $this->assertEquals("ouzo ...", $abbreviated);
+        $this->assertEquals("ouzo is ...", $abbreviated);
     }
 
     /**
      * @test
      */
-    public function shouldAbbreviateStringToWholeWordAfterSecondWord()
+    public function shouldAbbreviateStringCutIfMaxWidthIsSmallerThanFirstWordLength()
     {
         //given
-        $string = 'ouzo is great';
+        $string = 'verylongword';
 
         //when
-        $abbreviated = Strings::abbreviate($string, 9, true);
+        $abbreviated = Strings::abbreviate($string, 8, true);
 
         //then
-        $this->assertEquals("ouzo is ...", $abbreviated);
+        $this->assertEquals("verylong...", $abbreviated);
     }
 
 
