@@ -6,25 +6,32 @@
 
 namespace Ouzo\ExceptionHandling;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 class ValidationError extends Error
 {
     private ?string $value;
 
-    public function __construct(string $message, ?string $field = null, ?string $value = null, ?string $code = null)
+    public function __construct(
+        string $message,
+        ?string $field = null,
+        ?string $value = null,
+        ?int $code = null
+    )
     {
-        parent::__construct(null, $message, null, $field);
+        parent::__construct($code ?? 0, $message, null, $field);
         $this->value = $value;
-        $this->code = $code;
     }
 
-    public function toArray()
+    #[ArrayShape(['message' => "string", 'code' => "int", 'field' => "null|string"])]
+    public function toArray(): array
     {
         $array = ['message' => $this->getMessage()];
         if ($this->getField()) {
             $array['field'] = $this->getField();
         }
         if ($this->getCode()) {
-            $array['code'] = $this->code;
+            $array['code'] = $this->getCode();
         }
         if ($this->value) {
             $array['value'] = $this->value;

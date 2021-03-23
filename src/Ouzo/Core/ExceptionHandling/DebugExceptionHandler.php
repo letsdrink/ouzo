@@ -25,7 +25,7 @@ class DebugExceptionHandler extends ExceptionHandler
         }
     }
 
-    private function needPrettyHandler()
+    private function needPrettyHandler(): bool
     {
         $isHtmlResponse = ResponseTypeResolve::resolve() == "text/html";
         return $isHtmlResponse && !Uri::isAjax();

@@ -10,37 +10,29 @@ use Throwable;
 
 class StackTrace
 {
-    private $file;
-    private $line;
-    private $trace;
-
-    public function __construct($file, $line, $trace = null)
+    public function __construct(
+        private string $file,
+        private int $line,
+        private $trace = null)
     {
-        $this->file = $file;
-        $this->line = $line;
-        $this->trace = $trace;
     }
 
-    /**
-     * @param Throwable $exception
-     * @return StackTrace
-     */
-    public static function forException($exception)
+    public static function forException(Throwable $exception): StackTrace
     {
         return new self($exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
     }
 
-    public function getTraceAsString()
+    public function getTraceAsString(): string
     {
         return $this->trace;
     }
 
-    public function getFile()
+    public function getFile(): string
     {
         return $this->file;
     }
 
-    public function getLine()
+    public function getLine(): string
     {
         return $this->line;
     }

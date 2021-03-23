@@ -6,6 +6,8 @@
 
 namespace Ouzo\ExceptionHandling;
 
+use JetBrains\PhpStorm\Pure;
+use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -13,9 +15,9 @@ class DebugErrorHandler extends ErrorHandler
 {
     public function register(): void
     {
-        set_exception_handler([__CLASS__, 'exceptionHandler']);
-        set_error_handler([__CLASS__, 'errorHandler']);
-        register_shutdown_function([__CLASS__, 'shutdownHandler']);
+        set_exception_handler(fn(Throwable $exception) => DebugErrorHandler::exceptionHandler($exception));
+        set_error_handler(fn(...$args) => DebugErrorHandler::errorHandler(...$args));
+        register_shutdown_function(fn() => DebugErrorHandler::shutdownHandler());
     }
 
     protected static function getRun(): Run
@@ -26,12 +28,13 @@ class DebugErrorHandler extends ErrorHandler
         return $run;
     }
 
+    #[Pure]
     protected static function getExceptionHandler(): ExceptionHandler
     {
         return new DebugExceptionHandler();
     }
 
-    public static function errorHandler($errorNumber, $errorString, $errorFile, $errorLine): void
+    public static function errorHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): void
     {
         self::getRun()->handleError($errorNumber, $errorString, $errorFile, $errorLine);
     }

@@ -12,48 +12,54 @@ use Ouzo\Utilities\Functions;
 
 class OuzoException extends Exception
 {
-    private $_httpCode;
-    private $_errors;
-    private $_headers = [];
+    private int $httpCode;
+    private array $errors;
+    private array $headers = [];
 
     /**
-     * OuzoException constructor.
      * @param int $httpCode
      * @param string $message
      * @param Error[]|Error $errors
      * @param string[] $headers
      */
-    public function __construct($httpCode, $message, $errors, $headers = [])
+    public function __construct(
+        int $httpCode,
+        string $message,
+        array $errors,
+        array $headers = []
+    )
     {
-        $this->_httpCode = $httpCode;
-        $this->_errors = Arrays::toArray($errors);
-        $this->_headers = $headers;
-        $message .= " " .implode(", ", $this->getErrorMessages());
+        $this->httpCode = $httpCode;
+        $this->errors = Arrays::toArray($errors);
+        $this->headers = $headers;
+        $message .= " " . implode(", ", $this->getErrorMessages());
         parent::__construct($message);
     }
 
-    public function getHttpCode()
+    public function getHttpCode(): int
     {
-        return $this->_httpCode;
+        return $this->httpCode;
     }
 
-    public function getErrors()
+    public function getErrors(): array
     {
-        return $this->_errors;
+        return $this->errors;
     }
 
-    public function getErrorMessages()
+    /** @return string[] */
+    public function getErrorMessages(): array
     {
-        return Arrays::map($this->_errors, Functions::extractField('message'));
+        return Arrays::map($this->errors, Functions::extractField('message'));
     }
 
-    public function asExceptionData()
+    public function asExceptionData(): OuzoExceptionData
     {
-        return new OuzoExceptionData($this->_httpCode, $this->_errors, StackTrace::forException($this), $this->getHeaders(), get_class($this));
+        return new OuzoExceptionData($this->httpCode, $this->errors, StackTrace::forException($this), $this->getHeaders(), get_class($this));
     }
 
-    public function getHeaders()
+    /** @return string[] */
+    public function getHeaders(): array
     {
-        return $this->_headers;
+        return $this->headers;
     }
 }

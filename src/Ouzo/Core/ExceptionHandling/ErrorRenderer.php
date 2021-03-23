@@ -9,9 +9,9 @@ namespace Ouzo\ExceptionHandling;
 use Ouzo\Response\ResponseTypeResolve;
 use Ouzo\ViewPathResolver;
 
-class ErrorRenderer
+class ErrorRenderer implements Renderer
 {
-    public function render(OuzoExceptionData $exceptionData, $viewName)
+    public function render(OuzoExceptionData $exceptionData, ?string $viewName): void
     {
         /** @noinspection PhpUnusedLocalVariableInspection */
         $errorMessage = $exceptionData->getMessage();

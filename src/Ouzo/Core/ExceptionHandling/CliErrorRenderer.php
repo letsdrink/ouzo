@@ -5,9 +5,9 @@ namespace Ouzo\ExceptionHandling;
 use ErrorException;
 use Ouzo\Utilities\Objects;
 
-class CliErrorRenderer
+class CliErrorRenderer implements Renderer
 {
-    public function render(OuzoExceptionData $exceptionData): void
+    public function render(OuzoExceptionData $exceptionData, ?string $viewName): void
     {
         global $argv;
         $className = $exceptionData->getClassName();
