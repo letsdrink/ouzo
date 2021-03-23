@@ -7,29 +7,24 @@
 namespace Ouzo\Injection\Loader;
 
 use Ouzo\Injection\InjectorConfig;
+use RuntimeException;
 
 class ModuleLoader
 {
-    /** @var InjectorConfig */
-    private $injectorConfig;
-
-    /**
-     * @param InjectorConfig $injectorConfig
-     */
-    public function __construct($injectorConfig)
+    public function __construct(private InjectorConfig $injectorConfig)
     {
-        $this->injectorConfig = $injectorConfig;
     }
 
-    /**
-     * @param InjectModule[] $args
-     */
-    public function load(...$args)
+    public function load(string...$injectModules): void
     {
-        foreach ($args as $nameClass) {
-            /** @var InjectModule $injectModule */
-            $injectModule = new $nameClass;
-            $injectModule->configureBindings($this->injectorConfig);
+        foreach ($injectModules as $injectModule) {
+            $injectModuleInstance = new $injectModule();
+
+            if (!$injectModuleInstance instanceof InjectModule) {
+                throw new RuntimeException("Module '{$injectModule}' is not type of InjectModule.");
+            }
+
+            $injectModuleInstance->configureBindings($this->injectorConfig);
         }
     }
 }

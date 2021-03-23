@@ -8,134 +8,82 @@ namespace Ouzo\Injection;
 
 class Binder
 {
-    /** @var string */
-    private $className;
-    /** @var string */
-    private $boundClassName;
-    /** @var string */
-    private $scope = Scope::PROTOTYPE;
-    /** @var object */
-    private $instance;
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $factoryClassName;
-    /** @var boolean */
-    private $eager = false;
+    private string $scope = Scope::PROTOTYPE;
+    private bool $eager = false;
+    private ?string $boundClassName = null;
+    private ?object $instance = null;
+    private ?string $factoryClassName = null;
 
-    /**
-     * @param string $className
-     * @param string $name
-     */
-    public function __construct($className, $name = '')
+    public function __construct(
+        private string $className,
+        private string $name = ''
+    )
     {
-        $this->className = $className;
-        $this->name = $name;
     }
 
-    /**
-     * @param string $scope
-     * @return $this
-     */
-    public function in($scope)
+    public function in(string $scope): static
     {
         $this->scope = $scope;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function asEagerSingleton()
+    public function asEagerSingleton(): static
     {
         $this->scope = Scope::SINGLETON;
         $this->eager = true;
         return $this;
     }
 
-    /**
-     * @param string $boundClassName
-     * @return $this
-     */
-    public function to($boundClassName)
+    public function to(string $boundClassName): static
     {
         $this->boundClassName = $boundClassName;
         return $this;
     }
 
-    /**
-     * @param string $factoryClassName
-     * @return $this
-     */
-    public function throughFactory($factoryClassName)
-    {
-        $this->factoryClassName = $factoryClassName;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBoundClassName()
-    {
-        return $this->boundClassName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * @param object $instance
-     * @return $this
-     */
-    public function toInstance($instance)
+    public function toInstance(object $instance): static
     {
         $this->instance = $instance;
         return $this;
     }
 
-    /**
-     * @return object
-     */
-    public function getInstance()
+    public function throughFactory(string $factoryClassName): static
     {
-        return $this->instance;
+        $this->factoryClassName = $factoryClassName;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
+
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getFactoryClassName()
+    public function getScope(): string
     {
-        return $this->factoryClassName;
+        return $this->scope;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEager()
+    public function isEager(): bool
     {
         return $this->eager;
+    }
+
+    public function getBoundClassName(): ?string
+    {
+        return $this->boundClassName;
+    }
+
+    public function getInstance(): ?object
+    {
+        return $this->instance;
+    }
+
+    public function getFactoryClassName(): ?string
+    {
+        return $this->factoryClassName;
     }
 }

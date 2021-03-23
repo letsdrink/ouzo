@@ -10,5 +10,5 @@ use Ouzo\Injection\InjectorConfig;
 
 interface InjectModule
 {
-    public function configureBindings(InjectorConfig $config);
+    public function configureBindings(InjectorConfig $injectorConfig): void;
 }

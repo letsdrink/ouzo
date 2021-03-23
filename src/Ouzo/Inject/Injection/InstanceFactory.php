@@ -13,26 +13,13 @@ use ReflectionClass;
 
 class InstanceFactory
 {
-    /** @var Bindings */
-    private $bindings;
-    /** @var InjectMetadataProvider */
-    private $provider;
-    /** @var InstanceCreator */
-    private $eagerInstanceCreator;
-    /** @var InstanceCreator */
-    private $lazyInstanceCreator;
-
     public function __construct(
-        Bindings $bindings,
-        InjectMetadataProvider $provider,
-        InstanceCreator $eagerInstanceCreator,
-        InstanceCreator $lazyInstanceCreator
+        private Bindings $bindings,
+        private InjectMetadataProvider $provider,
+        private InstanceCreator $eagerInstanceCreator,
+        private InstanceCreator $lazyInstanceCreator
     )
     {
-        $this->bindings = $bindings;
-        $this->provider = $provider;
-        $this->eagerInstanceCreator = $eagerInstanceCreator;
-        $this->lazyInstanceCreator = $lazyInstanceCreator;
     }
 
     public function createInstance(InstanceRepository $repository, string $className, bool $eager = true): object
@@ -57,7 +44,7 @@ class InstanceFactory
     private function injectDependencies(InstanceRepository $repository, object $instance, ReflectionClass $class = null): void
     {
         $parent = true;
-        if ($class == null) {
+        if (is_null($class)) {
             $class = new ReflectionClass($instance);
             $parent = false;
         }

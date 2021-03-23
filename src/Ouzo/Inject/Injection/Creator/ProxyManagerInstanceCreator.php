@@ -15,8 +15,7 @@ use ProxyManager\Proxy\LazyLoadingInterface;
 
 class ProxyManagerInstanceCreator implements InstanceCreator
 {
-    /** @var LazyLoadingValueHolderFactory */
-    private $factory;
+    private LazyLoadingValueHolderFactory $factory;
 
     public function __construct(Configuration $configuration)
     {

@@ -12,80 +12,51 @@ use Ouzo\Utilities\Arrays;
 
 class InjectorConfig
 {
+    private InstanceCreator $lazyInstanceCreator;
+    private InstanceCreator $eagerInstanceCreator;
     /** @var Binder[] */
-    private $binders = [];
-    /** @var InstanceCreator */
-    private $lazyInstanceCreator;
-    /** @var InstanceCreator */
-    private $eagerInstanceCreator;
+    private array $binders = [];
 
     public function __construct()
     {
         $this->lazyInstanceCreator = $this->eagerInstanceCreator = new EagerInstanceCreator();
     }
 
-    /**
-     * @param string $className
-     * @param string $name
-     * @return Binder
-     */
-    public function bind($className, $name = '')
+    public function bind(string $className, string $name = ''): Binder
     {
         $binder = new Binder($className, $name);
         $this->binders[$className . '_' . $name] = $binder;
         return $binder;
     }
 
-    /**
-     * @param string $instance
-     * @param string $name
-     * @return Binder
-     */
-    public function bindInstance($instance, $name = '')
+    public function bindInstance(object $instance, string $name = ''): Binder
     {
-        return $this->bind(get_class($instance), $name)->toInstance($instance);
+        return $this->bind($instance::class, $name)->toInstance($instance);
     }
 
-    /**
-     * @param string $className
-     * @param string $name
-     * @return Binder
-     */
-    public function getBinder($className, $name)
+    public function getBinder(string $className, string $name): Binder
     {
         $binder = Arrays::getValue($this->binders, $className . '_' . $name);
         return $binder ?: new Binder($className, $name);
     }
 
-    /**
-     * @param InstanceCreator $lazyInstanceCreator
-     */
-    public function setLazyInstanceCreator(InstanceCreator $lazyInstanceCreator)
-    {
-        $this->lazyInstanceCreator = $lazyInstanceCreator;
-    }
-
-    /**
-     * @param InstanceCreator $eagerInstanceCreator
-     */
-    public function setEagerInstanceCreator(InstanceCreator $eagerInstanceCreator)
-    {
-        $this->eagerInstanceCreator = $eagerInstanceCreator;
-    }
-
-    /**
-     * @return InstanceCreator
-     */
-    public function getLazyInstanceCreator()
+    public function getLazyInstanceCreator(): InstanceCreator
     {
         return $this->lazyInstanceCreator;
     }
 
-    /**
-     * @return InstanceCreator
-     */
-    public function getEagerInstanceCreator()
+    public function setLazyInstanceCreator(InstanceCreator $lazyInstanceCreator): void
+    {
+        $this->lazyInstanceCreator = $lazyInstanceCreator;
+    }
+
+    public function getEagerInstanceCreator(): InstanceCreator
     {
         return $this->eagerInstanceCreator;
+    }
+
+    public function setEagerInstanceCreator(InstanceCreator $eagerInstanceCreator): void
+    {
+        $this->eagerInstanceCreator = $eagerInstanceCreator;
     }
 }

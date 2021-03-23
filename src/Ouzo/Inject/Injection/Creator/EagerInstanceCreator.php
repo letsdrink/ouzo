@@ -15,11 +15,12 @@ class EagerInstanceCreator implements InstanceCreator
 {
     public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory): object
     {
-        if ($arguments) {
+        if (!empty($arguments)) {
             $class = new ReflectionClass($className);
             return $class->newInstanceArgs($arguments);
         }
-        return new $className;
+
+        return new $className();
     }
 
     public function createThroughFactory(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory, Factory $factory): object
