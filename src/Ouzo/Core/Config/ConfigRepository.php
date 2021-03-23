@@ -58,6 +58,7 @@ class ConfigRepository
         return Session::get('config') ?: [];
     }
 
+    /** @var string[] $keys */
     public function overrideProperty(array $keys, mixed $value): void
     {
         $keys = Arrays::toArray($keys);
@@ -66,6 +67,7 @@ class ConfigRepository
         Arrays::setNestedValue($this->overriddenConfig, $keys, $oldValue);
     }
 
+    /** @var string[] $keys */
     public function revertProperty(array $keys): void
     {
         $keys = Arrays::toArray($keys);
@@ -86,6 +88,7 @@ class ConfigRepository
         $config = $overriddenConfig[$overriddenKey];
     }
 
+    /** @var string[] $args */
     public function getValue(array $args): mixed
     {
         return Arrays::getNestedValue($this->config, $args);
@@ -101,7 +104,7 @@ class ConfigRepository
         $this->customConfigs[] = $customConfig;
     }
 
-    private function getConfigEnvFromPath($configPath): array
+    private function getConfigEnvFromPath(string $configPath): array
     {
         if (file_exists($configPath)) {
             /** @noinspection PhpIncludeInspection */

@@ -10,6 +10,7 @@ use Ouzo\Config;
 
 class ConfigOverrideProperty
 {
+    /** @var string[] $keys */
     public function __construct(private array $keys)
     {
     }
