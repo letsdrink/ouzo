@@ -7,8 +7,8 @@
 namespace Ouzo\Injection;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
-use Ouzo\Injection\Annotation\DocCommentExtractor;
+use Ouzo\Injection\Annotation\InjectMetadataProvider;
+use Ouzo\Injection\Annotation\AttributesInjectMetadataProvider;
 
 class Injector
 {
@@ -23,16 +23,16 @@ class Injector
 
     /**
      * @param InjectorConfig|null $config
-     * @param AnnotationMetadataProvider|null $provider
+     * @param InjectMetadataProvider|null $provider
      */
-    public function __construct(InjectorConfig $config = null, AnnotationMetadataProvider $provider = null)
+    public function __construct(InjectorConfig $config = null, InjectMetadataProvider $provider = null)
     {
         AnnotationReader::addGlobalIgnoredName('Inject');
         $this->injectorConfig = $config ?: new InjectorConfig();
         $this->bindings = new Bindings($this->injectorConfig, $this);
         $this->factory = new InstanceFactory(
             $this->bindings,
-            $provider ?: new DocCommentExtractor(),
+            $provider ?: new AttributesInjectMetadataProvider(),
             $this->injectorConfig->getEagerInstanceCreator(),
             $this->injectorConfig->getLazyInstanceCreator()
         );

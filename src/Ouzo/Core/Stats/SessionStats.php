@@ -21,9 +21,7 @@ class SessionStats
     /** @var Uri */
     private $uri;
 
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(Uri $uri)
     {
         $this->uri = $uri;

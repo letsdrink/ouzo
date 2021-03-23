@@ -5,12 +5,10 @@
  */
 
 use Ouzo\Injection\Annotation\Inject;
+use Ouzo\Injection\Injector;
 
 class ClassWithInjectorDep
 {
-    /**
-     * @Inject
-     * @var \Ouzo\Injection\Injector
-     */
-    public $injector;
+    #[Inject]
+    public Injector $injector;
 }

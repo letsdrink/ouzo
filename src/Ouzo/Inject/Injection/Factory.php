@@ -8,5 +8,5 @@ namespace Ouzo\Injection;
 
 interface Factory
 {
-    public function create();
+    public function create(): object;
 }

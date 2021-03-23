@@ -10,9 +10,7 @@ class ClassWithConstructorDepWithoutType
 {
     public $myClass;
 
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct($myClass)
     {
         $this->myClass = $myClass;

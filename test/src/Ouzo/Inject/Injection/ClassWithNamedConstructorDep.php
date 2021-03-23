@@ -9,12 +9,10 @@ use Ouzo\Injection\Annotation\Named;
 
 class ClassWithNamedConstructorDep
 {
-    public $myClass;
+    public ClassWithNoDep $myClass;
 
-    /**
-     * @Inject
-     * @Named("my_dep")
-     */
+    #[Inject]
+    #[Named('my_dep')]
     public function __construct(ClassWithNoDep $myClass)
     {
         $this->myClass = $myClass;

@@ -9,6 +9,7 @@ namespace Command;
 use Ouzo\ApplicationPaths;
 use Ouzo\Config;
 use Ouzo\Injection\Annotation\Inject;
+use Ouzo\Routing\Generator\RouteFileGenerator;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\Es6UriHelperGenerator;
@@ -33,11 +34,8 @@ class RoutesCommand extends Command
      */
     private $output;
 
-    /**
-     * @Inject
-     * @var \Ouzo\Routing\Generator\RouteFileGenerator
-     */
-    private $routeFileGenerator;
+    #[Inject]
+    private RouteFileGenerator $routeFileGenerator;
 
     public function configure()
     {

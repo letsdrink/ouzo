@@ -13,9 +13,7 @@ use Ouzo\Stats\SessionStats;
 
 class RequestContextFactory implements Factory
 {
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(
         private RoutingService $routingService,
         private RequestParameters $requestParameters,

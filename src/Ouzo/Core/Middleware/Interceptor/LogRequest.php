@@ -16,9 +16,7 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class LogRequest implements Interceptor
 {
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(private PathProviderInterface $pathProvider)
     {
     }

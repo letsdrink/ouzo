@@ -11,9 +11,7 @@ use Ouzo\Uri;
 
 class RequestParameters
 {
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(private RoutingService $routingService)
     {
     }

@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Generator;
 
@@ -12,10 +16,7 @@ class RouteFileGenerator
     /** @var Loader */
     private $loader;
 
-    /**
-     * @Inject
-     * @param AnnotationDirectoryLoader $loader
-     */
+    #[Inject]
     public function __construct(AnnotationDirectoryLoader $loader)
     {
         $this->loader = $loader;

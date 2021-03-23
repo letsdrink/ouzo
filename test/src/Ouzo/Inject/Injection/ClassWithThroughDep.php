@@ -8,9 +8,6 @@ use Ouzo\Injection\Annotation\Inject;
 
 class ClassWithThroughDep
 {
-    /**
-     * @Inject
-     * @var \ClassWithNoDep
-     */
-    public $myClass;
+    #[Inject]
+    public ClassWithNoDep $myClass;
 }

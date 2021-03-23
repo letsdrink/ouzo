@@ -6,7 +6,20 @@
 
 class ClassWithNoDep
 {
+    private bool $throughFactoryFlag = false;
+
     public function someMethod()
     {
+    }
+
+    public function isThroughFactoryFlag(): bool
+    {
+        return $this->throughFactoryFlag;
+    }
+
+    public function setThroughFactoryFlag(): ClassWithNoDep
+    {
+        $this->throughFactoryFlag = true;
+        return $this;
     }
 }

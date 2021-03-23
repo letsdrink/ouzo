@@ -24,9 +24,7 @@ use ReflectionClass;
 
 class RequestExecutor
 {
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(
         private HeaderSender $headerSender,
         private CookiesSetter $cookiesSetter,

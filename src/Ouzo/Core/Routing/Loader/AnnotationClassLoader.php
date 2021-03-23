@@ -1,10 +1,15 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Loader;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
+use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Request\Annotation\ResponseCode;
 use Ouzo\Routing\Annotation\Route;
 use ReflectionClass;
@@ -15,10 +20,7 @@ class AnnotationClassLoader implements Loader
     /** @var Reader */
     private $reader;
 
-    /**
-     * @Inject
-     * @param AnnotationReader $reader
-     */
+    #[Inject]
     public function __construct(AnnotationReader $reader)
     {
         $this->reader = $reader;

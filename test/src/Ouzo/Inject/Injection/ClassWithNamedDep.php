@@ -9,10 +9,7 @@ use Ouzo\Injection\Annotation\Named;
 
 class ClassWithNamedDep
 {
-    /**
-     * @Inject
-     * @Named("my_dep")
-     * @var \ClassWithNoDep
-     */
-    public $myClass;
+    #[Inject]
+    #[Named('my_dep')]
+    public ClassWithNoDep $myClass;
 }

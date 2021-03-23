@@ -17,10 +17,7 @@ use ProxyManager\Proxy\VirtualProxyInterface;
 
 class InjectorTest extends TestCase
 {
-    /**
-     * @var Injector
-     */
-    private $injector;
+    private Injector $injector;
 
     public function setUp(): void
     {
@@ -391,7 +388,8 @@ class InjectorTest extends TestCase
 
         //then
         $this->assertInstanceOf(ClassWithThroughDep::class, $instance);
-        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance->myClass);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
+        $this->assertTrue($instance->myClass->isThroughFactoryFlag());
     }
 
     /**
@@ -426,7 +424,8 @@ class InjectorTest extends TestCase
 
         //then
         $this->assertInstanceOf(ClassWithNamedThroughDep::class, $instance);
-        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance->myClass);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
+        $this->assertTrue($instance->myClass->isThroughFactoryFlag());
     }
 
     /**
@@ -445,8 +444,10 @@ class InjectorTest extends TestCase
 
         //then
         $this->assertSame($instance1, $instance2);
-        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance1);
-        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance2);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance1);
+        $this->assertTrue($instance1->isThroughFactoryFlag());
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance2);
+        $this->assertTrue($instance2->isThroughFactoryFlag());
     }
 
     /**
@@ -461,12 +462,14 @@ class InjectorTest extends TestCase
         $config->bind(ClassFactory::class)->in(Scope::SINGLETON);
 
         //when
+        /** @var ClassWithNoDep $instance1 */
         $instance1 = $injector->getInstance(ClassWithNoDep::class);
         $instance2 = $injector->getInstance(ClassFactory::class);
 
         //then
         $this->assertNotSame($instance1, $instance2);
-        $this->assertDependencyInjected(ClassCreatedByFactory::class, $instance1);
+        $this->assertDependencyInjected(ClassWithNoDep::class, $instance1);
+        $this->assertTrue($instance1->isThroughFactoryFlag());
         $this->assertDependencyInjected(ClassFactory::class, $instance2);
     }
 

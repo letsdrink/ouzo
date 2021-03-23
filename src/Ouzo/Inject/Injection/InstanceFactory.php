@@ -6,7 +6,7 @@
 
 namespace Ouzo\Injection;
 
-use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
+use Ouzo\Injection\Annotation\InjectMetadataProvider;
 use Ouzo\Injection\Creator\InstanceCreator;
 use Ouzo\Utilities\Arrays;
 use ReflectionClass;
@@ -15,7 +15,7 @@ class InstanceFactory
 {
     /** @var Bindings */
     private $bindings;
-    /** @var AnnotationMetadataProvider */
+    /** @var InjectMetadataProvider */
     private $provider;
     /** @var InstanceCreator */
     private $eagerInstanceCreator;
@@ -24,7 +24,7 @@ class InstanceFactory
 
     public function __construct(
         Bindings $bindings,
-        AnnotationMetadataProvider $provider,
+        InjectMetadataProvider $provider,
         InstanceCreator $eagerInstanceCreator,
         InstanceCreator $lazyInstanceCreator
     )

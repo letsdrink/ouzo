@@ -32,9 +32,7 @@ class FrontController
     /** @var RequestContext */
     private $requestContext;
 
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(
         RequestContextFactory $requestContextFactory,
         MiddlewareRepository $middlewareRepository,

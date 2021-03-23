@@ -8,7 +8,7 @@ use Ouzo\Injection\Factory;
 
 class ExceptionThrowingClassFactory implements Factory
 {
-    public function create()
+    public function create(): object
     {
         throw new Exception('Should never be invoked! It means lazy is not working.');
     }

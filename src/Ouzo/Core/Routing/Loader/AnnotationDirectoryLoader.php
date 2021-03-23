@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Loader;
 
@@ -15,10 +19,7 @@ class AnnotationDirectoryLoader implements Loader
 {
     private $loader;
 
-    /**
-     * @Inject
-     * @param AnnotationClassLoader $loader
-     */
+    #[Inject]
     public function __construct(AnnotationClassLoader $loader)
     {
         $this->loader = $loader;

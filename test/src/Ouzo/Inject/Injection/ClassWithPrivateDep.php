@@ -8,16 +8,10 @@ use Ouzo\Injection\Annotation\Inject;
 
 class ClassWithPrivateDep
 {
-    /**
-     * @Inject
-     * @var \ClassWithNoDep
-     */
-    private $myClass;
+    #[Inject]
+    private ClassWithNoDep $myClass;
 
-    /**
-     * @return \ClassWithNoDep
-     */
-    public function getMyClass()
+    public function getMyClass(): ClassWithNoDep
     {
         return $this->myClass;
     }

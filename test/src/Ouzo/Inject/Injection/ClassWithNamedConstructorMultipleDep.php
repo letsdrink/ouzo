@@ -1,17 +1,20 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Injection\Annotation\Named;
 
 class ClassWithNamedConstructorMultipleDep
 {
-    public $myClass;
-    public $secondClass;
+    public ClassWithNoDep $myClass;
+    public ClassWithPrivateDep $secondClass;
 
-    /**
-     * @Inject
-     * @Named("myClass=my_dep,secondClass=my_second_dep")
-     */
+    #[Inject]
+    #[Named('my_dep', 'myClass')]
+    #[Named('my_second_dep', 'secondClass')]
     public function __construct(ClassWithNoDep $myClass, ClassWithPrivateDep $secondClass)
     {
         $this->myClass = $myClass;

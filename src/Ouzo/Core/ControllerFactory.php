@@ -8,17 +8,15 @@ namespace Ouzo;
 
 use LogicException;
 use Ouzo\Injection\Annotation\Inject;
+use Ouzo\Injection\Injector;
 use Ouzo\Request\RequestParameters;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Stats\SessionStats;
 
 class ControllerFactory
 {
-    /**
-     * @Inject
-     * @var \Ouzo\Injection\Injector
-     */
-    private $injector;
+    #[Inject]
+    private Injector $injector;
 
     /**
      * @param RouteRule $routeRule

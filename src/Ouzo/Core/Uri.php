@@ -16,9 +16,7 @@ class Uri
 {
     private $pathProvider;
 
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(PathProviderInterface $pathProvider)
     {
         $this->pathProvider = $pathProvider;

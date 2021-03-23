@@ -8,9 +8,8 @@ use Ouzo\Injection\Factory;
 
 class ClassFactory implements Factory
 {
-
-    public function create()
+    public function create(): ClassWithNoDep
     {
-        return new ClassCreatedByFactory();
+        return (new ClassWithNoDep())->setThroughFactoryFlag();
     }
 }

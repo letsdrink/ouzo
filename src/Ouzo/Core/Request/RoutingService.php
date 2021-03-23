@@ -16,9 +16,7 @@ class RoutingService
     private Uri $uri;
     private RouteRule $routeRule;
 
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(Uri $uri)
     {
         $this->uri = $uri;

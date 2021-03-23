@@ -8,11 +8,9 @@ use Ouzo\Injection\Annotation\Inject;
 
 class ClassWithConstructorDep
 {
-    public $myClass;
+    public ClassWithNoDep $myClass;
 
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(ClassWithNoDep $myClass)
     {
         $this->myClass = $myClass;

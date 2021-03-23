@@ -8,8 +8,6 @@ use Ouzo\Injection\Annotation\Inject;
 
 class ClassWithInvalidDep
 {
-    /**
-     * @Inject
-     */
+    #[Inject]
     public $myClass;
 }

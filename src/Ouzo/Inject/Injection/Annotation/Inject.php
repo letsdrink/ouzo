@@ -6,10 +6,9 @@
 
 namespace Ouzo\Injection\Annotation;
 
-/**
- * @Annotation
- * @Target({"ALL"})
- */
+use Attribute;
+
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class Inject
 {
 }

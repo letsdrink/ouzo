@@ -6,13 +6,8 @@
 
 namespace Ouzo\Injection\Creator;
 
-
-use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
-use Ouzo\Injection\Bindings;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
-use Ouzo\Injection\InstanceFactory;
-use Ouzo\Injection\InstanceRepository;
 use Ouzo\Injection\Scope;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;

@@ -9,12 +9,9 @@ use Ouzo\Injection\Annotation\Inject;
 
 class ClassWithTypedProperty
 {
-    /** @Inject */
+    #[Inject]
     public ClassWithNamespace $myClass;
 
-    /**
-     * @Inject
-     * @var ClassWithNoDep
-     */
-    public $mySecondClass;
+    #[Inject]
+    public ClassWithNoDep $mySecondClass;
 }

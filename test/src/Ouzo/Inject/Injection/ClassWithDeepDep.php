@@ -8,9 +8,6 @@ use Ouzo\Injection\Annotation\Inject;
 
 class ClassWithDeepDep
 {
-    /**
-     * @Inject
-     * @var \ClassWithDep
-     */
-    public $classWithDep;
+    #[Inject]
+    public ClassWithDep $classWithDep;
 }

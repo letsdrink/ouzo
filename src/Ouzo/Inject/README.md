@@ -43,16 +43,13 @@ $config = new InjectorConfig();
 $config->bind('\MyClass')->throughFactory('\MyClassFactory');
 ```
 
-Auto-wiring dependencies (with @Inject):
+Auto-wiring dependencies (with #[Inject]):
 
 ```php
 class MyClass
 {
-  /**
-   * @Inject
-   * @var \OtherClass
-   */
-  private $otherClass;
+  #[Inject]
+  private \OtherClass $otherClass;
 }
 ```
 
@@ -68,11 +65,9 @@ Auto-wiring for named binding:
 ```php
 class MyClass
 {
-  /**
-   * @Inject @Named("some_name")
-   * @var \OtherClass
-   */
-  private $otherClass;
+  #[Inject]
+  #[Named('some_name')]
+  private \OtherClass $otherClass;
 }
 ```
 
@@ -84,10 +79,9 @@ class MyClass
     private $otherClass;
     private $andAnotherClass;
 
-    /**
-     * @Inject
-     * @Named("otherClass=some_name,andAnotherClass=new_named")
-     */
+    #[Inject]
+    #[Named('some_name', 'otherClass')]
+    #[Named('new_named', 'andAnotherClass')]
     public function __construct(OtherClass $otherClass, AndAnotherClass $andAnotherClass)
     {
         $this->otherClass = $otherClass;
@@ -105,9 +99,7 @@ class MyClass
 {
     private $otherClass;
 
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct(OtherClass $otherClass)
     {
         $this->otherClass = $otherClass;
