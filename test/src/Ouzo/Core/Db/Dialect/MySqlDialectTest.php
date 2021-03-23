@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class MySqlDialectTest extends TestCase
 {
-    /**
-     * @var MySqlDialect
-     */
-    private $dialect;
+    private MySqlDialect $dialect;
 
     protected function setUp(): void
     {

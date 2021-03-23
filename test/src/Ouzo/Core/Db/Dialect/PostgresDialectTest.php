@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class PostgresDialectTest extends TestCase
 {
-    /**
-     * @var PostgresDialect
-     */
-    private $dialect;
+    private PostgresDialect $dialect;
 
     protected function setUp(): void
     {

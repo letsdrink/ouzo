@@ -7,15 +7,15 @@ use Ouzo\Tests\DbTransactionalTestCase;
 
 class ModelOrderedRelationTest extends DbTransactionalTestCase
 {
-    private $_category;
+    private Category $category;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->_category = Category::create(['name' => 'sony']);
-        Product::create(['name' => 'a', 'id_category' => $this->_category->getId()]);
-        Product::create(['name' => 'c', 'id_category' => $this->_category->getId()]);
-        Product::create(['name' => 'b', 'id_category' => $this->_category->getId()]);
+        $this->category = Category::create(['name' => 'sony']);
+        Product::create(['name' => 'a', 'id_category' => $this->category->getId()]);
+        Product::create(['name' => 'c', 'id_category' => $this->category->getId()]);
+        Product::create(['name' => 'b', 'id_category' => $this->category->getId()]);
     }
 
     /**
@@ -24,7 +24,7 @@ class ModelOrderedRelationTest extends DbTransactionalTestCase
     public function shouldOrderLazilyFetchedRelation()
     {
         //when
-        $products = $this->_category->products_ordered_by_name;
+        $products = $this->category->products_ordered_by_name;
 
         //then
         Assert::thatArray($products)->onProperty('name')->containsExactly('a', 'b', 'c');
