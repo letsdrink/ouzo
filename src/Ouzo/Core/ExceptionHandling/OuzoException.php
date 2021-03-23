@@ -25,7 +25,7 @@ class OuzoException extends Exception
     public function __construct(
         int $httpCode,
         string $message,
-        array $errors,
+        Error|array $errors,
         array $headers = []
     )
     {
