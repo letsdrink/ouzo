@@ -19,7 +19,7 @@ class CsrfProtector
 {
     public static function protect(Controller $controller): void
     {
-        $controller->before[] = function () {
+        $controller->before[] = function (): bool {
             if (CsrfProtector::isMethodProtected(Uri::getRequestType())) {
                 CsrfProtector::validate();
             }

@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use ArrayIterator;
@@ -15,20 +16,14 @@ use PDO;
 class BatchInserter
 {
     /** @var Model[] */
-    private $models = [];
+    private array $models = [];
 
-    /**
-     * @param Model $model
-     */
-    public function add(Model $model)
+    public function add(Model $model): void
     {
         $this->models[] = $model;
     }
 
-    /**
-     * @return void
-     */
-    public function execute()
+    public function execute(): void
     {
         if (empty($this->models)) {
             return;
@@ -48,12 +43,9 @@ class BatchInserter
         $this->callAfterSaveCallbacks();
     }
 
-    /**
-     * @param string $primaryKey
-     * @param array $ids
-     * @return void
+    /** @param string[] $ids
      */
-    private function assignPrimaryKeys($primaryKey, $ids)
+    private function assignPrimaryKeys(string $primaryKey, array $ids): void
     {
         if ($primaryKey) {
             $primaryKeysIterator = new ArrayIterator($ids);
@@ -64,20 +56,14 @@ class BatchInserter
         }
     }
 
-    /**
-     * @return void
-     */
-    public function callBeforeSaveCallbacks()
+    public function callBeforeSaveCallbacks(): void
     {
         foreach ($this->models as $model) {
             $model->callBeforeSaveCallbacks();
         }
     }
 
-    /**
-     * @return void
-     */
-    public function callAfterSaveCallbacks()
+    public function callAfterSaveCallbacks(): void
     {
         foreach ($this->models as $model) {
             $model->callAfterSaveCallbacks();
@@ -85,11 +71,7 @@ class BatchInserter
         }
     }
 
-    /**
-     * @param string $primaryKey
-     * @return array
-     */
-    public function prepareParams($primaryKey)
+    public function prepareParams(string $primaryKey): array
     {
         $allValues = [];
         foreach ($this->models as $model) {

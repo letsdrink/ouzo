@@ -3,54 +3,32 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Db;
 
 class TransactionalProxy
 {
-    /** @var mixed */
-    private $object;
-
-    /**
-     * @param mixed $object
-     */
-    public function __construct($object)
+    public function __construct(private mixed $object)
     {
-        $this->object = $object;
     }
 
-    /**
-     * @param mixed $object
-     * @return TransactionalProxy
-     */
-    public static function newInstance($object)
+    public static function newInstance(mixed $object): TransactionalProxy
     {
         return new TransactionalProxy($object);
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         $object = $this->object;
-        return Db::getInstance()->runInTransaction(function () use ($object, $name, $arguments) {
-            return call_user_func_array([$object, $name], $arguments);
-        });
+        return Db::getInstance()->runInTransaction(fn() => call_user_func_array([$object, $name], $arguments));
     }
 
-    /**
-     * @return mixed
-     */
-    public function __invoke()
+    public function __invoke(): mixed
     {
         $function = $this->object;
         $arguments = func_get_args();
-        return Db::getInstance()->runInTransaction(function () use ($function, $arguments) {
-            return call_user_func_array($function, $arguments);
-        });
+        return Db::getInstance()->runInTransaction(fn() => call_user_func_array($function, $arguments));
     }
 }

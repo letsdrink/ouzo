@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\WhereClause;
 
 use Ouzo\Db\Dialect\DialectUtil;
@@ -11,38 +12,30 @@ use Ouzo\Utilities\Arrays;
 class OrClause extends WhereClause
 {
     /** @var WhereClause[] */
-    private $conditions;
+    private array $conditions;
 
     public function __construct(array $conditions)
     {
         $this->conditions = $conditions;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
-        return Arrays::all($this->conditions, function (WhereClause $where) {
-            return $where->isEmpty();
-        });
+        return Arrays::all($this->conditions, fn(WhereClause $where) => $where->isEmpty());
     }
 
-    public function isNeverSatisfied()
+    public function isNeverSatisfied(): bool
     {
-        return Arrays::all($this->conditions, function (WhereClause $where) {
-            return $where->isNeverSatisfied();
-        });
+        return Arrays::all($this->conditions, fn(WhereClause $where) => $where->isNeverSatisfied());
     }
 
-    public function toSql()
+    public function toSql(): string
     {
-        return DialectUtil::joinClauses($this->conditions, 'OR', function (WhereClause $where) {
-            return $where->toSql();
-        });
+        return DialectUtil::joinClauses($this->conditions, 'OR', fn(WhereClause $where) => $where->toSql());
     }
 
-    public function getParameters()
+    public function getParameters(): array
     {
-        return Arrays::concat(Arrays::map($this->conditions, function (WhereClause $where) {
-            return $where->getParameters();
-        }));
+        return Arrays::concat(Arrays::map($this->conditions, fn(WhereClause $where) => $where->getParameters()));
     }
 }

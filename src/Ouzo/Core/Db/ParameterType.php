@@ -3,17 +3,14 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use PDO;
 
 class ParameterType
 {
-    /**
-     * @param int|bool $param
-     * @return int
-     */
-    public static function getType($param)
+    public static function getType(mixed $param): int
     {
         if (is_int($param)) {
             return PDO::PARAM_INT;

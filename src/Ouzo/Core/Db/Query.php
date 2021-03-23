@@ -13,47 +13,30 @@ use PDO;
 
 class Query
 {
-    /** @var string */
-    public $table;
-    /** @var string|null */
-    public $aliasTable;
-    /** @var bool */
-    public $distinct = false;
-    /** @var array */
-    public $selectColumns;
-    /** @var int */
-    public $selectType = PDO::FETCH_ASSOC;
-    /** @var string */
-    public $order;
-    /** @var int */
-    public $limit;
-    /** @var int */
-    public $offset;
-    /** @var array */
-    public $updateAttributes = [];
-    /** @var array */
-    public $upsertConflictColumns = [];
+    public Query|string|null $table = null;
+    public ?string $aliasTable = null;
+    public bool $distinct = false;
+    /** @var string[] */
+    public ?array $selectColumns = [];
+    public int $selectType = PDO::FETCH_ASSOC;
+    public string|array|null $order = null;
+    public ?int $limit = null;
+    public ?int $offset = null;
+    public array $updateAttributes = [];
+    public array $upsertConflictColumns = [];
     /** @var WhereClause[] */
-    public $whereClauses = [];
+    public array $whereClauses = [];
     /** @var JoinClause[] */
-    public $joinClauses = [];
+    public array $joinClauses = [];
     /** @var JoinClause[] */
-    public $usingClauses = [];
-    /** @var int|null */
-    public $type;
-    /** @var array */
-    public $options = [];
-    /** @var string */
-    public $groupBy;
-    /** @var bool */
-    public $lockForUpdate = false;
-    /** @var string */
-    public $comment;
+    public array $usingClauses = [];
+    public ?int $type;
+    public array $options = [];
+    public string|array|null $groupBy = null;
+    public bool $lockForUpdate = false;
+    public ?string $comment = null;
 
-    /**
-     * @param int|null $type
-     */
-    public function __construct($type = null)
+    public function __construct(?int $type = null)
     {
         $this->type = $type ? $type : QueryType::$SELECT;
     }
@@ -211,12 +194,7 @@ class Query
         return $this;
     }
 
-    /**
-     * @param array|string $where
-     * @param array|null $whereValues
-     * @return $this
-     */
-    public function where($where = '', $whereValues = null)
+    public function where(array|string|WhereClause $where = '', array|string|null $whereValues = null): static
     {
         $this->validateParameters($where);
         $this->whereClauses[] = WhereClause::create($where, $whereValues);

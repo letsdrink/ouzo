@@ -6,6 +6,7 @@
 
 namespace Ouzo\Db;
 
+use Closure;
 use Ouzo\Logger\Backtrace;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Objects;
@@ -14,128 +15,68 @@ use PDOStatement;
 
 class StatementExecutor
 {
-    /** @var string */
-    private $sql;
-    /** @var string */
-    private $humanizedSql;
-    /** @var PDO */
-    private $dbHandle;
-    /** @var array */
-    private $boundValues;
-    /** @var PDOExecutor */
-    private $pdoExecutor;
+    private string $humanizedSql;
 
-    /**
-     * @param PDO $dbHandle
-     * @param string $sql
-     * @param array $boundValues
-     * @param PDOExecutor $pdoExecutor
-     */
-    private function __construct($dbHandle, $sql, $boundValues, PDOExecutor $pdoExecutor)
+    private function __construct(
+        private PDO $dbHandle,
+        private string $sql,
+        private array $boundValues,
+        private PDOExecutor $pdoExecutor
+    )
     {
-        $this->boundValues = $boundValues;
-        $this->dbHandle = $dbHandle;
-        $this->sql = $sql;
         $this->humanizedSql = QueryHumanizer::humanize($sql);
-        $this->pdoExecutor = $pdoExecutor;
     }
 
-    /**
-     * @param \Closure $afterCallback
-     * @return mixed
-     */
-    private function _execute($afterCallback)
+    private function executeWithStats(Closure $afterCallback): mixed
     {
-        return Stats::trace($this->humanizedSql, $this->boundValues, function () use ($afterCallback) {
-            return $this->internalExecute($afterCallback);
-        });
+        return Stats::trace($this->humanizedSql, $this->boundValues, fn() => $this->internalExecute($afterCallback));
     }
 
-    /**
-     * @param \Closure $afterCallback
-     * @return mixed
-     */
-    private function internalExecute($afterCallback)
+    private function internalExecute(Closure $afterCallback): mixed
     {
-        $pdoStatement = $this->_createPdoStatement();
+        $pdoStatement = $this->createPdoStatement();
         $result = call_user_func($afterCallback, $pdoStatement);
         $pdoStatement->closeCursor();
         return $result;
     }
 
-    /**
-     * Returns number of affected rows
-     * @return mixed
-     */
-    public function execute()
+    public function execute(): mixed
     {
-        return $this->_execute(function (PDOStatement $pdoStatement) {
-            return $pdoStatement->rowCount();
-        });
+        return $this->executeWithStats(fn(PDOStatement $pdoStatement) => $pdoStatement->rowCount());
     }
 
-    /**
-     * @param string $function
-     * @param string $fetchStyle
-     * @return mixed
-     */
-    public function executeAndFetch($function, $fetchStyle)
+    public function executeAndFetch(string $function, string $fetchStyle): mixed
     {
-        return $this->_execute(function ($pdoStatement) use ($function, $fetchStyle) {
-            return $pdoStatement->$function($fetchStyle);
-        });
+        return $this->executeWithStats(fn($pdoStatement) => $pdoStatement->$function($fetchStyle));
     }
 
-    /**
-     * @param int $fetchMode
-     * @return mixed
-     */
-    public function fetch($fetchMode = PDO::FETCH_ASSOC)
+    public function fetch(int $fetchMode = PDO::FETCH_ASSOC): mixed
     {
         return $this->executeAndFetch('fetch', $fetchMode);
     }
 
-    /**
-     * @param int $fetchMode
-     * @return mixed
-     */
-    public function fetchAll($fetchMode = PDO::FETCH_ASSOC)
+    public function fetchAll(int $fetchMode = PDO::FETCH_ASSOC): mixed
     {
         return $this->executeAndFetch('fetchAll', $fetchMode);
     }
 
-    /**
-     * @param PDO $dbHandle
-     * @param string $sql
-     * @param array $boundValues
-     * @param array $options
-     * @return StatementExecutor
-     */
-    public static function prepare($dbHandle, $sql, $boundValues, $options)
+    public static function prepare(PDO $dbHandle, string $sql, array $boundValues, array $options): StatementExecutor
     {
         $pdoExecutor = PDOExecutor::newInstance($options);
         return new StatementExecutor($dbHandle, $sql, $boundValues, $pdoExecutor);
     }
 
-    /**
-     * @param array $options
-     * @return StatementIterator
-     */
-    public function fetchIterator($options = [])
+    public function fetchIterator(array $options = []): StatementIterator
     {
         return Stats::trace($this->humanizedSql, $this->boundValues, function () use ($options) {
-            $pdoStatement = $this->_createPdoStatement($options);
+            $pdoStatement = $this->createPdoStatement($options);
             return new StatementIterator($pdoStatement);
         });
     }
 
-    /**
-     * @param array $options
-     * @return PDOStatement
-     */
-    public function _createPdoStatement($options = [])
+    public function createPdoStatement(array $options = []): PDOStatement
     {
-        $sqlString = $this->humanizedSql . ' with params: ' . Objects::toString($this->boundValues);
+        $sqlString = sprintf("%s with params: %s", $this->humanizedSql, Objects::toString($this->boundValues));
         $callingClass = Backtrace::getCallingClass();
         Logger::getLogger(__CLASS__)->info("From: %s Query: %s", [$callingClass, $sqlString]);
 

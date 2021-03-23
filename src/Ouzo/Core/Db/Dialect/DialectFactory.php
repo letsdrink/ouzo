@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\Dialect;
 
 use Exception;
@@ -10,11 +11,7 @@ use Ouzo\Config;
 
 class DialectFactory
 {
-    /**
-     * @return Dialect
-     * @throws Exception
-     */
-    public static function create()
+    public static function create(): Dialect
     {
         $dialectClass = Config::getValue('sql_dialect');
         if (!$dialectClass) {

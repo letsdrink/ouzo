@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Db\WhereClause\WhereClause;
@@ -11,33 +12,21 @@ use Ouzo\Utilities\Objects;
 
 class QueryBoundValuesExtractor
 {
-    /** @var array */
-    private $boundValues = [];
-    /** @var Query */
-    private $query;
+    private array $boundValues = [];
+    private Query $query;
 
-    /**
-     * @param Query $query
-     */
     public function __construct(Query $query)
     {
         $this->query = $query;
     }
 
-    /**
-     * @return array
-     */
-    public function extract()
+    public function extract(): array
     {
         $this->addBindValues($this->query);
         return $this->boundValues;
     }
 
-    /**
-     * @param $query
-     * @return void
-     */
-    private function addBindValues($query)
+    private function addBindValues(Query $query): void
     {
         if ($query->table instanceof Query) {
             $this->addBindValues($query->table);
@@ -62,11 +51,8 @@ class QueryBoundValuesExtractor
         }
     }
 
-    /**
-     * @param JoinClause[] $joinClauses
-     * @return void
-     */
-    private function addBindValuesFromJoinClauses($joinClauses)
+    /** @param JoinClause[] $joinClauses */
+    private function addBindValuesFromJoinClauses(array $joinClauses): void
     {
         foreach ($joinClauses as $joinClause) {
             foreach ($joinClause->onClauses as $onClause) {
@@ -75,22 +61,15 @@ class QueryBoundValuesExtractor
         }
     }
 
-    /**
-     * @param WhereClause $whereClause
-     * @return void
-     */
-    private function addBindValuesFromWhereClause(WhereClause $whereClause)
+    /** @param WhereClause $whereClause */
+    private function addBindValuesFromWhereClause(WhereClause $whereClause): void
     {
         if (!$whereClause->isEmpty()) {
             $this->addBindValue($whereClause->getParameters());
         }
     }
 
-    /**
-     * @param array $array
-     * @return void
-     */
-    private function addBindArrayValue(array $array)
+    private function addBindArrayValue(array $array): void
     {
         foreach ($array as $value) {
             if ($value instanceof Restriction) {
@@ -101,10 +80,7 @@ class QueryBoundValuesExtractor
         }
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function addBindValue($value)
+    public function addBindValue(mixed $value): void
     {
         if (is_array($value)) {
             $this->addBindArrayValue($value);

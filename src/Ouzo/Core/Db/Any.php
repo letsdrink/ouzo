@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Db\WhereClause\ArrayWhereClause;
@@ -12,11 +13,7 @@ use Ouzo\Utilities\Arrays;
 
 class Any
 {
-    /**
-     * @param array $conditions
-     * @return WhereClause
-     */
-    public static function of(array $conditions)
+    public static function of(array $conditions): WhereClause
     {
         if (Arrays::isAssociative($conditions)) {
             return new ArrayWhereClause($conditions, 'OR');

@@ -181,41 +181,41 @@ class GeneratorTest extends TestCase
  */
 class MyImagineDialect extends Dialect
 {
-    public function getConnectionErrorCodes()
+    public function getConnectionErrorCodes(): array
     {
         return [];
     }
 
-    public function getErrorCode($errorInfo)
+    public function getErrorCode(array $errorInfo): mixed
     {
         return 0;
     }
 
-    function batchInsert($table, $primaryKey, $columns, $batchSize)
+    function batchInsert(string $table, string $primaryKey, $columns, $batchSize): string
     {
     }
 
-    protected function insertEmptyRow()
+    protected function insertEmptyRow(): string
     {
         return '';
     }
 
-    public function regexpMatcher()
+    public function regexpMatcher(): string
     {
         return '~';
     }
 
-    protected function quote($word)
+    protected function quote(string $word): string
     {
         return $word;
     }
 
-    public function onConflictUpdate()
+    public function onConflictUpdate(): string
     {
         return '';
     }
 
-    public function onConflictDoNothing()
+    public function onConflictDoNothing(): string
     {
         return '';
     }

@@ -3,8 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
+use Closure;
 use Ouzo\AutoloadNamespaces;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\DbException;
@@ -14,40 +16,15 @@ use Ouzo\Utilities\Arrays;
 
 class Relation
 {
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $class;
-    /** @var string */
-    private $localKey;
-    /** @var string */
-    private $foreignKey;
-    /** @var bool */
-    private $collection;
-    /** @var string|\Closure */
-    private $condition;
-    /** @var string|null */
-    private $order;
-
-    /**
-     * Relation constructor.
-     * @param string $name
-     * @param string $class
-     * @param string $localKey
-     * @param string $foreignKey
-     * @param bool $collection
-     * @param string|\Closure $condition
-     * @param string|null $order
-     */
-    public function __construct($name, $class, $localKey, $foreignKey, $collection, $condition = '', $order = null)
+    public function __construct(
+        private string $name,
+        private string $class,
+        private string $localKey,
+        private string $foreignKey,
+        private bool $collection,
+        private Closure|string|array $condition = '',
+        private array|string|null $order = null)
     {
-        $this->name = $name;
-        $this->class = $class;
-        $this->localKey = $localKey;
-        $this->foreignKey = $foreignKey;
-        $this->collection = $collection;
-        $this->condition = $condition;
-        $this->order = $order;
     }
 
     /**
@@ -58,49 +35,33 @@ class Relation
      * @var bool $collection
      * @var string $destinationField
      * }
-     * @return Relation
      */
-    public static function inline($params)
+    public static function inline(array $params): Relation
     {
         return RelationFactory::inline($params);
     }
 
-    /**
-     * @return string
-     */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @return string
-     */
-    public function getLocalKey()
+    public function getLocalKey(): string
     {
         return $this->localKey;
     }
 
-    /**
-     * @return string
-     */
-    public function getForeignKey()
+    public function getForeignKey(): string
     {
         return $this->foreignKey;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return WhereClause
-     */
-    public function getCondition()
+    public function getCondition(): WhereClause
     {
         if (is_callable($this->condition)) {
             return call_user_func($this->condition);
@@ -108,36 +69,22 @@ class Relation
         return WhereClause::create($this->condition);
     }
 
-    /**
-     * @return null|string
-     */
-    public function getOrder()
+    public function getOrder(): string|array|null
     {
         return $this->order;
     }
 
-    /**
-     * @return Model
-     */
-    public function getRelationModelObject()
+    public function getRelationModelObject(): Model
     {
         return MetaModelCache::getMetaInstance(AutoloadNamespaces::getModelNamespace() . $this->class);
     }
 
-    /**
-     * @return bool
-     */
-    public function isCollection()
+    public function isCollection(): bool
     {
         return $this->collection;
     }
 
-    /**
-     * @param mixed $values
-     * @return mixed|null
-     * @throws DbException
-     */
-    public function extractValue($values)
+    public function extractValue(mixed $values): mixed
     {
         if (!$this->collection) {
             if (count($values) > 1) {
@@ -148,19 +95,12 @@ class Relation
         return $values;
     }
 
-    /**
-     * @param string $name
-     * @return Relation
-     */
-    public function withName($name)
+    public function withName(string $name): Relation
     {
         return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection, $this->condition);
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return "Relation {$this->name} {$this->class} {$this->localKey} {$this->foreignKey}";
     }

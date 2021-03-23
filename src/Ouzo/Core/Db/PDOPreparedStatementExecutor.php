@@ -6,14 +6,13 @@
 
 namespace Ouzo\Db;
 
+use PDO;
 use PDOException;
+use PDOStatement;
 
 class PDOPreparedStatementExecutor extends PDOExecutor
 {
-    /**
-     * @inheritdoc
-     */
-    public function createPDOStatement($dbHandle, $sql, $boundValues, $queryString, $options = [])
+    public function createPDOStatement(PDO $dbHandle, string $sql, array $boundValues, string $queryString, array $options = []): PDOStatement
     {
         try {
             $pdoStatement = $dbHandle->prepare($sql, $options);

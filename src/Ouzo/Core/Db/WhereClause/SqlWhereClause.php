@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\WhereClause;
 
 use Ouzo\Utilities\Arrays;
@@ -10,29 +11,26 @@ use Ouzo\Utilities\Strings;
 
 class SqlWhereClause extends WhereClause
 {
-    /** @var string */
-    private $sql;
+    private string $sql;
+    private array $values;
 
-    /** @var array */
-    private $values;
-
-    public function __construct($sql, $parameters = [])
+    public function __construct(string $sql, null|array|string $parameters = [])
     {
         $this->sql = $sql;
         $this->values = $parameters === null ? [null] : Arrays::toArray($parameters);
     }
 
-    public function toSql()
+    public function toSql(): string
     {
-        return stripos($this->sql, 'OR') ? '(' . $this->sql . ')' : $this->sql;
+        return stripos($this->sql, 'OR') ? "({$this->sql})" : $this->sql;
     }
 
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->values;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return Strings::isBlank($this->sql);
     }

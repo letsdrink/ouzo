@@ -3,25 +3,21 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
+use Closure;
 use Exception;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 
 class BatchLoadingSession
 {
-    /** @var array */
-    private $queryResultsById = [];
+    private array $queryResultsById = [];
+    private static ?BatchLoadingSession $currentSession = null;
 
-    /** @var string|null */
-    private static $currentSession;
-
-    /**
-     * @param Model $model
-     * @return mixed
-     */
-    public static function getBatch(Model $model)
+    /** @return Model[] */
+    public static function getBatch(Model $model): array
     {
         if (self::isAllocated()) {
             return Arrays::getValue(BatchLoadingSession::$currentSession->queryResultsById, spl_object_hash($model), [$model]);
@@ -29,35 +25,22 @@ class BatchLoadingSession
         return [$model];
     }
 
-    /**
-     * @return bool
-     */
-    public static function isAllocated()
+    public static function isAllocated(): bool
     {
         return BatchLoadingSession::$currentSession !== null;
     }
 
-    /**
-     * @return void
-     */
-    public static function allocate()
+    public static function allocate(): void
     {
         BatchLoadingSession::$currentSession = new BatchLoadingSession();
     }
 
-    /**
-     * @return void
-     */
     public static function deallocate()
     {
         BatchLoadingSession::$currentSession = null;
     }
 
-    /**
-     * @param array $results
-     * @return void
-     */
-    public static function attach(array $results)
+    public static function attach(array $results): void
     {
         if (BatchLoadingSession::isAllocated()) {
             foreach ($results as $model) {
@@ -66,12 +49,7 @@ class BatchLoadingSession
         }
     }
 
-    /**
-     * @param \Closure $function
-     * @throws Exception
-     * @return mixed
-     */
-    public static function run($function)
+    public static function run(Closure $function): mixed
     {
         $allocatedSession = false;
         try {

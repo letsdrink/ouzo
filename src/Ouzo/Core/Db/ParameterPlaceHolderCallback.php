@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Db;
@@ -10,41 +11,28 @@ use Ouzo\Utilities\Objects;
 
 class ParameterPlaceHolderCallback
 {
-    /** @var array */
-    private $boundValues = [];
-    /** @var int */
-    private $paramIndex = 0;
-    /** @var int */
-    private $quoteCount = 0;
+    private array $boundValues = [];
+    private int $paramIndex = 0;
+    private int $quoteCount = 0;
 
-    /**
-     * @param array $boundValues
-     */
-    public function __construct($boundValues)
+    public function __construct(array $boundValues)
     {
         $this->boundValues = $boundValues;
     }
 
-    /**
-     * @param string $matches
-     * @return string
-     */
-    public function __invoke($matches)
+    public function __invoke(array $matches): string
     {
         if ($matches[0] == "'") {
             $this->quoteCount++;
             return "'";
-        } elseif (!$this->isInString()) {
-            return $this->substituteParam();
-        } else {
-            return "?";
         }
+        if (!$this->isInString()) {
+            return $this->substituteParam();
+        }
+        return "?";
     }
 
-    /**
-     * @return string|bool
-     */
-    private function substituteParam()
+    private function substituteParam(): string
     {
         $value = $this->boundValues[$this->paramIndex];
         $this->paramIndex++;
@@ -57,11 +45,8 @@ class ParameterPlaceHolderCallback
         return Db::getInstance()->dbHandle->quote($value);
     }
 
-    /**
-     * @return bool
-     */
-    private function isInString()
+    private function isInString(): bool
     {
-        return $this->quoteCount % 2 == 1;
+        return $this->quoteCount % 2 === 1;
     }
 }

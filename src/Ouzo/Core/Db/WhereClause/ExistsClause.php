@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\WhereClause;
 
 use Ouzo\Db\Dialect\DialectFactory;
@@ -11,11 +12,8 @@ use Ouzo\Db\QueryBoundValuesExtractor;
 
 class ExistsClause extends WhereClause
 {
-    /** @var Query */
-    private $query;
-
-    /** @var bool */
-    private $negate;
+    private Query $query;
+    private bool $negate;
 
     public function __construct(Query $query, $negate = false)
     {
@@ -23,18 +21,18 @@ class ExistsClause extends WhereClause
         $this->negate = $negate;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return false;
     }
 
-    public function toSql()
+    public function toSql(): string
     {
         $sql = DialectFactory::create()->buildQuery($this->query);
-        return $this->negate ? "NOT EXISTS ($sql)" : "EXISTS ($sql)";
+        return $this->negate ? "NOT EXISTS ({$sql})" : "EXISTS ({$sql})";
     }
 
-    public function getParameters()
+    public function getParameters(): array
     {
         $queryBindValuesExtractor = new QueryBoundValuesExtractor($this->query);
         return $queryBindValuesExtractor->extract();

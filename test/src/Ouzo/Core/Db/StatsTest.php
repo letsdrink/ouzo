@@ -33,7 +33,7 @@ class StatsTest extends TestCase
         $this->assertEquals("result", $result);
         $this->assertCount(1, Stats::$queries);
 
-        $this->assertEquals(Stats::getTotalTime(), Stats::$queries[0]['time']);
+        $this->assertGreaterThanOrEqual(Stats::getTotalTime(), Stats::$queries[0]['time']);
         $this->assertNotEquals('0.0000', Stats::$queries[0]['time']);
         $this->assertEquals('SELECT * FROM table WHERE id = ?', Stats::$queries[0]['query']);
         $this->assertEquals('10', Stats::$queries[0]['params']);

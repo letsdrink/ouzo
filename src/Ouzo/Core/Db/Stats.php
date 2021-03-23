@@ -6,19 +6,14 @@
 
 namespace Ouzo\Db;
 
+use Closure;
 use Ouzo\Config;
 
 class Stats
 {
-    public static $queries = [];
+    public static array $queries = [];
 
-    /**
-     * @param string $query
-     * @param array $params
-     * @param callable $function
-     * @return mixed
-     */
-    public static function trace($query, $params, $function)
+    public static function trace(string $query, mixed $params, Closure $function): mixed
     {
         $traceEnabled = Config::getValue('debug') && Config::getValue('stats_disabled') !== true;
         if ($traceEnabled) {
@@ -27,42 +22,33 @@ class Stats
         return $function();
     }
 
-    /**
-     * @return int
-     */
-    public static function getTotalTime()
+    public static function getTotalTime(): int
     {
-        return array_reduce(self::$queries, function ($sum, $value) {
-            return $sum + $value['time'];
-        });
+        return array_reduce(self::$queries, fn($sum, $value) => $sum + $value['time']);
     }
 
-    public static function reset()
+    public static function reset(): void
     {
         Stats::$queries = [];
     }
 
-    /**
-     * @param string $query
-     * @param array $params
-     * @param callable $function
-     * @return mixed
-     */
-    public static function traceNoCheck($query, $params, $function)
+    public static function traceNoCheck(string $query, mixed $params, Closure $function): mixed
     {
         $startTime = microtime(true);
         $result = $function();
         $time = number_format(microtime(true) - $startTime, 4, '.', '');
 
-        self::$queries[] = ['query' => $query, 'params' => $params, 'time' => $time, 'trace' => self::getBacktraceString()];
+        self::$queries[] = [
+            'query' => $query,
+            'params' => $params,
+            'time' => $time,
+            'trace' => self::getBacktraceString()
+        ];
 
         return $result;
     }
 
-    /**
-     * @return string
-     */
-    private static function getBacktraceString()
+    private static function getBacktraceString(): string
     {
         $trace = debug_backtrace();
         $trace = array_slice($trace, 2);
@@ -75,20 +61,15 @@ class Stats
         return $stack;
     }
 
-    /**
-     * @param string $index
-     * @param array $frame
-     * @return string
-     */
-    private static function formatStackFrame($index, array $frame)
+    private static function formatStackFrame(string $index, array $frame): string
     {
         $stack = '';
         if (isset($frame['file']) && isset($frame['line']) && isset($frame['function'])) {
             $stack .= "#$index {$frame['file']} ({$frame['line']}): ";
             if (isset($frame['class'])) {
-                $stack .= $frame['class'] . "->";
+                $stack .= "{$frame['class']}->";
             }
-            $stack .= $frame['function'] . "()" . PHP_EOL;
+            $stack = "{$stack}{$frame['function']}()" . PHP_EOL;
         }
 
         return $stack;

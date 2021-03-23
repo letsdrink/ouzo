@@ -16,34 +16,31 @@ use Ouzo\Utilities\Functions;
 class ModelQueryBuilderHelper
 {
     /**
-     * @param Model $root
-     * @param string|Relation $relationSelector
      * @param ModelJoin[] $joins
      * @return Relation[]
      */
-    public static function extractRelations(Model $root, $relationSelector, $joins = [])
+    public static function extractRelations(Model $root, Relation|string $relationSelector, array $joins = []): array
     {
-        $relations = [];
         if ($relationSelector instanceof Relation) {
-            $relations[] = $relationSelector;
-        } else {
-            $relationNames = explode('->', $relationSelector);
-            $model = $root;
-            foreach ($relationNames as $name) {
-                $relation = self::getRelation($model, $name, $joins);
-                $relations[] = $relation;
-                $model = $relation->getRelationModelObject();
-            }
+            return [$relationSelector];
+        }
+
+        $relations = [];
+        $relationNames = explode('->', $relationSelector);
+        $model = $root;
+        foreach ($relationNames as $name) {
+            $relation = self::getRelation($model, $name, $joins);
+            $relations[] = $relation;
+            $model = $relation->getRelationModelObject();
         }
         return $relations;
     }
 
     /**
      * @param Relation[] $relations
-     * @param string|string[]|null $aliases
      * @return RelationWithAlias[]
      */
-    public static function associateRelationsWithAliases(array $relations, $aliases)
+    public static function associateRelationsWithAliases(array $relations, array|string|null $aliases): array
     {
         $aliases = Arrays::toArray($aliases);
         if (count($relations) < count($aliases)) {
@@ -59,13 +56,10 @@ class ModelQueryBuilderHelper
     }
 
     /**
-     * @param string $fromTable
      * @param RelationWithAlias[] $relationWithAliases
-     * @param string $type
-     * @param string $on
      * @return ModelJoin[]
      */
-    public static function createModelJoins($fromTable, $relationWithAliases, $type, $on)
+    public static function createModelJoins(string $fromTable, array $relationWithAliases, string $type, array $on): array
     {
         $result = [];
         $field = '';
@@ -84,18 +78,14 @@ class ModelQueryBuilderHelper
         return $result;
     }
 
-    /**
-     * @param Model $model
-     * @param string $name
-     * @param ModelJoin[] $joins
-     * @return Relation|null
-     */
-    private static function getRelation($model, $name, $joins)
+    /** @param ModelJoin[] $joins */
+    private static function getRelation(Model $model, string $name, array $joins): ?Relation
     {
         return $model->hasRelation($name) ? $model->getRelation($name) : self::getRelationForInlineJoin($name, $joins);
     }
 
-    private static function getRelationForInlineJoin($name, $joins)
+    /** @param ModelJoin[] $joins */
+    private static function getRelationForInlineJoin(string $name, array $joins)
     {
         return FluentArray::from($joins)
             ->map(Functions::extractExpression('getRelation()'))

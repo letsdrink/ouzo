@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Db;
@@ -13,66 +14,28 @@ use ReflectionClass;
 
 class ModelDefinition
 {
-    /** @var Db */
-    public $db;
-    /** @var string */
-    public $table;
-    /** @var string */
-    public $sequence;
-    /** @var string */
-    public $primaryKey;
-    /** @var array */
-    public $fields;
-    /** @var Relations */
-    public $relations;
-    /** @var array */
-    public $afterSaveCallbacks = [];
-    /** @var array */
-    public $beforeSaveCallbacks = [];
-    /** @var array */
-    public $defaults = [];
+    private static array $cache = [];
 
-    /** @var array */
-    private static $cache = [];
-
-    /**
-     * @param Db $db
-     * @param string $table
-     * @param string $sequence
-     * @param string $primaryKey
-     * @param string $fields
-     * @param Relations $relations
-     * @param array $afterSaveCallbacks
-     * @param array $beforeSaveCallbacks
-     * @param array $defaults
-     */
-    public function __construct(Db $db, $table, $sequence, $primaryKey, $fields, $relations, array $afterSaveCallbacks, array $beforeSaveCallbacks, array $defaults)
+    public function __construct(
+        public Db $db,
+        public string $table,
+        public string $sequence,
+        public string $primaryKey,
+        public string|array $fields,
+        public Relations $relations,
+        public array $afterSaveCallbacks,
+        public array $beforeSaveCallbacks,
+        public array $defaults
+    )
     {
-        $this->db = $db;
-        $this->table = $table;
-        $this->sequence = $sequence;
-        $this->primaryKey = $primaryKey;
-        $this->fields = $fields;
-        $this->relations = $relations;
-        $this->afterSaveCallbacks = $afterSaveCallbacks;
-        $this->beforeSaveCallbacks = $beforeSaveCallbacks;
-        $this->defaults = $defaults;
     }
 
-    /**
-     * @return void
-     */
-    public static function resetCache()
+    public static function resetCache(): void
     {
         self::$cache = [];
     }
 
-    /**
-     * @param string $class
-     * @param array $params
-     * @return ModelDefinition
-     */
-    public static function get($class, array $params)
+    public static function get(string $class, array $params): ModelDefinition
     {
         if (!isset(self::$cache[$class])) {
             self::$cache[$class] = self::createDefinition($class, $params);
@@ -80,12 +43,7 @@ class ModelDefinition
         return self::$cache[$class];
     }
 
-    /**
-     * @param array $attributes
-     * @param string $fields
-     * @return array
-     */
-    public function mergeWithDefaults(array $attributes, $fields)
+    public function mergeWithDefaults(array $attributes, array $fields): array
     {
         if (empty($this->defaults)) {
             return $attributes;
@@ -101,22 +59,13 @@ class ModelDefinition
         return $attributes;
     }
 
-    /**
-     * @param string $class
-     * @return string
-     */
-    private static function defaultTable($class)
+    private static function defaultTable(string $class): string
     {
         $reflectionClass = new ReflectionClass($class);
         return Strings::tableize($reflectionClass->getShortName());
     }
 
-    /**
-     * @param string $class
-     * @param array $params
-     * @return ModelDefinition
-     */
-    private static function createDefinition($class, array $params)
+    private static function createDefinition(string $class, array $params): ModelDefinition
     {
         $table = Arrays::getValue($params, 'table') ?: self::defaultTable($class);
         $primaryKey = Arrays::getValue($params, 'primaryKey', 'id');
@@ -136,11 +85,7 @@ class ModelDefinition
         return new ModelDefinition($db, $table, $sequence, $primaryKey, $fields, $relations, $afterSaveCallbacks, $beforeSaveCallbacks, $defaults);
     }
 
-    /**
-     * @param array $fields
-     * @return array
-     */
-    private static function extractFieldsAndDefaults(array $fields)
+    private static function extractFieldsAndDefaults(array $fields): array
     {
         $newFields = [];
         $defaults = [];

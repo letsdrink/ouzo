@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\Dialect;
 
 use InvalidArgumentException;
@@ -11,10 +12,7 @@ use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
-    /**
-     * @inheritdoc
-     */
-    public function table()
+    public function table(): string
     {
         $alias = $this->query->aliasTable;
         $table = $this->tableOrSubQuery();
@@ -25,75 +23,48 @@ class MySqlDialect extends Dialect
         return $table;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getConnectionErrorCodes()
+    public function getConnectionErrorCodes(): array
     {
         return [2003, 2006];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getErrorCode($errorInfo)
+    public function getErrorCode(array $errorInfo): mixed
     {
         return Arrays::getValue($errorInfo, 1);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function using()
+    public function using(): string
     {
-        return $this->_using($this->query->usingClauses, ' INNER JOIN ', $this->query->table, $this->query->aliasTable);
+        return $this->usingClause($this->query->usingClauses, ' INNER JOIN ', $this->query->table, $this->query->aliasTable);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function batchInsert($table, $primaryKey, $columns, $batchSize)
+    public function batchInsert(string $table, string $primaryKey, array $columns, int $batchSize): string
     {
         throw new InvalidArgumentException("Batch insert not supported in mysql");
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function insertEmptyRow()
+    protected function insertEmptyRow(): string
     {
         return "INSERT INTO {$this->query->table} VALUES ()";
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function regexpMatcher()
+    public function regexpMatcher(): string
     {
         return 'REGEXP';
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function quote($word)
+    protected function quote(string $word): string
     {
-        return '`' . $word . '`';
+        return "`{$word}`";
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function onConflictUpdate()
+    public function onConflictUpdate(): string
     {
         $attributes = DialectUtil::buildAttributesPartForUpdate($this->query->updateAttributes);
         return " ON DUPLICATE KEY UPDATE {$attributes}";
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function onConflictDoNothing()
+    public function onConflictDoNothing(): string
     {
         throw new InvalidArgumentException("On conflict do nothing is not supported in mysql");
     }

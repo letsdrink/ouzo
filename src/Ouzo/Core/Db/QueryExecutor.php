@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
@@ -12,41 +13,21 @@ use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Utilities\Arrays;
 use PDO;
-use PDOStatement;
 
 class QueryExecutor
 {
-    /** @var Db */
-    private $db;
-    /** @var Dialect */
-    private $adapter;
-    /** @var Query */
-    private $query;
-    /** @var array */
-    private $boundValues = [];
+    private Dialect $adapter;
+    private array $boundValues = [];
 
-    public $sql;
-    public $fetchStyle = PDO::FETCH_ASSOC;
+    public string $sql;
+    public int $fetchStyle = PDO::FETCH_ASSOC;
 
-    /**
-     * @param Db $db
-     * @param Query $query
-     */
-    public function __construct(Db $db, Query $query)
+    public function __construct(private Db $db, private Query $query)
     {
-        $this->db = $db;
-        $this->query = $query;
-
         $this->adapter = DialectFactory::create();
     }
 
-    /**
-     * @param Db $db
-     * @param Query $query
-     * @throws InvalidArgumentException
-     * @return QueryExecutor|EmptyQueryExecutor
-     */
-    public static function prepare($db, $query)
+    public static function prepare(?Db $db, ?Query $query): EmptyQueryExecutor|QueryExecutor
     {
         if (empty($db) || !$db instanceof Db) {
             throw new InvalidArgumentException("Database handler not provided or is of wrong type");
@@ -64,91 +45,59 @@ class QueryExecutor
         return new QueryExecutor($db, $query);
     }
 
-    /**
-     * @return mixed
-     */
-    public function fetch()
+    public function fetch(): mixed
     {
         $this->buildQuery();
-        return $this->_fetch('fetch');
+        return $this->prepareAndFetch('fetch');
     }
 
-    /**
-     * @return mixed
-     */
-    public function fetchAll()
+    public function fetchAll(): mixed
     {
         $this->buildQuery();
-        return $this->_fetch('fetchAll');
+        return $this->prepareAndFetch('fetchAll');
     }
 
-    /**
-     * @return StatementIterator
-     */
-    public function fetchIterator()
+    public function fetchIterator(): StatementIterator
     {
         $this->buildQuery();
         $statement = StatementExecutor::prepare($this->db->dbHandle, $this->sql, $this->boundValues, $this->query->options);
         return $statement->fetchIterator($this->adapter->getIteratorOptions());
     }
 
-    /**
-     * @return int
-     */
-    public function execute()
+    public function execute(): int
     {
         $this->buildQuery();
         return $this->db->execute($this->sql, $this->boundValues);
     }
 
-    /**
-     * @param string $sequence
-     * @return int|null
-     */
-    public function insert($sequence = '')
+    public function insert(?string $sequence = ''): ?int
     {
         $this->execute();
         return $sequence ? (int)$this->db->lastInsertId($sequence) : null;
     }
 
-    /**
-     * @param string $function
-     * @return mixed
-     */
-    private function _fetch($function)
+    private function prepareAndFetch(string $function): mixed
     {
         $statement = StatementExecutor::prepare($this->db->dbHandle, $this->sql, $this->boundValues, $this->query->options);
         return $statement->executeAndFetch($function, $this->fetchStyle);
     }
 
-    /**
-     * @return string
-     */
-    public function getSql()
+    public function getSql(): string
     {
         return $this->sql;
     }
 
-    /**
-     * @return array
-     */
-    public function getBoundValues()
+    public function getBoundValues(): array
     {
         return $this->boundValues;
     }
 
-    /**
-     * @return string
-     */
-    public function lastErrorMessage()
+    public function lastErrorMessage(): string
     {
         return $this->db->lastErrorMessage();
     }
 
-    /**
-     * @return void
-     */
-    public function buildQuery()
+    public function buildQuery(): void
     {
         $this->fetchStyle = $this->query->selectType;
         $queryBindValuesExtractor = new QueryBoundValuesExtractor($this->query);
@@ -156,23 +105,14 @@ class QueryExecutor
         $this->sql = $this->adapter->buildQuery($this->query);
     }
 
-    /**
-     * @param Query $query
-     * @return bool
-     */
-    private static function isEmptyResult($query)
+    private static function isEmptyResult(Query $query): bool
     {
         return $query->limit === 0 || self::whereClauseNeverSatisfied($query->whereClauses);
     }
 
-    /**
-     * @param WhereClause $whereClauses
-     * @return bool
-     */
-    private static function whereClauseNeverSatisfied($whereClauses)
+    /** @param WhereClause[] $whereClauses */
+    private static function whereClauseNeverSatisfied(array $whereClauses): bool
     {
-        return Arrays::any($whereClauses, function (WhereClause $whereClause) {
-            return $whereClause->isNeverSatisfied();
-        });
+        return Arrays::any($whereClauses, fn(WhereClause $whereClause) => $whereClause->isNeverSatisfied());
     }
 }

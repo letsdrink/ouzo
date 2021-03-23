@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Model;
@@ -12,21 +13,12 @@ use Ouzo\Utilities\Functions;
 
 class RelationFetcher
 {
-    /** @var Relation */
-    private $relation;
-
-    /**
-     * @param Relation $relation
-     */
-    public function __construct(Relation $relation)
+    public function __construct(private Relation $relation)
     {
-        $this->relation = $relation;
     }
 
-    /**
-     * @param Model $results
-     */
-    public function transform(&$results)
+    /** @var Model[] $results */
+    public function transform(array $results)
     {
         $localKeyName = $this->relation->getLocalKey();
         $localKeys = FluentArray::from($results)
@@ -44,11 +36,7 @@ class RelationFetcher
         }
     }
 
-    /**
-     * @param string $localKeys
-     * @return array
-     */
-    private function loadRelationObjectsIndexedById($localKeys)
+    private function loadRelationObjectsIndexedById(array|string $localKeys): array
     {
         $relationObject = $this->relation->getRelationModelObject();
         $relationObjects = $relationObject::where([$this->relation->getForeignKey() => $localKeys])
@@ -58,12 +46,8 @@ class RelationFetcher
         return Arrays::groupBy($relationObjects, Functions::extractField($this->relation->getForeignKey()));
     }
 
-    /**
-     * @param array $relationObjectsById
-     * @param string $localKey
-     * @return mixed
-     */
-    private function findRelationObject($relationObjectsById, $localKey)
+    /** @return Model[] */
+    private function findRelationObject(array $relationObjectsById, ?string $localKey): array
     {
         return Arrays::getValue($relationObjectsById, $localKey, []);
     }

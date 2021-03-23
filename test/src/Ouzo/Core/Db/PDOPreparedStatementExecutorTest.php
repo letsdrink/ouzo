@@ -12,18 +12,15 @@ use PHPUnit\Framework\TestCase;
 
 class PDOPreparedStatementExecutorTest extends TestCase
 {
-    /**
-     * @var PDOStatement
-     */
-    private $pdoMock;
-    private $dbMock;
+    private PDOStatement $pdoMock;
+    private PDO $dbMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->pdoMock = Mock::mock();
-        $this->dbMock = Mock::mock();
+        $this->pdoMock = Mock::mock(PDOStatement::class);
+        $this->dbMock = Mock::mock(PDO::class);
         Mock::when($this->dbMock)->prepare('SELECT 1')->thenReturn($this->pdoMock);
         Mock::when($this->dbMock)->errorInfo()->thenReturn([1, 3, 'Preparation error']);
     }

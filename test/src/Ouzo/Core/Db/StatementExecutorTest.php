@@ -12,22 +12,20 @@ use Ouzo\DbConnectionException;
 use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\SimpleMock;
 use PHPUnit\Framework\TestCase;
 
 class StatementExecutorTest extends TestCase
 {
-    /**
-     * @var PDOStatement
-     */
-    private $pdoMock;
-    private $dbMock;
+    private PDOStatement|SimpleMock $pdoMock;
+    private PDO|SimpleMock $dbMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->pdoMock = Mock::mock();
-        $this->dbMock = Mock::mock();
+        $this->pdoMock = Mock::mock(PDOStatement::class);
+        $this->dbMock = Mock::mock(PDO::class);
         Mock::when($this->pdoMock)->execute()->thenReturn(false);
         Mock::when($this->dbMock)->prepare('SELECT 1', [])->thenReturn($this->pdoMock);
     }
