@@ -8,7 +8,7 @@ use Ouzo\Db;
 use PHPUnit\Framework\TestCase;
 class TransactionalProxyTest extends TestCase
 {
-    public $transactionStatus;
+    public bool $transactionStatus;
 
     /**
      * @test

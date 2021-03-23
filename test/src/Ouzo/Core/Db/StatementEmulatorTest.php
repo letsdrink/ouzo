@@ -10,6 +10,7 @@ use Ouzo\Db\Options;
 use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\SimpleMock;
 
 class SimpleModel extends Model
 {
@@ -29,6 +30,7 @@ class StatementEmulatorTest extends DbTransactionalTestCase
         //given
         $pdoStatement = Mock::mock(PDOStatement::class);
         $pdo = Mock::mock(PDO::class);
+        /** @var Db|SimpleMock $db */
         $db = Mock::mock(Db::class);
         $db->dbHandle = $pdo;
 

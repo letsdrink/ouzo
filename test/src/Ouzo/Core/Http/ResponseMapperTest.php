@@ -3,9 +3,9 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Http\ResponseMapper;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Http\ResponseMapper;
+use PHPUnit\Framework\TestCase;
 
 class ResponseMapperTest extends TestCase
 {
@@ -14,11 +14,8 @@ class ResponseMapperTest extends TestCase
      */
     public function shouldReturnResponse()
     {
-        //given
-        $code = 404;
-
         //when
-        $response = ResponseMapper::getMessage($code);
+        $response = ResponseMapper::getMessage(404);
 
         //then
         $this->assertEquals('404 Not Found', $response);
@@ -29,11 +26,8 @@ class ResponseMapperTest extends TestCase
      */
     public function shouldReturnDefaultResponseWhenNotFoundCode()
     {
-        //given
-        $code = 999;
-
         //when
-        $response = ResponseMapper::getMessage($code);
+        $response = ResponseMapper::getMessage(999);
 
         //then
         $this->assertEquals('500 Internal Server Error', $response);
@@ -44,11 +38,8 @@ class ResponseMapperTest extends TestCase
      */
     public function shouldReturnResponseWithProtocol()
     {
-        //given
-        $code = 404;
-
         //when
-        $response = ResponseMapper::getMessageWithHttpProtocol($code);
+        $response = ResponseMapper::getMessageWithHttpProtocol(404);
 
         //then
         $this->assertEquals('HTTP/1.1 404 Not Found', $response);

@@ -68,7 +68,13 @@ class QueryTest extends TestCase
     public function shouldCreateSelectQueryWithWhereOrderLimitOffset()
     {
         // when
-        $query = Query::select()->from('table')->where(['name' => 'bob'])->limit(5)->offset(10)->groupBy('group')->order(['name asc']);
+        $query = Query::select()
+            ->from('table')
+            ->where(['name' => 'bob'])
+            ->limit(5)
+            ->offset(10)
+            ->groupBy('group')
+            ->order(['name asc']);
 
         // then
         $this->assertEquals('table', $query->table);
