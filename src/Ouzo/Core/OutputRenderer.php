@@ -6,7 +6,7 @@
 
 namespace Ouzo;
 
-class OutputDisplayer
+class OutputRenderer
 {
     public function display(string $content): void
     {

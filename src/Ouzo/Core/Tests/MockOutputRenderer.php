@@ -6,9 +6,9 @@
 
 namespace Ouzo\Tests;
 
-use Ouzo\OutputDisplayer;
+use Ouzo\OutputRenderer;
 
-class MockOutputDisplayer extends OutputDisplayer
+class MockOutputRenderer extends OutputRenderer
 {
     public function display(string $content): void
     {

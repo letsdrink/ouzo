@@ -19,7 +19,7 @@ class ResponseTypeResolve
     const TEXT_HTML = 'text/html';
     const ALL = '*/*';
 
-    public static function resolve()
+    public static function resolve(): string
     {
         $accept = array_keys(RequestHeaders::accept()) ?: [self::ALL];
         $supported = [

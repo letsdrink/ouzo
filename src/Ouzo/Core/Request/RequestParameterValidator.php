@@ -12,9 +12,7 @@ use Ouzo\ExceptionHandling\ValidationError;
 
 class RequestParameterValidator
 {
-    /**
-     * @return ValidationError[]
-     */
+    /** @return ValidationError[] */
     public function validate(object $object): array
     {
         throw new Exception('Provide request parameter validator implementation if you want to use this feature');

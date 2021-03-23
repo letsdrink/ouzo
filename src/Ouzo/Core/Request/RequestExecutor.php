@@ -14,7 +14,7 @@ use Ouzo\Exception\ValidationException;
 use Ouzo\HeaderSender;
 use Ouzo\Http\ResponseMapper;
 use Ouzo\Injection\Annotation\Inject;
-use Ouzo\OutputDisplayer;
+use Ouzo\OutputRenderer;
 use Ouzo\RedirectHandler;
 use Ouzo\Uri;
 use Ouzo\Utilities\Arrays;
@@ -30,7 +30,7 @@ class RequestExecutor
         private CookiesSetter $cookiesSetter,
         private RedirectHandler $redirectHandler,
         private DownloadHandler $downloadHandler,
-        private OutputDisplayer $outputDisplayer,
+        private OutputRenderer $outputRenderer,
         private RequestParameterSerializer $requestParameterSerializer,
         private RequestParameterValidator $requestParameterValidator
     )
@@ -73,9 +73,9 @@ class RequestExecutor
         return $this->downloadHandler;
     }
 
-    public function getOutputDisplayer(): OutputDisplayer
+    public function getOutputRenderer(): OutputRenderer
     {
-        return $this->outputDisplayer;
+        return $this->outputRenderer;
     }
 
     private function invokeInit(Controller $controller): void
@@ -169,7 +169,7 @@ class RequestExecutor
         $controller->display();
         $page = ob_get_contents();
         ob_end_clean();
-        $this->outputDisplayer->display($page);
+        $this->outputRenderer->display($page);
     }
 
     private function redirect(string $url): void

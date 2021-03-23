@@ -13,13 +13,11 @@ use Ouzo\Uri;
 
 class RoutingService
 {
-    private Uri $uri;
     private RouteRule $routeRule;
 
     #[Inject]
-    public function __construct(Uri $uri)
+    public function __construct(private Uri $uri)
     {
-        $this->uri = $uri;
         $router = new Router($this->uri);
         $this->routeRule = $router->findRoute();
     }

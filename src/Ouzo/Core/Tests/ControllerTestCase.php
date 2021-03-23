@@ -13,7 +13,7 @@ use Ouzo\FrontController;
 use Ouzo\HeaderSender;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
-use Ouzo\OutputDisplayer;
+use Ouzo\OutputRenderer;
 use Ouzo\RedirectHandler;
 use Ouzo\Request\RequestHeaders;
 use Ouzo\Uri\PathProvider;
@@ -234,7 +234,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
 
     protected function frontControllerBindings(InjectorConfig $config)
     {
-        $config->bind(OutputDisplayer::class)->toInstance(new MockOutputDisplayer());
+        $config->bind(OutputRenderer::class)->toInstance(new MockOutputRenderer());
         $config->bind(HeaderSender::class)->toInstance(new MockHeaderSender());
         $config->bind(CookiesSetter::class)->toInstance(new MockCookiesSetter());
         $config->bind(RedirectHandler::class)->toInstance(new MockRedirectHandler());
