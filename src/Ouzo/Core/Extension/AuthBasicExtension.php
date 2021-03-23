@@ -20,11 +20,11 @@ use Ouzo\Utilities\Arrays;
  *
  * In your controller's init method add:
  * <pre>
- * AuthBasicExtension::register($this, array(
+ * AuthBasicExtension::register($this, [
  *  'login' => $login,
  *  'password' => $password,
  *  'realm' => $realm
- * ));
+ * ]);
  * </pre>
  */
 class AuthBasicExtension
@@ -40,7 +40,7 @@ class AuthBasicExtension
         };
     }
 
-    public static function checkCredentials(string $authUser, string $authPassword, $realm): bool
+    public static function checkCredentials(string $authUser, string $authPassword, string $realm): bool
     {
         $login = Arrays::getValue($_SERVER, 'PHP_AUTH_USER');
         $pass = Arrays::getValue($_SERVER, 'PHP_AUTH_PW');
