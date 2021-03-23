@@ -48,6 +48,7 @@ class Sqlite3Dialect extends Dialect
         if ($this->query->lockForUpdate) {
             throw new BadMethodCallException('SELECT ... FOR UPDATE is not supported in sqlite3');
         }
+        return '';
     }
 
     public function using(): string
@@ -55,6 +56,7 @@ class Sqlite3Dialect extends Dialect
         if ($this->query->usingClauses) {
             throw new BadMethodCallException('USING clause is not supported in sqlite3');
         }
+        return '';
     }
 
     public function batchInsert(string $table, string $primaryKey, $columns, $batchSize): string
