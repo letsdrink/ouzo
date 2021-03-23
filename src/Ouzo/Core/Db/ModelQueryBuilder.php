@@ -168,7 +168,7 @@ class ModelQueryBuilder
         return QueryExecutor::prepare($this->db, $this->query)->execute();
     }
 
-    public function join(string $relationSelector, array|string|null $aliases = null, string $type = 'LEFT', array $on = []): static
+    public function join(Relation|string $relationSelector, array|string|null $aliases = null, string $type = 'LEFT', array $on = []): static
     {
         $modelJoins = $this->createModelJoins($relationSelector, $aliases, $type, $on);
         foreach ($modelJoins as $modelJoin) {
@@ -291,7 +291,7 @@ class ModelQueryBuilder
     }
 
     /** @return ModelJoin[] */
-    private function createModelJoins(string $relationSelector, array|string|null $aliases, string $type, array $on): array
+    private function createModelJoins(Relation|string $relationSelector, array|string|null $aliases, string $type, array $on): array
     {
         $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector, $this->joinedModels);
         $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
