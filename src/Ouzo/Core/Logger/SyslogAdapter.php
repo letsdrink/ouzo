@@ -1,14 +1,15 @@
 <?php
+
 namespace Ouzo\Logger;
 
-class SyslogLogProvider
+class SyslogAdapter
 {
-    public function log($level, $message)
+    public function log(string $level, string $message): void
     {
         syslog($level, $message);
     }
 
-    public function open($loggerConfiguration)
+    public function open(array $loggerConfiguration): void
     {
         openlog($loggerConfiguration['ident'], $loggerConfiguration['option'], $loggerConfiguration['facility']);
     }

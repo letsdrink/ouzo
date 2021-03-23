@@ -3,32 +3,30 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Logger;
 
 use Ouzo\Utilities\Clock;
 
 class StdOutputLogger extends AbstractOuzoLogger
 {
-    private $outputStreamIdentifier;
-
-    public function __construct($name, $configuration, $outputStreamIdentifier = 'php')
+    public function __construct(string $name, string $configuration, private string $outputStreamIdentifier = 'php')
     {
         parent::__construct($name, $configuration);
-        $this->outputStreamIdentifier = $outputStreamIdentifier;
     }
 
-    private function errorStreamName()
+    private function errorStreamName(): string
     {
-        return $this->outputStreamIdentifier . "://stderr";
+        return "{$this->outputStreamIdentifier}://stderr";
     }
 
-    private function standardStreamName()
+    private function standardStreamName(): string
     {
-        return $this->outputStreamIdentifier . "://stdout";
+        return "{$this->outputStreamIdentifier}://stdout";
     }
 
 
-    private function getStreamForLogLevel($logLevel)
+    private function getStreamForLogLevel(string $logLevel): string
     {
         if (LogLevelTranslator::toSyslogLevel($logLevel) >= LOG_WARNING) {
             return $this->standardStreamName();

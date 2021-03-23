@@ -23,14 +23,9 @@ use Psr\Log\LoggerInterface;
  */
 class Logger
 {
-    private static $loggers = [];
+    private static array $loggers = [];
 
-    /**
-     * @param $name
-     * @param string $configuration
-     * @return LoggerInterface
-     */
-    public static function getLogger($name, $configuration = 'default')
+    public static function getLogger(string $name, string $configuration = 'default'): LoggerInterface
     {
         $logger = Arrays::getNestedValue(self::$loggers, [$name, $configuration]);
         if (!$logger) {
@@ -40,16 +35,12 @@ class Logger
         return $logger;
     }
 
-    /**
-     * @param $name
-     * @param string $configuration
-     */
-    public static function clearLogger($name, $configuration = 'default')
+    public static function clearLogger(string $name, string $configuration = 'default'): void
     {
         Arrays::removeNestedKey(self::$loggers, [$name, $configuration]);
     }
 
-    private static function loadLogger($name, $configuration)
+    private static function loadLogger(string $name, string $configuration): LoggerInterface
     {
         $logger = Config::getValue('logger', $configuration);
         if (!$logger || !isset($logger['class'])) {

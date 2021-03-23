@@ -18,14 +18,14 @@ class SyslogLoggerTest extends TestCase
      */
     private $logger;
     /**
-     * @var SyslogLogProvider
+     * @var SyslogAdapter
      */
     private $syslogLogProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->syslogLogProvider = Mock::create(SyslogLogProvider::class);
+        $this->syslogLogProvider = Mock::create(SyslogAdapter::class);
         $this->logger = new SyslogLogger('TEST', 'default', $this->syslogLogProvider);
     }
 
