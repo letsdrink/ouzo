@@ -111,7 +111,7 @@ class HtmlElementRenderer
         return $this;
     }
 
-    public function setAttribute(string $attribute, string $value): HtmlElementRenderer
+    public function setAttribute(string $attribute, mixed $value): HtmlElementRenderer
     {
         $this->attributes[$attribute] = $value;
         return $this;

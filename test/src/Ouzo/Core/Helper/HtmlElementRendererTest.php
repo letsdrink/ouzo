@@ -24,7 +24,7 @@ class HtmlElementRendererTest extends TestCase
         $html = $renderer->render();
 
         //then
-        $this->assertEquals('<a data-a="\'dta\'&quot; txt" id="element-id" href="https://link.to">some link</a>', $html);
+        $this->assertEquals('<a id="element-id" data-a="\'dta\'&quot; txt" href="https://link.to">some link</a>', $html);
     }
 
     /**
