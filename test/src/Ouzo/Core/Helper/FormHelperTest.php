@@ -13,6 +13,7 @@ class FormHelperTest extends DbTransactionalTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $_SESSION = [];
         new View('test');
     }
 
@@ -29,7 +30,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = selectTag("lab", $items, 2, $attributes);
 
         //then
-        $expected = '<select id="lab" name="lab" size="1"><option value="1" >Opt1</option><option value="2" selected>Opt1</option></select>';
+        $expected = "<select id=\"lab\" name=\"lab\" size=\"1\">\n<option value=\"1\">Opt1</option>\n<option value=\"2\" selected>Opt1</option>\n</select>";
         $this->assertEquals($expected, $result);
     }
 
@@ -46,7 +47,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = selectTag("lab", $items, 2, $attributes);
 
         //then
-        $expected = '<select id="lab" name="lab" size="1" readonly="readonly"><option value="1" disabled>Opt1</option><option value="2" selected>Opt1</option></select>';
+        $expected = "<select id=\"lab\" name=\"lab\" readonly=\"readonly\" size=\"1\">\n<option value=\"1\" disabled>Opt1</option>\n<option value=\"2\" selected>Opt1</option>\n</select>";
         $this->assertEquals($expected, $result);
     }
 
@@ -63,7 +64,12 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = selectTag("lab", $items, [2, 4], $attributes);
 
         //then
-        $expected = '<select id="lab" name="lab" multiple="1" size="4"><option value="1" >Opt1</option><option value="2" selected>Opt2</option><option value="3" >Opt3</option><option value="4" selected>Opt4</option></select>';
+        $expected = "<select id=\"lab\" name=\"lab\" multiple=\"1\" size=\"4\">
+<option value=\"1\">Opt1</option>
+<option value=\"2\" selected>Opt2</option>
+<option value=\"3\">Opt3</option>
+<option value=\"4\" selected>Opt4</option>
+</select>";
         $this->assertEquals($expected, $result);
     }
 
@@ -104,7 +110,9 @@ class FormHelperTest extends DbTransactionalTestCase
         //then
         $this->assertEquals('<textarea id="product_name" name="product[name]">name</textarea>', $textArea1);
         $this->assertStringContainsString('id="id_new"', $textField2);
-        $this->assertStringContainsString('rows="12" cols="10" style="color: red;"', $textField3);
+        $this->assertStringContainsString('rows="12"', $textField3);
+        $this->assertStringContainsString('cols="10"', $textField3);
+        $this->assertStringContainsString('style="color: red;"', $textField3);
     }
 
     /**
@@ -123,7 +131,10 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         $this->assertEquals(
-            '<select id="product_id_category" name="product[id_category]"><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>',
+            '<select id="product_id_category" name="product[id_category]">
+<option value="1" selected>Cat1</option>
+<option value="2">Cat2</option>
+</select>',
             $selectField1
         );
         $this->assertStringContainsString('id="id_new"', $selectField2);
@@ -192,7 +203,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = formFor($product)->checkboxField('id_category');
 
         //then
-        $this->assertEquals('<input name="product[id_category]" type="hidden" value="0" /><input type="checkbox" value="1" id="product_id_category" name="product[id_category]" />', $result);
+        $this->assertEquals('<input type="hidden" name="product[id_category]" value="0"/><input type="checkbox" id="product_id_category" name="product[id_category]" value="1"/>', $result);
     }
 
     /**
@@ -207,7 +218,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = formFor($product)->checkboxField('id_category');
 
         //then
-        $this->assertEquals('<input name="product[id_category]" type="hidden" value="0" /><input type="checkbox" value="1" id="product_id_category" name="product[id_category]" checked/>', $result);
+        $this->assertEquals('<input type="hidden" name="product[id_category]" value="0"/><input type="checkbox" id="product_id_category" name="product[id_category]" value="1" checked/>', $result);
     }
 
     /**
@@ -316,7 +327,7 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         /** @noinspection HtmlUnknownTarget */
-        $this->assertEquals('<a href="/albums/about" >About</a>', $linkTo);
+        $this->assertEquals('<a href="/albums/about">About</a>', $linkTo);
     }
 
     /**
@@ -332,7 +343,7 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         /** @noinspection HtmlUnknownTarget */
-        $this->assertEquals('<a href="/albums/about" class="link" id="about">About</a>', $linkTo);
+        $this->assertEquals('<a id="about" class="link" href="/albums/about">About</a>', $linkTo);
     }
 
     /**
@@ -345,7 +356,7 @@ class FormHelperTest extends DbTransactionalTestCase
 
         //then
         /** @noinspection HtmlUnknownTarget */
-        $this->assertEquals('<a href="/albums/about" >&lt;script&gt;alert(\'hello\')&lt;/script&gt;About</a>', $linkTo);
+        $this->assertEquals('<a href="/albums/about">&lt;script&gt;alert(\'hello\')&lt;/script&gt;About</a>', $linkTo);
     }
 
     /**
@@ -361,7 +372,11 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = selectTag("lab", $items, [2], $attributes, 'default option');
 
         //then
-        $expected = '<select id="lab" name="lab" size="1"><option value="" >default option</option><option value="1" >Opt1</option><option value="2" selected>Opt2</option></select>';
+        $expected = '<select id="lab" name="lab" size="1">
+<option value="">default option</option>
+<option value="1">Opt1</option>
+<option value="2" selected>Opt2</option>
+</select>';
         $this->assertEquals($expected, $result);
     }
 
@@ -379,7 +394,10 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = $form->selectField('id_category', $items);
 
         //then
-        $expected = '<select id="product_id_category" name="product[id_category]"><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>';
+        $expected = '<select id="product_id_category" name="product[id_category]">
+<option value="1" selected>Cat1</option>
+<option value="2">Cat2</option>
+</select>';
         $this->assertEquals($expected, $result);
     }
 
@@ -397,7 +415,11 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = $form->selectField('id_category', $items, [], 'select category');
 
         //then
-        $expected = '<select id="product_id_category" name="product[id_category]"><option value="" >select category</option><option value="1" selected>Cat1</option><option value="2" >Cat2</option></select>';
+        $expected = '<select id="product_id_category" name="product[id_category]">
+<option value="">select category</option>
+<option value="1" selected>Cat1</option>
+<option value="2">Cat2</option>
+</select>';
         $this->assertEquals($expected, $result);
     }
 
@@ -414,7 +436,10 @@ class FormHelperTest extends DbTransactionalTestCase
         $result = selectTag("lab", $items, [1], $attributes);
 
         //then
-        $expected = '<select id="lab" name="lab" size="1"><option value="0" >Opt1</option><option value="1" selected>Opt2</option></select>';
+        $expected = '<select id="lab" name="lab" size="1">
+<option value="0">Opt1</option>
+<option value="1" selected>Opt2</option>
+</select>';
         $this->assertEquals($expected, $result);
     }
 
