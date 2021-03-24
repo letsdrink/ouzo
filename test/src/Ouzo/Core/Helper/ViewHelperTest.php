@@ -85,7 +85,7 @@ class ViewHelperTest extends TestCase
         $defaults = Config::getValue('global');
 
         //when
-        $expected = '<link rel="stylesheet" href="' . $defaults['prefix_system'] . '/public/css/style.css?' . $defaults['suffix_cache'] . '" type="text/css" />' . PHP_EOL;
+        $expected = '<link type="text/css" href="' . $defaults['prefix_system'] . '/public/css/style.css?' . $defaults['suffix_cache'] . '" rel="stylesheet"/>' . PHP_EOL;
         $actual = addFile(['type' => 'link', 'params' => ['url' => '/public/css/style.css']]);
 
         //then
