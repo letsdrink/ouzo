@@ -157,7 +157,7 @@ class RoutesCommand extends Command
 
     private function getRuleMethod(RouteRule $rule)
     {
-        if (!$rule->isActionRequired()) {
+        if (!$rule->isRequiredAction()) {
             return 'ALL';
         }
         return is_array($rule->getMethod()) ? 'ANY' : $rule->getMethod();

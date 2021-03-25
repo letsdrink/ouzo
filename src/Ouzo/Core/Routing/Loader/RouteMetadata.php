@@ -1,28 +1,23 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Loader;
 
 class RouteMetadata
 {
-    /** @var string */
-    private $uri;
+    private string $uri;
+    private string $httpMethod;
+    private string $className;
+    private string $classMethod;
+    private ?int $responseCode;
 
-    /** @var string */
-    private $method;
-
-    /** @var string */
-    private $className;
-
-    /** @var string */
-    private $classMethod;
-
-    /** @var int */
-    private $responseCode;
-
-    public function __construct(string $uri, string $method, string $className, string $classMethod, ?int $responseCode)
+    public function __construct(string $uri, string $httpMethod, string $className, string $classMethod, ?int $responseCode)
     {
         $this->uri = $uri;
-        $this->method = $method;
+        $this->httpMethod = $httpMethod;
         $this->className = $className;
         $this->classMethod = $classMethod;
         $this->responseCode = $responseCode;
@@ -33,9 +28,9 @@ class RouteMetadata
         return $this->uri;
     }
 
-    public function getMethod(): string
+    public function getHttpMethod(): string
     {
-        return $this->method;
+        return $this->httpMethod;
     }
 
     public function getClassName(): string
@@ -43,23 +38,23 @@ class RouteMetadata
         return $this->className;
     }
 
-    public function getClassNameReference(): string
-    {
-        return "\\{$this->className}::class";
-    }
-    
     public function getClassMethod(): string
     {
         return $this->classMethod;
     }
 
-    public function hasParameters(): bool
-    {
-        return strpos($this->getUri(), ':') !== false;
-    }
-
     public function getResponseCode(): ?int
     {
         return $this->responseCode;
+    }
+
+    public function getClassNameReference(): string
+    {
+        return "\\{$this->className}::class";
+    }
+
+    public function hasParameters(): bool
+    {
+        return str_contains($this->getUri(), ':');
     }
 }

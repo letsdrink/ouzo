@@ -6,6 +6,7 @@
 
 namespace Ouzo\Routing;
 
+use Ouzo\Http\HttpMethod;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Inflector;
@@ -13,60 +14,60 @@ use Ouzo\Utilities\Strings;
 
 class RouteRule
 {
-    private $method;
-    private $uri;
-    private $controller;
-    private $action;
-    private $actionRequired;
-    private $options;
-    private $parameters = [];
-    private $isResource;
+    private array $parameters = [];
 
-    public function __construct($method, $uri, $controller, $action, $requireAction, $options = [], $isResource = false)
+    public function __construct(
+        private array|string $method,
+        private string $uri,
+        private string $controller,
+        private ?string $action,
+        private bool $requireAction,
+        private array $options = [],
+        private bool $isResource = false
+    )
     {
-        $this->method = $method;
-        $this->uri = $uri;
-        $this->controller = $controller;
-        $this->action = $action;
-        $this->actionRequired = $requireAction;
-        $this->options = $options;
-        $this->isResource = $isResource;
     }
 
-    public function getMethod()
+    public function getMethod(): array|string
     {
         return $this->method;
     }
 
-    public function getUri()
+    public function getUri(): string
     {
         return $this->uri;
     }
 
-    public function isActionRequired()
-    {
-        return $this->actionRequired;
-    }
-
-    public function getController()
+    public function getController(): string
     {
         return $this->controller;
     }
 
-    public function getAction()
+    public function getAction(): ?string
     {
         return $this->action;
     }
 
-    public function hasRequiredAction()
+    public function isRequiredAction(): bool
     {
-        if ($this->actionRequired) {
-            return (in_array($this->method, ['GET', 'POST']) || is_array($this->method)) && !$this->action;
-        }
-        return $this->actionRequired;
+        return $this->requireAction;
     }
 
-    public function matches($uri, $requestType)
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    public function hasRequiredAction(): bool
+    {
+        if ($this->requireAction) {
+            return (in_array($this->method, [HttpMethod::GET, HttpMethod::POST]) || is_array($this->method)) && !$this->action;
+        }
+
+        return $this->requireAction;
+    }
+
+    public function matches(string $uri, string $requestType): bool
     {
         if ($this->isEqualOrAnyMethod($requestType)) {
             return $this->match($uri);
@@ -74,32 +75,32 @@ class RouteRule
         return false;
     }
 
-    private function isEqualOrAnyMethod($requestType)
+    private function isEqualOrAnyMethod(string $requestType): bool
     {
-        return is_array($this->method) ? in_array($requestType, $this->method) : $requestType == $this->method;
+        return is_array($this->method) ? in_array($requestType, $this->method) : $requestType === $this->method;
     }
 
-    private function match($uri)
+    private function match(string $uri): bool
     {
         preg_match('#/.+?/(.+?)(/|$)#', $uri, $matches);
         if ($this->isInExceptActions(Arrays::getValue($matches, 1, ''))) {
             return false;
         }
         $definedUri = $this->getUri();
-        if ($definedUri == $uri) {
+        if ($definedUri === $uri) {
             return true;
         }
         if (strstr($definedUri, ':') !== false) {
             $replacedUri = preg_replace('#:\w*#u', '[\w.\-~_%@ \+]+', $definedUri);
-            return preg_match('#^' . $replacedUri . '$#u', $uri);
+            return preg_match('#^' . $replacedUri . '$#u', $uri) === 1;
         }
         if (!$this->action) {
-            return preg_match('#^' . $definedUri . '/#u', $uri);
+            return preg_match('#^' . $definedUri . '/#u', $uri) === 1;
         }
         return false;
     }
 
-    public function isInExceptActions($action)
+    public function isInExceptActions(string $action): bool
     {
         return in_array($action, $this->getExcept());
     }
@@ -128,45 +129,45 @@ class RouteRule
         $this->parameters = Arrays::combine($filterParameters, $filterValues);
     }
 
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    public function getControllerName()
+    public function getControllerName(): string
     {
         $name = implode('', $this->getControllerParts());
         return Strings::underscoreToCamelCase($name);
     }
 
-    public function getName()
+    public function getName(): string
     {
         $name = Arrays::getValue($this->options, 'as', $this->prepareRuleName());
         $nameWithPath = Strings::appendSuffix($name, '_path');
         $name = lcfirst(Strings::underscoreToCamelCase($nameWithPath));
-        return $this->actionRequired ? $name : '';
+        return $this->requireAction ? $name : '';
     }
 
-    private function prepareRuleName()
+    private function prepareRuleName(): string
     {
         return $this->isResource ? $this->getNameToRest() : $this->getNameToNonRest();
     }
 
-    private function getNameToRest()
+    private function getNameToRest(): string
     {
         return $this->prepareResourceActionName() . $this->prepareResourceControllerName();
     }
 
-    private function prepareResourceActionName()
+    private function prepareResourceActionName(): string
     {
         $action = $this->action;
         if (in_array($action, ['fresh', 'edit'])) {
-            return $action . '_';
+            return "{$action}_";
         }
         return '';
     }
 
-    private function prepareResourceControllerName()
+    private function prepareResourceControllerName(): string
     {
         $controllerParts = $this->getControllerParts();
         $result = [];
@@ -186,19 +187,19 @@ class RouteRule
         return implode('_', $result);
     }
 
-    private function getNameToNonRest()
+    private function getNameToNonRest(): string
     {
-        return $this->action . '_' . $this->handleNestedResource();
+        return "{$this->action}_{$this->handleNestedResource()}";
     }
 
-    private function handleNestedResource()
+    private function handleNestedResource(): string
     {
         $parts = $this->getControllerParts();
         rsort($parts);
         return implode('_', $parts);
     }
 
-    private function getControllerParts()
+    private function getControllerParts(): array
     {
         $parts = explode('\\', $this->controller);
         $parts = Arrays::map($parts, function ($part) {
@@ -209,10 +210,5 @@ class RouteRule
         $parts = Arrays::map($parts, 'strtolower');
         $parts[] = $controllerName;
         return array_filter($parts);
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
     }
 }

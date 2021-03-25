@@ -8,8 +8,10 @@ namespace Ouzo\Http;
 
 final class HttpMethod
 {
+    public const DELETE = 'DELETE';
     public const GET = 'GET';
+    public const OPTIONS = 'OPTIONS';
+    public const PATCH = 'PATCH';
     public const POST = 'POST';
     public const PUT = 'PUT';
-    public const DELETE = 'DELETE';
 }

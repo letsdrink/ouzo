@@ -34,7 +34,7 @@ class RoutingService
 
     public function getAction(): string
     {
-        return $this->routeRule->isActionRequired() ? $this->routeRule->getAction() : $this->uri->getAction();
+        return $this->routeRule->isRequiredAction() ? $this->routeRule->getAction() : $this->uri->getAction();
     }
 
     public function getRouteRule(): RouteRule

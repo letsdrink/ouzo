@@ -234,7 +234,7 @@ class RouterTest extends TestCase
         $rule = $router->findRoute();
 
         //then
-        $this->assertFalse($rule->isActionRequired());
+        $this->assertFalse($rule->isRequiredAction());
         $this->assertEquals('Controller\\UsersController', $rule->getController());
     }
 

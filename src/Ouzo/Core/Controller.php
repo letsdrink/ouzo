@@ -79,7 +79,7 @@ class Controller
         $this->sessionStats = $sessionStats;
         $this->uri = $requestParameters->getRoutingService()->getUri();
         $this->currentController = $routeRule->getController();
-        $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $this->uri->getAction();
+        $this->currentAction = $routeRule->isRequiredAction() ? $routeRule->getAction() : $this->uri->getAction();
 
         $viewName = $this->getViewName();
 
