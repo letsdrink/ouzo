@@ -12,25 +12,16 @@ use PHPUnit\Framework\TestCase;
 
 class ToStringBuilderClass
 {
-    /** @var string */
-    private $name;
-    /** @var int */
-    private $age;
-    /** @var boolean */
-    private $smoking;
-    /** @var array */
-    private $tags;
-    /** @var array */
-    private $customFields;
-    /** @var string|null */
-    private $nullable;
-    /** @var object */
-    private $classWithoutToString;
-    /** @var object */
-    private $classWithToString;
+    private string $name;
+    private int $age;
+    private bool $smoking;
+    private array $tags;
+    private array $customFields;
+    private ?string $nullable;
+    private object $classWithoutToString;
+    private object $classWithToString;
 
-    /** @var ToStringStyle */
-    private $style = null;
+    private ?ToStringStyle $style = null;
 
     public function __construct($name, $age, $smoking, $tags, $customFields, $nullable, $classWithoutToString, $classWithToString)
     {
@@ -44,12 +35,12 @@ class ToStringBuilderClass
         $this->classWithToString = $classWithToString;
     }
 
-    public function setStyle(ToStringStyle $style)
+    public function setStyle(ToStringStyle $style): void
     {
         $this->style = $style;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (new ToStringBuilder($this, $this->style))
             ->append('name', $this->name)
@@ -66,9 +57,9 @@ class ToStringBuilderClass
 
 class ClassWithoutToString
 {
-    private $string;
+    private string $string;
 
-    public function __construct($string)
+    public function __construct(string $string)
     {
         $this->string = $string;
     }
@@ -76,14 +67,14 @@ class ClassWithoutToString
 
 class ClassWithToString
 {
-    private $string;
+    private string $string;
 
-    public function __construct($string)
+    public function __construct(string $string)
     {
         $this->string = $string;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (new ToStringBuilder($this))
             ->append('string', $this->string)
@@ -93,8 +84,7 @@ class ClassWithToString
 
 class ToStringBuilderTest extends TestCase
 {
-    /** @var ToStringBuilderClass */
-    private $toStringBuilderClass;
+    private ToStringBuilderClass $toStringBuilderClass;
 
     public function setUp(): void
     {
