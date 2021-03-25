@@ -16,10 +16,8 @@ use Ouzo\Uri;
 
 class SessionStats
 {
-    const NUMBER_OF_REQUESTS_TO_KEEP = 10;
-
-    /** @var Uri */
-    private $uri;
+    public const NUMBER_OF_REQUESTS_TO_KEEP = 10;
+    private Uri $uri;
 
     #[Inject]
     public function __construct(Uri $uri)
@@ -27,11 +25,7 @@ class SessionStats
         $this->uri = $uri;
     }
 
-    /**
-     * @param RequestContext $requestContext
-     * @return void
-     */
-    public function save(RequestContext $requestContext)
+    public function save(RequestContext $requestContext): void
     {
         $traceDisabled = !(Config::getValue('debug') && Config::getValue('stats_disabled') !== true);
         if ($traceDisabled) {
@@ -51,10 +45,7 @@ class SessionStats
         $this->removeExcessiveRequests();
     }
 
-    /**
-     * @return void
-     */
-    private function removeExcessiveRequests()
+    private function removeExcessiveRequests(): void
     {
         $all = $this->queries();
         if (sizeof($all) > self::NUMBER_OF_REQUESTS_TO_KEEP) {
@@ -65,26 +56,17 @@ class SessionStats
         }
     }
 
-    /**
-     * @return array
-     */
-    public function queries()
+    public function queries(): array
     {
         return Session::get('stats_queries') ?: [];
     }
 
-    /**
-     * @return void
-     */
-    public function reset()
+    public function reset(): void
     {
         Session::remove('stats_queries');
     }
 
-    /**
-     * @return int
-     */
-    public function getTotalTime()
+    public function getTotalTime(): int
     {
         $totalTime = 0;
 
@@ -95,21 +77,14 @@ class SessionStats
         return $totalTime;
     }
 
-    /**
-     * @param string $request
-     * @return mixed
-     */
-    public function getRequestTotalTime($request)
+    public function getRequestTotalTime(?string $request): mixed
     {
         return array_reduce($this->queriesForRequest($request), function ($total, $value) {
             return $total + $value['time'];
         });
     }
 
-    /**
-     * @return int
-     */
-    public function getNumberOfQueries()
+    public function getNumberOfQueries(): int
     {
         $number = 0;
 
@@ -120,28 +95,17 @@ class SessionStats
         return $number;
     }
 
-    /**
-     * @param string $request
-     * @return int
-     */
-    public function getRequestNumberOfQueries($request)
+    public function getRequestNumberOfQueries(?string $request): int
     {
         return sizeof($this->queriesForRequest($request));
     }
 
-    /**
-     * @return int
-     */
-    public function getNumberOfRequests()
+    public function getNumberOfRequests(): int
     {
         return sizeof($this->queries());
     }
 
-    /**
-     * @param string $request
-     * @return array
-     */
-    private function queriesForRequest($request)
+    private function queriesForRequest(?string $request): array
     {
         return Session::get('stats_queries', $request, 'queries') ?: [];
     }
