@@ -3,9 +3,9 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\Date;
-
 use PHPUnit\Framework\TestCase;
 
 class DateTest extends TestCase
@@ -94,7 +94,7 @@ class DateTest extends TestCase
         $this->assertGreaterThan(Clock::nowAsString(), $date);
     }
 
-    public function intervalsAndDates()
+    public function intervalsAndDates(): array
     {
         return [
             ['1 day', '2010-01-21 12:00'],
@@ -108,10 +108,8 @@ class DateTest extends TestCase
     /**
      * @test
      * @dataProvider intervalsAndDates
-     * @param string $interval
-     * @param string $expectedDate
      */
-    public function shouldModifyDate($interval, $expectedDate)
+    public function shouldModifyDate(string $interval, string $expectedDate)
     {
         //when
         $date = Date::modify('2010-01-20 12:00', $interval);
