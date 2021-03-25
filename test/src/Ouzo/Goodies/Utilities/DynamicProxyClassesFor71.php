@@ -24,3 +24,11 @@ class ClassWithNullReturningMethod
         return null;
     }
 }
+
+class ClassWithMixedReturningMethod
+{
+    public function fun1(mixed $p1): mixed
+    {
+        return $p1;
+    }
+}

@@ -74,7 +74,7 @@ class BeforeFilterTest extends ControllerTestCase
         SampleController::$beforeCallback = null;
     }
 
-    protected function frontControllerBindings(InjectorConfig $config)
+    protected function frontControllerBindings(InjectorConfig $config): void
     {
         parent::frontControllerBindings($config);
         $config->bind(ControllerFactory::class)->toInstance(new MockControllerFactory());

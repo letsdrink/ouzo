@@ -402,4 +402,21 @@ class DynamicProxyTest extends TestCase
         //then
         $this->assertNull($result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldNotCastMixed()
+    {
+        //given
+        $testMethodHandler = new NullReturningTestMethodHandler();
+        $proxy = DynamicProxy::newInstance(ClassWithMixedReturningMethod::class, $testMethodHandler);
+
+        //when
+        $result = $proxy->fun1(1);
+
+        //then
+        $this->assertNull($result);
+    }
+
 }

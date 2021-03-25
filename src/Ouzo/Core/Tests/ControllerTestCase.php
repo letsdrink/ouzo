@@ -71,7 +71,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         return Config::getValue('global', 'prefix_system');
     }
 
-    public function get(string $url, array $data = null): void
+    public function get(string $url, array $data = []): void
     {
         $url = $this->appendParamsToUrl($url, $data);
         $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
@@ -81,7 +81,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         $this->initFrontController();
     }
 
-    private function appendParamsToUrl(string $url, array $data): string
+    private function appendParamsToUrl(string $url, array $data = []): string
     {
         if ($data) {
             $conjunction = $this->urlHasParams($url) ? "&" : "?";

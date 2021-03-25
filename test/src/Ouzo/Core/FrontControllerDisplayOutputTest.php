@@ -25,7 +25,7 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
         Config::clearProperty('debug');
     }
 
-    protected function frontControllerBindings(InjectorConfig $config)
+    protected function frontControllerBindings(InjectorConfig $config): void
     {
         parent::frontControllerBindings($config);
         $config->bind(HeaderSender::class)->toInstance(Mock::create(HeaderSender::class));
