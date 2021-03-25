@@ -3,13 +3,13 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Utilities\Joiner;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Utilities\Joiner;
+use PHPUnit\Framework\TestCase;
 
 class JoinerTest extends TestCase
 {
-    public function arrayJoinedWithSeparator()
+    public function arrayJoinedWithSeparator(): array
     {
         return [
             [['A', 'B', 'C'], 'A, B, C'],
@@ -26,10 +26,8 @@ class JoinerTest extends TestCase
     /**
      * @test
      * @dataProvider arrayJoinedWithSeparator
-     * @param array $array
-     * @param string $expectedResult
      */
-    public function shouldJoinArrayWithSeparator($array, $expectedResult)
+    public function shouldJoinArrayWithSeparator(array $array, string $expectedResult)
     {
         //when
         $result = Joiner::on(', ')->join($array);
@@ -92,9 +90,9 @@ class JoinerTest extends TestCase
     public function shouldJoinArrayApplyingFunction()
     {
         //when
-        $result = Joiner::on(', ')->map(function ($key, $value) {
-            return strtolower($value);
-        })->join(['A', 'B', 'C']);
+        $result = Joiner::on(', ')
+            ->map(fn($key, $value) => strtolower($value))
+            ->join(['A', 'B', 'C']);
 
         //then
         $this->assertEquals('a, b, c', $result);
@@ -106,9 +104,9 @@ class JoinerTest extends TestCase
     public function shouldJoinMapApplyingFunction()
     {
         //when
-        $result = Joiner::on(', ')->map(function ($key, $value) {
-            return "$key => $value";
-        })->join([1 => 'A', 2 => 'B', 3 => 'C']);
+        $result = Joiner::on(', ')
+            ->map(fn($key, $value) => "$key => $value")
+            ->join([1 => 'A', 2 => 'B', 3 => 'C']);
 
         //then
         $this->assertEquals('1 => A, 2 => B, 3 => C', $result);
@@ -120,9 +118,9 @@ class JoinerTest extends TestCase
     public function shouldJoinMapApplyingFunctionOnValues()
     {
         //when
-        $result = Joiner::on(', ')->mapValues(function ($value) {
-            return "val = $value";
-        })->join([1 => 'A', 2 => 'B', 3 => 'C']);
+        $result = Joiner::on(', ')
+            ->mapValues(fn($value) => "val = $value")
+            ->join([1 => 'A', 2 => 'B', 3 => 'C']);
 
         //then
         $this->assertEquals('val = A, val = B, val = C', $result);
