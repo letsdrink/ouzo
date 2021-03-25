@@ -3,14 +3,14 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\TimeAgo;
-
 use PHPUnit\Framework\TestCase;
 
 class TimeAgoTest extends TestCase
 {
-    public function dates()
+    public function dates(): array
     {
         return [
             ['2012-02-20 12:00', '2012-02-20 11:59', 'timeAgo.justNow', []],
@@ -31,10 +31,6 @@ class TimeAgoTest extends TestCase
     /**
      * @test
      * @dataProvider dates
-     * @param string $currentDate
-     * @param string $date
-     * @param string $expectedKey
-     * @param array $expectedParams
      */
     public function shouldCreateTimeAgo($currentDate, $date, $expectedKey, $expectedParams)
     {

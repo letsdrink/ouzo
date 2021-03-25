@@ -5,7 +5,7 @@
  */
 use Ouzo\Utilities\ArrayContainFunctions;
 
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class ArrayContainFunctionsTest extends TestCase
 {
@@ -101,9 +101,6 @@ class ArrayContainFunctionsTest extends TestCase
         $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [2]));
         $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], ['1']));
         $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], ['2']));
-        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], 1));
-        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], '1'));
-        $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], null));
         $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [true]));
         $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [null]));
         $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], []));
