@@ -10,7 +10,7 @@ use Ouzo\SessionInitializer;
 
 class MockSessionInitializer extends SessionInitializer
 {
-    public function startSession()
+    public function startSession(): void
     {
         $_SESSION = isset($_SESSION) ? $_SESSION : [];
     }

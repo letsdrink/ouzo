@@ -10,15 +10,15 @@ use Ouzo\CookiesSetter;
 
 class MockCookiesSetter extends CookiesSetter
 {
-    private $_cookies = [];
+    private array $cookies = [];
 
-    public function setCookies($cookies)
+    public function setCookies(array $cookies): void
     {
-        $this->_cookies = $cookies;
+        $this->cookies = $cookies;
     }
 
-    public function getCookies()
+    public function getCookies(): array
     {
-        return $this->_cookies;
+        return $this->cookies;
     }
 }

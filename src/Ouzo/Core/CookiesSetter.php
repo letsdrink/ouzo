@@ -9,10 +9,7 @@ use Ouzo\Utilities\Arrays;
 
 class CookiesSetter
 {
-    /**
-     * @param array $cookies
-     */
-    public function setCookies($cookies)
+    public function setCookies(array $cookies): void
     {
         Arrays::map($cookies, function (array $cookies) {
             setcookie(

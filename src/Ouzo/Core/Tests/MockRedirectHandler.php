@@ -10,17 +10,15 @@ use Ouzo\RedirectHandler;
 
 class MockRedirectHandler extends RedirectHandler
 {
-    private $_location;
+    private string $location;
 
-    public function redirect($url)
+    public function redirect(string $url): void
     {
-        $this->_location = $url;
-
-        return $this;
+        $this->location = $url;
     }
 
-    public function getLocation()
+    public function getLocation(): string
     {
-        return $this->_location;
+        return $this->location;
     }
 }

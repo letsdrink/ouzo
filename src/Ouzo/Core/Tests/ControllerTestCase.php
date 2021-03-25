@@ -13,8 +13,10 @@ use Ouzo\FrontController;
 use Ouzo\HeaderSender;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
+use Ouzo\Model;
 use Ouzo\OutputRenderer;
 use Ouzo\RedirectHandler;
+use Ouzo\Request\RequestContext;
 use Ouzo\Request\RequestHeaders;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Uri\PathProviderInterface;
@@ -24,12 +26,10 @@ use Ouzo\Utilities\Strings;
 
 abstract class ControllerTestCase extends DbTransactionalTestCase
 {
-    /** @var InjectorConfig */
-    protected $injectorConfig;
-    /** @var FrontController */
-    protected $frontController;
+    protected InjectorConfig $injectorConfig;
+    protected FrontController $frontController;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct(string $name = null, array $data = [], ?string $dataName = '')
     {
         $mockSessionInitializer = new MockSessionInitializer();
         $mockSessionInitializer->startSession();
@@ -66,12 +66,12 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         RequestHeaders::clearCache();
     }
 
-    private static function prefixSystem()
+    private static function prefixSystem(): ?string
     {
         return Config::getValue('global', 'prefix_system');
     }
 
-    public function get($url, $data = null)
+    public function get(string $url, array $data = null): void
     {
         $url = $this->appendParamsToUrl($url, $data);
         $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
@@ -81,7 +81,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         $this->initFrontController();
     }
 
-    private function appendParamsToUrl($url, $data)
+    private function appendParamsToUrl(string $url, array $data): string
     {
         if ($data) {
             $conjunction = $this->urlHasParams($url) ? "&" : "?";
@@ -90,12 +90,12 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         return $url;
     }
 
-    private function urlHasParams($url)
+    private function urlHasParams(string $url): bool
     {
         return count($this->parseUrlParams($url)) > 0;
     }
 
-    private function parseUrlParams($url)
+    private function parseUrlParams(string $url): array
     {
         $urlComponents = parse_url($url);
         $query = Arrays::getValue($urlComponents, 'query', '');
@@ -103,16 +103,15 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         return $array;
     }
 
-    protected function initFrontController()
+    protected function initFrontController(): void
     {
         $this->frontControllerBindings($this->injectorConfig);
         $injector = new Injector($this->injectorConfig);
         $this->frontController = $injector->getInstance(FrontController::class);
-
         $this->frontController->init();
     }
 
-    public function post($url, $data)
+    public function post(string $url, array $data): void
     {
         $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -122,7 +121,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         $this->initFrontController();
     }
 
-    public function put($url, $data)
+    public function put(string $url, array $data): void
     {
         $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -131,7 +130,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         $this->initFrontController();
     }
 
-    public function patch($url)
+    public function patch(string $url): void
     {
         $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -140,7 +139,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         $this->initFrontController();
     }
 
-    public function delete($url)
+    public function delete(string $url): void
     {
         $_SERVER['REQUEST_URI'] = self::prefixSystem() . $url;
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -149,19 +148,19 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         $this->initFrontController();
     }
 
-    public function assertRedirectsTo($path)
+    public function assertRedirectsTo(string $path): void
     {
         $expected = $this->removePrefix($path);
         $actual = $this->removePrefix($this->frontController->getRequestExecutor()->getRedirectHandler()->getLocation());
         $this->assertEquals($expected, $actual);
     }
 
-    private function removePrefix($string)
+    private function removePrefix(?string $string): ?string
     {
         return Strings::removePrefix($string, self::prefixSystem());
     }
 
-    public function assertRenders($viewName)
+    public function assertRenders(string $viewName): void
     {
         $statusResponse = $this->requestContext()->getCurrentControllerObject()->getStatusResponse();
         $location = $this->requestContext()->getCurrentControllerObject()->getRedirectLocation();
@@ -171,68 +170,68 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         $this->assertEquals($viewName, $this->requestContext()->getCurrentControllerObject()->view->getViewName());
     }
 
-    public function assertAssignsModel($variable, $modelObject)
+    public function assertAssignsModel(string $variable, Model $modelObject): void
     {
         $modelVariable = $this->requestContext()->getCurrentControllerObject()->view->$variable;
         $this->assertNotNull($modelVariable);
         Assert::thatModel($modelVariable)->hasSameAttributesAs($modelObject);
     }
 
-    public function assertDownloadsFile($file)
+    public function assertDownloadsFile(string $file): void
     {
         $this->assertEquals($file, $this->frontController->getRequestExecutor()->getDownloadHandler()->getFileName());
     }
 
-    public function assertAssignsValue($variable, $value)
+    public function assertAssignsValue(string $variable, mixed $value): void
     {
         $this->assertNotNull($this->requestContext()->getCurrentControllerObject()->view->$variable);
         $this->assertEquals($value, $this->requestContext()->getCurrentControllerObject()->view->$variable);
     }
 
-    public function assertRenderedContent()
+    public function assertRenderedContent(): StringAssert
     {
         return Assert::thatString($this->getActualContent());
     }
 
-    public function assertRenderedJsonAttributeEquals($attribute, $equals)
+    public function assertRenderedJsonAttributeEquals(string $attribute, mixed $equals): void
     {
         $json = $this->getRenderedJsonAsArray();
         $this->assertEquals($equals, $json[$attribute]);
     }
 
-    public function getAssigned($name)
+    public function getAssigned(string $name): mixed
     {
         return $this->requestContext()->getCurrentControllerObject()->view->$name;
     }
 
-    public function getRenderedJsonAsArray()
+    public function getRenderedJsonAsArray(): array
     {
         return Json::decode($this->getActualContent(), true);
     }
 
-    public function assertResponseHeader($expected)
+    public function assertResponseHeader(string $expected): void
     {
         $actual = $this->getResponseHeaders();
         Assert::thatArray($actual)->contains($expected);
     }
 
-    public function assertHasCookie($cookieAttributes)
+    public function assertHasCookie(string $cookieAttributes): void
     {
         $actual = $this->frontController->getRequestExecutor()->getCookiesSetter()->getCookies();
         Assert::thatArray($actual)->contains($cookieAttributes);
     }
 
-    public function getResponseHeaders()
+    public function getResponseHeaders(): array
     {
         return $this->frontController->getRequestExecutor()->getHeaderSender()->getHeaders();
     }
 
-    public function getActualContent()
+    public function getActualContent(): ?string
     {
         return $this->frontController->getRequestContext()->getCurrentControllerObject()->layout->layoutContent();
     }
 
-    protected function frontControllerBindings(InjectorConfig $config)
+    protected function frontControllerBindings(InjectorConfig $config): void
     {
         $config->bind(OutputRenderer::class)->toInstance(new MockOutputRenderer());
         $config->bind(HeaderSender::class)->toInstance(new MockHeaderSender());
@@ -242,7 +241,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         $config->bind(PathProviderInterface::class)->toInstance(new PathProvider());
     }
 
-    protected function requestContext()
+    protected function requestContext(): RequestContext
     {
         return $this->frontController->getRequestContext();
     }

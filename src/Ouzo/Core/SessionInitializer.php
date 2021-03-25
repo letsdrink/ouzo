@@ -7,7 +7,7 @@ namespace Ouzo;
 
 class SessionInitializer
 {
-    public function startSession()
+    public function startSession(): void
     {
         Session::startSession();
     }
