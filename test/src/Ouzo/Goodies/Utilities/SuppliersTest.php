@@ -3,11 +3,11 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\Suppliers;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class SuppliersTest extends TestCase
 {
@@ -20,9 +20,7 @@ class SuppliersTest extends TestCase
         $command = Mock::mock();
         Mock::when($command)->getName()->thenReturn('Jack', 'Black', 'White');
 
-        $supplier = Suppliers::memoizeWithExpiration(function () use ($command) {
-            return $command->getName();
-        }, 10);
+        $supplier = Suppliers::memoizeWithExpiration(fn() => $command->getName(), 10);
 
         //when
         Clock::freeze('2014-01-01 11:11:11');
@@ -51,9 +49,7 @@ class SuppliersTest extends TestCase
         $command = Mock::mock();
         Mock::when($command)->getName()->thenReturn('Jack', 'Black', 'White');
 
-        $supplier = Suppliers::memoize(function () use ($command) {
-            return $command->getName();
-        });
+        $supplier = Suppliers::memoize(fn() => $command->getName());
 
         //when
         Clock::freeze('2014-01-01 11:11:11');
