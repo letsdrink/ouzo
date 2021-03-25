@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use InvalidArgumentException;
@@ -12,13 +13,9 @@ use ReflectionMethod;
 
 class Config
 {
-    /** @var null|ConfigRepository */
-    private static $configInstance = null;
+    private static ?ConfigRepository $configInstance = null;
 
-    /**
-     * @return boolean
-     */
-    public static function isLoaded()
+    public static function isLoaded(): bool
     {
         return self::$configInstance ? true : false;
     }
@@ -29,19 +26,13 @@ class Config
      *  getValue('db', 'host') - will return $config['db']['host']
      *
      * If value does not exist it will return empty array.
-     *
-     * @param array $keys
-     * @return mixed
      */
-    public static function getValue(...$keys)
+    public static function getValue(string ...$keys): mixed
     {
         return self::getInstance()->getValue($keys);
     }
 
-    /**
-     * @return ConfigRepository
-     */
-    private static function getInstance()
+    private static function getInstance(): ConfigRepository
     {
         if (!self::isLoaded()) {
             self::$configInstance = new ConfigRepository();
@@ -50,10 +41,7 @@ class Config
         return self::$configInstance;
     }
 
-    /**
-     * @return ConfigRepository
-     */
-    private static function getInstanceNoReload()
+    private static function getInstanceNoReload(): ConfigRepository
     {
         if (!self::isLoaded()) {
             self::$configInstance = new ConfigRepository();
@@ -61,28 +49,17 @@ class Config
         return self::$configInstance;
     }
 
-    /**
-     * @return string
-     */
-    public static function getPrefixSystem()
+    public static function getPrefixSystem(): string
     {
         return self::getValue('global', 'prefix_system');
     }
 
-    /**
-     * @return array
-     */
-    public static function all()
+    public static function all(): array
     {
         return self::getInstance()->all();
     }
 
-    /**
-     * @param object $customConfig
-     * @throws InvalidArgumentException
-     * @return ConfigRepository
-     */
-    public static function registerConfig($customConfig)
+    public static function registerConfig(object|string $customConfig): ConfigRepository
     {
         if (!is_object($customConfig)) {
             throw new InvalidArgumentException('Custom config must be a object');
@@ -90,57 +67,40 @@ class Config
         if (!method_exists($customConfig, 'getConfig')) {
             throw new InvalidArgumentException('Custom config object must have getConfig method');
         }
+
         $reflection = new ReflectionMethod($customConfig, 'getConfig');
         if (!$reflection->isPublic()) {
             throw new InvalidArgumentException('Custom config method getConfig must be public');
         }
+
         $config = self::getInstanceNoReload();
         $config->addCustomConfig($customConfig);
         return self::$configInstance;
     }
 
-    /**
-     * @param array $keys
-     * @return ConfigOverrideProperty
-     */
-    public static function overrideProperty(...$keys)
+    public static function overrideProperty(string ...$keys): ConfigOverrideProperty
     {
         return new ConfigOverrideProperty($keys);
     }
 
-    /**
-     * @param array $keys
-     * @return void
-     */
-    public static function clearProperty(...$keys)
+    public static function clearProperty(string ...$keys): void
     {
         self::overridePropertyArray($keys, null);
     }
 
-    /**
-     * @param array $keys
-     * @return void
-     */
-    public static function revertProperty(...$keys)
+    public static function revertProperty(string ...$keys): void
     {
         self::revertPropertyArray($keys);
     }
 
-    /**
-     * @param $keys
-     * @return void
-     */
-    public static function revertPropertyArray($keys)
+    /** @param string[] $keys */
+    public static function revertPropertyArray(array $keys): void
     {
         self::getInstance()->revertProperty($keys);
     }
 
-    /**
-     * @param $keys
-     * @param $value
-     * @return void
-     */
-    public static function overridePropertyArray($keys, $value)
+    /** @param string[] $keys */
+    public static function overridePropertyArray(array $keys, mixed $value): void
     {
         self::getInstance()->overrideProperty($keys, $value);
     }

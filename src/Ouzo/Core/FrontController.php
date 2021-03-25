@@ -6,7 +6,6 @@
 
 namespace Ouzo;
 
-use Exception;
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Middleware\MiddlewareRepository;
 use Ouzo\Request\RequestContext;
@@ -18,40 +17,21 @@ use Throwable;
 
 class FrontController
 {
-    /** @var string */
-    public static $requestId = null;
+    public static ?string $requestId = null;
 
-    /** @var RequestContextFactory */
-    private $requestContextFactory;
-    /** @var MiddlewareRepository */
-    private $middlewareRepository;
-    /** @var RequestExecutor */
-    private $requestExecutor;
-    /** @var SessionStats */
-    private $sessionStats;
-    /** @var RequestContext */
-    private $requestContext;
+    private ?RequestContext $requestContext = null;
 
     #[Inject]
     public function __construct(
-        RequestContextFactory $requestContextFactory,
-        MiddlewareRepository $middlewareRepository,
-        RequestExecutor $requestExecutor,
-        SessionStats $sessionStats
+        private RequestContextFactory $requestContextFactory,
+        private MiddlewareRepository $middlewareRepository,
+        private RequestExecutor $requestExecutor,
+        private SessionStats $sessionStats
     )
     {
-        $this->requestContextFactory = $requestContextFactory;
-        $this->middlewareRepository = $middlewareRepository;
-        $this->requestExecutor = $requestExecutor;
-        $this->sessionStats = $sessionStats;
     }
 
-    /**
-     * @return void
-     * @throws Exception
-     * @throws Throwable
-     */
-    public function init()
+    public function init(): void
     {
         $this->requestContext = $this->requestContextFactory->create();
 
@@ -64,9 +44,6 @@ class FrontController
             $chainExecutor->execute($this->requestContext, function (RequestContext $requestContext) {
                 $this->requestExecutor->execute($requestContext);
             });
-        } catch (Exception $e) {
-            ob_end_clean();
-            throw $e;
         } catch (Throwable $e) {
             ob_end_clean();
             throw $e;
@@ -77,20 +54,17 @@ class FrontController
         ob_end_flush();
     }
 
-    /** @return RequestContext */
-    public function getRequestContext()
+    public function getRequestContext(): RequestContext
     {
         return $this->requestContext;
     }
 
-    /** @return RequestExecutor */
-    public function getRequestExecutor()
+    public function getRequestExecutor(): RequestExecutor
     {
         return $this->requestExecutor;
     }
 
-    /** @return MiddlewareRepository */
-    public function getMiddlewareRepository()
+    public function getMiddlewareRepository(): MiddlewareRepository
     {
         return $this->middlewareRepository;
     }

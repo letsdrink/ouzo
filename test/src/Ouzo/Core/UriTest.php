@@ -9,6 +9,7 @@ use Ouzo\ContentType;
 use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\SimpleMock;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
@@ -17,11 +18,8 @@ use PHPUnit\Framework\TestCase;
 
 class UriTest extends TestCase
 {
-    /**
-     * @var Uri
-     */
-    private $uri;
-    private $pathProviderMock;
+    private Uri $uri;
+    private PathProvider|SimpleMock $pathProviderMock;
 
     public function setUp(): void
     {
@@ -39,7 +37,7 @@ class UriTest extends TestCase
     public function shouldExtractController()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
+        $this->path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
 
         //then
         $this->assertEquals('User', $this->uri->getController());
@@ -52,7 +50,7 @@ class UriTest extends TestCase
     public function shouldExtractAction()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
+        $this->path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
 
         //then
         $this->assertEquals('add', $this->uri->getAction());
@@ -64,7 +62,7 @@ class UriTest extends TestCase
     public function shouldGetParamValueByName()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
+        $this->path(Config::getPrefixSystem() . '/user/add/id/5/name/john');
 
         //then
         $this->assertEquals('john', $this->uri->getParam('name'));
@@ -77,7 +75,7 @@ class UriTest extends TestCase
     public function shouldGetNullValueByNonExistingNameWhenAnyParamsPassed()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add/id/5');
+        $this->path(Config::getPrefixSystem() . '/user/add/id/5');
 
         //then
         $this->assertNull($this->uri->getParam('surname'));
@@ -89,7 +87,7 @@ class UriTest extends TestCase
     public function shouldGetNullValueByNonExistingNameWhenNoParamsPassed()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add');
+        $this->path(Config::getPrefixSystem() . '/user/add');
 
         //then
         $this->assertNull($this->uri->getParam('surname'));
@@ -101,7 +99,7 @@ class UriTest extends TestCase
     public function shouldHandleOddNumberOfParameters()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name');
+        $this->path(Config::getPrefixSystem() . '/user/add/id/5/name');
 
         //when
         $param = $this->uri->getParam('name');
@@ -116,7 +114,7 @@ class UriTest extends TestCase
     public function shouldSplitPathWithoutLimit()
     {
         //given
-        $reflectionOfUri = $this->_privateMethod('_parsePath');
+        $reflectionOfUri = $this->setPrivateMethodAccessible('parsePath');
 
         //when
         $paramsExpected = ['user', 'add', 'id', '5', 'name', 'john'];
@@ -132,7 +130,7 @@ class UriTest extends TestCase
     public function shouldSplitPathWithLimit()
     {
         //given
-        $reflectionOfUri = $this->_privateMethod('_parsePath');
+        $reflectionOfUri = $this->setPrivateMethodAccessible('parsePath');
 
         //when
         $paramsExpected = ['user', 'add', 'id/5/name/john'];
@@ -148,7 +146,7 @@ class UriTest extends TestCase
     public function shouldGetAllParams()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add/id/5/name/john/surname/smith/');
+        $this->path(Config::getPrefixSystem() . '/user/add/id/5/name/john/surname/smith/');
 
         //when
         $params = $this->uri->getParams();
@@ -179,7 +177,7 @@ class UriTest extends TestCase
     public function shouldParseUrlWithParamsWhenGETDataAdded()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add/id/5?param1=val1&param2=val2');
+        $this->path(Config::getPrefixSystem() . '/user/add/id/5?param1=val1&param2=val2');
 
         //when
         $params = $this->uri->getParams();
@@ -195,7 +193,7 @@ class UriTest extends TestCase
     public function shouldParseUrlWithoutParamsWhenGETDataAdded()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add?param1=val1&param2=val2&param3=t1%2Ct2%2Ct3');
+        $this->path(Config::getPrefixSystem() . '/user/add?param1=val1&param2=val2&param3=t1%2Ct2%2Ct3');
 
         //when
         $params = $this->uri->getParams();
@@ -211,7 +209,7 @@ class UriTest extends TestCase
     public function shouldParseUrlWhenSlashInGET()
     {
         //given
-        $this->_path(Config::getPrefixSystem() . '/user/add/id/4?param1=path/to/file&param2=val2');
+        $this->path(Config::getPrefixSystem() . '/user/add/id/4?param1=path/to/file&param2=val2');
 
         //when
         $params = $this->uri->getParams();
@@ -275,7 +273,7 @@ class UriTest extends TestCase
         StreamStub::unregister();
     }
 
-    public function getRequestParameters($stream)
+    public function getRequestParameters($stream): array
     {
         return Uri::getRequestParameters($stream);
     }
@@ -337,13 +335,11 @@ class UriTest extends TestCase
     /**
      * @test
      * @dataProvider malformedSlashes
-     * @param string $broken
-     * @param string $good
      */
-    public function shouldReplaceTwoBackSlashes($broken, $good)
+    public function shouldReplaceTwoBackSlashes(string $broken, string $good)
     {
         //given
-        $this->_path(Config::getPrefixSystem() . $broken);
+        $this->path(Config::getPrefixSystem() . $broken);
 
         //when
         $path = $this->uri->getPathWithoutPrefix();
@@ -358,7 +354,7 @@ class UriTest extends TestCase
     public function shouldReturnEmptyArrayWhenParsePathIsNull()
     {
         //given
-        $this->_path(null);
+        $this->path(null);
 
         //when
         $path = $this->uri->getAction();
@@ -370,11 +366,8 @@ class UriTest extends TestCase
     /**
      * @test
      * @dataProvider protocols
-     * @param string $header
-     * @param mixed $value
-     * @param string $expected
      */
-    public function shouldReturnCorrectProtocol($header, $value, $expected)
+    public function shouldReturnCorrectProtocol(string $header, mixed $value, string $expected)
     {
         //given
         $_SERVER[$header] = $value;
@@ -386,7 +379,7 @@ class UriTest extends TestCase
         $this->assertEquals($expected, $protocol);
     }
 
-    public function protocols()
+    public function protocols(): array
     {
         return [
             ['HTTP_X_FORWARDED_PROTO', 'https', 'https://'],
@@ -396,7 +389,7 @@ class UriTest extends TestCase
         ];
     }
 
-    public function malformedSlashes()
+    public function malformedSlashes(): array
     {
         return [
             ['/users//index', '/users/index'],
@@ -405,12 +398,12 @@ class UriTest extends TestCase
         ];
     }
 
-    private function _path($path)
+    private function path(?string $path)
     {
         Mock::when($this->pathProviderMock)->getPath()->thenReturn($path);
     }
 
-    private function _privateMethod($testMethod)
+    private function setPrivateMethodAccessible(string $testMethod): ReflectionMethod
     {
         $reflectionOfUri = new ReflectionMethod(Uri::class, $testMethod);
         $reflectionOfUri->setAccessible(true);

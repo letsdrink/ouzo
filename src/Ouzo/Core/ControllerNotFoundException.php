@@ -1,4 +1,5 @@
 <?php
+
 namespace Ouzo;
 
 use Exception;

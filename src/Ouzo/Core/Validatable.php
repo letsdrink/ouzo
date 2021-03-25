@@ -13,10 +13,10 @@ use Ouzo\Utilities\Strings;
 
 class Validatable
 {
-    protected $_errors = [];
-    protected $_errorFields = [];
+    protected array $errors = [];
+    protected array $errorFields = [];
 
-    public function isValid()
+    public function isValid(): bool
     {
         $this->validate();
         $errors = $this->getErrors();
@@ -26,162 +26,125 @@ class Validatable
     /**
      * @return array - returns array with saved errors
      */
-    public function getErrors()
+    public function getErrors(): array
     {
-        return Arrays::map($this->_errors, Functions::extractField('message'));
+        return Arrays::map($this->errors, Functions::extractField('message'));
     }
 
-    public function getErrorObjects()
+    public function getErrorObjects(): array
     {
-        return $this->_errors;
+        return $this->errors;
     }
 
-    public function getErrorFields()
+    public function getErrorFields(): array
     {
-        return $this->_errorFields;
+        return $this->errorFields;
     }
 
-    public function validate()
+    public function validate(): void
     {
-        $this->_errors = [];
-        $this->_errorFields = [];
+        $this->errors = [];
+        $this->errorFields = [];
     }
 
-    public function validateAssociated(Validatable $validatable)
+    public function validateAssociated(Validatable $validatable): void
     {
         $validatable->validate();
-        $this->_errors = array_merge($this->getErrorObjects(), $validatable->getErrorObjects());
-        $this->_errorFields = array_merge($this->_errorFields, $validatable->getErrorFields());
+        $this->errors = array_merge($this->getErrorObjects(), $validatable->getErrorObjects());
+        $this->errorFields = array_merge($this->errorFields, $validatable->getErrorFields());
     }
 
-    /**
-     * @param Validatable []
-     */
-    public function validateAssociatedCollection($validatables)
+    /** @param Validatable[] */
+    public function validateAssociatedCollection(array $validatables): void
     {
         foreach ($validatables as $validatable) {
             $this->validateAssociated($validatable);
         }
     }
 
-    /**
-     * Check whether passed string in $value parameter has 0 length or not
-     * @param string $value - string to check
-     * @param $errorMessage - error message
-     * @param null $errorField
-     */
-    public function validateNotBlank($value, $errorMessage, $errorField = null)
+    /** Check whether passed string in `$value` parameter has 0 length or not */
+    public function validateNotBlank(string $value, string|Error $errorMessage, string $errorField = null): void
     {
         if (Strings::isBlank($value)) {
             $this->error($errorMessage);
-            $this->_errorFields[] = $errorField;
+            $this->errorFields[] = $errorField;
         }
     }
 
     /**
      * Checks whether value is true, if not it saves error
-     * @param $value - value to check whether is true
      * (values which are considered as TRUE or FALSE are presented here http://php.net/manual/en/types.comparisons.php )
-     * @param $errorMessage - error message
-     * @param null $errorField
      */
-    public function validateTrue($value, $errorMessage, $errorField = null)
+    public function validateTrue(mixed $value, string|Error $errorMessage, string $errorField = null): void
     {
         if (!$value) {
             $this->error($errorMessage);
-            $this->_errorFields[] = $errorField;
+            $this->errorFields[] = $errorField;
         }
     }
 
-    /**
-     * Checks whether array does not contain duplicate values
-     * @param array $values - array to check
-     * @param $errorMessage - error message
-     * @param null $errorField
-     */
-    public function validateUnique(array $values, $errorMessage, $errorField = null)
+    /** Checks whether array does not contain duplicate values */
+    public function validateUnique(array $values, string|Error $errorMessage, string $errorField = null): void
     {
         if (count($values) != count(array_unique($values))) {
             $this->error($errorMessage);
-            $this->_errorFields[] = $errorField;
+            $this->errorFields[] = $errorField;
         }
     }
 
-    /**
-     * Checks whether $value can be converted to time by "strtotime" function
-     * @param string $value - string to check
-     * @param $errorMessage - error message
-     * @param null $errorField
-     */
-    public function validateDateTime($value, $errorMessage, $errorField = null)
+    /** Checks whether $value can be converted to time by "strtotime" function */
+    public function validateDateTime(string $value, string|Error $errorMessage, string $errorField = null): void
     {
         if (!strtotime($value)) {
             $this->error($errorMessage);
-            $this->_errorFields[] = $errorField;
+            $this->errorFields[] = $errorField;
         }
     }
 
-    /**
-     * Checks whether string does not exceed max length
-     * @param string $value - string to check
-     * @param int $maxLength - max length which doesn't cause error
-     * @param $errorMessage - error message
-     * @param null $errorField
-     */
-    public function validateStringMaxLength($value, $maxLength, $errorMessage, $errorField = null)
+    /** Checks whether string does not exceed max length */
+    public function validateStringMaxLength(string $value, int $maxLength, string|Error $errorMessage, string $errorField = null): void
     {
         if (strlen($value) > $maxLength) {
             $this->error($errorMessage);
-            $this->_errorFields[] = $errorField;
+            $this->errorFields[] = $errorField;
         }
     }
 
     /**
      * Checks whether $value is not empty
      * (table which explains that is here http://php.net/manual/en/types.comparisons.php)
-     * @param $value - value to check
-     * @param $errorMessage - error message
-     * @param null $errorField
      */
-    public function validateNotEmpty($value, $errorMessage, $errorField = null)
+    public function validateNotEmpty(mixed $value, string|Error $errorMessage, string $errorField = null): void
     {
         if (empty($value)) {
             $this->error($errorMessage);
-            $this->_errorFields[] = $errorField;
+            $this->errorFields[] = $errorField;
         }
     }
 
     /**
      * Validate whether $value is empty
      * (table which explains that is here http://php.net/manual/en/types.comparisons.php)
-     * @param $value - value to check
-     * @param $errorMessage - error message
-     * @param null $errorField
      */
-    public function validateEmpty($value, $errorMessage, $errorField = null)
+    public function validateEmpty(mixed $value, string|Error $errorMessage, string $errorField = null): void
     {
         if (!empty($value)) {
             $this->error($errorMessage);
-            $this->_errorFields[] = $errorField;
+            $this->errorFields[] = $errorField;
         }
     }
 
-    /**
-     * Method for adding error manually
-     * @param string|\Ouzo\ExceptionHandling\Error $error - \Ouzo\ExceptionHandling\Error instance or new error message
-     * @param int $code - error code
-     */
-    public function error($error, $code = 0)
+    /** Method for adding error manually */
+    public function error(string|Error $error, int $code = 0): void
     {
-        $this->_errors[] = $error instanceof Error ? $error : new Error($code, $error);
+        $this->errors[] = $error instanceof Error ? $error : new Error($code, $error);
     }
 
     /**
      * Method for batch adding errors manually
-     * @param array $errors - array of \Ouzo\ExceptionHandling\Error instaces or new error messages
-     * @param int $code
+     * @param string[]|Error[] $errors
      */
-    public function errors(array $errors, $code = 0)
+    public function errors(array $errors, int $code = 0): void
     {
         foreach ($errors as $error) {
             $this->error($error, $code);

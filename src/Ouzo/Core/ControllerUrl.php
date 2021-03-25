@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use InvalidArgumentException;
@@ -11,12 +12,7 @@ use Ouzo\Utilities\Joiner;
 
 class ControllerUrl
 {
-    /**
-     * @param string|array $params
-     * @return string
-     * @throws InvalidArgumentException
-     */
-    public static function createUrl($params)
+    public static function createUrl(array|string $params): string
     {
         if (is_string($params)) {
             return self::createUrlFromString($params);
@@ -27,12 +23,7 @@ class ControllerUrl
         throw new InvalidArgumentException('Illegal arguments');
     }
 
-    /**
-     * @param string $params
-     * @return string
-     * @throws InvalidArgumentException
-     */
-    private static function createUrlFromString($params)
+    private static function createUrlFromString(string $params): string
     {
         if (empty($params)) {
             throw new InvalidArgumentException("String argument can't be empty");
@@ -40,12 +31,7 @@ class ControllerUrl
         return Config::getValue('global', 'prefix_system') . $params;
     }
 
-    /**
-     * @param array $params
-     * @return string
-     * @throws InvalidArgumentException
-     */
-    private static function createUrlFromArray($params)
+    private static function createUrlFromArray(array $params): string
     {
         $prefixSystem = Config::getValue('global', 'prefix_system');
 
@@ -62,19 +48,14 @@ class ControllerUrl
 
         $string = Arrays::getValue($params, 'string');
         if ($string) {
-            return $prefixSystem . $string;
+            return "{$prefixSystem}{$string}";
         }
         throw new InvalidArgumentException('Illegal arguments');
     }
 
-    /**
-     * @param array $params
-     * @return string
-     */
-    private static function mergeParams(array $params)
+    private static function mergeParams(array $params): string
     {
-        return '/' . Joiner::on('/')->map(function ($key, $value) {
-            return $key . '/' . $value;
-        })->join($params);
+        $mergedParams = Joiner::on('/')->map(fn($key, $value) => "{$key}/{$value}")->join($params);
+        return "/{$mergedParams}";
     }
 }

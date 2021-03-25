@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
 
 class ValidatableChild extends Validatable
 {
-    public function __construct($errors = [], $errorFields = [])
+    public function __construct(array $errors = [], array $errorFields = [])
     {
         $this->errors($errors);
-        $this->_errorFields = $errorFields;
+        $this->errorFields = $errorFields;
     }
 
-    public function validate()
+    public function validate(): void
     {
         //do not reset errors
     }
@@ -24,16 +24,13 @@ class ValidatableChild extends Validatable
 
 class ValidatableParent extends Validatable
 {
-    private $child;
-
-    public function __construct($child, $errors = [], $errorFields = [])
+    public function __construct(private Validatable $child, array $errors = [], array $errorFields = [])
     {
         $this->errors($errors);
-        $this->_errorFields = $errorFields;
-        $this->child = $child;
+        $this->errorFields = $errorFields;
     }
 
-    public function validate()
+    public function validate(): void
     {
         $this->validateAssociated($this->child);
     }

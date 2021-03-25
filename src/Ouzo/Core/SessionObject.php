@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use InvalidArgumentException;
@@ -10,12 +11,12 @@ use Ouzo\Utilities\Arrays;
 
 class SessionObject
 {
-    public function has($keys)
+    public function has(string...$keys): bool
     {
         return Arrays::hasNestedKey($_SESSION, Arrays::toArray($keys));
     }
 
-    public function get($keys)
+    public function get(string...$keys): mixed
     {
         if (!isset($_SESSION)) {
             return null;
@@ -23,49 +24,49 @@ class SessionObject
         return Arrays::getNestedValue($_SESSION, $keys);
     }
 
-    public function set()
+    public function set(mixed...$args): static
     {
         if (!isset($_SESSION)) {
-            return null;
+            return $this;
         }
-        list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
+        [$keys, $value] = $this->getKeyAndValueArguments($args);
 
         Arrays::setNestedValue($_SESSION, $keys, $value);
         return $this;
     }
 
-    public function flush()
+    public function flush(): static
     {
         unset($_SESSION);
         return $this;
     }
 
-    public function all()
+    public function all(): ?array
     {
         return isset($_SESSION) ? $_SESSION : null;
     }
 
-    public function remove($keys)
+    public function remove($keys): void
     {
         if (!isset($_SESSION)) {
-            return null;
+            return;
         }
         Arrays::removeNestedKey($_SESSION, Arrays::toArray($keys));
     }
 
-    public function push($args)
+    public function push(mixed...$args): void
     {
         if (!isset($_SESSION)) {
-            return null;
+            return;
         }
-        list($keys, $value) = $this->getKeyAndValueArguments(func_get_args());
+        [$keys, $value] = $this->getKeyAndValueArguments($args);
 
-        $array = $this->get($keys) ? : [];
+        $array = $this->get(...$keys) ?: [];
         $array[] = $value;
         Arrays::setNestedValue($_SESSION, $keys, $array);
     }
 
-    private function getKeyAndValueArguments($args)
+    private function getKeyAndValueArguments(array $args): array
     {
         if (count($args) == 1 && is_array($args[0])) {
             $args = $args[0];

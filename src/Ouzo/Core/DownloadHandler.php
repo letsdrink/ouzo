@@ -36,16 +36,16 @@ class DownloadHandler
         clearstatcache(true, $location);
 
         if (!file_exists($location)) {
-            header("HTTP/1.1 404 Not Found");
+            header('HTTP/1.1 404 Not Found');
             return;
         }
 
         $size = filesize($location);
         $time = date('r', filemtime($location));
 
-        $fm = @fopen($location, 'rb');
+        $fm = fopen($location, 'rb');
         if (!$fm) {
-            header("HTTP/1.1 505 Internal server error");
+            header('HTTP/1.1 505 Internal server error');
             return;
         }
 
@@ -67,17 +67,19 @@ class DownloadHandler
             header('HTTP/1.1 200 OK');
         }
 
-        header("Content-Type: $mimeType");
+        $length = ($end - $begin) + 1;
+
+        header("Content-Type: {$mimeType}");
         header('Cache-Control: public, must-revalidate, max-age=0');
         header('Pragma: no-cache');
         header('Accept-Ranges: bytes');
-        header('Content-Length:' . (($end - $begin) + 1));
+        header("Content-Length:{$length}");
         if (isset($_SERVER['HTTP_RANGE'])) {
-            header("Content-Range: bytes $begin-$end/$size");
+            header("Content-Range: bytes {$begin}-{$end}/{$size}");
         }
-        header("Content-Disposition: inline; filename=$filename");
-        header("Content-Transfer-Encoding: binary");
-        header("Last-Modified: $time");
+        header("Content-Disposition: inline; filename={$filename}");
+        header('Content-Transfer-Encoding: binary');
+        header("Last-Modified: {$time}");
 
         $cur = $begin;
         fseek($fm, $begin, 0);

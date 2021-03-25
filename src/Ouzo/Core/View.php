@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Utilities\Files;
@@ -13,98 +14,88 @@ use Ouzo\View\ViewRendererFactory;
 
 class View
 {
-    /** @var ViewRenderer */
-    private $_renderer;
+    private ?ViewRenderer $renderer = null;
+    private string $renderedView;
+    private string $viewName;
+    private array $attributes;
 
-    /** @var string */
-    private $_renderedView;
-
-    /** @var string */
-    private $_viewName;
-
-    /** @var array */
-    private $_attributes;
-
-    public function __construct($viewName, array $attributes = [])
+    public function __construct(?string $viewName, array $attributes = [])
     {
         if (empty($viewName)) {
             throw new ViewException('View name is empty');
         }
-        $this->_viewName = $viewName;
-        $this->_attributes = $attributes;
+        $this->viewName = $viewName;
+        $this->attributes = $attributes;
 
-        $this->_loadHelpers();
+        $this->loadHelpers();
     }
 
-    public function render($viewName = '')
+    public function render(?string $viewName = ''): string
     {
         if (!empty($viewName)) {
-            $this->_viewName = $viewName;
+            $this->viewName = $viewName;
         }
-        if (!$this->_renderer) {
-            $this->_renderer = ViewRendererFactory::create($this->_viewName, $this->_attributes);
+        if (!$this->renderer) {
+            $this->renderer = ViewRendererFactory::create($this->viewName, $this->attributes);
         }
-        $this->verifyExists($this->_renderer->getViewPath(), $this->_viewName);
-        $this->_renderedView = $this->_renderer->render();
-        return $this->_renderedView;
+        $this->verifyExists($this->renderer->getViewPath(), $this->viewName);
+        $this->renderedView = $this->renderer->render();
+        return $this->renderedView;
     }
 
-    private function verifyExists($viewPath, $viewName)
+    private function verifyExists(string $viewPath, string $viewName): void
     {
         if (!Files::exists($viewPath)) {
-            throw new ViewException('No view found [' . $viewName . '] at: ' . $viewPath);
+            throw new ViewException("No view found [{$viewName}] at: {$viewPath}");
         }
     }
 
-    public function getRenderedView()
+    public function getRenderedView(): ?string
     {
-        return !empty($this->_renderedView) ? $this->_renderedView : null;
+        return !empty($this->renderedView) ? $this->renderedView : null;
     }
 
-    public function getViewName()
+    public function getViewName(): string
     {
-        return $this->_viewName;
+        return $this->viewName;
     }
 
-    private function _loadHelpers()
+    private function loadHelpers(): void
     {
         $viewHelperPath = Path::join('Helper', 'ViewHelper.php');
         $appHelperPath = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'ApplicationHelper.php');
         $formHelperPath = Path::join('Helper', 'FormHelper.php');
         $urlHelperPath = Path::join(ROOT_PATH, ApplicationPaths::getHelperPath(), 'UrlHelper.php');
 
-        $this->_requireOnce($viewHelperPath);
+        $this->requireOnce($viewHelperPath);
         Files::loadIfExists($appHelperPath);
-        $this->_requireOnce($formHelperPath);
+        $this->requireOnce($formHelperPath);
         Files::loadIfExists($urlHelperPath);
     }
 
-    private function _requireOnce($path)
+    private function requireOnce($path): void
     {
         /** @noinspection PhpIncludeInspection */
         require_once($path);
     }
 
-    /**
-     * @return ViewRenderer
-     */
-    public function getRenderer()
+    public function getRenderer(): ViewRenderer
     {
-        return $this->_renderer;
+        return $this->renderer;
     }
 
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
-        $this->_attributes[$name] = $value;
+        $this->attributes[$name] = $value;
     }
 
-    public function __get($name)
+    public function __get(string $name): mixed
     {
-        return $this->_attributes[$name];
+        return $this->attributes[$name];
     }
 
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
-        return isset($this->_attributes[$name]);
+        return isset($this->attributes[$name]);
     }
 }

@@ -129,7 +129,7 @@ class ControllerFactoryTest extends TestCase
         //then
         CatchException::assertThat()->isInstanceOf(\LogicException::class);
         CatchException::assertThat()
-            ->hasMessage(IncorrectController::class . ' is not a subclass of Ouzo\Controller');
+            ->hasMessage(IncorrectController::class . ' is not a subclass of Controller');
     }
 
     /**

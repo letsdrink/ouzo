@@ -30,7 +30,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
 {
     private ModelDefinition $modelDefinition;
     private array $attributes;
-    private array $modifiedFields = [];
+    private array $modifiedFields;
 
     /**
      * Creates a new model object.
@@ -63,7 +63,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
         $this->modifiedFields = array_keys($this->attributes);
     }
 
-    public function __set(string $name, mixed $value)
+    public function __set(string $name, mixed $value): void
     {
         $this->modifiedFields[] = $name;
         $this->attributes[$name] = $value;
@@ -128,7 +128,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
             $params['attributes'] = [];
         }
         if (empty($params['fields'])) {
-            throw new InvalidArgumentException("Fields are required");
+            throw new InvalidArgumentException('Fields are required');
         }
     }
 
@@ -146,9 +146,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
 
     public function insertOrDoNothing(): ?int
     {
-        return $this->doInsert(function ($attributes) {
-            return Query::insertOrDoNoting($attributes)->into($this->modelDefinition->table);
-        });
+        return $this->doInsert(fn($attributes) => Query::insertOrDoNoting($attributes)->into($this->modelDefinition->table));
     }
 
     public function upsert(array $upsertConflictColumns = []): ?int
@@ -187,10 +185,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return $lastInsertedId;
     }
 
-    /**
-     * @return void
-     */
-    public function callAfterSaveCallbacks()
+    public function callAfterSaveCallbacks(): void
     {
         $this->callCallbacks($this->modelDefinition->afterSaveCallbacks);
     }
@@ -403,9 +398,8 @@ class Model extends Validatable implements Serializable, JsonSerializable
             ->fetchAll();
     }
 
-    /** Executes a native sql and returns an array of model objects created by passing every result row to the model constructor.
-     * @param string $nativeSql - database specific sql
-     * @param array $params - bind parameters
+    /**
+     * Executes a native sql and returns an array of model objects created by passing every result row to the model constructor.
      * @return static[]
      */
     public static function findBySql(string $nativeSql, null|string|array $params = []): array
@@ -418,27 +412,27 @@ class Model extends Validatable implements Serializable, JsonSerializable
 
     public static function findById(int $value): static
     {
-        return static::metaInstance()->_findById($value);
+        return static::metaInstance()->internalFindById($value);
     }
 
-    private function _findById(int $value): static
+    private function internalFindById(int $value): static
     {
         if (!$this->modelDefinition->primaryKey) {
-            throw new DbException('Primary key is not defined for table ' . $this->modelDefinition->table);
+            throw new DbException("Primary key is not defined for table {$this->modelDefinition->table}");
         }
-        $result = $this->_findByIdOrNull($value);
+        $result = $this->internalFindByIdOrNull($value);
         if ($result) {
             return $result;
         }
-        throw new DbException($this->modelDefinition->table . " with " . $this->modelDefinition->primaryKey . "=" . $value . " not found");
+        throw new DbException("{$this->modelDefinition->table} with {$this->modelDefinition->primaryKey}={$value} not found");
     }
 
     public static function findByIdOrNull(int $value): ?static
     {
-        return static::metaInstance()->_findByIdOrNull($value);
+        return static::metaInstance()->internalFindByIdOrNull($value);
     }
 
-    private function _findByIdOrNull(int $value): ?static
+    private function internalFindByIdOrNull(int $value): ?static
     {
         return $this->where([$this->modelDefinition->primaryKey => $value])->fetch();
     }

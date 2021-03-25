@@ -10,61 +10,35 @@ use Ouzo\Utilities\Arrays;
 
 class Notice
 {
-    /** @var null|string */
-    private $url;
-    /** @var string */
-    private $message;
-
-    /**
-     * @param string $message
-     * @param null|string $url
-     */
-    public function __construct($message, $url = null)
+    public function __construct(private string $message, private ?string $url = null)
     {
-        $this->url = $url ? $url : null;
-        $this->message = $message;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * @param Uri $uri
-     * @return bool
-     */
-    public function requestUrlMatches(Uri $uri)
+    public function requestUrlMatches(Uri $uri): bool
     {
-        return $this->getUrl() == null || strcmp(Uri::removePrefix($this->getCurrentPath($uri)), Uri::removePrefix($this->getUrlWithoutQuery($this->getUrl()))) === 0;
+        return $this->getUrl() == null || strcmp(
+                Uri::removePrefix($this->getCurrentPath($uri)),
+                Uri::removePrefix($this->getUrlWithoutQuery($this->getUrl()))
+            ) === 0;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->message;
     }
 
-    /**
-     * @param Uri $uri
-     * @return string
-     */
-    private function getCurrentPath(Uri $uri)
+    private function getCurrentPath(Uri $uri): string
     {
         $url = $uri->getFullUrlWithPrefix();
         return $this->getUrlWithoutQuery($url);
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
-    private function getUrlWithoutQuery($url)
+    private function getUrlWithoutQuery(string $url): string
     {
         $parts = parse_url($url);
         return Arrays::getValue($parts, 'path', $url);

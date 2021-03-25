@@ -6,6 +6,7 @@
 
 namespace Ouzo;
 
+use Closure;
 use Exception;
 use Ouzo\Db\PDOExceptionExtractor;
 use Ouzo\Db\StatementExecutor;
@@ -17,19 +18,13 @@ use PDOException;
 
 class Db
 {
-    /** @var PDO */
-    public $dbHandle = null;
-    /** @var bool */
-    public $startedTransaction = false;
+    public ?PDO $dbHandle = null;
+    public bool $startedTransaction = false;
 
     private static ?Db $instance = null;
-    /** @var bool */
-    private static $transactionsEnabled = true;
+    private static bool $transactionsEnabled = true;
 
-    /**
-     * @param bool $loadDefault
-     */
-    public function __construct($loadDefault = true)
+    public function __construct(bool $loadDefault = true)
     {
         if ($loadDefault) {
             $configDb = Config::getValue('db');
@@ -47,11 +42,7 @@ class Db
         return self::$instance;
     }
 
-    /**
-     * @param array $params
-     * @return $this
-     */
-    public function connectDb($params = [])
+    public function connectDb(array $params = []): static
     {
         $this->dbHandle = $this->createPdo($params);
         $attributes = Arrays::getValue($params, 'attributes', []);
@@ -61,12 +52,7 @@ class Db
         return $this;
     }
 
-    /**
-     * @param string $functionName
-     * @param array $parameters
-     * @return mixed
-     */
-    public static function callFunction($functionName, $parameters)
+    public static function callFunction(string $functionName, ?array $parameters): mixed
     {
         $db = self::getInstance();
         $bindParams = Arrays::toArray($parameters);
@@ -74,25 +60,15 @@ class Db
         return Arrays::first($db->query("SELECT $functionName($paramsQueryString)", $parameters)->fetch());
     }
 
-    /**
-     * @param string $query
-     * @param array $params
-     * @param array $options
-     * @return StatementExecutor
-     */
-    public function query($query, $params = [], $options = [])
+    public function query(string $query, array $params = [], array $options = []): StatementExecutor
     {
         return StatementExecutor::prepare($this->dbHandle, $query, $params, $options);
     }
 
     /**
      * Returns number of affected rows
-     * @param string $query
-     * @param array $params
-     * @param array $options
-     * @return int
      */
-    public function execute($query, $params = [], $options = [])
+    public function execute(string $query, array $params = [], array $options = []): int
     {
         return StatementExecutor::prepare($this->dbHandle, $query, $params, $options)->execute();
     }
@@ -100,20 +76,13 @@ class Db
     /**
      * Returns a new transactional proxy for given target object/function.
      * All methods called on proxy are run in a transaction.
-     * @param mixed $object
-     * @return TransactionalProxy
      */
-    public static function transactional($object)
+    public static function transactional(mixed $object): TransactionalProxy
     {
         return TransactionalProxy::newInstance($object);
     }
 
-    /**
-     * @param \Closure $callable
-     * @return mixed
-     * @throws Exception
-     */
-    public function runInTransaction($callable)
+    public function runInTransaction(Closure $callable): mixed
     {
         if (!$this->startedTransaction) {
             $this->beginTransaction();
@@ -129,10 +98,7 @@ class Db
         return call_user_func($callable);
     }
 
-    /**
-     * @return void
-     */
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
         if (self::$transactionsEnabled) {
             $this->startedTransaction = true;
@@ -140,10 +106,7 @@ class Db
         }
     }
 
-    /**
-     * @return void
-     */
-    public function commitTransaction()
+    public function commitTransaction(): void
     {
         if (self::$transactionsEnabled) {
             $this->invokePdo('commit');
@@ -163,7 +126,7 @@ class Db
     {
         try {
             $this->rollbackTransaction();
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
     }
 

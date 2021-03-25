@@ -12,14 +12,9 @@ use Ouzo\Tests\Mock\Mock;
 
 class Sample
 {
-    public function callMethod()
+    public function callMethod(): string
     {
         return 'OK';
-    }
-
-    public function exceptionMethod()
-    {
-        throw new InvalidArgumentException();
     }
 }
 
@@ -31,7 +26,7 @@ class DbTest extends DbTransactionalTestCase
     public function shouldRunFunctionInTransaction()
     {
         //when
-        $result = Db::getInstance()->runInTransaction([new Sample(), 'callMethod']);
+        $result = Db::getInstance()->runInTransaction(fn() => (new Sample())->callMethod());
 
         //then
         $this->assertEquals('OK', $result);
@@ -44,13 +39,13 @@ class DbTest extends DbTransactionalTestCase
     {
         // given
         Db::getInstance()->enableTransactions();
-        $dbHandle = Mock::mock();
+        $dbHandle = Mock::mock(PDO::class);
 
         $db = new Db(false);
         $db->dbHandle = $dbHandle;
 
         //when
-        $result = $db->runInTransaction([new Sample(), 'callMethod']);
+        $result = $db->runInTransaction(fn() => (new Sample())->callMethod());
 
         //then
         $this->assertEquals('OK', $result);
@@ -66,13 +61,13 @@ class DbTest extends DbTransactionalTestCase
     {
         // given
         Db::getInstance()->enableTransactions();
-        $dbHandle = Mock::mock();
+        $dbHandle = Mock::mock(PDO::class);
 
         $db = new Db(false);
         $db->dbHandle = $dbHandle;
 
         //when
-        CatchException::when($db)->runInTransaction([new Sample(), 'exceptionMethod']);
+        CatchException::when($db)->runInTransaction(fn() => throw new InvalidArgumentException());
 
         //then
         CatchException::assertThat()->isInstanceOf('InvalidArgumentException');
@@ -88,7 +83,7 @@ class DbTest extends DbTransactionalTestCase
     {
         // given
         Db::getInstance()->enableTransactions();
-        $dbHandle = Mock::mock();
+        $dbHandle = Mock::mock(PDO::class);
         Mock::when($dbHandle)->commit()->thenReturn(false);
         Mock::when($dbHandle)->errorInfo()->thenReturn([
             '10A1',
@@ -100,7 +95,7 @@ class DbTest extends DbTransactionalTestCase
         $db->dbHandle = $dbHandle;
 
         //when
-        CatchException::when($db)->runInTransaction([new Sample(), 'callMethod']);
+        CatchException::when($db)->runInTransaction(fn() => (new Sample())->callMethod());
 
         //then
         CatchException::assertThat()

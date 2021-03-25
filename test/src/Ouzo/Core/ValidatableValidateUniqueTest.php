@@ -9,14 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class UniquenessValidatable extends Validatable
 {
-    private $values;
-
-    public function __construct($values)
+    public function __construct(private array $values)
     {
-        $this->values = $values;
     }
 
-    public function validate()
+    public function validate(): void
     {
         parent::validate();
         $this->validateUnique($this->values, "error");

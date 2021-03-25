@@ -8,16 +8,12 @@ namespace Ouzo;
 
 class EnvironmentSetter
 {
-    /** @var string */
-    private $env = 'prod';
-
-    public function __construct($env)
+    public function __construct(private string $env = 'prod')
     {
-        $this->env = $env;
     }
 
     public function set()
     {
-        putenv('environment=' . $this->env);
+        putenv("environment={$this->env}");
     }
 }

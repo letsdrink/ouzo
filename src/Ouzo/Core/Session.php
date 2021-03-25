@@ -26,17 +26,17 @@ use RuntimeException;
  */
 class Session
 {
-    public static function create()
+    public static function create(): SessionObject
     {
         return new SessionObject();
     }
 
-    public static function isStarted()
+    public static function isStarted(): bool
     {
         return isset($_SESSION);
     }
 
-    public static function startSession()
+    public static function startSession(): void
     {
         if (version_compare(phpversion(), '5.4.0', '>=') && \PHP_SESSION_ACTIVE === session_status()) {
             throw new RuntimeException('Failed to start the session: already started by PHP.');
@@ -47,16 +47,16 @@ class Session
         }
 
         if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
-            throw new RuntimeException(sprintf('Failed to start the session: headers already sent by "%s" at line %d.', $file, $line));
+            throw new RuntimeException("Failed to start the session: headers already sent by \"{$file}\" at line {$line}.");
         }
 
-        self::_setSavePath();
+        self::setSavePath();
         if (!session_start()) {
             throw new RuntimeException('Failed to start the session');
         }
     }
 
-    private static function _setSavePath()
+    private static function setSavePath(): void
     {
         $path = Config::getValue('session', 'path');
         if ($path) {
@@ -67,38 +67,38 @@ class Session
         }
     }
 
-    public static function has()
+    public static function has(string...$keys): bool
     {
-        return self::create()->has(func_get_args());
+        return self::create()->has(...$keys);
     }
 
-    public static function get()
+    public static function get(string...$keys): mixed
     {
-        return self::create()->get(func_get_args());
+        return self::create()->get(...$keys);
     }
 
-    public static function set()
+    public static function set(mixed...$keys): SessionObject
     {
-        return self::create()->set(func_get_args());
+        return self::create()->set(...$keys);
     }
 
-    public static function flush()
+    public static function flush(): SessionObject
     {
         return self::create()->flush();
     }
 
-    public static function remove()
+    public static function remove(string...$keys): void
     {
-        return self::create()->remove(func_get_args());
+        self::create()->remove(...$keys);
     }
 
-    public static function all()
+    public static function all(): ?array
     {
         return self::create()->all();
     }
 
-    public static function push()
+    public static function push(mixed...$args): void
     {
-        return self::create()->push(func_get_args());
+        self::create()->push(...$args);
     }
 }

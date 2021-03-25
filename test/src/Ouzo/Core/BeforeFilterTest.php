@@ -24,11 +24,11 @@ class SampleControllerException extends Exception
 
 class SampleController extends Controller
 {
-    public static $beforeActionResult;
-    public static $actionCalled;
-    public static $beforeCallback;
+    public static ?bool $beforeActionResult = null;
+    public static bool $actionCalled;
+    public static ?Closure $beforeCallback = null;
 
-    public function init()
+    public function init(): void
     {
         $this->before[] = 'beforeAction';
         if (self::$beforeCallback) {
@@ -36,12 +36,12 @@ class SampleController extends Controller
         }
     }
 
-    public function beforeAction()
+    public function beforeAction(): ?bool
     {
         return self::$beforeActionResult;
     }
 
-    public function action()
+    public function action(): void
     {
         self::$actionCalled = true;
     }
@@ -49,7 +49,7 @@ class SampleController extends Controller
 
 class MockControllerFactory extends ControllerFactory
 {
-    public function createController(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats)
+    public function createController(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats): Controller
     {
         $routeRule = Arrays::first(Route::getRoutes());
 
