@@ -36,7 +36,7 @@ class InjectorConfig
 
     public function getBinder(string $className, string $name): Binder
     {
-        $binder = Arrays::getValue($this->binders, $className . '_' . $name);
+        $binder = Arrays::getValue($this->binders, "{$className}_{$name}");
         return $binder ?: new Binder($className, $name);
     }
 

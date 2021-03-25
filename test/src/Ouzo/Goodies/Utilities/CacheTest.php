@@ -3,13 +3,13 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Utilities\Cache;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Utilities\Cache;
+use PHPUnit\Framework\TestCase;
 
 class CacheTest extends TestCase
 {
-    public static $call_count = 0;
+    public static int $call_count = 0;
 
     public function setUp(): void
     {
@@ -24,9 +24,7 @@ class CacheTest extends TestCase
     public function shouldCacheGets()
     {
         //given
-        $function = function () {
-            return ++CacheTest::$call_count;
-        };
+        $function = fn() => ++CacheTest::$call_count;
 
         //when
         $result1 = Cache::get("id", $function);
@@ -40,9 +38,7 @@ class CacheTest extends TestCase
 
     public function methodWithCachedClosure()
     {
-        return Cache::memoize(function () {
-            return ++CacheTest::$call_count;
-        });
+        return Cache::memoize(fn() => ++CacheTest::$call_count);
     }
 
     /**
@@ -66,12 +62,8 @@ class CacheTest extends TestCase
     public function shouldUseDifferentKeysForDifferentClosures()
     {
         //when
-        $result1 = Cache::memoize(function () {
-            return 1;
-        });
-        $result2 = Cache::memoize(function () {
-            return 2;
-        });
+        $result1 = Cache::memoize(fn() => 1);
+        $result2 = Cache::memoize(fn() => 2);
 
         //then
         $this->assertEquals(2, Cache::size());

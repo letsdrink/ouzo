@@ -231,7 +231,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2017-03-26 04:31:50', $clock->format());
     }
 
-    function monthChange()
+    function monthChange(): array
     {
         return [
             ['2017-01-01', 1, '2017-02-01'],
