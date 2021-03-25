@@ -13,7 +13,7 @@ use Ouzo\Utilities\Functions;
 
 class ExtractorTestClass
 {
-    public function returnArgument($type)
+    public function returnArgument(string $type): string
     {
         return $type;
     }
