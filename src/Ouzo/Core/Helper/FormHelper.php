@@ -204,11 +204,6 @@ namespace Ouzo\Helper {
             return new ModelFormBuilder($model);
         }
     }
-
-    function delegateToFormHelper(string $function, array $args)
-    {
-        return call_user_func_array([FormHelper::class, $function], $args);
-    }
 }
 
 namespace {
