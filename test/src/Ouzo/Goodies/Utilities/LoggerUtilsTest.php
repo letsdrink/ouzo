@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Utilities;
 
@@ -19,7 +23,7 @@ class LoggerUtilsTest extends TestCase
         $this->assertEquals($expected, $shortenClassName);
     }
 
-    public function classes()
+    public function classes(): array
     {
         return [
             ['Ouzo\Utilities\LoggerUtils', null, 'Ouzo\Utilities\LoggerUtils'],

@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+
 use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\Directory;
 use Ouzo\Utilities\Path;
@@ -7,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class DirectoryTest extends TestCase
 {
-    private $directory;
+    private string $directory;
 
     public function setUp(): void
     {

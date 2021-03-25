@@ -6,7 +6,7 @@
   },
   "name": "letsdrink/ouzo",
   "description": "Ouzo PHP MVC framework",
-  "homepage": "http://ouzoframework.org/",
+  "homepage": "https://github.com/letsdrink/ouzo/",
   "minimum-stability": "stable",
   "license": "MIT",
   "keywords": [

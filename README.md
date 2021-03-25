@@ -16,7 +16,7 @@ We believe in **clean code** and **simplicity**. We value **unit testing** and *
 
 # Want to know more?
 
-* [Offical website](http://ouzoframework.org)
+* [Offical website](https://github.com/letsdrink/ouzo)
 * [Getting started (5 minutes tutorial)](https://github.com/letsdrink/ouzo-app)
 * [Documentation](http://ouzo.readthedocs.org)
 * Interested only in Ouzo's fancy utils? Check out [Ouzo Goodies](https://github.com/letsdrink/ouzo-goodies)
