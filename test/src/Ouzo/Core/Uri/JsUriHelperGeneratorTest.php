@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class JsUriHelperGeneratorTest extends TestCase
 {
-    private $path;
+    private string $path;
 
     protected function setUp(): void
     {

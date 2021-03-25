@@ -13,23 +13,21 @@ use Ouzo\Utilities\Strings;
 
 class Es6UriHelperGenerator
 {
+    /** @var string[] */
     private array $generatedParts = [];
-
     /** @var RouteRule[] */
-    public $routeRules;
-    private string $format;
+    public array $routeRules;
     private Es6GeneratorTemplates $templates;
 
-    public function __construct(string $format)
+    public function __construct(private string $format)
     {
         $this->templates = new Es6GeneratorTemplates($format);
         $this->routeRules = $routes = Route::getRoutes();
         $this->generatedParts[] = $this->templates->checkParametersTemplate();
         $this->generateFunctions();
-        $this->format = $format;
     }
 
-    private function generateFunctions()
+    private function generateFunctions(): void
     {
         $functions = [];
         foreach ($this->routeRules as $routeRule) {
@@ -39,7 +37,7 @@ class Es6UriHelperGenerator
         $this->generatedParts += $functions;
     }
 
-    private function createFunction(RouteRule $routeRule)
+    private function createFunction(RouteRule $routeRule): string
     {
         $uri = $routeRule->getUri();
         $applicationPrefix = UriGeneratorHelper::getApplicationPrefix($routeRule);
@@ -53,23 +51,24 @@ class Es6UriHelperGenerator
         return '';
     }
 
-    private function prepareParameters($uri)
+    /** @return string[] */
+    private function prepareParameters(string $uri): array
     {
         preg_match_all('#:(\w+)#', $uri, $matches);
         return Arrays::getValue($matches, 1, []);
     }
 
-    public function getGeneratedFunctions()
+    public function getGeneratedFunctions(): string
     {
         return trim(implode("\n\n", $this->generatedParts)) . "\n";
     }
 
-    public function saveToFile($path)
+    public function saveToFile(string $path): bool|int
     {
         return file_put_contents($path, $this->getGeneratedFunctions());
     }
 
-    public static function generate(string $format = 'js')
+    public static function generate(string $format = 'js'): self
     {
         return new self($format);
     }

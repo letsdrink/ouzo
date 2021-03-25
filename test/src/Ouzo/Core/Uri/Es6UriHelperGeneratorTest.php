@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class Es6UriHelperGeneratorTest extends TestCase
 {
-    private $path;
+    private string $path;
 
     protected function setUp(): void
     {

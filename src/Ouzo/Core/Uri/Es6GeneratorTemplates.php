@@ -4,48 +4,50 @@ namespace Ouzo\Uri;
 
 use Closure;
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 
 class Es6GeneratorTemplates
 {
-    private string $format;
-
-    public function __construct(string $format)
+    public function __construct(private string $format)
     {
-        $this->format = $format;
         if ($format != 'js' && $format != 'ts') {
-            throw new \InvalidArgumentException("Unsupported output format '$format'.");
+            throw new \InvalidArgumentException("Unsupported output format '{$format}'.");
         }
     }
 
-    public function getFunction(string $name, $parameters, string $return)
+    /** @var string[] $parameters */
+    public function getFunction(string $name, array $parameters, string $return): string
     {
         $functionTemplate = empty($parameters) ? $this->functionWithoutArgs() : $this->functionWithArgs();
         $replacements = [
-            "NAME" => $name,
-            "ARGS_DEFINITION" => $this->prepareParametersDefinition($parameters),
-            "ARGS" => implode(", ", $parameters),
-            "RETURN" => $return
+            'NAME' => $name,
+            'ARGS_DEFINITION' => $this->prepareParametersDefinition($parameters),
+            'ARGS' => implode(", ", $parameters),
+            'RETURN' => $return
         ];
         return $this->replace($functionTemplate, $replacements);
     }
 
-    private function prepareParametersDefinition($parameters)
+    private function prepareParametersDefinition(array $parameters): ?string
     {
-        return $this->run(fn() => $this->prepareParametersDefinitionJs($parameters), fn() => $this->prepareParametersDefinitionTs($parameters));
+        return $this->run(
+            fn() => $this->prepareParametersDefinitionJs($parameters),
+            fn() => $this->prepareParametersDefinitionTs($parameters)
+        );
     }
 
-    private function prepareParametersDefinitionJs($parameters): string
+    private function prepareParametersDefinitionJs(array $parameters): string
     {
         return implode(", ", $parameters);
     }
 
-    private function prepareParametersDefinitionTs($parameters): string
+    private function prepareParametersDefinitionTs(array $parameters): string
     {
         return implode(", ", Arrays::map($parameters, Functions::append(": UriParam")));
     }
 
-    private function replace(string $template, array $replacements)
+    private function replace(string $template, array $replacements): string
     {
         $result = $template;
         foreach ($replacements as $key => $value) {
@@ -54,9 +56,12 @@ class Es6GeneratorTemplates
         return $result;
     }
 
-    public function checkParametersTemplate(): string
+    public function checkParametersTemplate(): ?string
     {
-        return $this->run(fn() => $this->checkParametersTemplateJs(), fn() => $this->checkParametersTemplateTs());
+        return $this->run(
+            fn() => $this->checkParametersTemplateJs(),
+            fn() => $this->checkParametersTemplateTs()
+        );
     }
 
     private function checkParametersTemplateJs(): string
@@ -131,7 +136,7 @@ export const NAME_REPLACEMENT = (ARGS_DEFINITION_REPLACEMENT): string => {
 TEMPLATE;
     }
 
-    private function run(Closure $jsHelper, Closure $tsHelper)
+    private function run(Closure $jsHelper, Closure $tsHelper): ?string
     {
         if ($this->format === 'js') {
             return $jsHelper();
@@ -141,5 +146,4 @@ TEMPLATE;
         }
         return null;
     }
-
 }
