@@ -1,18 +1,20 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Annotation\Route;
 
+use Attribute;
+use Ouzo\Http\HttpMethod;
 use Ouzo\Routing\Annotation\Route;
 
-/**
- * @Annotation
- * @Target({"METHOD"})
- */
+#[Attribute(Attribute::TARGET_METHOD)]
 class Delete extends Route
 {
-    public function __construct(array $data)
+    public function __construct(string $path, ?int $httpResponseCode = null)
     {
-        $data['methods'] = ['DELETE'];
-        parent::__construct($data);
+        parent::__construct($path, [HttpMethod::DELETE], $httpResponseCode);
     }
 }

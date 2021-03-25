@@ -1,6 +1,13 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
+use Ouzo\Http\HttpMethod;
+use Ouzo\Http\HttpStatus;
 use Ouzo\Routing\Annotation\Route;
+use Ouzo\Routing\Annotation\Route\Post;
 use PHPUnit\Framework\TestCase;
 
 class PostTest extends TestCase
@@ -10,25 +17,30 @@ class PostTest extends TestCase
      */
     public function shouldExtendRouteAnnotationClass()
     {
-        $this->assertInstanceOf(Route::class, new Route\Post([]));
+        //then
+        $this->assertInstanceOf(Route::class, new Post(''));
     }
 
     /**
      * @test
      * @dataProvider getValidParameters
      */
-    public function testRouteParameters($parameter, $value, $getter, $result)
+    public function testRouteParameters(string $path, ?int $httpResponseCode)
     {
-        $route = new Route\Post([$parameter => $value]);
-        $this->assertEquals($route->$getter(), $result);
+        //when
+        $route = new Post($path, $httpResponseCode);
+
+        //then
+        $this->assertEquals([HttpMethod::POST], $route->getHttpMethods());
+        $this->assertEquals($path, $route->getPath());
+        $this->assertEquals($httpResponseCode, $route->getHttpResponseCode());
     }
 
-    public function getValidParameters()
+    public function getValidParameters(): array
     {
         return [
-            ['value', '/foo', 'getPath', '/foo'],
-            ['path', '/bar', 'getPath', '/bar'],
-            ['methods', ['GET', 'POST'], 'getMethods', ['POST']],
+            ['/foo', null],
+            ['/foo', HttpStatus::OK],
         ];
     }
 }

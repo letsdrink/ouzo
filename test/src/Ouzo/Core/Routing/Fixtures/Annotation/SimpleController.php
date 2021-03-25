@@ -1,17 +1,17 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Application\Model\Test;
 
-use Ouzo\Routing\Annotation\Route;
+use Ouzo\Routing\Annotation\Route\Get;
 
 class SimpleController
 {
-    /**
-     * @Route\Get("/action")
-     */
+    #[Get('/action')]
     public function action()
     {
-
     }
-
 }

@@ -4,11 +4,12 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-namespace Application\Model\Test;
+namespace Ouzo\Http;
 
-class FooClass
+final class HttpMethod
 {
-    public function foo()
-    {
-    }
+    public const GET = 'GET';
+    public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const DELETE = 'DELETE';
 }
