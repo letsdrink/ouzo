@@ -3,9 +3,9 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Model\Template;
 
-use Exception;
 use Ouzo\AutoloadNamespaces;
 use Ouzo\Db\Dialect\DialectFactory;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
@@ -16,62 +16,57 @@ use ReflectionClass;
 
 class Generator
 {
-    private $tableName;
-    private $className;
     private $adapter;
     private $dialectShortName;
-    private $tablePrefix;
-    private $namespace;
+    private string $namespace;
 
-    public function __construct($tableName, $className = null, $nameSpace = '', $tablePrefix = 't')
+    public function __construct(
+        private string $tableName,
+        private ?string $className = null,
+        private string $nameSpace = '',
+        private string $tablePrefix = 't'
+    )
     {
-        $this->tableName = $tableName;
-        $this->className = $className;
         $this->namespace = $this->normalizeNameSpace($nameSpace);
-        $this->tablePrefix = $tablePrefix;
         $this->adapter = $this->dialectAdapter();
         $this->dialectShortName = $this->getDialectShortName($this->adapter);
     }
 
-    private function normalizeNameSpace($nameSpace)
+    private function normalizeNameSpace(string $nameSpace): string
     {
         return str_replace('/', '\\', $nameSpace);
     }
 
-    private function getDialectShortName($adapterObject)
+    private function getDialectShortName(object $adapterObject): string
     {
         return mb_strtolower(str_replace('Dialect', '', $this->objectShortClassName($adapterObject)));
     }
 
-    private function thisNamespace()
+    private function thisNamespace(): string
     {
         $thisReflection = new ReflectionClass($this);
         return $thisReflection->getNamespaceName();
     }
 
-    private function objectShortClassName($object)
+    private function objectShortClassName(object $object): string
     {
         $objectReflection = new ReflectionClass($object);
         return $objectReflection->getShortName();
     }
 
-    /**
-     * @throws GeneratorException
-     * @return Dialect
-     */
-    public function dialectAdapter()
+    public function dialectAdapter(): Dialect
     {
         $dialect = DialectFactory::create();
         $dialectShortName = $this->objectShortClassName($dialect);
         $selfClassPath = $this->thisNamespace();
-        $generatorDialect = "$selfClassPath\\Dialect\\$dialectShortName";
+        $generatorDialect = "{$selfClassPath}\\Dialect\\{$dialectShortName}";
         if (!class_exists($generatorDialect)) {
-            throw new GeneratorException("Model generator for '$dialectShortName' does not exists.");
+            throw new GeneratorException("Model generator for '{$dialectShortName}' does not exists.");
         }
         return new $generatorDialect($this->tableName);
     }
 
-    private function removeTablePrefix($tableNameParts)
+    private function removeTablePrefix(array $tableNameParts): array
     {
         if (Arrays::first($tableNameParts) == $this->tablePrefix) {
             array_shift($tableNameParts);
@@ -79,28 +74,28 @@ class Generator
         return $tableNameParts;
     }
 
-    public function getTemplateClassName()
+    public function getTemplateClassName(): string
     {
         return $this->className ?: $this->classNameFromTableName();
     }
 
-    public function templateContents()
+    public function templateContents(): string
     {
         $tableInfo = new TableInfo($this->adapter);
         $stubReplacer = new ClassStubPlaceholderReplacer($this->getTemplateClassName(), $tableInfo, $this->getClassNamespace());
         return $stubReplacer->contents();
     }
 
-    public function saveToFile($fileName)
+    public function saveToFile(string $fileName): void
     {
         if (is_file($fileName)) {
-            throw new GeneratorException("File already exists '$fileName'.");
+            throw new GeneratorException("File already exists '{$fileName}'.");
         }
         $this->preparePaths(dirname($fileName));
         file_put_contents($fileName, $this->templateContents());
     }
 
-    public function getClassNamespace()
+    public function getClassNamespace(): string
     {
         $parts = explode('\\', $this->namespace);
         $parts = Arrays::map($parts, 'ucfirst');
@@ -112,7 +107,7 @@ class Generator
         return implode('\\', $parts);
     }
 
-    private function classNameFromTableName()
+    private function classNameFromTableName(): string
     {
         $parts = explode('_', $this->tableName);
         $parts = $this->removeTablePrefix($parts);
@@ -121,7 +116,7 @@ class Generator
         return implode('', $parts);
     }
 
-    private function preparePaths($basename)
+    private function preparePaths(string $basename): void
     {
         if (!is_dir($basename)) {
             mkdir($basename, 0777, true);
@@ -129,6 +124,4 @@ class Generator
     }
 }
 
-class GeneratorException extends Exception
-{
-}
+

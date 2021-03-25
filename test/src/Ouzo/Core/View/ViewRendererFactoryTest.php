@@ -10,11 +10,11 @@ use Ouzo\View\ViewRendererFactory;
 
 class DummyRenderer implements ViewRenderer
 {
-    public function render()
+    public function render(): string
     {
     }
 
-    public function getViewPath()
+    public function getViewPath(): string
     {
     }
 }

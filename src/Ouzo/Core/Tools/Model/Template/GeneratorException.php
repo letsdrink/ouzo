@@ -4,10 +4,12 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-namespace Ouzo;
+namespace Ouzo\Tools\Model\Template;
+
 
 use Exception;
 
-class DbConnectionException extends Exception
+class GeneratorException extends Exception
 {
+
 }

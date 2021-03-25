@@ -1,4 +1,4 @@
-    public function {{action}}()
+    public function {{action}}(): void
     {
 
         $this->view->render();

@@ -12,15 +12,17 @@ class DownloadHandler
 {
     public function downloadFile(array $fileData): void
     {
-        header('Content-Type: ' . $fileData['mime']);
-        header('Content-Disposition: attachment; filename="' . $fileData['label'] . '"');
+        header("Content-Type: {$fileData['mime']}");
+        header("Content-Disposition: attachment; filename=\"{$fileData['label']}\"");
         $data = Arrays::getValue($fileData, 'data');
         if ($data) {
-            header('Content-Length:' . strlen($data));
+            $length = strlen($data);
+            header("Content-Length:{$length}");
             echo $data;
         } else {
             clearstatcache(true, $fileData['path']);
-            header('Content-Length:' . filesize($fileData['path']));
+            $length = filesize($fileData['path']);
+            header("Content-Length:{$length}");
             readfile($fileData['path']);
         }
     }

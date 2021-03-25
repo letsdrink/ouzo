@@ -3,34 +3,26 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Utilities\Path;
 
 class ApplicationPaths
 {
-    /**
-     * @return string
-     */
-    public static function getViewPath()
+    public static function getViewPath(): string
     {
         $controllerPath = Config::getValue('path', 'view');
         return $controllerPath ? $controllerPath : Path::join('Application', 'View');
     }
 
-    /**
-     * @return string
-     */
-    public static function getHelperPath()
+    public static function getHelperPath(): string
     {
         $controllerPath = Config::getValue('path', 'helper');
         return $controllerPath ? $controllerPath : Path::join('Application', 'Helper');
     }
 
-    /**
-     * @return string
-     */
-    public static function getLayoutPath()
+    public static function getLayoutPath(): string
     {
         $controllerPath = Config::getValue('path', 'layout');
         return $controllerPath ? $controllerPath : Path::join('Application', 'Layout');

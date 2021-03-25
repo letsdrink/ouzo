@@ -3,9 +3,11 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Model\Template;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Path;
 
@@ -13,42 +15,37 @@ class ClassStub
 {
     const FIELDS_COUNT_IN_LINE = 7;
 
-    private $_stubContent;
-    private $_attributes = [];
-    private $_placeholderWithReplacements = [];
+    private string $stubContent;
+    private array $attributes = [];
+    private array $placeholderWithReplacements = [];
 
     public function __construct()
     {
-        $stubFilePath = $this->_getStubFilePath();
-        $this->_stubContent = file_get_contents($stubFilePath);
+        $stubFilePath = Path::join(__DIR__, 'stubs', 'class.stub');
+        $this->stubContent = file_get_contents($stubFilePath);
     }
 
-    private function _getStubFilePath()
+    public function addColumn(DatabaseColumn $databaseColumn): static
     {
-        return Path::join(__DIR__, 'stubs', 'class.stub');
-    }
-
-    public function addColumn(DatabaseColumn $databaseColumn)
-    {
-        $this->_attributes[$databaseColumn->name] = $databaseColumn->type;
+        $this->attributes[$databaseColumn->name] = $databaseColumn->type;
         return $this;
     }
 
-    public function addPlaceholderReplacement($placeholder, $replacement)
+    public function addPlaceholderReplacement(string $placeholder, string $replacement): static
     {
-        $this->_placeholderWithReplacements[$placeholder] = $replacement;
+        $this->placeholderWithReplacements[$placeholder] = $replacement;
         return $this;
     }
 
-    public function addTableSetupItem($name, $value)
+    public function addTableSetupItem(string $name, string $value): void
     {
         if ($value) {
             $value = sprintf("'%s' => '%s',", $name, $value);
         }
-        $this->addPlaceholderReplacement("table_$name", $value);
+        $this->addPlaceholderReplacement("table_{$name}", $value);
     }
 
-    public function addTablePrimaryKey($primaryKey)
+    public function addTablePrimaryKey(string $primaryKey): void
     {
         if (empty($primaryKey)) {
             $value = sprintf("'%s' => '',", 'primaryKey');
@@ -59,45 +56,44 @@ class ClassStub
         }
     }
 
-    public function replacePlaceholders($replacement)
+    public function replacePlaceholders(array $replacement): static
     {
         foreach ($replacement as $key => $value) {
             $searchRegExp = ($value) ? "/{($key)}/" : "/\s*{($key)}*/";
-            $this->_stubContent = preg_replace($searchRegExp, $value, $this->_stubContent);
+            $this->stubContent = preg_replace($searchRegExp, $value, $this->stubContent);
         }
         return $this;
     }
 
-    public function getPropertiesAsString()
+    public function getPropertiesAsString(): string
     {
-        $properties = [];
-        foreach ($this->_attributes as $name => $type) {
-            $properties[] = " * @property $type $name";
-        }
+        $properties = FluentArray::from($this->attributes)
+            ->mapEntries(fn($name, $type) => " * @property {$type} {$name}")
+            ->toArray();
         return implode("\n", $properties);
     }
 
-    public function getFieldsAsString()
+    public function getFieldsAsString(): string
     {
-        $fields = array_keys($this->_attributes);
+        $fields = array_keys($this->attributes);
         $escapedFields = Arrays::map($fields, Functions::compose(Functions::append("'"), Functions::prepend("'")));
         for ($index = self::FIELDS_COUNT_IN_LINE; $index < sizeof($escapedFields); $index += self::FIELDS_COUNT_IN_LINE) {
-            $escapedFields[$index] = "\n\t\t\t" . $escapedFields[$index];
+            $escapedFields[$index] = "\n\t\t\t{$escapedFields[$index]}";
         }
         return implode(', ', $escapedFields);
     }
 
-    private function _getPlaceholderReplacements()
+    private function getPlaceholderReplacements(): array
     {
         $this
             ->addPlaceholderReplacement('properties', $this->getPropertiesAsString())
             ->addPlaceholderReplacement('fields', $this->getFieldsAsString());
-        return $this->_placeholderWithReplacements;
+        return $this->placeholderWithReplacements;
     }
 
-    public function contents()
+    public function contents(): string
     {
-        $this->replacePlaceholders($this->_getPlaceholderReplacements());
-        return $this->_stubContent;
+        $this->replacePlaceholders($this->getPlaceholderReplacements());
+        return $this->stubContent;
     }
 }

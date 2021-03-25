@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Controller\Template;
 
 use Ouzo\Tools\Utils\ClassPathResolver;
@@ -12,15 +13,11 @@ use Ouzo\Utilities\Strings;
 
 class ViewGenerator
 {
-    private $viewPath;
-
-    public function __construct($controller, $viewPath = null)
+    public function __construct(private string $controller, private ?string $viewPath = null)
     {
-        $this->controller = $controller;
-        $this->viewPath = $viewPath;
     }
 
-    public function getViewName()
+    public function getViewName(): string
     {
         $class = Strings::underscoreToCamelCase($this->controller);
         if (Strings::endsWith($class, 'Controller')) {
@@ -29,22 +26,22 @@ class ViewGenerator
         return $class;
     }
 
-    public function createViewDirectoryIfNotExists()
+    public function createViewDirectoryIfNotExists(): bool
     {
         return $this->preparePaths($this->getViewPath());
     }
 
-    public function getViewPath()
+    public function getViewPath(): string
     {
         return $this->viewPath ?: ClassPathResolver::forClassAndNamespace($this->getViewName(), $this->getViewNamespace())->getClassDirectory();
     }
 
-    public function getViewNamespace()
+    public function getViewNamespace(): string
     {
         return '\\Application\\View';
     }
 
-    private function preparePaths($path)
+    private function preparePaths($path): bool
     {
         if (!is_dir($path)) {
             return mkdir($path, 0777, true);
@@ -52,7 +49,7 @@ class ViewGenerator
         return false;
     }
 
-    public function appendAction(ActionGenerator $actionGenerator = null)
+    public function appendAction(ActionGenerator $actionGenerator = null): bool
     {
         if ($actionGenerator) {
             if ($this->isActionExists($actionGenerator->getActionViewFile())) {
@@ -64,7 +61,7 @@ class ViewGenerator
         return false;
     }
 
-    public function isActionExists($actionFile)
+    public function isActionExists(string $actionFile): bool
     {
         return Files::exists(Path::join($this->getViewPath(), $actionFile));
     }

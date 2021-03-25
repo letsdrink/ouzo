@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Model\Template\Dialect;
 
 use Ouzo\Db;
@@ -11,27 +12,27 @@ use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
-    public function primaryKey()
+    public function primaryKey(): string
     {
-        return $this->_getPrimaryKey($this->tableName());
+        return $this->getPrimaryKey($this->tableName());
     }
 
-    public function columns()
+    public function columns(): array
     {
-        return array_values($this->_getTableColumns($this->tableName()));
+        return array_values($this->getTableColumns($this->tableName()));
     }
 
-    private function _getPrimaryKey($tableName)
+    private function getPrimaryKey(string $tableName): string
     {
         $primaryKey = Db::getInstance()->query("SHOW KEYS FROM $tableName WHERE Key_name = 'PRIMARY'")->fetch();
         if ($primaryKey) {
             return Arrays::getValue($primaryKey, 'Column_name');
-        } else {
-            return '';
         }
+        return '';
     }
 
-    private function _getTableColumns($tableName)
+    /** @return string[] */
+    private function getTableColumns(string $tableName): array
     {
         $schema = Db::getInstance()->query("SHOW COLUMNS FROM $tableName")->fetchAll();
         $tableColumns = [];
@@ -44,7 +45,7 @@ class MySqlDialect extends Dialect
         return $tableColumns;
     }
 
-    public function dataTypeToPhpType($dataType)
+    public function dataTypeToPhpType(string $dataType): string
     {
         $dataType = mb_strtolower($dataType);
         if (mb_strpos($dataType, 'int') !== false) {
@@ -53,13 +54,9 @@ class MySqlDialect extends Dialect
         if (preg_match('/double.*|float.*|decimal.*/', $dataType)) {
             return 'float';
         }
-        switch ($dataType) {
-            case 'bool':
-                return 'bool';
-            case 'boolean':
-                return 'bool';
-            default:
-                return 'string';
-        }
+        return match ($dataType) {
+            'bool', 'boolean' => 'bool',
+            default => 'string'
+        };
     }
 }

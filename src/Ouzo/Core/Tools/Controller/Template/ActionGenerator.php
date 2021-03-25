@@ -3,30 +3,28 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Controller\Template;
 
 class ActionGenerator
 {
-    private $action;
-
-    public function __construct($action)
+    public function __construct(private string $action)
     {
-        $this->action = $action;
     }
 
-    public function getActionName()
+    public function getActionName(): string
     {
         return $this->action;
     }
 
-    public function getActionViewFile()
+    public function getActionViewFile(): string
     {
-        return $this->action . '.phtml';
+        return "{$this->action}.phtml";
     }
 
-    public function templateContents()
+    public function templateContents(): string
     {
-        $classStubPlaceholderReplacer = new ActionStubPlaceholderReplacer($this);
-        return $classStubPlaceholderReplacer->content();
+        $replacer = new ActionStubPlaceholderReplacer($this);
+        return $replacer->content();
     }
 }

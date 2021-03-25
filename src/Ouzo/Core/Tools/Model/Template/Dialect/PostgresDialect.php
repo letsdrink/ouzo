@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Model\Template\Dialect;
 
 use Ouzo\Db;
@@ -11,23 +12,23 @@ use Ouzo\Utilities\Arrays;
 
 class PostgresDialect extends Dialect
 {
-    public function primaryKey()
+    public function primaryKey(): string
     {
-        return $this->_getPrimaryKey($this->tableName());
+        return $this->getPrimaryKey($this->tableName());
     }
 
-    public function sequence()
+    public function sequence(): string
     {
-        $tableColumns = $this->_getTableColumns($this->tableName());
+        $tableColumns = $this->getTableColumns($this->tableName());
         return $this->getSequenceName($tableColumns, $this->primaryKey());
     }
 
-    public function columns()
+    public function columns(): array
     {
-        return array_values($this->_getTableColumns($this->tableName()));
+        return array_values($this->getTableColumns($this->tableName()));
     }
 
-    public function getSequenceName($tableColumns, $primaryKey)
+    public function getSequenceName(array $tableColumns, string $primaryKey): string
     {
         $primaryColumnInfo = Arrays::getValue($tableColumns, $primaryKey);
         if (!$primaryColumnInfo || empty($primaryColumnInfo->default)) {
@@ -37,7 +38,7 @@ class PostgresDialect extends Dialect
         return Arrays::getValue($matches, 'sequence');
     }
 
-    private function _getPrimaryKey($tableName)
+    private function getPrimaryKey(string $tableName): string
     {
         $primaryKey = Db::getInstance()->query(
             "SELECT pg_attribute.attname
@@ -51,12 +52,11 @@ class PostgresDialect extends Dialect
         ")->fetch();
         if ($primaryKey) {
             return Arrays::getValue($primaryKey, 'attname');
-        } else {
-            return '';
         }
+        return '';
     }
 
-    private function _getTableColumns($tableName)
+    private function getTableColumns(string $tableName): array
     {
         $schema = Db::getInstance()
             ->query("SELECT column_name, data_type, column_default FROM information_schema.columns WHERE table_name = '$tableName' ORDER BY ordinal_position")
@@ -65,21 +65,18 @@ class PostgresDialect extends Dialect
         foreach ($schema as $columnInfo) {
             $columnName = $columnInfo['column_name'];
             $columnDefault = $columnInfo['column_default'];
-            $columnType = $this->_postgresDataTypeToPhpType($columnInfo['data_type']);
+            $columnType = $this->postgresDataTypeToPhpType($columnInfo['data_type']);
             $tableColumns[$columnName] = new DatabaseColumn($columnName, $columnType, $columnDefault);
         }
         return $tableColumns;
     }
 
-    private function _postgresDataTypeToPhpType($dataType)
+    private function postgresDataTypeToPhpType(string $dataType): string
     {
-        switch ($dataType) {
-            case 'boolean':
-                return 'bool';
-            case 'integer':
-                return 'int';
-            default:
-                return 'string';
-        }
+        return match ($dataType) {
+            'boolean' => 'bool',
+            'integer' => 'int',
+            default => 'string'
+        };
     }
 }

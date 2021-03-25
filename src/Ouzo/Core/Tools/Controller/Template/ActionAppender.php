@@ -3,43 +3,33 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Controller\Template;
 
 use Ouzo\Utilities\Path;
 
 class ActionAppender
 {
-    /**
-     * @var ActionGenerator
-     */
-    private $actionGenerator;
-    /**
-     * @var ControllerGenerator
-     */
-    private $controllerGenerator = null;
-    /**
-     * @var ViewGenerator
-     */
-    private $viewGenerator = null;
+    private ?ControllerGenerator $controllerGenerator = null;
+    private ?ViewGenerator $viewGenerator = null;
 
-    public function __construct(ActionGenerator $actionGenerator)
+    public function __construct(private ActionGenerator $actionGenerator)
     {
-        $this->actionGenerator = $actionGenerator;
     }
 
-    public function toController(ControllerGenerator $controllerGenerator)
+    public function toController(ControllerGenerator $controllerGenerator): static
     {
         $this->controllerGenerator = $controllerGenerator;
         return $this;
     }
 
-    public function toView(ViewGenerator $viewGenerator)
+    public function toView(ViewGenerator $viewGenerator): static
     {
         $this->viewGenerator = $viewGenerator;
         return $this;
     }
 
-    public function append()
+    public function append(): bool
     {
         if ($this->controllerGenerator) {
             $controllerPath = $this->controllerGenerator->getControllerPath();

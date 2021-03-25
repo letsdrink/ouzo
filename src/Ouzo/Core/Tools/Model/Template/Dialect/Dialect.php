@@ -3,33 +3,32 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Model\Template\Dialect;
 
 class Dialect
 {
-    private $_tableName;
-
-    public function __construct($tableName)
+    public function __construct(private string $tableName)
     {
-        $this->_tableName = $tableName;
     }
 
-    public function primaryKey()
+    public function primaryKey(): string
     {
         return '';
     }
 
-    public function sequence()
+    public function sequence(): string
     {
         return '';
     }
 
-    public function tableName()
+    public function tableName(): string
     {
-        return $this->_tableName;
+        return $this->tableName;
     }
 
-    public function columns()
+    /** @return string[] */
+    public function columns(): array
     {
         return [];
     }
