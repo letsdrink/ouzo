@@ -11,14 +11,14 @@ use Ouzo\Utilities\Arrays;
 
 class ModelAssert
 {
-    private Model $actual;
+    private ?Model $actual;
 
-    private function __construct(Model $actual)
+    private function __construct(?Model $actual)
     {
         $this->actual = $actual;
     }
 
-    public static function that(Model $actual): ModelAssert
+    public static function that(?Model $actual): ModelAssert
     {
         return new ModelAssert($actual);
     }

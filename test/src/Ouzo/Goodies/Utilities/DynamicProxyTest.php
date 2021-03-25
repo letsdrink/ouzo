@@ -123,6 +123,7 @@ if (version_compare('7.1.0', PHP_VERSION, '<=')) {
     include __DIR__ . '/DynamicProxyClassesFor71.php';
 }
 
+use Ouzo\Tests\Mock\MockInterface;
 use PHPUnit\Framework\TestCase;
 
 class DynamicProxyTest extends TestCase
@@ -417,6 +418,22 @@ class DynamicProxyTest extends TestCase
 
         //then
         $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldImplementsMockInterface()
+    {
+        //given
+        $testMethodHandler = new NullReturningTestMethodHandler();
+        $proxy = DynamicProxy::newInstance(ClassWithMixedReturningMethod::class, $testMethodHandler);
+
+        //when
+        $result = $proxy instanceof MockInterface;
+
+        //then
+        $this->assertTrue($result);
     }
 
 }
