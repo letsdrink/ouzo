@@ -14,7 +14,7 @@ class BooleansTest extends TestCase
      * @test
      * @dataProvider toBoolean
      */
-    public function shouldConvertToBoolean(string $string, string $expected)
+    public function shouldConvertToBoolean(mixed $string, bool $expected)
     {
         //when
         $toBoolean = Booleans::toBoolean($string);
