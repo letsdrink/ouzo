@@ -29,7 +29,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
     protected InjectorConfig $injectorConfig;
     protected FrontController $frontController;
 
-    public function __construct(string $name = null, array $data = [], ?string $dataName = '')
+    public function __construct(string $name = null, array $data = [], int|string|null $dataName = '')
     {
         $mockSessionInitializer = new MockSessionInitializer();
         $mockSessionInitializer->startSession();
