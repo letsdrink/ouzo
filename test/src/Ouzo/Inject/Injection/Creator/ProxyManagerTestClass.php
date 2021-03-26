@@ -8,7 +8,7 @@ namespace Ouzo\Injection\Creator;
 
 class ProxyManagerTestClass
 {
-    public $field;
+    public mixed $field;
 
     public function __construct()
     {

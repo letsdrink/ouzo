@@ -14,8 +14,7 @@ use ProxyManager\Configuration;
 
 class ProxyManagerInstanceCreatorTest extends TestCase
 {
-    /** @var bool */
-    public static $constructorInvoked;
+    public static bool $constructorInvoked;
 
     /**
      * @test
