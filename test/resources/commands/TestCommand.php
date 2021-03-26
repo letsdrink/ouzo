@@ -10,12 +10,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class TestCommand extends Command
 {
-    public function configure()
+    public function configure(): void
     {
         $this->setName('ouzo:test');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln("Hello world");
     }

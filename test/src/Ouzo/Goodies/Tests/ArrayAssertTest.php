@@ -5,35 +5,29 @@
  */
 
 use Ouzo\Tests\Assert;
-use Ouzo\Tests\CatchException;
 use Ouzo\Tests\CatchExceptionAssert;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 class Photo
 {
-    private $_photoName;
-    private $_data;
-
-    public function __construct($photoName, $data = '')
+    public function __construct(
+        private string $photoName,
+        private string $data = ''
+    )
     {
-        $this->_photoName = $photoName;
-        $this->_data = $data;
     }
 
-    public function getPhotoName()
+    public function getPhotoName(): string
     {
-        return $this->_photoName;
+        return $this->photoName;
     }
 }
 
 class PhotoFrame
 {
-    private $photo;
-
-    public function __construct($photo)
+    public function __construct(private Photo $photo)
     {
-        $this->photo = $photo;
     }
 }
 
@@ -332,7 +326,7 @@ class ArrayAssertTest extends TestCase
     {
         $photos = [new Photo('vacation', 'vvv'), new Photo('portrait', 'ppp')];
 
-        Assert::thatArray($photos)->onProperty('_data')->containsExactly('vvv', 'ppp');
+        Assert::thatArray($photos)->onProperty('data')->containsExactly('vvv', 'ppp');
     }
 
     /**
@@ -342,7 +336,7 @@ class ArrayAssertTest extends TestCase
     {
         $photos = [new PhotoFrame(new Photo('vacation', 'vvv'))];
 
-        Assert::thatArray($photos)->onProperty('photo->_data')->containsExactly('vvv');
+        Assert::thatArray($photos)->onProperty('photo->data')->containsExactly('vvv');
     }
 
     /**
@@ -403,7 +397,7 @@ class ArrayAssertTest extends TestCase
         $photos[] = new Photo('photo1', 'd1');
         $photos[] = new Photo('photo2', 'd2');
 
-        Assert::thatArray($photos)->extracting('getPhotoName()', '_data')->contains(['photo1', 'd1'], ['photo2', 'd2']);
+        Assert::thatArray($photos)->extracting('getPhotoName()', 'data')->contains(['photo1', 'd1'], ['photo2', 'd2']);
     }
 
     /**
@@ -416,7 +410,7 @@ class ArrayAssertTest extends TestCase
         $photos[] = new Photo('photo2', 'd2');
 
         //then
-        Assert::thatArray($photos)->extracting('_data')->contains('d1', 'd2');
+        Assert::thatArray($photos)->extracting('data')->contains('d1', 'd2');
     }
 
     /**

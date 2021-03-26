@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Console;
 
@@ -7,16 +11,17 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Path;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use TestCommand;
 
 class CommandsLoaderTest extends TestCase
 {
-    private $testCommandsPath;
+    private string $testCommandsPath;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->testCommandsPath = Path::join(ROOT_PATH, "test", "resources", "commands");
-        require_once($this->testCommandsPath . DIRECTORY_SEPARATOR . "TestCommand.php");
+        $this->testCommandsPath = Path::join(ROOT_PATH, 'test', 'resources', 'commands');
+        require_once($this->testCommandsPath . DIRECTORY_SEPARATOR . 'TestCommand.php');
     }
 
     /**
@@ -32,7 +37,7 @@ class CommandsLoaderTest extends TestCase
         $loader->registerCommandsFromPath($this->testCommandsPath);
 
         //then
-        Mock::verify($application)->addCommands([new \TestCommand()]);
+        Mock::verify($application)->addCommands([new TestCommand()]);
     }
 
     /**
@@ -43,15 +48,14 @@ class CommandsLoaderTest extends TestCase
         //given
         $application = Mock::mock(Application::class);
         $injector = Mock::mock(Injector::class);
-        Mock::when($injector)->getInstance("\\TestCommand")->thenReturn(new \TestCommand());
+        Mock::when($injector)->getInstance('\TestCommand')->thenReturn(new TestCommand());
         $loader = CommandsLoader::forApplicationAndInjector($application, $injector);
 
         //when
         $loader->registerCommandsFromPath($this->testCommandsPath);
 
         //then
-        Mock::verify($application)->addCommands([new \TestCommand()]);
-        Mock::verify($injector)->getInstance("\\TestCommand");
+        Mock::verify($application)->addCommands([new TestCommand()]);
+        Mock::verify($injector)->getInstance('\TestCommand');
     }
-
 }

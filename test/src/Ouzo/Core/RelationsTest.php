@@ -12,7 +12,6 @@ class RelationsTest extends TestCase
 {
     /**
      * @test
-     * @throws Exception
      */
     public function shouldThrowExceptionIfDuplicatedRelation()
     {

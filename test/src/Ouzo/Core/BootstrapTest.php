@@ -37,10 +37,8 @@ class BootstrapSampleController extends Controller
 
 class BootstrapTest extends TestCase
 {
-    /** @var InjectorConfig */
-    private $config;
-    /** @var Bootstrap */
-    private $bootstrap;
+    private InjectorConfig $config;
+    private Bootstrap $bootstrap;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {

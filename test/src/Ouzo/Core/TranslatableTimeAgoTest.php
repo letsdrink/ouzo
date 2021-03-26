@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class TranslatableTimeAgoTest extends TestCase
 {
-    public function dates()
+    public function dates(): array
     {
         return [
             ['2012-02-20 12:00', '2012-02-20 11:59', 'just now'],
@@ -31,9 +31,6 @@ class TranslatableTimeAgoTest extends TestCase
     /**
      * @test
      * @dataProvider dates
-     * @param string $currentDate
-     * @param string $date
-     * @param string $expectedText
      */
     public function shouldCreateTranslatableTimeAgo($currentDate, $date, $expectedText)
     {

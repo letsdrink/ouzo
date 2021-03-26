@@ -3,7 +3,9 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\TestCase;
 
 class MyClass
 {
@@ -16,8 +18,6 @@ class MyClass
     {
     }
 }
-
-use PHPUnit\Framework\TestCase; 
 
 class CatchExceptionTest extends TestCase
 {

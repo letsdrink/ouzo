@@ -10,5 +10,4 @@ use Ouzo\Controller;
 
 class TestController extends Controller
 {
-
 }

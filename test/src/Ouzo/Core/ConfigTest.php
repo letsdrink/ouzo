@@ -6,13 +6,11 @@
 
 use Ouzo\Config;
 use Ouzo\Tests\Assert;
-use Ouzo\Utilities\Files;
 use PHPUnit\Framework\TestCase;
 
 class SampleConfig
 {
-    /** @var array */
-    private $values;
+    private array $values;
 
     public function __construct(array $values)
     {
@@ -32,7 +30,7 @@ class NoGetConfigMethod
 class PrivateGetConfigMethod
 {
     /** @noinspection PhpUnusedPrivateMethodInspection */
-    private function getConfig()
+    private function getConfig(): array
     {
         return [];
     }

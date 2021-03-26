@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
@@ -17,7 +18,7 @@ class TestModel extends Model
 
 class ModelDefaultMappingTest extends DbTransactionalTestCase
 {
-    public  function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         ModelDefinition::resetCache();

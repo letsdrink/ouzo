@@ -6,5 +6,4 @@
 
 class SubClassWithNoDep extends ClassWithNoDep
 {
-
 }

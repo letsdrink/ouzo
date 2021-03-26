@@ -8,5 +8,4 @@ namespace Application\MyNamespace;
 
 class ClassWithNamespace
 {
-
 }

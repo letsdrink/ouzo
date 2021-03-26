@@ -565,7 +565,6 @@ class MockTest extends TestCase
         //when
         CatchException::when(new Mock())->verifyZeroInteractions($mock);
         CatchException::assertThat()->hasMessage('Expected zero interactions but got method1(2)');
-//        }
     }
 
     /**
