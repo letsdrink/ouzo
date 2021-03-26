@@ -10,7 +10,6 @@ use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\Functions;
-
 use PHPUnit\Framework\TestCase;
 
 class ArraysTest extends TestCase
@@ -48,9 +47,7 @@ class ArraysTest extends TestCase
             'k3' => 'v3',
         ];
         //when
-        $arrayWithNewKeys = Arrays::mapKeys($array, function ($key) {
-            return 'new_' . $key;
-        });
+        $arrayWithNewKeys = Arrays::mapKeys($array, fn($key) => "new_{$key}");
 
         //then
         $this->assertEquals([
@@ -69,9 +66,7 @@ class ArraysTest extends TestCase
         $array = ['k1', 'k2', 'k3'];
 
         //when
-        $result = Arrays::map($array, function ($value) {
-            return 'new_' . $value;
-        });
+        $result = Arrays::map($array, fn($value) => "new_{$value}");
 
         //then
         $this->assertEquals(['new_k1', 'new_k2', 'new_k3'], $result);
@@ -86,9 +81,7 @@ class ArraysTest extends TestCase
         $array = ['a' => 1, 'b' => 2, 'c' => 3];
 
         //when
-        $result = Arrays::mapEntries($array, function ($key, $value) {
-            return $key . '_' . $value;
-        });
+        $result = Arrays::mapEntries($array, fn($key, $value): string => "{$key}_{$value}");
 
         //then
         $this->assertEquals(['a' => 'a_1', 'b' => 'b_2', 'c' => 'c_3'], $result);
@@ -103,9 +96,7 @@ class ArraysTest extends TestCase
         $array = [1, 2, 3, 4];
 
         //when
-        $result = Arrays::filter($array, function ($value) {
-            return $value > 2;
-        });
+        $result = Arrays::filter($array, fn($value) => $value > 2);
 
         //then
         $this->assertEquals([2 => 3, 3 => 4], $result);
@@ -120,9 +111,7 @@ class ArraysTest extends TestCase
         $array = range(1, 2);
 
         //when
-        $map = Arrays::toMap($array, function ($elem) {
-            return $elem * 10;
-        });
+        $map = Arrays::toMap($array, fn($elem) => $elem * 10);
 
         //then
         $this->assertEquals([10 => 1, 20 => 2], $map);
@@ -232,9 +221,7 @@ class ArraysTest extends TestCase
         $array = [1, 2];
 
         //when
-        $all = Arrays::all($array, function ($element) {
-            return $element < 3;
-        });
+        $all = Arrays::all($array, fn($element) => $element < 3);
 
         //then
         $this->assertTrue($all);
@@ -249,9 +236,7 @@ class ArraysTest extends TestCase
         $array = [1, 2, 3];
 
         //when
-        $all = Arrays::all($array, function ($element) {
-            return $element < 3;
-        });
+        $all = Arrays::all($array, fn($element) => $element < 3);
 
         //then
         $this->assertFalse($all);
@@ -266,9 +251,7 @@ class ArraysTest extends TestCase
         $array = ['a', true, 'c'];
 
         //when
-        $any = Arrays::any($array, function ($element) {
-            return is_bool($element);
-        });
+        $any = Arrays::any($array, fn($element) => is_bool($element));
 
         //then
         $this->assertTrue($any);
@@ -298,9 +281,7 @@ class ArraysTest extends TestCase
         $array = ['a1' => 1, 'a2' => 2, 'c' => 3];
 
         //when
-        $filtered = Arrays::filterByKeys($array, function ($elem) {
-            return $elem[0] == 'a';
-        });
+        $filtered = Arrays::filterByKeys($array, fn($elem) => $elem[0] == 'a');
 
         //then
         $this->assertEquals(['a1' => 1, 'a2' => 2], $filtered);
@@ -610,7 +591,9 @@ class ArraysTest extends TestCase
         $combined = Arrays::combine($keys, $values);
 
         //then
-        Assert::thatArray($combined)->hasSize(3)->containsKeyAndValue(['id' => 1, 'name' => 'john', 'surname' => 'smith']);
+        Assert::thatArray($combined)
+            ->hasSize(3)
+            ->containsKeyAndValue(['id' => 1, 'name' => 'john', 'surname' => 'smith']);
     }
 
     /**
@@ -638,7 +621,9 @@ class ArraysTest extends TestCase
         $flatten = Arrays::flatten($array);
 
         //then
-        Assert::thatArray($flatten)->hasSize(6)->containsExactly('john', 'peter', 'bill', 'cheese', 'milk', 'brie');
+        Assert::thatArray($flatten)
+            ->hasSize(6)
+            ->containsExactly('john', 'peter', 'bill', 'cheese', 'milk', 'brie');
     }
 
     /**
@@ -1151,7 +1136,11 @@ class ArraysTest extends TestCase
     public function shouldReturnObjectsUniqueByField()
     {
         //given
-        $array = [new Product(['name' => 'bob']), new Product(['name' => 'bob']), new Product(['name' => 'john'])];
+        $array = [
+            new Product(['name' => 'bob']),
+            new Product(['name' => 'bob']),
+            new Product(['name' => 'john'])
+        ];
 
         //when
         $uniqueByName = Arrays::uniqueBy($array, 'name');
@@ -1166,7 +1155,11 @@ class ArraysTest extends TestCase
     public function shouldReturnObjectsUniqueByFunctionResults()
     {
         //given
-        $array = [new Product(['name' => 'bob']), new Product(['name' => 'bob']), new Product(['name' => 'john'])];
+        $array = [
+            new Product(['name' => 'bob']),
+            new Product(['name' => 'bob']),
+            new Product(['name' => 'john'])
+        ];
 
         //when
         $uniqueByName = Arrays::uniqueBy($array, Functions::extract()->name);
