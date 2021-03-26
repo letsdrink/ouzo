@@ -470,321 +470,256 @@ class StringsTest extends TestCase
 
     /**
      * @test
+     * @dataProvider abbreviate
      */
-    public function shouldAbbreviateString()
+    public function shouldAbbreviateString($string, $maxWidth, $expected)
     {
-        //given
-        $string = 'ouzo is great';
-
         //when
-        $abbreviated = Strings::abbreviate($string, 5);
+        $abbreviated = Strings::abbreviate($string, $maxWidth);
 
         //then
-        $this->assertEquals("ouzo ...", $abbreviated);
+        $this->assertSame($expected, $abbreviated);
     }
 
-    /**
-     * @test
-     */
-    public function shouldNotAbbreviateStringShorterThanLimit()
+    public function abbreviate(): array
     {
-        //given
-        $string = 'ouzo is great';
-
-        //when
-        $abbreviated = Strings::abbreviate($string, 13);
-
-        //then
-        $this->assertEquals($string, $abbreviated);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldTrimString()
-    {
-        //given
-        $string = '  sdf ';
-
-        //when
-        $result = Strings::trimToNull($string);
-
-        //then
-        $this->assertEquals('sdf', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldTrimStringToNull()
-    {
-        //given
-        $string = '   ';
-
-        //when
-        $result = Strings::trimToNull($string);
-
-        //then
-        $this->assertNull($result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldTrimNull()
-    {
-        //given
-        $string = null;
-
-        //when
-        $result = Strings::trimToNull($string);
-
-        //then
-        $this->assertNull($result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldSprintfStringWithAssocArrayAsParam()
-    {
-        //given
-        $sprintfString = "This is %{what}! %{what}? This is %{place}!";
-        $assocArray = [
-            'what' => 'madness',
-            'place' => 'Sparta'
+        return [
+            ['ouzo is great', 5, 'ouzo ...'],
+            ['ouzo is great', 13, 'ouzo is great'],
+            [null, 5, null],
         ];
+    }
 
+    /**
+     * @test
+     * @dataProvider trimToNull
+     */
+    public function shouldTrimString($string, $expected)
+    {
+        //when
+        $result = Strings::trimToNull($string);
+
+        //then
+        $this->assertSame($expected, $result);
+    }
+
+    public function trimToNull(): array
+    {
+        return [
+            ['  sdf ', 'sdf'],
+            ['   ', null],
+            [null, null],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider sprintAssoc
+     */
+    public function shouldSprintfStringWithAssocArrayAsParam($sprintfString, $assocArray, $expected)
+    {
         //when
         $resultString = Strings::sprintAssoc($sprintfString, $assocArray);
 
         //then
-        $this->assertEquals('This is madness! madness? This is Sparta!', $resultString);
+        $this->assertSame($expected, $resultString);
     }
 
-    /**
-     * @test
-     */
-    public function shouldSprintfStringAndReplaceWithEmptyIfNoPlaceholderFound()
+    public function sprintAssoc(): array
     {
-        //given
-        $sprintfString = "This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!";
-        $assocArray = [
-            'what' => 'madness',
-            'place' => 'Sparta'
+        return [
+            ['This is %{what}! %{what}? This is %{place}!', ['what' => 'madness', 'place' => 'Sparta'], 'This is madness! madness? This is Sparta!'],
+            ['This is %{what}! %{what}? This is %{place}! And %{invalid_placeholder}!', ['what' => 'madness', 'place' => 'Sparta'], 'This is madness! madness? This is Sparta! And %{invalid_placeholder}!'],
+            [null, ['what' => 'madness', 'place' => 'Sparta'], null],
+            ['This is %{what}! %{what}? This is %{place}!', null, 'This is %{what}! %{what}? This is %{place}!'],
         ];
-
-        //when
-        $resultString = Strings::sprintAssocDefault($sprintfString, $assocArray);
-
-        //then
-        $this->assertEquals('This is madness! This is Sparta! No, this is invalid  placeholder!', $resultString);
     }
 
     /**
      * @test
+     * @dataProvider sprintAssocDefault
      */
-    public function shouldCheckStringContainsSubstring()
+    public function shouldSprintfStringAndReplaceWithEmptyIfNoPlaceholderFound($sprintfString, $assocArray, $default, $expected)
     {
-        //given
-        $string = 'Fear cuts deeper than swords';
-
         //when
-        $contains = Strings::contains($string, 'deeper');
+        $resultString = Strings::sprintAssocDefault($sprintfString, $assocArray, $default);
 
         //then
-        $this->assertTrue($contains);
+        $this->assertSame($expected, $resultString);
+    }
+
+    public function sprintAssocDefault(): array
+    {
+        return [
+            ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', ['what' => 'madness', 'place' => 'Sparta'], '', 'This is madness! This is Sparta! No, this is invalid  placeholder!'],
+            ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', ['what' => 'madness', 'place' => 'Sparta'], 'tomato', 'This is madness! This is Sparta! No, this is invalid tomato placeholder!'],
+            [null, ['what' => 'madness', 'place' => 'Sparta'], 'tomato', null],
+            ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', null, 'tomato', 'This is tomato! This is tomato! No, this is invalid tomato placeholder!'],
+            ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', null, null, 'This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!'],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider contains
      */
-    public function shouldCheckStringContainsSubstringWhenCaseDoesNotMatch()
+    public function shouldCheckStringContainsSubstring($string, $substring, $expected)
     {
-        //given
-        $string = 'Fear cuts deeper than swords';
-
         //when
-        $contains = Strings::contains($string, 'DeEpEr');
+        $contains = Strings::contains($string, $substring);
 
         //then
-        $this->assertFalse($contains);
+        $this->assertSame($expected, $contains);
+    }
+
+    public function contains(): array
+    {
+        return [
+            ['Fear cuts deeper than swords', 'deeper', true],
+            ['Fear cuts deeper than swords', 'DeEpEr', false],
+            [null, 'DeEpEr', false],
+            ['Fear cuts deeper than swords', null, false],
+            [null, null, false],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider containsIgnoreCase
      */
-    public function shouldCheckStringContainsSubstringIgnoringCase()
+    public function shouldCheckStringContainsSubstringIgnoringCase($string, $substring, $expected)
     {
-        //given
-        $string = 'Fear cuts deeper than swords';
-
         //when
-        $contains = Strings::containsIgnoreCase($string, 'DeEpEr');
+        $contains = Strings::containsIgnoreCase($string, $substring);
 
         //then
-        $this->assertTrue($contains);
+        $this->assertSame($expected, $contains);
+    }
+
+    public function containsIgnoreCase(): array
+    {
+        return [
+            ['Fear cuts deeper than swords', 'deeper', true],
+            ['Fear cuts deeper than swords', 'DeEpEr', true],
+            [null, 'DeEpEr', false],
+            ['Fear cuts deeper than swords', null, false],
+            [null, null, false],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider substringBefore
      */
-    public function shouldGetSubstringBeforeSeparator()
+    public function shouldGetSubstringBeforeSeparator($string, $separator, $expected)
     {
-        //given
-        $string = 'winter is coming???!!!';
-
         //when
-        $result = Strings::substringBefore($string, '?');
+        $result = Strings::substringBefore($string, $separator);
 
         //then
-        $this->assertEquals('winter is coming', $result);
+        $this->assertSame($expected, $result);
+    }
+
+    public function substringBefore(): array
+    {
+        return [
+            ['winter is coming???!!!', '?', 'winter is coming'],
+            ['winter is coming', ',', 'winter is coming'],
+            [null, ',', null],
+            ['winter is coming', null, 'winter is coming'],
+            [null, null, null],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider substringAfter
      */
-    public function shouldReturnStringIfSeparatorNotFound()
+    public function shouldGetSubstringAfterSeparator($string, $separator, $expected)
     {
-        //given
-        $string = 'winter is coming';
-
         //when
-        $result = Strings::substringBefore($string, ',');
+        $result = Strings::substringAfter($string, $separator);
 
         //then
-        $this->assertEquals('winter is coming', $result);
+        $this->assertSame($expected, $result);
+    }
+
+    public function substringAfter(): array
+    {
+        return [
+            ['abc+efg+hij', '+', 'efg+hij'],
+            ['abc+', '+', ''],
+            ['abc', '-', 'abc'],
+            [null, '+', null],
+            ['abc+efg+hij', null, 'abc+efg+hij'],
+            [null, null, null],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider replaceNth
      */
-    public function shouldGetSubstringAfterSeparator()
+    public function shouldReplaceNthString($subject, $search, $replace, $nth, $expected)
     {
-        //given
-        $string = 'abc+efg+hij';
-
         //when
-        $result = Strings::substringAfter($string, '+');
+        $replaceNth = Strings::replaceNth($subject, $search, $replace, $nth);
 
         //then
-        $this->assertEquals('efg+hij', $result);
+        $this->assertSame($expected, $replaceNth);
+    }
+
+    public function replaceNth(): array
+    {
+        return [
+            ['name = ? AND description =    ?', '\\=\\s*\\?', 'IS NULL', 1, 'name = ? AND description IS NULL'],
+            ['name = ? AND description =    ?', 'not there', 'IS NULL', 1, 'name = ? AND description =    ?'],
+            [null, 'not there', 'IS NULL', 1, null],
+            ['name = ? AND description =    ?', null, 'IS NULL', 1, 'name = ? AND description =    ?'],
+            ['name = ? AND description =    ?', '\\=\\s*\\?', null, 1, 'name = ? AND description =    ?'],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider removeAccent
      */
-    public function shouldReturnEmptyStringInSubstringAfterSeparatorWhenSeparatorIsAtTheEnd()
+    public function shouldRemoveAccents($string, $expected)
     {
-        //given
-        $string = 'abc+';
-
-        //when
-        $result = Strings::substringAfter($string, '+');
-
-        //then
-        $this->assertEquals('', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnStringInSubstringAfterSeparatorWhenSeparatorIsNotFound()
-    {
-        //given
-        $string = 'abc';
-
-        //when
-        $result = Strings::substringAfter($string, '-');
-
-        //then
-        $this->assertEquals('abc', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnNullForNull()
-    {
-        //when
-        $result = Strings::substringBefore(null, ',');
-
-        //then
-        $this->assertNull($result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReplaceNthString()
-    {
-        //given
-        $subject = 'name = ? AND description =    ?';
-
-        //when
-        $replaceNth = Strings::replaceNth($subject, '\\=\\s*\\?', 'IS NULL', 1);
-
-        //then
-        $this->assertEquals('name = ? AND description IS NULL', $replaceNth);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnInputStringReplaceNthStringWhenNoSearchFound()
-    {
-        //given
-        $subject = 'name = ? AND description =    ?';
-
-        //when
-        $replaceNth = Strings::replaceNth($subject, 'not there', 'IS NULL', 1);
-
-        //then
-        $this->assertEquals($subject, $replaceNth);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldRemoveAccents()
-    {
-        //given
-        $string = 'String with śżźćółŹĘ ÀÁÂ';
-
         //when
         $removeAccent = Strings::removeAccent($string);
 
         //then
-        $this->assertEquals('String with szzcolZE AAA', $removeAccent);
+        $this->assertSame($expected, $removeAccent);
+    }
+
+    public function removeAccent(): array
+    {
+        return [
+            ['String with śżźćółŹĘ ÀÁÂ', 'String with szzcolZE AAA'],
+            [null, null],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider uppercaseFirst
      */
-    public function shouldUpperCaseFirstLetter()
+    public function shouldUpperCaseFirstLetter($string, $expected)
     {
-        //given
-        $string = "łukasz";
-
         //when
         $uppercaseFirst = Strings::uppercaseFirst($string);
 
         //then
-        $this->assertEquals('Łukasz', $uppercaseFirst);
+        $this->assertSame($expected, $uppercaseFirst);
     }
 
-    /**
-     * @test
-     */
-    public function shouldPreserveCaseInRestOfString()
+    public function uppercaseFirst(): array
     {
-        //given
-        $string = "łuKaSz";
-
-        //when
-        $uppercaseFirst = Strings::uppercaseFirst($string);
-
-        //then
-        $this->assertEquals('ŁuKaSz', $uppercaseFirst);
+        return [
+            ['łukasz', 'Łukasz'],
+            ['łuKaSz', 'ŁuKaSz'],
+            [null, null],
+        ];
     }
 }
