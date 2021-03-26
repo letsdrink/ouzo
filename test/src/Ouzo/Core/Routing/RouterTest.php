@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -234,7 +234,7 @@ class RouterTest extends TestCase
         $rule = $router->findRoute();
 
         //then
-        $this->assertFalse($rule->isActionRequired());
+        $this->assertFalse($rule->isRequiredAction());
         $this->assertEquals('Controller\\UsersController', $rule->getController());
     }
 

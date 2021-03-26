@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Loader;
 
@@ -13,22 +17,15 @@ use RegexIterator;
 
 class AnnotationDirectoryLoader implements Loader
 {
-    private $loader;
+    private AnnotationClassLoader $annotationClassLoader;
 
-    /**
-     * @Inject
-     * @param AnnotationClassLoader $loader
-     */
-    public function __construct(AnnotationClassLoader $loader)
+    #[Inject]
+    public function __construct(AnnotationClassLoader $annotationClassLoader)
     {
-        $this->loader = $loader;
+        $this->annotationClassLoader = $annotationClassLoader;
     }
 
-    /**
-     * @param string[] $paths
-     * @return RouteMetadataCollection
-     */
-    public function load(array $paths = []): RouteMetadataCollection
+    public function load(array $paths): RouteMetadataCollection
     {
         $collection = new RouteMetadataCollection();
         $files = $this->resolveFiles($this->resolvePaths($paths));
@@ -39,7 +36,7 @@ class AnnotationDirectoryLoader implements Loader
             $sourceFile = $reflectionClass->getFileName();
 
             if (in_array($sourceFile, $files, true)) {
-                $collection->addCollection($this->loader->load([$className]));
+                $collection->addCollection($this->annotationClassLoader->load([$className]));
             }
         }
 

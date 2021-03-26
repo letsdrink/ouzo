@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -9,7 +9,6 @@ use Application\Model\Test\FooClass;
 use Application\Model\Test\GlobalController;
 use Application\Model\Test\MultipleMethods;
 use Application\Model\Test\SimpleController;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Ouzo\Routing\Loader\AnnotationClassLoader;
 use Ouzo\Routing\Loader\RouteMetadata;
 use Ouzo\Tests\Assert;
@@ -22,8 +21,7 @@ class AnnotationClassLoaderTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $reader = new AnnotationReader();
-        $this->loader = new AnnotationClassLoader($reader);
+        $this->loader = new AnnotationClassLoader();
     }
 
     /**

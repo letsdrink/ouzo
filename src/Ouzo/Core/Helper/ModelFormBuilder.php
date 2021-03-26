@@ -1,129 +1,128 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Helper;
 
 use Ouzo\Csrf\CsrfProtector;
 use Ouzo\I18n;
-use Ouzo\Model;
 use Ouzo\Utilities\Joiner;
 use Ouzo\Utilities\Strings;
 
 class ModelFormBuilder
 {
-    /** @var Model */
-    private $_object;
+    private object $object;
 
     public function __construct($object)
     {
-        $this->_object = $object;
+        $this->object = $object;
     }
 
-    private function _objectName()
+    private function objectName(): string
     {
-        return Strings::camelCaseToUnderscore($this->_object->getModelName());
+        return Strings::camelCaseToUnderscore($this->object->getModelName());
     }
 
-    private function _generateId($name)
+    private function generateId($name): string
     {
-        return $this->_objectName() . '_' . $name;
+        return $this->objectName() . '_' . $name;
     }
 
-    public function generateName($name)
+    public function generateName($name): string
     {
-        return $this->_objectName() . '[' . $name . ']';
+        return $this->objectName() . '[' . $name . ']';
     }
 
-    private function _generatePredefinedAttributes($field)
+    private function generatePredefinedAttributes(string $field): array
     {
-        $id = $this->_generateId($field);
+        $id = $this->generateId($field);
         $attributes = ['id' => $id];
 
-        if (in_array($field, $this->_object->getErrorFields())) {
+        if (in_array($field, $this->object->getErrorFields())) {
             $attributes['class'] = 'error';
         }
         return $attributes;
     }
 
-    private function _translate($field)
+    private function translate(string $field): string
     {
-        return I18n::t($this->_objectName() . '.' . $field);
+        return I18n::t($this->objectName() . '.' . $field);
     }
 
-    public function label($field, array $options = [])
+    public function label(string $field, array $options = []): string
     {
-        return labelTag($this->_generateId($field), $this->_translate($field), $options);
+        return FormHelper::labelTag($this->generateId($field), $this->translate($field), $options);
     }
 
-    public function textField($field, array $options = [])
+    public function textField(string $field, array $options = []): string
     {
-        $attributes = $this->_generatePredefinedAttributes($field);
-        $attributes = $this->_mergeAttributes($attributes, $options);
-        return textFieldTag($this->generateName($field), $this->_object->$field, $attributes);
+        $attributes = $this->generatePredefinedAttributes($field);
+        $attributes = $this->mergeAttributes($attributes, $options);
+        return FormHelper::textFieldTag($this->generateName($field), $this->object->$field, $attributes);
     }
 
-    public function textArea($field, array $options = [])
+    public function textArea(string $field, array $options = []): string
     {
-        $attributes = $this->_generatePredefinedAttributes($field);
-        $attributes = $this->_mergeAttributes($attributes, $options);
-        return textAreaTag($this->generateName($field), $this->_object->$field, $attributes);
+        $attributes = $this->generatePredefinedAttributes($field);
+        $attributes = $this->mergeAttributes($attributes, $options);
+        return FormHelper::textAreaTag($this->generateName($field), $this->object->$field, $attributes);
     }
 
-    public function selectField($field, array $items, $options = [], $promptOption = null)
+    public function selectField(string $field, array $items, array $options = [], string $promptOption = null): string
     {
-        $attributes = $this->_generatePredefinedAttributes($field);
-        $attributes = $this->_mergeAttributes($attributes, $options);
-        return selectTag($this->generateName($field), $items, [$this->_object->$field], $attributes, $promptOption);
+        $attributes = $this->generatePredefinedAttributes($field);
+        $attributes = $this->mergeAttributes($attributes, $options);
+        return FormHelper::selectTag($this->generateName($field), $items, [$this->object->$field], $attributes, $promptOption);
     }
 
-    public function hiddenField($field, $options = [])
+    public function hiddenField(string $field, array $options = []): string
     {
-        $attributes = $this->_generatePredefinedAttributes($field);
-        $attributes = $this->_mergeAttributes($attributes, $options);
-        return hiddenTag($this->generateName($field), $this->_object->$field, $attributes);
+        $attributes = $this->generatePredefinedAttributes($field);
+        $attributes = $this->mergeAttributes($attributes, $options);
+        return FormHelper::hiddenTag($this->generateName($field), $this->object->$field, $attributes);
     }
 
-    public function passwordField($field, array $options = [])
+    public function passwordField(string $field, array $options = []): string
     {
-        $attributes = $this->_generatePredefinedAttributes($field);
-        $attributes = $this->_mergeAttributes($attributes, $options);
-        return passwordFieldTag($this->generateName($field), $this->_object->$field, $attributes);
+        $attributes = $this->generatePredefinedAttributes($field);
+        $attributes = $this->mergeAttributes($attributes, $options);
+        return FormHelper::passwordFieldTag($this->generateName($field), $this->object->$field, $attributes);
     }
 
-    public function checkboxField($field, array $options = [])
+    public function checkboxField(string $field, array $options = []): string
     {
-        $attributes = $this->_generatePredefinedAttributes($field);
-        $attributes = $this->_mergeAttributes($attributes, $options);
-        $value = $this->_object->$field;
+        $attributes = $this->generatePredefinedAttributes($field);
+        $attributes = $this->mergeAttributes($attributes, $options);
+        $value = $this->object->$field;
         $checked = !empty($value);
-        return checkboxTag($this->generateName($field), '1', $checked, $attributes);
+        return FormHelper::checkboxTag($this->generateName($field), '1', $checked, $attributes);
     }
 
-    public function radioField($field, array $options = [])
+    public function radioField(string $field, array $options = []): string
     {
-        $attributes = $this->_generatePredefinedAttributes($field);
-        $attributes = $this->_mergeAttributes($attributes, $options);
-        return radioButtonTag($this->generateName($field), $this->_object->$field, $attributes);
+        $attributes = $this->generatePredefinedAttributes($field);
+        $attributes = $this->mergeAttributes($attributes, $options);
+        return FormHelper::radioButtonTag($this->generateName($field), $this->object->$field, $attributes);
     }
 
-    public function start($url, $method = 'post', $attributes = [])
+    public function start(string $url, string $method = 'post', array $attributes = []): string
     {
-        return formTag($url, $method, $attributes) . hiddenTag('csrftoken', CsrfProtector::getCsrfToken());
+        return FormHelper::formTag($url, $method, $attributes) . FormHelper::hiddenTag('csrftoken', CsrfProtector::getCsrfToken());
     }
 
-    public function end()
+    public function end(): string
     {
-        return endFormTag();
+        return FormHelper::endFormTag();
     }
 
-    public function getObject()
+    public function getObject(): object
     {
-        return $this->_object;
+        return $this->object;
     }
 
-    private function _mergeAttributes($attributes, $options)
+    private function mergeAttributes(array $attributes, array $options): array
     {
         if (isset($options['class']) && isset($attributes['class'])) {
             $options['class'] = Joiner::on(' ')->skipNulls()->join([$options['class'], $attributes['class']]);

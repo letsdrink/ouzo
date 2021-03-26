@@ -1,30 +1,21 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Config;
 
 use Ouzo\Config;
 
 class ConfigOverrideProperty
 {
-    /** @var array */
-    private $keys;
-
-    /**
-     * @param array $keys
-     */
-    public function __construct($keys)
+    /** @var string[] $keys */
+    public function __construct(private array $keys)
     {
-        $this->keys = $keys;
     }
 
-    /**
-     * @param string|array $value
-     * @return void
-     */
-    public function with($value)
+    public function with(mixed $value): void
     {
         Config::overridePropertyArray($this->keys, $value);
     }

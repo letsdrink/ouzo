@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -10,15 +10,15 @@ use Ouzo\HeaderSender;
 
 class MockHeaderSender extends HeaderSender
 {
-    private $_headers;
+    private array $headers;
 
-    public function send($headers)
+    public function send(array $headers): void
     {
-        $this->_headers = $headers;
+        $this->headers = $headers;
     }
 
-    public function getHeaders()
+    public function getHeaders(): array
     {
-        return $this->_headers;
+        return $this->headers;
     }
 }

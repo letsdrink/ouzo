@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
 use Ouzo\Model;
@@ -10,53 +11,40 @@ use Ouzo\Utilities\Arrays;
 
 class ModelAssert
 {
-    /**
-     * @var Model
-     */
-    private $_actual;
+    private ?Model $actual;
 
-    private function __construct(Model $actual)
+    private function __construct(?Model $actual)
     {
-        $this->_actual = $actual;
+        $this->actual = $actual;
     }
 
-    public static function that(Model $actual)
+    public static function that(?Model $actual): ModelAssert
     {
         return new ModelAssert($actual);
     }
 
-    /**
-     * Compares all attributes. If one model has loaded a relation and other has not, they are considered not equal.
-     *
-     * @param Model $expected
-     */
-    public function isEqualTo(Model $expected)
+    public function isEqualTo(Model $expected): void
     {
-        $this->_assertSameType($expected);
-        AssertAdapter::assertEquals($expected->attributes(), $this->_actual->attributes(), 'Models have different attributes ');
+        $this->assertSameType($expected);
+        AssertAdapter::assertEquals($expected->attributes(), $this->actual->attributes(), 'Models have different attributes ');
     }
 
-    /**
-     * Compares only attributes listed in Models fields!
-     *
-     * @param Model $expected
-     */
-    public function hasSameAttributesAs(Model $expected)
+    public function hasSameAttributesAs(Model $expected): void
     {
-        $this->_assertSameType($expected);
-        $this->_assertSamePersistentAttributes($expected);
+        $this->assertSameType($expected);
+        $this->assertSamePersistentAttributes($expected);
     }
 
-    private function _assertSameType(Model $expected)
+    private function assertSameType(Model $expected): void
     {
-        AssertAdapter::assertEquals(get_class($expected), get_class($this->_actual),
-            'Expected object of type ' . $expected->getModelName() . ' but got ' . $this->_actual->getModelName());
+        AssertAdapter::assertEquals(get_class($expected), get_class($this->actual),
+            'Expected object of type ' . $expected->getModelName() . ' but got ' . $this->actual->getModelName());
     }
 
-    private function _assertSamePersistentAttributes(Model $expected)
+    private function assertSamePersistentAttributes(Model $expected): void
     {
         $expectedAttributes = Arrays::filterByAllowedKeys($expected->attributes(), $expected->getFields());
-        $actualAttributes = Arrays::filterByAllowedKeys($this->_actual->attributes(), $this->_actual->getFields());
+        $actualAttributes = Arrays::filterByAllowedKeys($this->actual->attributes(), $this->actual->getFields());
 
         AssertAdapter::assertEquals($expectedAttributes, $actualAttributes, 'Models have different attributes ');
     }

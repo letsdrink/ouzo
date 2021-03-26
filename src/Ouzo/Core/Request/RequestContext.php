@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -10,35 +10,26 @@ use Ouzo\Controller;
 
 class RequestContext
 {
-    /** @var string */
-    private $currentController;
-    /** @var string */
-    private $currentAction;
-    /** @var Controller */
-    private $controllerObject;
-
-    public function __construct($controller, $action, Controller $controllerObject)
+    public function __construct(
+        private string $controller,
+        private string $action,
+        private Controller $controllerObject
+    )
     {
-        $this->currentController = $controller;
-        $this->currentAction = $action;
-        $this->controllerObject = $controllerObject;
     }
 
-    /** @return string */
-    public function getCurrentController()
+    public function getCurrentController(): string
     {
-        return $this->currentController;
+        return $this->controller;
     }
 
-    /** @return Controller */
-    public function getCurrentControllerObject()
+    public function getCurrentControllerObject(): Controller
     {
         return $this->controllerObject;
     }
 
-    /** @return string */
-    public function getCurrentAction()
+    public function getCurrentAction(): string
     {
-        return $this->currentAction;
+        return $this->action;
     }
 }

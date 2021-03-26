@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -10,9 +10,7 @@ class ClassWithConstructorDepWithoutType
 {
     public $myClass;
 
-    /**
-     * @Inject
-     */
+    #[Inject]
     public function __construct($myClass)
     {
         $this->myClass = $myClass;

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -13,7 +13,7 @@ use Ouzo\EnvironmentSetter;
 use Ouzo\HeaderSender;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Middleware\Interceptor\SessionStarter;
-use Ouzo\OutputDisplayer;
+use Ouzo\OutputRenderer;
 use Ouzo\RedirectHandler;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
@@ -21,7 +21,7 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Tests\MockCookiesSetter;
 use Ouzo\Tests\MockDownloadHandler;
 use Ouzo\Tests\MockHeaderSender;
-use Ouzo\Tests\MockOutputDisplayer;
+use Ouzo\Tests\MockOutputRenderer;
 use Ouzo\Tests\MockRedirectHandler;
 use Ouzo\Tests\MockSessionStarterInterceptor;
 use PHPUnit\Framework\TestCase;
@@ -37,17 +37,15 @@ class BootstrapSampleController extends Controller
 
 class BootstrapTest extends TestCase
 {
-    /** @var InjectorConfig */
-    private $config;
-    /** @var Bootstrap */
-    private $bootstrap;
+    private InjectorConfig $config;
+    private Bootstrap $bootstrap;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
         $this->config = new InjectorConfig();
-        $this->config->bind(OutputDisplayer::class)->toInstance(new MockOutputDisplayer());
+        $this->config->bind(OutputRenderer::class)->toInstance(new MockOutputRenderer());
         $this->config->bind(HeaderSender::class)->toInstance(new MockHeaderSender());
         $this->config->bind(CookiesSetter::class)->toInstance(new MockCookiesSetter());
         $this->config->bind(RedirectHandler::class)->toInstance(new MockRedirectHandler());

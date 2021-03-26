@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Application\Model\Test;
 
 use Ouzo\Db;
@@ -17,10 +18,7 @@ use Ouzo\Model;
  */
 class Category extends Model
 {
-    //id is not required here but it should not cause errors (it's here just for a test)
-    private $_fields = ['id', 'name', 'id_parent'];
-
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct([
             'hasMany' => [
@@ -33,9 +31,7 @@ class Category extends Model
                 'products_ending_with_b_or_y' => [
                     'class' => 'Test\Product',
                     'foreignKey' => 'id_category',
-                    'conditions' => function () {
-                        return WhereClause::create("products.name LIKE ? OR products.name LIKE ?", ['%b', '%y']);
-                    },
+                    'conditions' => fn() => WhereClause::create('products.name LIKE ? OR products.name LIKE ?', ['%b', '%y']),
                 ],
                 'products_name_bob' => [
                     'class' => 'Test\Product',
@@ -57,10 +53,12 @@ class Category extends Model
             ],
             'belongsTo' => ['parent' => ['class' => 'Test\Category', 'foreignKey' => 'id_parent', 'referencedColumn' => 'id']],
             'attributes' => $attributes,
-            'fields' => $this->_fields]);
+            //id is not required here but it should not cause errors (it's here just for a test)
+            'fields' => ['id', 'name', 'id_parent']
+        ]);
     }
 
-    public function getName($name)
+    public function getName(string $name): string
     {
         return Db::callFunction('get_name', [$name]);
     }

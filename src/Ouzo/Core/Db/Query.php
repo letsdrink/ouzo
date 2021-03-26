@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -13,301 +13,181 @@ use PDO;
 
 class Query
 {
-    /** @var string */
-    public $table;
-    /** @var string|null */
-    public $aliasTable;
-    /** @var bool */
-    public $distinct = false;
-    /** @var array */
-    public $selectColumns;
-    /** @var int */
-    public $selectType = PDO::FETCH_ASSOC;
-    /** @var string */
-    public $order;
-    /** @var int */
-    public $limit;
-    /** @var int */
-    public $offset;
-    /** @var array */
-    public $updateAttributes = [];
-    /** @var array */
-    public $upsertConflictColumns = [];
+    public Query|string|null $table = null;
+    public ?string $aliasTable = null;
+    public bool $distinct = false;
+    /** @var string[] */
+    public ?array $selectColumns = [];
+    public int $selectType = PDO::FETCH_ASSOC;
+    public string|array|null $order = null;
+    public ?int $limit = null;
+    public ?int $offset = null;
+    public array $updateAttributes = [];
+    public array $upsertConflictColumns = [];
     /** @var WhereClause[] */
-    public $whereClauses = [];
+    public array $whereClauses = [];
     /** @var JoinClause[] */
-    public $joinClauses = [];
+    public array $joinClauses = [];
     /** @var JoinClause[] */
-    public $usingClauses = [];
-    /** @var int|null */
-    public $type;
-    /** @var array */
-    public $options = [];
-    /** @var string */
-    public $groupBy;
-    /** @var bool */
-    public $lockForUpdate = false;
-    /** @var string */
-    public $comment;
+    public array $usingClauses = [];
+    public ?int $type;
+    public array $options = [];
+    public string|array|null $groupBy = null;
+    public bool $lockForUpdate = false;
+    public ?string $comment = null;
 
-    /**
-     * @param int|null $type
-     */
-    public function __construct($type = null)
+    public function __construct(?int $type = null)
     {
         $this->type = $type ? $type : QueryType::$SELECT;
     }
 
-    /**
-     * @param int|null $type
-     * @return Query
-     */
-    public static function newInstance($type = null)
+    public static function newInstance(?int $type = null): static
     {
         return new Query($type);
     }
 
-    /**
-     * @param array $attributes
-     * @return Query
-     */
-    public static function insert($attributes)
+    public static function insert(array $attributes): static
     {
         return Query::newInstance(QueryType::$INSERT)->attributes($attributes);
     }
 
-    /**
-     * @param array $attributes
-     * @return Query
-     */
-    public static function insertOrDoNoting($attributes)
+    public static function insertOrDoNoting(array $attributes): static
     {
         return Query::newInstance(QueryType::$INSERT_OR_DO_NOTHING)->attributes($attributes);
     }
 
-    /**
-     * @param array $attributes
-     * @return Query
-     */
-    public static function update($attributes)
+    public static function update(array $attributes): static
     {
         return Query::newInstance(QueryType::$UPDATE)->attributes($attributes);
     }
 
-    /**
-     * @param array $attributes
-     * @return Query
-     */
-    public static function upsert($attributes)
+    public static function upsert(array $attributes): static
     {
         return Query::newInstance(QueryType::$UPSERT)->attributes($attributes);
     }
 
-    /**
-     * @param array|null $selectColumns
-     * @return Query
-     */
-    public static function select(array $selectColumns = null)
+    public static function select(?array $selectColumns = null): static
     {
         $query = new Query();
         $query->selectColumns = $selectColumns;
         return $query;
     }
 
-    /**
-     * @param array|null $selectColumns
-     * @return Query
-     */
-    public static function selectDistinct(array $selectColumns = null)
+    public static function selectDistinct(?array $selectColumns = null): static
     {
         $query = self::select($selectColumns);
         $query->distinct = true;
         return $query;
     }
 
-    /**
-     * @return Query
-     */
-    public static function count()
+    public static function count(): static
     {
         return new Query(QueryType::$COUNT);
     }
 
-    /**
-     * @return Query
-     */
-    public static function delete()
+    public static function delete(): static
     {
         return new Query(QueryType::$DELETE);
     }
 
-    /**
-     * @param array $attributes
-     * @return $this
-     */
-    public function attributes($attributes)
+    public function attributes(array $attributes): static
     {
         $this->updateAttributes = $attributes;
         return $this;
     }
 
-    /**
-     * @param string $table
-     * @return $this
-     */
-    public function table($table)
+    public function table(string|Query $table): static
     {
         $this->table = $table;
         return $this;
     }
 
-    /**
-     * @param string $table
-     * @return Query
-     */
-    public function into($table)
+    public function into(string $table): static
     {
         return $this->table($table);
     }
 
-    /**
-     * @param string $table
-     * @param string|null $alias
-     * @return Query
-     */
-    public function from($table, $alias = null)
+    public function from(string|Query $table, ?string $alias = null): static
     {
         $this->aliasTable = $alias;
         return $this->table($table);
     }
 
-    /**
-     * @param string $order
-     * @return $this
-     */
-    public function order($order)
+    /** @param string|string[]|null $order */
+    public function order(array|string|null $order): static
     {
         $this->order = $order;
         return $this;
     }
 
-    /**
-     * @param int $limit
-     * @return $this
-     */
-    public function limit($limit)
+    public function limit(int $limit): static
     {
         $this->limit = $limit;
         return $this;
     }
 
-    /**
-     * @param int $offset
-     * @return $this
-     */
-    public function offset($offset)
+    public function offset(int $offset): static
     {
         $this->offset = $offset;
         return $this;
     }
 
-    /**
-     * @param array|string $where
-     * @param array|null $whereValues
-     * @return $this
-     */
-    public function where($where = '', $whereValues = null)
+    public function where(array|string|WhereClause $where = '', array|string|null $whereValues = null): static
     {
         $this->validateParameters($where);
         $this->whereClauses[] = WhereClause::create($where, $whereValues);
         return $this;
     }
 
-    /**
-     * @param JoinClause $usingClause
-     * @return $this
-     */
-    public function addUsing(JoinClause $usingClause)
+    public function addUsing(JoinClause $usingClause): static
     {
         $this->usingClauses[] = $usingClause;
         return $this;
     }
 
-    /**
-     * @param string $joinTable
-     * @param string $joinKey
-     * @param string $idName
-     * @param string|null $alias
-     * @param string $type
-     * @param array $on
-     * @return $this
-     */
-    public function join($joinTable, $joinKey, $idName, $alias = null, $type = 'LEFT', $on = [])
+    public function join(string $joinTable, string $joinKey, string $idName, string|array|null $alias = null, string $type = 'LEFT', array $on = []): static
     {
         $onClauses = [WhereClause::create($on)];
         $this->joinClauses[] = new JoinClause($joinTable, $joinKey, $idName, $this->aliasTable ?: $this->table, $alias, $type, $onClauses);
         return $this;
     }
 
-    /**
-     * @param JoinClause $join
-     * @return $this
-     */
-    public function addJoin(JoinClause $join)
+    public function addJoin(JoinClause $join): static
     {
         $this->joinClauses[] = $join;
         return $this;
     }
 
-    /**
-     * @param string $groupBy
-     * @return $this
-     */
-    public function groupBy($groupBy)
+    public function groupBy(string $groupBy): static
     {
         $this->groupBy = $groupBy;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function lockForUpdate()
+    public function lockForUpdate(): static
     {
         $this->lockForUpdate = true;
         return $this;
     }
 
-    /**
-     * @param string $comment
-     * @return $this
-     */
-    public function comment($comment)
+    public function comment(string $comment): static
     {
         $this->comment = $comment;
         return $this;
     }
 
-    /**
-     * @param array $upsertConflictColumns
-     * @return $this
-     */
-    public function onConflict(array $upsertConflictColumns = [])
+    public function onConflict(array $upsertConflictColumns = []): static
     {
         $this->upsertConflictColumns = $upsertConflictColumns;
         return $this;
     }
 
-    /**
-     * @param array $where
-     * @throws DbException
-     */
-    private function validateParameters($where)
+    private function validateParameters(mixed $where)
     {
         if (is_array($where)) {
             foreach ($where as $key => $value) {
                 if (is_object($value) && !($value instanceof Restriction)) {
-                    throw new DbException('Cannot bind object as a parameter for "' . $key . '".');
+                    throw new DbException("Cannot bind object as a parameter for `{$key}`.");
                 }
             }
         }

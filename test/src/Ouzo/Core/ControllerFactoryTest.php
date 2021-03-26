@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -129,7 +129,7 @@ class ControllerFactoryTest extends TestCase
         //then
         CatchException::assertThat()->isInstanceOf(\LogicException::class);
         CatchException::assertThat()
-            ->hasMessage(IncorrectController::class . ' is not a subclass of Ouzo\Controller');
+            ->hasMessage(IncorrectController::class . ' is not a subclass of Controller');
     }
 
     /**

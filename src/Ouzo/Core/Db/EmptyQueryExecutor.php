@@ -1,50 +1,38 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use ArrayIterator;
+use Ouzo\Model;
 
 class EmptyQueryExecutor
 {
-    /**
-     * @return null
-     */
-    public function fetch()
+    public function fetch(): ?Model
     {
         return null;
     }
 
-    /**
-     * @return array
-     */
-    public function fetchAll()
+    /** @return Model[] */
+    public function fetchAll(): array
     {
         return [];
     }
 
-    /**
-     * @return ArrayIterator
-     */
-    public function fetchIterator()
+    public function fetchIterator(): ArrayIterator
     {
         return new ArrayIterator([]);
     }
 
-    /**
-     * @return int
-     */
-    public function execute()
+    public function execute(): int
     {
         return 0;
     }
 
-    /**
-     * @return int
-     */
-    public function count()
+    public function count(): int
     {
         return 0;
     }

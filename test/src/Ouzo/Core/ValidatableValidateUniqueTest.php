@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -9,14 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class UniquenessValidatable extends Validatable
 {
-    private $values;
-
-    public function __construct($values)
+    public function __construct(private array $values)
     {
-        $this->values = $values;
     }
 
-    public function validate()
+    public function validate(): void
     {
         parent::validate();
         $this->validateUnique($this->values, "error");

@@ -1,13 +1,17 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
 use Ouzo\Utilities\Objects;
 
-class CliErrorRenderer
+class CliErrorRenderer implements Renderer
 {
-    public function render(OuzoExceptionData $exceptionData, $viewName = null)
+    public function render(OuzoExceptionData $exceptionData, ?string $viewName): void
     {
         global $argv;
         $className = $exceptionData->getClassName();

@@ -1,6 +1,13 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
+use Ouzo\Http\HttpMethod;
+use Ouzo\Http\HttpStatus;
 use Ouzo\Routing\Annotation\Route;
+use Ouzo\Routing\Annotation\Route\Delete;
 use PHPUnit\Framework\TestCase;
 
 class DeleteTest extends TestCase
@@ -10,25 +17,30 @@ class DeleteTest extends TestCase
      */
     public function shouldExtendRouteAnnotationClass()
     {
-        $this->assertInstanceOf(Route::class, new Route\Delete([]));
+        //then
+        $this->assertInstanceOf(Route::class, new Delete(''));
     }
 
     /**
      * @test
      * @dataProvider getValidParameters
      */
-    public function testRouteParameters($parameter, $value, $getter, $result)
+    public function testRouteParameters(string $path, ?int $httpResponseCode)
     {
-        $route = new Route\Delete([$parameter => $value]);
-        $this->assertEquals($route->$getter(), $result);
+        //when
+        $route = new Delete($path, $httpResponseCode);
+
+        //then
+        $this->assertEquals([HttpMethod::DELETE], $route->getHttpMethods());
+        $this->assertEquals($path, $route->getPath());
+        $this->assertEquals($httpResponseCode, $route->getHttpResponseCode());
     }
 
-    public function getValidParameters()
+    public function getValidParameters(): array
     {
         return [
-            ['value', '/foo', 'getPath', '/foo'],
-            ['path', '/bar', 'getPath', '/bar'],
-            ['methods', ['GET', 'POST'], 'getMethods', ['DELETE']],
+            ['/foo', null],
+            ['/foo', HttpStatus::OK],
         ];
     }
 }

@@ -1,82 +1,36 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Annotation;
 
-use BadMethodCallException;
+use Attribute;
 
-/**
- * @Annotation
- * @Target({"CLASS"})
- */
+#[Attribute(Attribute::TARGET_METHOD)]
 class Route
 {
-    /** @var string */
-    private $path;
-
-    /** @var string[] */
-    private $methods = [];
-
-    /** @var int */
-    private $responseCode;
-
-    /**
-     * @param array $data
-     */
-    public function __construct(array $data)
+    public function __construct(
+        private string $path,
+        private array $httpMethods,
+        private ?int $httpResponseCode,
+    )
     {
-        if (isset($data['value'])) {
-            $data['path'] = $data['value'];
-            unset($data['value']);
-        }
-
-        foreach ($data as $key => $value) {
-            $method = 'set'.ucfirst($key);
-            if (!method_exists($this, $method)) {
-                throw new BadMethodCallException(sprintf('Unknown property "%s" on annotation "%s".', $key, static::class));
-            }
-            $this->$method($value);
-        }
     }
 
-    /**
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * @param string $path
-     */
-    public function setPath(string $path)
+    public function getHttpMethods(): array
     {
-        $this->path = $path;
+        return $this->httpMethods;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getMethods(): array
+    public function getHttpResponseCode(): ?int
     {
-        return $this->methods;
-    }
-
-    /**
-     * @param string[] $methods
-     */
-    public function setMethods(array $methods)
-    {
-        $this->methods = $methods;
-    }
-
-    public function getResponseCode(): ?int
-    {
-        return $this->responseCode;
-    }
-
-    public function setResponseCode(?int $responseCode): void
-    {
-        $this->responseCode = $responseCode;
+        return $this->httpResponseCode;
     }
 }

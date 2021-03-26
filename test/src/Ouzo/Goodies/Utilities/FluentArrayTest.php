@@ -1,15 +1,15 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
-
 use PHPUnit\Framework\TestCase;
 
 class FluentArrayTest extends TestCase
@@ -29,9 +29,7 @@ class FluentArrayTest extends TestCase
         //when
         $transformed = FluentArray::from($array)
             ->values()
-            ->filter(function ($item) {
-                return $item > 2;
-            })
+            ->filter(fn($item) => $item > 2)
             ->unique()
             ->values()
             ->toArray();
@@ -99,7 +97,9 @@ class FluentArrayTest extends TestCase
         $obj[1]->field2 = 'value2';
 
         //when
-        $toMap = FluentArray::from($obj)->toMap(Functions::extractField('field1'), Functions::extractField('field2'))->toArray();
+        $toMap = FluentArray::from($obj)
+            ->toMap(Functions::extractField('field1'), Functions::extractField('field2'))
+            ->toArray();
 
         //then
         $this->assertEquals(['key1' => 'value1', 'key2' => 'value2'], $toMap);
@@ -217,13 +217,21 @@ class FluentArrayTest extends TestCase
     public function shouldReturnObjectsUniqueByField()
     {
         //given
-        $array = [new Product(['name' => 'bob']), new Product(['name' => 'bob']), new Product(['name' => 'john'])];
+        $array = [
+            new Product(['name' => 'bob']),
+            new Product(['name' => 'bob']),
+            new Product(['name' => 'john'])
+        ];
 
         //when
-        $uniqueByName = FluentArray::from($array)->uniqueBy('name')->toArray();
+        $uniqueByName = FluentArray::from($array)
+            ->uniqueBy('name')
+            ->toArray();
 
         //then
-        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+        Assert::thatArray($uniqueByName)
+            ->onProperty('name')
+            ->containsExactly('bob', 'john');
     }
 
     /**
@@ -232,13 +240,21 @@ class FluentArrayTest extends TestCase
     public function shouldReturnObjectsUniqueByFunctionResults()
     {
         //given
-        $array = [new Product(['name' => 'bob']), new Product(['name' => 'bob']), new Product(['name' => 'john'])];
+        $array = [
+            new Product(['name' => 'bob']),
+            new Product(['name' => 'bob']),
+            new Product(['name' => 'john'])
+        ];
 
         //when
-        $uniqueByName = FluentArray::from($array)->uniqueBy(Functions::extract()->name)->toArray();
+        $uniqueByName = FluentArray::from($array)
+            ->uniqueBy(Functions::extract()->name)
+            ->toArray();
 
         //then
-        Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
+        Assert::thatArray($uniqueByName)
+            ->onProperty('name')
+            ->containsExactly('bob', 'john');
     }
 
     /**
@@ -280,7 +296,9 @@ class FluentArrayTest extends TestCase
         $array = [$product1, $product2];
 
         //when
-        $uniqueByName = FluentArray::from($array)->uniqueBy('category->name')->toArray();
+        $uniqueByName = FluentArray::from($array)
+            ->uniqueBy('category->name')
+            ->toArray();
 
         //then
         Assert::thatArray($uniqueByName)->hasSize(1);
@@ -316,7 +334,7 @@ class FluentArrayTest extends TestCase
         });
 
         //then
-        $this->assertEquals(['a' , 'b' , 'c' ], $newArray);
+        $this->assertEquals(['a', 'b', 'c'], $newArray);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -14,25 +14,16 @@ use Ouzo\Utilities\Path;
 
 class ConfigRepository
 {
-    /** @var array */
-    private $customConfigs = [];
-    /** @var array */
-    private $config = [];
-    /** @var array */
-    private $overriddenConfig = [];
+    private array $customConfigs = [];
+    private array $config = [];
+    private array $overriddenConfig = [];
 
-    /**
-     * @return void
-     */
-    public function reload()
+    public function reload(): void
     {
         $this->config = $this->load();
     }
 
-    /**
-     * @return array
-     */
-    public function load()
+    public function load(): array
     {
         $configEnv = $this->getConfigEnv();
         $defaultConfigEnv = $this->getDefaultConfigEnv();
@@ -41,28 +32,19 @@ class ConfigRepository
         return array_replace_recursive($defaultConfigEnv, $configEnv, $configCustom, $configSession);
     }
 
-    /**
-     * @return array
-     */
-    private function getConfigEnv()
+    private function getConfigEnv(): array
     {
         $configPath = Path::join(ROOT_PATH, 'config', getenv('environment'), 'config.php');
         return $this->getConfigEnvFromPath($configPath);
     }
 
-    /**
-     * @return array
-     */
-    private function getDefaultConfigEnv()
+    private function getDefaultConfigEnv(): array
     {
         $configPath = Path::join(ROOT_PATH, 'config', 'config.php');
         return $this->getConfigEnvFromPath($configPath);
     }
 
-    /**
-     * @return array
-     */
-    private function getConfigCustom()
+    private function getConfigCustom(): array
     {
         $result = [];
         foreach ($this->customConfigs as $config) {
@@ -71,20 +53,13 @@ class ConfigRepository
         return $result;
     }
 
-    /**
-     * @return array
-     */
-    private function getConfigFromSession()
+    private function getConfigFromSession(): array
     {
         return Session::get('config') ?: [];
     }
 
-    /**
-     * @param array $keys
-     * @param mixed $value
-     * @return void
-     */
-    public function overrideProperty($keys, $value)
+    /** @var string[] $keys */
+    public function overrideProperty(array $keys, mixed $value): void
     {
         $keys = Arrays::toArray($keys);
         $oldValue = Arrays::getNestedValue($this->config, $keys);
@@ -92,12 +67,8 @@ class ConfigRepository
         Arrays::setNestedValue($this->overriddenConfig, $keys, $oldValue);
     }
 
-    /**
-     * @param array $keys
-     * @return void
-     * @throws InvalidArgumentException
-     */
-    public function revertProperty($keys)
+    /** @var string[] $keys */
+    public function revertProperty(array $keys): void
     {
         $keys = Arrays::toArray($keys);
         $config = &$this->config;
@@ -117,33 +88,23 @@ class ConfigRepository
         $config = $overriddenConfig[$overriddenKey];
     }
 
-    /**
-     * @param array $args
-     * @return mixed|null
-     */
-    public function getValue($args)
+    /** @var string[] $args */
+    public function getValue(array $args): mixed
     {
         return Arrays::getNestedValue($this->config, $args);
     }
 
-    /**
-     * @return array
-     */
-    public function all()
+    public function all(): array
     {
         return $this->config;
     }
 
-    /**
-     * @param object $customConfig
-     * @return void
-     */
-    public function addCustomConfig($customConfig)
+    public function addCustomConfig(object $customConfig): void
     {
         $this->customConfigs[] = $customConfig;
     }
 
-    private function getConfigEnvFromPath($configPath)
+    private function getConfigEnvFromPath(string $configPath): array
     {
         if (file_exists($configPath)) {
             /** @noinspection PhpIncludeInspection */

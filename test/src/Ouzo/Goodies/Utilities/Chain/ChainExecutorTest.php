@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -20,9 +20,7 @@ class ChainExecutorTest extends TestCase
         $chainExecutor->add(new InterceptorTwo());
 
         //when
-        $result = $chainExecutor->execute('', function ($param) {
-            return $param . ' execution';
-        });
+        $result = $chainExecutor->execute('', fn($param) => $param . ' execution');
 
         //then
         $this->assertEquals('12 execution', $result);
@@ -38,9 +36,7 @@ class ChainExecutorTest extends TestCase
         $chainExecutor->add(new BeforeAfterInterceptor());
 
         //when
-        $result = $chainExecutor->execute('', function ($param) {
-            return $param . ' execution ';
-        });
+        $result = $chainExecutor->execute('', fn($param) => $param . ' execution ');
 
         //then
         $this->assertEquals('before execution after', $result);

@@ -1,40 +1,36 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Utils;
 
 use Ouzo\Utilities\Path;
 
 class ClassPathResolver
 {
-    private $className;
-    private $nameSpace;
-
-    private function __construct($className, $nameSpace)
+    private function __construct(private string $className, private string $nameSpace)
     {
-        $this->className = $className;
-        $this->nameSpace = $nameSpace;
     }
 
-    public static function forClassAndNamespace($className, $nameSpace = null)
+    public static function forClassAndNamespace(string $className, ?string $nameSpace = null): self
     {
         return new self($className, $nameSpace);
     }
 
-    private function resolvePathFromNameSpace()
+    private function resolvePathFromNameSpace(): string
     {
         $parts = explode('\\', $this->nameSpace);
         return implode(DIRECTORY_SEPARATOR, $parts);
     }
 
-    public function getClassFileName()
+    public function getClassFileName(): string
     {
-        return Path::join(ROOT_PATH, $this->resolvePathFromNameSpace(), $this->className . ".php");
+        return Path::join(ROOT_PATH, $this->resolvePathFromNameSpace(), "{$this->className}.php");
     }
 
-    public function getClassDirectory()
+    public function getClassDirectory(): string
     {
         return Path::join(ROOT_PATH, $this->resolvePathFromNameSpace(), $this->className);
     }

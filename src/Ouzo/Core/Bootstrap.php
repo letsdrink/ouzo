@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -28,18 +28,13 @@ use Ouzo\Utilities\Path;
 
 class Bootstrap
 {
-    /** @var ConfigRepository */
-    private $configRepository;
-    /** @var Injector */
-    private $injector;
-    /** @var InjectorConfig */
-    private $injectorConfig;
-    /** @var Closure */
-    private $injectorCallback = null;
+    private ?ConfigRepository $configRepository = null;
+    private ?Injector $injector = null;
+    private ?InjectorConfig $injectorConfig = null;
+    private ?Closure $injectorCallback = null;
     /** @var string[] */
-    private $interceptors = [];
-    /** @var bool */
-    private $overrideMiddleware = false;
+    private array $interceptors = [];
+    private bool $overrideMiddleware = false;
 
     public function __construct(EnvironmentSetter $environmentSetter = null)
     {
@@ -48,75 +43,46 @@ class Bootstrap
         $environmentSetter->set();
     }
 
-    /**
-     * @param object $config
-     * @return $this
-     */
-    public function addConfig($config)
+    public function addConfig(object $config): static
     {
         $this->configRepository = Config::registerConfig($config);
-
         return $this;
     }
 
-    /**
-     * @param Injector $injector
-     * @return $this
-     */
-    public function withInjector(Injector $injector)
+    public function withInjector(Injector $injector): static
     {
         $this->injector = $injector;
-
         return $this;
     }
 
-    /**
-     * @param InjectorConfig $config
-     * @return $this
-     */
-    public function withInjectorConfig(InjectorConfig $config)
+    public function withInjectorConfig(InjectorConfig $config): static
     {
         $this->injectorConfig = $config;
-
         return $this;
     }
 
-    /**
-     * @param Closure $callback
-     * @return $this
-     */
-    public function configureInjector(Closure $callback)
+    public function configureInjector(Closure $callback): static
     {
         $this->injectorCallback = $callback;
-
         return $this;
     }
 
-    /**
-     * @param string[] $interceptors
-     * @return $this
-     */
-    public function withMiddleware(...$interceptors)
+    /** @param string[] $interceptors */
+    public function withMiddleware(...$interceptors): static
     {
         $this->interceptors = $interceptors;
-
         return $this;
     }
 
-    /**
-     * @param string[] $interceptors
-     * @return $this
-     */
-    public function overrideMiddleware(...$interceptors)
+    /** @param string[] $interceptors */
+    public function overrideMiddleware(...$interceptors): static
     {
         $this->interceptors = $interceptors;
         $this->overrideMiddleware = true;
-
         return $this;
     }
 
-    /** @return FrontController */
-    public function runApplication()
+    public function runApplication(): FrontController
     {
         if ($this->configRepository) {
             $this->configRepository->reload();
@@ -134,8 +100,7 @@ class Bootstrap
         return $frontController;
     }
 
-    /** @return void */
-    private function registerErrorHandlers()
+    private function registerErrorHandlers(): void
     {
         if (Config::getValue('debug')) {
             $handler = new DebugErrorHandler();
@@ -145,15 +110,13 @@ class Bootstrap
         $handler->register();
     }
 
-    /** @return void */
-    private function includeRoutes()
+    private function includeRoutes(): void
     {
         $routesPath = Path::join(ROOT_PATH, 'config', 'routes.php');
         Files::loadIfExists($routesPath);
     }
 
-    /** @return Injector */
-    public function setupInjector()
+    public function setupInjector(): Injector
     {
         $injector = $this->createInjector();
 
@@ -171,16 +134,13 @@ class Bootstrap
         return $injector;
     }
 
-    /** @return Injector */
-    private function createInjector()
+    private function createInjector(): Injector
     {
         $injectorConfig = $this->injectorConfig ?: new InjectorConfig();
-
         return $this->injector ?: new Injector($injectorConfig);
     }
 
-    /** @return MiddlewareRepository */
-    private function createMiddlewareRepository(Injector $injector)
+    private function createMiddlewareRepository(Injector $injector): MiddlewareRepository
     {
         $middlewareRepository = new MiddlewareRepository();
 
@@ -203,7 +163,7 @@ class Bootstrap
         return $middlewareRepository;
     }
 
-    private function createInterceptor(Injector $injector)
+    private function createInterceptor(Injector $injector): Closure
     {
         return function ($interceptor) use ($injector) {
             $instance = $injector->getInstance($interceptor);

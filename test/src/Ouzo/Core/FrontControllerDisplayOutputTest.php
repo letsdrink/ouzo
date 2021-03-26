@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -25,7 +25,7 @@ class FrontControllerDisplayOutputTest extends ControllerTestCase
         Config::clearProperty('debug');
     }
 
-    protected function frontControllerBindings(InjectorConfig $config)
+    protected function frontControllerBindings(InjectorConfig $config): void
     {
         parent::frontControllerBindings($config);
         $config->bind(HeaderSender::class)->toInstance(Mock::create(HeaderSender::class));

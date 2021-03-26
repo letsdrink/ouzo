@@ -1,48 +1,30 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
+
+use Closure;
 
 class RelationToFetch
 {
-    /** @var string */
-    public $field;
-    /** @var string */
-    public $relation;
-    /** @var string */
-    public $destinationField;
-
-    /**
-     * @param string $field
-     * @param string $relation
-     * @param string $destinationField
-     */
-    public function __construct($field, $relation, $destinationField)
+    public function __construct(
+        public string $field,
+        public Relation $relation,
+        public string $destinationField
+    )
     {
-        $this->field = $field;
-        $this->relation = $relation;
-        $this->destinationField = $destinationField;
     }
 
-    /**
-     * @param RelationToFetch $other
-     * @return bool
-     */
-    public function equals(RelationToFetch $other)
+    public function equals(RelationToFetch $other): bool
     {
         return $this->relation === $other->relation && $this->field === $other->field && $this->destinationField === $other->destinationField;
     }
 
-    /**
-     * @param RelationToFetch $other
-     * @return \Closure
-     */
-    public static function equalsPredicate(RelationToFetch $other)
+    public static function equalsPredicate(RelationToFetch $other): Closure
     {
-        return function (RelationToFetch $relationToFetch) use ($other) {
-            return $relationToFetch->equals($other);
-        };
+        return fn(RelationToFetch $relationToFetch) => $relationToFetch->equals($other);
     }
 }

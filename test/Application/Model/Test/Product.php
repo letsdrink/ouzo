@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Application\Model\Test;
 
 use Ouzo\Model;
@@ -15,9 +16,7 @@ use Ouzo\Model;
  */
 class Product extends Model
 {
-    private $_fields = ['description', 'name', 'id_category', 'id_manufacturer', 'sale'];
-
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct([
             'attributes' => $attributes,
@@ -27,24 +26,25 @@ class Product extends Model
                 'categoryWithNameByDescription' => ['class' => 'Test\Category', 'foreignKey' => 'description', 'referencedColumn' => 'name']
             ],
             'hasOne' => ['orderProduct' => ['class' => 'Test\OrderProduct', 'foreignKey' => 'id_product']],
-            'fields' => $this->_fields]);
+            'fields' => ['description', 'name', 'id_category', 'id_manufacturer', 'sale']
+        ]);
     }
 
-    public function validate()
+    public function validate(): void
     {
         parent::validate();
         if (!$this->name) {
             parent::error('Empty name');
-            $this->_errorFields[] = 'name';
+            $this->errorFields[] = 'name';
         }
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'This is product,';
     }
 
-    public function getCategory()
+    public function getCategory(): Category
     {
         return $this->category;
     }

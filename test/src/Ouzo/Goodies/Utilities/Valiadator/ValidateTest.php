@@ -1,32 +1,16 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Validator\Validate;
 use Ouzo\Utilities\Validator\ValidateException;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class ValidateTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenIsNotTrue()
-    {
-        //given
-        $value = 'some text value';
-
-        //when
-        CatchException::when(new Validate())->isTrue($value, 'This value is not true');
-
-        //then
-        CatchException::assertThat()->isInstanceOf(ValidateException::class);
-        CatchException::assertThat()->hasMessage('This value is not true');
-    }
-
     /**
      * @test
      */

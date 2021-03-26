@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Response;
 
 use Ouzo\ContentType;
@@ -11,20 +12,27 @@ use Ouzo\Utilities\Arrays;
 
 class ResponseTypeResolve
 {
-    public static function resolve()
+    const APPLICATION_ALL = 'application/*';
+    const APPLICATION_JSON = 'application/json';
+    const APPLICATION_XML = 'application/xml';
+    const TEXT_ALL = 'text/*';
+    const TEXT_HTML = 'text/html';
+    const ALL = '*/*';
+
+    public static function resolve(): string
     {
-        $accept = array_keys(RequestHeaders::accept()) ? : ['*/*'];
+        $accept = array_keys(RequestHeaders::accept()) ?: [self::ALL];
         $supported = [
-            'application/json' => 'application/json',
-            'application/xml' => 'application/xml',
-            'application/*' => 'application/json',
-            'text/html' => 'text/html',
-            'text/*' => 'text/html'
+            self::APPLICATION_JSON => self::APPLICATION_JSON,
+            self::APPLICATION_XML => self::APPLICATION_XML,
+            self::APPLICATION_ALL => self::APPLICATION_JSON,
+            self::TEXT_HTML => self::TEXT_HTML,
+            self::TEXT_ALL => self::TEXT_HTML
         ];
         $intersection = array_intersect($accept, array_keys($supported));
         if ($intersection) {
             return $supported[Arrays::first($intersection)];
         }
-        return Arrays::getValue($supported, ContentType::value(), 'text/html');
+        return Arrays::getValue($supported, ContentType::value(), self::TEXT_HTML);
     }
 }

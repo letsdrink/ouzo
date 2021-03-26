@@ -1,28 +1,26 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Utilities\Arrays;
 
 class CookiesSetter
 {
-    /**
-     * @param array $cookies
-     */
-    public function setCookies($cookies)
+    public function setCookies(array $cookies): void
     {
-        Arrays::map($cookies, function (array $cookies) {
-            setcookie(
-                $cookies['name'],
-                $cookies['value'],
-                Arrays::getValue($cookies, 'expire'),
-                Arrays::getValue($cookies, 'path'),
-                Arrays::getValue($cookies, 'domain'),
-                Arrays::getValue($cookies, 'secure'),
-                Arrays::getValue($cookies, 'httponly'));
-        });
+        Arrays::each($cookies, fn(array $cookies) => setcookie(
+            $cookies['name'],
+            $cookies['value'],
+            Arrays::getValue($cookies, 'expire'),
+            Arrays::getValue($cookies, 'path'),
+            Arrays::getValue($cookies, 'domain'),
+            Arrays::getValue($cookies, 'secure'),
+            Arrays::getValue($cookies, 'httponly')
+        )
+        );
     }
 }

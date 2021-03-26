@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Db\Query;
@@ -68,7 +68,13 @@ class QueryTest extends TestCase
     public function shouldCreateSelectQueryWithWhereOrderLimitOffset()
     {
         // when
-        $query = Query::select()->from('table')->where(['name' => 'bob'])->limit(5)->offset(10)->groupBy('group')->order(['name asc']);
+        $query = Query::select()
+            ->from('table')
+            ->where(['name' => 'bob'])
+            ->limit(5)
+            ->offset(10)
+            ->groupBy('group')
+            ->order(['name asc']);
 
         // then
         $this->assertEquals('table', $query->table);

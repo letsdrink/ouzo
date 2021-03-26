@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -11,28 +11,19 @@ use Ouzo\Uri;
 
 class RequestParameters
 {
-    /** @var RoutingService */
-    private $routingService;
-
-    /**
-     * @Inject
-     */
-    public function __construct(RoutingService $routingService)
+    #[Inject]
+    public function __construct(private RoutingService $routingService)
     {
-        $this->routingService = $routingService;
     }
 
-    public function get($stream = 'php://input')
+    public function get(string $stream = 'php://input'): array
     {
         $parameters = $this->routingService->getRouteRule()->getParameters() ?: $this->routingService->getUri()->getParams();
         $requestParameters = Uri::getRequestParameters($stream);
         return array_merge($parameters, $_POST, $_GET, $requestParameters);
     }
 
-    /**
-     * @return RoutingService
-     */
-    public function getRoutingService()
+    public function getRoutingService(): RoutingService
     {
         return $this->routingService;
     }

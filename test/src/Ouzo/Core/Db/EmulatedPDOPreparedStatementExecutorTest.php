@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -12,18 +12,15 @@ use PHPUnit\Framework\TestCase;
 
 class EmulatedPDOPreparedStatementExecutorTest extends TestCase
 {
-    /**
-     * @var PDOStatement
-     */
-    private $pdoMock;
-    private $dbMock;
+    private PDOStatement $pdoMock;
+    private PDO $dbMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->pdoMock = Mock::mock();
-        $this->dbMock = Mock::mock();
+        $this->pdoMock = Mock::mock(PDOStatement::class);
+        $this->dbMock = Mock::mock(PDO::class);
         Mock::when($this->pdoMock)->query(Mock::anyArgList())->thenReturn(false);
         Mock::when($this->dbMock)->errorInfo()->thenReturn([1, 3, 'Preparation error']);
     }

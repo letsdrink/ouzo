@@ -1,11 +1,12 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\Db\Dialect;
 
+use Closure;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Utilities\Arrays;
@@ -14,21 +15,13 @@ use Ouzo\Utilities\Joiner;
 
 class DialectUtil
 {
-    /**
-     * @return \Closure
-     */
-    public static function _addAliases()
+    public static function addAliases(): Closure
     {
-        return function ($alias, $column) {
-            return $column . (is_string($alias) ? ' AS ' . $alias : '');
-        };
+        return fn($alias, $column) => $column . (is_string($alias) ? " AS {$alias}" : '');
     }
 
-    /**
-     * @param WhereClause[] $whereClauses
-     * @return string
-     */
-    public static function buildWhereQuery($whereClauses)
+    /** @param WhereClause[] $whereClauses */
+    public static function buildWhereQuery(array $whereClauses): string
     {
         $parts = FluentArray::from($whereClauses)
             ->filter(WhereClause::isNotEmptyFunction())
@@ -37,20 +30,13 @@ class DialectUtil
         return implode(' AND ', Arrays::filterNotBlank($parts));
     }
 
-    /**
-     * @param WhereClause $whereClause
-     * @return string
-     */
-    public static function buildWhereQueryPart(WhereClause $whereClause)
+    public static function buildWhereQueryPart(WhereClause $whereClause): string
     {
         return $whereClause->toSql();
     }
 
-    /**
-     * @param JoinClause[] $joinClauses
-     * @return string
-     */
-    public static function buildJoinQuery($joinClauses)
+    /** @param JoinClause[] $joinClauses */
+    public static function buildJoinQuery(array $joinClauses): string
     {
         $elements = FluentArray::from($joinClauses)
             ->map([DialectUtil::class, 'buildJoinQueryPart'])
@@ -58,41 +44,26 @@ class DialectUtil
         return implode(" ", $elements);
     }
 
-    /**
-     * @param JoinClause $joinClause
-     * @return string
-     */
-    public static function buildJoinQueryPart(JoinClause $joinClause)
+    public static function buildJoinQueryPart(JoinClause $joinClause): string
     {
         $alias = $joinClause->alias ? " AS {$joinClause->alias}" : "";
-        $on = self::buildWhereQuery($joinClause->onClauses);
+        $on = self::buildWhereQuery(Arrays::toArray($joinClause->onClauses));
         if ($joinClause->alias) {
             $on = preg_replace("#(?<=^| ){$joinClause->joinTable}(?=\\.)#", $joinClause->alias, $on);
         }
-        return $joinClause->type . ' JOIN ' . $joinClause->joinTable . $alias . ' ON ' . $joinClause->getJoinColumnWithTable() . ' = ' . $joinClause->getJoinedColumnWithTable() . ($on ? " AND $on" : '');
+        $onClause = $on ? " AND {$on}" : '';
+        return "{$joinClause->type} JOIN {$joinClause->joinTable}{$alias} ON {$joinClause->getJoinColumnWithTable()} = {$joinClause->getJoinedColumnWithTable()}{$onClause}";
     }
 
-    /**
-     * @param array $updateAttributes
-     * @return string
-     */
-    public static function buildAttributesPartForUpdate($updateAttributes)
+    public static function buildAttributesPartForUpdate(array $updateAttributes): string
     {
         return Joiner::on(', ')->join(FluentArray::from($updateAttributes)
             ->keys()
-            ->map(function ($column) {
-                return "$column = ?";
-            })->toArray());
+            ->map(fn($column) => "$column = ?")->toArray());
     }
 
-    /**
-     * @param JoinClause[] $usingClauses
-     * @param string $glue
-     * @param string $table
-     * @param string $alias
-     * @return string
-     */
-    public static function buildUsingQuery($usingClauses, $glue, $table, $alias)
+    /** @param JoinClause[] $usingClauses */
+    public static function buildUsingQuery(array $usingClauses, string $glue, ?string $table, ?string $alias): string
     {
         $elements = FluentArray::from($usingClauses)
             ->map([DialectUtil::class, 'buildUsingQueryPart'])
@@ -104,26 +75,16 @@ class DialectUtil
         return implode($glue, $elements);
     }
 
-    /**
-     * @param JoinClause $usingClause
-     * @return string
-     */
-    public static function buildUsingQueryPart(JoinClause $usingClause)
+    public static function buildUsingQueryPart(JoinClause $usingClause): string
     {
         $alias = $usingClause->alias ? " AS {$usingClause->alias}" : "";
         return $usingClause->joinTable . $alias;
     }
 
-    /**
-     * @param array $parts
-     * @param string $operator
-     * @param \Closure|null $extractFunction
-     * @return string
-     */
-    public static function joinClauses($parts, $operator, $extractFunction = null)
+    public static function joinClauses(array $parts, string $operator, ?Closure $extractFunction = null): string
     {
         $mappedParts = $extractFunction ? Arrays::map($parts, $extractFunction) : $parts;
         $sql = implode(" $operator ", $mappedParts);
-        return $operator == 'OR' && count($parts) > 1 ? "($sql)" : $sql;
+        return $operator === 'OR' && count($parts) > 1 ? "($sql)" : $sql;
     }
 }

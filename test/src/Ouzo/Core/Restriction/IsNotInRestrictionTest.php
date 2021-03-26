@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Restrictions;
@@ -27,7 +27,7 @@ class IsNotInRestrictionTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnNullForEmptyArray()
+    public function shouldReturnEmptyStringForEmptyArray()
     {
         //given
         $restriction = Restrictions::isNotIn([]);
@@ -36,6 +36,6 @@ class IsNotInRestrictionTest extends TestCase
         $sql = $restriction->toSql('category_id');
 
         //then
-        $this->assertNull($sql);
+        $this->assertEmpty($sql);
     }
 }

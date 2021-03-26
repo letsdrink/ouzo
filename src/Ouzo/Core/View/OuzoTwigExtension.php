@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\View;
 
 use Twig_Extension;
@@ -14,10 +15,12 @@ class OuzoTwigExtension extends Twig_Extension
     {
         $uriHelperFunctions = allGeneratedUriNames();
 
-        $helperFunctions = ['t', 'linkTo', 'linkButton', 'formButton', 'translatableOptions', 'labelTag',
+        $helperFunctions = [
+            't', 'linkTo', 'linkButton', 'formButton', 'translatableOptions', 'labelTag',
             'hiddenTag', 'textFieldTag', 'textAreaTag', 'checkboxTag', 'selectTag', 'optionTag', 'passwordFieldTag',
             'radioButtonTag', 'endFormTag', 'formTag', 'formFor', 'showErrors', 'showNotices', 'showSuccess',
-            'showWarnings', 'renderPartial'];
+            'showWarnings', 'renderPartial'
+        ];
 
         return array_merge(
             $this->toSimpleFunctions($helperFunctions, ['is_safe' => ['html']]),

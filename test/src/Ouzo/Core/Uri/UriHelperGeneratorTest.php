@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -34,7 +34,7 @@ class UriHelperGeneratorTest extends TestCase
 <?php
 class GeneratedUriHelper {
     
-    private static function validateParameter($parameter)
+    private static function validateParameter(mixed $parameter): void
     {
         if (!isset($parameter)) {
             throw new \InvalidArgumentException("Missing parameters");
@@ -44,12 +44,12 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::show_item()
      */
-    public static function showItemUsersPath() 
+    public static function showItemUsersPath(): string 
     {
         return "/users/show_item";
     }
     
-    public static function allGeneratedUriNames() 
+    public static function allGeneratedUriNames(): array 
     {
         return ['showItemUsersPath'];
     }
@@ -58,12 +58,12 @@ class GeneratedUriHelper {
 /**
  * @see \Controller\UsersController::show_item()
  */
-function showItemUsersPath() 
+function showItemUsersPath(): string 
 {
     return GeneratedUriHelper::showItemUsersPath();
 }
 
-function allGeneratedUriNames() 
+function allGeneratedUriNames(): array
 {
     return GeneratedUriHelper::allGeneratedUriNames();
 }
@@ -87,7 +87,7 @@ FUNCT;
 <?php
 class GeneratedUriHelper {
     
-    private static function validateParameter($parameter)
+    private static function validateParameter(mixed $parameter): void
     {
         if (!isset($parameter)) {
             throw new \InvalidArgumentException("Missing parameters");
@@ -97,12 +97,12 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::save()
      */
-    public static function saveUsersPath() 
+    public static function saveUsersPath(): string 
     {
         return "/users/save";
     }
     
-    public static function allGeneratedUriNames() 
+    public static function allGeneratedUriNames(): array 
     {
         return ['saveUsersPath'];
     }
@@ -111,12 +111,12 @@ class GeneratedUriHelper {
 /**
  * @see \Controller\UsersController::save()
  */
-function saveUsersPath() 
+function saveUsersPath(): string 
 {
     return GeneratedUriHelper::saveUsersPath();
 }
 
-function allGeneratedUriNames() 
+function allGeneratedUriNames(): array
 {
     return GeneratedUriHelper::allGeneratedUriNames();
 }
@@ -140,7 +140,7 @@ FUNCT;
 <?php
 class GeneratedUriHelper {
     
-    private static function validateParameter($parameter)
+    private static function validateParameter(mixed $parameter): void
     {
         if (!isset($parameter)) {
             throw new \InvalidArgumentException("Missing parameters");
@@ -150,12 +150,12 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::get_duplicated()
      */
-    public static function getDuplicatedUsersPath() 
+    public static function getDuplicatedUsersPath(): string 
     {
         return "/users/get_duplicated";
     }
     
-    public static function allGeneratedUriNames() 
+    public static function allGeneratedUriNames(): array 
     {
         return ['getDuplicatedUsersPath'];
     }
@@ -164,12 +164,12 @@ class GeneratedUriHelper {
 /**
  * @see \Controller\UsersController::get_duplicated()
  */
-function getDuplicatedUsersPath() 
+function getDuplicatedUsersPath(): string 
 {
     return GeneratedUriHelper::getDuplicatedUsersPath();
 }
 
-function allGeneratedUriNames() 
+function allGeneratedUriNames(): array
 {
     return GeneratedUriHelper::allGeneratedUriNames();
 }
@@ -193,7 +193,7 @@ FUNCT;
 <?php
 class GeneratedUriHelper {
     
-    private static function validateParameter($parameter)
+    private static function validateParameter(mixed $parameter): void
     {
         if (!isset($parameter)) {
             throw new \InvalidArgumentException("Missing parameters");
@@ -203,14 +203,14 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::show()
      */
-    public static function showUsersPath($id, $call_id) 
+    public static function showUsersPath($id, $call_id): string 
     {
         GeneratedUriHelper::validateParameter($id);
         GeneratedUriHelper::validateParameter($call_id);
         return "/users/show/id/$id/call_id/$call_id";
     }
     
-    public static function allGeneratedUriNames() 
+    public static function allGeneratedUriNames(): array 
     {
         return ['showUsersPath'];
     }
@@ -219,12 +219,12 @@ class GeneratedUriHelper {
 /**
  * @see \Controller\UsersController::show()
  */
-function showUsersPath($id, $call_id) 
+function showUsersPath($id, $call_id): string 
 {
     return GeneratedUriHelper::showUsersPath($id, $call_id);
 }
 
-function allGeneratedUriNames() 
+function allGeneratedUriNames(): array
 {
     return GeneratedUriHelper::allGeneratedUriNames();
 }
@@ -248,7 +248,7 @@ FUNCT;
 <?php
 class GeneratedUriHelper {
     
-    private static function validateParameter($parameter)
+    private static function validateParameter(mixed $parameter): void
     {
         if (!isset($parameter)) {
             throw new \InvalidArgumentException("Missing parameters");
@@ -258,12 +258,12 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::show_item()
      */
-    public static function userItemPath() 
+    public static function userItemPath(): string 
     {
         return "/users/show_item";
     }
     
-    public static function allGeneratedUriNames() 
+    public static function allGeneratedUriNames(): array 
     {
         return ['userItemPath'];
     }
@@ -272,12 +272,12 @@ class GeneratedUriHelper {
 /**
  * @see \Controller\UsersController::show_item()
  */
-function userItemPath() 
+function userItemPath(): string 
 {
     return GeneratedUriHelper::userItemPath();
 }
 
-function allGeneratedUriNames() 
+function allGeneratedUriNames(): array
 {
     return GeneratedUriHelper::allGeneratedUriNames();
 }
@@ -301,7 +301,7 @@ FUNCT;
 <?php
 class GeneratedUriHelper {
     
-    private static function validateParameter($parameter)
+    private static function validateParameter(mixed $parameter): void
     {
         if (!isset($parameter)) {
             throw new \InvalidArgumentException("Missing parameters");
@@ -311,7 +311,7 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::index()
      */
-    public static function usersPath() 
+    public static function usersPath(): string 
     {
         return "/users";
     }
@@ -319,7 +319,7 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::show()
      */
-    public static function userPath($id) 
+    public static function userPath($id): string 
     {
         GeneratedUriHelper::validateParameter($id);
         return "/users/$id";
@@ -328,7 +328,7 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::edit()
      */
-    public static function editUserPath($id) 
+    public static function editUserPath($id): string 
     {
         GeneratedUriHelper::validateParameter($id);
         return "/users/$id/edit";
@@ -337,12 +337,12 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\UsersController::fresh()
      */
-    public static function freshUserPath() 
+    public static function freshUserPath(): string 
     {
         return "/users/fresh";
     }
     
-    public static function allGeneratedUriNames() 
+    public static function allGeneratedUriNames(): array 
     {
         return ['usersPath',
 'userPath',
@@ -354,7 +354,7 @@ class GeneratedUriHelper {
 /**
  * @see \Controller\UsersController::index()
  */
-function usersPath() 
+function usersPath(): string 
 {
     return GeneratedUriHelper::usersPath();
 }
@@ -362,7 +362,7 @@ function usersPath()
 /**
  * @see \Controller\UsersController::show()
  */
-function userPath($id) 
+function userPath($id): string 
 {
     return GeneratedUriHelper::userPath($id);
 }
@@ -370,7 +370,7 @@ function userPath($id)
 /**
  * @see \Controller\UsersController::edit()
  */
-function editUserPath($id) 
+function editUserPath($id): string 
 {
     return GeneratedUriHelper::editUserPath($id);
 }
@@ -378,12 +378,12 @@ function editUserPath($id)
 /**
  * @see \Controller\UsersController::fresh()
  */
-function freshUserPath() 
+function freshUserPath(): string 
 {
     return GeneratedUriHelper::freshUserPath();
 }
 
-function allGeneratedUriNames() 
+function allGeneratedUriNames(): array
 {
     return GeneratedUriHelper::allGeneratedUriNames();
 }
@@ -427,7 +427,7 @@ FUNCT;
 <?php
 class GeneratedUriHelper {
     
-    private static function validateParameter($parameter)
+    private static function validateParameter(mixed $parameter): void
     {
         if (!isset($parameter)) {
             throw new \InvalidArgumentException("Missing parameters");
@@ -437,13 +437,13 @@ class GeneratedUriHelper {
     /**
      * @see \Controller\Api\UsersController::orders()
      */
-    public static function ordersUsersApiPath($id) 
+    public static function ordersUsersApiPath($id): string 
     {
         GeneratedUriHelper::validateParameter($id);
         return "/api/users/$id/orders";
     }
     
-    public static function allGeneratedUriNames() 
+    public static function allGeneratedUriNames(): array 
     {
         return ['ordersUsersApiPath'];
     }
@@ -452,12 +452,12 @@ class GeneratedUriHelper {
 /**
  * @see \Controller\Api\UsersController::orders()
  */
-function ordersUsersApiPath($id) 
+function ordersUsersApiPath($id): string 
 {
     return GeneratedUriHelper::ordersUsersApiPath($id);
 }
 
-function allGeneratedUriNames() 
+function allGeneratedUriNames(): array
 {
     return GeneratedUriHelper::allGeneratedUriNames();
 }

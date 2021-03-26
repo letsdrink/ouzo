@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Utilities\StrSubstitutor;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Utilities\StrSubstitutor;
+use PHPUnit\Framework\TestCase;
 
 class StrSubstitutorTest extends TestCase
 {

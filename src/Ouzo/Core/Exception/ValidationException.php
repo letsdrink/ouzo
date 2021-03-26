@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -17,7 +17,7 @@ class ValidationException extends OuzoException
      * @param Error[]|Error $errors
      * @param string[] $headers
      */
-    public function __construct($errors, $headers = [])
+    public function __construct(array|Error $errors, array $headers = [])
     {
         parent::__construct(self::HTTP_CODE, "Validation failed.", $errors, $headers);
     }

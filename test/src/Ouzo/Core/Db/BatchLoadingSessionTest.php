@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Db\BatchLoadingSession;
@@ -28,7 +33,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
         Stats::reset();
 
         //when
-        $products = BatchLoadingSession::run(function() {
+        $products = BatchLoadingSession::run(function () {
             $models = Product::all();
             $models[0]->category;
             return $models;
@@ -52,7 +57,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
         Stats::reset();
 
         //when
-        $products = BatchLoadingSession::run(function() {
+        $products = BatchLoadingSession::run(function () {
             return Product::where()->with('category')->fetchAll();
         });
 
@@ -67,7 +72,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
     public function shouldDeallocateSession()
     {
         //when
-        BatchLoadingSession::run(function() {
+        BatchLoadingSession::run(function () {
             return Product::where()->with('category')->fetchAll();
         });
 

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -16,97 +16,82 @@ use Throwable;
 
 class OuzoExceptionData
 {
-    /** @var int */
-    private $httpCode;
-    /** @var Error[] */
-    private $errors;
-    /** @var StackTrace */
-    private $stackTrace;
-    /** @var string[] */
-    private $additionalHeaders;
-    /** @var string */
-    private $className;
-    /**@var int */
-    private $severity;
-
-    public function __construct($httpCode, $errors, $stackTrace, $additionalHeaders = [], $className = null, $severity = 0)
+    public function __construct(
+        private int $httpCode,
+        private array $errors,
+        private StackTrace $stackTrace,
+        private array $additionalHeaders = [],
+        private ?string $className = null,
+        private int $severity = 0
+    )
     {
-        $this->errors = $errors;
-        $this->httpCode = $httpCode;
-        $this->stackTrace = $stackTrace;
-        $this->additionalHeaders = $additionalHeaders;
-        $this->className = $className;
-        $this->severity = $severity;
     }
 
-    /**
-     * @param int $httpCode
-     * @param Throwable $exception
-     * @return OuzoExceptionData
-     */
-    public static function forException($httpCode, $exception)
+    public static function forException(int $httpCode, Throwable $exception): OuzoExceptionData
     {
         $severity = ($exception instanceof ErrorException) ? $exception->getSeverity() : 0;
         return new OuzoExceptionData($httpCode, [Error::forException($exception)], StackTrace::forException($exception), [], get_class($exception), $severity);
     }
 
-    public function getErrors()
+    /** @return Error[] */
+    public function getErrors(): array
     {
         return $this->errors;
     }
 
-    public function getHttpCode()
+    public function getHttpCode(): int
     {
         return $this->httpCode;
     }
 
-    public function getStackTrace()
+    public function getStackTrace(): StackTrace
     {
         return $this->stackTrace;
     }
 
-    public function getHeader()
+    public function getHeader(): string
     {
         return ResponseMapper::getMessageWithHttpProtocol($this->httpCode);
     }
 
-    public function getAdditionalHeaders()
+    /** @return string[] */
+    public function getAdditionalHeaders(): array
     {
         return $this->additionalHeaders;
     }
 
-    public function getMessage()
+    public function getMessage(): string
     {
         return Joiner::on(', ')->map(function ($key, $value) {
             return $value->message;
         })->join($this->errors);
     }
 
-    public function getOriginalMessage()
+    public function getOriginalMessage(): string
     {
         return Joiner::on(', ')->map(function ($key, $value) {
             return $value->originalMessage;
         })->join($this->errors);
     }
 
-    public function getOriginalMessageWithCodes()
+    public function getOriginalMessageWithCodes(): string
     {
         return Joiner::on(', ')->map(function ($key, $value) {
             return $value->originalMessage . " (code: " . $value->code . ")";
         })->join($this->errors);
     }
 
-    public function getClassName()
+    public function getClassName(): ?string
     {
         return $this->className;
     }
 
-    public function getSeverity()
+    public function getSeverity(): int
     {
         return $this->severity;
     }
 
-    public function getSeverityAsString()
+    public function getSeverityAsString(): string
     {
         $coreConstants = Arrays::getValue(get_defined_constants(true), 'Core', []);
         foreach ($coreConstants as $constName => $contValue) {
@@ -117,7 +102,7 @@ class OuzoExceptionData
         return "E_UNKNOWN";
     }
 
-    function __toString()
+    function __toString(): string
     {
         return __CLASS__ . Objects::toString(get_object_vars($this));
     }

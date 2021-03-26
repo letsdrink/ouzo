@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -12,47 +12,16 @@ use Symfony\Component\Console\Command\Command;
 
 class CommandsLoader
 {
-    /** @var Application */
-    private $application;
-    /** @var Injector */
-    private $injector;
-
-    /**
-     * @param Application $application
-     * @param Injector|null $injector
-     */
-    public function __construct(Application $application, Injector $injector = null)
+    public function __construct(private Application $application, private Injector $injector)
     {
-        $this->application = $application;
-        $this->injector = $injector;
     }
 
-    /**
-     * @param Application $application
-     * @return CommandsLoader
-     */
-    public static function forApplication(Application $application)
-    {
-        return new self($application);
-    }
-
-    /**
-     * @param Application $application
-     * @param Injector|null $injector
-     * @return CommandsLoader
-     */
-    public static function forApplicationAndInjector(Application $application, Injector $injector = null)
+    public static function forApplicationAndInjector(Application $application, Injector $injector = null): static
     {
         return new self($application, $injector);
     }
 
-    /**
-     * @param string $path
-     * @param string $namespace
-     * @param string $pattern
-     * @return $this
-     */
-    public function registerCommandsFromPath($path, $namespace = "", $pattern = "*.php")
+    public function registerCommandsFromPath(string $path, string $namespace = "", string $pattern = "*.php"): static
     {
         $commands = [];
         $files = glob($path . DIRECTORY_SEPARATOR . $pattern);
@@ -67,11 +36,7 @@ class CommandsLoader
         return $this;
     }
 
-    /**
-     * @param string $class
-     * @return object
-     */
-    private function createInstance($class)
+    private function createInstance(string $class): object
     {
         if ($this->injector) {
             return $this->injector->getInstance($class);
@@ -79,11 +44,7 @@ class CommandsLoader
         return new $class();
     }
 
-    /**
-     * @param $class
-     * @return bool
-     */
-    private function isValidClass($class)
+    private function isValidClass(string $class): bool
     {
         return class_exists($class) && is_subclass_of($class, Command::class);
     }

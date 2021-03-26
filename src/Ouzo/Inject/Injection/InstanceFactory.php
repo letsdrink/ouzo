@@ -1,38 +1,25 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\Injection;
 
-use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
+use Ouzo\Injection\Annotation\InjectMetadataProvider;
 use Ouzo\Injection\Creator\InstanceCreator;
 use Ouzo\Utilities\Arrays;
 use ReflectionClass;
 
 class InstanceFactory
 {
-    /** @var Bindings */
-    private $bindings;
-    /** @var AnnotationMetadataProvider */
-    private $provider;
-    /** @var InstanceCreator */
-    private $eagerInstanceCreator;
-    /** @var InstanceCreator */
-    private $lazyInstanceCreator;
-
     public function __construct(
-        Bindings $bindings,
-        AnnotationMetadataProvider $provider,
-        InstanceCreator $eagerInstanceCreator,
-        InstanceCreator $lazyInstanceCreator
+        private Bindings $bindings,
+        private InjectMetadataProvider $provider,
+        private InstanceCreator $eagerInstanceCreator,
+        private InstanceCreator $lazyInstanceCreator
     )
     {
-        $this->bindings = $bindings;
-        $this->provider = $provider;
-        $this->eagerInstanceCreator = $eagerInstanceCreator;
-        $this->lazyInstanceCreator = $lazyInstanceCreator;
     }
 
     public function createInstance(InstanceRepository $repository, string $className, bool $eager = true): object
@@ -57,7 +44,7 @@ class InstanceFactory
     private function injectDependencies(InstanceRepository $repository, object $instance, ReflectionClass $class = null): void
     {
         $parent = true;
-        if ($class == null) {
+        if (is_null($class)) {
             $class = new ReflectionClass($instance);
             $parent = false;
         }

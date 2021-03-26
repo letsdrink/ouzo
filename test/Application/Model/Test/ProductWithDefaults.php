@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Application\Model\Test;
 
 use Ouzo\Model;
@@ -14,19 +15,17 @@ use Ouzo\Model;
  */
 class ProductWithDefaults extends Model
 {
-    public static $defaultName = 'no name';
-    public static $defaultDescription = 'no desc';
+    public static string $defaultName = 'no name';
+    public static string $defaultDescription = 'no desc';
 
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct([
             'table' => 'products',
             'attributes' => $attributes,
             'fields' => [
                 'description' => self::$defaultDescription,
-                'name' => function () {
-                    return ProductWithDefaults::$defaultName;
-                },
+                'name' => fn() => ProductWithDefaults::$defaultName,
                 'id_category',
                 'id_manufacturer',
                 'sale'

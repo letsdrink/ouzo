@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -11,26 +11,24 @@ use Ouzo\Utilities\Arrays;
 
 class MockDownloadHandler extends DownloadHandler
 {
-    private $fileData = [];
+    private array $fileData = [];
 
-    public function downloadFile(array $fileData)
+    public function downloadFile(array $fileData): void
     {
         $this->fileData = $fileData;
-        return $this;
     }
 
-    public function streamMediaFile(array $fileData)
+    public function streamMediaFile(array $fileData): void
     {
         $this->fileData = $fileData;
-        return $this;
     }
 
-    public function getFileName()
+    public function getFileName(): ?string
     {
         return Arrays::getValue($this->fileData, 'label');
     }
 
-    public function getFileData()
+    public function getFileData(): mixed
     {
         return Arrays::getValue($this->fileData, 'data');
     }

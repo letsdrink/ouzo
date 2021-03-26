@@ -1,19 +1,16 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Utilities\Strings;
 
 class QueryHumanizer
 {
-    /**
-     * @param $sql
-     * @return string
-     */
-    public static function humanize($sql)
+    public static function humanize(string $sql): string
     {
         if (Strings::endsWith($sql, ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT . ' */')) {
             $sql = Strings::removeSuffix($sql, ' /* ' . ModelQueryBuilder::MODEL_QUERY_MARKER_COMMENT . ' */');

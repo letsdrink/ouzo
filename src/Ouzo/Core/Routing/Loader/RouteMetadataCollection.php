@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Loader;
 
@@ -8,7 +12,7 @@ use Ouzo\Utilities\FluentArray;
 class RouteMetadataCollection
 {
     /** @var RouteMetadata[] */
-    private $elements;
+    private array $elements;
 
     public function __construct(array $elements = [])
     {
@@ -32,31 +36,25 @@ class RouteMetadataCollection
         return count($this->elements);
     }
 
-    public function sort(): self
+    public function sort(): RouteMetadataCollection
     {
         $elementsWithoutParameters = FluentArray::from($this->elements)
-            ->filter(function (RouteMetadata $route) {
-                return !$route->hasParameters();
-            })
-            ->sort(Comparator::compareBy('getUri()', 'getMethod()'))
+            ->filter(fn(RouteMetadata $route) => !$route->hasParameters())
+            ->sort(Comparator::compareBy('getUri()', 'getHttpMethod()'))
             ->toArray();
 
         $elementsWithParameters = FluentArray::from($this->elements)
-            ->filter(function (RouteMetadata $route) {
-                return $route->hasParameters();
-            })
-            ->sort(Comparator::compareBy('getUri()', 'getMethod()'))
+            ->filter(fn(RouteMetadata $route) => $route->hasParameters())
+            ->sort(Comparator::compareBy('getUri()', 'getHttpMethod()'))
             ->toArray();
         $this->elements = array_values(array_merge($elementsWithoutParameters, $elementsWithParameters));
+
         return $this;
     }
 
-    /**
-     * @return RouteMetadata[]
-     */
+    /** @return RouteMetadata[] */
     public function toArray(): array
     {
         return $this->elements;
     }
-
 }

@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Model;
@@ -12,15 +13,15 @@ use Ouzo\Utilities\Arrays;
 
 class ModelRelationConditionsTest extends DbTransactionalTestCase
 {
-    private $_category;
+    private Category $category;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->_category = Category::create(['name' => 'sony']);
-        Product::create(['name' => 'bob', 'id_category' => $this->_category->getId()]);
-        Product::create(['name' => 'billy', 'id_category' => $this->_category->getId()]);
-        Product::create(['name' => 'peter', 'id_category' => $this->_category->getId()]);
+        $this->category = Category::create(['name' => 'sony']);
+        Product::create(['name' => 'bob', 'id_category' => $this->category->getId()]);
+        Product::create(['name' => 'billy', 'id_category' => $this->category->getId()]);
+        Product::create(['name' => 'peter', 'id_category' => $this->category->getId()]);
     }
 
     /**
@@ -29,7 +30,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
     public function shouldLazilyFetchHasManyWithStringCondition()
     {
         //when
-        $products_starting_from_b = $this->_category->products_starting_with_b;
+        $products_starting_from_b = $this->category->products_starting_with_b;
 
         //then
         Assert::thatArray($products_starting_from_b)->hasSize(2)->onProperty('name')->containsOnly('bob', 'billy');
@@ -55,7 +56,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
     public function shouldLazilyFetchHasManyWithCallbackCondition()
     {
         //when
-        $products_ending_with_b_or_y = $this->_category->products_ending_with_b_or_y;
+        $products_ending_with_b_or_y = $this->category->products_ending_with_b_or_y;
 
         //then
         Assert::thatArray($products_ending_with_b_or_y)->hasSize(2)->onProperty('name')->containsOnly('bob', 'billy');
@@ -81,7 +82,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
     public function shouldLazilyFetchHasManyWithArrayCondition()
     {
         //when
-        $products_name_bob = $this->_category->products_name_bob;
+        $products_name_bob = $this->category->products_name_bob;
 
         //then
         Assert::thatArray($products_name_bob)->hasSize(1)->onProperty('name')->containsOnly('bob');
@@ -168,7 +169,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
     public function shouldLazilyFetchHasOneWithStringCondition()
     {
         //when
-        $product = $this->_category->product_named_billy;
+        $product = $this->category->product_named_billy;
 
         //then
         $this->assertEquals('billy', $product->name);

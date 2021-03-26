@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -8,16 +8,12 @@ namespace Ouzo;
 
 class EnvironmentSetter
 {
-    /** @var string */
-    private $env = 'prod';
-
-    public function __construct($env)
+    public function __construct(private string $env = 'prod')
     {
-        $this->env = $env;
     }
 
     public function set()
     {
-        putenv('environment=' . $this->env);
+        putenv("environment={$this->env}");
     }
 }

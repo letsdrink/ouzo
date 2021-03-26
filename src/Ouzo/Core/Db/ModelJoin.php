@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 namespace Ouzo\Db;
@@ -10,85 +10,44 @@ use Ouzo\Model;
 
 class ModelJoin
 {
-    /** @var Relation */
-    private $relation;
-    /** @var string */
-    private $alias;
-    /** @var string */
-    private $destinationField;
-    /** @var string */
-    private $fromTable;
-    /** @var string */
-    private $type;
-    /** @var string */
-    private $on;
-    /** @var bool */
-    private $fetch;
-
-    /**
-     * @param string $destinationField
-     * @param string $fromTable
-     * @param string $relation
-     * @param string $alias
-     * @param string $type
-     * @param string $on
-     * @param bool $fetch
-     */
-    public function __construct($destinationField, $fromTable, $relation, $alias, $type, $on, $fetch)
+    public function __construct(
+        private string $destinationField,
+        private string $fromTable,
+        private Relation $relation,
+        private ?string $alias,
+        private string $type,
+        private array $on,
+        private bool $fetch
+    )
     {
-        $this->relation = $relation;
-        $this->alias = $alias;
-        $this->destinationField = $destinationField;
-        $this->fromTable = $fromTable;
-        $this->type = $type;
-        $this->on = $on;
-        $this->fetch = $fetch;
     }
 
-    /**
-     * @return Relation
-     */
-    public function getRelation()
+    public function getRelation(): Relation
     {
         return $this->relation;
     }
 
-    /**
-     * @return bool
-     */
-    public function storeField()
+    public function storeField(): bool
     {
         return $this->fetch &&  $this->destinationField();
     }
 
-    /**
-     * @return string
-     */
-    public function destinationField()
+    public function destinationField(): string
     {
         return $this->destinationField;
     }
 
-    /**
-     * @return string
-     */
-    public function alias()
+    public function alias(): string
     {
         return $this->alias ? : $this->relation->getRelationModelObject()->getTableName();
     }
 
-    /**
-     * @return Model
-     */
-    public function getModelObject()
+    public function getModelObject(): Model
     {
         return $this->relation->getRelationModelObject();
     }
 
-    /**
-     * @return JoinClause
-     */
-    public function asJoinClause()
+    public function asJoinClause(): JoinClause
     {
         $joinedModel = $this->relation->getRelationModelObject();
         $joinTable = $joinedModel->getTableName();

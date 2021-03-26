@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -8,6 +8,7 @@ namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
 use Exception;
+use JetBrains\PhpStorm\Pure;
 use Ouzo\ContentType;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
@@ -20,31 +21,31 @@ class ExceptionLogger
     const UNAUTHORIZED = '401';
     const NOT_FOUND = '404';
 
-    /** @var OuzoExceptionData */
-    private $exceptionData;
+    private OuzoExceptionData $exceptionData;
 
     public function __construct(OuzoExceptionData $exceptionData)
     {
         $this->exceptionData = $exceptionData;
     }
 
-    public static function newInstance(OuzoExceptionData $exceptionData)
+    #[Pure]
+    public static function newInstance(OuzoExceptionData $exceptionData): ExceptionLogger
     {
         return new self($exceptionData);
     }
 
-    public static function forException(Exception $exception, $httpCode = 500)
+    public static function forException(Exception $exception, $httpCode = 500): ExceptionLogger
     {
         return new self(OuzoExceptionData::forException($httpCode, $exception));
     }
 
-    public function log()
+    public function log(): void
     {
         $message = $this->getMessage();
         Logger::getLogger(__CLASS__)->error($message);
     }
 
-    public function getMessage()
+    public function getMessage(): string
     {
         $className = $this->exceptionData->getClassName();
         $originalMessage = $this->exceptionData->getOriginalMessageWithCodes();
@@ -99,7 +100,7 @@ class ExceptionLogger
         }
     }
 
-    public static function sanitize(array $array)
+    public static function sanitize(array $array): string
     {
         if (isset($array['password'])) {
             $array['password'] = self::PASSWORD_PLACEHOLDER;

@@ -1,12 +1,14 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\Functions;
+use PHPUnit\Framework\TestCase;
 
 interface Foo
 {
@@ -15,20 +17,15 @@ interface Foo
 
 class CallableWrapper
 {
-    private $callable;
-
-    public function __construct($callable)
+    public function __construct(private object $callable)
     {
-        $this->callable = $callable;
     }
 
-    public function call()
+    public function call(): void
     {
         call_user_func_array($this->callable, func_get_args());
     }
 }
-
-use PHPUnit\Framework\TestCase; 
 
 class ComparatorTest extends TestCase
 {

@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
@@ -19,6 +20,8 @@ class TestCallback
 
 class CallbackTestModel extends Model
 {
+    public bool $callbackCalled = false;
+
     public function __construct($attributes = [], $beforeSaveCallback = null, $afterSaveCallback = null)
     {
         parent::__construct([
@@ -27,7 +30,8 @@ class CallbackTestModel extends Model
             'table' => 'products',
             'primaryKey' => 'id',
             'attributes' => $attributes,
-            'fields' => ['name']]);
+            'fields' => ['name']
+        ]);
     }
 
     public function _callback()
@@ -38,7 +42,7 @@ class CallbackTestModel extends Model
 
 class ModelCallbackTest extends DbTransactionalTestCase
 {
-    public  function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         ModelDefinition::resetCache();

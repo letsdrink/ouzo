@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Utilities\FluentArray;
@@ -10,26 +11,16 @@ use Ouzo\Utilities\Functions;
 
 class FieldTransformer
 {
-    /** @var string */
-    private $field;
-    /** @var RelationFetcher */
-    private $transformer;
+    private string $field;
+    private RelationFetcher $transformer;
 
-    /**
-     * @param string $field
-     * @param RelationFetcher $transformer
-     */
-    public function __construct($field, RelationFetcher $transformer)
+    public function __construct(string $field, RelationFetcher $transformer)
     {
         $this->field = $field;
         $this->transformer = $transformer;
     }
 
-    /**
-     * @param array $results
-     * @return void
-     */
-    public function transform(&$results)
+    public function transform(array &$results): void
     {
         if ($this->field) {
             $fields = FluentArray::from($results)

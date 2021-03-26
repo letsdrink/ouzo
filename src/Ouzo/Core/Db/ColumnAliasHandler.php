@@ -1,23 +1,18 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use Ouzo\Utilities\Arrays;
 
 class ColumnAliasHandler
 {
-    /**
-     * @param array $columns
-     * @param string $alias
-     * @return array
-     */
-    public static function createSelectColumnsWithAliases($columns, $alias)
+    /** @param string[] $columns */
+    public static function createSelectColumnsWithAliases(array $columns, string $alias): array
     {
-        return Arrays::map($columns, function ($field) use ($alias) {
-            return "$alias.$field";
-        });
+        return Arrays::map($columns, fn($field) => "{$alias}.{$field}");
     }
 }

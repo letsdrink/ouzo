@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Utilities\Inflector;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Utilities\Inflector;
+use PHPUnit\Framework\TestCase;
 
 class InflectorTest extends TestCase
 {
@@ -15,12 +15,7 @@ class InflectorTest extends TestCase
         Inflector::reset();
     }
 
-    /**
-     * Singular & Plural test data. Returns an array of sample words.
-     *
-     * @return array
-     */
-    public function dataSampleWords()
+    public function dataSampleWords(): array
     {
         Inflector::reset();
         // in the format array('singular', 'plural')
@@ -71,33 +66,25 @@ class InflectorTest extends TestCase
     }
 
     /**
-     * testInflectingSingulars method
-     *
+     * @test
      * @dataProvider dataSampleWords
-     * @param string $singular
-     * @param string $plural
      */
-    public function testInflectingSingulars($singular, $plural)
+    public function testInflectingSingulars(string $singular, string $plural)
     {
-        $this->assertEquals($singular, Inflector::singularize($plural), "'$plural' should be singularized to '$singular'");
+        $this->assertEquals($singular, Inflector::singularize($plural), "'{$plural}' should be singularized to '{$singular}'");
     }
 
     /**
-     * testInflectingPlurals method
-     *
+     * @test
      * @dataProvider dataSampleWords
-     * @param $singular
-     * @param $plural
      */
-    public function testInflectingPlurals($singular, $plural)
+    public function testInflectingPlurals(string $singular, string $plural)
     {
-        $this->assertEquals($plural, Inflector::pluralize($singular), "'$singular' should be pluralized to '$plural'");
+        $this->assertEquals($plural, Inflector::pluralize($singular), "'{$singular}' should be pluralized to '{$plural}'");
     }
 
     /**
-     * testCustomPluralRule method
-     *
-     * @return void
+     * @test
      */
     public function testCustomPluralRule()
     {
@@ -121,9 +108,7 @@ class InflectorTest extends TestCase
     }
 
     /**
-     * testCustomSingularRule method
-     *
-     * @return void
+     * @test
      */
     public function testCustomSingularRule()
     {
@@ -146,9 +131,7 @@ class InflectorTest extends TestCase
     }
 
     /**
-     * test that setting new rules clears the inflector caches.
-     *
-     * @return void
+     * @test
      */
     public function testRulesClearsCaches()
     {
@@ -170,9 +153,7 @@ class InflectorTest extends TestCase
     }
 
     /**
-     * Test resetting inflection rules.
-     *
-     * @return void
+     * @test
      */
     public function testCustomRuleWithReset()
     {

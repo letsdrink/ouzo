@@ -1,28 +1,35 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Application\Model\Test;
 
-use Ouzo\Routing\Annotation\Route;
+use Ouzo\Routing\Annotation\Route\Delete;
+use Ouzo\Routing\Annotation\Route\Get;
+use Ouzo\Routing\Annotation\Route\Post;
+use Ouzo\Routing\Annotation\Route\Put;
 
 class CrudController
 {
-    /**
-     * @Route\Post("/create")
-     */
-    public function post() {}
+    #[Post('/create')]
+    public function post()
+    {
+    }
 
-    /**
-     * @Route\Get("/read")
-     */
-    public function get() {}
+    #[Get('/read')]
+    public function get()
+    {
+    }
 
-    /**
-     * @Route\Put("/update")
-     */
-    public function put() {}
+    #[Put('/update')]
+    public function put()
+    {
+    }
 
-    /**
-     * @Route\Delete("/delete")
-     */
-    public function delete() {}
+    #[Delete('/delete')]
+    public function delete()
+    {
+    }
 }

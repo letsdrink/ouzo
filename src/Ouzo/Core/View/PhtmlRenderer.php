@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\View;
 
 use Exception;
@@ -14,29 +15,20 @@ class PhtmlRenderer implements ViewRenderer
 {
     const EXTENSION = '.phtml';
 
-    /** @var string */
-    private $_viewName;
+    private string $viewPath;
 
-    /** @var array */
-    private $_attributes;
-
-    /** @var string */
-    private $_viewPath;
-
-    public function __construct($viewName, array $attributes)
+    public function __construct(private string $viewName, private array $attributes)
     {
-        $this->_viewName = $viewName;
-        $this->_attributes = $attributes;
-        $this->_viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . self::EXTENSION);
+        $this->viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->viewName . self::EXTENSION);
     }
 
-    public function render()
+    public function render(): string
     {
-        $this->_saveAttributes();
+        $this->saveAttributes();
         ob_start();
         try {
-            $this->_loadViewHelper();
-            $this->_loadView();
+            $this->loadViewHelper();
+            $this->loadView();
         } catch (Exception $e) {
             ob_end_flush();
             throw $e;
@@ -46,27 +38,27 @@ class PhtmlRenderer implements ViewRenderer
         return $view;
     }
 
-    private function _loadViewHelper()
+    private function loadViewHelper(): void
     {
-        $helperPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->_viewName . '.helper.php');
+        $helperPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), "{$this->viewName}.helper.php");
         Files::loadIfExists($helperPath);
     }
 
-    private function _loadView()
+    private function loadView(): void
     {
         /** @noinspection PhpIncludeInspection */
-        require($this->_viewPath);
+        require($this->viewPath);
     }
 
-    private function _saveAttributes()
+    private function saveAttributes(): void
     {
-        foreach ($this->_attributes as $name => $value) {
+        foreach ($this->attributes as $name => $value) {
             $this->$name = $value;
         }
     }
 
-    public function getViewPath()
+    public function getViewPath(): string
     {
-        return $this->_viewPath;
+        return $this->viewPath;
     }
 }

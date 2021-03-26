@@ -1,17 +1,16 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Application\Model\Test;
 
 use Ouzo\Model;
 
 class OrderProduct extends Model
 {
-    private $_fields = ['id_order', 'id_product'];
-
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct([
             'table' => 'order_products',
@@ -22,6 +21,7 @@ class OrderProduct extends Model
                 'product' => ['class' => 'Test\Product', 'foreignKey' => 'id_product'],
                 'order' => ['class' => 'Test\Order', 'foreignKey' => 'id_order']
             ],
-            'fields' => $this->_fields]);
+            'fields' => ['id_order', 'id_product']
+        ]);
     }
 }

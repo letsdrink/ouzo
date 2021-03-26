@@ -1,110 +1,108 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\Routing;
 
+use Closure;
 use InvalidArgumentException;
 use Ouzo\Config;
+use Ouzo\Http\HttpMethod;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 use ReflectionClass;
 use ReflectionMethod;
 
-/**
- * Routes define URLs mapping to controllers and actions.
- *
- * Sample usage:
- * <code>
- *  Route::get('/agents/index', 'agents#index'); will match: GET /agents/index
- *  Route::post('/agents/save', 'agents#save'); will match: POST /agents/save
- *  Route::resource('agents'); will mapping RESTs methods (index, fresh, edit, show, create, update, destroy)
- *  Route::any('/agents/show_numbers', 'agents#show_numbers'); will match: POST or GET /agents/show_numbers
- *  Route::allowAll('/agents', 'agents'); will mapping any methods to all actions in controller
- * </code>
- *
- * To show all routes or routes per controller:
- * <code>
- *  Route::getRoutes();
- *  Route::getRoutesForController('agents');
- * </code>
- */
 class Route implements RouteInterface
 {
-    public static $methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
-    public static $validate = true;
-    public static $isDebug;
+    public static bool $isDebug;
+    public static bool $validate = true;
 
-    /**
-     * @var RouteRule[]
-     */
-    private static $routes = [];
-    private static $routeKeys = [];
+    private static array $methods = [
+        HttpMethod::GET, HttpMethod::POST, HttpMethod::PUT, HttpMethod::PATCH, HttpMethod::DELETE, HttpMethod::OPTIONS
+    ];
+    /** @var RouteRule[] */
+    private static array $routes = [];
+    private static array $routeKeys = [];
 
-    public static function get($uri, $controller, $action, array $options = [])
+    public static function get(string $uri, string $controller, string $action, array $options = []): void
     {
-        self::addRoute('GET', $uri, $controller, $action, true, $options);
+        self::addRoute(HttpMethod::GET, $uri, $controller, $action, true, $options);
     }
 
-    public static function post($uri, $controller, $action, array $options = [])
+    public static function post(string $uri, string $controller, string $action, array $options = []): void
     {
-        self::addRoute('POST', $uri, $controller, $action, true, $options);
+        self::addRoute(HttpMethod::POST, $uri, $controller, $action, true, $options);
     }
 
-    public static function put($uri, $controller, $action, array $options = [])
+    public static function put(string $uri, string $controller, string $action, array $options = []): void
     {
-        self::addRoute('PUT', $uri, $controller, $action, true, $options);
+        self::addRoute(HttpMethod::PUT, $uri, $controller, $action, true, $options);
     }
 
-    public static function delete($uri, $controller, $action, array $options = [])
+    public static function delete(string $uri, string $controller, string $action, array $options = []): void
     {
-        self::addRoute('DELETE', $uri, $controller, $action, true, $options);
+        self::addRoute(HttpMethod::DELETE, $uri, $controller, $action, true, $options);
     }
 
-    public static function options($uri, $controller, $action, array $options = [])
+    public static function options(string $uri, string $controller, string $action, array $options = []): void
     {
-        self::addRoute('OPTIONS', $uri, $controller, $action, true, $options);
+        self::addRoute(HttpMethod::OPTIONS, $uri, $controller, $action, true, $options);
     }
 
-    public static function any($uri, $controller, $action, array $options = [])
+    public static function any(string $uri, string $controller, string $action, array $options = []): void
     {
         self::addRoute(self::$methods, $uri, $controller, $action, true, $options);
     }
 
-    public static function resource($controller, $uriPrefix)
+    public static function resource(string $controller, string $uriPrefix): void
     {
-        self::addResourceRoute($controller, $uriPrefix, 'GET', '', 'index');
-        self::addResourceRoute($controller, $uriPrefix, 'GET', '/fresh', 'fresh');
-        self::addResourceRoute($controller, $uriPrefix, 'GET', '/:id/edit', 'edit');
-        self::addResourceRoute($controller, $uriPrefix, 'GET', '/:id', 'show');
-        self::addResourceRoute($controller, $uriPrefix, 'POST', '', 'create');
-        self::addResourceRoute($controller, $uriPrefix, 'PUT', '/:id', 'update');
-        self::addResourceRoute($controller, $uriPrefix, 'PATCH', '/:id', 'update');
-        self::addResourceRoute($controller, $uriPrefix, 'DELETE', '/:id', 'destroy');
+        self::addResourceRoute($controller, $uriPrefix, HttpMethod::GET, '', 'index');
+        self::addResourceRoute($controller, $uriPrefix, HttpMethod::GET, '/fresh', 'fresh');
+        self::addResourceRoute($controller, $uriPrefix, HttpMethod::GET, '/:id/edit', 'edit');
+        self::addResourceRoute($controller, $uriPrefix, HttpMethod::GET, '/:id', 'show');
+        self::addResourceRoute($controller, $uriPrefix, HttpMethod::POST, '', 'create');
+        self::addResourceRoute($controller, $uriPrefix, HttpMethod::PUT, '/:id', 'update');
+        self::addResourceRoute($controller, $uriPrefix, HttpMethod::PATCH, '/:id', 'update');
+        self::addResourceRoute($controller, $uriPrefix, HttpMethod::DELETE, '/:id', 'destroy');
     }
 
-    public static function allowAll($uri, $controller, $options = [])
+    public static function allowAll(string $uri, string $controller, array $options = []): void
     {
         self::addRoute(self::$methods, $uri, $controller, null, false, $options);
     }
 
-    private static function addRoute($method, $uri, $controller, $action = null, $requireAction = true, $options = [], $isResource = false)
+    private static function addResourceRoute(string $controller, string $uriPrefix, string $method, string $uriSuffix, string $action): void
+    {
+        $uri = self::createRouteUri($uriPrefix, $uriSuffix);
+        self::addRoute($method, $uri, $controller, $action, true, [], true);
+    }
+
+    private static function addRoute(
+        array|string $method,
+        string $uri,
+        string $controller,
+        ?string $action,
+        bool $requireAction,
+        array $options,
+        bool $isResource = false
+    ): void
     {
         $methods = Arrays::toArray($method);
         if (self::$isDebug && $requireAction && self::$validate && self::existRouteRule($methods, $uri)) {
             $methods = implode(', ', $methods);
-            throw new InvalidArgumentException('Route rule for method ' . $methods . ' and URI "' . $uri . '" already exists');
+            throw new InvalidArgumentException("Route rule for method '{$methods}' and URI '{$uri}' already exists.");
         }
 
         if (self::$isDebug && !$isResource) {
-            self::validateMethod($method, $uri, $controller, $action);
+            self::validateMethod($methods, $uri, $controller, $action);
         }
 
         $routeRule = new RouteRule($method, $uri, $controller, $action, $requireAction, $options, $isResource);
         if ($routeRule->hasRequiredAction()) {
-            throw new InvalidArgumentException('Route rule ' . $uri . ' required action');
+            throw new InvalidArgumentException("Route rule '{$uri}' required action.");
         }
         self::$routes[] = $routeRule;
         foreach ($methods as $method) {
@@ -112,7 +110,7 @@ class Route implements RouteInterface
         }
     }
 
-    private static function existRouteRule($methods, $uri)
+    private static function existRouteRule(array $methods, string $uri): bool
     {
         $routeKeys = Route::$routeKeys;
         return Arrays::any($methods, function ($method) use ($routeKeys, $uri) {
@@ -120,55 +118,46 @@ class Route implements RouteInterface
         });
     }
 
-    private static function addResourceRoute($controller, $uriPrefix, $method, $uriSuffix, $action)
-    {
-        $uri = self::createRouteUri($uriPrefix, $uriSuffix);
-        self::addRoute($method, $uri, $controller, $action, true, [], true);
-    }
-
-    private static function createRouteUri($prefix, $suffix = '')
+    private static function createRouteUri(string $prefix, string $suffix = ''): string
     {
         return '/' . ltrim($prefix, '/') . $suffix;
     }
 
-    /**
-     * @return RouteRule[]
-     */
-    public static function getRoutes()
+    /** @return RouteRule[] */
+    public static function getRoutes(): array
     {
         return self::$routes;
     }
 
-    /**
-     * @param RouteRule[] $routes
-     */
-    public static function setRoutes($routes)
+    /** @param RouteRule[] $routes */
+    public static function setRoutes(array $routes): void
     {
         self::$routes = $routes;
     }
 
-    public static function getRoutesForController($controller)
+    /** @return RouteRule[] */
+    public static function getRoutesForController(string $controller): array
     {
         return Arrays::filter(self::getRoutes(), function (RouteRule $route) use ($controller) {
             return Strings::equalsIgnoreCase($route->getController(), $controller);
         });
     }
 
-    public static function group($name, $routeFunction)
+    public static function group(string $name, Closure $routeFunction): void
     {
         GroupedRoute::setGroupName($name);
         $routeFunction();
     }
 
-    public static function clear()
+    public static function clear(): void
     {
         self::$routes = [];
         self::$routeKeys = [];
     }
 
-    private static function validateMethod($methodOrMethods, string $uri, $controller, $action)
+    private static function validateMethod(array $methodOrMethods, string $uri, string $controller, ?string $action): void
     {
-        if ($action) {
+        if (!is_null($action)) {
             $controllerReflection = new ReflectionClass($controller);
             $reflectionMethods = $controllerReflection->getMethods(ReflectionMethod::IS_PUBLIC);
             if (!Arrays::any($reflectionMethods, fn($method) => $method->name === $action)) {

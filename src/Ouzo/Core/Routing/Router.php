@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -11,15 +11,9 @@ use Ouzo\Utilities\Arrays;
 
 class Router
 {
-    /**
-     * @var Uri
-     */
-    private $uri;
+    private Uri $uri;
 
-    /**
-     * @var String
-     */
-    private $path;
+    private string $path;
 
     public function __construct(Uri $uri)
     {
@@ -27,29 +21,19 @@ class Router
         $this->path = $this->uri->getPathWithoutPrefix();
     }
 
-    /**
-     * @return RouteRule
-     * @throws RouterException
-     */
-    public function findRoute()
+    public function findRoute(): RouteRule
     {
         $requestType = Uri::getRequestType();
         $rule = $this->findRouteRuleForMethod($requestType);
         if (!$rule) {
-            throw new RouterException('No route rule found for HTTP method [' . $requestType . '] and URI [' . $this->path . ']');
+            throw new RouterException("No route rule found for HTTP method [{$requestType}] and URI [{$this->path}]");
         }
         return $rule;
     }
 
-    /**
-     * @param $requestType
-     * @return null|RouteRule
-     */
-    public function findRouteRuleForMethod($requestType)
+    public function findRouteRuleForMethod(string $requestType): ?RouteRule
     {
-        $routeRule = Arrays::find(Route::getRoutes(), function (RouteRule $rule) use ($requestType) {
-            return $rule->matches($this->path, $requestType);
-        });
+        $routeRule = Arrays::find(Route::getRoutes(), fn(RouteRule $rule) => $rule->matches($this->path, $requestType));
         if ($routeRule) {
             $routeRule->setParameters($this->path);
         }

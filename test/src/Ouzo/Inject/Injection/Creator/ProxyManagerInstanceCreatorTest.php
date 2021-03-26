@@ -1,26 +1,20 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\Injection\Creator;
 
-
-use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
-use Ouzo\Injection\Bindings;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
-use Ouzo\Injection\InstanceFactory;
-use Ouzo\Injection\InstanceRepository;
 use Ouzo\Injection\Scope;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 
 class ProxyManagerInstanceCreatorTest extends TestCase
 {
-    /** @var bool */
-    public static $constructorInvoked;
+    public static bool $constructorInvoked;
 
     /**
      * @test

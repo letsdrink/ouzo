@@ -1,24 +1,21 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\Mock\AnyArgument;
 use Ouzo\Tests\Mock\AnyArgumentList;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\MethodCallMatcher;
+use PHPUnit\Framework\TestCase;
 
 class TestClass
 {
-    private $value;
-
-    public function __construct($value)
+    public function __construct(private string $value)
     {
-        $this->value = $value;
     }
 }
-
-use PHPUnit\Framework\TestCase; 
 
 class MethodCallMatcherTest extends TestCase
 {

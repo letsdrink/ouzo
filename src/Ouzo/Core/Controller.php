@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -15,50 +15,27 @@ use Ouzo\Utilities\Strings;
 
 class Controller
 {
-    /** @var string */
-    public static $stream = 'php://input';
+    public static string $stream = 'php://input';
 
-    /** @var View */
-    public $view;
-    /** @var Layout */
-    public $layout;
-    /** @var array */
-    public $before = [];
-    /** @var array */
-    public $after = [];
-    /** @var string */
-    public $currentController = '';
-    /** @var string */
-    public $currentAction = '';
-    /** @var array */
-    public $params;
+    public View $view;
+    public Layout $layout;
+    public array $before = [];
+    public array $after = [];
+    public string $currentController = '';
+    public ?string $currentAction = '';
+    public array $params;
 
-    /** @var string */
-    private $statusResponse = 'show';
-    /** @var string */
-    private $redirectLocation = '';
-    /** @var array */
-    private $fileData = [];
-    /** @var array */
-    private $headers = [];
-    /** @var array */
-    private $cookies = [];
-    /** @var RouteRule|null */
-    private $routeRule = null;
-    /** @var Uri */
-    private $uri;
-    /** @var bool */
-    private $keepMessage = false;
-    /** @var SessionStats */
-    private $sessionStats;
+    private string $statusResponse = 'show';
+    private string $redirectLocation = '';
+    private array $fileData = [];
+    private array $headers = [];
+    private array $cookies = [];
+    private ?RouteRule $routeRule = null;
+    private Uri $uri;
+    private bool $keepMessage = false;
+    private SessionStats $sessionStats;
 
-    /**
-     * @param RouteRule $routeRule
-     * @param RequestParameters $requestParameters
-     * @param SessionStats $sessionStats
-     * @return Controller
-     */
-    public static function createInstance(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats)
+    public static function createInstance(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats): Controller
     {
         $className = get_called_class();
         /** @var $controller Controller */
@@ -67,19 +44,13 @@ class Controller
         return $controller;
     }
 
-    /**
-     * @param RouteRule $routeRule
-     * @param RequestParameters $requestParameters
-     * @param SessionStats $sessionStats
-     * @return void
-     */
-    public function initialize(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats)
+    public function initialize(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats): void
     {
         $this->routeRule = $routeRule;
         $this->sessionStats = $sessionStats;
         $this->uri = $requestParameters->getRoutingService()->getUri();
         $this->currentController = $routeRule->getController();
-        $this->currentAction = $routeRule->isActionRequired() ? $routeRule->getAction() : $this->uri->getAction();
+        $this->currentAction = $routeRule->isRequiredAction() ? $routeRule->getAction() : $this->uri->getAction();
 
         $viewName = $this->getViewName();
 
@@ -88,45 +59,27 @@ class Controller
         $this->params = $requestParameters->get(static::$stream);
     }
 
-    /**
-     * @param string $header
-     * @return void
-     */
-    public function header($header)
+    public function header(string $header): void
     {
         $this->headers[] = $header;
     }
 
-    /**
-     * @param string $params
-     */
-    public function setCookie($params)
+    public function setCookie(string $params): void
     {
         $this->cookies[] = $params;
     }
 
-    /**
-     * @return array
-     */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    /**
-     * @return array
-     */
-    public function getNewCookies()
+    public function getNewCookies(): array
     {
         return $this->cookies;
     }
 
-    /**
-     * @param string $url
-     * @param array $messages
-     * @return void
-     */
-    public function redirect($url, $messages = [])
+    public function redirect(string $url, array $messages = []): void
     {
         $url = trim($url);
         $this->notice($messages, false, $url);
@@ -135,66 +88,38 @@ class Controller
         $this->statusResponse = 'redirect';
     }
 
-    /**
-     * @param string $label
-     * @param string $mime
-     * @param string $path
-     * @param string $type
-     * @param string $data
-     * @return void
-     */
-    public function downloadFile($label, $mime, $path, $type = 'file', $data = null)
+    public function downloadFile(string $label, string $mime, string $path, string $type = 'file', ?string $data = null): void
     {
         $this->fileData = ['label' => $label, 'mime' => $mime, 'path' => $path, 'data' => $data];
         $this->statusResponse = $type;
     }
 
-    /**
-     * @param string $redirectLocation
-     * @return void
-     */
-    public function setRedirectLocation($redirectLocation)
+    public function setRedirectLocation(string $redirectLocation): void
     {
         $this->redirectLocation = $redirectLocation;
     }
 
-    /**
-     * @param string $statusResponse
-     * @return void
-     */
-    public function setStatusResponse($statusResponse)
+    public function setStatusResponse(string $statusResponse): void
     {
         $this->statusResponse = $statusResponse;
     }
 
-    /**
-     * @return string
-     */
-    public function getStatusResponse()
+    public function getStatusResponse(): string
     {
         return $this->statusResponse;
     }
 
-    /**
-     * @return string
-     */
-    public function getRedirectLocation()
+    public function getRedirectLocation(): string
     {
         return $this->redirectLocation;
     }
 
-    /**
-     * @return array
-     */
-    public function getFileData()
+    public function getFileData(): array
     {
         return $this->fileData;
     }
 
-    /**
-     * @return void
-     */
-    public function display()
+    public function display(): void
     {
         $renderedView = $this->view->getRenderedView();
         if ($renderedView) {
@@ -202,121 +127,77 @@ class Controller
         }
 
         $this->layout->renderLayout();
-        $this->_removeMessages();
+        $this->removeMessages();
     }
 
-    /**
-     * @return void
-     */
-    private function _removeMessages()
+    private function removeMessages(): void
     {
         if (!$this->keepMessage && Session::isStarted() && Session::has('messages')) {
-            $messages = Arrays::filter(Session::get('messages'), function (Notice $notice) {
-                return !$notice->requestUrlMatches($this->uri);
-            });
+            $messages = Arrays::filter(Session::get('messages'), fn(Notice $notice) => !$notice->requestUrlMatches($this->uri));
             $this->saveMessagesWithEmptyCheck($messages);
         }
     }
 
-    /**
-     * @param string|null $viewName
-     */
-    public function renderAjaxView($viewName = null)
+    public function renderAjaxView(?string $viewName = null): void
     {
         $view = $this->view->render($viewName ?: $this->getViewName());
         $this->layout->renderAjax($view);
     }
 
-    /**
-     * @param array|string $messages
-     * @param bool $keep
-     * @param string|null $url
-     */
-    public function notice($messages, $keep = false, $url = null)
+    public function notice(array|string $messages, bool $keep = false, ?string $url = null): void
     {
         if (!empty($messages)) {
             $url = $url ? Uri::addPrefixIfNeeded($url) : null;
-            $messages = $this->wrapAsNotices($messages, $url);
+            $messages = $this->wrapAsNotices(Arrays::toArray($messages), $url);
             Session::set('messages', $messages);
             $this->keepMessage = $keep;
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getTab()
+    public function getTab(): string
     {
         $noController = Strings::remove(get_called_class(), 'Controller');
         $noSlashes = Strings::remove($noController, '\\');
         return Strings::camelCaseToUnderscore($noSlashes);
     }
 
-    /**
-     * @return bool
-     */
-    public function isAjax()
+    public function isAjax(): bool
     {
         return Uri::isAjax();
     }
 
-    /**
-     * @return null|RouteRule
-     */
-    public function getRouteRule()
+    public function getRouteRule(): ?RouteRule
     {
         return $this->routeRule;
     }
 
-    /**
-     * @return SessionStats
-     */
-    public function getSessionStats()
+    public function getSessionStats(): SessionStats
     {
         return $this->sessionStats;
     }
 
-    /**
-     * @return Uri
-     */
-    public function getUri()
+    public function getUri(): Uri
     {
         return $this->uri;
     }
 
-    public function getCurrentControllerName()
+    public function getCurrentControllerName(): string
     {
         return Strings::camelCaseToUnderscore($this->routeRule->getControllerName());
     }
 
-    /**
-     * @param string $name
-     * @param array $args
-     * @throws NoControllerActionException
-     */
-    public function __call($name, $args)
+    public function __call(string $name, array $args)
     {
-        throw new NoControllerActionException('No action [' . $name . '] defined in controller [' . get_called_class() . '].');
+        $class = get_called_class();
+        throw new NoControllerActionException("No action [{$name}] defined in controller [{$class}].");
     }
 
-    /**
-     * @param array|string $messages
-     * @param string $url
-     * @return array
-     */
-    private function wrapAsNotices($messages, $url)
+    private function wrapAsNotices(array $messages, ?string $url): array
     {
-        $array = Arrays::toArray($messages);
-        return Arrays::map($array, function ($msg) use ($url) {
-            return new Notice($msg, $url);
-        });
+        return Arrays::map($messages, fn($msg) => new Notice($msg, $url));
     }
 
-    /**
-     * @param string $messages
-     * @return void
-     */
-    private function saveMessagesWithEmptyCheck($messages)
+    private function saveMessagesWithEmptyCheck(array $messages): void
     {
         if ($messages) {
             Session::set('messages', $messages);
@@ -325,18 +206,14 @@ class Controller
         }
     }
 
-    /**
-     * @return string
-     */
-    private function getViewName()
+    private function getViewName(): string
     {
-        return ($this->routeRule->getControllerName() . '/' . $this->currentAction) ?: '/';
+        $controllerName = $this->routeRule->getControllerName();
+        $action = $this->currentAction ?: '';
+        return "{$controllerName}/{$action}";
     }
 
-    /**
-     * @return array
-     */
-    public function getRequestHeaders()
+    public function getRequestHeaders(): array
     {
         return RequestHeaders::all();
     }

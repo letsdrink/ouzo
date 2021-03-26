@@ -1,22 +1,29 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Application\Model\Test;
 
 use Ouzo\Routing\Annotation\Route;
+use Ouzo\Routing\Annotation\Route\Get;
+use Ouzo\Routing\Annotation\Route\Post;
+use Ouzo\Routing\Annotation\RoutePrefix;
 
 /**
  * @Route("/prefix")
  */
+#[RoutePrefix('/prefix')]
 class GlobalController
 {
-    /**
-     * @Route\Get("/")
-     */
-    public function index() {}
+    #[Get('/')]
+    public function index()
+    {
+    }
 
-    /**
-     * @Route\Post("/action")
-     */
-    public function action() {}
-
+    #[Post('/action')]
+    public function action()
+    {
+    }
 }

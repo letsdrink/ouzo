@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Uri;
 
 use Ouzo\Routing\Route;
@@ -14,10 +15,9 @@ class JsUriHelperGenerator
 {
     const INDENT = '    ';
 
-    private $generatedFunctions = '';
-
+    private string $generatedFunctions = '';
     /** @var RouteRule[] */
-    public $routeRules;
+    public array $routeRules;
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class JsUriHelperGenerator
         $this->generateFunctions();
     }
 
-    private function generateFunctions()
+    private function generateFunctions(): void
     {
         $namesAlreadyGenerated = [];
         foreach ($this->routeRules as $routeRule) {
@@ -42,7 +42,7 @@ class JsUriHelperGenerator
         }
     }
 
-    private function createFunction(RouteRule $routeRule)
+    private function createFunction(RouteRule $routeRule): string
     {
         $uri = $routeRule->getUri();
         $applicationPrefix = UriGeneratorHelper::getApplicationPrefix($routeRule);
@@ -60,35 +60,33 @@ FUNCTION;
         return $name ? $function : '';
     }
 
-    private function prepareParameters($uri)
+    /** @return string[] */
+    private function prepareParameters(string $uri): array
     {
         preg_match_all('#:(\w+)#', $uri, $matches);
         return Arrays::getValue($matches, 1, []);
     }
 
-    private function createCheckParameters($parameters)
+    private function createCheckParameters(array $parameters): string
     {
         if ($parameters) {
-            $indent = self::INDENT;
-            $checkFunctionParameters = Arrays::map($parameters, function ($element) use ($indent) {
-                return $indent . "checkParameter($element);";
-            });
-            return implode("\n", $checkFunctionParameters) . "\n" . $indent;
+            $checkFunctionParameters = Arrays::map($parameters, fn($element) => self::INDENT . "checkParameter($element);");
+            return implode("\n", $checkFunctionParameters) . "\n" . self::INDENT;
         }
         return self::INDENT;
     }
 
-    public function getGeneratedFunctions()
+    public function getGeneratedFunctions(): string
     {
         return trim($this->generatedFunctions) . "\n";
     }
 
-    public function saveToFile($path)
+    public function saveToFile(string $path): bool|int
     {
         return file_put_contents($path, $this->getGeneratedFunctions());
     }
 
-    public static function generate()
+    public static function generate(): self
     {
         return new self();
     }

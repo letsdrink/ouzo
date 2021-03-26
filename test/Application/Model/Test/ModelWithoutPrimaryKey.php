@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Application\Model\Test;
 
 use Ouzo\Model;
@@ -14,14 +15,13 @@ use Ouzo\Model;
  */
 class ModelWithoutPrimaryKey extends Model
 {
-    private $_fields = ['name'];
-
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct([
             'table' => 'products',
             'primaryKey' => '',
             'attributes' => $attributes,
-            'fields' => $this->_fields]);
+            'fields' => ['name']
+        ]);
     }
 }

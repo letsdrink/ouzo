@@ -1,11 +1,12 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\ExceptionHandling;
 
+use JetBrains\PhpStorm\ArrayShape;
 use Ouzo\Config;
 use Ouzo\I18n;
 use Ouzo\UserException;
@@ -13,12 +14,17 @@ use Throwable;
 
 class Error
 {
-    public $code;
-    public $message;
-    public $originalMessage;
-    private $field;
+    public int $code;
+    public string $message;
+    public string $originalMessage;
+    private ?string $field;
 
-    public function __construct($code, $message, $originalMessage = null, $field = null)
+    public function __construct(
+        int $code,
+        string $message,
+        ?string $originalMessage = null,
+        ?string $field = null
+    )
     {
         $this->code = $code;
         $this->message = $message;
@@ -26,8 +32,7 @@ class Error
         $this->field = $field;
     }
 
-    /** @param Throwable $exception */
-    public static function forException($exception)
+    public static function forException(Throwable $exception): Error
     {
         if ($exception instanceof UserException || Config::getValue('debug')) {
             return new Error($exception->getCode(), $exception->getMessage());
@@ -35,7 +40,8 @@ class Error
         return new Error($exception->getCode(), I18n::t('exception.unknown'), $exception->getMessage());
     }
 
-    public function toArray()
+    #[ArrayShape(['message' => "string", 'code' => "int", 'field' => "null|string"])]
+    public function toArray(): array
     {
         $array = ['message' => $this->message, 'code' => $this->code];
         if ($this->field) {
@@ -44,23 +50,23 @@ class Error
         return $array;
     }
 
-    public static function getByCode($code, $params = [], $prefix = 'errors.')
+    public static function getByCode($code, $params = [], $prefix = 'errors.'): Error
     {
         $message = I18n::t($prefix . $code, $params);
         return new Error($code, $message);
     }
 
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
-    public function getCode()
+    public function getCode(): int
     {
         return $this->code;
     }
 
-    public function getField()
+    public function getField(): ?string
     {
         return $this->field;
     }

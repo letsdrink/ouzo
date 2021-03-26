@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Product;
 use Ouzo\Db;
 use Ouzo\Tests\DbTransactionalTestCase;
@@ -10,7 +11,6 @@ use Ouzo\Utilities\Iterator\BatchingIterator;
 
 class StatementIteratorTest extends DbTransactionalTestCase
 {
-
     /**
      * @test
      */

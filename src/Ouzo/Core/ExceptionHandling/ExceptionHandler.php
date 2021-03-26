@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -13,9 +13,9 @@ use Ouzo\UserException;
 
 class ExceptionHandler
 {
-    private static $errorHandled = false;
-    private static $isCli = false;
-    public static $errorRenderer = null;
+    private static bool $errorHandled = false;
+    private static bool $isCli = false;
+    public static ?Renderer $errorRenderer = null;
 
     public static function setupErrorRenderer()
     {

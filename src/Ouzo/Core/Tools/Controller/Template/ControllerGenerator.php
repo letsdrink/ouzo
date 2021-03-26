@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Controller\Template;
 
 use Ouzo\AutoloadNamespaces;
@@ -12,16 +13,11 @@ use Ouzo\Utilities\Strings;
 
 class ControllerGenerator
 {
-    private $controller;
-    private $controllerPath;
-
-    public function __construct($controller, $controllerPath = null)
+    public function __construct(private string $controller, private ?string $controllerPath = null)
     {
-        $this->controller = $controller;
-        $this->controllerPath = $controllerPath;
     }
 
-    public function getClassName()
+    public function getClassName(): string
     {
         $class = Strings::underscoreToCamelCase($this->controller);
         if (Strings::endsWith($class, 'Controller')) {
@@ -30,43 +26,43 @@ class ControllerGenerator
         return Strings::appendSuffix($class, 'Controller');
     }
 
-    public function getClassNamespace()
+    public function getClassNamespace(): string
     {
         $controllerNamespaces = AutoloadNamespaces::getControllerNamespace();
         return rtrim($controllerNamespaces[0], '\\');
     }
 
-    public function isControllerExists()
+    public function isControllerExists(): bool
     {
         return Files::exists($this->getControllerPath());
     }
 
-    public function getControllerPath()
+    public function getControllerPath(): string
     {
         return $this->controllerPath ?: ClassPathResolver::forClassAndNamespace($this->getClassName(), $this->getClassNamespace())->getClassFileName();
     }
 
-    public function templateContents()
+    public function templateContents(): string
     {
-        $classStubPlaceholderReplacer = new ControllerClassStubPlaceholderReplacer($this);
-        return $classStubPlaceholderReplacer->content();
+        $replacer = new ControllerClassStubPlaceholderReplacer($this);
+        return $replacer->content();
     }
 
-    public function saveController()
+    public function saveController(): void
     {
         $path = $this->getControllerPath();
         $this->preparePaths(dirname($path));
         file_put_contents($path, $this->templateContents());
     }
 
-    private function preparePaths($path)
+    private function preparePaths(string $path): void
     {
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
         }
     }
 
-    public function getControllerContents()
+    public function getControllerContents(): string
     {
         $controllerPath = $this->getControllerPath();
         if (Files::exists($controllerPath)) {
@@ -75,20 +71,20 @@ class ControllerGenerator
         return '';
     }
 
-    public function appendAction(ActionGenerator $actionGenerator = null)
+    public function appendAction(ActionGenerator $actionGenerator = null): bool
     {
         if ($actionGenerator) {
             if ($this->isActionExists($actionGenerator->getActionName())) {
                 return false;
             }
-            $actionAppender = new ActionAppender($actionGenerator);
-            return $actionAppender->toController($this)->append();
+            $appender = new ActionAppender($actionGenerator);
+            return $appender->toController($this)->append();
         }
         return false;
     }
 
-    public function isActionExists($actionName)
+    public function isActionExists($actionName): bool
     {
-        return Strings::contains($this->getControllerContents(), 'function ' . $actionName);
+        return Strings::contains($this->getControllerContents(), "function {$actionName}");
     }
 }

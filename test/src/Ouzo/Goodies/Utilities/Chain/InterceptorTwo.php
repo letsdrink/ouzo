@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -9,7 +9,7 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class InterceptorTwo implements Interceptor
 {
-    public function handle($param, Chain $next)
+    public function handle(mixed $param, Chain $next): mixed
     {
         return $next->proceed($param . '2');
     }

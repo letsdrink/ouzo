@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 use Ouzo\Tests\Assert;
@@ -231,7 +231,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2017-03-26 04:31:50', $clock->format());
     }
 
-    function monthChange()
+    function monthChange(): array
     {
         return [
             ['2017-01-01', 1, '2017-02-01'],

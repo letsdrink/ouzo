@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -11,39 +11,37 @@ use BadMethodCallException;
 class InstanceRepository
 {
     /** @var object[] */
-    private $instances = [];
+    private array $instances = [];
     /** @var object[] */
-    private $factoryInstances = [];
-    /** @var Bindings */
-    private $bindings;
+    private array $factoryInstances = [];
 
-    public function __construct(Bindings $bindings)
+    public function __construct(private Bindings $bindings)
     {
-        $this->bindings = $bindings;
     }
 
     public function getInstance(InstanceFactory $factory, Binder $binder): object
     {
         $instance = $binder->getInstance();
-        if ($instance) {
+        if (!is_null($instance)) {
             return $instance;
         }
 
         $className = $binder->getBoundClassName() ?: $binder->getClassName();
 
         $factoryClassName = $binder->getFactoryClassName();
-        if ($factoryClassName) {
+        if (!is_null($factoryClassName)) {
             return $this->createInstanceThroughFactory($factory, $className, $binder);
         }
 
         $scope = $binder->getScope();
-        if ($scope == Scope::SINGLETON) {
+        if ($scope === Scope::SINGLETON) {
             return $this->singletonInstance($factory, $className, $binder->isEager());
         }
-        if ($scope == Scope::PROTOTYPE) {
+        if ($scope === Scope::PROTOTYPE) {
             return $factory->createInstance($this, $className);
         }
-        throw new BadMethodCallException("Unknown scope: $scope");
+
+        throw new BadMethodCallException("Unknown scope: {$scope}");
     }
 
     public function singletonInstance(InstanceFactory $factory, string $className, bool $eager): object
@@ -61,10 +59,10 @@ class InstanceRepository
         $factoryClassName = $binder->getFactoryClassName();
 
         if (!in_array(Factory::class, class_implements($factoryClassName))) {
-            throw new InjectorException("Factory class $factoryClassName does not implemented \Ouzo\Injection\Factory interface.");
+            throw new InjectorException("Factory class {$factoryClassName} does not implemented \Ouzo\Injection\Factory interface.");
         }
 
-        if ($binder->getScope() == Scope::SINGLETON) {
+        if ($binder->getScope() === Scope::SINGLETON) {
             if (isset($this->factoryInstances[$factoryClassName])) {
                 return $this->factoryInstances[$factoryClassName];
             }

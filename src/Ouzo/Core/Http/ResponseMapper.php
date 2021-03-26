@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Http;
 
 use Ouzo\Utilities\Arrays;
@@ -10,7 +11,7 @@ use Ouzo\Utilities\Strings;
 
 class ResponseMapper
 {
-    protected static $_messages = [
+    protected static array $messages = [
         //Informational 1xx
         100 => '100 Continue',
         101 => '101 Switching Protocols',
@@ -82,12 +83,12 @@ class ResponseMapper
         599 => '599 Network Connect Timeout Error'
     ];
 
-    public static function getMessage($code, $default = '500 Internal Server Error')
+    public static function getMessage(int $code, string $default = '500 Internal Server Error'): string
     {
-        return Arrays::getValue(self::$_messages, $code, $default);
+        return Arrays::getValue(self::$messages, $code, $default);
     }
 
-    public static function getMessageWithHttpProtocol($code, $protocol = 'HTTP/1.1 ')
+    public static function getMessageWithHttpProtocol(int $code, string $protocol = 'HTTP/1.1 '): string
     {
         return Strings::appendPrefix(self::getMessage($code), $protocol);
     }

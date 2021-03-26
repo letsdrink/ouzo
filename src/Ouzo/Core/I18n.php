@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Exception;
@@ -14,24 +15,16 @@ class I18n
 {
     const DEFAULT_LANGUAGE = 'en';
 
-    /** @var Translator */
-    private static $translator;
-    /** @var array|null */
-    private static $labels;
+    private static ?Translator $translator = null;
+    private static ?array $labels = [];
 
-    /**
-     * @param string $key
-     * @param array $params
-     * @param PluralizeOption|null $pluralize
-     * @return string
-     */
-    public static function t($key, $params = [], PluralizeOption $pluralize = null)
+    public static function t(string $key, array $params = [], ?PluralizeOption $pluralize = null): string
     {
         if (!$key) {
             return '';
         }
         if (!self::$translator) {
-            self::$translator = self::_getTranslator();
+            self::$translator = self::getTranslator();
         }
         if ($pluralize != null) {
             return self::$translator->translateWithChoice($key, $pluralize->getValue(), $params);
@@ -39,32 +32,20 @@ class I18n
         return self::$translator->translate($key, $params);
     }
 
-    /**
-     * @param Translator|null $translator
-     * @return void
-     */
-    public static function reset(Translator $translator = null)
+    public static function reset(Translator $translator = null): void
     {
         self::$translator = $translator;
         self::$labels = null;
     }
 
-    /**
-     * @param string $key
-     * @return array
-     */
-    public static function labels($key = '')
+    public static function labels(string $key = ''): ?array
     {
         $labels = self::loadLabels();
         $explodedKey = explode('.', $key);
         return $key ? Arrays::getNestedValue($labels, $explodedKey) : $labels;
     }
 
-    /**
-     * @return array
-     * @throws Exception
-     */
-    public static function loadLabels()
+    public static function loadLabels(): array
     {
         if (!self::$labels) {
             $language = self::getLanguage();
@@ -78,28 +59,18 @@ class I18n
         return self::$labels;
     }
 
-    /**
-     * @return Translator
-     */
-    private static function _getTranslator()
+    private static function getTranslator(): Translator
     {
         $labels = self::loadLabels();
         return new Translator(self::getLanguage(), $labels);
     }
 
-    /**
-     * @return string
-     */
-    private static function getLanguage()
+    private static function getLanguage(): string
     {
         return Config::getValue('language') ?: I18n::DEFAULT_LANGUAGE;
     }
 
-    /**
-     * @param int $value
-     * @return PluralizeOption
-     */
-    public static function pluralizeBasedOn($value)
+    public static function pluralizeBasedOn(int $value): PluralizeOption
     {
         return new PluralizeOption($value);
     }

@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
 use Ouzo\Model;
@@ -11,19 +12,16 @@ use Ouzo\Utilities\Arrays;
 
 class ModelAttributesMatcher implements ArgumentMatcher
 {
-    private $expectedAttributes;
-    /**
-     * @var Model
-     */
-    private $expected;
+    private array $expectedAttributes;
+    private Model $expected;
 
     public function __construct(Model $expected)
     {
         $this->expected = $expected;
-        $this->expectedAttributes = $expectedAttributes = Arrays::filterByAllowedKeys($this->expected->attributes(), $this->expected->getFields());
+        $this->expectedAttributes = Arrays::filterByAllowedKeys($this->expected->attributes(), $this->expected->getFields());
     }
 
-    public function matches($argument)
+    public function matches(mixed $argument): bool
     {
         if (get_class($this->expected) !== get_class($argument)) {
             return false;
@@ -32,7 +30,7 @@ class ModelAttributesMatcher implements ArgumentMatcher
         return $this->expectedAttributes == $actualAttributes;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $attributes = print_r($this->expectedAttributes, true);
         return get_class($this->expected) . " with attributes($attributes)";

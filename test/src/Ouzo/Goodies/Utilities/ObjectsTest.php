@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -9,14 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class ClassImplementingToString
 {
-    private $string;
-
-    public function __construct($string)
+    public function __construct(private string $string)
     {
-        $this->string = $string;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->string;
     }
@@ -24,10 +21,8 @@ class ClassImplementingToString
 
 class ClassWithProperty
 {
-    public $property;
-    private
-        /** @noinspection PhpUnusedPrivateFieldInspection */
-        $privateProperty = 'private value';
+    public mixed $property;
+    private mixed $privateProperty = 'private value';
 }
 
 class ObjectsTest extends TestCase
@@ -395,12 +390,12 @@ class ObjectsTest extends TestCase
     {
         //given
         $array = [
-            'id'   => 123,
+            'id' => 123,
             'name' => 'John',
             'info' => [
                 'account' => [
                     'number' => '2343-de',
-                    'info'   => 'some info about account'
+                    'info' => 'some info about account'
                 ]
             ]
         ];

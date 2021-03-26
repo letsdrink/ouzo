@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -8,18 +8,17 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\FluentFunctions;
 use Ouzo\Utilities\Optional;
+use PHPUnit\Framework\TestCase;
 
 class MyOptionalClass
 {
-    public $myField = 'abc';
+    public string $myField = 'abc';
 
-    public function myMethod()
+    public function myMethod(): string
     {
         return '123';
     }
 }
-
-use PHPUnit\Framework\TestCase;
 
 class OptionalTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -18,18 +18,14 @@ use PDO;
 
 abstract class Dialect
 {
-    /** @var Query */
-    protected $query;
+    protected Query $query;
 
-    /**
-     * @return string
-     */
-    public function select()
+    public function select(): string
     {
         if ($this->query->type == QueryType::$SELECT) {
-            return 'SELECT ' .
-                ($this->query->distinct ? 'DISTINCT ' : '') .
-                (empty($this->query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::_addAliases())->join($this->query->selectColumns));
+            $distinct = $this->query->distinct ? 'DISTINCT ' : '';
+            $columns = empty($this->query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::addAliases())->join($this->query->selectColumns);
+            return "SELECT {$distinct}{$columns}";
         }
         if ($this->query->type == QueryType::$COUNT) {
             return 'SELECT count(*)';
@@ -37,20 +33,14 @@ abstract class Dialect
         return '';
     }
 
-    /**
-     * @return string
-     */
-    public function update()
+    public function update(): string
     {
         $attributes = DialectUtil::buildAttributesPartForUpdate($this->query->updateAttributes);
         $table = $this->table();
-        return "UPDATE $table SET $attributes";
+        return "UPDATE {$table} SET {$attributes}";
     }
 
-    /**
-     * @return string
-     */
-    public function insert()
+    public function insert(): string
     {
         $data = $this->query->updateAttributes;
 
@@ -60,98 +50,70 @@ abstract class Dialect
         if ($values) {
             $joinedColumns = implode(', ', $columns);
             $joinedValues = implode(', ', array_fill(0, count($values), '?'));
-            return "INSERT INTO {$this->query->table} ($joinedColumns) VALUES ($joinedValues)";
+            return "INSERT INTO {$this->query->table} ({$joinedColumns}) VALUES ({$joinedValues})";
         } else {
             return $this->insertEmptyRow();
         }
     }
 
-    /**
-     * @return string
-     */
-    abstract public function onConflictUpdate();
+    abstract public function onConflictUpdate(): string;
 
-    /**
-     * @return string
-     */
-    abstract public function onConflictDoNothing();
+    abstract public function onConflictDoNothing(): string;
 
-    /**
-     * @return string
-     */
-    public function delete()
+    public function delete(): string
     {
         return "DELETE";
     }
 
-    /**
-     * @return string
-     */
-    public function join()
+    public function join(): string
     {
         $join = DialectUtil::buildJoinQuery($this->query->joinClauses);
         if ($join) {
-            return ' ' . $join;
+            return " {$join}";
         }
         return '';
     }
 
-    /**
-     * @return string
-     */
-    public function where()
+    public function where(): string
     {
-        return $this->_where($this->query->whereClauses);
+        return $this->whereClause(Arrays::toArray($this->query->whereClauses));
     }
 
-    /**
-     * @return string
-     */
-    private function whereWithUsing()
+    private function whereWithUsing(): string
     {
         $usingClauses = $this->query->usingClauses;
         $whereClauses = Arrays::map($usingClauses, function (JoinClause $usingClause) {
             return WhereClause::create($usingClause->getJoinColumnWithTable() . ' = ' . $usingClause->getJoinedColumnWithTable());
         });
-        return $this->_where(array_merge($whereClauses, $this->query->whereClauses));
+        return $this->whereClause(array_merge($whereClauses, $this->query->whereClauses));
     }
 
-    /**
-     * @return string
-     */
-    public function using()
+    public function using(): string
     {
-        return $this->_using($this->query->usingClauses);
+        return $this->usingClause($this->query->usingClauses);
     }
 
-    /**
-     * @return string
-     */
-    public function groupBy()
+    public function groupBy(): string
     {
         $groupBy = $this->query->groupBy;
         if ($groupBy) {
-            return ' GROUP BY ' . (is_array($groupBy) ? implode(', ', $groupBy) : $groupBy);
+            $groupBy = is_array($groupBy) ? implode(', ', $groupBy) : $groupBy;
+            return " GROUP BY {$groupBy}";
         }
         return '';
     }
 
-    /**
-     * @return string
-     */
-    public function order()
+    public function order(): string
     {
         $order = $this->query->order;
         if ($order) {
-            return ' ORDER BY ' . (is_array($order) ? implode(', ', $order) : $order);
+            $order = is_array($order) ? implode(', ', $order) : $order;
+            return " ORDER BY {$order}";
         }
         return '';
     }
 
-    /**
-     * @return string
-     */
-    public function limit()
+    public function limit(): string
     {
         if ($this->query->limit !== null) {
             return ' LIMIT ?';
@@ -159,10 +121,7 @@ abstract class Dialect
         return '';
     }
 
-    /**
-     * @return string
-     */
-    public function offset()
+    public function offset(): string
     {
         if ($this->query->offset) {
             return ' OFFSET ?';
@@ -170,55 +129,37 @@ abstract class Dialect
         return '';
     }
 
-    /**
-     * @return string
-     */
-    public function table()
+    public function table(): string
     {
-        $alias = $this->query->aliasTable ? ' AS ' . $this->query->aliasTable : '';
+        $alias = $this->query->aliasTable ? " AS {$this->query->aliasTable}" : '';
         return $this->tableOrSubQuery() . $alias;
     }
 
-    /**
-     * @return string
-     */
-    public function tableOrSubQuery()
+    public function tableOrSubQuery(): string
     {
         if ($this->query->table instanceof Query) {
-            return '(' . DialectFactory::create()->buildQuery($this->query->table) . ')';
+            $query = DialectFactory::create()->buildQuery($this->query->table);
+            return "({$query})";
         }
         return $this->query->table;
     }
 
-    /**
-     * @return string
-     */
-    public function from()
+    public function from(): string
     {
-        return ' FROM ' . $this->table();
+        return " FROM {$this->table()}";
     }
 
-    /**
-     * @return string
-     */
-    public function comment()
+    public function comment(): string
     {
-        return $this->query->comment ? ' /* ' . $this->query->comment . ' */ ' : '';
+        return $this->query->comment ? " /* {$this->query->comment} */ " : '';
     }
 
-    /**
-     * @return string
-     */
-    public function lockForUpdate()
+    public function lockForUpdate(): string
     {
         return $this->query->lockForUpdate ? ' FOR UPDATE' : '';
     }
 
-    /**
-     * @param Query $query
-     * @return string
-     */
-    public function buildQuery(Query $query)
+    public function buildQuery(Query $query): string
     {
         $this->query = $query;
         $sql = '';
@@ -260,11 +201,7 @@ abstract class Dialect
         return rtrim($sql);
     }
 
-    /**
-     * @param array $errorInfo
-     * @return string
-     */
-    public function getExceptionForError($errorInfo)
+    public function getExceptionForError(array $errorInfo): string
     {
         if ($this->isConnectionError($errorInfo)) {
             return DbConnectionException::class;
@@ -272,85 +209,47 @@ abstract class Dialect
         return DbException::class;
     }
 
-    /**
-     * @param array $errorInfo
-     * @return bool
-     */
-    public function isConnectionError($errorInfo)
+    public function isConnectionError(array $errorInfo): bool
     {
         return in_array($this->getErrorCode($errorInfo), $this->getConnectionErrorCodes());
     }
 
-    /**
-     * @return array
-     */
-    abstract public function getConnectionErrorCodes();
+    abstract public function getConnectionErrorCodes(): array;
 
-    /**
-     * @param array $errorInfo
-     * @return mixed
-     */
-    abstract public function getErrorCode($errorInfo);
+    abstract public function getErrorCode(array $errorInfo): mixed;
 
-    /**
-     * @param string $table
-     * @param string $primaryKey
-     * @param array $columns
-     * @param int $batchSize
-     * @return string
-     */
-    abstract public function batchInsert($table, $primaryKey, $columns, $batchSize);
+    /** @param string[] $columns */
+    abstract public function batchInsert(string $table, string $primaryKey, array $columns, int $batchSize): string;
 
-    /**
-     * @return string
-     */
-    abstract public function regexpMatcher();
+    abstract public function regexpMatcher(): string;
 
-    /**
-     * @param string $whereClauses
-     * @return string
-     */
-    protected function _where($whereClauses)
+    /** @param WhereClause[] $whereClauses */
+    protected function whereClause(array $whereClauses): string
     {
         $where = DialectUtil::buildWhereQuery($whereClauses);
         if ($where) {
-            return ' WHERE ' . $where;
+            return " WHERE {$where}";
         }
         return '';
     }
 
-    /**
-     * @param array $usingClauses
-     * @param string $glue
-     * @param string $table
-     * @param string $alias
-     * @return string
-     */
-    protected function _using($usingClauses, $glue = ', ', $table = null, $alias = null)
+    /** @param JoinClause[] $usingClauses */
+    protected function usingClause(array $usingClauses, string $glue = ', ', string $table = null, string $alias = null): string
     {
         $using = DialectUtil::buildUsingQuery($usingClauses, $glue, $table, $alias);
         if ($using) {
-            return ' USING ' . $using;
+            return " USING {$using}";
         }
         return '';
     }
 
-    /**
-     * @return string
-     */
-    abstract protected function insertEmptyRow();
+    abstract protected function insertEmptyRow(): string;
 
-    /**
-     * @return array
-     */
-    public function getIteratorOptions()
+    /** @return int[] */
+    public function getIteratorOptions(): array
     {
         return [PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL];
     }
 
-    /**
-     * @param string $word
-     * @return string
-     */
-    abstract protected function quote($word);
+    abstract protected function quote(string $word): string;
 }

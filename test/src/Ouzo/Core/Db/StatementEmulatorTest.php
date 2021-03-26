@@ -1,14 +1,16 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db;
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\Options;
 use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\SimpleMock;
 
 class SimpleModel extends Model
 {
@@ -26,8 +28,9 @@ class StatementEmulatorTest extends DbTransactionalTestCase
     public function shouldSubstituteParams()
     {
         //given
-        $pdoStatement = Mock::mock();
-        $pdo = Mock::mock();
+        $pdoStatement = Mock::mock(PDOStatement::class);
+        $pdo = Mock::mock(PDO::class);
+        /** @var Db|SimpleMock $db */
         $db = Mock::mock(Db::class);
         $db->dbHandle = $pdo;
 

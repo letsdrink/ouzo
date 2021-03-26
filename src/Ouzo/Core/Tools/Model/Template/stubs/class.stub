@@ -8,7 +8,7 @@ use Ouzo\Model;
  */
 class {class} extends Model
 {
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct([
             {table_table}

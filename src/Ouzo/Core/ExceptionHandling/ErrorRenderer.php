@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -9,9 +9,9 @@ namespace Ouzo\ExceptionHandling;
 use Ouzo\Response\ResponseTypeResolve;
 use Ouzo\ViewPathResolver;
 
-class ErrorRenderer
+class ErrorRenderer implements Renderer
 {
-    public function render(OuzoExceptionData $exceptionData, $viewName)
+    public function render(OuzoExceptionData $exceptionData, ?string $viewName): void
     {
         /** @noinspection PhpUnusedLocalVariableInspection */
         $errorMessage = $exceptionData->getMessage();

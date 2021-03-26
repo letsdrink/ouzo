@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -9,10 +9,9 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class SampleMiddleware implements Interceptor
 {
-    /** @inheritdoc */
-    public function handle($request, Chain $next)
+    public function handle(mixed $param, Chain $next): mixed
     {
-        $request->forTestPurposesOnly = 'SampleMiddleware';
-        return $next->proceed($request);
+        $param->forTestPurposesOnly = 'SampleMiddleware';
+        return $next->proceed($param);
     }
 }

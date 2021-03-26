@@ -1,86 +1,57 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Utilities\Path;
 
 class Layout
 {
-    /** @var View */
-    public $view;
+    private ?string $renderContent = null;
+    private ?string $layout = null;
 
-    /** @var string */
-    private $renderContent;
-    /** @var string */
-    private $layout;
-
-    /**
-     * @param View $view
-     */
-    public function __construct(View $view)
+    public function __construct(public View $view)
     {
-        $this->view = $view;
     }
 
-    /**
-     * @param string $layout
-     * @return $this
-     */
-    public function setLayout($layout)
+    public function setLayout(string $layout): static
     {
         $this->layout = $layout;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function unsetLayout()
+    public function unsetLayout(): static
     {
         $this->layout = null;
         return $this;
     }
 
-    /**
-     * @param string $renderContent
-     * @return $this
-     */
-    public function setRenderContent($renderContent)
+    public function setRenderContent(string $renderContent): static
     {
         $this->renderContent = $renderContent;
         return $this;
     }
 
-    /**
-     * @return void
-     */
-    public function renderLayout()
+    public function renderLayout(): void
     {
         if ($this->layout) {
-            $layoutPath = Path::join(ROOT_PATH, ApplicationPaths::getLayoutPath(), $this->layout . '.phtml');
+            $layoutPath = Path::join(ROOT_PATH, ApplicationPaths::getLayoutPath(), "{$this->layout}.phtml");
             /** @noinspection PhpIncludeInspection */
             require_once($layoutPath);
         }
     }
 
-    /**
-     * @return string
-     */
-    public function layoutContent()
+    public function layoutContent(): ?string
     {
         return $this->renderContent;
     }
 
-    /**
-     * @param string $content
-     * @return void
-     */
-    public function renderAjax($content = '')
+    public function renderAjax(?string $content = ''): void
     {
-        if ($content) {
+        if (!empty($content)) {
             $this->setRenderContent($content);
         }
         $this->setLayout('ajax_layout');

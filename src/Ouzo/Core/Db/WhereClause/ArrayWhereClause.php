@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db\WhereClause;
 
 use Ouzo\Db\Dialect\DialectUtil;
@@ -13,13 +14,11 @@ use Ouzo\Utilities\Functions;
 
 class ArrayWhereClause extends WhereClause
 {
-    private $where;
-    private $values;
+    private array $where;
+    private array $values;
+    private string $operator;
 
-    /** @var string */
-    private $operator;
-
-    public function __construct($where, $operator = 'AND')
+    public function __construct(array $where, string $operator = 'AND')
     {
         foreach ($where as $column => $value) {
             if ($value === null) {
@@ -31,45 +30,36 @@ class ArrayWhereClause extends WhereClause
         $this->operator = $operator;
     }
 
-    public function isNeverSatisfied()
+    public function isNeverSatisfied(): bool
     {
-        foreach ($this->where as $value) {
-            if (is_array($value) && sizeof($value) == 0) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays::any($this->where, fn($value) => is_array($value) && sizeof($value) == 0);
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return empty($this->where);
     }
 
-    public function toSql()
+    public function toSql(): string
     {
-        $whereKeys = self::_buildWhereKeys($this->where);
+        $whereKeys = self::buildWhereKeys($this->where);
         return DialectUtil::joinClauses($whereKeys, $this->operator);
     }
 
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->values;
     }
 
-    private static function _buildWhereKeys($params)
+    private static function buildWhereKeys(array $params): array
     {
-        $keys = [];
-        foreach ($params as $column => $value) {
-            $keys[] = self::_buildWhereKey($column, $value);
-        }
-        return Arrays::filterNotBlank($keys);
+        return Arrays::filterNotBlank(Arrays::mapEntries($params, fn($column, $value) => self::buildWhereKey($column, $value)));
     }
 
-    private static function _buildWhereKey($column, $value)
+    private static function buildWhereKey(string $column, mixed $value): string
     {
         if (is_array($value)) {
-            return self::_buildWhereKeyIn($column, $value);
+            return self::buildWhereKeyIn($column, $value);
         }
         if ($value instanceof Restriction) {
             return $value->toSql($column);
@@ -77,17 +67,15 @@ class ArrayWhereClause extends WhereClause
         return $column . ' = ?';
     }
 
-    private static function _buildWhereKeyIn($column, array $array)
+    private static function buildWhereKeyIn(string $column, array $array): string
     {
         $useRestrictions = Arrays::any($array, Functions::isInstanceOf(Restriction::class));
 
         if ($useRestrictions) {
-            return DialectUtil::joinClauses($array, 'OR', function (Restriction $restriction) use ($column) {
-                return $restriction->toSql($column);
-            });
+            return DialectUtil::joinClauses($array, 'OR', fn(Restriction $restriction) => $restriction->toSql($column));
         }
 
         $in = implode(', ', array_fill(0, count($array), '?'));
-        return $column . ' IN (' . $in . ')';
+        return "{$column} IN ({$in})";
     }
 }

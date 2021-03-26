@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use InvalidArgumentException;
@@ -11,68 +12,41 @@ use Ouzo\Db\RelationFactory;
 
 class Relations
 {
-    /** @var array */
-    private $relations;
-    /** @var string */
-    private $modelClass;
+    private array $relations;
 
-    /** @var array */
-    private static $relationNames = ['hasOne', 'belongsTo', 'hasMany'];
+    /** @var string[] */
+    private static array $relationNames = ['hasOne', 'belongsTo', 'hasMany'];
 
-    /**
-     * @param string $modelClass
-     * @param array $params
-     * @param string $primaryKeyName
-     */
-    public function __construct($modelClass, array $params, $primaryKeyName)
+    public function __construct(private string $modelClass, array $params, string $primaryKeyName)
     {
-        $this->modelClass = $modelClass;
         $this->relations = [];
 
         $this->addRelations($params, $primaryKeyName);
     }
 
-    /**
-     * @param string $name
-     * @throws InvalidArgumentException
-     * @return Relation
-     */
-    public function getRelation($name)
+    public function getRelation(string $name): Relation
     {
         if (!isset($this->relations[$name])) {
-            throw new InvalidArgumentException("{$this->modelClass} has no relation: $name");
+            throw new InvalidArgumentException("{$this->modelClass} has no relation: {$name}");
         }
         return $this->relations[$name];
     }
 
-    /***
-     * @param string $name
-     * @return bool
-     */
-    public function hasRelation($name)
+    public function hasRelation(string $name): bool
     {
         return isset($this->relations[$name]);
     }
 
-    /**
-     * @param Relation $relation
-     * @return void
-     */
-    private function addRelation(Relation $relation)
+    private function addRelation(Relation $relation): void
     {
         $name = $relation->getName();
         if (isset($this->relations[$name])) {
-            throw new InvalidArgumentException("{$this->modelClass} already has a relation: $name");
+            throw new InvalidArgumentException("{$this->modelClass} already has a relation: {$name}");
         }
         $this->relations[$name] = $relation;
     }
 
-    /**
-     * @param array $params
-     * @param string $primaryKeyName
-     * @return void
-     */
-    private function addRelations(array $params, $primaryKeyName)
+    private function addRelations(array $params, string $primaryKeyName): void
     {
         foreach (self::$relationNames as $relationName) {
             if (isset($params[$relationName])) {

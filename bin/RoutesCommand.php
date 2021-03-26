@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -9,6 +9,7 @@ namespace Command;
 use Ouzo\ApplicationPaths;
 use Ouzo\Config;
 use Ouzo\Injection\Annotation\Inject;
+use Ouzo\Routing\Generator\RouteFileGenerator;
 use Ouzo\Routing\Route;
 use Ouzo\Routing\RouteRule;
 use Ouzo\Uri\Es6UriHelperGenerator;
@@ -33,11 +34,8 @@ class RoutesCommand extends Command
      */
     private $output;
 
-    /**
-     * @Inject
-     * @var \Ouzo\Routing\Generator\RouteFileGenerator
-     */
-    private $routeFileGenerator;
+    #[Inject]
+    private RouteFileGenerator $routeFileGenerator;
 
     public function configure()
     {
@@ -159,7 +157,7 @@ class RoutesCommand extends Command
 
     private function getRuleMethod(RouteRule $rule)
     {
-        if (!$rule->isActionRequired()) {
+        if (!$rule->isRequiredAction()) {
             return 'ALL';
         }
         return is_array($rule->getMethod()) ? 'ANY' : $rule->getMethod();

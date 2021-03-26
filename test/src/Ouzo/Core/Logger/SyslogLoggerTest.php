@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Logger;
 
@@ -6,6 +10,7 @@ namespace Ouzo\Logger;
 use Ouzo\Config;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\SimpleMock;
 use Ouzo\Utilities\Clock;
 use Psr\Log\LoggerInterface;
 
@@ -13,20 +18,14 @@ use PHPUnit\Framework\TestCase;
 
 class SyslogLoggerTest extends TestCase
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-    /**
-     * @var SyslogLogProvider
-     */
-    private $syslogLogProvider;
+    private LoggerInterface $logger;
+    private SyslogAdapter $syslogAdapter;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->syslogLogProvider = Mock::create(SyslogLogProvider::class);
-        $this->logger = new SyslogLogger('TEST', 'default', $this->syslogLogProvider);
+        $this->syslogAdapter = Mock::create(SyslogAdapter::class);
+        $this->logger = new SyslogLogger('TEST', 'default', $this->syslogAdapter);
     }
 
     protected function tearDown(): void
@@ -44,7 +43,7 @@ class SyslogLoggerTest extends TestCase
         $this->logger->error('My error log line with param %s and %s.', [42, 'Zaphod']);
 
         //then
-        Mock::verify($this->syslogLogProvider)->log(LOG_ERR, 'TEST error: [ID: ] My error log line with param 42 and Zaphod.');
+        Mock::verify($this->syslogAdapter)->log(LOG_ERR, 'TEST error: [ID: ] My error log line with param 42 and Zaphod.');
     }
 
 }

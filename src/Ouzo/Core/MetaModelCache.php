@@ -1,22 +1,17 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 class MetaModelCache
 {
-    /**
-     * @var Model
-     */
-    private static $modelMetaInstances = [];
+    /** @var Model[] */
+    private static array $modelMetaInstances = [];
 
-    /**
-     * @param string $modelClass
-     * @return Model
-     */
-    public static function getMetaInstance($modelClass)
+    public static function getMetaInstance(string $modelClass): Model
     {
         if (!isset(self::$modelMetaInstances[$modelClass])) {
             self::$modelMetaInstances[$modelClass] = $modelClass::newInstance([]);

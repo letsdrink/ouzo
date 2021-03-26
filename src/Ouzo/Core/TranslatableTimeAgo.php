@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo;
 
 use Ouzo\Utilities\Strings;
@@ -10,17 +11,11 @@ use Ouzo\Utilities\TimeAgo;
 
 class TranslatableTimeAgo
 {
-    /**
-     * @var TimeAgo
-     */
-    private $timeAgo;
-
-    private function __construct(TimeAgo $timeAgo)
+    private function __construct(private TimeAgo $timeAgo)
     {
-        $this->timeAgo = $timeAgo;
     }
 
-    public function asString()
+    public function asString(): string
     {
         $key = $this->timeAgo->getKey();
         $params = $this->timeAgo->getParams();
@@ -30,7 +25,7 @@ class TranslatableTimeAgo
         return I18n::t($key, $params);
     }
 
-    public static function create($date)
+    public static function create(string $date): TranslatableTimeAgo
     {
         $timeAgo = new TimeAgo($date);
         return new TranslatableTimeAgo($timeAgo);

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class PostgresDialectTest extends TestCase
 {
-    /**
-     * @var PostgresDialect
-     */
-    private $dialect;
+    private PostgresDialect $dialect;
 
     protected function setUp(): void
     {

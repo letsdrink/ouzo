@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tools\Model\Template;
 
 use Ouzo\Utilities\Arrays;
@@ -10,39 +11,34 @@ use Ouzo\Utilities\Strings;
 
 class ClassStubPlaceholderReplacer
 {
-    /**
-     * @var TableInfo
-     */
-    private $tableInfo;
-    private $className;
-    private $classStub;
-    private $classNamespace;
+    private ClassStub $classStub;
 
-    public function __construct($className, $tableInfo, $classNamespace = '')
+    public function __construct(
+        private string $className,
+        private TableInfo $tableInfo,
+        private string $classNamespace = ''
+    )
     {
-        $this->className = $className;
-        $this->tableInfo = $tableInfo;
-        $this->classNamespace = $classNamespace;
         $this->classStub = new ClassStub();
     }
 
-    private function _setupTablePlaceholderReplacements()
+    private function setupTablePlaceholderReplacements(): void
     {
-        $this->_setupTableNameReplacement();
-        $this->_setupPrimaryKeyReplacement();
-        $this->_setupSequenceReplacement();
+        $this->setupTableNameReplacement();
+        $this->setupPrimaryKeyReplacement();
+        $this->setupSequenceReplacement();
     }
 
-    public function contents()
+    public function contents(): string
     {
-        $this->_setupTablePlaceholderReplacements();
+        $this->setupTablePlaceholderReplacements();
         $this->classStub->addPlaceholderReplacement('class', $this->className);
         $this->classStub->addPlaceholderReplacement('namespace', $this->classNamespace);
-        Arrays::map($this->tableInfo->tableColumns, [$this->classStub, 'addColumn']);
+        Arrays::map($this->tableInfo->tableColumns, fn($column) => $this->classStub->addColumn($column));
         return $this->classStub->contents();
     }
 
-    private function _setupTableNameReplacement()
+    private function setupTableNameReplacement(): void
     {
         $tableName = $this->tableInfo->tableName;
         $defaultTableName = Strings::tableize($this->className);
@@ -50,17 +46,17 @@ class ClassStubPlaceholderReplacer
         $this->classStub->addTableSetupItem('table', $placeholderTableName);
     }
 
-    private function _setupPrimaryKeyReplacement()
+    private function setupPrimaryKeyReplacement(): void
     {
         $primaryKey = $this->tableInfo->primaryKeyName;
         $this->classStub->addTablePrimaryKey($primaryKey);
     }
 
-    private function _setupSequenceReplacement()
+    private function setupSequenceReplacement(): void
     {
         $sequenceName = $this->tableInfo->sequenceName;
-        $defaultSequenceName = $this->tableInfo->tableName . '_' . $this->tableInfo->primaryKeyName . '_seq';
-        $placeholderSequenceName = ($sequenceName != $defaultSequenceName) ? $sequenceName : '';
+        $defaultSequenceName = "{$this->tableInfo->tableName}_{$this->tableInfo->primaryKeyName}_seq";
+        $placeholderSequenceName = $sequenceName != $defaultSequenceName ? $sequenceName : '';
         $this->classStub->addTableSetupItem('sequence', $placeholderSequenceName);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -12,15 +12,15 @@ use Ouzo\Utilities\Functions;
 
 class RequestHeaders
 {
-    private static $headers;
+    private static array $headers;
 
-    public static function accept()
+    public static function accept(): array
     {
         $accept = Arrays::getValue($_SERVER, 'HTTP_ACCEPT');
-        return AcceptHeaderParser::parse($accept);
+        return $accept ? AcceptHeaderParser::parse($accept) : [];
     }
 
-    public static function ip()
+    public static function ip(): ?string
     {
         $ip = Arrays::getValue($_SERVER, 'HTTP_CLIENT_IP');
         if (!$ip) {
@@ -32,7 +32,7 @@ class RequestHeaders
         return $ip;
     }
 
-    public static function all()
+    public static function all(): array
     {
         //this implementation is for PHP where function getallheaders() doesn't exists in CLI
         if (!self::$headers) {
@@ -44,7 +44,8 @@ class RequestHeaders
         return self::$headers;
     }
 
-    public static function clearCache() {
-        self::$headers = null;
+    public static function clearCache(): void
+    {
+        self::$headers = [];
     }
 }

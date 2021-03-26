@@ -1,23 +1,20 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-
-use PHPUnit\Framework\TestCase; 
 
 class StdOutputLoggerTest extends TestCase
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     protected function setUp(): void
     {

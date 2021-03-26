@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -8,7 +8,6 @@ use Ouzo\Controller;
 use Ouzo\Routing\GroupedRoute;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
-use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
 use PHPUnit\Framework\TestCase;
 
@@ -184,39 +183,6 @@ class RouteTest extends TestCase
 
         //then
         Assert::thatArray($routes)->hasSize(8);
-    }
-
-    /**
-     * @test
-     * @throws Exception
-     */
-    public function shouldThrowExceptionIfNoActionInGetMethod()
-    {
-        //when
-        CatchException::when(new Route())->get('/user/save', UsersMockController::class, null);
-        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
-    }
-
-    /**
-     * @test
-     * @throws Exception
-     */
-    public function shouldThrowExceptionIfNoActionInPostMethod()
-    {
-        //when
-        CatchException::when(new Route())->post('/user/save', UsersMockController::class, null);
-        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
-    }
-
-    /**
-     * @test
-     * @throws Exception
-     */
-    public function shouldThrowExceptionIfNoActionInAnyMethod()
-    {
-        //when
-        CatchException::when(new Route())->any('/user/save', UsersMockController::class, null);
-        CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -16,22 +16,17 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class LogRequest implements Interceptor
 {
-    private $pathProvider;
-
-    /**
-     * @Inject
-     */
-    public function __construct(PathProviderInterface $pathProvider)
+    #[Inject]
+    public function __construct(private PathProviderInterface $pathProvider)
     {
-        $this->pathProvider = $pathProvider;
     }
 
-    /**
-     * @param RequestContext $requestContext
-     * @param Chain $next
-     * @return Chain
-     */
-    public function handle($requestContext, Chain $next)
+    public function handle(mixed $param, Chain $next): mixed
+    {
+        return $this->handleRequestContext($param, $next);
+    }
+
+    private function handleRequestContext(RequestContext $requestContext, Chain $next): mixed
     {
         Logger::getLogger(__CLASS__)->info('[Action: %s#%s] [Request: %s %s]', [
             $requestContext->getCurrentController(),

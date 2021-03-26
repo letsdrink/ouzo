@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -110,6 +110,7 @@ class JsonTest extends TestCase
     {
         //when
         CatchException::when(new Json())->decode($validJson);
+
         //then
         CatchException::assertThat()->notCaught();
     }
@@ -165,7 +166,7 @@ class JsonTest extends TestCase
         }
     }
 
-    function invalidJson()
+    function invalidJson(): array
     {
         return [
             ['()'],
@@ -177,7 +178,7 @@ class JsonTest extends TestCase
         ];
     }
 
-    function validJson()
+    function validJson(): array
     {
         return [
             [''],

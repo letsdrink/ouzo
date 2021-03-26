@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
@@ -13,15 +14,7 @@ use Ouzo\Utilities\Strings;
 
 class RelationFactory
 {
-    /**
-     * @param string $relationType
-     * @param string $relation
-     * @param string|array $relationParams
-     * @param string $primaryKeyName
-     * @param string $modelClass
-     * @return Relation
-     */
-    public static function create($relationType, $relation, $relationParams, $primaryKeyName, $modelClass)
+    public static function create(string $relationType, string $relation, array|string $relationParams, string $primaryKeyName, string $modelClass): Relation
     {
         if (is_string($relationParams)) {
             $relationParams = ['class' => $relationParams];
@@ -39,14 +32,7 @@ class RelationFactory
         throw new InvalidArgumentException("Invalid relation type: $relationType");
     }
 
-    /**
-     * @param string $name
-     * @param array $params
-     * @param string $primaryKey
-     * @param string $modelClass
-     * @return Relation
-     */
-    public static function hasMany($name, array $params, $primaryKey, $modelClass)
+    public static function hasMany(string $name, array $params, string $primaryKey, string $modelClass): Relation
     {
         self::validateParams($params);
 
@@ -56,14 +42,7 @@ class RelationFactory
         return self::newRelation($name, $localKey, $foreignKey, true, $params);
     }
 
-    /**
-     * @param string $name
-     * @param array $params
-     * @param string $primaryKey
-     * @param string $modelClass
-     * @return Relation
-     */
-    public static function hasOne($name, array $params, $primaryKey, $modelClass)
+    public static function hasOne(string $name, array $params, string $primaryKey, string $modelClass): Relation
     {
         self::validateParams($params);
 
@@ -73,12 +52,7 @@ class RelationFactory
         return self::newRelation($name, $localKey, $foreignKey, false, $params);
     }
 
-    /**
-     * @param string $name
-     * @param array $params
-     * @return Relation
-     */
-    public static function belongsTo($name, array $params)
+    public static function belongsTo(string $name, array $params): Relation
     {
         self::validateParams($params);
         $class = $params['class'];
@@ -88,11 +62,7 @@ class RelationFactory
         return self::newRelation($name, $localKey, $foreignKey, false, $params);
     }
 
-    /**
-     * @param array $params
-     * @return Relation
-     */
-    public static function inline($params)
+    public static function inline(array $params): Relation
     {
         self::validateNotEmpty($params, 'class');
         self::validateNotEmpty($params, 'localKey');
@@ -104,45 +74,24 @@ class RelationFactory
         return self::newRelation($destinationField, $params['localKey'], $params['foreignKey'], $collection, $params);
     }
 
-    /**
-     * @param array $params
-     * @return void
-     */
-    private static function validateParams(array $params)
+    private static function validateParams(array $params): void
     {
         self::validateNotEmpty($params, 'class');
     }
 
-    /**
-     * @param string $modelClass
-     * @return string
-     */
-    private static function defaultForeignKey($modelClass)
+    private static function defaultForeignKey(string $modelClass): string
     {
         return Strings::camelCaseToUnderscore(Arrays::last(explode('\\', $modelClass))) . '_id';
     }
 
-    /**
-     * @param array $params
-     * @param string $parameter
-     * @return void
-     */
-    private static function validateNotEmpty(array $params, $parameter)
+    private static function validateNotEmpty(array $params, string $parameter): void
     {
         if (empty($params[$parameter])) {
-            throw new InvalidArgumentException($parameter . " is required");
+            throw new InvalidArgumentException("{$parameter} is required");
         }
     }
 
-    /**
-     * @param string $name
-     * @param string $localKey
-     * @param string $foreignKey
-     * @param bool $collection
-     * @param array $params
-     * @return Relation
-     */
-    private static function newRelation($name, $localKey, $foreignKey, $collection, array $params)
+    private static function newRelation(string $name, string $localKey, string $foreignKey, bool $collection, array $params): Relation
     {
         $class = $params['class'];
         $condition = Arrays::getValue($params, 'conditions', '');

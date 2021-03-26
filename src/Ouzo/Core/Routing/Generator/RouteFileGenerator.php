@@ -1,43 +1,33 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Routing\Generator;
 
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Routing\Loader\AnnotationDirectoryLoader;
-use Ouzo\Routing\Loader\Loader;
 use Ouzo\Routing\Loader\RouteMetadataCollection;
 
 class RouteFileGenerator
 {
-    /** @var Loader */
-    private $loader;
+    private AnnotationDirectoryLoader $annotationDirectoryLoader;
 
-    /**
-     * @Inject
-     * @param AnnotationDirectoryLoader $loader
-     */
-    public function __construct(AnnotationDirectoryLoader $loader)
+    #[Inject]
+    public function __construct(AnnotationDirectoryLoader $annotationDirectoryLoader)
     {
-        $this->loader = $loader;
+        $this->annotationDirectoryLoader = $annotationDirectoryLoader;
     }
 
-    /**
-     * @param string $destinationPath
-     * @param array $resources
-     * @return false|int
-     */
-    public function generate(string $destinationPath, array $resources = [])
+    public function generate(string $destinationPath, array $resources = []): false|int
     {
-        $routesMetadata = $this->loader->load($resources);
+        $routesMetadata = $this->annotationDirectoryLoader->load($resources);
         $template = $this->generateFileTemplate($routesMetadata);
         return file_put_contents($destinationPath, $template);
     }
 
-    /**
-     * @param RouteMetadataCollection $routesMetadata
-     * @return string
-     */
-    private function generateFileTemplate(RouteMetadataCollection $routesMetadata)
+    private function generateFileTemplate(RouteMetadataCollection $routesMetadata): string
     {
         $template = "";
         $template .= "<?php\n\n";
@@ -45,11 +35,11 @@ class RouteFileGenerator
         $routesMetadata = $routesMetadata->sort()->toArray();
 
         foreach ($routesMetadata as $routeMetadata) {
-            $responseCode = $routeMetadata->getResponseCode() ? sprintf(", ['code' => %s]", $routeMetadata->getResponseCode()) : '';
+            $responseCode = $routeMetadata->getResponseCode() ? ", ['code' => {$routeMetadata->getResponseCode()}]" : '';
 
             $template .= sprintf(
                 "Route::%s('%s', %s, '%s'%s);\n",
-                strtolower($routeMetadata->getMethod()),
+                strtolower($routeMetadata->getHttpMethod()),
                 $routeMetadata->getUri(),
                 $routeMetadata->getClassNameReference(),
                 $routeMetadata->getClassMethod(),

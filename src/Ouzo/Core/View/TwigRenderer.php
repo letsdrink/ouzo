@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\View;
 
 use Ouzo\ApplicationPaths;
@@ -15,38 +16,34 @@ class TwigRenderer implements ViewRenderer
 {
     const EXTENSION = '.html.twig';
 
-    private $_viewName;
-    private $_attributes;
-    private $_loaderPath;
-    private $_viewPath;
-    private $_viewFilename;
+    private string $loaderPath;
+    private string $viewPath;
+    private string $viewFilename;
 
-    public function __construct($viewName, array $attributes)
+    public function __construct(private string $viewName, private array $attributes)
     {
-        $this->_viewName = $viewName;
-        $this->_attributes = $attributes;
-        $this->_loaderPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath());
-        $this->_viewFilename = $viewName . self::EXTENSION;
-        $this->_viewPath = Path::join($this->_loaderPath, $this->_viewFilename);
+        $this->loaderPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath());
+        $this->viewFilename = $viewName . self::EXTENSION;
+        $this->viewPath = Path::join($this->loaderPath, $this->viewFilename);
     }
 
-    public function render()
+    public function render(): string
     {
         $options = Config::getValue('twig', 'options') ?: [];
-        $loader = new Twig_Loader_Filesystem($this->_loaderPath);
+        $loader = new Twig_Loader_Filesystem($this->loaderPath);
         $environment = new Twig_Environment($loader, $options);
         $environment->addExtension(new OuzoTwigExtension());
         $this->initialize($environment);
-        $template = $environment->loadTemplate($this->_viewFilename);
-        return $template->render($this->_attributes);
+        $template = $environment->loadTemplate($this->viewFilename);
+        return $template->render($this->attributes);
     }
 
-    public function getViewPath()
+    public function getViewPath(): string
     {
-        return $this->_viewPath;
+        return $this->viewPath;
     }
 
-    private function initialize(Twig_Environment $environment)
+    private function initialize(Twig_Environment $environment): void
     {
         $initializerClass = Config::getValue('twig', 'initializer');
         if ($initializerClass) {

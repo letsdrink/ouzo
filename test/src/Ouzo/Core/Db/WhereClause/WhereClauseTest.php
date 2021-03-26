@@ -1,15 +1,13 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\Db\WhereClause;
 
-use InvalidArgumentException;
 use Ouzo\Db\Any;
 use Ouzo\Restrictions;
-
 use PHPUnit\Framework\TestCase;
 
 class WhereClauseTest extends TestCase
@@ -162,15 +160,5 @@ class WhereClauseTest extends TestCase
 
         // then
         $this->assertEquals('(a = 1 OR a = 2)', $result->toSql());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldFailForNotSupportedParameter()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        WhereClause::create(1);
     }
 }

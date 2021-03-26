@@ -1,58 +1,42 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\Injection;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Ouzo\Injection\Annotation\AnnotationMetadataProvider;
-use Ouzo\Injection\Annotation\DocCommentExtractor;
+use Ouzo\Injection\Annotation\AttributesInjectMetadataProvider;
+use Ouzo\Injection\Annotation\InjectMetadataProvider;
 
 class Injector
 {
-    /** @param InjectorConfig */
-    private $injectorConfig;
-    /** @var Bindings */
-    private $bindings;
-    /** @var InstanceRepository */
-    private $repository;
-    /** @var InstanceFactory */
-    private $factory;
+    private InjectorConfig $injectorConfig;
+    private Bindings $bindings;
+    private InstanceFactory $instanceFactory;
+    private InstanceRepository $instanceRepository;
 
-    /**
-     * @param InjectorConfig|null $config
-     * @param AnnotationMetadataProvider|null $provider
-     */
-    public function __construct(InjectorConfig $config = null, AnnotationMetadataProvider $provider = null)
+    public function __construct(InjectorConfig $injectorConfig = null, InjectMetadataProvider $injectMetadataProvider = null)
     {
-        AnnotationReader::addGlobalIgnoredName('Inject');
-        $this->injectorConfig = $config ?: new InjectorConfig();
+        $this->injectorConfig = $injectorConfig ?: new InjectorConfig();
         $this->bindings = new Bindings($this->injectorConfig, $this);
-        $this->factory = new InstanceFactory(
+        $this->instanceFactory = new InstanceFactory(
             $this->bindings,
-            $provider ?: new DocCommentExtractor(),
+            $injectMetadataProvider ?: new AttributesInjectMetadataProvider(),
             $this->injectorConfig->getEagerInstanceCreator(),
             $this->injectorConfig->getLazyInstanceCreator()
         );
-        $this->repository = new InstanceRepository($this->bindings);
+        $this->instanceRepository = new InstanceRepository($this->bindings);
     }
 
-    /** @return InjectorConfig */
-    public function getInjectorConfig()
+    public function getInjectorConfig(): InjectorConfig
     {
         return $this->injectorConfig;
     }
 
-    /**
-     * @param string $className
-     * @param string $name
-     * @return object
-     */
-    public function getInstance($className, $name = '')
+    public function getInstance(string $className, string $name = ''): object
     {
         $binder = $this->bindings->getBinder($className, $name);
-        return $this->repository->getInstance($this->factory, $binder);
+        return $this->instanceRepository->getInstance($this->instanceFactory, $binder);
     }
 }

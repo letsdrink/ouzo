@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -13,37 +13,31 @@ use Ouzo\Uri;
 
 class RoutingService
 {
-    /** @var Uri */
-    private $uri;
-    /** @var RouteRule */
-    private $routeRule;
+    private RouteRule $routeRule;
 
-    /**
-     * @Inject
-     */
-    public function __construct(Uri $uri)
+    #[Inject]
+    public function __construct(private Uri $uri)
     {
-        $this->uri = $uri;
         $router = new Router($this->uri);
         $this->routeRule = $router->findRoute();
     }
 
-    public function getUri()
+    public function getUri(): Uri
     {
         return $this->uri;
     }
 
-    public function getController()
+    public function getController(): string
     {
         return $this->routeRule->getController();
     }
 
-    public function getAction()
+    public function getAction(): string
     {
-        return $this->routeRule->isActionRequired() ? $this->routeRule->getAction() : $this->uri->getAction();
+        return $this->routeRule->isRequiredAction() ? $this->routeRule->getAction() : $this->uri->getAction();
     }
 
-    public function getRouteRule()
+    public function getRouteRule(): RouteRule
     {
         return $this->routeRule;
     }

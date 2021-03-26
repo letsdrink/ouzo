@@ -1,9 +1,10 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
+use Ouzo\Http\HttpMethod;
 use Ouzo\Routing\Loader\RouteMetadata;
 use Ouzo\Routing\Loader\RouteMetadataCollection;
 use Ouzo\Tests\Assert;
@@ -85,6 +86,6 @@ class RouteMetadataCollectionTest extends TestCase
 
         //then
         Assert::thatArray($elements)->onMethod('getUri')->containsExactly('/test', '/test');
-        Assert::thatArray($elements)->onMethod('getMethod')->containsExactly('GET', 'POST');
+        Assert::thatArray($elements)->onMethod('getHttpMethod')->containsExactly(HttpMethod::GET, HttpMethod::POST);
     }
 }
