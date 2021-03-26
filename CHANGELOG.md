@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-INCOMING
+Release 1.8.0
 --------
 
 Support for PHP 5.6 is dropped. Minimal PHP version required is 7.4.
