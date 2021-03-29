@@ -254,7 +254,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return (bool)$this->where([$this->modelDefinition->primaryKey => $this->getId()])->deleteAll();
     }
 
-    public function getId(): ?int
+    public function getId(): int|string|null
     {
         $primaryKeyName = $this->modelDefinition->primaryKey;
         return $this->$primaryKeyName;
