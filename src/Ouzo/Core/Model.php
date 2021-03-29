@@ -159,7 +159,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
         });
     }
 
-    private function doInsert($callback): ?int
+    private function doInsert($callback): string|int|null
     {
         $this->callBeforeSaveCallbacks();
 

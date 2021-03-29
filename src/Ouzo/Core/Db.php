@@ -166,7 +166,7 @@ class Db
         return new PDO($dsn, $params['user'], $params['pass'], $options);
     }
 
-    public function lastInsertId(?string $sequence): string
+    public function lastInsertId(?string $sequence): string|int|null
     {
         try {
             $lastInsertId = $this->dbHandle->lastInsertId($sequence);

@@ -70,7 +70,7 @@ class QueryExecutor
         return $this->db->execute($this->sql, $this->boundValues);
     }
 
-    public function insert(?string $sequence = ''): ?int
+    public function insert(?string $sequence = ''): string|int|null
     {
         $this->execute();
         return $sequence ? (int)$this->db->lastInsertId($sequence) : null;
