@@ -385,10 +385,8 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return static::queryBuilder($alias);
     }
 
-    /**
-     * @return static[]
-     */
-    public static function find(array|string $where, array $whereValues, array $orderBy = [], ?int $limit = null, ?int $offset = null): array
+    /** @return static[] */
+    public static function find(array|string $where, array|string $whereValues, array $orderBy = [], ?int $limit = null, ?int $offset = null): array
     {
         return static::metaInstance()
             ->where($where, $whereValues)
