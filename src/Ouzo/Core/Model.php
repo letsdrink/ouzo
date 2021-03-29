@@ -18,6 +18,7 @@ use Ouzo\Db\Relation;
 use Ouzo\Db\RelationFetcher;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Exception\ValidationException;
+use Ouzo\Restriction\Restriction;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
@@ -362,7 +363,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return static::queryBuilder()->using($relation, $alias);
     }
 
-    public static function where(null|string|array|WhereClause $params = '', null|string|array $values = []): ModelQueryBuilder
+    public static function where(null|string|array|WhereClause $params = '', null|string|array|Restriction $values = []): ModelQueryBuilder
     {
         return static::queryBuilder()->where($params, $values);
     }

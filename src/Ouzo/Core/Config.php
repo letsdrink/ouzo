@@ -49,7 +49,7 @@ class Config
         return self::$configInstance;
     }
 
-    public static function getPrefixSystem(): string
+    public static function getPrefixSystem(): ?string
     {
         return self::getValue('global', 'prefix_system');
     }
