@@ -16,14 +16,14 @@ class ValidationError extends Error
         string $message,
         ?string $field = null,
         ?string $value = null,
-        ?int $code = null
+        ?string $code = null
     )
     {
         parent::__construct($code ?? 0, $message, null, $field);
         $this->value = $value;
     }
 
-    #[ArrayShape(['message' => "string", 'code' => "int", 'field' => "null|string"])]
+    #[ArrayShape(['message' => "string", 'code' => "string", 'field' => "null|string"])]
     public function toArray(): array
     {
         $array = ['message' => $this->getMessage()];

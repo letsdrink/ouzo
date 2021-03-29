@@ -25,7 +25,7 @@ class TranslatableTimeAgo
         return I18n::t($key, $params);
     }
 
-    public static function create(string $date): TranslatableTimeAgo
+    public static function create(?string $date): TranslatableTimeAgo
     {
         $timeAgo = new TimeAgo($date);
         return new TranslatableTimeAgo($timeAgo);

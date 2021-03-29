@@ -14,13 +14,13 @@ use Throwable;
 
 class Error
 {
-    public ?int $code;
+    public ?string $code;
     public ?string $message;
     public ?string $originalMessage;
     private ?string $field;
 
     public function __construct(
-        ?int $code,
+        ?string $code,
         ?string $message,
         ?string $originalMessage = null,
         ?string $field = null
@@ -61,7 +61,7 @@ class Error
         return $this->message;
     }
 
-    public function getCode(): ?int
+    public function getCode(): ?string
     {
         return $this->code;
     }

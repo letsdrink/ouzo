@@ -104,7 +104,7 @@ class ModelFormBuilder
         return FormHelper::radioButtonTag($this->generateName($field), $this->object->$field, $attributes);
     }
 
-    public function start(string $url, string $method = 'post', array $attributes = []): string
+    public function start(?string $url, string $method = 'post', array $attributes = []): string
     {
         return FormHelper::formTag($url, $method, $attributes) . FormHelper::hiddenTag('csrftoken', CsrfProtector::getCsrfToken());
     }

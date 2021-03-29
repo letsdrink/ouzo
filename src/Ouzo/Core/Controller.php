@@ -88,7 +88,7 @@ class Controller
         $this->statusResponse = 'redirect';
     }
 
-    public function downloadFile(string $label, string $mime, string $path, string $type = 'file', ?string $data = null): void
+    public function downloadFile(string $label, ?string $mime, string $path, string $type = 'file', ?string $data = null): void
     {
         $this->fileData = ['label' => $label, 'mime' => $mime, 'path' => $path, 'data' => $data];
         $this->statusResponse = $type;
