@@ -137,11 +137,9 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return $this->modelDefinition->table;
     }
 
-    public function insert(): ?int
+    public function insert(): string|int|null
     {
-        return $this->doInsert(function ($attributes) {
-            return Query::insert($attributes)->into($this->modelDefinition->table);
-        });
+        return $this->doInsert(fn($attributes) => Query::insert($attributes)->into($this->modelDefinition->table));
     }
 
     public function insertOrDoNothing(): ?int
