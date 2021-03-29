@@ -255,25 +255,25 @@ namespace {
     }
 
     #[Deprecated(replacement: "FormHelper::hiddenTag(%parametersList%)")]
-    function hiddenTag(string $name, string $value, array $attributes = []): string
+    function hiddenTag(string $name, ?string $value, array $attributes = []): string
     {
         return FormHelper::hiddenTag($name, $value, $attributes);
     }
 
     #[Deprecated(replacement: "FormHelper::textFieldTag(%parametersList%)")]
-    function textFieldTag(string $name, string $value, array $attributes = []): string
+    function textFieldTag(string $name, ?string $value, array $attributes = []): string
     {
         return FormHelper::textFieldTag($name, $value, $attributes);
     }
 
     #[Deprecated(replacement: "FormHelper::textAreaTag(%parametersList%)")]
-    function textAreaTag(string $name, string $content, array $attributes = []): string
+    function textAreaTag(string $name, ?string $content, array $attributes = []): string
     {
         return FormHelper::textAreaTag($name, $content, $attributes);
     }
 
     #[Deprecated(replacement: "FormHelper::checkboxTag(%parametersList%)")]
-    function checkboxTag(string $name, string $value, ?bool $checked, array $attributes = []): string
+    function checkboxTag(string $name, ?string $value, ?bool $checked, array $attributes = []): string
     {
         return FormHelper::checkboxTag($name, $value, $checked, $attributes);
     }
@@ -291,13 +291,13 @@ namespace {
     }
 
     #[Deprecated(replacement: "FormHelper::passwordFieldTag(%parametersList%)")]
-    function passwordFieldTag(string $name, string $value, array $attributes = []): string
+    function passwordFieldTag(string $name, ?string $value, array $attributes = []): string
     {
         return FormHelper::passwordFieldTag($name, $value, $attributes);
     }
 
     #[Deprecated(replacement: "FormHelper::radioButtonTag(%parametersList%)")]
-    function radioButtonTag(string $name, string $value, array $attributes = []): string
+    function radioButtonTag(string $name, ?string $value, array $attributes = []): string
     {
         return FormHelper::radioButtonTag($name, $value, $attributes);
     }
