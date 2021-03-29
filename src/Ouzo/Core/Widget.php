@@ -10,5 +10,5 @@ abstract class Widget
 {
     protected View $view;
 
-    abstract public function render(): void;
+    abstract public function render(): string;
 }
