@@ -18,7 +18,7 @@ class I18n
     private static ?Translator $translator = null;
     private static ?array $labels = [];
 
-    public static function t(string $key, array $params = [], ?PluralizeOption $pluralize = null): string
+    public static function t(string $key, array $params = [], ?PluralizeOption $pluralize = null): array|string|null
     {
         if (!$key) {
             return '';
