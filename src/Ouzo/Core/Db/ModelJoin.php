@@ -3,8 +3,10 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Db;
 
+use Closure;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Model;
 
@@ -16,7 +18,7 @@ class ModelJoin
         private Relation $relation,
         private ?string $alias,
         private string $type,
-        private array $on,
+        private array|string $on,
         private bool $fetch
     )
     {
@@ -29,7 +31,7 @@ class ModelJoin
 
     public function storeField(): bool
     {
-        return $this->fetch &&  $this->destinationField();
+        return $this->fetch && $this->destinationField();
     }
 
     public function destinationField(): string
@@ -39,7 +41,7 @@ class ModelJoin
 
     public function alias(): string
     {
-        return $this->alias ? : $this->relation->getRelationModelObject()->getTableName();
+        return $this->alias ?: $this->relation->getRelationModelObject()->getTableName();
     }
 
     public function getModelObject(): Model
@@ -57,11 +59,7 @@ class ModelJoin
         return new JoinClause($joinTable, $joinKey, $idName, $this->fromTable, $this->alias, $this->type, $onClauses);
     }
 
-    /**
-     * @param ModelJoin $other
-     * @return bool
-     */
-    public function equals(ModelJoin $other)
+    public function equals(ModelJoin $other): bool
     {
         return
             $this->relation === $other->relation &&
@@ -72,14 +70,8 @@ class ModelJoin
             $this->on === $other->on;
     }
 
-    /**
-     * @param $other
-     * @return \Closure
-     */
-    public static function equalsPredicate($other)
+    public static function equalsPredicate($other): Closure
     {
-        return function ($modelJoin) use ($other) {
-            return $modelJoin->equals($other);
-        };
+        return fn($modelJoin) => $modelJoin->equals($other);
     }
 }
