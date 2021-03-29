@@ -79,7 +79,7 @@ class Controller
         return $this->cookies;
     }
 
-    public function redirect(string $url, array $messages = []): void
+    public function redirect(string $url, string|array $messages = []): void
     {
         $url = trim($url);
         $this->notice($messages, false, $url);
