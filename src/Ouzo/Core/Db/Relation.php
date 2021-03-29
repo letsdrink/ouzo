@@ -22,7 +22,7 @@ class Relation
         private string $localKey,
         private string $foreignKey,
         private bool $collection,
-        private Closure|string|array $condition = '',
+        private Closure|WhereClause|string|array $condition = '',
         private array|string|null $order = null)
     {
     }
