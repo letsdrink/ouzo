@@ -12,7 +12,7 @@ use Ouzo\Utilities\Functions;
 
 class RequestHeaders
 {
-    private static array $headers;
+    private static array $headers = [];
 
     public static function accept(): array
     {
