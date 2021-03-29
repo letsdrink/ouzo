@@ -65,13 +65,13 @@ class ModelQueryBuilder
         return $this;
     }
 
-    public function offset(int $offset): static
+    public function offset(?int $offset): static
     {
         $this->query->offset = $offset;
         return $this;
     }
 
-    public function limit(int $limit): static
+    public function limit(?int $limit): static
     {
         $this->query->limit = $limit;
         return $this;
