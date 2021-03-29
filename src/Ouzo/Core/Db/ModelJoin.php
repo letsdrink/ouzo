@@ -13,7 +13,7 @@ use Ouzo\Model;
 class ModelJoin
 {
     public function __construct(
-        private string $destinationField,
+        private ?string $destinationField,
         private string $fromTable,
         private Relation $relation,
         private ?string $alias,
@@ -34,7 +34,7 @@ class ModelJoin
         return $this->fetch && $this->destinationField();
     }
 
-    public function destinationField(): string
+    public function destinationField(): ?string
     {
         return $this->destinationField;
     }

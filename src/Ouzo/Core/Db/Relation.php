@@ -17,7 +17,7 @@ use Ouzo\Utilities\Arrays;
 class Relation
 {
     public function __construct(
-        private string $name,
+        private ?string $name,
         private string $class,
         private string $localKey,
         private string $foreignKey,
@@ -56,7 +56,7 @@ class Relation
         return $this->foreignKey;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

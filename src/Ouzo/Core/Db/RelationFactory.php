@@ -91,7 +91,7 @@ class RelationFactory
         }
     }
 
-    private static function newRelation(string $name, string $localKey, string $foreignKey, bool $collection, array $params): Relation
+    private static function newRelation(?string $name, string $localKey, string $foreignKey, bool $collection, array $params): Relation
     {
         $class = $params['class'];
         $condition = Arrays::getValue($params, 'conditions', '');

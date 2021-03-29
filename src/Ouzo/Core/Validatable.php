@@ -84,14 +84,14 @@ class Validatable
     /** Checks whether array does not contain duplicate values */
     public function validateUnique(array $values, string|Error $errorMessage, string|array $errorField = null): void
     {
-        if (count($values) != count(array_unique($values))) {
+        if (count($values) !== count(array_unique($values))) {
             $this->error($errorMessage);
             $this->errorFields[] = $errorField;
         }
     }
 
     /** Checks whether $value can be converted to time by "strtotime" function */
-    public function validateDateTime(string $value, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateDateTime(?string $value, string|Error $errorMessage, string|array $errorField = null): void
     {
         if (!strtotime($value)) {
             $this->error($errorMessage);
@@ -100,7 +100,7 @@ class Validatable
     }
 
     /** Checks whether string does not exceed max length */
-    public function validateStringMaxLength(string $value, int $maxLength, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateStringMaxLength(?string $value, int $maxLength, string|Error $errorMessage, string|array $errorField = null): void
     {
         if (strlen($value) > $maxLength) {
             $this->error($errorMessage);
