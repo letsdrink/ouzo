@@ -344,17 +344,17 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return static::queryBuilder()->selectDistinct($columns, $type);
     }
 
-    public static function join(Relation|string $relation, null|array|string $alias = null, string $type = 'LEFT', array $on = []): ModelQueryBuilder
+    public static function join(Relation|string $relation, null|array|string $alias = null, string $type = 'LEFT', array|string $on = []): ModelQueryBuilder
     {
         return static::queryBuilder()->join($relation, $alias, $type, $on);
     }
 
-    public static function innerJoin(Relation|string $relation, ?string $alias = null, array $on = []): ModelQueryBuilder
+    public static function innerJoin(Relation|string $relation, ?string $alias = null, array|string $on = []): ModelQueryBuilder
     {
         return static::queryBuilder()->innerJoin($relation, $alias, $on);
     }
 
-    public static function rightJoin(Relation|string $relation, ?string $alias = null, array $on = []): ModelQueryBuilder
+    public static function rightJoin(Relation|string $relation, ?string $alias = null, array|string $on = []): ModelQueryBuilder
     {
         return static::queryBuilder()->rightJoin($relation, $alias, $on);
     }
@@ -410,12 +410,12 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return Arrays::map($results, fn($row) => $meta->newInstance($row));
     }
 
-    public static function findById(int $value): static
+    public static function findById(?int $value): static
     {
         return static::metaInstance()->internalFindById($value);
     }
 
-    private function internalFindById(int $value): static
+    private function internalFindById(?int $value): static
     {
         if (!$this->modelDefinition->primaryKey) {
             throw new DbException("Primary key is not defined for table {$this->modelDefinition->table}");
@@ -427,12 +427,12 @@ class Model extends Validatable implements Serializable, JsonSerializable
         throw new DbException("{$this->modelDefinition->table} with {$this->modelDefinition->primaryKey}={$value} not found");
     }
 
-    public static function findByIdOrNull(int $value): ?static
+    public static function findByIdOrNull(?int $value): ?static
     {
         return static::metaInstance()->internalFindByIdOrNull($value);
     }
 
-    private function internalFindByIdOrNull(int $value): ?static
+    private function internalFindByIdOrNull(?int $value): ?static
     {
         return $this->where([$this->modelDefinition->primaryKey => $value])->fetch();
     }

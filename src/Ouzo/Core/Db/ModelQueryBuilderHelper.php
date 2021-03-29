@@ -59,7 +59,7 @@ class ModelQueryBuilderHelper
      * @param RelationWithAlias[] $relationWithAliases
      * @return ModelJoin[]
      */
-    public static function createModelJoins(string $fromTable, array $relationWithAliases, string $type, array $on): array
+    public static function createModelJoins(string $fromTable, array $relationWithAliases, string $type, array|string $on): array
     {
         $result = [];
         $field = '';
