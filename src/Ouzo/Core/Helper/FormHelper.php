@@ -41,14 +41,15 @@ namespace Ouzo\Helper {
             if (!empty($params)) {
                 $query = http_build_query($params);
                 $url .= "/?" . $query;
-            }
 
-            return HtmlElementRenderer::input('button')
-                ->setNameId(Arrays::getValue($params, 'name', ''))
-                ->setClass(Arrays::getValue($params, 'class', ''))
-                ->setValue(Arrays::getValue($params, 'value', ''))
-                ->setAttribute('onclick', "window.location.href = '{$url}'")
-                ->render();
+                return HtmlElementRenderer::input('button')
+                    ->setNameId(Arrays::getValue($params, 'name', ''))
+                    ->setClass(Arrays::getValue($params, 'class', ''))
+                    ->setValue(Arrays::getValue($params, 'value', ''))
+                    ->setAttribute('onclick', "window.location.href = '{$url}'")
+                    ->render();
+            }
+            return '';
         }
 
         public static function formButton(array $params): string
