@@ -53,13 +53,13 @@ class ModelQueryBuilder
         }
     }
 
-    public function where(string|array|WhereClause $where = '', array|string|null $values = []): static
+    public function where(string|array|WhereClause $where = '', mixed $values = []): static
     {
         $this->query->where($where, $values);
         return $this;
     }
 
-    public function order(array|string $columns): static
+    public function order(array|string|null $columns): static
     {
         $this->query->order = $columns;
         return $this;

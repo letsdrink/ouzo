@@ -132,7 +132,7 @@ class Query
         return $this;
     }
 
-    public function where(array|string|WhereClause $where = '', array|string|null $whereValues = null): static
+    public function where(array|string|WhereClause $where = '', mixed $whereValues = null): static
     {
         $this->validateParameters($where);
         $this->whereClauses[] = WhereClause::create($where, $whereValues);

@@ -28,7 +28,6 @@ class DebugErrorHandler extends ErrorHandler
         return $run;
     }
 
-    #[Pure]
     protected static function getExceptionHandler(): ExceptionHandler
     {
         return new DebugExceptionHandler();

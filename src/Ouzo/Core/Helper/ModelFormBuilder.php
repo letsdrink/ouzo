@@ -13,11 +13,8 @@ use Ouzo\Utilities\Strings;
 
 class ModelFormBuilder
 {
-    private object $object;
-
-    public function __construct($object)
+    public function __construct(private mixed $object)
     {
-        $this->object = $object;
     }
 
     private function objectName(): string
@@ -27,12 +24,12 @@ class ModelFormBuilder
 
     private function generateId($name): string
     {
-        return $this->objectName() . '_' . $name;
+        return "{$this->objectName()}_{$name}";
     }
 
     public function generateName($name): string
     {
-        return $this->objectName() . '[' . $name . ']';
+        return "{$this->objectName()}[{$name}]";
     }
 
     private function generatePredefinedAttributes(string $field): array
@@ -48,7 +45,7 @@ class ModelFormBuilder
 
     private function translate(string $field): string
     {
-        return I18n::t($this->objectName() . '.' . $field);
+        return I18n::t("{$this->objectName()}.{$field}");
     }
 
     public function label(string $field, array $options = []): string

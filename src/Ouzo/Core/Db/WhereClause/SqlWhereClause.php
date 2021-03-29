@@ -14,7 +14,7 @@ class SqlWhereClause extends WhereClause
     private string $sql;
     private array $values;
 
-    public function __construct(string $sql, null|array|string $parameters = [])
+    public function __construct(string $sql, mixed $parameters = [])
     {
         $this->sql = $sql;
         $this->values = $parameters === null ? [null] : Arrays::toArray($parameters);

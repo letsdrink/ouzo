@@ -14,14 +14,14 @@ use Throwable;
 
 class Error
 {
-    public int $code;
-    public string $message;
-    public string $originalMessage;
+    public ?int $code;
+    public ?string $message;
+    public ?string $originalMessage;
     private ?string $field;
 
     public function __construct(
-        int $code,
-        string $message,
+        ?int $code,
+        ?string $message,
         ?string $originalMessage = null,
         ?string $field = null
     )
@@ -40,7 +40,7 @@ class Error
         return new Error($exception->getCode(), I18n::t('exception.unknown'), $exception->getMessage());
     }
 
-    #[ArrayShape(['message' => "string", 'code' => "int", 'field' => "null|string"])]
+    #[ArrayShape(['message' => "null|string", 'code' => "null|int", 'field' => "null|string"])]
     public function toArray(): array
     {
         $array = ['message' => $this->message, 'code' => $this->code];
@@ -56,12 +56,12 @@ class Error
         return new Error($code, $message);
     }
 
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
         return $this->message;
     }
 
-    public function getCode(): int
+    public function getCode(): ?int
     {
         return $this->code;
     }

@@ -63,7 +63,7 @@ class Validatable
     }
 
     /** Check whether passed string in `$value` parameter has 0 length or not */
-    public function validateNotBlank(string $value, string|Error $errorMessage, string $errorField = null): void
+    public function validateNotBlank(mixed $value, string|Error $errorMessage, string $errorField = null): void
     {
         if (Strings::isBlank($value)) {
             $this->error($errorMessage);

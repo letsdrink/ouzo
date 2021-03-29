@@ -28,7 +28,7 @@ abstract class WhereClause
         return fn(WhereClause $whereClause) => !$whereClause->isEmpty();
     }
 
-    public static function create(array|string|WhereClause|null $where, null|string|array $parameters = []): WhereClause
+    public static function create(array|string|WhereClause|null $where, mixed $parameters = []): WhereClause
     {
         if (is_null($where)) {
             return new EmptyWhereClause();

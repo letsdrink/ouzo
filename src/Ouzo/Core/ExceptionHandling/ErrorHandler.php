@@ -41,7 +41,6 @@ class ErrorHandler
         };
     }
 
-    #[Pure]
     protected static function getExceptionHandler(): ExceptionHandler
     {
         return new ExceptionHandler();

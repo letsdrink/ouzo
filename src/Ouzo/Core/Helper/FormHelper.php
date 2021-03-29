@@ -101,7 +101,7 @@ namespace Ouzo\Helper {
             return HtmlElementRenderer::textarea()
                 ->setNameId($name)
                 ->setAttributes($attributes)
-                ->setText($content)
+                ->setText($content ?: '')
                 ->render();
         }
 

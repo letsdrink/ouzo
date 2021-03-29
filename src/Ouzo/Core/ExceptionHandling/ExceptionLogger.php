@@ -28,7 +28,6 @@ class ExceptionLogger
         $this->exceptionData = $exceptionData;
     }
 
-    #[Pure]
     public static function newInstance(OuzoExceptionData $exceptionData): ExceptionLogger
     {
         return new self($exceptionData);
