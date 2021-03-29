@@ -349,17 +349,17 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return static::queryBuilder()->join($relation, $alias, $type, $on);
     }
 
-    public static function innerJoin(Relation|string $relation, ?string $alias = null, array|string $on = []): ModelQueryBuilder
+    public static function innerJoin(Relation|string $relation, null|array|string $alias = null, array|string $on = []): ModelQueryBuilder
     {
         return static::queryBuilder()->innerJoin($relation, $alias, $on);
     }
 
-    public static function rightJoin(Relation|string $relation, ?string $alias = null, array|string $on = []): ModelQueryBuilder
+    public static function rightJoin(Relation|string $relation, null|array|string $alias = null, array|string $on = []): ModelQueryBuilder
     {
         return static::queryBuilder()->rightJoin($relation, $alias, $on);
     }
 
-    public static function using(string $relation, ?string $alias = null): ModelQueryBuilder
+    public static function using(string $relation, null|array|string $alias = null): ModelQueryBuilder
     {
         return static::queryBuilder()->using($relation, $alias);
     }

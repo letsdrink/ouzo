@@ -27,7 +27,7 @@ class Config
      *
      * If value does not exist it will return empty array.
      */
-    public static function getValue(string ...$keys): mixed
+    public static function getValue(?string ...$keys): mixed
     {
         return self::getInstance()->getValue($keys);
     }
