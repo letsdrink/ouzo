@@ -177,22 +177,22 @@ class ModelQueryBuilder
         return $this;
     }
 
-    public function innerJoin(string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
+    public function innerJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
     {
         return $this->join($relationSelector, $aliases, 'INNER', $on);
     }
 
-    public function rightJoin(string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
+    public function rightJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
     {
         return $this->join($relationSelector, $aliases, 'RIGHT', $on);
     }
 
-    public function leftJoin(string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
+    public function leftJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
     {
         return $this->join($relationSelector, $aliases, 'LEFT', $on);
     }
 
-    public function using(string $relationSelector, array|string|null $aliases): static
+    public function using(Relation|string $relationSelector, array|string|null $aliases): static
     {
         $modelJoins = $this->createModelJoins($relationSelector, $aliases, 'USING', []);
         foreach ($modelJoins as $modelJoin) {
@@ -217,7 +217,7 @@ class ModelQueryBuilder
         return Arrays::any($this->joinedModels, ModelJoin::equalsPredicate($modelJoin));
     }
 
-    public function with(string $relationSelector): static
+    public function with(Relation|string $relationSelector): static
     {
         if (!BatchLoadingSession::isAllocated()) {
             $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector, $this->joinedModels);
