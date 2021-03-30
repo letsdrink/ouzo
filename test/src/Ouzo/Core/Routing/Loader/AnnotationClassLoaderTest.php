@@ -8,6 +8,7 @@ use Application\Model\Test\CrudController;
 use Application\Model\Test\FooClass;
 use Application\Model\Test\GlobalController;
 use Application\Model\Test\MultipleMethods;
+use Application\Model\Test\RepeatedMethods;
 use Application\Model\Test\SimpleController;
 use Ouzo\Routing\Loader\AnnotationClassLoader;
 use Ouzo\Routing\Loader\RouteMetadata;
@@ -76,6 +77,22 @@ class AnnotationClassLoaderTest extends TestCase
         Assert::thatArray($routes->toArray())->containsExactly(
             new RouteMetadata('/get', 'GET', MultipleMethods::class, 'getAndPost', null),
             new RouteMetadata('/post', 'POST', MultipleMethods::class, 'getAndPost', null)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldLoadRouteMetadataFromSingleMethodForRepeatedAttributes()
+    {
+        //when
+        $routes = $this->loader->load([RepeatedMethods::class]);
+
+        //then
+        $this->assertEquals(2, $routes->count());
+        Assert::thatArray($routes->toArray())->containsExactly(
+            new RouteMetadata('/get1', 'GET', RepeatedMethods::class, 'getAndPost', null),
+            new RouteMetadata('/get2', 'GET', RepeatedMethods::class, 'getAndPost', null)
         );
     }
 
