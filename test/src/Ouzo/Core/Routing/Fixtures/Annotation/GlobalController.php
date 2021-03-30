@@ -6,14 +6,10 @@
 
 namespace Application\Model\Test;
 
-use Ouzo\Routing\Annotation\Route;
 use Ouzo\Routing\Annotation\Route\Get;
 use Ouzo\Routing\Annotation\Route\Post;
 use Ouzo\Routing\Annotation\RoutePrefix;
 
-/**
- * @Route("/prefix")
- */
 #[RoutePrefix('/prefix')]
 class GlobalController
 {
