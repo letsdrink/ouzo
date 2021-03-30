@@ -37,19 +37,18 @@ namespace Ouzo\Helper {
             $defaultParams = ['class' => 'buttonLong'];
             $params = array_merge($defaultParams, $params);
             $url = Arrays::getValue($params, 'url');
-            $params = Arrays::getValue($params, 'params', []);
-            if (!empty($params)) {
-                $query = http_build_query($params);
+            $urlParams = Arrays::getValue($params, 'params', []);
+            if (!empty($urlParams)) {
+                $query = http_build_query($urlParams);
                 $url .= "/?" . $query;
-
-                return HtmlElementRenderer::input('button')
-                    ->setNameId(Arrays::getValue($params, 'name', ''))
-                    ->setClass(Arrays::getValue($params, 'class', ''))
-                    ->setValue(Arrays::getValue($params, 'value', ''))
-                    ->setAttribute('onclick', "window.location.href = '{$url}'")
-                    ->render();
             }
-            return '';
+
+            return HtmlElementRenderer::input('button')
+                ->setNameId($params["name"])
+                ->setClass($params["class"])
+                ->setValue($params["value"])
+                ->setAttribute('onclick', "window.location.href = '{$url}'")
+                ->render();
         }
 
         public static function formButton(array $params): string
