@@ -6,6 +6,7 @@
 
 namespace Ouzo;
 
+use Ouzo\Exception\ValidationException;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
@@ -43,6 +44,14 @@ class Validatable
     {
         $this->errors = [];
         $this->errorFields = [];
+    }
+
+    public function validateOrFail(): void
+    {
+        $this->validate();
+        if (!$this->isValid()) {
+            throw new ValidationException($this->getErrorObjects());
+        }
     }
 
     public function validateAssociated(Validatable $validatable): void
