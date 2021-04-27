@@ -366,4 +366,37 @@ class FluentArrayTest extends TestCase
         //then
         $this->assertEquals([1 => 'b', 3 => 'c'], $result);
     }
+
+    /**
+     * @test
+     * @dataProvider associativeAndSequentialValueArrays
+     */
+    public function shouldValuesResetInternalArrayPointer(array $inputArray)
+    {
+        // given
+        next($inputArray);
+
+        // when
+        $copiedArray = FluentArray::from($inputArray)->values()->toArray();
+
+        // then
+        $this->assertEquals('two', current($inputArray));
+        $this->assertEquals('one', current($copiedArray));
+    }
+
+    public function associativeAndSequentialValueArrays(): array
+    {
+        return [
+            'associative' => [[
+                'one' => 'one',
+                'two' => 'two',
+                'three' => 'three'
+            ]],
+            'sequential' => [[
+                'one',
+                'two',
+                'three'
+            ]],
+        ];
+    }
 }
