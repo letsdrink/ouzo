@@ -1319,4 +1319,50 @@ class ArraysTest extends TestCase
         $this->assertEmpty(Arrays::getDuplicatesAssoc(['a', 'b', 'c']));
         $this->assertEmpty(Arrays::getDuplicatesAssoc([]));
     }
+
+    /**
+     * @test
+     */
+    public function shouldGetValues()
+    {
+        //given
+        $array = ['id' => 4, 'name' => 'Arya', 'surname' => 'Stark'];
+
+        //when
+        $keys = Arrays::values($array);
+
+        //then
+        Assert::thatArray($keys)->isEqualTo([4, 'Arya', 'Stark']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldResetInternalArrayPointer()
+    {
+        //given
+        $array = ['one', 'two', 'three'];
+        next($array);
+
+        //when
+        $values = Arrays::values($array);
+
+        //then
+        $this->assertEquals('one', current($values));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetKeys()
+    {
+        //given
+        $array = ['id' => 4, 'name' => 'Arya', 'surname' => 'Stark'];
+
+        //when
+        $keys = Arrays::keys($array);
+
+        //then
+        Assert::thatArray($keys)->isEqualTo(['id', 'name', 'surname']);
+    }
 }
