@@ -1022,3 +1022,47 @@ Returns only duplicated values from an array, preserving key-value pairs, based 
       [3] => b
       [6] => c
   )
+
+----
+
+values
+~~~~~~
+Returns only values from an array.
+
+**Parameters:** ``array $array``
+
+**Example:**
+::
+
+    $result = Arrays::values(['red' => 'apple', 'green' => 'pear']);
+
+**Result:**
+::
+
+  Array
+  (
+      [0] => apple
+      [1] => pear
+  )
+
+----
+
+keys
+~~~~
+Returns only keys from an array.
+
+**Parameters:** ``array $array``
+
+**Example:**
+::
+
+    $result = Arrays::keys(['red' => 'apple', 'green' => 'pear']);
+
+**Result:**
+::
+
+  Array
+  (
+      [0] => red
+      [1] => green
+  )
