@@ -8,7 +8,6 @@ namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
 use Exception;
-use JetBrains\PhpStorm\Pure;
 use Ouzo\ContentType;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
@@ -59,7 +58,7 @@ class ExceptionLogger
             $uri = Arrays::getValue($_SERVER, 'SCRIPT_URI');
             return "$httpCode Exception [$method $uri]: $originalMessage";
         } else {
-            $message = "Exception: $originalMessage";
+            $message = "Exception: $originalMessage [source: $source]";
             $message .= "\n------------------------------------------------------------------------------------------------------------------------------------";
             $message .= "\nHTTP status: $httpCode";
 

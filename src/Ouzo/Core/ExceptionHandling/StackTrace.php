@@ -22,7 +22,7 @@ class StackTrace
         return new self($exception->getFile(), $exception->getLine(), $exception->getTraceAsString());
     }
 
-    public function getTraceAsString(): string
+    public function getTraceAsString(): ?string
     {
         return $this->trace;
     }

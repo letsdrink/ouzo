@@ -21,4 +21,20 @@ class ExceptionLoggerTest extends TestCase
         // then
         $this->assertEquals('[<login> => "xxx", <password> => "***"]', $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldLogSource()
+    {
+        //given
+        $exceptionData = new OuzoExceptionData(500, [new Error(1, "Internal error")], new StackTrace("/var/www/Application/Model/User.php", 11));
+        $logger = new ExceptionLogger($exceptionData);
+
+        //when
+        $message = $logger->getMessage();
+
+        //then
+        $this->assertStringContainsString(" [source: /var/www/Application/Model/User.php:11]", $message);
+    }
 }
