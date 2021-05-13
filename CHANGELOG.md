@@ -1,15 +1,22 @@
 CHANGELOG
 =========
 
+IN PROGRESS
+--------
+Support for PHP 7.x is dropped. Minimal PHP version required is 8.0.
+
+Enhancements:
+* [Core] Added ignore list to `Backtrace::getCallingClass()`.
+
+
 Release 1.8.0
 --------
-
 Support for PHP 5.6 is dropped. Minimal PHP version required is 7.4.
 
 Enhancements:
-* [Utilities] Added `Arrays.getDuplicates()`, `Arrays.getDuplicatesAssoc()`.
-* [Utilities] Added `FluentArray.getDuplicates()`, `FluentArray.getDuplicatesAssoc()`.
-* [Utilities] Added `Arrays.values()`, `Arrays.keys()`.
+* [Utilities] Added `Arrays::getDuplicates()`, `Arrays::getDuplicatesAssoc()`.
+* [Utilities] Added `FluentArray::getDuplicates()`, `FluentArray::getDuplicatesAssoc()`.
+* [Utilities] Added `Arrays::values()`, `Arrays::keys()`.
 * [Core] Added database migration tools (`migrate:run` and `migrate:generate`).
 
 Release 1.7.0

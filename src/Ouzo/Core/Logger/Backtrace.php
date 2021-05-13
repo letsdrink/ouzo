@@ -7,13 +7,12 @@
 namespace Ouzo\Logger;
 
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Strings;
 
 class Backtrace
 {
     private const OUZO_PACKAGE_NAME = 'letsdrink/ouzo';
 
-    public static function getCallingClass(): string
+    public static function getCallingClass(array $namesToIgnore = [self::OUZO_PACKAGE_NAME]): string
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
@@ -26,10 +25,18 @@ class Backtrace
                 return "{$class}:{$line}";
             }
             $file = Arrays::getValue($traceItem, 'file');
-            if ($file && !Strings::contains($file, self::OUZO_PACKAGE_NAME)) {
+            if (!self::isIgnored($namesToIgnore, $file)) {
                 $line = Arrays::getValue($traceItem, 'line');
             }
         }
         return "{$file}:{$line}";
+    }
+
+    private static function isIgnored(array $namesToIgnore, ?string $file): bool
+    {
+        if (!$file) {
+            return true;
+        }
+        return Arrays::any($namesToIgnore, fn($nameToIgnore) => str_contains($file, $nameToIgnore));
     }
 }
