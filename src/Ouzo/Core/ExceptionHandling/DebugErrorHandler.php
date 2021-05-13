@@ -6,7 +6,6 @@
 
 namespace Ouzo\ExceptionHandling;
 
-use JetBrains\PhpStorm\Pure;
 use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -22,6 +21,7 @@ class DebugErrorHandler extends ErrorHandler
 
     protected static function getRun(): Run
     {
+        error_reporting(E_ALL);
         $run = new Run();
         $run->pushHandler(new PrettyPageHandler());
         $run->pushHandler(new DebugErrorLogHandler());
