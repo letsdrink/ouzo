@@ -27,8 +27,6 @@ jobs:
         image: mysql:8
         env:
           MYSQL_DATABASE: ouzo_test
-          MYSQL_USER: ouzo_user
-          MYSQL_PASSWORD: password
           MYSQL_ROOT_PASSWORD: password
         # Set health checks to wait until mysql has started
         options: --health-cmd="mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 5
@@ -62,7 +60,9 @@ jobs:
 
       - name: Seed database (MySQL)
         if: "${{ matrix.db == 'MySQL' }}"
-        run: cat test/test-db/recreate_schema_mysql.sql | mysql -h 127.0.0.1 -u root -ppassword ouzo_test
+        run: |
+          mysql -h 127.0.0.1 -u root -ppassword -e "CREATE USER travis; GRANT ALL ON *.* TO travis;"
+          cat test/test-db/recreate_schema_mysql.sql | mysql -h 127.0.0.1 -u root -ppassword ouzo_test
 
       - name: Seed database (SQLite)
         if: "${{ matrix.db == 'SQLite' }}"

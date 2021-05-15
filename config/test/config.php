@@ -6,8 +6,8 @@ use Ouzo\Db\Dialect\Sqlite3Dialect;
 $db = getenv('db');
 if ($db == 'mysql') {
     $config['sql_dialect'] = MySqlDialect::class;
-    $config['db']['user'] = 'ouzo_user';
-    $config['db']['pass'] = 'password';
+    $config['db']['user'] = 'travis';
+    $config['db']['pass'] = '';
     $config['db']['driver'] = 'mysql';
     $config['db']['host'] = '127.0.0.1';
     $config['db']['port'] = '3306';
