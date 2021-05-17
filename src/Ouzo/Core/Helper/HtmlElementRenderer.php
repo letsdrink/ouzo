@@ -64,9 +64,9 @@ class HtmlElementRenderer
         return new HtmlElementRenderer("form", false, false);
     }
 
-    public function setText(string $text): HtmlElementRenderer
+    public function setText(?string $text): HtmlElementRenderer
     {
-        $this->text = htmlspecialchars($text);
+        $this->text = htmlspecialchars($text ?? '');
         return $this;
     }
 
