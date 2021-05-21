@@ -722,4 +722,28 @@ class StringsTest extends TestCase
             [null, null],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider defaultIfBlank
+     */
+    public function shouldDefaultIfBlank($string, $default, $expected)
+    {
+        //when
+        $uppercaseFirst = Strings::defaultIfBlank($string, $default);
+
+        //then
+        $this->assertSame($expected, $uppercaseFirst);
+    }
+
+    public function defaultIfBlank(): array
+    {
+        return [
+            [null, '<NULL>', '<NULL>'],
+            ['', '<NULL>', '<NULL>'],
+            [' ', '<NULL>', '<NULL>'],
+            ['test', '<NULL>', 'test'],
+            ['', null, null],
+        ];
+    }
 }
