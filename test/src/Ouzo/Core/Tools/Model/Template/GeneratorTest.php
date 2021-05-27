@@ -8,6 +8,7 @@ namespace Ouzo\Tools\Model\Template;
 
 use Ouzo\Config;
 use Ouzo\Db\Dialect\Dialect;
+use Ouzo\Db\OnConflict;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use PHPUnit\Framework\TestCase;
@@ -191,7 +192,7 @@ class MyImagineDialect extends Dialect
         return 0;
     }
 
-    function batchInsert(string $table, string $primaryKey, $columns, $batchSize): string
+    function batchInsert(string $table, string $primaryKey, $columns, $batchSize, ?OnConflict $onConflict): string
     {
     }
 

@@ -8,6 +8,8 @@ use Application\Model\Test\Order;
 use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
 use Ouzo\Db\BatchInserter;
+use Ouzo\Db\OnConflict;
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 
 class BatchInserterTest extends DbTransactionalTestCase
@@ -77,5 +79,56 @@ class BatchInserterTest extends DbTransactionalTestCase
         //then
         $this->assertNotNull(Product::where(['name' => 'product1'])->fetch());
         $this->assertNotNull(Product::where(['name' => 'product2'])->fetch());
+    }
+
+    /**
+     * @test
+     * @group postgres
+     */
+    public function shouldBatchInsertOnConflictDoNothing()
+    {
+        //given
+        $product = Product::create(['name' => 'product1']);
+        $order = Order::create(['name' => 'order1']);
+        OrderProduct::create(['id_product' => $product->getId(), 'id_order' => $order->getId()]);
+
+        $orderProduct = new OrderProduct(['id_product' => $product->getId(), 'id_order' => $order->getId()]);
+        $inserter = new BatchInserter();
+        $inserter->add($orderProduct);
+        $inserter->onConflict(OnConflict::doNothing());
+
+        //when
+        $inserter->execute();
+
+        //then
+        Assert::thatArray(OrderProduct::all())
+            ->hasSize(1);
+    }
+
+    /**
+     * @test
+     * @group postgres
+     */
+    public function shouldBatchInsertOnConflictUpdate()
+    {
+        //given
+        $product = Product::create(['name' => 'product1']);
+        $product2 = Product::create(['name' => 'product2']);
+        $order = Order::create(['name' => 'order1']);
+        OrderProduct::create(['id_product' => $product->getId(), 'id_order' => $order->getId()]);
+
+        $orderProduct = new OrderProduct(['id_product' => $product->getId(), 'id_order' => $order->getId()]);
+        $inserter = new BatchInserter();
+        $inserter->add($orderProduct);
+        $inserter->onConflict(OnConflict::doUpdate(['id_product', 'id_order'], ['id_product' => $product2->getId()]));
+
+        //when
+        $inserter->execute();
+
+        //then
+        Assert::thatArray(OrderProduct::all())
+            ->hasSize(1)
+            ->extracting('id_product', 'id_order')
+            ->containsOnly([$product2->getId(), $order->getId()]);
     }
 }

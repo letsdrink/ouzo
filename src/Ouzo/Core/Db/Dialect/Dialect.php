@@ -7,6 +7,7 @@
 namespace Ouzo\Db\Dialect;
 
 use Ouzo\Db\JoinClause;
+use Ouzo\Db\OnConflict;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Db\WhereClause\WhereClause;
@@ -219,7 +220,8 @@ abstract class Dialect
     abstract public function getErrorCode(array $errorInfo): mixed;
 
     /** @param string[] $columns */
-    abstract public function batchInsert(string $table, string $primaryKey, array $columns, int $batchSize): string;
+    abstract public function batchInsert(string $table, string $primaryKey, array $columns, int $batchSize,
+                                         ?OnConflict $onConflict): string;
 
     abstract public function regexpMatcher(): string;
 

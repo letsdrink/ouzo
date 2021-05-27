@@ -6,6 +6,8 @@
 
 namespace Ouzo\Db\Dialect;
 
+use Ouzo\Db\OnConflict;
+use Ouzo\Db\Query;
 use Ouzo\Utilities\Arrays;
 
 class PostgresDialect extends Dialect
@@ -20,12 +22,26 @@ class PostgresDialect extends Dialect
         return Arrays::getValue($errorInfo, 0);
     }
 
-    public function batchInsert(string $table, string $primaryKey, $columns, $batchSize): string
+    public function batchInsert(string $table, string $primaryKey, $columns, $batchSize, ?OnConflict $onConflict): string
     {
         $valueClause = '(' . implode(', ', array_fill(0, count($columns), '?')) . ')';
         $valueClauses = implode(', ', array_fill(0, $batchSize, $valueClause));
         $joinedColumns = implode(', ', $columns);
         $sql = "INSERT INTO {$table} ($joinedColumns) VALUES $valueClauses";
+
+        if ($onConflict) {
+            if ($onConflict->isDoNothingAction()) {
+                $sql .= $this->onConflictDoNothing();
+            }
+            if ($onConflict->isUpdateAction()) {
+                $query = new Query();
+                $query->updateAttributes = $onConflict->getOnConflictUpdateValues();
+                $query->upsertConflictColumns = $onConflict->getOnConflictColumns();
+                $this->query = $query;
+                $sql .= $this->onConflictUpdate();
+            }
+        }
+
         if ($primaryKey) {
             return "{$sql} RETURNING {$primaryKey}";
         }

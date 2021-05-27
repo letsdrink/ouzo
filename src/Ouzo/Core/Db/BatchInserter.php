@@ -17,10 +17,16 @@ class BatchInserter
 {
     /** @var Model[] */
     private array $models = [];
+    private ?OnConflict $onConflict = null;
 
     public function add(Model $model): void
     {
         $this->models[] = $model;
+    }
+
+    public function onConflict(OnConflict $onConflict): void
+    {
+        $this->onConflict = $onConflict;
     }
 
     public function execute(): void
@@ -35,7 +41,7 @@ class BatchInserter
         $primaryKey = $metaInstance->getIdName();
         $table = $metaInstance->getTableName();
 
-        $sql = DialectFactory::create()->batchInsert($table, $primaryKey, $columns, count($this->models));
+        $sql = DialectFactory::create()->batchInsert($table, $primaryKey, $columns, count($this->models), $this->onConflict);
         $params = $this->prepareParams($primaryKey);
 
         $ids = Arrays::flatten(Db::getInstance()->query($sql, $params)->fetchAll(PDO::FETCH_NUM));
@@ -79,6 +85,9 @@ class BatchInserter
             unset($attributes[$primaryKey]);
             $values = array_values($attributes);
             $allValues = array_merge($allValues, $values);
+        }
+        if ($this->onConflict?->isUpdateAction()) {
+            $allValues = array_merge($allValues, array_values($this->onConflict?->getOnConflictUpdateValues()));
         }
         return $allValues;
     }

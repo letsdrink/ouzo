@@ -9,6 +9,7 @@ namespace Ouzo\Db\Dialect;
 use BadMethodCallException;
 use InvalidArgumentException;
 use Ouzo\Db\JoinClause;
+use Ouzo\Db\OnConflict;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 
@@ -59,7 +60,7 @@ class Sqlite3Dialect extends Dialect
         return '';
     }
 
-    public function batchInsert(string $table, string $primaryKey, $columns, $batchSize): string
+    public function batchInsert(string $table, string $primaryKey, $columns, $batchSize, ?OnConflict $onConflict): string
     {
         throw new InvalidArgumentException("Batch insert not supported in sqlite3");
     }

@@ -34,6 +34,8 @@ CREATE TABLE order_products (
   id_product        INTEGER REFERENCES products
 );
 
+CREATE UNIQUE INDEX order_products_id_order_id_product_uniq_idx ON order_products(id_order, id_product);
+
 CREATE OR REPLACE FUNCTION get_name(TEXT)
   RETURNS TEXT
 LANGUAGE plpgsql
