@@ -297,4 +297,9 @@ class ModelQueryBuilder
         $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);
         return ModelQueryBuilderHelper::createModelJoins($this->getModelAliasOrTable(), $relationWithAliases, $type, $on);
     }
+
+    public function getModel(): Model
+    {
+        return $this->model;
+    }
 }
