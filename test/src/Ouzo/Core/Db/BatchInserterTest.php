@@ -102,7 +102,9 @@ class BatchInserterTest extends DbTransactionalTestCase
 
         //then
         Assert::thatArray(OrderProduct::all())
-            ->hasSize(1);
+            ->hasSize(1)
+            ->extracting('id_product', 'id_order')
+            ->containsOnly([$product->getId(), $order->getId()]);
     }
 
     /**
