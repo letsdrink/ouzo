@@ -7,6 +7,7 @@
 namespace Ouzo\Logger;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 class Backtrace
 {
@@ -37,6 +38,9 @@ class Backtrace
         if (!$file) {
             return true;
         }
-        return Arrays::any($namesToIgnore, fn($nameToIgnore) => str_contains($file, $nameToIgnore));
+        return Arrays::any($namesToIgnore, function ($nameToIgnore) use ($file) {
+            $fileRelative = Strings::removePrefix($file, ROOT_PATH);
+            return str_contains($fileRelative, $nameToIgnore);
+        });
     }
 }
