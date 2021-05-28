@@ -168,4 +168,4 @@ class Route implements RouteInterface
     }
 }
 
-Route::$isDebug = Config::getValue('debug');
+Route::$isDebug = (bool)Config::getValue('debug');
