@@ -7,6 +7,7 @@
 namespace Ouzo\Injection;
 
 use Ouzo\Injection\Annotation\AttributesInjectMetadataProvider;
+use Ouzo\Injection\Annotation\Custom\CustomAttributeInjectRegistry;
 use Ouzo\Injection\Annotation\InjectMetadataProvider;
 
 class Injector
@@ -16,7 +17,11 @@ class Injector
     private InstanceFactory $instanceFactory;
     private InstanceRepository $instanceRepository;
 
-    public function __construct(InjectorConfig $injectorConfig = null, InjectMetadataProvider $injectMetadataProvider = null)
+    public function __construct(
+        InjectorConfig $injectorConfig = null,
+        InjectMetadataProvider $injectMetadataProvider = null,
+        CustomAttributeInjectRegistry $customAttributeInjectRegistry = null
+    )
     {
         $this->injectorConfig = $injectorConfig ?: new InjectorConfig();
         $this->bindings = new Bindings($this->injectorConfig, $this);
@@ -24,7 +29,8 @@ class Injector
             $this->bindings,
             $injectMetadataProvider ?: new AttributesInjectMetadataProvider(),
             $this->injectorConfig->getEagerInstanceCreator(),
-            $this->injectorConfig->getLazyInstanceCreator()
+            $this->injectorConfig->getLazyInstanceCreator(),
+            $customAttributeInjectRegistry ?: new CustomAttributeInjectRegistry()
         );
         $this->instanceRepository = new InstanceRepository($this->bindings);
     }

@@ -65,7 +65,7 @@ class AttributesInjectMetadataProvider implements InjectMetadataProvider
                     $parameterName = $parameter->getName();
                     $name = Arrays::getValue($namedMap, $parameterName, '');
 
-                    $annotations[$parameterName] = ['name' => $name, 'className' => $type->getName()];
+                    $annotations[$parameterName] = ['name' => $name, 'className' => $type->getName(), 'parameter' => $parameter];
                 }
             }
         }
