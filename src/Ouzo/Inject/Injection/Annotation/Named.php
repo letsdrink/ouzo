@@ -8,20 +8,15 @@ namespace Ouzo\Injection\Annotation;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER)]
 class Named
 {
-    public function __construct(private string $name, private ?string $parameterName = null)
+    public function __construct(private string $name)
     {
     }
 
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getParameterName(): ?string
-    {
-        return $this->parameterName;
     }
 }

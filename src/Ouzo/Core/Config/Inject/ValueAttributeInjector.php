@@ -3,17 +3,18 @@
 namespace Ouzo\Config\Inject;
 
 use Ouzo\Config;
-use Ouzo\Injection\Annotation\Custom\CustomAttributeInject;
+use Ouzo\Injection\Annotation\AttributeInjector;
+use Ouzo\Injection\InstanceFactory;
 use Ouzo\Utilities\Strings;
 use ReflectionAttribute;
-use ReflectionParameter;
+use ReflectionMethod;
 
-class ValueCustomAttributeInject implements CustomAttributeInject
+class ValueAttributeInjector implements AttributeInjector
 {
     private const CONFIG_START = '${';
     private const CONFIG_END = '}';
 
-    public function forProperties(object $instance, array $reflectionProperties): void
+    public function injectForProperties(object $instance, array $reflectionProperties, InstanceFactory $instanceFactory): void
     {
         foreach ($reflectionProperties as $reflectionProperty) {
             $attributes = $reflectionProperty->getAttributes(Value::class);
@@ -26,14 +27,18 @@ class ValueCustomAttributeInject implements CustomAttributeInject
         }
     }
 
-    public function forConstructorParameter(ReflectionParameter $parameter): mixed
+    public function injectForConstructorParameter(ReflectionMethod $constructor, InstanceFactory $instanceFactory): array
     {
-        $attributes = $parameter->getAttributes(Value::class);
-        if (empty($attributes)) {
-            return null;
+        $constructorParameters = [];
+        $parameters = $constructor->getParameters();
+        foreach ($parameters as $parameter) {
+            $attributes = $parameter->getAttributes(Value::class);
+            if (!empty($attributes)) {
+                $parameterName = $parameter->getName();
+                $constructorParameters[$parameterName] = $this->getConfigValue($attributes[0]);
+            }
         }
-
-        return $this->getConfigValue($attributes[0]);
+        return $constructorParameters;
     }
 
     private function getConfigValue(ReflectionAttribute $attribute): mixed

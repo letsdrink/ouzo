@@ -13,8 +13,7 @@ class ClassWithNamedConstructorSingleNamedDep
     public ClassWithPrivateDep $secondClass;
 
     #[Inject]
-    #[Named('my_second_dep', 'secondClass')]
-    public function __construct(ClassWithPrivateDep $myClass, ClassWithPrivateDep $secondClass)
+    public function __construct(ClassWithPrivateDep $myClass, #[Named('my_second_dep')] ClassWithPrivateDep $secondClass)
     {
         $this->myClass = $myClass;
         $this->secondClass = $secondClass;

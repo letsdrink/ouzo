@@ -12,8 +12,7 @@ class ClassWithNamedConstructorDep
     public ClassWithNoDep $myClass;
 
     #[Inject]
-    #[Named('my_dep')]
-    public function __construct(ClassWithNoDep $myClass)
+    public function __construct(#[Named('my_dep')] ClassWithNoDep $myClass)
     {
         $this->myClass = $myClass;
     }

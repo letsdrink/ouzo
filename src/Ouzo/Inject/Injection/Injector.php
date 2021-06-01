@@ -6,9 +6,8 @@
 
 namespace Ouzo\Injection;
 
-use Ouzo\Injection\Annotation\AttributesInjectMetadataProvider;
-use Ouzo\Injection\Annotation\Custom\CustomAttributeInjectRegistry;
-use Ouzo\Injection\Annotation\InjectMetadataProvider;
+use Ouzo\Injection\Annotation\AttributeInjectorRegistry;
+use Ouzo\Injection\Annotation\InjectAttributeInjector;
 
 class Injector
 {
@@ -19,20 +18,21 @@ class Injector
 
     public function __construct(
         InjectorConfig $injectorConfig = null,
-        InjectMetadataProvider $injectMetadataProvider = null,
-        CustomAttributeInjectRegistry $customAttributeInjectRegistry = null
+        AttributeInjectorRegistry $attributeInjectorRegistry = null
     )
     {
         $this->injectorConfig = $injectorConfig ?: new InjectorConfig();
         $this->bindings = new Bindings($this->injectorConfig, $this);
+        $this->instanceRepository = new InstanceRepository($this->bindings);
+
+        $attributeInjectorRegistry = $attributeInjectorRegistry ?: new AttributeInjectorRegistry();
+        $attributeInjectorRegistry->register(new InjectAttributeInjector($this->bindings, $this->instanceRepository));
+
         $this->instanceFactory = new InstanceFactory(
-            $this->bindings,
-            $injectMetadataProvider ?: new AttributesInjectMetadataProvider(),
             $this->injectorConfig->getEagerInstanceCreator(),
             $this->injectorConfig->getLazyInstanceCreator(),
-            $customAttributeInjectRegistry ?: new CustomAttributeInjectRegistry()
+            $attributeInjectorRegistry
         );
-        $this->instanceRepository = new InstanceRepository($this->bindings);
     }
 
     public function getInjectorConfig(): InjectorConfig

@@ -6,21 +6,17 @@
 
 namespace Ouzo\Injection;
 
-use Ouzo\Injection\Annotation\Custom\CustomAttributeInjectRegistry;
-use Ouzo\Injection\Annotation\InjectMetadataProvider;
+use Ouzo\Injection\Annotation\AttributeInjectorRegistry;
 use Ouzo\Injection\Creator\InstanceCreator;
-use Ouzo\Utilities\Arrays;
 use ReflectionClass;
-use ReflectionParameter;
+use ReflectionProperty;
 
 class InstanceFactory
 {
     public function __construct(
-        private Bindings $bindings,
-        private InjectMetadataProvider $provider,
         private InstanceCreator $eagerInstanceCreator,
         private InstanceCreator $lazyInstanceCreator,
-        private CustomAttributeInjectRegistry $customAttributeInjectRegistry
+        private AttributeInjectorRegistry $attributeInjectorRegistry
     )
     {
     }
@@ -46,25 +42,16 @@ class InstanceFactory
 
     private function injectDependencies(InstanceRepository $repository, object $instance, ReflectionClass $class = null): void
     {
-        $parent = true;
+        $propertyFilter = ReflectionProperty::IS_PRIVATE;
         if (is_null($class)) {
             $class = new ReflectionClass($instance);
-            $parent = false;
+            $propertyFilter = ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED;
         }
-        $annotations = $this->provider->getMetadata($class, $parent);
-        $properties = $class->getProperties();
-        foreach ($properties as $property) {
-            $annotation = Arrays::getValue($annotations, $property->getName());
-            if ($annotation) {
-                $dependencyInstance = $this->getInstance($repository, $annotation);
-                $property->setAccessible(true);
-                $property->setValue($instance, $dependencyInstance);
-            }
-        }
+        $properties = $class->getProperties($propertyFilter);
 
-        $customAttributeInjects = $this->customAttributeInjectRegistry->getCustomAttributeInjects();
-        foreach ($customAttributeInjects as $customAttributeInject) {
-            $customAttributeInject->forProperties($instance, $properties);
+        $attributeInjectors = $this->attributeInjectorRegistry->getAttributeInjectors();
+        foreach ($attributeInjectors as $attributeInjector) {
+            $attributeInjector->injectForProperties($instance, $properties, $this);
         }
 
         $parentClass = $class->getParentClass();
@@ -76,34 +63,26 @@ class InstanceFactory
     private function constructInstance(InstanceRepository $repository, string $className, bool $eager = true): object
     {
         if ($eager || $this->lazyInstanceCreator === $this->eagerInstanceCreator) {
-            $arguments = $this->getConstructorArguments($repository, $className);
+            $arguments = $this->getConstructorArguments($className);
             return $this->eagerInstanceCreator->create($className, $arguments, $repository, $this);
         }
         return $this->lazyInstanceCreator->create($className, null, $repository, $this);
     }
 
-    private function getConstructorArguments(InstanceRepository $repository, string $className): array
+    private function getConstructorArguments(string $className): array
     {
-        $annotations = $this->provider->getConstructorMetadata($className);
-        return Arrays::map($annotations, fn($annotation) => $this->getInstance($repository, $annotation));
-    }
+        $instance = new ReflectionClass($className);
+        $constructor = $instance->getConstructor();
 
-    private function getInstance(InstanceRepository $repository, array $annotation): mixed
-    {
-        if (isset($annotation['parameter'])) {
-            /** @var ReflectionParameter $parameter */
-            $parameter = $annotation['parameter'];
-
-            $customAttributeInjects = $this->customAttributeInjectRegistry->getCustomAttributeInjects();
-            foreach ($customAttributeInjects as $customAttributeInject) {
-                $value = $customAttributeInject->forConstructorParameter($parameter);
-                if (!is_null($value)) {
-                    return $value;
-                }
-            }
+        if (is_null($constructor)) {
+            return [];
         }
 
-        $binder = $this->bindings->getBinder($annotation['className'], $annotation['name']);
-        return $repository->getInstance($this, $binder);
+        $arguments = [];
+        $attributeInjectors = $this->attributeInjectorRegistry->getAttributeInjectors();
+        foreach ($attributeInjectors as $attributeInjector) {
+            $arguments = array_merge($arguments, $attributeInjector->injectForConstructorParameter($constructor, $this));
+        }
+        return $arguments;
     }
 }

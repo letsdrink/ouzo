@@ -1,11 +1,16 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 use Ouzo\Config;
 use Ouzo\Config\Inject\Value;
-use Ouzo\Config\Inject\ValueCustomAttributeInject;
-use Ouzo\Injection\Annotation\Custom\CustomAttributeInjectRegistry;
+use Ouzo\Config\Inject\ValueAttributeInjector;
+use Ouzo\Injection\Annotation\AttributeInjectorRegistry;
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Injection\Injector;
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use PHPUnit\Framework\TestCase;
 
@@ -17,6 +22,7 @@ class ValueInjectSampleConfig
             [
                 'field' => 'property to filed',
                 'constructor_parameter' => 999,
+                'errors' => ['error1', 'error2', 'error3']
             ]
         ];
     }
@@ -30,10 +36,14 @@ class SampleClass
     #[Value('properties.field')]
     private string $exactValue;
 
+    #[Value('${properties.errors}')]
+    private array $errors;
+
     #[Inject]
     public function __construct(
         #[Value('${properties.constructor_parameter}')] private int $constructorParameter,
-        private InjectedClass $injectedClass
+        private InjectedClass $injectedClass,
+        private InjectedClassWithConfig $injectedClassWithConfig
     )
     {
     }
@@ -57,6 +67,35 @@ class SampleClass
     {
         return $this->exactValue;
     }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    public function getInjectedClassWithConfig(): InjectedClassWithConfig
+    {
+        return $this->injectedClassWithConfig;
+    }
+}
+
+class InjectedClassWithConfig
+{
+    #[Value('${properties.field}')]
+    private string $field;
+
+    #[Value('${properties.errors}')]
+    private array $errors;
+
+    public function getField(): string
+    {
+        return $this->field;
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
 }
 
 class InjectedClass
@@ -77,9 +116,9 @@ class ValueInjectTests extends TestCase
     {
         parent::setUp();
 
-        $customAttributeInjectRegistry = new CustomAttributeInjectRegistry();
-        $customAttributeInjectRegistry->register(new ValueCustomAttributeInject());
-        $this->injector = new Injector(customAttributeInjectRegistry: $customAttributeInjectRegistry);
+        $attributeInjectorRegistry = new AttributeInjectorRegistry();
+        $attributeInjectorRegistry->register(new ValueAttributeInjector());
+        $this->injector = new Injector(attributeInjectorRegistry: $attributeInjectorRegistry);
     }
 
     /**
@@ -162,5 +201,39 @@ class ValueInjectTests extends TestCase
         CatchException::assertThat()
             ->isInstanceOf(TypeError::class)
             ->hasMessage('SampleClass::__construct(): Argument #1 ($constructorParameter) must be of type int, string given');
+        Config::revertProperty('properties', 'constructor_parameter');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectConfigValueWhichIsArray()
+    {
+        //given
+        /** @var SampleClass $sampleClass */
+        $sampleClass = $this->injector->getInstance(SampleClass::class);
+
+        //when
+        $errors = $sampleClass->getErrors();
+
+        //then
+        Assert::thatArray($errors)->containsOnly('error1', 'error2', 'error3');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectClassWithValuesAsProperties()
+    {
+        //given
+        /** @var SampleClass $sampleClass */
+        $sampleClass = $this->injector->getInstance(SampleClass::class);
+
+        //when
+        $injectedClassWithConfig = $sampleClass->getInjectedClassWithConfig();
+
+        //then
+        $this->assertEquals('property to filed', $injectedClassWithConfig->getField());
+        Assert::thatArray($injectedClassWithConfig->getErrors())->containsOnly('error1', 'error2', 'error3');
     }
 }
