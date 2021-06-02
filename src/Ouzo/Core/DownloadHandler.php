@@ -10,8 +10,12 @@ use Ouzo\Utilities\Arrays;
 
 class DownloadHandler
 {
+    const READ_BUFFER_SIZE = 1024 * 1024 * 20;
+
     public function downloadFile(array $fileData): void
     {
+        $this->disableObjectBuffering();
+
         header("Content-Type: {$fileData['mime']}");
         header("Content-Disposition: attachment; filename=\"{$fileData['label']}\"");
         $data = Arrays::getValue($fileData, 'data');
@@ -23,7 +27,12 @@ class DownloadHandler
             clearstatcache(true, $fileData['path']);
             $length = filesize($fileData['path']);
             header("Content-Length:{$length}");
-            readfile($fileData['path']);
+            $fileHandle = fopen($fileData['path'], "r");
+            while (!feof($fileHandle)) {
+                print fread($fileHandle, self::READ_BUFFER_SIZE);
+                flush();
+            }
+            fclose($fileHandle);
         }
     }
 
@@ -87,6 +96,13 @@ class DownloadHandler
         while (!feof($fm) && $cur <= $end && (connection_status() == 0)) {
             print fread($fm, min(1024 * 16, ($end - $cur) + 1));
             $cur += 1024 * 16;
+        }
+    }
+
+    private function disableObjectBuffering()
+    {
+        while (ob_get_level()) {
+            ob_end_clean();
         }
     }
 }
