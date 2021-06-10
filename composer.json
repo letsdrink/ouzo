@@ -45,7 +45,7 @@
     "symfony/event-dispatcher": "^5.1",
     "filp/whoops": "2.8.*",
     "psr/log": "^1.0",
-    "ocramius/proxy-manager": "^2.11",
+    "ocramius/proxy-manager": "^2.13",
     "doctrine/annotations": "^1.10"
   },
   "require-dev": {
