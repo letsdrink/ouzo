@@ -215,6 +215,21 @@ class ArraysTest extends TestCase
     /**
      * @test
      */
+    public function shouldReturnNullIfNotFoundLastElement()
+    {
+        //given
+        $array = [];
+
+        //when
+        $return = Arrays::lastOrNull($array);
+
+        //then
+        $this->assertNull($return);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnTrueIfAllElementSatisfyPredicate()
     {
         //given

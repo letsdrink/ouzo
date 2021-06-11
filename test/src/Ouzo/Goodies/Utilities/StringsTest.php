@@ -730,10 +730,10 @@ class StringsTest extends TestCase
     public function shouldDefaultIfBlank($string, $default, $expected)
     {
         //when
-        $uppercaseFirst = Strings::defaultIfBlank($string, $default);
+        $defaultIfBlank = Strings::defaultIfBlank($string, $default);
 
         //then
-        $this->assertSame($expected, $uppercaseFirst);
+        $this->assertSame($expected, $defaultIfBlank);
     }
 
     public function defaultIfBlank(): array
