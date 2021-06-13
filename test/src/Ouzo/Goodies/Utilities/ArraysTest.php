@@ -200,7 +200,22 @@ class ArraysTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnNullIfNotFoundFirstElement()
+    public function shouldFirstOnNullReturnFirst()
+    {
+        //given
+        $array = [2 => 'foo', 1 => 'bar'];
+
+        //when
+        $return = Arrays::firstOrNull($array);
+
+        //then
+        $this->assertEquals('foo', $return);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFirstOrNullReturnNullForEmptyArray()
     {
         //given
         $array = [];
