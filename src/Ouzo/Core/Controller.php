@@ -12,6 +12,8 @@ use Ouzo\Routing\RouteRule;
 use Ouzo\Stats\SessionStats;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
+use Ouzo\View\ViewNameProvider;
+use Ouzo\View\ViewNameProviderFactory;
 
 class Controller
 {
@@ -34,6 +36,7 @@ class Controller
     private Uri $uri;
     private bool $keepMessage = false;
     private SessionStats $sessionStats;
+    private ViewNameProvider $viewNameProvider;
 
     public static function createInstance(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats): Controller
     {
@@ -46,15 +49,14 @@ class Controller
 
     public function initialize(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats): void
     {
+        $this->viewNameProvider = ViewNameProviderFactory::create();
         $this->routeRule = $routeRule;
         $this->sessionStats = $sessionStats;
         $this->uri = $requestParameters->getRoutingService()->getUri();
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isRequiredAction() ? $routeRule->getAction() : $this->uri->getAction();
 
-        $viewName = $this->getViewName();
-
-        $this->view = new View($viewName);
+        $this->view = new View($this->viewNameProvider->getViewName($routeRule, $this->currentAction));
         $this->layout = new Layout($this->view);
         $this->params = $requestParameters->get(static::$stream);
     }
@@ -140,7 +142,7 @@ class Controller
 
     public function renderAjaxView(?string $viewName = null): void
     {
-        $view = $this->view->render($viewName ?: $this->getViewName());
+        $view = $this->view->render($viewName ?: $this->viewNameProvider->getViewName($this->routeRule, $this->currentAction));
         $this->layout->renderAjax($view);
     }
 
@@ -204,13 +206,6 @@ class Controller
         } else {
             Session::remove('messages');
         }
-    }
-
-    private function getViewName(): string
-    {
-        $controllerName = $this->routeRule->getControllerName();
-        $action = $this->currentAction ?: '';
-        return "{$controllerName}/{$action}";
     }
 
     public function getRequestHeaders(): array

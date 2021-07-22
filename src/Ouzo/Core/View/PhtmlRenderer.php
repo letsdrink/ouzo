@@ -7,9 +7,8 @@
 namespace Ouzo\View;
 
 use Exception;
-use Ouzo\ApplicationPaths;
 use Ouzo\Utilities\Files;
-use Ouzo\Utilities\Path;
+use Ouzo\Utilities\Strings;
 
 class PhtmlRenderer implements ViewRenderer
 {
@@ -19,7 +18,7 @@ class PhtmlRenderer implements ViewRenderer
 
     public function __construct(private string $viewName, private array $attributes)
     {
-        $this->viewPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $this->viewName . self::EXTENSION);
+        $this->viewPath = ViewPathProviderFactory::create()->getViewPath($this->viewName, self::EXTENSION);
     }
 
     public function render(): string
@@ -40,7 +39,7 @@ class PhtmlRenderer implements ViewRenderer
 
     private function loadViewHelper(): void
     {
-        $helperPath = Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), "{$this->viewName}.helper.php");
+        $helperPath = Strings::removeSuffix($this->viewPath, self::EXTENSION) . ".helper.php";
         Files::loadIfExists($helperPath);
     }
 
