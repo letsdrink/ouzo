@@ -12,7 +12,7 @@ class ViewPathProviderFactory
 {
     public static function create(): ViewPathProvider
     {
-        $provider = Config::getValue("view", "path_provider") ?? DefaultViewPathProvider::class;
+        $provider = Config::getValue('view', 'path_provider') ?? DefaultViewPathProvider::class;
         return new $provider();
     }
 }

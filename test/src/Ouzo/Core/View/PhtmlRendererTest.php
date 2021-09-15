@@ -3,10 +3,11 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Config;
-use Ouzo\View\PhtmlRenderer;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Config;
+use Ouzo\View\DefaultViewPathProvider;
+use Ouzo\View\PhtmlRenderer;
+use PHPUnit\Framework\TestCase;
 
 class PhtmlRendererTest extends TestCase
 {
@@ -28,7 +29,7 @@ class PhtmlRendererTest extends TestCase
     public function shouldRenderView()
     {
         //given
-        $renderer = new PhtmlRenderer('hello_world', []);
+        $renderer = new PhtmlRenderer('hello_world', [], new DefaultViewPathProvider());
 
         //when
         $result = $renderer->render();
@@ -43,7 +44,7 @@ class PhtmlRendererTest extends TestCase
     public function shouldRenderViewWithAttributes()
     {
         //given
-        $renderer = new PhtmlRenderer('hello', ['name' => 'Jack']);
+        $renderer = new PhtmlRenderer('hello', ['name' => 'Jack'], new DefaultViewPathProvider());
 
         //when
         $result = $renderer->render();

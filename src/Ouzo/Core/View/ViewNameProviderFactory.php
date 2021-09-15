@@ -12,7 +12,7 @@ class ViewNameProviderFactory
 {
     public static function create(): ViewNameProvider
     {
-        $provider = Config::getValue("view", "name_provider") ?? DefaultViewNameProvider::class;
+        $provider = Config::getValue('view', 'name_provider') ?? DefaultViewNameProvider::class;
         return new $provider();
     }
 }

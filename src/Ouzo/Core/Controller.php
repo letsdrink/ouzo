@@ -14,6 +14,8 @@ use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Strings;
 use Ouzo\View\ViewNameProvider;
 use Ouzo\View\ViewNameProviderFactory;
+use Ouzo\View\ViewPathProvider;
+use Ouzo\View\ViewPathProviderFactory;
 
 class Controller
 {
@@ -49,14 +51,14 @@ class Controller
 
     public function initialize(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats): void
     {
-        $this->viewNameProvider = ViewNameProviderFactory::create();
+        $this->viewNameProvider = $this->getViewNameProvider();
         $this->routeRule = $routeRule;
         $this->sessionStats = $sessionStats;
         $this->uri = $requestParameters->getRoutingService()->getUri();
         $this->currentController = $routeRule->getController();
         $this->currentAction = $routeRule->isRequiredAction() ? $routeRule->getAction() : $this->uri->getAction();
 
-        $this->view = new View($this->viewNameProvider->getViewName($routeRule, $this->currentAction));
+        $this->view = new View($this->viewNameProvider->getViewName($routeRule, $this->currentAction), [], $this->getViewPathProvider());
         $this->layout = new Layout($this->view);
         $this->params = $requestParameters->get(static::$stream);
     }
@@ -211,5 +213,15 @@ class Controller
     public function getRequestHeaders(): array
     {
         return RequestHeaders::all();
+    }
+
+    protected function getViewNameProvider(): ViewNameProvider
+    {
+        return ViewNameProviderFactory::create();
+    }
+
+    protected function getViewPathProvider(): ViewPathProvider
+    {
+        return ViewPathProviderFactory::create();
     }
 }

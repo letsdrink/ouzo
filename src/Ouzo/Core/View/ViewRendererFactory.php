@@ -10,7 +10,7 @@ use Ouzo\Config;
 
 class ViewRendererFactory
 {
-    public static function create(string $viewName, array $attributes): ViewRenderer
+    public static function create(string $viewName, array $attributes, ViewPathProvider $viewPathProvider): ViewRenderer
     {
         $rendererClass = Config::getValue('renderer', $viewName);
         if ($rendererClass) {
@@ -20,6 +20,6 @@ class ViewRendererFactory
         if ($rendererClass) {
             return new $rendererClass($viewName, $attributes);
         }
-        return new PhtmlRenderer($viewName, $attributes);
+        return new PhtmlRenderer($viewName, $attributes, $viewPathProvider);
     }
 }

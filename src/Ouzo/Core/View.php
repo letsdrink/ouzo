@@ -9,6 +9,8 @@ namespace Ouzo;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
 use Ouzo\View\ViewException;
+use Ouzo\View\ViewPathProvider;
+use Ouzo\View\ViewPathProviderFactory;
 use Ouzo\View\ViewRenderer;
 use Ouzo\View\ViewRendererFactory;
 
@@ -18,14 +20,16 @@ class View
     private string $renderedView;
     private string $viewName;
     private array $attributes;
+    private ViewPathProvider $viewPathProvider;
 
-    public function __construct(?string $viewName, array $attributes = [])
+    public function __construct(?string $viewName, array $attributes = [], ?ViewPathProvider $viewPathProvider = null)
     {
         if (empty($viewName)) {
             throw new ViewException('View name is empty');
         }
         $this->viewName = $viewName;
         $this->attributes = $attributes;
+        $this->viewPathProvider = $viewPathProvider ?? ViewPathProviderFactory::create();
 
         $this->loadHelpers();
     }
@@ -36,7 +40,7 @@ class View
             $this->viewName = $viewName;
         }
         if (!$this->renderer) {
-            $this->renderer = ViewRendererFactory::create($this->viewName, $this->attributes);
+            $this->renderer = ViewRendererFactory::create($this->viewName, $this->attributes, $this->viewPathProvider);
         }
         $this->verifyExists($this->renderer->getViewPath(), $this->viewName);
         $this->renderedView = $this->renderer->render();

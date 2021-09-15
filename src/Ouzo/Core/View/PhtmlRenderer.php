@@ -16,9 +16,13 @@ class PhtmlRenderer implements ViewRenderer
 
     private string $viewPath;
 
-    public function __construct(private string $viewName, private array $attributes)
+    public function __construct(
+        private string $viewName,
+        private array $attributes,
+        private ViewPathProvider $viewPathProvider
+    )
     {
-        $this->viewPath = ViewPathProviderFactory::create()->getViewPath($this->viewName, self::EXTENSION);
+        $this->viewPath = $this->viewPathProvider->getViewPath($this->viewName, self::EXTENSION);
     }
 
     public function render(): string
@@ -39,7 +43,7 @@ class PhtmlRenderer implements ViewRenderer
 
     private function loadViewHelper(): void
     {
-        $helperPath = Strings::removeSuffix($this->viewPath, self::EXTENSION) . ".helper.php";
+        $helperPath = Strings::removeSuffix($this->viewPath, self::EXTENSION) . '.helper.php';
         Files::loadIfExists($helperPath);
     }
 
