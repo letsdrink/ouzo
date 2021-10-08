@@ -51,7 +51,9 @@ class FrontController
             $this->sessionStats->save($this->requestContext);
         }
 
-        ob_end_flush();
+        if (ob_get_length() !== false) {
+            ob_end_flush();
+        }
     }
 
     public function getRequestContext(): RequestContext
