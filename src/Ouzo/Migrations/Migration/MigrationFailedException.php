@@ -7,15 +7,16 @@
 namespace Ouzo\Migration;
 
 use Exception;
+use Throwable;
 
 class MigrationFailedException extends Exception
 {
-    /** @var Exception */
+    /** @var Throwable */
     private $exception;
     private $className;
     private $version;
 
-    public function __construct(Exception $exception, $className, $version)
+    public function __construct(Throwable $exception, $className, $version)
     {
         parent::__construct($exception->getMessage(), $exception->getCode(), $exception);
         $this->exception = $exception;
