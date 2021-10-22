@@ -6,9 +6,9 @@
 
 namespace Ouzo\Migration;
 
-use Exception;
 use Ouzo\Db;
 use Ouzo\Utilities\Clock;
+use Throwable;
 
 class MigrationRunner
 {
@@ -20,7 +20,7 @@ class MigrationRunner
                 $db->runInTransaction(function () use ($className, $version, $db) {
                     $this->runSingleMigration($db, $className, $version);
                 });
-            } catch (Exception $ex) {
+            } catch (Throwable $ex) {
                 throw new MigrationFailedException($ex, $className, $version);
             }
             $progressBar->advance();
