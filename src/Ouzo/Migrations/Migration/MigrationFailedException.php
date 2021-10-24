@@ -12,14 +12,14 @@ use Throwable;
 class MigrationFailedException extends Exception
 {
     /** @var Throwable */
-    private $exception;
+    private $throwable;
     private $className;
     private $version;
 
-    public function __construct(Throwable $exception, $className, $version)
+    public function __construct(Throwable $throwable, $className, $version)
     {
-        parent::__construct($exception->getMessage(), $exception->getCode(), $exception);
-        $this->exception = $exception;
+        parent::__construct($throwable->getMessage(), $throwable->getCode(), $throwable);
+        $this->throwable = $throwable;
         $this->className = $className;
         $this->version = $version;
     }
