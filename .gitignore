@@ -7,3 +7,6 @@ vendor/
 .phpunit.result.cache
 build/logs/clover.xml
 build/cov/coverage.cov
+
+# SQLite
+ouzo_test

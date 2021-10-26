@@ -1,0 +1,88 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    name: Unit tests on PHP ${{ matrix.php }} and ${{ matrix.db }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '8.0.0', '8.0.1' ]
+        db: [ 'MySQL', 'PostgreSQL', 'SQLite' ]
+        include:
+          - db: MySQL
+            phpunitArgs: "--exclude-group postgres,sqlite3"
+            phpunitEnv: db=mysql # from config/test/config.php
+          - db: PostgreSQL
+            phpunitArgs: "--exclude-group mysql,sqlite3"
+            phpunitEnv: db=postgres # from config/test/config.php
+          - db: SQLite
+            phpunitArgs: "--exclude-group mysql,postgres,non-sqlite3"
+            phpunitEnv: db=sqlite3 # from config/test/config.php
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: ouzo_test
+          MYSQL_ROOT_PASSWORD: password
+        # Set health checks to wait until mysql has started
+        options: --health-cmd="mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 3306:3306
+      postgres:
+        image: postgres:10.0
+        env:
+          POSTGRES_DB: ouzo_test
+          POSTGRES_USER: ouzo_user
+          POSTGRES_PASSWORD: password
+        # Set health checks to wait until postgres has started
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: "${{ matrix.coverage }}"
+
+      - name: Seed database (PostgreSQL)
+        if: "${{ matrix.db == 'PostgreSQL' }}"
+        run: PGPASSWORD=password psql -h 127.0.0.1 -U ouzo_user -v ON_ERROR_STOP=1 -e -f test/test-db/recreate_schema.sql ouzo_test
+
+      - name: Seed database (MySQL)
+        if: "${{ matrix.db == 'MySQL' }}"
+        run: |
+          mysql -h 127.0.0.1 -u root -ppassword -e "CREATE USER travis; GRANT ALL ON *.* TO travis;"
+          cat test/test-db/recreate_schema_mysql.sql | mysql -h 127.0.0.1 -u root -ppassword ouzo_test
+
+      - name: Seed database (SQLite)
+        if: "${{ matrix.db == 'SQLite' }}"
+        run: echo | sqlite3 ouzo_test -init test/test-db/recreate_schema_sqlite3.sql
+        # I don't know how to run sqlite without it going into interactive mode, so I piped empty stream to it
+
+      - name: Cache dependencies installed with Composer
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/composer
+          key: php${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: php${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-progress;
+
+      - name: Run tests
+        run: ${{ matrix.phpunitEnv }} ./vendor/bin/phpunit ${{ matrix.phpunitArgs }} --whitelist src test
+
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
