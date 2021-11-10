@@ -7,6 +7,8 @@
 namespace Ouzo\Console;
 
 use Ouzo\Injection\Injector;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 
@@ -46,6 +48,11 @@ class CommandsLoader
 
     private function isValidClass(string $class): bool
     {
-        return class_exists($class) && is_subclass_of($class, Command::class);
+        try {
+            $reflectionClass = new ReflectionClass($class);
+            return !$reflectionClass->isAbstract() && $reflectionClass->isSubclassOf(Command::class);
+        } catch (ReflectionException) {
+            return false;
+        }
     }
 }

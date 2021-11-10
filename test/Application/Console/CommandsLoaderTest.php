@@ -8,6 +8,7 @@ namespace Ouzo\Console;
 
 use Ouzo\Injection\Injector;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\MockInterface;
 use Ouzo\Utilities\Path;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -15,13 +16,22 @@ use TestCommand;
 
 class CommandsLoaderTest extends TestCase
 {
+    private Application|MockInterface $application;
+    private Injector|MockInterface $injector;
+
+    private CommandsLoader $commandsLoader;
     private string $testCommandsPath;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->application = Mock::mock(Application::class);
+        $this->injector = Mock::mock(Injector::class);
+
+        Mock::when($this->injector)->getInstance('\TestCommand')->thenReturn(new TestCommand());
+
+        $this->commandsLoader = CommandsLoader::forApplicationAndInjector($this->application, $this->injector);
         $this->testCommandsPath = Path::join(ROOT_PATH, 'test', 'resources', 'commands');
-        require_once($this->testCommandsPath . DIRECTORY_SEPARATOR . 'TestCommand.php');
     }
 
     /**
@@ -29,15 +39,11 @@ class CommandsLoaderTest extends TestCase
      */
     public function shouldSearchCommandsInSpecifiedPath()
     {
-        //given
-        $application = Mock::mock(Application::class);
-        $loader = CommandsLoader::forApplicationAndInjector($application, new Injector());
-
         //when
-        $loader->registerCommandsFromPath($this->testCommandsPath);
+        $this->commandsLoader->registerCommandsFromPath($this->testCommandsPath);
 
         //then
-        Mock::verify($application)->addCommands([new TestCommand()]);
+        Mock::verify($this->application)->addCommands([new TestCommand()]);
     }
 
     /**
@@ -45,17 +51,23 @@ class CommandsLoaderTest extends TestCase
      */
     public function shouldLoadCommandsUsingInjector()
     {
-        //given
-        $application = Mock::mock(Application::class);
-        $injector = Mock::mock(Injector::class);
-        Mock::when($injector)->getInstance('\TestCommand')->thenReturn(new TestCommand());
-        $loader = CommandsLoader::forApplicationAndInjector($application, $injector);
-
         //when
-        $loader->registerCommandsFromPath($this->testCommandsPath);
+        $this->commandsLoader->registerCommandsFromPath($this->testCommandsPath);
 
         //then
-        Mock::verify($application)->addCommands([new TestCommand()]);
-        Mock::verify($injector)->getInstance('\TestCommand');
+        Mock::verify($this->application)->addCommands([new TestCommand()]);
+        Mock::verify($this->injector)->getInstance('\TestCommand');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotLoadAbstractClass()
+    {
+        //when
+        $this->commandsLoader->registerCommandsFromPath($this->testCommandsPath);
+
+        //then
+        Mock::verify($this->application)->addCommands([new TestCommand()]);
     }
 }
