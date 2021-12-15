@@ -11,6 +11,8 @@ use Ouzo\Utilities\FluentArray;
 
 class RouteMetadataCollection
 {
+    private const VERY_END_ALPHABET_VALUE = 'zzzzzzzzzzzzzzzzzzzzz';
+
     /** @var RouteMetadata[] */
     private array $elements;
 
@@ -45,7 +47,13 @@ class RouteMetadataCollection
 
         $elementsWithParameters = FluentArray::from($this->elements)
             ->filter(fn(RouteMetadata $route) => $route->hasParameters())
-            ->sort(Comparator::compareBy('getUri()', 'getHttpMethod()'))
+            ->sort(function (RouteMetadata $lhs, RouteMetadata $rhs) {
+                // This moves parameters at the end of list.
+                $lshUri = str_replace(':', self::VERY_END_ALPHABET_VALUE, $lhs->getUri());
+                $rhsUri = str_replace(':', self::VERY_END_ALPHABET_VALUE, $rhs->getUri());
+                $uriComparisonResult = $lshUri <=> $rhsUri;
+                return $uriComparisonResult === 0 ? $lhs->getHttpMethod() <=> $rhs->getHttpMethod() : $uriComparisonResult;
+            })
             ->toArray();
         $this->elements = array_values(array_merge($elementsWithoutParameters, $elementsWithParameters));
 

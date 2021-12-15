@@ -52,6 +52,8 @@ class RouteMetadataCollectionTest extends TestCase
             new RouteMetadata('/test', '', '', '', null),
             new RouteMetadata('/a/b', '', '', '', null),
             new RouteMetadata('/a/:id/b', '', '', '', null),
+            new RouteMetadata('/c/:id/d/:other_id', '', '', '', null),
+            new RouteMetadata('/c/:id/d/e', '', '', '', null),
         ]);
 
         //when
@@ -66,6 +68,8 @@ class RouteMetadataCollectionTest extends TestCase
             '/a/:id',
             '/a/:id/b',
             '/b/:id',
+            '/c/:id/d/e',
+            '/c/:id/d/:other_id',
             '/test/:id',
         );
     }
