@@ -58,8 +58,9 @@ class RouteMetadataCollection
     private function compareColonLast(string $lhs, string $rhs): int
     {
         // This moves parameters at the end of list.
-        $left = str_replace(':', chr(255), $lhs);
-        $right = str_replace(':', chr(255), $rhs);
+        $highByte = chr(255);
+        $left = str_replace(':', $highByte, $lhs);
+        $right = str_replace(':', $highByte, $rhs);
         return $left <=> $right;
     }
 
