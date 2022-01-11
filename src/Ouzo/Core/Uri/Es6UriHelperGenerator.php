@@ -32,7 +32,9 @@ class Es6UriHelperGenerator
         $functions = [];
         foreach ($this->routeRules as $routeRule) {
             $name = $routeRule->getName();
-            $functions[$name] = $this->createFunction($routeRule);
+            if (!isset($functions[$name])) {
+                $functions[$name] = $this->createFunction($routeRule);
+            }
         }
         $this->generatedParts += $functions;
     }

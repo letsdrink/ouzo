@@ -316,4 +316,32 @@ export const showUsersPath = (id: UriParam, call_id: UriParam): string => {
 FUNCT;
         $this->assertEquals($expected, $generated);
     }
+
+    /**
+     * @test
+     */
+    public function shouldGenerateUriHelperForFirstDuplicatedEntry()
+    {
+        //given
+        Route::get('/users/show_item_1', 'Controller\\UsersController', 'show_item');
+        Route::get('/users/show_item_2', 'Controller\\UsersController', 'show_item');
+
+        //when
+        $generated = Es6UriHelperGenerator::generate()->getGeneratedFunctions();
+
+        //then
+        $expected = <<<EXPECTED
+const checkParameters = (...args) => {
+    args.forEach(arg => {
+        if (typeof arg !== 'string' && typeof arg !== 'number') {
+            throw new Error("Uri helper: Bad parameters")
+        }
+    })
+}
+
+export const showItemUsersPath = () => '/app/users/show_item_1'
+
+EXPECTED;
+        $this->assertEquals($expected, $generated);
+    }
 }
