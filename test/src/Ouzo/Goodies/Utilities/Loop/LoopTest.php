@@ -50,6 +50,28 @@ class LoopTest extends TestCase
     /**
      * @test
      */
+    public function shouldRunLoopWithForMultipleEveryNth()
+    {
+        // given
+        $counter = 0;
+
+        // when
+        Loop::of(10)
+            ->withFixedDelay(0)
+            ->forEveryNth(1, function () use (&$counter) {
+                $counter++;
+            })
+            ->forEveryNth(5, function () use (&$counter) {
+                $counter++;
+            })->run();
+
+        // then
+        $this->assertEquals(10 + 2, $counter);
+    }
+
+    /**
+     * @test
+     */
     public function shouldRunLoopWithForEachAndForEveryNth()
     {
         // given
