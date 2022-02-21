@@ -19,7 +19,8 @@ class ContentType
 
     private static function getFromServer(): string
     {
-        return Arrays::first(explode(';', Arrays::getValue($_SERVER, 'CONTENT_TYPE')));
+        $contentType = Arrays::getValue($_SERVER, 'CONTENT_TYPE', '');
+        return Arrays::first(explode(';', $contentType));
     }
 
     public static function value(): ?string
