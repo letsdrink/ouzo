@@ -8,6 +8,7 @@ Support for PHP 7.x is dropped. Minimal PHP version required is 8.0.
 Enhancements:
 * [Core] Added ignore list to `Backtrace::getCallingClass()`.
 * [Utilities] Added `Arrays::lastOrNull()`.
+* [Utilities] Added `Stopwatch` and `Ticker` classes.
 
 
 Release 1.8.0
