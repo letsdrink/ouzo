@@ -8,18 +8,18 @@ class TimeUnitTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider times
+     * @dataProvider durations
      */
-    public function shouldConvertNanos(int $time, string $timeUnit, int $expectedTime)
+    public function shouldConvertFromNanos(int $duration, string $timeUnit, int $expectedTime)
     {
         //when
-        $result = TimeUnit::convert($time, $timeUnit);
+        $result = TimeUnit::of($timeUnit)->convert($duration, TimeUnit::NANOSECONDS);
 
         //then
         $this->assertEquals($expectedTime, $result);
     }
 
-    public function times(): array
+    public function durations(): array
     {
         return [
             [10, TimeUnit::NANOSECONDS, 10],
@@ -30,5 +30,89 @@ class TimeUnitTest extends TestCase
             [15 * 1000 * 1000 * 1000 * 60 * 60, TimeUnit::HOURS, 15],
             [16 * 1000 * 1000 * 1000 * 60 * 60 * 24, TimeUnit::DAYS, 16],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateTimeUnitByInstanceOfTimeUnit()
+    {
+        //when
+        $result = TimeUnit::of(TimeUnit::days());
+
+        //then
+        $this->assertEquals(TimeUnit::DAYS, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToMillis()
+    {
+        //when
+        $result = TimeUnit::millis()->convert(5 * 1000 * 1000, TimeUnit::NANOSECONDS);
+
+        //then
+        $this->assertEquals(5, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToMicros()
+    {
+        //when
+        $result = TimeUnit::micros()->convert(5, TimeUnit::MILLISECONDS);
+
+        //then
+        $this->assertEquals(5 * 1000, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToSeconds()
+    {
+        //when
+        $result = TimeUnit::seconds()->convert(5, TimeUnit::MINUTES);
+
+        //then
+        $this->assertEquals(5 * 60, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToMinutes()
+    {
+        //when
+        $result = TimeUnit::minutes()->convert(5, TimeUnit::HOURS);
+
+        //then
+        $this->assertEquals(5 * 60, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToHours()
+    {
+        //when
+        $result = TimeUnit::hours()->convert(5 * 60, TimeUnit::MINUTES);
+
+        //then
+        $this->assertEquals(5, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToDays()
+    {
+        //when
+        $result = TimeUnit::days()->convert(2 * 24, TimeUnit::HOURS);
+
+        //then
+        $this->assertEquals(2, $result);
     }
 }
