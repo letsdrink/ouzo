@@ -115,4 +115,88 @@ class TimeUnitTest extends TestCase
         //then
         $this->assertEquals(2, $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToNanosByToMethod()
+    {
+        //when
+        $result = TimeUnit::millis()->toNanos(3);
+
+        //then
+        $this->assertEquals(3 * 1000 * 1000, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToMillisByToMethod()
+    {
+        //when
+        $result = TimeUnit::nanos()->toMillis(5 * 1000 * 1000);
+
+        //then
+        $this->assertEquals(5, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToMicrosByToMethod()
+    {
+        //when
+        $result = TimeUnit::millis()->toMicros(5);
+
+        //then
+        $this->assertEquals(5 * 1000, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToSecondsByToMethod()
+    {
+        //when
+        $result = TimeUnit::minutes()->toSeconds(5);
+
+        //then
+        $this->assertEquals(5 * 60, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToMinutesByToMethod()
+    {
+        //when
+        $result = TimeUnit::hours()->toMinutes(5);
+
+        //then
+        $this->assertEquals(5 * 60, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToHoursByToMethod()
+    {
+        //when
+        $result = TimeUnit::minutes()->toHours(5 * 60);
+
+        //then
+        $this->assertEquals(5, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldConvertToDaysByToMethod()
+    {
+        //when
+        $result = TimeUnit::hours()->toDays(2 * 24);
+
+        //then
+        $this->assertEquals(2, $result);
+    }
 }
