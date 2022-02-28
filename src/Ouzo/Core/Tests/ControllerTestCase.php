@@ -7,10 +7,12 @@
 namespace Ouzo\Tests;
 
 use Ouzo\Config;
+use Ouzo\Config\Inject\ValueAttributeInjector;
 use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
 use Ouzo\FrontController;
 use Ouzo\HeaderSender;
+use Ouzo\Injection\Annotation\AttributeInjectorRegistry;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Model;
@@ -28,11 +30,14 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
 {
     protected InjectorConfig $injectorConfig;
     protected FrontController $frontController;
+    protected AttributeInjectorRegistry $attributeInjectorRegistry;
 
     public function __construct(string $name = null, array $data = [], int|string|null $dataName = '')
     {
         $mockSessionInitializer = new MockSessionInitializer();
         $mockSessionInitializer->startSession();
+        $this->attributeInjectorRegistry = new AttributeInjectorRegistry();
+        $this->attributeInjectorRegistry->register(new ValueAttributeInjector());
         $this->injectorConfig = new InjectorConfig();
         parent::__construct($name, $data, $dataName);
     }
@@ -106,7 +111,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
     protected function initFrontController(): void
     {
         $this->frontControllerBindings($this->injectorConfig);
-        $injector = new Injector($this->injectorConfig);
+        $injector = new Injector($this->injectorConfig, $this->attributeInjectorRegistry);
         $this->frontController = $injector->getInstance(FrontController::class);
         $this->frontController->init();
     }
