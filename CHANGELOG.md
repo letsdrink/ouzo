@@ -5,6 +5,9 @@ IN PROGRESS
 --------
 Support for PHP 7.x is dropped. Minimal PHP version required is 8.0.
 
+Breaking changes:
+* [Core] Removed setting of default environment to 'prod'
+
 Enhancements:
 * [Core] Added ignore list to `Backtrace::getCallingClass()`.
 * [Utilities] Added `Arrays::lastOrNull()`.
