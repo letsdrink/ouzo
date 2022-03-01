@@ -36,10 +36,9 @@ class Bootstrap
     private array $interceptors = [];
     private bool $overrideMiddleware = false;
 
-    public function __construct(EnvironmentSetter $environmentSetter = null)
+    public function __construct(EnvironmentSetter $environmentSetter)
     {
         error_reporting(E_ALL);
-        $environmentSetter = $environmentSetter ?: new EnvironmentSetter('prod');
         $environmentSetter->set();
     }
 

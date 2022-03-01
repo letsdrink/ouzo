@@ -8,7 +8,7 @@ namespace Ouzo;
 
 class EnvironmentSetter
 {
-    public function __construct(private string $env = 'prod')
+    public function __construct(private string $env)
     {
     }
 
