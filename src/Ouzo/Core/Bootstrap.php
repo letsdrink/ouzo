@@ -36,10 +36,10 @@ class Bootstrap
     private array $interceptors = [];
     private bool $overrideMiddleware = false;
 
-    public function __construct(EnvironmentSetter $environmentSetter)
+    public function __construct(Environment $environment)
     {
         error_reporting(E_ALL);
-        $environmentSetter->set();
+        $environment->init();
     }
 
     public function addConfig(object $config): static

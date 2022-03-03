@@ -9,7 +9,7 @@ use Ouzo\Config;
 use Ouzo\Controller;
 use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
-use Ouzo\EnvironmentSetter;
+use Ouzo\Environment;
 use Ouzo\HeaderSender;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Middleware\Interceptor\SessionStarter;
@@ -18,6 +18,8 @@ use Ouzo\RedirectHandler;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\MockInterface;
 use Ouzo\Tests\MockCookiesSetter;
 use Ouzo\Tests\MockDownloadHandler;
 use Ouzo\Tests\MockHeaderSender;
@@ -59,7 +61,11 @@ class BootstrapTest extends TestCase
         Route::clear();
 
         Route::get('/', BootstrapSampleController::class, 'index');
-        $this->bootstrap = new Bootstrap(new EnvironmentSetter('test'));
+
+        /** @var Environment|MockInterface $environment */
+        $environment = Mock::create(Environment::class);
+
+        $this->bootstrap = new Bootstrap($environment);
         $this->bootstrap->withInjectorConfig($this->config);
 
         unset($_SERVER['REDIRECT_URL']);
