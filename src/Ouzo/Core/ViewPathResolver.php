@@ -6,6 +6,7 @@
 
 namespace Ouzo;
 
+use Ouzo\Http\MediaType;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Path;
 
@@ -19,9 +20,9 @@ class ViewPathResolver
     private static function getViewPostfix(string $responseType): string
     {
         $availableViewsMap = [
-            'text/xml' => '.xml.phtml',
-            'application/json' => '.json.phtml',
-            'text/json' => '.json.phtml',
+            MediaType::TEXT_XML => '.xml.phtml',
+            MediaType::APPLICATION_JSON => '.json.phtml',
+            MediaType::TEXT_JSON => '.json.phtml',
         ];
 
         $viewForType = Arrays::getValue($availableViewsMap, $responseType, false);

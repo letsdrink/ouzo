@@ -6,6 +6,7 @@
 
 namespace Ouzo;
 
+use Ouzo\Http\MediaType;
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Uri\PathProviderInterface;
 use Ouzo\Utilities\Arrays;
@@ -151,7 +152,7 @@ class Uri
 
     private static function jsonParameters(string $content): array
     {
-        if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
+        if (Strings::equalsIgnoreCase(ContentType::value(), MediaType::APPLICATION_JSON)) {
             return Arrays::toArray(Json::decode($content, true));
         }
         return [];

@@ -9,6 +9,7 @@ namespace Ouzo\ExceptionHandling;
 use ErrorException;
 use Exception;
 use Ouzo\ContentType;
+use Ouzo\Http\MediaType;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Objects;
@@ -87,7 +88,7 @@ class ExceptionLogger
             if (!empty($_POST)) {
                 $message .= "\nPOST = " . self::sanitize($_POST);
             }
-            if (Strings::equalsIgnoreCase(ContentType::value(), 'application/json')) {
+            if (Strings::equalsIgnoreCase(ContentType::value(), MediaType::APPLICATION_JSON)) {
                 $jsonBody = stream_get_contents(fopen('php://input', 'r'));
                 $jsonBody = preg_replace('/"password"\s*:\s*".*"/', '"password":"***"', $jsonBody);
                 $jsonBodyAbbrev = Strings::abbreviate($jsonBody, 1024 * 20);
