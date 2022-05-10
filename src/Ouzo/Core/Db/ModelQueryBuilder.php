@@ -168,7 +168,7 @@ class ModelQueryBuilder
         return QueryExecutor::prepare($this->db, $this->query)->execute();
     }
 
-    public function join(Relation|string $relationSelector, array|string|null $aliases = null, string $type = 'LEFT', array|string $on = []): static
+    public function join(Relation|string $relationSelector, array|string|null $aliases = null, string $type = 'LEFT', array|string|WhereClause $on = []): static
     {
         $modelJoins = $this->createModelJoins($relationSelector, $aliases, $type, $on);
         foreach ($modelJoins as $modelJoin) {
@@ -177,17 +177,17 @@ class ModelQueryBuilder
         return $this;
     }
 
-    public function innerJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
+    public function innerJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string|WhereClause $on = []): static
     {
         return $this->join($relationSelector, $aliases, 'INNER', $on);
     }
 
-    public function rightJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
+    public function rightJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string|WhereClause $on = []): static
     {
         return $this->join($relationSelector, $aliases, 'RIGHT', $on);
     }
 
-    public function leftJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string $on = []): static
+    public function leftJoin(Relation|string $relationSelector, array|string|null $aliases = null, array|string|WhereClause $on = []): static
     {
         return $this->join($relationSelector, $aliases, 'LEFT', $on);
     }
@@ -291,7 +291,7 @@ class ModelQueryBuilder
     }
 
     /** @return ModelJoin[] */
-    private function createModelJoins(Relation|string $relationSelector, array|string|null $aliases, string $type, array|string $on): array
+    private function createModelJoins(Relation|string $relationSelector, array|string|null $aliases, string $type, array|string|WhereClause $on): array
     {
         $relations = ModelQueryBuilderHelper::extractRelations($this->model, $relationSelector, $this->joinedModels);
         $relationWithAliases = ModelQueryBuilderHelper::associateRelationsWithAliases($relations, $aliases);

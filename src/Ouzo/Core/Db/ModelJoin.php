@@ -18,7 +18,7 @@ class ModelJoin
         private Relation $relation,
         private ?string $alias,
         private string $type,
-        private array|string $on,
+        private array|string|WhereClause $on,
         private bool $fetch
     )
     {

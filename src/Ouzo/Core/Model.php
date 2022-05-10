@@ -343,7 +343,7 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return static::queryBuilder()->selectDistinct($columns, $type);
     }
 
-    public static function join(Relation|string $relation, null|array|string $alias = null, string $type = 'LEFT', array|string $on = []): ModelQueryBuilder
+    public static function join(Relation|string $relation, null|array|string $alias = null, string $type = 'LEFT', array|string|WhereClause $on = []): ModelQueryBuilder
     {
         return static::queryBuilder()->join($relation, $alias, $type, $on);
     }

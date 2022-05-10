@@ -7,6 +7,7 @@
 namespace Ouzo\Db;
 
 use InvalidArgumentException;
+use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Model;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
@@ -59,7 +60,7 @@ class ModelQueryBuilderHelper
      * @param RelationWithAlias[] $relationWithAliases
      * @return ModelJoin[]
      */
-    public static function createModelJoins(string $fromTable, array $relationWithAliases, string $type, array|string $on): array
+    public static function createModelJoins(string $fromTable, array $relationWithAliases, string $type, array|string|WhereClause $on): array
     {
         $result = [];
         $field = '';
