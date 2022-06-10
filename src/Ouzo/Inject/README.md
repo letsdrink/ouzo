@@ -10,6 +10,8 @@ $injector = new Injector();
 $injector->getInstance('\MyClass');
 ```
 
+### Scopes
+
 Scope definition:
 
 ```php
@@ -22,19 +24,21 @@ $injector->getInstance('\MyClass');
 
 Default scope is Scope::PROTOTYPE.
 
-Linked binding:
+### Linked binding
 
 ```php
 $config = new InjectorConfig();
 $config->bind('\MyClass')->to('\MySubClass');
 ```
 
-Instance binding:
+### Instance binding
 
 ```php
 $config = new InjectorConfig();
 $config->bind('\MyClass')->toInstance(new MyClass());
 ```
+
+### Through-factory binding
 
 Binding through factory class (`Factory` interface has to be implemented):
 
@@ -42,6 +46,8 @@ Binding through factory class (`Factory` interface has to be implemented):
 $config = new InjectorConfig();
 $config->bind('\MyClass')->throughFactory('\MyClassFactory');
 ```
+
+### Auto-wiring
 
 Auto-wiring dependencies (with #[Inject]):
 
@@ -53,7 +59,7 @@ class MyClass
 }
 ```
 
-Named binding:
+### Named binding
 
 ```php
 $config = new InjectorConfig();
@@ -90,7 +96,9 @@ class MyClass
 }
 ```
 
-You can named any constructor argument using parameter name.
+You can use #[Named] on any constructor argument using parameter name.
+
+### Constructor injection
 
 Constructor injection (requires arguments types):
 
@@ -107,7 +115,9 @@ class MyClass
 }
 ```
 
-By default all singletons will be lazy loaded IF lazy loading is enabled in configuration.
+### Lazy loading
+
+By default, all singletons will be lazy loaded IF lazy loading is enabled in configuration.
 Enabling it with ProxyManager (https://github.com/Ocramius/ProxyManager) implementation:
 
 ```php
@@ -117,12 +127,15 @@ $config = new InjectorConfig();
 $config->setLazyInstanceCreator($lazyCreator);
 ```
 
+### Eager loading
+
 If you want your singletons to be loaded eagerly use `asEagerSingleton` method:
 
 ```php
 $config = new InjectorConfig();
 $config->bind('\MyClass')->asEagerSingleton();
 ```
+### Multi binding
 
 Multi bindings (injecting list of specified type, can be done via property or constructor):
 
