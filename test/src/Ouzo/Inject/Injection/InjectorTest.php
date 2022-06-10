@@ -10,7 +10,9 @@ use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Injection\InjectorException;
 use Ouzo\Injection\Scope;
+use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use Ouzo\Utilities\Arrays;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Proxy\VirtualProxyInterface;
@@ -619,6 +621,48 @@ class InjectorTest extends TestCase
         //then
         $this->assertDependencyInjected(ClassWithNamespace::class, $instance->myClass);
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->mySecondClass);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldX() //TODO Refactor name
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->bind(SampleInterface::class)->to(SampleImpl1::class);
+
+        $injector = new Injector($config);
+
+        //when
+        /** @var ClassWithListOfConstructorDep $instance */
+        $instance = $injector->getInstance(ClassWithListOfConstructorDep::class);
+
+        //then
+        $sampleInterfaces = Arrays::map($instance->getSampleInterfaces(), fn(SampleInterface $sample) => $sample::class);
+        Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class);
+        print_r($instance);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldY() //TODO Refactor name
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->bind(SampleInterface::class)->to(SampleImpl1::class);
+
+        $injector = new Injector($config);
+
+        //when
+        /** @var ClassWithListOfDep $instance */
+        $instance = $injector->getInstance(ClassWithListOfDep::class);
+
+        //then
+        $sampleInterfaces = Arrays::map($instance->getSampleInterfaces(), fn(SampleInterface $sample) => $sample::class);
+        Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class);
+        print_r($instance);
     }
 
     private function assertDependencyInjected($className, $instance)

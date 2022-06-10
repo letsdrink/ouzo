@@ -8,6 +8,7 @@ namespace Ouzo\Injection;
 
 use Ouzo\Injection\Annotation\AttributeInjectorRegistry;
 use Ouzo\Injection\Annotation\InjectAttributeInjector;
+use Ouzo\Injection\Annotation\InjectListAttributeInjector;
 
 class Injector
 {
@@ -27,6 +28,7 @@ class Injector
 
         $attributeInjectorRegistry = $attributeInjectorRegistry ?: new AttributeInjectorRegistry();
         $attributeInjectorRegistry->register(new InjectAttributeInjector($this->bindings, $this->instanceRepository));
+        $attributeInjectorRegistry->register(new InjectListAttributeInjector($this->bindings, $this->instanceRepository));
 
         $this->instanceFactory = new InstanceFactory(
             $this->injectorConfig->getEagerInstanceCreator(),
