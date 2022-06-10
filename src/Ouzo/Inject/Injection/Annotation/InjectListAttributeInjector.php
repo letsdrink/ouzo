@@ -26,21 +26,19 @@ class InjectListAttributeInjector implements AttributeInjector
     public function injectForProperties(object $instance, array $reflectionProperties, InstanceFactory $instanceFactory): void
     {
         foreach ($reflectionProperties as $reflectionProperty) {
-            $injectList = $reflectionProperty->getAttributes(InjectList::class);
+            $attributes = $reflectionProperty->getAttributes(InjectList::class);
 
-            if (!empty($injectList)) {
+            if (!empty($attributes)) {
                 if ($reflectionProperty->getType()?->getName() !== 'array') {
                     $class = $instance::class;
                     throw new InjectorException("Cannot #[InjectList] dependency - wrong type. " .
                         "Use array property \${$reflectionProperty->getName()} in class {$class}.");
                 }
-                $className = $injectList[0]->newInstance()->getName();
 
-                $binder = $this->bindings->getBinder($className);
-                $dependencyInstance = $this->instanceRepository->getInstance($instanceFactory, $binder);
+                $dependencyInstances = $this->createListOfInstances($attributes, $instanceFactory);
 
                 $reflectionProperty->setAccessible(true);
-                $reflectionProperty->setValue($instance, [$dependencyInstance]);
+                $reflectionProperty->setValue($instance, $dependencyInstances);
             }
         }
     }
@@ -53,23 +51,30 @@ class InjectListAttributeInjector implements AttributeInjector
         if (!empty($attributes)) {
             $parameters = $constructor->getParameters();
             foreach ($parameters as $parameter) {
-                $injectList = $parameter->getAttributes(InjectList::class);
+                $attributes = $parameter->getAttributes(InjectList::class);
 
-                if (!empty($injectList)) {
+                if (!empty($attributes)) {
                     if ($parameter->getType()?->getName() !== 'array') {
                         throw new InjectorException("Cannot #[InjectList] dependency - wrong type. " .
                             "Use array property \${$parameter->getName()}.");
                     }
-                    $className = $injectList[0]->newInstance()->getName();
 
-                    $binder = $this->bindings->getBinder($className);
-                    $dependencyInstance = $this->instanceRepository->getInstance($instanceFactory, $binder);
+                    $dependencyInstances = $this->createListOfInstances($attributes, $instanceFactory);
 
-                    $constructorParameters[$parameter->getName()] = [$dependencyInstance];
+                    $constructorParameters[$parameter->getName()] = $dependencyInstances;
                 }
             }
         }
 
         return $constructorParameters;
+    }
+
+    private function createListOfInstances(array $attributes, InstanceFactory $instanceFactory): array
+    {
+        /** @var InjectList $injectList */
+        $injectList = $attributes[0]->newInstance();
+
+        $binder = $this->bindings->getBinder($injectList->getClassName(), $injectList->getName() ?: '');
+        return $this->instanceRepository->getListOfInstances($instanceFactory, $binder);
     }
 }

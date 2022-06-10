@@ -123,3 +123,33 @@ If you want your singletons to be loaded eagerly use `asEagerSingleton` method:
 $config = new InjectorConfig();
 $config->bind('\MyClass')->asEagerSingleton();
 ```
+
+Multi bindings (injecting list of specified type, can be done via property or constructor):
+
+```php
+$config = new InjectorConfig();
+$config->bind(OtherClass::class)->to(OtherClass1::class, OtherClass2::class);
+```
+
+```php
+class MyClass
+{
+  #[InjectList(OtherClass::class)]
+  private array $otherClass;
+}
+```
+
+Multi bindings can be named:
+
+```php
+$config = new InjectorConfig();
+$config->bind(OtherClass::class, 'some_name')->to(OtherClass1::class, OtherClass2::class);
+```
+
+```php
+class MyClass
+{
+  #[InjectList(OtherClass::class, 'some_name')]
+  private array $otherClass;
+}
+```

@@ -626,11 +626,11 @@ class InjectorTest extends TestCase
     /**
      * @test
      */
-    public function shouldX() //TODO Refactor name
+    public function shouldInjectListOfConstructorDependencies()
     {
         //given
         $config = new InjectorConfig();
-        $config->bind(SampleInterface::class)->to(SampleImpl1::class);
+        $config->bind(SampleInterface::class)->to(SampleImpl1::class, SampleImpl2::class);
 
         $injector = new Injector($config);
 
@@ -639,19 +639,40 @@ class InjectorTest extends TestCase
         $instance = $injector->getInstance(ClassWithListOfConstructorDep::class);
 
         //then
-        $sampleInterfaces = Arrays::map($instance->getSampleInterfaces(), fn(SampleInterface $sample) => $sample::class);
-        Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class);
-        print_r($instance);
+        $sampleInterfaces = Arrays::map($instance->getSampleInterfaces(), fn($object) => $object::class);
+        Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class, SampleImpl2::class);
     }
 
     /**
      * @test
      */
-    public function shouldY() //TODO Refactor name
+    public function shouldInjectNamedListOfConstructorDependencies()
     {
         //given
         $config = new InjectorConfig();
+        $config->bind(SampleInterface::class, 'SampleList')->to(SampleImpl1::class, SampleImpl2::class);
+        $config->bind(SampleInterface::class, 'OtherList')->to(SampleImpl2::class);
         $config->bind(SampleInterface::class)->to(SampleImpl1::class);
+
+        $injector = new Injector($config);
+
+        //when
+        /** @var ClassWithNamedListOfConstructorDep $instance */
+        $instance = $injector->getInstance(ClassWithNamedListOfConstructorDep::class);
+
+        //then
+        $sampleInterfaces = Arrays::map($instance->getSampleInterfaces(), fn($object) => $object::class);
+        Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class, SampleImpl2::class);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectListOfDependencies()
+    {
+        //given
+        $config = new InjectorConfig();
+        $config->bind(SampleInterface::class)->to(SampleImpl1::class, SampleImpl2::class);
 
         $injector = new Injector($config);
 
@@ -660,9 +681,8 @@ class InjectorTest extends TestCase
         $instance = $injector->getInstance(ClassWithListOfDep::class);
 
         //then
-        $sampleInterfaces = Arrays::map($instance->getSampleInterfaces(), fn(SampleInterface $sample) => $sample::class);
-        Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class);
-        print_r($instance);
+        $sampleInterfaces = Arrays::map($instance->getSampleInterfaces(), fn($object) => $object::class);
+        Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class, SampleImpl2::class);
     }
 
     private function assertDependencyInjected($className, $instance)

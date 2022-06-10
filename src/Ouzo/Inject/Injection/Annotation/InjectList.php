@@ -11,11 +11,16 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PARAMETER | Attribute::TARGET_PROPERTY)]
 class InjectList
 {
-    public function __construct(private string $name)
+    public function __construct(private string $className, private ?string $name = null)
     {
     }
 
-    public function getName(): string
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
+
+    public function getName(): ?string
     {
         return $this->name;
     }
