@@ -10,7 +10,7 @@ class Binder
 {
     private string $scope = Scope::PROTOTYPE;
     private bool $eager = false;
-    private ?string $boundClassName = null;
+    private array $boundClassNames = [];
     private ?object $instance = null;
     private ?string $factoryClassName = null;
 
@@ -34,9 +34,9 @@ class Binder
         return $this;
     }
 
-    public function to(string $boundClassName): static
+    public function to(string...$boundClassNames): static
     {
-        $this->boundClassName = $boundClassName;
+        $this->boundClassNames = $boundClassNames;
         return $this;
     }
 
@@ -72,9 +72,9 @@ class Binder
         return $this->eager;
     }
 
-    public function getBoundClassName(): ?string
+    public function getBoundClassNames(): array
     {
-        return $this->boundClassName;
+        return $this->boundClassNames;
     }
 
     public function getInstance(): ?object
