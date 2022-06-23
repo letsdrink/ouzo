@@ -9,7 +9,7 @@ use Ouzo\Http\HttpMethod;
 use Ouzo\Routing\Annotation\Route;
 use PHPUnit\Framework\TestCase;
 
-class RouteTest extends TestCase
+class RouteAnnotationTest extends TestCase
 {
     public function tearDown(): void
     {
