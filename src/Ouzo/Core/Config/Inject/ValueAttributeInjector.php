@@ -1,19 +1,19 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Config\Inject;
 
-use Ouzo\Config;
+use Ouzo\Config\ConfigValueSelector;
 use Ouzo\Injection\Annotation\AttributeInjector;
 use Ouzo\Injection\InstanceFactory;
-use Ouzo\Utilities\Strings;
 use ReflectionAttribute;
 use ReflectionMethod;
 
 class ValueAttributeInjector implements AttributeInjector
 {
-    private const CONFIG_START = '${';
-    private const CONFIG_END = '}';
-
     public function injectForProperties(object $instance, array $reflectionProperties, InstanceFactory $instanceFactory): void
     {
         foreach ($reflectionProperties as $reflectionProperty) {
@@ -47,13 +47,6 @@ class ValueAttributeInjector implements AttributeInjector
         $value = $attribute->newInstance();
         $selector = $value->getSelector();
 
-        if (Strings::startsWith($selector, self::CONFIG_START) && Strings::endsWith($selector, self::CONFIG_END)) {
-            $selector = Strings::removePrefix($selector, self::CONFIG_START);
-            $selector = Strings::removeSuffix($selector, self::CONFIG_END);
-            $arguments = explode('.', $selector);
-            return Config::getValue(...$arguments);
-        }
-
-        return $selector;
+        return ConfigValueSelector::selectConfigValue($selector);
     }
 }

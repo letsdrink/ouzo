@@ -7,6 +7,7 @@
 namespace Ouzo\Routing\Annotation;
 
 use Attribute;
+use Ouzo\Config\ConfigValueSelector;
 
 #[Attribute(Attribute::TARGET_METHOD)]
 class Route
@@ -21,7 +22,8 @@ class Route
 
     public function getPath(): string
     {
-        return $this->path;
+        $pathFromConfig = ConfigValueSelector::selectConfigValue($this->path);
+        return is_null($pathFromConfig) ? $this->path : $pathFromConfig;
     }
 
     public function getHttpMethods(): array
