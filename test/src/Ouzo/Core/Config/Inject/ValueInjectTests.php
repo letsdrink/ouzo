@@ -49,6 +49,12 @@ class SampleClass
     #[Value('${properties.invalid:123}')]
     private int $fieldWithDefaultInt;
 
+    #[Value('${properties.invalid:true}')]
+    private bool $fieldWithDefaultTrue;
+
+    #[Value('${properties.invalid:false}')]
+    private bool $fieldWithDefaultFalse;
+
     #[Inject]
     public function __construct(
         #[Value('${properties.constructor_parameter}')] private int $constructorParameter,
@@ -101,6 +107,16 @@ class SampleClass
     public function getFieldWithDefaultInt(): int
     {
         return $this->fieldWithDefaultInt;
+    }
+
+    public function isFieldWithDefaultTrue(): bool
+    {
+        return $this->fieldWithDefaultTrue;
+    }
+
+    public function isFieldWithDefaultFalse(): bool
+    {
+        return $this->fieldWithDefaultFalse;
     }
 }
 
@@ -308,5 +324,37 @@ class ValueInjectTests extends TestCase
 
         //then
         $this->assertEmpty($value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectDefaultTrueValue()
+    {
+        //given
+        /** @var SampleClass $sampleClass */
+        $sampleClass = $this->injector->getInstance(SampleClass::class);
+
+        //when
+        $value = $sampleClass->isFieldWithDefaultTrue();
+
+        //then
+        $this->assertTrue($value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectDefaultFalseValue()
+    {
+        //given
+        /** @var SampleClass $sampleClass */
+        $sampleClass = $this->injector->getInstance(SampleClass::class);
+
+        //when
+        $value = $sampleClass->isFieldWithDefaultFalse();
+
+        //then
+        $this->assertFalse($value);
     }
 }
