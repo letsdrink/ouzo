@@ -10,6 +10,7 @@ use Ouzo\Config\Inject\ValueAttributeInjector;
 use Ouzo\Injection\Annotation\AttributeInjectorRegistry;
 use Ouzo\Injection\Annotation\Inject;
 use Ouzo\Injection\Injector;
+use Ouzo\Injection\InjectorConfig;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use PHPUnit\Framework\TestCase;
@@ -38,6 +39,15 @@ class SampleClass
 
     #[Value('${properties.errors}')]
     private array $errors;
+
+    #[Value('${properties.invalid:test}')]
+    private string $fieldWithDefaultString;
+
+    #[Value('${properties.invalid:}')]
+    private string $fieldWithDefaultEmpty;
+
+    #[Value('${properties.invalid:123}')]
+    private int $fieldWithDefaultInt;
 
     #[Inject]
     public function __construct(
@@ -76,6 +86,21 @@ class SampleClass
     public function getInjectedClassWithConfig(): InjectedClassWithConfig
     {
         return $this->injectedClassWithConfig;
+    }
+
+    public function getFieldWithDefaultString(): string
+    {
+        return $this->fieldWithDefaultString;
+    }
+
+    public function getFieldWithDefaultEmpty(): string
+    {
+        return $this->fieldWithDefaultEmpty;
+    }
+
+    public function getFieldWithDefaultInt(): int
+    {
+        return $this->fieldWithDefaultInt;
     }
 }
 
@@ -118,7 +143,7 @@ class ValueInjectTests extends TestCase
 
         $attributeInjectorRegistry = new AttributeInjectorRegistry();
         $attributeInjectorRegistry->register(new ValueAttributeInjector());
-        $this->injector = new Injector(attributeInjectorRegistry: $attributeInjectorRegistry);
+        $this->injector = new Injector(new InjectorConfig(), $attributeInjectorRegistry);
     }
 
     /**
@@ -235,5 +260,53 @@ class ValueInjectTests extends TestCase
         //then
         $this->assertEquals('property to filed', $injectedClassWithConfig->getField());
         Assert::thatArray($injectedClassWithConfig->getErrors())->containsOnly('error1', 'error2', 'error3');
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectDefaultStringValue()
+    {
+        //given
+        /** @var SampleClass $sampleClass */
+        $sampleClass = $this->injector->getInstance(SampleClass::class);
+
+        //when
+        $value = $sampleClass->getFieldWithDefaultString();
+
+        //then
+        $this->assertEquals('test', $value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectDefaultIntValue()
+    {
+        //given
+        /** @var SampleClass $sampleClass */
+        $sampleClass = $this->injector->getInstance(SampleClass::class);
+
+        //when
+        $value = $sampleClass->getFieldWithDefaultInt();
+
+        //then
+        $this->assertEquals(123, $value);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectDefaultEmptyValue()
+    {
+        //given
+        /** @var SampleClass $sampleClass */
+        $sampleClass = $this->injector->getInstance(SampleClass::class);
+
+        //when
+        $value = $sampleClass->getFieldWithDefaultEmpty();
+
+        //then
+        $this->assertEmpty($value);
     }
 }
