@@ -23,10 +23,10 @@ class MigrationInitializer
         $this->dbConfig = $dbConfig;
     }
 
-    public function initMigrations(Db $db): void
+    public function initMigrationsIfNotExists(Db $db): void
     {
         $this->output->write("<info>Initializing migrations... </info>");
-        $db->execute("CREATE TABLE schema_migrations(
+        $db->execute("CREATE TABLE IF NOT EXISTS schema_migrations(
                 id SERIAL PRIMARY KEY,
                 version TEXT,
                 applied_at TIMESTAMP

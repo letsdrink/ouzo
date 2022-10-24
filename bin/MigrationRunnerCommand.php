@@ -121,7 +121,7 @@ class MigrationRunnerCommand extends MigrationCommand
             $initializer->dropMigrations($db);
         }
         if ($this->init) {
-            $initializer->initMigrations($db);
+            $initializer->initMigrationsIfNotExists($db);
         }
         if ($this->reset) {
             $initializer->resetMigrations();
