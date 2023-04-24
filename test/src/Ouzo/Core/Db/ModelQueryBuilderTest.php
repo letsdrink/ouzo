@@ -819,6 +819,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
     /**
      * @test
+     * @group postgres
      */
     public function shouldReturnDistinctOnResults()
     {
