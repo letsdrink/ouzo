@@ -10,7 +10,6 @@ use Ouzo\Db\OnConflict;
 use Ouzo\Db\Query;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
-use Ouzo\Utilities\Strings;
 
 class PostgresDialect extends Dialect
 {
@@ -80,8 +79,6 @@ class PostgresDialect extends Dialect
 
     protected function getDistinctOnQuery(): string
     {
-        return empty($this->query->distinctOnColumns) ?
-            Strings::EMPTY_STRING :
-            'DISTINCT ON (' . Joiner::on(', ')->join($this->query->distinctOnColumns) . ') ';
+        return 'DISTINCT ON (' . Joiner::on(', ')->join($this->query->distinctOnColumns) . ') ';
     }
 }

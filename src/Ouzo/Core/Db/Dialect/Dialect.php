@@ -25,7 +25,7 @@ abstract class Dialect
     public function select(): string
     {
         if ($this->query->type == QueryType::$SELECT) {
-            $distinct = $this->query->distinct ? 'DISTINCT ' : $this->getDistinctOnQuery();
+            $distinct = $this->query->distinct ? 'DISTINCT ' : (empty($this->query->distinctOnColumns) ? Strings::EMPTY_STRING : $this->getDistinctOnQuery());
             $columns = empty($this->query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::addAliases())->join($this->query->selectColumns);
             return "SELECT {$distinct}{$columns}";
         }
