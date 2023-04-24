@@ -69,4 +69,9 @@ class MySqlDialect extends Dialect
     {
         throw new InvalidArgumentException("On conflict do nothing is not supported in mysql");
     }
+
+    protected function getDistinctOnQuery(): string
+    {
+        throw new InvalidArgumentException("DISTINCT ON is not supported in mysql");
+    }
 }

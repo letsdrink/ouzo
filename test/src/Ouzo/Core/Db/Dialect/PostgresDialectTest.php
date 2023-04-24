@@ -481,6 +481,41 @@ class PostgresDialectTest extends TestCase
     /**
      * @test
      */
+    public function shouldReturnSelectDistinctOn()
+    {
+        // given
+        $query = new Query();
+        $query->selectColumns = ['name', 'category'];
+        $query->table = 'products';
+        $query->distinctOnColumns = ['description'];
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT DISTINCT ON (description) name, category FROM products', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectDistinctOnWithSelectingAllColumns()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->distinctOnColumns = ['description'];
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT DISTINCT ON (description) * FROM products', $sql);
+    }
+
+    /**
+     * @test
+     */
     public function shouldReturnSelectForUpdate()
     {
         // given

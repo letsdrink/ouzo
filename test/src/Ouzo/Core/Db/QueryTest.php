@@ -41,6 +41,20 @@ class QueryTest extends TestCase
     /**
      * @test
      */
+    public function shouldCreateSelectDistinctOnQuery()
+    {
+        // when
+        $query = Query::select()->distinctOn(['col1', 'col2']);
+
+        // then
+        $this->assertEquals(QueryType::$SELECT, $query->type);
+        $this->assertFalse($query->distinct);
+        $this->assertEquals(['col1', 'col2'], $query->distinctOnColumns);
+    }
+
+    /**
+     * @test
+     */
     public function shouldCreateSelectCountQuery()
     {
         // when

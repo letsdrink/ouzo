@@ -53,6 +53,12 @@ class ModelQueryBuilder
         }
     }
 
+    public function distinctOn(array $columns): static
+    {
+        $this->query->distinctOn($columns);
+        return $this;
+    }
+
     public function where(string|array|WhereClause $where = '', mixed $values = []): static
     {
         $this->query->where($where, $values);

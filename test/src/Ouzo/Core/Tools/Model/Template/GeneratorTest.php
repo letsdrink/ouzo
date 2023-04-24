@@ -220,4 +220,9 @@ class MyImagineDialect extends Dialect
     {
         return '';
     }
+
+    protected function getDistinctOnQuery(): string
+    {
+        return '';
+    }
 }

@@ -15,6 +15,7 @@ use Ouzo\DbConnectionException;
 use Ouzo\DbException;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Joiner;
+use Ouzo\Utilities\Strings;
 use PDO;
 
 abstract class Dialect
@@ -24,14 +25,14 @@ abstract class Dialect
     public function select(): string
     {
         if ($this->query->type == QueryType::$SELECT) {
-            $distinct = $this->query->distinct ? 'DISTINCT ' : '';
+            $distinct = $this->query->distinct ? 'DISTINCT ' : $this->getDistinctOnQuery();
             $columns = empty($this->query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::addAliases())->join($this->query->selectColumns);
             return "SELECT {$distinct}{$columns}";
         }
         if ($this->query->type == QueryType::$COUNT) {
             return 'SELECT count(*)';
         }
-        return '';
+        return Strings::EMPTY_STRING;
     }
 
     public function update(): string
@@ -220,8 +221,10 @@ abstract class Dialect
     abstract public function getErrorCode(array $errorInfo): mixed;
 
     /** @param string[] $columns */
-    abstract public function batchInsert(string $table, string $primaryKey, array $columns, int $batchSize,
-                                         ?OnConflict $onConflict): string;
+    abstract public function batchInsert(
+        string $table, string $primaryKey, array $columns, int $batchSize,
+        ?OnConflict $onConflict
+    ): string;
 
     abstract public function regexpMatcher(): string;
 
@@ -254,4 +257,6 @@ abstract class Dialect
     }
 
     abstract protected function quote(string $word): string;
+
+    abstract protected function getDistinctOnQuery(): string;
 }

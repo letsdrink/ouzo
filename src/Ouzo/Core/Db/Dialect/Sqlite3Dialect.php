@@ -95,4 +95,9 @@ class Sqlite3Dialect extends Dialect
     {
         throw new BadMethodCallException('On conflict do nothing is not supported in sqlite3');
     }
+
+    protected function getDistinctOnQuery(): string
+    {
+        throw new InvalidArgumentException("DISTINCT ON is not supported in sqlite3");
+    }
 }

@@ -35,6 +35,7 @@ class Query
     public string|array|null $groupBy = null;
     public bool $lockForUpdate = false;
     public ?string $comment = null;
+    public array $distinctOnColumns = [];
 
     public function __construct(?int $type = null)
     {
@@ -132,6 +133,15 @@ class Query
         return $this;
     }
 
+    public function distinctOn(array $columns): static
+    {
+        if ($this->distinct) {
+            throw new DbException('Cannot use DISTINCT together with DISTINCT ON.');
+        }
+        $this->distinctOnColumns = $columns;
+        return $this;
+    }
+
     public function where(array|string|WhereClause $where = '', mixed $whereValues = null): static
     {
         $this->validateParameters($where);
@@ -182,7 +192,7 @@ class Query
         return $this;
     }
 
-    private function validateParameters(mixed $where)
+    private function validateParameters(mixed $where): void
     {
         if (is_array($where)) {
             foreach ($where as $key => $value) {
