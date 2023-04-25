@@ -843,6 +843,38 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
 
     /**
      * @test
+     * @group postgres
+     */
+    public function shouldFailForDistinctOnAndSelectDistinct()
+    {
+        // then
+        $this->expectException(DbException::class);
+        $this->expectExceptionMessage('Cannot use DISTINCT together with DISTINCT ON');
+        // when
+        Product::where()
+            ->distinctOn(['description'])
+            ->selectDistinct(['description'])
+            ->fetchAll();
+    }
+
+    /**
+     * @test
+     * @group postgres
+     */
+    public function shouldFailForSelectDistinctAndDistinctOn()
+    {
+        // then
+        $this->expectException(DbException::class);
+        $this->expectExceptionMessage('Cannot use DISTINCT together with DISTINCT ON');
+        // when
+        Product::where()
+            ->selectDistinct(['description'])
+            ->distinctOn(['description'])
+            ->fetchAll();
+    }
+
+    /**
+     * @test
      */
     public function shouldReturnSpecifiedColumnAsArray()
     {
