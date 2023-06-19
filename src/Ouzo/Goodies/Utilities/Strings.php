@@ -310,7 +310,7 @@ class Strings
         if (is_null($string)) {
             return null;
         }
-        return nl2br(htmlspecialchars($string));
+        return nl2br(htmlspecialchars($string, ENT_COMPAT));
     }
 
     public static function htmlEntityDecode(?string $text): ?string
