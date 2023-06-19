@@ -10,6 +10,8 @@ use Ouzo\Controller;
 
 class RequestContext
 {
+    private string $id;
+
     public function __construct(
         private string $controller,
         private string $action,
@@ -31,5 +33,15 @@ class RequestContext
     public function getCurrentAction(): string
     {
         return $this->action;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
     }
 }

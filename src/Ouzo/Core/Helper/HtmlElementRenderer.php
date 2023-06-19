@@ -7,6 +7,7 @@
 namespace Ouzo\Helper;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 class HtmlElementRenderer
 {
@@ -166,7 +167,7 @@ class HtmlElementRenderer
         $attributes = $this->sort($attributes);
 
         $attrs = Arrays::mapEntries($attributes, function ($key, $value) {
-            $escaped = htmlspecialchars($value);
+            $escaped = htmlspecialchars($value ?? Strings::EMPTY_STRING);
             return "$key=\"$escaped\"";
         });
         return implode(' ', $attrs);

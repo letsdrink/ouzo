@@ -7,6 +7,7 @@
 namespace Ouzo\View;
 
 use Exception;
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Strings;
 
@@ -27,7 +28,6 @@ class PhtmlRenderer implements ViewRenderer
 
     public function render(): string
     {
-        $this->saveAttributes();
         ob_start();
         try {
             $this->loadViewHelper();
@@ -53,11 +53,14 @@ class PhtmlRenderer implements ViewRenderer
         require($this->viewPath);
     }
 
-    private function saveAttributes(): void
+    public function __get(string $name)
     {
-        foreach ($this->attributes as $name => $value) {
-            $this->$name = $value;
-        }
+        return Arrays::getValue($this->attributes, $name);
+    }
+
+    public function __set(string $name, $value): void
+    {
+        $this->attributes[$name] = $value;
     }
 
     public function getViewPath(): string

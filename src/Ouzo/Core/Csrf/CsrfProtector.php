@@ -56,7 +56,7 @@ class CsrfProtector
     private static function generateCsrfToken(): string
     {
         $length = 32;
-        $bytes = openssl_random_pseudo_bytes(($length + 1) / 2);
+        $bytes = openssl_random_pseudo_bytes(round(($length + 1) / 2));
         $hex = bin2hex($bytes);
         return substr(base64_encode($hex), 0, $length);
     }

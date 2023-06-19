@@ -25,9 +25,8 @@ use Ouzo\Utilities\Objects;
 use Ouzo\Utilities\Strings;
 use PDO;
 use ReflectionClass;
-use Serializable;
 
-class Model extends Validatable implements Serializable, JsonSerializable
+class Model extends Validatable implements JsonSerializable
 {
     private ModelDefinition $modelDefinition;
     private array $attributes;
@@ -508,17 +507,14 @@ class Model extends Validatable implements Serializable, JsonSerializable
         return array_intersect_key($attributes, array_flip($this->modifiedFields));
     }
 
-    public function serialize(): string
+    public function __serialize(): array
     {
-        return serialize($this->attributes);
+        return $this->attributes;
     }
 
-    public function unserialize($serialized): void
+    public function __unserialize(array $serialized): void
     {
-        $result = unserialize($serialized);
-        foreach ($result as $key => $value) {
-            $this->$key = $value;
-        }
+        $this->attributes = $serialized;
     }
 
     public function jsonSerialize(): string

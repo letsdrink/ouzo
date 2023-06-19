@@ -9,9 +9,16 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class SampleMiddleware implements Interceptor
 {
+    private string $data;
+
     public function handle(mixed $param, Chain $next): mixed
     {
-        $param->forTestPurposesOnly = 'SampleMiddleware';
+        $this->data = 'SampleMiddleware';
         return $next->proceed($param);
+    }
+
+    public function getData(): string
+    {
+        return $this->data;
     }
 }

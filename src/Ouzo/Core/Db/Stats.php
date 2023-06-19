@@ -24,7 +24,7 @@ class Stats
 
     public static function getTotalTime(): int
     {
-        return array_reduce(self::$queries, fn($sum, $value) => $sum + $value['time']);
+        return round(array_reduce(self::$queries, fn($sum, $value) => $sum + $value['time']));
     }
 
     public static function reset(): void
