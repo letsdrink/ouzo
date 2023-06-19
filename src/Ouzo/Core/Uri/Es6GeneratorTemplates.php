@@ -55,7 +55,7 @@ class Es6GeneratorTemplates
     {
         $result = $template;
         foreach ($replacements as $key => $value) {
-            $result = str_replace("${key}_REPLACEMENT", $value, $result);
+            $result = str_replace("{$key}_REPLACEMENT", $value, $result);
         }
         return $result;
     }

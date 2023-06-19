@@ -474,8 +474,9 @@ class FrontControllerTest extends ControllerTestCase
     {
         //given
         Route::get('/sample/save', SampleFrontController::class, 'save');
+        $interceptor = new SampleMiddleware();
         $middlewareRepository = new MiddlewareRepository();
-        $middlewareRepository->add(new SampleMiddleware());
+        $middlewareRepository->add($interceptor);
 
         $this->injectorConfig->bind(MiddlewareRepository::class)->toInstance($middlewareRepository);
 
@@ -483,7 +484,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->get('/sample/save');
 
         //then
-        $this->assertEquals('SampleMiddleware', $this->requestContext()->forTestPurposesOnly);
+        $this->assertEquals('SampleMiddleware', $interceptor->getData());
         $this->assertRenderedContent()->isEqualTo('save');
     }
 

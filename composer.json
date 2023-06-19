@@ -1,8 +1,9 @@
 {
   "config": {
     "platform": {
-      "php": "7.4.11"
-    }
+      "php": "8.2.7"
+    },
+    "allow-plugins": true
   },
   "name": "letsdrink/ouzo",
   "description": "Ouzo PHP MVC framework",
@@ -41,16 +42,16 @@
   "require": {
     "ext-json": "*",
     "ext-fileinfo": "*",
-    "symfony/console": "^5.1",
-    "symfony/event-dispatcher": "^5.1",
-    "filp/whoops": "2.8.*",
-    "psr/log": "^1.0",
-    "ocramius/proxy-manager": "^2.13",
-    "doctrine/annotations": "^1.10"
+    "symfony/console": "^6.3",
+    "symfony/event-dispatcher": "^6.3",
+    "filp/whoops": "^2.15",
+    "psr/log": "^1.1",
+    "friendsofphp/proxy-manager-lts": "1.0.16",
+    "doctrine/annotations": "^1.14"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.5",
-    "php-coveralls/php-coveralls": "^2.4"
+    "phpunit/phpunit": "^9.6",
+    "php-coveralls/php-coveralls": "^2.5"
   },
   "replace": {
     "letsdrink/ouzo-goodies": "self.version",

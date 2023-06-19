@@ -23,7 +23,7 @@ class DefaultRequestId implements Interceptor
         $id = uniqid();
         if (FrontController::$requestId === null) {
             FrontController::$requestId = $id;
-            $requestContext->id = $id;
+            $requestContext->setId($id);
         }
 
         return $next->proceed($requestContext);

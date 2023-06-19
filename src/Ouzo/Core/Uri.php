@@ -108,7 +108,7 @@ class Uri
         if ($path != null) {
             $prefix = Config::getValue('global', 'prefix_system');
             $pathWithoutPrefix = urldecode(str_replace($prefix, '', $path));
-            return preg_split('#/|\?#', $pathWithoutPrefix, $limit, PREG_SPLIT_NO_EMPTY);
+            return preg_split('#/|\?#', $pathWithoutPrefix, $limit ?: -1, PREG_SPLIT_NO_EMPTY);
         }
         return [];
     }

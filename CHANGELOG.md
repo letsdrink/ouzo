@@ -3,6 +3,11 @@ CHANGELOG
 
 IN PROGRESS
 --------
+Support for PHP 8.0 is dropped. Minimal PHP version required is 8.2.
+
+
+Release 2.0.0
+--------
 Support for PHP 7.x is dropped. Minimal PHP version required is 8.0.
 
 Breaking changes:

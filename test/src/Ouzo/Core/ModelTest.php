@@ -930,10 +930,10 @@ class ModelTest extends DbTransactionalTestCase
         $product = new Product(['name' => 'Sport']);
 
         // when
-        $serialized = $product->serialize();
+        $serialized = $product->__serialize();
 
         // then
-        $this->assertEquals('a:1:{s:4:"name";s:5:"Sport";}', $serialized);
+        $this->assertEquals(['name' => 'Sport'], $serialized);
     }
 
     /**
@@ -945,7 +945,7 @@ class ModelTest extends DbTransactionalTestCase
         $product = new Product(['name' => 'Test']);
 
         // when
-        $product->unserialize('a:1:{s:4:"name";s:5:"Sport";}');
+        $product->__unserialize(['name' => 'Sport']);
 
         // then
         $this->assertEquals('Sport', $product->name);

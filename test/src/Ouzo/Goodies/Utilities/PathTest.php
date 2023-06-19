@@ -21,7 +21,7 @@ class PathTest extends TestCase
         $path = Path::join('/my', 'path', 'to/file.txt');
 
         // then
-        $this->assertEquals("${s}my${s}path${s}to${s}file.txt", $path);
+        $this->assertEquals("{$s}my{$s}path{$s}to{$s}file.txt", $path);
     }
 
     /**
@@ -36,7 +36,7 @@ class PathTest extends TestCase
         $path = Path::join('my', '', '/file.txt');
 
         // then
-        $this->assertEquals("my${s}file.txt", $path);
+        $this->assertEquals("my{$s}file.txt", $path);
     }
 
     /**
@@ -52,7 +52,7 @@ class PathTest extends TestCase
         $path = Path::joinWithTemp('my/file.txt');
 
         // then
-        $this->assertEquals("${tmp}${s}my${s}file.txt", $path);
+        $this->assertEquals("{$tmp}{$s}my{$s}file.txt", $path);
     }
 
     /**

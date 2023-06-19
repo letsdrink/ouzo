@@ -189,7 +189,7 @@ class StringsTest extends TestCase
         $result = Strings::equalsIgnoreCase($string1, $string2);
 
         //then
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $result, "Equality failed for '{$string1}' and '{$string2}'");
     }
 
     public function equalsIgnoreCase(): array
@@ -199,7 +199,6 @@ class StringsTest extends TestCase
             ['ABC123', 'ABC123', true],
             ['ABC123', 'abc123', true],
             [null, null, true],
-
             [null, '', false],
             ['', null, false],
             ['null', null, false],
