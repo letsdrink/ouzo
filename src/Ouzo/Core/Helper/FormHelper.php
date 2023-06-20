@@ -15,7 +15,7 @@ namespace Ouzo\Helper {
     {
         public static function escapeText(?string $text): ?string
         {
-            return htmlspecialchars($text, ENT_COMPAT);
+            return htmlspecialchars($text ?: Strings::EMPTY_STRING, ENT_COMPAT);
         }
 
         public static function escapeNewLine(?string $text): ?string
