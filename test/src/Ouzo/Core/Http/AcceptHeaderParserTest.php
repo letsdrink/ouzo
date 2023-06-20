@@ -5,13 +5,12 @@
  */
 
 use Ouzo\Http\AcceptHeaderParser;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AcceptHeaderParserTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseAcceptHeader()
     {
         //given
@@ -28,9 +27,7 @@ class AcceptHeaderParserTest extends TestCase
         ], $parsed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseAcceptHeaderWithNoSubtype()
     {
         //given
@@ -49,9 +46,7 @@ class AcceptHeaderParserTest extends TestCase
         ], $parsed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseInvalidContentType()
     {
         //given
@@ -66,9 +61,7 @@ class AcceptHeaderParserTest extends TestCase
         ], $parsed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDecreaseWildcardsPriority()
     {
         //given
@@ -86,9 +79,7 @@ class AcceptHeaderParserTest extends TestCase
         ]), array_keys($parsed));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyArrayForEmptyString()
     {
         //when

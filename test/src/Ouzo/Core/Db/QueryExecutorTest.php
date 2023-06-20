@@ -3,18 +3,18 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Product;
+use Ouzo\Db;
 use Ouzo\Db\EmptyQueryExecutor;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryExecutor;
-use Ouzo\Db;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class QueryExecutorTest extends DbTransactionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionIfNoQueryObjectGiven()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -22,9 +22,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         QueryExecutor::prepare(Db::getInstance(), null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionIfNoDbGiven()
     {
         // given
@@ -35,9 +33,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         QueryExecutor::prepare(null, $query);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionIfNoTableNameGiven()
     {
         // given
@@ -48,9 +44,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         QueryExecutor::prepare(Db::getInstance(), $query);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyQueryExecutorForEmptyWhereValues()
     {
         // given
@@ -63,9 +57,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         $this->assertTrue($executor instanceof EmptyQueryExecutor);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyQueryExecutorForLimitZero()
     {
         //given
@@ -79,9 +71,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotAddOffsetZero()
     {
         //given
@@ -97,9 +87,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         $this->assertEquals(["first"], $executor->getBoundValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateSqlForSubQueries()
     {
         //given
@@ -117,9 +105,7 @@ class QueryExecutorTest extends DbTransactionalTestCase
         $this->assertEquals([12, 123], $executor->getBoundValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleSubQueries()
     {
         //given

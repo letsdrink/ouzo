@@ -8,6 +8,7 @@ namespace Some\Test\Ns;
 
 use Ouzo\Utilities\ToString\ToStringBuilder;
 use Ouzo\Utilities\ToString\ToStringStyle;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ToStringBuilderClass
@@ -102,9 +103,7 @@ class ToStringBuilderTest extends TestCase
         $this->toStringBuilderClass = new ToStringBuilderClass($string, $int, $boolean, $array, $map, $nullable, $classWithoutToString, $classWithToString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseDefaultStyle()
     {
         //when
@@ -115,9 +114,7 @@ class ToStringBuilderTest extends TestCase
         $this->assertEquals($expected, $toString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseNoFieldNameStyle()
     {
         //given
@@ -131,9 +128,7 @@ class ToStringBuilderTest extends TestCase
         $this->assertEquals($expected, $toString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseShortPrefixStyle()
     {
         //given
@@ -147,9 +142,7 @@ class ToStringBuilderTest extends TestCase
         $this->assertEquals($expected, $toString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseSimpleStyle()
     {
         //given
@@ -163,9 +156,7 @@ class ToStringBuilderTest extends TestCase
         $this->assertEquals($expected, $toString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseNoClassNameStyle()
     {
         //given
@@ -179,9 +170,7 @@ class ToStringBuilderTest extends TestCase
         $this->assertEquals($expected, $toString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseMultiLineStyle()
     {
         //given

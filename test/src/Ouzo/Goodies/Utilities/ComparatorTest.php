@@ -8,6 +8,7 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\Functions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 interface Foo
@@ -29,9 +30,7 @@ class CallableWrapper
 
 class ComparatorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareByExpression()
     {
         //given
@@ -52,9 +51,7 @@ class ComparatorTest extends TestCase
         $this->assertEquals(0, $equal);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldProperlyCompareUsingReversed()
     {
         //given
@@ -71,9 +68,7 @@ class ComparatorTest extends TestCase
         $this->assertEquals(0, $equal);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldProperlyCompareUsingDefault()
     {
         //given
@@ -90,9 +85,7 @@ class ComparatorTest extends TestCase
         $this->assertEquals(0, $equal);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotInvokeTieBreakersWhenMainComparatorResolves()
     {
         //given
@@ -107,9 +100,7 @@ class ComparatorTest extends TestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInvokeFirstTieBreaker()
     {
         //given
@@ -125,9 +116,7 @@ class ComparatorTest extends TestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInvokeFirstLastTieBreaker()
     {
         //given
@@ -142,9 +131,7 @@ class ComparatorTest extends TestCase
         CatchException::assertThat()->hasMessage('second should be invoked');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseFinalTieBreaker()
     {
         //given
@@ -166,9 +153,7 @@ class ComparatorTest extends TestCase
         $this->assertEquals(0, $equal);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotUseFinalTieBreakerWhenAnyPriorResolves()
     {
         //given

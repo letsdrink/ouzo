@@ -14,6 +14,7 @@ use Ouzo\Routing\Loader\AnnotationDirectoryLoader;
 use Ouzo\Routing\Loader\RouteMetadataCollection;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AnnotationDirectoryLoaderTest extends TestCase
@@ -31,18 +32,14 @@ class AnnotationDirectoryLoaderTest extends TestCase
         $this->loader = new AnnotationDirectoryLoader($this->annotationClassLoader);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenNonExistentDirectoryPath()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->loader->load(['invalid_directory']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveDirectoryPath()
     {
         $paths = $this->loader->resolvePaths([__DIR__ . '/../Fixtures/']);
@@ -52,9 +49,7 @@ class AnnotationDirectoryLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveGlobPath()
     {
         $paths = $this->loader->resolvePaths([__DIR__ . '/../Fixtures/*tion']);
@@ -64,9 +59,7 @@ class AnnotationDirectoryLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadClassesInDirectory()
     {
         $this->loader->load([__DIR__ . '/../Fixtures/Annotation']);

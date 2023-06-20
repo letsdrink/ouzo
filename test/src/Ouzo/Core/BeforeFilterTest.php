@@ -17,6 +17,7 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Test;
 
 class SampleControllerException extends Exception
 {
@@ -80,9 +81,7 @@ class BeforeFilterTest extends ControllerTestCase
         $config->bind(ControllerFactory::class)->toInstance(new MockControllerFactory());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotInvokeActionWhenBeforeFilterReturnsFalse()
     {
         //given
@@ -97,9 +96,7 @@ class BeforeFilterTest extends ControllerTestCase
         $this->assertFalse(SampleController::$actionCalled);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInvokeActionWhenBeforeFilterReturnsTrue()
     {
         //given
@@ -114,9 +111,7 @@ class BeforeFilterTest extends ControllerTestCase
         $this->assertTrue(SampleController::$actionCalled);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInvokeFunctionCallback()
     {
         //given

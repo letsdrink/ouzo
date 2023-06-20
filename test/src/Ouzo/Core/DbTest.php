@@ -9,6 +9,7 @@ use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Tests\Mock\Mock;
+use PHPUnit\Framework\Attributes\Test;
 
 class Sample
 {
@@ -20,9 +21,7 @@ class Sample
 
 class DbTest extends DbTransactionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunFunctionInTransaction()
     {
         //when
@@ -32,9 +31,7 @@ class DbTest extends DbTransactionalTestCase
         $this->assertEquals('OK', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function runInTransactionShouldInvokeBeginAndCommitOnSuccess()
     {
         // given
@@ -54,9 +51,7 @@ class DbTest extends DbTransactionalTestCase
         Mock::verify($dbHandle)->neverReceived()->rollbackTransaction();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function runInTransactionShouldInvokeRollbackOnFailure()
     {
         // given
@@ -76,9 +71,7 @@ class DbTest extends DbTransactionalTestCase
         Mock::verify($dbHandle)->rollBack();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function runThrowWhenPdoCommitFailed()
     {
         // given

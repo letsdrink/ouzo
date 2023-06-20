@@ -7,13 +7,12 @@
 use Ouzo\Db;
 use Ouzo\Db\PreparedStatementEmulator;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class PreparedStatementEmulatorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteParametersInSimpleQuery()
     {
         //given
@@ -27,9 +26,7 @@ class PreparedStatementEmulatorTest extends TestCase
         Assert::thatString($result)->isEqualTo("select * from users where name = 'bob' and surname = 'smith'");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteBooleanParameters()
     {
         //given
@@ -43,9 +40,7 @@ class PreparedStatementEmulatorTest extends TestCase
         Assert::thatString($result)->isEqualTo("select * from users where verified = true or admin = false");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertNumbersToStrings()
     {
         //given
@@ -59,9 +54,7 @@ class PreparedStatementEmulatorTest extends TestCase
         Assert::thatString($result)->isEqualTo("select * from users where age = '26'");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotSubstituteQuestionMarksInStrings()
     {
         //given
@@ -75,9 +68,7 @@ class PreparedStatementEmulatorTest extends TestCase
         Assert::thatString($result)->isEqualTo($sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteParametersWhenSqlContainsStrings()
     {
         //given
@@ -92,9 +83,7 @@ class PreparedStatementEmulatorTest extends TestCase
             ->isEqualTo("select * from users where name = 'bob?' and age = '26' and  surname = 'smith?'");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldQuoteParams()
     {
         //given

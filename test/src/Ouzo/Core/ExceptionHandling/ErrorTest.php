@@ -3,17 +3,22 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\UserException;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ErrorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Config::clearProperty('debug');
+    }
+
+    #[Test]
     public function shouldGetErrorForUserException()
     {
         //given

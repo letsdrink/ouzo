@@ -10,6 +10,7 @@ use Ouzo\Extension\AuthBasicExtension;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AuthSampleController extends Controller
 {
@@ -43,9 +44,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCallActionWhenNoCredentials()
     {
         //when
@@ -55,9 +54,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(UnauthorizedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCallActionWhenInvalidCredentials()
     {
         //given
@@ -71,9 +68,7 @@ class AuthBasicControllerTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(UnauthorizedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCallActionWhenValidCredentials()
     {
         //given

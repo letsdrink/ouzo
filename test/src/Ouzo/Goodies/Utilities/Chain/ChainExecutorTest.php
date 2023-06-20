@@ -5,13 +5,12 @@
  */
 
 use Ouzo\Utilities\Chain\ChainExecutor;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ChainExecutorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExecuteChain()
     {
         //given
@@ -26,9 +25,7 @@ class ChainExecutorTest extends TestCase
         $this->assertEquals('12 execution', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExecuteBeforeAndAfterInterceptor()
     {
         //given

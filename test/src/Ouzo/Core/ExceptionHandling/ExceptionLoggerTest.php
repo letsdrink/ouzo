@@ -6,13 +6,12 @@
 
 namespace Ouzo\ExceptionHandling;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ExceptionLoggerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotWritePasswordToLog()
     {
         // when
@@ -22,9 +21,7 @@ class ExceptionLoggerTest extends TestCase
         $this->assertEquals('[<login> => "xxx", <password> => "***"]', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLogSource()
     {
         //given

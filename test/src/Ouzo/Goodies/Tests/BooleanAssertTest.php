@@ -6,14 +6,14 @@
 
 use Ouzo\Tests\BooleanAssert;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 class BooleanAssertTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnInstance()
     {
         // when
@@ -23,25 +23,39 @@ class BooleanAssertTest extends TestCase
         $this->assertInstanceOf(BooleanAssert::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeTrue()
     {
         // then
         BooleanAssert::that(true)->isTrue();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeFalse()
     {
         // then
         BooleanAssert::that(false)->isFalse();
     }
 
-    function notTrue()
+    #[Test]
+    #[DataProvider('notTrue')]
+    public function shouldNotBeTrue($notTrue): void
+    {
+        CatchException::when(BooleanAssert::that($notTrue))->isTrue();
+
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+    }
+
+    #[Test]
+    #[DataProvider('notFalse')]
+    public function shouldNotBeFalse($notFalse): void
+    {
+        CatchException::when(BooleanAssert::that($notFalse))->isFalse();
+
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+    }
+
+    public static function notTrue(): array
     {
         return [
             [false],
@@ -58,7 +72,7 @@ class BooleanAssertTest extends TestCase
         ];
     }
 
-    function notFalse()
+    public static function notFalse(): array
     {
         return [
             [true],
@@ -73,31 +87,5 @@ class BooleanAssertTest extends TestCase
             [[]],
             [null],
         ];
-    }
-
-    /**
-     * @test
-     * @dataProvider notTrue
-     * @param $notTrue
-     * @throws Exception
-     */
-    public function shouldNotBeTrue($notTrue)
-    {
-        CatchException::when(BooleanAssert::that($notTrue))->isTrue();
-
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
-    }
-
-    /**
-     * @test
-     * @dataProvider notFalse
-     * @param $notFalse
-     * @throws Exception
-     */
-    public function shouldNotBeFalse($notFalse)
-    {
-        CatchException::when(BooleanAssert::that($notFalse))->isFalse();
-
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 }

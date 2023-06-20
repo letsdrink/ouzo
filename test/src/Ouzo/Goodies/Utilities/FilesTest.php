@@ -12,14 +12,13 @@ use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\FileNotFoundException;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class FilesTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDeleteFile()
     {
         //given
@@ -34,9 +33,7 @@ class FilesTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenNotFoundFileToDelete()
     {
         //given
@@ -49,9 +46,7 @@ class FilesTest extends TestCase
         CatchException::assertThat()->isInstanceOf(FileNotFoundException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMoveFile()
     {
         //given
@@ -69,9 +64,7 @@ class FilesTest extends TestCase
         Files::delete($newPath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenNotFoundSourceFileToMove()
     {
         //given
@@ -84,13 +77,9 @@ class FilesTest extends TestCase
         CatchException::assertThat()->isInstanceOf(FileNotFoundException::class);
     }
 
-    /**
-     * @test
-     * @dataProvider units
-     * @param int $size
-     * @param string $result
-     */
-    public function shouldConvertUnits($size, $result)
+    #[Test]
+    #[DataProvider('units')]
+    public function shouldConvertUnits(int $size, string $result): void
     {
         //when
         $unit = Files::convertUnitFileSize($size);
@@ -99,9 +88,7 @@ class FilesTest extends TestCase
         $this->assertEquals($result, $unit);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnWhenZeroPassed()
     {
         //when
@@ -111,9 +98,7 @@ class FilesTest extends TestCase
         $this->assertEquals('0 B', $unit);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFileSize()
     {
         //given
@@ -127,9 +112,7 @@ class FilesTest extends TestCase
         $this->assertEquals(4, $size);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetFilesRecursivelyByExtension()
     {
         //given
@@ -150,7 +133,7 @@ class FilesTest extends TestCase
         Assert::thatArray($files)->hasSize(3)->contains($file1, $file2, $file3);
     }
 
-    public function units()
+    public static function units(): array
     {
         return [
             [10, '10 B'],
@@ -164,9 +147,7 @@ class FilesTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCopyFileContent()
     {
         //given
@@ -186,9 +167,7 @@ class FilesTest extends TestCase
         $this->assertEquals('content', $content);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnMimeType()
     {
         //given
@@ -201,9 +180,7 @@ class FilesTest extends TestCase
         $this->assertEquals('image/png', $mimeType);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDeleteFileIfExists()
     {
         //given
@@ -218,9 +195,7 @@ class FilesTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFalseIfNotExistsAnTryToDelete()
     {
         //when
@@ -231,9 +206,7 @@ class FilesTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssumeThatFileContainsClass()
     {
         //given
@@ -246,9 +219,7 @@ class FilesTest extends TestCase
         $this->assertEquals('TestClass', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssumeThatFileDoesNotContainClass()
     {
         //given

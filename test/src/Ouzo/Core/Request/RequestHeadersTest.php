@@ -4,11 +4,10 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-use Ouzo\Db\ModelDefinition;
 use Ouzo\Request\RequestHeaders;
 use Ouzo\Tests\Assert;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class RequestHeadersTest extends TestCase
 {
@@ -33,9 +32,7 @@ class RequestHeadersTest extends TestCase
         unset($_SERVER['HTTP_X_CSRFTOKEN']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetArrayOfAllHeaders()
     {
         //given
@@ -67,9 +64,7 @@ class RequestHeadersTest extends TestCase
             ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnIpFromCLIENT_IP()
     {
         //given
@@ -82,9 +77,7 @@ class RequestHeadersTest extends TestCase
         $this->assertEquals('10.170.12.51', $ip);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnIpFromX_FORWARDED_FOR()
     {
         //given
@@ -97,9 +90,7 @@ class RequestHeadersTest extends TestCase
         $this->assertEquals('10.170.12.52', $ip);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnIpFromREMOTE_ADDR()
     {
         //given

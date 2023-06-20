@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Iterator;
 
 use InvalidArgumentException;
@@ -11,14 +12,12 @@ use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentFunctions;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class FluentIteratorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMapItems()
     {
         //given
@@ -33,9 +32,7 @@ class FluentIteratorTest extends TestCase
         $this->assertEquals([3, 4, 5, 6], $mappedIterator->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSkipAndLimitItems()
     {
         //given
@@ -48,9 +45,7 @@ class FluentIteratorTest extends TestCase
         $this->assertEquals([2, 3], array_values($result->toArray()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBatchIteratorElements()
     {
         //given
@@ -63,9 +58,7 @@ class FluentIteratorTest extends TestCase
         $this->assertEquals([[1, 2], [3, 4]], $result->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCycleIndefinitely()
     {
         //given
@@ -78,9 +71,7 @@ class FluentIteratorTest extends TestCase
         $this->assertEquals([1, 2, 3, 4, 1, 2, 3, 4, 1, 2], $result->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateValues()
     {
         //when
@@ -94,9 +85,7 @@ class FluentIteratorTest extends TestCase
         $this->assertEquals([1, 1, 1], $result->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterIteratorElements()
     {
         //given
@@ -109,18 +98,14 @@ class FluentIteratorTest extends TestCase
         $this->assertEquals(['pref_a', 'pref_b'], $result->toArray());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFirstElementOrDefault()
     {
         $this->assertEquals('a', FluentIterator::fromArray(['a'])->firstOr('default'));
         $this->assertEquals('default', FluentIterator::fromArray([])->firstOr('default'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionIfFirstCalledForEmptyIterator()
     {
         //given
@@ -133,9 +118,7 @@ class FluentIteratorTest extends TestCase
         CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFirstElementInIterator()
     {
         //given
@@ -148,9 +131,7 @@ class FluentIteratorTest extends TestCase
         $this->assertEquals('a', $first);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCallMapFunctionOnSkippedElements()
     {
         //given

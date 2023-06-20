@@ -124,13 +124,12 @@ if (version_compare('7.1.0', PHP_VERSION, '<=')) {
 }
 
 use Ouzo\Tests\Mock\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DynamicProxyTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInterceptMethodCalls()
     {
         //given
@@ -144,9 +143,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun1', [1, 2]]], $testMethodHandler->calls);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnMethodHandlerResult()
     {
         //given
@@ -160,9 +157,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals("TestMethodHandler fun1", $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeInstanceOfGivenType()
     {
         //given
@@ -175,9 +170,7 @@ class DynamicProxyTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractMethodHandler()
     {
         //given
@@ -191,9 +184,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals($testMethodHandler, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWorkWithDefaultParameters()
     {
         //given
@@ -207,9 +198,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun', []]], $testMethodHandler->calls);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWorkWithTypedParameters()
     {
         //given
@@ -224,9 +213,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWorkForClassesWithConstructor()
     {
         //given
@@ -239,9 +226,7 @@ class DynamicProxyTest extends TestCase
         $this->assertNotNull($proxy);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWorkForClassesWithConstructorWithParameters()
     {
         //given
@@ -254,9 +239,7 @@ class DynamicProxyTest extends TestCase
         $this->assertNotNull($proxy);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWorkForClassWithStaticMethod()
     {
         //given
@@ -269,9 +252,7 @@ class DynamicProxyTest extends TestCase
         $this->assertNotNull($proxy);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWorkForAbstractStaticMethod()
     {
         //given
@@ -284,9 +265,7 @@ class DynamicProxyTest extends TestCase
         $this->assertNotNull($proxy);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWorkForClassWithAbstractMethod()
     {
         //given
@@ -299,9 +278,7 @@ class DynamicProxyTest extends TestCase
         $this->assertNotNull($proxy);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProxyForInterface()
     {
         //when
@@ -316,9 +293,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProxyForMethodWithParamsByRef()
     {
         //when
@@ -333,9 +308,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProxyForMethodWithVararg()
     {
         //when
@@ -350,9 +323,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun1', [$param]]], $testMethodHandler->calls);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProxyForMethodWithPrimitiveTypes()
     {
         if (version_compare('7.1.0', PHP_VERSION, '>')) {
@@ -369,9 +340,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun1', [1, [], new TestClass()]]], $testMethodHandler->calls);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProxyForMethodWithReturnType()
     {
         if (version_compare('7.1.0', PHP_VERSION, '>')) {
@@ -388,9 +357,7 @@ class DynamicProxyTest extends TestCase
         $this->assertEquals([['fun1', [1]]], $testMethodHandler->calls);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCastNull()
     {
         //given
@@ -404,9 +371,7 @@ class DynamicProxyTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCastMixed()
     {
         //given
@@ -420,9 +385,7 @@ class DynamicProxyTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldImplementsMockInterface()
     {
         //given

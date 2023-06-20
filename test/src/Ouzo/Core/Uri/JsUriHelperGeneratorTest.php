@@ -11,7 +11,7 @@ use Ouzo\Routing\Route;
 use Ouzo\Uri\JsUriHelperGenerator;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
-
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class JsUriHelperGeneratorTest extends TestCase
@@ -35,9 +35,7 @@ class JsUriHelperGeneratorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForGet()
     {
         //given
@@ -61,9 +59,7 @@ EXPECTED;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForPost()
     {
         //given
@@ -87,9 +83,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForAny()
     {
         //given
@@ -113,9 +107,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperWhenMultipleBindParameters()
     {
         //given
@@ -141,9 +133,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForCustomRouteName()
     {
         //given
@@ -167,9 +157,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForResource()
     {
         //given
@@ -207,9 +195,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateCorrectNestedResources()
     {
         //given
@@ -234,9 +220,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSaveGeneratedUriHelperInFile()
     {
         //given
@@ -251,9 +235,7 @@ FUNCT;
         $this->assertEquals($generator->getGeneratedFunctions(), file_get_contents($this->path));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotGenerateCorrectAllowAllResource()
     {
         //given

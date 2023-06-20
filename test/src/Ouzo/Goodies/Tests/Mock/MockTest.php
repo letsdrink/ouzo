@@ -9,6 +9,7 @@ use Ouzo\Tests\Mock\InOrderVerifier;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -32,9 +33,7 @@ class MockTestClass
 
 class MockTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnMockObjectOfTheGivenType()
     {
         //given
@@ -47,9 +46,7 @@ class MockTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnMockObjectOfTheGivenTypeWithCreateMethod()
     {
         //given
@@ -62,9 +59,7 @@ class MockTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMethod()
     {
         //given
@@ -78,9 +73,7 @@ class MockTest extends TestCase
         $this->assertEquals("result", $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyMethodCall()
     {
         //given
@@ -94,9 +87,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->method("arg");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfMethodWasNotCalled()
     {
         //given
@@ -109,9 +100,7 @@ class MockTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyMethodIsNotCalled()
     {
         //given
@@ -125,9 +114,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->neverReceived()->method("other");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfUnwantedMethodWasCalled()
     {
         //given
@@ -145,9 +132,7 @@ class MockTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfUnwantedMethodWasCalledWithAnyArguments()
     {
         //given
@@ -165,9 +150,7 @@ class MockTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldShowActualInteractions()
     {
         //given
@@ -186,9 +169,7 @@ class MockTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleArrayAndObjectParametersInActualInteractionsMessage()
     {
         //given
@@ -206,9 +187,7 @@ class MockTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSimpleMockIfNoClassGiven()
     {
         //given
@@ -222,9 +201,7 @@ class MockTest extends TestCase
         $this->assertEquals("result", $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowException()
     {
         //given
@@ -239,9 +216,7 @@ class MockTest extends TestCase
         CatchException::assertThat()->isEqualTo($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMethodWithCallback()
     {
         //given
@@ -257,9 +232,7 @@ class MockTest extends TestCase
         $this->assertEquals("method arg", $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyThatMethodWasCalledWithAnyArgument()
     {
         //given
@@ -273,9 +246,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->method(Mock::any(), "arg2");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyThatMethodWasCalledWithAnyArgumentList()
     {
         //given
@@ -289,9 +260,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->method(Mock::anyArgList());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMethodForAnyArgument()
     {
         //given
@@ -306,9 +275,7 @@ class MockTest extends TestCase
         $this->assertEquals("result", $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMethodForAnyArgumentList()
     {
         //given
@@ -323,9 +290,7 @@ class MockTest extends TestCase
         $this->assertEquals("result", $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNullIfNoStubbedMethodMatchesTheCall()
     {
         //given
@@ -340,9 +305,7 @@ class MockTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMultipleCallsWithDifferentResults()
     {
         //given
@@ -359,9 +322,7 @@ class MockTest extends TestCase
         $this->assertEquals("result2", $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMultipleMethodsWithMultipleResults()
     {
         //given
@@ -380,9 +341,7 @@ class MockTest extends TestCase
         $this->assertEquals("method2 result2", $result3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnLastResultForMultipleCalls()
     {
         //given
@@ -398,9 +357,7 @@ class MockTest extends TestCase
         $this->assertEquals("result", $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMultipleCallsInOneCallToWhen()
     {
         //given
@@ -416,9 +373,7 @@ class MockTest extends TestCase
         $this->assertEquals("result2", $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMultipleCallsInMultipleThenReturn()
     {
         //given
@@ -434,9 +389,7 @@ class MockTest extends TestCase
         $this->assertEquals("result2", $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMultipleCallsForDifferentMethods()
     {
         //given
@@ -458,9 +411,7 @@ class MockTest extends TestCase
         $this->assertEquals('result2', $mock->method());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMultipleExceptions()
     {
         //given
@@ -479,9 +430,7 @@ class MockTest extends TestCase
         CatchException::assertThat()->isEqualTo($exception2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMultipleExceptionsInOneCallToWhen()
     {
         //given
@@ -499,9 +448,7 @@ class MockTest extends TestCase
         CatchException::assertThat()->isEqualTo($exception2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMultipleCallsWithResultsAndExceptions()
     {
         //given
@@ -519,9 +466,7 @@ class MockTest extends TestCase
         CatchException::assertThat()->isEqualTo($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubMethodThatTakesParamByRef()
     {
         //given
@@ -537,9 +482,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->method3($a);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStubWithArgumentMatcher()
     {
         //given
@@ -552,10 +495,7 @@ class MockTest extends TestCase
         $this->assertNull($mock->method("something else"));
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldFailIfExpectedZeroInteractions()
     {
         //given
@@ -567,10 +507,7 @@ class MockTest extends TestCase
         CatchException::assertThat()->hasMessage('Expected zero interactions but got method1(2)');
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldVerifyZeroInteractions()
     {
         //given
@@ -582,9 +519,7 @@ class MockTest extends TestCase
         //then no exceptions
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyWithArgumentMatcher()
     {
         //given
@@ -597,10 +532,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->method(Mock::argThat()->startsWith('matching'));
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldFailVerificationWithArgumentMatcher()
     {
         //given
@@ -620,9 +552,7 @@ class MockTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyMethodIsCalledNTimes()
     {
         //given
@@ -637,9 +567,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->receivedTimes(3)->method("something else");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyMethodIsCalledNTimesForAnyArgs()
     {
         //given
@@ -654,9 +582,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->receivedTimes(3)->method(Mock::any());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyMethodsAreNotInvokeInOrder()
     {
         //given
@@ -678,9 +604,7 @@ class MockTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyInOrderWhenNoInteractions()
     {
         //given
@@ -700,9 +624,7 @@ class MockTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldVerifyInOrder()
     {
         //given

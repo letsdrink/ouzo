@@ -3,18 +3,18 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 
 class ModelAssertTest extends DbTransactionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailForModelsOfDifferentType()
     {
         $product = new Product(['name' => 'abc']);
@@ -25,9 +25,7 @@ class ModelAssertTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfModelsHaveDifferentAttributes()
     {
         $product = new Product(['name' => 'abc']);
@@ -38,9 +36,7 @@ class ModelAssertTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCompareRelations()
     {
         $cars = Category::create(['name' => 'phones']);
@@ -54,9 +50,7 @@ class ModelAssertTest extends DbTransactionalTestCase
         Assert::thatModel($product)->hasSameAttributesAs($productWithoutLoadedCategory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfModelsAreNotEqual()
     {
         //given
@@ -71,9 +65,7 @@ class ModelAssertTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPassIfModelsAreEqual()
     {
         //given

@@ -6,13 +6,12 @@
 
 namespace Ouzo\Tests\Mock;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AndArgumentMatcherTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMatchWhenAllMatch()
     {
         //given
@@ -28,9 +27,7 @@ class AndArgumentMatcherTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotMatchWhenNotAllMatch()
     {
         //given

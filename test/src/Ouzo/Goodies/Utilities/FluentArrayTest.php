@@ -10,13 +10,13 @@ use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class FluentArrayTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSupportChaining()
     {
         //given
@@ -38,9 +38,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals([3], $transformed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnArrayKeys()
     {
         //given
@@ -53,9 +51,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals([1, 2, 3], $transformed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlipArray()
     {
         //given
@@ -68,9 +64,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals(['a' => 1, 'b' => 2, 'c' => 3], $transformed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlattenArray()
     {
         //given
@@ -83,9 +77,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals([1, 2, 3, 4], $flattened);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToMap()
     {
         //given
@@ -105,9 +97,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals(['key1' => 'value1', 'key2' => 'value2'], $toMap);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToJson()
     {
         //given
@@ -120,9 +110,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals('{"1":"a","2":"b","3":"c"}', $json);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnArraysIntersection()
     {
         //given
@@ -136,9 +124,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals(['1', '4'], $intersection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReverseArray()
     {
         //given
@@ -151,9 +137,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals(['2', '1'], $reversed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTheFirstElement()
     {
         //given
@@ -166,9 +150,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals('1', $first);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDefaultIfNoFirstElement()
     {
         //given
@@ -181,9 +163,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals('default', $first);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSkipElements()
     {
         //given
@@ -196,9 +176,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals([3, 4, 5], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLimitElements()
     {
         //given
@@ -211,9 +189,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals([1, 2, 3], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectsUniqueByField()
     {
         //given
@@ -234,9 +210,7 @@ class FluentArrayTest extends TestCase
             ->containsExactly('bob', 'john');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectsUniqueByFunctionResults()
     {
         //given
@@ -257,9 +231,7 @@ class FluentArrayTest extends TestCase
             ->containsExactly('bob', 'john');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectsGroupedByFunctionResults()
     {
         //given
@@ -279,9 +251,7 @@ class FluentArrayTest extends TestCase
         ], $groupedByName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectsUniqueByNestedField()
     {
         //given
@@ -304,9 +274,7 @@ class FluentArrayTest extends TestCase
         Assert::thatArray($uniqueByName)->hasSize(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSortElements()
     {
         //given
@@ -319,9 +287,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals([1, 2, 3, 4], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExecuteForEach()
     {
         //given
@@ -337,9 +303,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals(['a', 'b', 'c'], $newArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetDuplicates()
     {
         //given
@@ -352,9 +316,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals(['b', 'c'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetDuplicatesAssoc()
     {
         //given
@@ -367,11 +329,9 @@ class FluentArrayTest extends TestCase
         $this->assertEquals([1 => 'b', 3 => 'c'], $result);
     }
 
-    /**
-     * @test
-     * @dataProvider associativeAndSequentialValueArrays
-     */
-    public function shouldValuesResetInternalArrayPointer(array $inputArray)
+    #[Test]
+    #[DataProvider('associativeAndSequentialValueArrays')]
+    public function shouldValuesResetInternalArrayPointer(array $inputArray): void
     {
         // given
         next($inputArray);
@@ -384,7 +344,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals('one', current($copiedArray));
     }
 
-    public function associativeAndSequentialValueArrays(): array
+    public static function associativeAndSequentialValueArrays(): array
     {
         return [
             'associative' => [[

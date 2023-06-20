@@ -10,6 +10,7 @@ use Ouzo\Injection\Injector;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\Mock\MockInterface;
 use Ouzo\Utilities\Path;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use TestCommand;
@@ -34,9 +35,7 @@ class CommandsLoaderTest extends TestCase
         $this->testCommandsPath = Path::join(ROOT_PATH, 'test', 'resources', 'commands');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSearchCommandsInSpecifiedPath()
     {
         //when
@@ -46,9 +45,7 @@ class CommandsLoaderTest extends TestCase
         Mock::verify($this->application)->addCommands([new TestCommand()]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadCommandsUsingInjector()
     {
         //when
@@ -59,9 +56,7 @@ class CommandsLoaderTest extends TestCase
         Mock::verify($this->injector)->getInstance('\TestCommand');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotLoadAbstractClass()
     {
         //when

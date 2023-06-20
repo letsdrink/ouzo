@@ -7,8 +7,8 @@
 use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\Directory;
 use Ouzo\Utilities\Path;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class DirectoryTest extends TestCase
 {
@@ -27,9 +27,7 @@ class DirectoryTest extends TestCase
         DeleteDirectory::recursive($this->directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetDirectorySize()
     {
         //when

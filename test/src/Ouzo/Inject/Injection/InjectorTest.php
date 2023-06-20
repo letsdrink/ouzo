@@ -13,6 +13,7 @@ use Ouzo\Injection\Scope;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Proxy\VirtualProxyInterface;
@@ -27,9 +28,7 @@ class InjectorTest extends TestCase
         $this->injector = new Injector();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateInstanceByName()
     {
         //when
@@ -39,9 +38,7 @@ class InjectorTest extends TestCase
         $this->assertInstanceOf(ClassWithNoDep::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreatePrototype()
     {
         //given
@@ -59,9 +56,7 @@ class InjectorTest extends TestCase
         $this->assertNotSame($instance1, $instance2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSingleton()
     {
         //given
@@ -79,9 +74,7 @@ class InjectorTest extends TestCase
         $this->assertSame($instance1, $instance2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateEagerSingleton()
     {
         //given
@@ -96,9 +89,7 @@ class InjectorTest extends TestCase
         $this->assertInstanceOf(ClassWithNoDep::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDependency()
     {
         //when
@@ -109,9 +100,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDeepDependency()
     {
         //when
@@ -123,9 +112,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->classWithDep->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDependencyByConstructorBoundToOtherClass()
     {
         //given
@@ -141,9 +128,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectNamedDependencyByConstructorBoundToOtherClass()
     {
         // given
@@ -160,9 +145,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectPrivateDependency()
     {
         //when
@@ -173,9 +156,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->getMyClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectSubClassDependency()
     {
         // given
@@ -191,9 +172,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSubClass()
     {
         // given
@@ -208,9 +187,7 @@ class InjectorTest extends TestCase
         $this->assertInstanceOf(SubClassWithNoDep::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnBoundInstance()
     {
         // given
@@ -227,9 +204,7 @@ class InjectorTest extends TestCase
         $this->assertSame($object, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenVarNotDefinedForInject()
     {
         //when
@@ -239,9 +214,7 @@ class InjectorTest extends TestCase
         CatchException::assertThat()->isInstanceOf(InjectorException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectNamedDependencyWhenNameWasNotBound()
     {
         //when
@@ -252,9 +225,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectNamedDependency()
     {
         // given
@@ -270,9 +241,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectProperNamedDependency()
     {
         // given
@@ -289,9 +258,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(SubClassWithNoDep::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnInstanceByNameEvenWhenNameWasNotBound()
     {
         //when
@@ -301,9 +268,7 @@ class InjectorTest extends TestCase
         $this->assertInstanceOf(ClassWithNoDep::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectItself()
     {
         // given
@@ -317,9 +282,7 @@ class InjectorTest extends TestCase
         $this->assertSame($injector, $instance->injector);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldModifyConfigAfterCreation()
     {
         //given
@@ -337,9 +300,7 @@ class InjectorTest extends TestCase
         $this->assertSame($object, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDependencyByConstructor()
     {
         //when
@@ -350,9 +311,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotInjectDependencyByConstructorWhenConstructorHasParameterWithoutType()
     {
         //when
@@ -362,9 +321,7 @@ class InjectorTest extends TestCase
         CatchException::assertThat()->isInstanceOf(InjectorException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectParentPrivateField()
     {
         //when
@@ -375,9 +332,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->getMyClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectThroughFactoryDependency()
     {
         //given
@@ -394,9 +349,7 @@ class InjectorTest extends TestCase
         $this->assertTrue($instance->myClass->isThroughFactoryFlag());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectThroughFactoryDependencyWhenInterfaceIsNotImplemented()
     {
         //given
@@ -411,9 +364,7 @@ class InjectorTest extends TestCase
         CatchException::assertThat()->isInstanceOf(InjectorException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectNamedThroughFactoryDependency()
     {
         //given
@@ -430,9 +381,7 @@ class InjectorTest extends TestCase
         $this->assertTrue($instance->myClass->isThroughFactoryFlag());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectThroughFactoryInSingletonScope()
     {
         //given
@@ -452,9 +401,7 @@ class InjectorTest extends TestCase
         $this->assertTrue($instance2->isThroughFactoryFlag());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectThroughFactoryInSingletonScopeAndStillBeAbleToCreateProperFactoryClass()
     {
         //given
@@ -475,9 +422,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassFactory::class, $instance2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function injectThroughFactoryShouldBeCreatedEagerly()
     {
         //given
@@ -492,9 +437,7 @@ class InjectorTest extends TestCase
         CatchException::assertThat()->hasMessage('Should never be invoked! It means lazy is not working.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function injectThroughFactoryShouldBeCreatedAsLazy()
     {
         //given
@@ -511,9 +454,7 @@ class InjectorTest extends TestCase
         $this->assertInstanceOf(VirtualProxyInterface::class, $instance->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function injectThroughFactoryShouldBeCreatedAsLazyInSingletonScope()
     {
         //given
@@ -530,9 +471,7 @@ class InjectorTest extends TestCase
         $this->assertSame($instance1->myClass, $instance2->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function injectThroughFactoryShouldBeCreatedAsLazyInPrototypeScope()
     {
         //given
@@ -549,9 +488,7 @@ class InjectorTest extends TestCase
         $this->assertNotSame($instance1->myClass, $instance2->myClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function injectThroughFactoryShouldBeCreatedAsLazyAndCreatedWhenMethodOnProxyIsInvoked()
     {
         //given
@@ -569,9 +506,7 @@ class InjectorTest extends TestCase
         CatchException::assertThat()->hasMessage('Should never be invoked! It means lazy is not working.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectMultipleNamedDependenciesIntoConstructor()
     {
         //given
@@ -588,9 +523,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(SubClassOfClassWithPrivateDep::class, $instance->secondClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectOneNamedDependencyIntoDefinedConstructorParameter()
     {
         //given
@@ -606,9 +539,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(SubClassOfClassWithPrivateDep::class, $instance->secondClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectFieldDependencyWithoutFQN()
     {
         //given
@@ -623,9 +554,7 @@ class InjectorTest extends TestCase
         $this->assertDependencyInjected(ClassWithNoDep::class, $instance->mySecondClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectListOfConstructorDependencies()
     {
         //given
@@ -643,9 +572,7 @@ class InjectorTest extends TestCase
         Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class, SampleImpl2::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectNamedListOfConstructorDependencies()
     {
         //given
@@ -665,9 +592,7 @@ class InjectorTest extends TestCase
         Assert::thatArray($sampleInterfaces)->containsOnly(SampleImpl1::class, SampleImpl2::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectListOfDependencies()
     {
         //given

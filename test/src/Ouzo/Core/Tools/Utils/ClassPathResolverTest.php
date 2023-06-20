@@ -3,17 +3,16 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\Assert;
 use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Utilities\Path;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ClassPathResolverTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindFileNameForClassNameAndNamespace()
     {
         //given
@@ -26,9 +25,7 @@ class ClassPathResolverTest extends TestCase
         Assert::thatString($classPath)->endsWith(Path::join('Application', 'Model', 'My', 'Name', 'Space', 'UserAcl.php'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveFilePathForDefaultNamespaces()
     {
         //given
@@ -41,9 +38,7 @@ class ClassPathResolverTest extends TestCase
         Assert::thatString($classPath)->endsWith(Path::join('Application', 'Model', 'UserAcl.php'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveDirectoryPath()
     {
         //given

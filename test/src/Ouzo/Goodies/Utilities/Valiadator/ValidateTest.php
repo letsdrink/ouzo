@@ -7,13 +7,12 @@
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Validator\Validate;
 use Ouzo\Utilities\Validator\ValidateException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ValidateTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTrueWhenIsTrue()
     {
         //given
@@ -26,9 +25,7 @@ class ValidateTest extends TestCase
         $this->assertTrue($isTrue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenIsNotEmail()
     {
         //given
@@ -42,9 +39,7 @@ class ValidateTest extends TestCase
         CatchException::assertThat()->hasMessage('Is not correct email');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTrueWhenIsCorrectEmail()
     {
         //given
@@ -57,9 +52,7 @@ class ValidateTest extends TestCase
         $this->assertTrue($isEmail);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenIsNull()
     {
         //given
@@ -73,9 +66,7 @@ class ValidateTest extends TestCase
         CatchException::assertThat()->hasMessage('Is null');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTrueWhenIsNotNull()
     {
         //given

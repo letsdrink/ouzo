@@ -8,6 +8,7 @@ use Ouzo\Db\PDOPreparedStatementExecutor;
 use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class PDOPreparedStatementExecutorTest extends TestCase
@@ -25,9 +26,7 @@ class PDOPreparedStatementExecutorTest extends TestCase
         Mock::when($this->dbMock)->errorInfo()->thenReturn([1, 3, 'Preparation error']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionOnExecutionError()
     {
         //given

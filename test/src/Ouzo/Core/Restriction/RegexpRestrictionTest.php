@@ -3,13 +3,14 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\Db\Dialect\MySqlDialect;
 use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\Dialect\Sqlite3Dialect;
 use Ouzo\Restrictions;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class RegexpRestrictionTest extends TestCase
 {
@@ -19,9 +20,7 @@ class RegexpRestrictionTest extends TestCase
         Config::revertProperty('sql_dialect');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSqlForPostgres()
     {
         //given
@@ -36,9 +35,7 @@ class RegexpRestrictionTest extends TestCase
         $this->assertEquals(['value'], $restriction->getValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSqlForMysql()
     {
         //given
@@ -53,9 +50,7 @@ class RegexpRestrictionTest extends TestCase
         $this->assertEquals(['value'], $restriction->getValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSqlForSqlite()
     {
         //given

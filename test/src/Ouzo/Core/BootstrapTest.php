@@ -26,6 +26,7 @@ use Ouzo\Tests\MockHeaderSender;
 use Ouzo\Tests\MockOutputRenderer;
 use Ouzo\Tests\MockRedirectHandler;
 use Ouzo\Tests\MockSessionStarterInterceptor;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapSampleController extends Controller
@@ -79,9 +80,7 @@ class BootstrapTest extends TestCase
         Config::clearProperty('debug');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBindMiddlewareWithInterceptors()
     {
         //when
@@ -94,9 +93,7 @@ class BootstrapTest extends TestCase
         Assert::thatArray($interceptors)->isNotEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOverrideMiddleware()
     {
         //when
@@ -109,9 +106,7 @@ class BootstrapTest extends TestCase
         Assert::thatArray($interceptors)->hasSize(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenMiddlewareClassNotImplementingInterceptorInterface()
     {
         //when

@@ -5,13 +5,12 @@
  */
 
 use Ouzo\Utilities\Loop\Loop;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class LoopTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunLoopWithForEach()
     {
         // given
@@ -28,9 +27,7 @@ class LoopTest extends TestCase
         $this->assertEquals(10, $counter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunLoopWithForEveryNth()
     {
         // given
@@ -47,9 +44,7 @@ class LoopTest extends TestCase
         $this->assertEquals(2, $counter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunLoopWithForMultipleEveryNth()
     {
         // given
@@ -69,9 +64,7 @@ class LoopTest extends TestCase
         $this->assertEquals(10 + 2, $counter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunLoopWithForEachAndForEveryNth()
     {
         // given

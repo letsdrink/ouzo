@@ -3,12 +3,13 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tools\Controller\Template\ActionGenerator;
 use Ouzo\Tools\Controller\Template\ViewGenerator;
 use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\Path;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ViewGeneratorTest extends TestCase
 {
@@ -26,9 +27,7 @@ class ViewGeneratorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateDirectoryForController()
     {
         //given
@@ -42,9 +41,7 @@ class ViewGeneratorTest extends TestCase
         $this->assertFileExists($this->path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAppendViewFile()
     {
         //given
@@ -60,9 +57,7 @@ class ViewGeneratorTest extends TestCase
         $this->assertFileExists(Path::join($this->path, $actionGenerator->getActionViewFile()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotAppendFileWhenExists()
     {
         //given

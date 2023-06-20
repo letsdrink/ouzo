@@ -7,6 +7,7 @@
 use Ouzo\Routing\Route;
 use Ouzo\Uri\UriHelperGenerator;
 use Ouzo\Utilities\Path;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class UriHelperGeneratorTest extends TestCase
@@ -17,9 +18,7 @@ class UriHelperGeneratorTest extends TestCase
         Route::clear();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForGet()
     {
         //given
@@ -71,9 +70,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForPost()
     {
         //given
@@ -124,9 +121,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForAny()
     {
         //given
@@ -177,9 +172,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperWhenMultipleBindParameters()
     {
         //given
@@ -232,9 +225,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForCustomRouteName()
     {
         //given
@@ -285,9 +276,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateUriHelperForResource()
     {
         //given
@@ -391,9 +380,7 @@ FUNCT;
         $this->assertEquals($expected, $generated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSaveGeneratedUriHelperInFile()
     {
         //given
@@ -411,9 +398,7 @@ FUNCT;
         unlink($path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateCorrectNestedResources()
     {
         //given

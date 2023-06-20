@@ -8,13 +8,12 @@ namespace Ouzo\Db\WhereClause;
 
 use Ouzo\Db\Any;
 use Ouzo\Restrictions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class WhereClauseTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyWhereClauseForNull()
     {
         // when
@@ -24,9 +23,7 @@ class WhereClauseTest extends TestCase
         $this->assertInstanceOf(EmptyWhereClause::class, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnArrayWhereClauseForArray()
     {
         // when
@@ -36,9 +33,7 @@ class WhereClauseTest extends TestCase
         $this->assertInstanceOf(ArrayWhereClause::class, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSqlWhereClauseForString()
     {
         // when
@@ -48,9 +43,7 @@ class WhereClauseTest extends TestCase
         $this->assertInstanceOf(SqlWhereClause::class, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnGivenWhereClauseForWhereClauseInstance()
     {
         // given
@@ -63,9 +56,7 @@ class WhereClauseTest extends TestCase
         $this->assertEquals($whereClause, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnArrayWhereClauseForAny()
     {
         // when
@@ -77,9 +68,7 @@ class WhereClauseTest extends TestCase
         $this->assertEquals('(a = ? OR c = ?)', $result->toSql());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnArrayWhereClauseForListOfRestrictions()
     {
         // when
@@ -91,9 +80,7 @@ class WhereClauseTest extends TestCase
         $this->assertEquals('(a = ? OR a < ?)', $result->toSql());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnArrayWhereClauseForAnyWithInAndWithoutRestriction()
     {
         // when
@@ -105,9 +92,7 @@ class WhereClauseTest extends TestCase
         $this->assertEquals('a IN (?, ?)', $result->toSql());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddParenthesisToListOfRestrictions()
     {
 
@@ -122,9 +107,7 @@ class WhereClauseTest extends TestCase
         $this->assertEquals('(a = ? OR a < ?) AND b = ?', $result->toSql());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotAddParenthesisToSingleOfRestriction()
     {
         // when
@@ -137,9 +120,7 @@ class WhereClauseTest extends TestCase
         $this->assertEquals('a = ?', $result->toSql());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinConditionsWithOrForAnyOfAndAssociativeArray()
     {
         // when
@@ -150,9 +131,7 @@ class WhereClauseTest extends TestCase
         $this->assertEquals(['0' => 'bob', '1' => 12], $result->getParameters());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinConditionsWithOrForAnyOfAndWhereClauses()
     {
         // when

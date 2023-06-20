@@ -3,15 +3,14 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Utilities\RecursiveStrSubstitutor;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Utilities\RecursiveStrSubstitutor;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class RecursiveStrSubstitutorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteNormalValues()
     {
         //given
@@ -24,9 +23,7 @@ class RecursiveStrSubstitutorTest extends TestCase
         $this->assertEquals('Hi John Smith', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteRecursively()
     {
         //given
@@ -39,9 +36,7 @@ class RecursiveStrSubstitutorTest extends TestCase
         $this->assertEquals('Best website: ouzoframework.org', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnValueWhenInfinityLoopOccurs()
     {
         //given

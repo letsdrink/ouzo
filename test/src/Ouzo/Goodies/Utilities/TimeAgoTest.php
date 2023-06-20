@@ -6,11 +6,28 @@
 
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\TimeAgo;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TimeAgoTest extends TestCase
 {
-    public function dates(): array
+    #[Test]
+    #[DataProvider('dates')]
+    public function shouldCreateTimeAgo($currentDate, $date, $expectedKey, $expectedParams): void
+    {
+        //given
+        Clock::freeze($currentDate);
+
+        //when
+        $timeAgo = TimeAgo::create($date);
+
+        //then
+        $this->assertEquals($expectedKey, $timeAgo->getKey());
+        $this->assertEquals($expectedParams, $timeAgo->getParams());
+    }
+
+    public static function dates(): array
     {
         return [
             ['2012-02-20 12:00', '2012-02-20 11:59', 'timeAgo.justNow', []],
@@ -26,22 +43,5 @@ class TimeAgoTest extends TestCase
             ['2012-02-20 12:00', '2011-01-20 11:59', '2011-01-20', []],
             ['2012-02-20 12:00', '2011-01-20 11:55', '2011-01-20', []]
         ];
-    }
-
-    /**
-     * @test
-     * @dataProvider dates
-     */
-    public function shouldCreateTimeAgo($currentDate, $date, $expectedKey, $expectedParams)
-    {
-        //given
-        Clock::freeze($currentDate);
-
-        //when
-        $timeAgo = TimeAgo::create($date);
-
-        //then
-        $this->assertEquals($expectedKey, $timeAgo->getKey());
-        $this->assertEquals($expectedParams, $timeAgo->getParams());
     }
 }

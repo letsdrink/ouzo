@@ -8,13 +8,12 @@ use Ouzo\Db\Dialect\DialectUtil;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DialectUtilTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReplaceTableWithAlias()
     {
         //given
@@ -28,9 +27,7 @@ class DialectUtilTest extends TestCase
             ->isEqualTo('LEFT JOIN products AS p ON p.id = order_products.product_id AND p.active = true');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotReplaceWhenTableNameIsPartOfOtherTableName()
     {
         //given

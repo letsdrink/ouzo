@@ -5,13 +5,12 @@
  */
 
 use Ouzo\ContentType;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ContentTypeTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseContentType()
     {
         //given
@@ -24,9 +23,7 @@ class ContentTypeTest extends TestCase
         $this->assertEquals('application/json', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetContentType()
     {
         //given

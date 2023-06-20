@@ -6,13 +6,12 @@
 
 use Ouzo\Config;
 use Ouzo\ControllerUrl;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ControllerUrlTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateCorrectUrl()
     {
         //given
@@ -25,9 +24,7 @@ class ControllerUrlTest extends TestCase
         $this->assertEquals($defaults['prefix_system'] . '/users/add', $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateCorrectUrlFromString()
     {
         //given
@@ -40,9 +37,7 @@ class ControllerUrlTest extends TestCase
         $this->assertEquals($defaults['prefix_system'] . '/users/add', $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateCorrectUrlWithExtraParams()
     {
         //given

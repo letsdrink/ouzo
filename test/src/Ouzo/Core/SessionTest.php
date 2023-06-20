@@ -6,6 +6,7 @@
 
 use Ouzo\Session;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class SessionTest extends TestCase
@@ -16,9 +17,7 @@ class SessionTest extends TestCase
         $_SESSION = [];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetSessionValue()
     {
         //when
@@ -30,9 +29,7 @@ class SessionTest extends TestCase
             ->containsKeyAndValue(['key' => 'value']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetNestedSessionValue()
     {
         //when
@@ -43,9 +40,7 @@ class SessionTest extends TestCase
         $this->assertEquals('value', $_SESSION['key1']['key2']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetMultipleSessionValues()
     {
         //when
@@ -63,9 +58,7 @@ class SessionTest extends TestCase
             ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetSessionValue()
     {
         //given
@@ -78,9 +71,7 @@ class SessionTest extends TestCase
         $this->assertEquals('value', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetNestedSessionValue()
     {
         //given
@@ -93,9 +84,7 @@ class SessionTest extends TestCase
         $this->assertEquals('value', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldReturnNullIfKeyDoesNotExist()
     {
         //when
@@ -105,9 +94,7 @@ class SessionTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasShouldReturnTrueIfItemExistsInSession()
     {
         //given
@@ -120,9 +107,7 @@ class SessionTest extends TestCase
         $this->assertTrue($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasShouldReturnFalseIfItemDoesNotExistInSession()
     {
         //when
@@ -132,9 +117,7 @@ class SessionTest extends TestCase
         $this->assertFalse($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlushSession()
     {
         //given
@@ -147,9 +130,7 @@ class SessionTest extends TestCase
         Assert::thatSession()->isEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlushIfSessionIsEmpty()
     {
         //when
@@ -159,9 +140,7 @@ class SessionTest extends TestCase
         Assert::thatSession()->isEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveElementFromSession()
     {
         //given
@@ -177,9 +156,7 @@ class SessionTest extends TestCase
             ->containsKeyAndValue(['key2' => 'value2']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeShouldDoNothingIfElementDoesNotExist()
     {
         //when
@@ -189,9 +166,7 @@ class SessionTest extends TestCase
         Assert::thatSession()->isEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetAllValuesFromSession()
     {
         //given
@@ -206,9 +181,7 @@ class SessionTest extends TestCase
             ->containsKeyAndValue(['key' => 'value']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPushSessionValue()
     {
         //when
@@ -221,9 +194,7 @@ class SessionTest extends TestCase
         Assert::thatArray($value)->containsExactly('value');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPushNestedSessionValue()
     {
         //when
@@ -236,9 +207,7 @@ class SessionTest extends TestCase
         Assert::thatArray($value)->containsExactly('value');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPushSessionValueWhenArrayIsNotEmpty()
     {
         // given
@@ -255,9 +224,7 @@ class SessionTest extends TestCase
         Assert::thatArray($value)->containsExactly('value1', 'value2', 'value3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPushNestedSessionValueWhenArrayIsNotEmpty()
     {
         // given

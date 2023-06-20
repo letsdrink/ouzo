@@ -80,7 +80,7 @@ jobs:
         run: composer install --no-progress;
 
       - name: Run tests
-        run: ${{ matrix.phpunitEnv }} ./vendor/bin/phpunit ${{ matrix.phpunitArgs }} --whitelist src test
+        run: ${{ matrix.phpunitEnv }} ./vendor/bin/phpunit ${{ matrix.phpunitArgs }} test
 
       - name: Upload coverage results to Coveralls
         env:

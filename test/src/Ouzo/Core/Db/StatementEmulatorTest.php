@@ -11,6 +11,7 @@ use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\Mock\SimpleMock;
+use PHPUnit\Framework\Attributes\Test;
 
 class SimpleModel extends Model
 {
@@ -22,9 +23,7 @@ class SimpleModel extends Model
 
 class StatementEmulatorTest extends DbTransactionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteParams()
     {
         //given

@@ -8,6 +8,7 @@ use Application\Model\Test\Category;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ModelOrderedRelationTest extends DbTransactionalTestCase
 {
@@ -22,9 +23,7 @@ class ModelOrderedRelationTest extends DbTransactionalTestCase
         Product::create(['name' => 'b', 'id_category' => $this->category->getId()]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOrderLazilyFetchedRelation()
     {
         //when
@@ -34,9 +33,7 @@ class ModelOrderedRelationTest extends DbTransactionalTestCase
         Assert::thatArray($products)->onProperty('name')->containsExactly('a', 'b', 'c');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOrderEagerlyFetchedRelation()
     {
         //given

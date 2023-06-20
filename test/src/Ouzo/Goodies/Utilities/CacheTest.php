@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Utilities\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class CacheTest extends TestCase
@@ -18,9 +19,7 @@ class CacheTest extends TestCase
         CacheTest::$call_count = 0;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCacheGets()
     {
         //given
@@ -41,9 +40,7 @@ class CacheTest extends TestCase
         return Cache::memoize(fn() => ++CacheTest::$call_count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCacheClosure()
     {
         //when
@@ -56,9 +53,7 @@ class CacheTest extends TestCase
         $this->assertEquals(1, $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseDifferentKeysForDifferentClosures()
     {
         //when
@@ -71,9 +66,7 @@ class CacheTest extends TestCase
         $this->assertEquals(2, $result2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCacheNullValues()
     {
         //given

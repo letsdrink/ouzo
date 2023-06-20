@@ -2,15 +2,15 @@
 
 namespace Ouzo\Utilities\Time;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TimeUnitTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider durations
-     */
-    public function shouldConvertFromNanos(int $duration, string $timeUnit, int $expectedTime)
+    #[Test]
+    #[DataProvider('durations')]
+    public function shouldConvertFromNanos(int $duration, string $timeUnit, int $expectedTime): void
     {
         //when
         $result = TimeUnit::of($timeUnit)->convert($duration, TimeUnit::NANOSECONDS);
@@ -19,7 +19,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals($expectedTime, $result);
     }
 
-    public function durations(): array
+    public static function durations(): array
     {
         return [
             [10, TimeUnit::NANOSECONDS, 10],
@@ -32,9 +32,7 @@ class TimeUnitTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateTimeUnitByInstanceOfTimeUnit()
     {
         //when
@@ -44,9 +42,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(TimeUnit::DAYS, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToMillis()
     {
         //when
@@ -56,9 +52,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToMicros()
     {
         //when
@@ -68,9 +62,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5 * 1000, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToSeconds()
     {
         //when
@@ -80,9 +72,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5 * 60, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToMinutes()
     {
         //when
@@ -92,9 +82,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5 * 60, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToHours()
     {
         //when
@@ -104,9 +92,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToDays()
     {
         //when
@@ -116,9 +102,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(2, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToNanosByToMethod()
     {
         //when
@@ -128,9 +112,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(3 * 1000 * 1000, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToMillisByToMethod()
     {
         //when
@@ -140,9 +122,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToMicrosByToMethod()
     {
         //when
@@ -152,9 +132,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5 * 1000, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToSecondsByToMethod()
     {
         //when
@@ -164,9 +142,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5 * 60, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToMinutesByToMethod()
     {
         //when
@@ -176,9 +152,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5 * 60, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToHoursByToMethod()
     {
         //when
@@ -188,9 +162,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals(5, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertToDaysByToMethod()
     {
         //when

@@ -18,6 +18,8 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 
 class ModelTest extends DbTransactionalTestCase
 {
@@ -27,9 +29,7 @@ class ModelTest extends DbTransactionalTestCase
         ModelDefinition::resetCache();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenTableEmptyInPrepareParameters()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -37,9 +37,7 @@ class ModelTest extends DbTransactionalTestCase
         new Model(['table' => '']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenFieldsEmptyInPrepareParameters()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -47,9 +45,7 @@ class ModelTest extends DbTransactionalTestCase
         new Model(['table' => 't_example', 'fields' => '']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPersistModel()
     {
         //given
@@ -66,9 +62,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Sport', $actual->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPersistModelWithSpecifiedPrimaryKeyValue()
     {
         //given
@@ -86,9 +80,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Sport', $actual->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterConstructorData()
     {
         //given
@@ -102,9 +94,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNull($product->junk);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterAttributesForInsert()
     {
         //given
@@ -119,9 +109,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Sport', $actual->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterAttributesForUpdate()
     {
         //given
@@ -136,9 +124,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Sport', $actual->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUpdateAttributesToNull()
     {
         //given
@@ -153,9 +139,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNull($actual->price);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHaveNoErrorsWhenModelIsValid()
     {
         //given
@@ -168,9 +152,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEmpty($product->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHaveErrorsWhenModelIsNotValid()
     {
         //given
@@ -184,9 +166,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNotEmpty($product->getErrorFields());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnPrimaryKey()
     {
         //given
@@ -202,10 +182,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals($id, $savedId);
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldFailIfModelWithGivenIdDoesNotExists()
     {
         //given
@@ -216,9 +193,7 @@ class ModelTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetIdInInsert()
     {
         //when
@@ -228,9 +203,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertTrue(is_numeric($product->id));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUpdateModel()
     {
         //given
@@ -245,9 +218,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('new name', $updatedProduct->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUpdateModelMultipleTimes()
     {
         //given
@@ -265,9 +236,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('another name', $updatedProduct->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUpdateModelAttributes()
     {
         //given
@@ -284,9 +253,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('desc1', $updatedProduct->description);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailedOnUpdateAttributesIfModelNotValid()
     {
         //given
@@ -301,9 +268,7 @@ class ModelTest extends DbTransactionalTestCase
             ->hasMessage("Validation failed. Empty name");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateShouldOnlyUpdateChangedFieldsForCreatedModel()
     {
         //given
@@ -321,9 +286,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Something else', $updatedProduct->description);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateShouldOnlyUpdateChangedFieldsForFetchedModel()
     {
         //given
@@ -343,9 +306,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Something else', $updatedProduct->description);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterOutNullAttributesSoThatInsertedAndLoadedObjectsAreEqual()
     {
         //given
@@ -358,9 +319,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals($product->attributes(), $loadedProduct->attributes());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeSameReturnIn_FindById_and_FindByIdOrNull()
     {
         //given
@@ -374,9 +333,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals($loadedProduct1, $loadedProduct2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByIdOrNullShouldReturnNullWhenIdNotFound()
     {
         //given
@@ -389,9 +346,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNull($loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldReturnFieldValue()
     {
         //given
@@ -404,9 +359,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Sport', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldReturnDefaultWhenNotExistentNestedField()
     {
         //given
@@ -419,9 +372,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('default', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldReturnDefaultForNotExistentField()
     {
         //given
@@ -434,9 +385,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('default', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldReturnDefaultForNullField()
     {
         //given
@@ -450,9 +399,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('default', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNestedValueThroughLazyRelation()
     {
         //given
@@ -466,9 +413,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('phones', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldInvokeMethod()
     {
         //given
@@ -481,9 +426,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals($product->getDescription(), $description);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attributesShouldReturnAllFieldsIncludingNulls()
     {
         //given
@@ -498,9 +441,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertArrayHasKey('name', $attributes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDerivedClassNameInInspect()
     {
         //given
@@ -514,9 +455,7 @@ class ModelTest extends DbTransactionalTestCase
             ->isEqualTo('Application\Model\Test\Product[<name> => "Sport", <id> => ' . $product->id . ']');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotIncludeBlankPrimaryKeyInFields()
     {
         //given
@@ -529,9 +468,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals(['field1'], $fields);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnValueByMagicGetter()
     {
         //given
@@ -544,9 +481,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Sport', $name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNullWhenFieldWasNotFound()
     {
         //given
@@ -559,9 +494,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetModelName()
     {
         //given
@@ -574,10 +507,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Product', $modelName);
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldThrowExceptionIfNoRelation()
     {
         $model = new Model(['fields' => ['field1']]);
@@ -587,9 +517,7 @@ class ModelTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazyFetchHasManyRelation()
     {
         //given
@@ -604,9 +532,7 @@ class ModelTest extends DbTransactionalTestCase
         Assert::thatArray($products)->containsOnly($product1, $product2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazyFetchHasManyRelationWithoutChildren()
     {
         //given
@@ -619,9 +545,7 @@ class ModelTest extends DbTransactionalTestCase
         Assert::thatArray($products)->isEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazyFetchHasOneRelation()
     {
         //given
@@ -635,9 +559,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals($orderProduct, $fetched);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazyFetchBelongsToRelation()
     {
         //given
@@ -651,9 +573,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals($category, $fetched);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinMultipleModels()
     {
         //given
@@ -681,9 +601,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('category1', $find->product->category->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindByNativeSql()
     {
         //given
@@ -696,9 +614,7 @@ class ModelTest extends DbTransactionalTestCase
         Assert::thatArray($found)->containsOnly($category);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptParamsInFindBySql()
     {
         //given
@@ -712,9 +628,7 @@ class ModelTest extends DbTransactionalTestCase
         Assert::thatArray($found)->onProperty('name')->containsOnly('phones1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptSingleParamInFindBySql()
     {
         //given
@@ -728,9 +642,7 @@ class ModelTest extends DbTransactionalTestCase
         Assert::thatArray($found)->onProperty('name')->containsOnly('phones1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowValidationExceptionIfModelInvalid()
     {
         //given
@@ -743,9 +655,7 @@ class ModelTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(ValidationException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsSetVariable()
     {
         //given
@@ -757,9 +667,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertTrue(isset($product->price));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUnsetVariable()
     {
         //given
@@ -773,9 +681,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEmpty($product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionIfInvalidSequence()
     {
         //given
@@ -793,24 +699,22 @@ class ModelTest extends DbTransactionalTestCase
         if (!$model->id) {
             CatchException::assertThat()->isInstanceOf(DbException::class);
             //drivers other than postgres return last inserted id even if invalid sequence is given
+        } else {
+            $this->expectNotToPerformAssertions();
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleZeroAsPrimaryKey()
     {
         //when
         $product = new Product(['id' => 0, 'name' => 'Phone']);
 
         //then
-        $this->assertTrue(0 === $product->id);
+        $this->assertEquals(0, $product->id);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByIdShould()
     {
         //when
@@ -822,9 +726,7 @@ class ModelTest extends DbTransactionalTestCase
             ->hasMessage('Primary key is not defined for table products');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateShouldUpdateOnlyChangedFieldsWhenAssignAttributesIsUsed()
     {
         //given
@@ -839,9 +741,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Desc', $actual->description);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateShouldUpdateOnlyChangedFieldsWhenObjectWasCreatedByHandAndIdWasSet()
     {
         //given
@@ -858,9 +758,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Water', $actual->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCountValuesWithoutWhere()
     {
         //given
@@ -873,9 +771,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals(1, $count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUpdateModelWithoutSequence()
     {
         //given
@@ -891,10 +787,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('new name', $model->reload()->name);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldSelectForUpdate()
     {
         // given
@@ -907,9 +801,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertCount(1, $products);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInsertRecordWithoutValues()
     {
         // when
@@ -921,9 +813,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNull($order->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSerializeModel()
     {
         // given
@@ -936,9 +826,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals(['name' => 'Sport'], $serialized);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUnserializeModel()
     {
         // given
@@ -951,9 +839,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Sport', $product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSerializeAndUnserializeModel()
     {
         // given
@@ -967,9 +853,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Test', $unserialized->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSerializeModelToJson()
     {
         // given
@@ -982,9 +866,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('{"name":"Sport"}', $json);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotAssignPrimaryKeyInAssignAttributes()
     {
         //given
@@ -1001,10 +883,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('modified', $product1->reload()->name);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function createOrUpdateShouldInsertProductWhenNotExist()
     {
         //when
@@ -1015,10 +895,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Tech', $product->name);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function createOrUpdateShouldUpdateProductWhenOneAlreadyExists()
     {
         //given
@@ -1032,10 +910,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('new name', $product->name);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function upsertShouldReturnIdOnInsert()
     {
         //given
@@ -1048,10 +924,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNotNull($id);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function upsertShouldReturnIdOnUpdate()
     {
         //given
@@ -1065,10 +939,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNotNull($id);
     }
 
-    /**
-     * @group postgres
-     * @test
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldInsertOrDoNothing()
     {
         //given

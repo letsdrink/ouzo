@@ -6,13 +6,12 @@
 
 namespace Ouzo;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ViewPathResolverTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlPathForTextContentType()
     {
         //given
@@ -25,9 +24,7 @@ class ViewPathResolverTest extends TestCase
         $this->assertEquals(ROOT_PATH . 'Application' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'exception.phtml', $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnXmlPathForXmlContentType()
     {
         //given
@@ -40,9 +37,7 @@ class ViewPathResolverTest extends TestCase
         $this->assertEquals(ROOT_PATH . 'Application' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'exception.xml.phtml', $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnAjaxPathForAjax()
     {
         //given
@@ -55,9 +50,7 @@ class ViewPathResolverTest extends TestCase
         $this->assertEquals(ROOT_PATH . 'Application' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'exception.ajax.phtml', $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnJsonPath()
     {
         //given

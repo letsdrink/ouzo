@@ -26,6 +26,7 @@ use Ouzo\Stats\SessionStats;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri\PathProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class SimpleTestController extends Controller
@@ -55,9 +56,7 @@ class ControllerFactoryTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveAction()
     {
         //given
@@ -82,9 +81,7 @@ class ControllerFactoryTest extends TestCase
         $this->assertEquals('action1', $currentController->currentAction);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenControllerNotFound()
     {
         //given
@@ -107,9 +104,7 @@ class ControllerFactoryTest extends TestCase
             ->hasMessage('Controller [NotExists] for URI [/simple_test/action] does not exist!');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenControllerIsNotSubclassOfOuzoController()
     {
         //given
@@ -132,9 +127,7 @@ class ControllerFactoryTest extends TestCase
             ->hasMessage(IncorrectController::class . ' is not a subclass of Controller');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveControllerWithNamespace()
     {
         //given

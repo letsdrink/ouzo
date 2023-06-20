@@ -6,6 +6,7 @@
 
 use Ouzo\Tests\Assert;
 use Ouzo\Validatable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ValidatableChild extends Validatable
@@ -38,9 +39,7 @@ class ValidatableParent extends Validatable
 
 class ValidatableTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnParentAndChildErrors()
     {
         //given
@@ -54,9 +53,7 @@ class ValidatableTest extends TestCase
         $this->assertEquals(['error from parent', 'error from child'], $validatable->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnParentAndChildErrorFields()
     {
         //given
@@ -70,9 +67,7 @@ class ValidatableTest extends TestCase
         $this->assertEquals(['errorField from parent', 'errorField from child'], $validatable->getErrorFields());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotValidIfBothParentAndChildValid()
     {
         $child = new ValidatableChild();
@@ -81,9 +76,7 @@ class ValidatableTest extends TestCase
         $this->assertTrue($validatable->isValid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeValidIfChildNotValid()
     {
         $child = new ValidatableChild(['error from child'], ['errorField from child']);
@@ -92,9 +85,7 @@ class ValidatableTest extends TestCase
         $this->assertFalse($validatable->isValid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeValidIfParentNotValid()
     {
         $child = new ValidatableChild();
@@ -103,9 +94,7 @@ class ValidatableTest extends TestCase
         $this->assertFalse($validatable->isValid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldValidateWrongDateTime()
     {
         // given
@@ -120,9 +109,7 @@ class ValidatableTest extends TestCase
         $this->assertEquals('Wrong date.', $errors[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldValidateCorrectDateTime()
     {
         // given
@@ -135,9 +122,7 @@ class ValidatableTest extends TestCase
         $this->assertEmpty($validatable->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldClearErrorBeforeValidation()
     {
         // given
@@ -152,9 +137,7 @@ class ValidatableTest extends TestCase
         $this->assertEmpty($validatable->getErrorFields());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldValidStringMaxLength()
     {
         //given
@@ -168,9 +151,7 @@ class ValidatableTest extends TestCase
         $this->assertCount(0, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldValidateStringMaxLengthWhenLengthEqualsMax()
     {
         //given
@@ -184,9 +165,7 @@ class ValidatableTest extends TestCase
         $this->assertCount(0, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldValidateStringMaxLengthWhenLengthEqualsMaxPlusOne()
     {
         //given
@@ -200,9 +179,7 @@ class ValidatableTest extends TestCase
         $this->assertEquals('Too long string', $errors[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeValidStringMaxLength()
     {
         //given
@@ -216,9 +193,7 @@ class ValidatableTest extends TestCase
         $this->assertEquals('Too long string', $errors[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddErrorIfValueIsNotTrue()
     {
         //given
@@ -232,9 +207,7 @@ class ValidatableTest extends TestCase
         Assert::thatArray($validatable->getErrorFields())->containsOnly('field');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddErrorIfValueIsBlank()
     {
         //given
@@ -248,9 +221,7 @@ class ValidatableTest extends TestCase
         Assert::thatArray($validatable->getErrorFields())->containsOnly('field');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotTreatZeroAsBlank()
     {
         //given
@@ -264,9 +235,7 @@ class ValidatableTest extends TestCase
         Assert::thatArray($validatable->getErrorFields())->isEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldValidateAssociatedCollection()
     {
         // given
@@ -284,9 +253,7 @@ class ValidatableTest extends TestCase
         Assert::thatArray($validatable->getErrorFields())->containsOnly('errorField1', 'errorField2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyShouldReturnErrorForEmpty()
     {
         //given
@@ -300,9 +267,7 @@ class ValidatableTest extends TestCase
         Assert::thatArray($validatable->getErrors())->containsOnly('error1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyShouldNotReturnErrorForNotEmpty()
     {
         //given
@@ -316,9 +281,7 @@ class ValidatableTest extends TestCase
         $this->assertEmpty($validatable->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyShouldReturnErrorForNonEmpty()
     {
         //given
@@ -332,9 +295,7 @@ class ValidatableTest extends TestCase
         Assert::thatArray($validatable->getErrors())->containsOnly('error1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyShouldNotReturnErrorForEmpty()
     {
         //given

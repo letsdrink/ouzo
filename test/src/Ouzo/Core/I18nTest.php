@@ -7,6 +7,7 @@
 use Ouzo\Config;
 use Ouzo\I18n;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class I18nTest extends TestCase
@@ -22,9 +23,7 @@ class I18nTest extends TestCase
         I18n::reset();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTranslateValue()
     {
         //given
@@ -37,9 +36,7 @@ class I18nTest extends TestCase
         $this->assertEquals('Opis produktu', $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTranslateWithChoice()
     {
         //when
@@ -49,9 +46,7 @@ class I18nTest extends TestCase
         $this->assertEquals('5 products', $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTranslateValueInDefaultLanguageWhenNoLanguageWasSet()
     {
         //when
@@ -61,9 +56,7 @@ class I18nTest extends TestCase
         $this->assertEquals('Product description', $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionForNonExistingLanguage()
     {
         //given
@@ -77,9 +70,7 @@ class I18nTest extends TestCase
         CatchException::assertThat()->isInstanceOf('Exception');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnLabel()
     {
         //when
@@ -89,9 +80,7 @@ class I18nTest extends TestCase
         $this->assertGreaterThan(1, sizeof($allLabels));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnAllLabels()
     {
         //when

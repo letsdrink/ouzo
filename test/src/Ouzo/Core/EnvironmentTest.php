@@ -3,6 +3,7 @@
 namespace Ouzo;
 
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -13,9 +14,7 @@ function getenv(?string $name, bool $local_only = false): array|string|false
 
 class EnvironmentTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInitializeWhenIsNotConsoleAndServerEnvironmentNotExist(): void
     {
         //given

@@ -9,6 +9,7 @@ use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class PostgresDialectTest extends TestCase
@@ -20,9 +21,7 @@ class PostgresDialectTest extends TestCase
         $this->dialect = new PostgresDialect();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectFrom()
     {
         // given
@@ -36,9 +35,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDeleteFrom()
     {
         // given
@@ -53,9 +50,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('DELETE FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDeleteFromWithJoin()
     {
         // given
@@ -71,9 +66,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('DELETE FROM products USING categories AS c WHERE (c.id_category = products.id)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectCountFrom()
     {
         // given
@@ -88,9 +81,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT count(*) FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldIgnoreOrderLimitAndOffsetForSelectCount()
     {
         // given
@@ -107,9 +98,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT count(*) FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnGroupBy()
     {
         // given
@@ -124,9 +113,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT category, count(*) FROM products GROUP BY category', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectColumnsFrom()
     {
         // given
@@ -141,9 +128,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT id, name FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithSingleOrderBy()
     {
         // given
@@ -158,9 +143,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products ORDER BY id ASC', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithMultipleOrderBy()
     {
         // given
@@ -175,9 +158,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products ORDER BY id ASC, name DESC', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithLimit()
     {
         // given
@@ -192,9 +173,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products LIMIT ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithOffset()
     {
         // given
@@ -209,9 +188,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products OFFSET ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithSingleWhere()
     {
         // given
@@ -226,9 +203,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithMultipleWhere()
     {
         // given
@@ -243,9 +218,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWrapConditionsWithOrInParenthesis()
     {
         // given
@@ -261,9 +234,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ? AND (a = 1 OR b = 2)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseOrOperator()
     {
         // given
@@ -278,9 +249,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE (name = ? OR id = ?)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseBothAndOrOperator()
     {
         // given
@@ -296,9 +265,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE a = ? AND (name = ? OR id = ?)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithWhereIn()
     {
         // given
@@ -313,9 +280,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name IN (?, ?)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithJoin()
     {
         // given
@@ -330,9 +295,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithJoinWithOnClause()
     {
         // given
@@ -347,9 +310,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category AND col = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddAliases()
     {
         // given
@@ -365,9 +326,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products AS p LEFT JOIN categories AS c ON c.id_category = p.id_category', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectForChainedWhere()
     {
         // given
@@ -383,9 +342,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSkipEmptyWheres()
     {
         // given
@@ -401,9 +358,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE id = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithMultipleJoins()
     {
         //given
@@ -422,9 +377,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals($expected, $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBuildUpdateQuery()
     {
         //given
@@ -441,9 +394,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals("UPDATE products SET col1 = ?, col2 = ? WHERE col1 = ? AND col2 = ?", $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBuildUpsertQuery()
     {
         //given
@@ -460,9 +411,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals("INSERT INTO products (col1, col2) VALUES (?, ?) ON CONFLICT (col3, col4) DO UPDATE SET col1 = ?, col2 = ?", $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectDistinctFrom()
     {
         // given
@@ -478,9 +427,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT DISTINCT name FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectDistinctOn()
     {
         // given
@@ -496,9 +443,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT DISTINCT ON (description) name, category FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectDistinctOnWithSelectingAllColumns()
     {
         // given
@@ -513,9 +458,7 @@ class PostgresDialectTest extends TestCase
         $this->assertEquals('SELECT DISTINCT ON (description) * FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectForUpdate()
     {
         // given

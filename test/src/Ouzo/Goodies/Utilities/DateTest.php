@@ -6,13 +6,13 @@
 
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\Date;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DateTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatDateDefaultFormatter()
     {
         //given
@@ -25,9 +25,7 @@ class DateTest extends TestCase
         $this->assertEquals('2013-05-10', $formattedDate);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatDateCustomFormatter()
     {
         //given
@@ -40,9 +38,7 @@ class DateTest extends TestCase
         $this->assertEquals('2013/05/10', $formattedDate);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatDateTimeDefaultFormatter()
     {
         //given
@@ -55,9 +51,7 @@ class DateTest extends TestCase
         $this->assertEquals('2013-05-10 16:32', $formattedDateTime);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatDateTimeCustomFormatter()
     {
         //given
@@ -70,9 +64,7 @@ class DateTest extends TestCase
         $this->assertEquals('2013/05/10 16-32-30', $formattedDateTime);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddIntervalToCurrentDate()
     {
         //when
@@ -82,9 +74,7 @@ class DateTest extends TestCase
         $this->assertGreaterThan(Clock::nowAsString(), $date);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldModifyCurrentDate()
     {
         //when
@@ -94,7 +84,18 @@ class DateTest extends TestCase
         $this->assertGreaterThan(Clock::nowAsString(), $date);
     }
 
-    public function intervalsAndDates(): array
+    #[Test]
+    #[DataProvider('intervalsAndDates')]
+    public function shouldModifyDate(string $interval, string $expectedDate): void
+    {
+        //when
+        $date = Date::modify('2010-01-20 12:00', $interval);
+
+        //then
+        $this->assertEquals($expectedDate, $date);
+    }
+
+    public static function intervalsAndDates(): array
     {
         return [
             ['1 day', '2010-01-21 12:00'],
@@ -105,22 +106,7 @@ class DateTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider intervalsAndDates
-     */
-    public function shouldModifyDate(string $interval, string $expectedDate)
-    {
-        //when
-        $date = Date::modify('2010-01-20 12:00', $interval);
-
-        //then
-        $this->assertEquals($expectedDate, $date);
-    }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetBeginningOfDayForDate()
     {
         //given
@@ -133,9 +119,7 @@ class DateTest extends TestCase
         $this->assertEquals('2013-09-09 00:00:00', $begin);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetBeginningOfDayForDateWithTime()
     {
         //given
@@ -148,9 +132,7 @@ class DateTest extends TestCase
         $this->assertEquals('2013-09-09 00:00:00', $begin);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetEndOfDayForDate()
     {
         //given
@@ -163,9 +145,7 @@ class DateTest extends TestCase
         $this->assertEquals('2013-09-09 23:59:59.999', $begin);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetEndOfDayForDateWithTime()
     {
         //given
@@ -178,9 +158,7 @@ class DateTest extends TestCase
         $this->assertEquals('2013-09-09 23:59:59.999', $end);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatTime()
     {
         //given
@@ -193,9 +171,7 @@ class DateTest extends TestCase
         $this->assertEquals('13:03', $timeOnly);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatTimestamp()
     {
         //given

@@ -9,6 +9,7 @@ use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -31,9 +32,7 @@ class StdOutputLoggerTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWriteErrorMessage()
     {
         //when
@@ -44,9 +43,7 @@ class StdOutputLoggerTest extends TestCase
         Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST error: [ID: ] My error log line with param 42 and Zaphod.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWriteInfoMessage()
     {
         //when
@@ -57,9 +54,7 @@ class StdOutputLoggerTest extends TestCase
         Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST info: [ID: ] My info log line with param 42 and Zaphod.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotWriteInfoMessageIfMinimalLevelIsSetToWarning()
     {
         //given
@@ -74,9 +69,7 @@ class StdOutputLoggerTest extends TestCase
         Assert::thatString($logContent)->isEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWriteInfoMessageIfMinimalLevelIsSetToInfo()
     {
         //given
@@ -91,9 +84,7 @@ class StdOutputLoggerTest extends TestCase
         Assert::thatString($logContent)->isNotEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWriteWarningMessage()
     {
         //when
@@ -104,9 +95,7 @@ class StdOutputLoggerTest extends TestCase
         Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST warning: [ID: ] My warning log line without params.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWriteCriticalMessage()
     {
         //when
@@ -117,9 +106,7 @@ class StdOutputLoggerTest extends TestCase
         Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST critical: [ID: ] My fatal log line without params.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWriteDebugMessageIfDebugIsOn()
     {
         //given
@@ -133,9 +120,7 @@ class StdOutputLoggerTest extends TestCase
         Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST debug: [ID: ] My debug log line without params.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldIgnoreDebugMessageIfDebugIsOff()
     {
         //given
@@ -147,6 +132,7 @@ class StdOutputLoggerTest extends TestCase
         //then
         $logContent = $this->_readStreamContent('test://stdout');
         Assert::thatString($logContent)->hasSize(0);
+        Config::clearProperty('debug');
     }
 
     private function _readStreamContent($streamFile)

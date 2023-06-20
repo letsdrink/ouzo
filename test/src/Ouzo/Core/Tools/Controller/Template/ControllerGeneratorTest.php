@@ -3,12 +3,13 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\Assert;
 use Ouzo\Tools\Controller\Template\ActionGenerator;
 use Ouzo\Tools\Controller\Template\ControllerGenerator;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
-
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ControllerGeneratorTest extends TestCase
@@ -29,9 +30,7 @@ class ControllerGeneratorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnControllerClassName()
     {
         //given
@@ -44,9 +43,7 @@ class ControllerGeneratorTest extends TestCase
         $this->assertEquals('UsersController', $className);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnControllerClassNameWithControllerStringInName()
     {
         //given
@@ -59,9 +56,7 @@ class ControllerGeneratorTest extends TestCase
         $this->assertEquals('UsersController', $className);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnClassNamespace()
     {
         //given
@@ -74,9 +69,7 @@ class ControllerGeneratorTest extends TestCase
         $this->assertEquals('\\Application\\Controller', $classNamespace);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFalseIfControllerNotExists()
     {
         //given
@@ -89,9 +82,7 @@ class ControllerGeneratorTest extends TestCase
         $this->assertFalse($isControllerExists);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAppendAction()
     {
         //given
@@ -108,9 +99,7 @@ class ControllerGeneratorTest extends TestCase
             ->contains('public function index()');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAppendActionWhenControllerHasActions()
     {
         //given
@@ -118,6 +107,8 @@ class ControllerGeneratorTest extends TestCase
 namespace \Application\Controller;
 
 use Ouzo\Controller;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class UsersController extends Controller
 {
@@ -141,9 +132,7 @@ class UsersController extends Controller
             ->contains('public function save()');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotAppendWhenActionIsExists()
     {
         //given

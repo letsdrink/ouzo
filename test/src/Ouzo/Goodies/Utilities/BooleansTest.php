@@ -6,15 +6,15 @@
 
 use Ouzo\Utilities\Booleans;
 use Ouzo\Utilities\Objects;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class BooleansTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider toBoolean
-     */
-    public function shouldConvertToBoolean(mixed $string, bool $expected)
+    #[Test]
+    #[DataProvider('toBoolean')]
+    public function shouldConvertToBoolean(mixed $string, bool $expected): void
     {
         //when
         $toBoolean = Booleans::toBoolean($string);
@@ -23,7 +23,7 @@ class BooleansTest extends TestCase
         $this->assertEquals($expected, $toBoolean, 'To convert: ' . Objects::toString($string) . ' Expected: ' . Objects::toString($expected));
     }
 
-    public function toBoolean(): array
+    public static function toBoolean(): array
     {
         return [
             [true, true],

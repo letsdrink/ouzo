@@ -10,7 +10,7 @@ use Ouzo\Db\BatchLoadingSession;
 use Ouzo\Db\Stats;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
-
+use PHPUnit\Framework\Attributes\Test;
 
 class BatchLoadingSessionTest extends DbTransactionalTestCase
 {
@@ -20,9 +20,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
         $_SESSION = [];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadRelationsInAllModelsFromResultWhenAccessingAnyRelation()
     {
         //given
@@ -44,9 +42,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
         $this->assertCount(2, Stats::$queries);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotLoadRelationsEagerlyWhenSessionAllocated()
     {
         //given
@@ -66,9 +62,7 @@ class BatchLoadingSessionTest extends DbTransactionalTestCase
         $this->assertCount(1, Stats::$queries);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDeallocateSession()
     {
         //when

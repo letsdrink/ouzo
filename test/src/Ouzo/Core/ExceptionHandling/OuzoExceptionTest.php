@@ -7,14 +7,12 @@
 namespace Ouzo\ExceptionHandling;
 
 use Ouzo\Tests\Assert;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class OuzoExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnErrorMessages()
     {
         //given

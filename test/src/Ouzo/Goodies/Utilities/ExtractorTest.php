@@ -10,6 +10,7 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Functions;
+use PHPUnit\Framework\Attributes\Test;
 
 class ExtractorTestClass
 {
@@ -21,9 +22,7 @@ class ExtractorTestClass
 
 class ExtractorTest extends DbTransactionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractField()
     {
         //given
@@ -36,9 +35,7 @@ class ExtractorTest extends DbTransactionalTestCase
         Assert::thatString($result)->isEqualTo('bmw');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractFieldWithZero()
     {
         //given
@@ -51,9 +48,7 @@ class ExtractorTest extends DbTransactionalTestCase
         $this->assertTrue($result === 0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractNestedField()
     {
         //given
@@ -70,9 +65,7 @@ class ExtractorTest extends DbTransactionalTestCase
         Assert::thatString($result)->isEqualTo('value');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractNestedMethod()
     {
         //given
@@ -89,9 +82,7 @@ class ExtractorTest extends DbTransactionalTestCase
         Assert::thatString($result)->isEqualTo('This is product,');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractFieldAfterMethod()
     {
         //given
@@ -107,9 +98,7 @@ class ExtractorTest extends DbTransactionalTestCase
         Assert::thatString($result)->isEqualTo('category');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBindMethodParameters()
     {
         //given
@@ -123,9 +112,7 @@ class ExtractorTest extends DbTransactionalTestCase
         Assert::thatString($result)->isEqualTo('argument');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNull()
     {
         //given
@@ -140,9 +127,7 @@ class ExtractorTest extends DbTransactionalTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptTypeAsFirstParameter()
     {
         //given
@@ -159,10 +144,7 @@ class ExtractorTest extends DbTransactionalTestCase
         Assert::thatString($result)->isEqualTo('category');
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldThrowExceptionIfNoOperationGiven()
     {
         //given
@@ -175,9 +157,7 @@ class ExtractorTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractArrayValueFromField()
     {
         //given
@@ -193,9 +173,7 @@ class ExtractorTest extends DbTransactionalTestCase
         Assert::thatString($result)->isEqualTo('value');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractArrayValue()
     {
         //given

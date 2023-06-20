@@ -8,6 +8,7 @@ use Ouzo\Tests\Mock\AnyArgument;
 use Ouzo\Tests\Mock\AnyArgumentList;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\MethodCallMatcher;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TestClass
@@ -19,9 +20,7 @@ class TestClass
 
 class MethodCallMatcherTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMatchExactArguments()
     {
         //given
@@ -34,9 +33,7 @@ class MethodCallMatcherTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMatchExactObjectArguments()
     {
         //given
@@ -49,9 +46,7 @@ class MethodCallMatcherTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfDifferentMethod()
     {
         //given
@@ -64,9 +59,7 @@ class MethodCallMatcherTest extends TestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMatchAnyArgument()
     {
         //given
@@ -79,9 +72,7 @@ class MethodCallMatcherTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMatchAnyArgumentList()
     {
         //given
@@ -94,9 +85,7 @@ class MethodCallMatcherTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMatchNoArgumentsForAnyArgumentList()
     {
         //given
@@ -109,9 +98,7 @@ class MethodCallMatcherTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotMatchDifferentExactArguments()
     {
         //given

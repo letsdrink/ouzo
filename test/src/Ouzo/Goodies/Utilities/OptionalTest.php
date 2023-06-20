@@ -8,6 +8,7 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\FluentFunctions;
 use Ouzo\Utilities\Optional;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class MyOptionalClass
@@ -22,9 +23,7 @@ class MyOptionalClass
 
 class OptionalTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function isPresentShouldReturnFalseForNull()
     {
         //given
@@ -37,9 +36,7 @@ class OptionalTest extends TestCase
         $this->assertFalse($present);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPresentShouldReturnTrueForNotNull()
     {
         //given
@@ -52,9 +49,7 @@ class OptionalTest extends TestCase
         Assert::thatBool($present)->isTrue();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invokingMethodShouldReturnOptional()
     {
         //given
@@ -67,9 +62,7 @@ class OptionalTest extends TestCase
         Assert::that($result)->isInstanceOf(Optional::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldReturnValue()
     {
         //given
@@ -82,9 +75,7 @@ class OptionalTest extends TestCase
         $this->assertEquals('123', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldThrowExceptionOnNull()
     {
         //given
@@ -97,9 +88,7 @@ class OptionalTest extends TestCase
         CatchException::assertThat()->isInstanceOf(Exception::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invokingNonExistentMethodShouldReturnOptionalWithNull()
     {
         //given
@@ -113,9 +102,7 @@ class OptionalTest extends TestCase
         Assert::that($result->orNull())->isNull();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orShouldReturnValueWhenNotNull()
     {
         //given
@@ -128,9 +115,7 @@ class OptionalTest extends TestCase
         $this->assertEquals('123', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orShouldReturnValueOnNull()
     {
         //given
@@ -143,9 +128,7 @@ class OptionalTest extends TestCase
         $this->assertEquals('456', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orShouldReturnValueOnNullWhenGettingFieldValue()
     {
         //given
@@ -158,9 +141,7 @@ class OptionalTest extends TestCase
         $this->assertEquals('456', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orNullShouldReturnValueWhenNotNull()
     {
         //given
@@ -173,9 +154,7 @@ class OptionalTest extends TestCase
         $this->assertEquals('123', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function orNullShouldReturnNullOnNull()
     {
         //given
@@ -188,9 +167,7 @@ class OptionalTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ofShouldCreateOptional()
     {
         //when
@@ -200,9 +177,7 @@ class OptionalTest extends TestCase
         Assert::that($optional)->isInstanceOf(Optional::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ofShouldThrowExceptionOnNull()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -210,9 +185,7 @@ class OptionalTest extends TestCase
         Optional::of(null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fieldAccessShouldReturnOptional()
     {
         //given
@@ -225,9 +198,7 @@ class OptionalTest extends TestCase
         Assert::that($result)->isInstanceOf(Optional::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fieldAccessOnNonExistentFieldShouldReturnOptional()
     {
         //given
@@ -240,9 +211,7 @@ class OptionalTest extends TestCase
         Assert::that($result)->isInstanceOf(Optional::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOnFieldShouldReturnValue()
     {
         //given
@@ -255,9 +224,7 @@ class OptionalTest extends TestCase
         $this->assertEquals('abc', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMapObject()
     {
         //given
@@ -271,9 +238,7 @@ class OptionalTest extends TestCase
         $this->assertEquals('abc!!!', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnOrForAbsentMap()
     {
         //given
@@ -287,9 +252,7 @@ class OptionalTest extends TestCase
         $this->assertEquals('def', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlattenValue()
     {
         //given
@@ -302,9 +265,7 @@ class OptionalTest extends TestCase
         $this->assertEquals(1, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlattenNullValue()
     {
         //given

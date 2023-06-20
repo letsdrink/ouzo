@@ -6,13 +6,12 @@
 
 use Ouzo\Db\ModelQueryBuilder;
 use Ouzo\Db\QueryHumanizer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class QueryHumanizerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHumanizeSqlQuery()
     {
         //given
@@ -25,9 +24,7 @@ class QueryHumanizerTest extends TestCase
         $this->assertEquals("SELECT t_customers.*, t_customer_phones.* FROM t_customers AS t_customers LEFT JOIN t_customer_phones AS t_customer_phones ON t_customer_phones.id_customer = t_customers.id_customer WHERE hidden = false AND (t_customer_phones.primary_flag is true or t_customer_phones.id_customer_phone is null) ORDER BY surname ASC LIMIT ?", $humanized);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHumanizeSqlQueryForOneTable()
     {
         //given
@@ -40,9 +37,7 @@ class QueryHumanizerTest extends TestCase
         $this->assertEquals("SELECT t_customers.* FROM t_customers AS t_customers WHERE hidden = false ORDER BY surname ASC LIMIT ?", $humanized);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotHumanizeAllAliases()
     {
         //given

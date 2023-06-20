@@ -3,16 +3,15 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Iterator;
 
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class UnbatchingIteratorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlattenChunks()
     {
         //given

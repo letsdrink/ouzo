@@ -8,24 +8,22 @@ use Ouzo\Http\HttpMethod;
 use Ouzo\Http\HttpStatus;
 use Ouzo\Routing\Annotation\Route;
 use Ouzo\Routing\Annotation\Route\Post;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class PostTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtendRouteAnnotationClass()
     {
         //then
         $this->assertInstanceOf(Route::class, new Post(''));
     }
 
-    /**
-     * @test
-     * @dataProvider getValidParameters
-     */
-    public function testRouteParameters(string $path, ?int $httpResponseCode)
+    #[Test]
+    #[DataProvider('getValidParameters')]
+    public function testRouteParameters(string $path, ?int $httpResponseCode): void
     {
         //when
         $route = new Post($path, $httpResponseCode);
@@ -36,7 +34,7 @@ class PostTest extends TestCase
         $this->assertEquals($httpResponseCode, $route->getHttpResponseCode());
     }
 
-    public function getValidParameters(): array
+    public static function getValidParameters(): array
     {
         return [
             ['/foo', null],

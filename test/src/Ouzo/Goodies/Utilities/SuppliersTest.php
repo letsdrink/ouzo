@@ -7,13 +7,12 @@
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\Suppliers;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class SuppliersTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function memoizeWithExpirationShouldCacheResultForGivenTime()
     {
         //given
@@ -40,9 +39,7 @@ class SuppliersTest extends TestCase
         $this->assertEquals('Black', $result5);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function memoizeShouldCacheResult()
     {
         //given

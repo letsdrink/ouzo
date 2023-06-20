@@ -3,16 +3,16 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Db;
 
+use Ouzo\Db;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+
 class TransactionalProxyTest extends TestCase
 {
     public bool $transactionStatus;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunMethodInTransaction()
     {
         //when
@@ -22,9 +22,7 @@ class TransactionalProxyTest extends TestCase
         $this->assertTrue($this->transactionStatus);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunFunctionInTransaction()
     {
         //given

@@ -13,6 +13,7 @@ use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\Mock\SimpleMock;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class StatementExecutorTest extends TestCase
@@ -30,9 +31,7 @@ class StatementExecutorTest extends TestCase
         Mock::when($this->dbMock)->prepare('SELECT 1', [])->thenReturn($this->pdoMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionOnExecutionError()
     {
         //given
@@ -46,9 +45,7 @@ class StatementExecutorTest extends TestCase
         CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowConnectionExceptionForMySQL()
     {
         //given
@@ -64,9 +61,7 @@ class StatementExecutorTest extends TestCase
         Config::revertProperty('sql_dialect');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowConnectionExceptionForPostgres()
     {
         //given

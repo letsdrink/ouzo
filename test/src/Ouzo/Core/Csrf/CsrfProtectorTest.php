@@ -10,6 +10,7 @@ use Ouzo\Exception\ForbiddenException;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CsrfSampleController extends Controller
 {
@@ -46,9 +47,7 @@ class CsrfProtectorTest extends ControllerTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfNoCsrfCookie()
     {
         //when
@@ -58,9 +57,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(ForbiddenException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfNoCsrfToken()
     {
         //given
@@ -74,9 +71,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(ForbiddenException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfInvalidCsrfToken()
     {
         //given
@@ -90,9 +85,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(ForbiddenException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfInvalidCsrfAjaxHeader()
     {
         //given
@@ -107,9 +100,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(ForbiddenException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptValidCsrfAjaxHeader()
     {
         //given
@@ -124,9 +115,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptValidCsrfToken()
     {
         //given
@@ -140,9 +129,7 @@ class CsrfProtectorTest extends ControllerTestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotValidateGetMethod()
     {
         //when

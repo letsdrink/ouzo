@@ -3,16 +3,15 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\ContentType;
 use Ouzo\Response\ResponseTypeResolve;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ResponseTypeResolveTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTypeFromAcceptHeader()
     {
         //given
@@ -25,9 +24,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('application/json', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnBestMatchForAcceptHeader()
     {
         //given
@@ -40,9 +37,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('text/html', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnContentTypeIfEmptyAccept()
     {
         //given
@@ -56,9 +51,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('application/json', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnContentTypeIfWildcardInAccept()
     {
         //given
@@ -72,9 +65,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('application/json', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlIfNoAcceptAndNoContentType()
     {
         //given
@@ -89,9 +80,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('text/html', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnRequestContentTypeForUnsupportedAccept()
     {
         //given
@@ -105,9 +94,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('application/json', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlForUnsupportedAcceptAndUnsupportedRequestContentType()
     {
         //given
@@ -121,9 +108,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('text/html', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlForUnsupportedAcceptAndNoRequestContentType()
     {
         //given

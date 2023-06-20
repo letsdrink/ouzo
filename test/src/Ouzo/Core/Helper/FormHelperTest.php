@@ -3,10 +3,13 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Product;
 use Ouzo\Csrf\CsrfProtector;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class FormHelperTest extends DbTransactionalTestCase
 {
@@ -17,9 +20,7 @@ class FormHelperTest extends DbTransactionalTestCase
         new View('test');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateSelectTag()
     {
         //given
@@ -34,9 +35,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateReadOnlySelectTag()
     {
         //given
@@ -51,9 +50,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateMultipleSelectList()
     {
         //given
@@ -73,9 +70,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateTextFieldInFormForModelClass()
     {
         //given
@@ -93,9 +88,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertStringContainsString('style="color: red;"', $textField3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateTextAreaInFormForModelClass()
     {
         //given
@@ -115,9 +108,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertStringContainsString('style="color: red;"', $textField3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSelectFieldInFormForModelClass()
     {
         //given
@@ -140,9 +131,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertStringContainsString('id="id_new"', $selectField2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateHiddenFieldInFormForModelClass()
     {
         //given
@@ -156,9 +145,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<input type="hidden" id="product_name" name="product[name]" value="name &quot;&lt;&amp;"/>', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateLabelInFormForModelClass()
     {
         //given
@@ -176,9 +163,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<label for="product_id_category">Category&gt;&quot;ID&quot;</label>', $result3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreatePasswordFieldInFormModelClass()
     {
         //given
@@ -191,9 +176,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<input type="password" id="product_name" name="product[name]" value="name &quot;&lt;&amp;"/>', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateUncheckedCheckboxFieldInFormModelClass()
     {
         //given
@@ -206,9 +189,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<input type="hidden" name="product[id_category]" value="0"/><input type="checkbox" id="product_id_category" name="product[id_category]" value="1"/>', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateCheckedCheckboxFieldInFormModelClass()
     {
         //given
@@ -221,12 +202,9 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<input type="hidden" name="product[id_category]" value="0"/><input type="checkbox" id="product_id_category" name="product[id_category]" value="1" checked/>', $result);
     }
 
-    /**
-     * @test
-     * @dataProvider requestUnsupportedMethods
-     * @param string $method
-     */
-    public function shouldCreateWorkAroundForUnsupportedMethods($method)
+    #[Test]
+    #[DataProvider('requestUnsupportedMethods')]
+    public function shouldCreateWorkAroundForUnsupportedMethods(string $method): void
     {
         //when
         $form = formTag('/users/add', $method);
@@ -236,12 +214,9 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertStringContainsString('name="_method" value="' . $method . '"', $form);
     }
 
-    /**
-     * @test
-     * @dataProvider requestSupportedMethods
-     * @param string $method
-     */
-    public function shouldNoCreateWorkAroundWhenSupportedMethods($method)
+    #[Test]
+    #[DataProvider('requestSupportedMethods')]
+    public function shouldNoCreateWorkAroundWhenSupportedMethods(string $method): void
     {
         //when
         $form = formTag('/users/add', $method);
@@ -251,9 +226,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertStringNotContainsString('value="' . $method . '" name="_method"', $form);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateFormStartTagWithCsrfTokenInFormForModelClass()
     {
         //given
@@ -268,9 +241,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<form class="form-horizontal" action="/sample/url" method="GET"><input type="hidden" id="csrftoken" name="csrftoken" value="' . CsrfProtector::getCsrfToken() . '"/>', $startTag);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateFormEndTagInFormForModelClass()
     {
         //given
@@ -284,9 +255,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('</form>', $endTag);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnCorrectModelObjectDelegatedAtFormBuilder()
     {
         //given
@@ -300,7 +269,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertInstanceOf(Product::class, $model);
     }
 
-    public function requestUnsupportedMethods()
+    public static function requestUnsupportedMethods(): array
     {
         return [
             ['PUT'],
@@ -309,7 +278,7 @@ class FormHelperTest extends DbTransactionalTestCase
         ];
     }
 
-    public function requestSupportedMethods()
+    public static function requestSupportedMethods(): array
     {
         return [
             ['POST'],
@@ -317,9 +286,7 @@ class FormHelperTest extends DbTransactionalTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateLinkTo()
     {
         //when
@@ -330,9 +297,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<a href="/albums/about">About</a>', $linkTo);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateLinkToWithAttributes()
     {
         //given
@@ -346,9 +311,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<a id="about" class="link" href="/albums/about">About</a>', $linkTo);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEscapeInLinkTo()
     {
         //when
@@ -359,9 +322,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<a href="/albums/about">&lt;script&gt;alert(\'hello\')&lt;/script&gt;About</a>', $linkTo);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetDefaultOptionInSelectTag()
     {
         //given
@@ -380,9 +341,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectTagForModelClass()
     {
         //given
@@ -401,9 +360,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetDefaultOptionInSelectTagForModelClass()
     {
         //given
@@ -423,9 +380,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWhenOptionValuesStartFromZero()
     {
         //given
@@ -443,9 +398,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateRadioButtonTag()
     {
         //when

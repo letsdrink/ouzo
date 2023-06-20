@@ -3,15 +3,14 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-use Ouzo\Utilities\Path;
 
-use PHPUnit\Framework\TestCase; 
+use Ouzo\Utilities\Path;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class PathTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinPathWithSeparator()
     {
         // given
@@ -24,9 +23,7 @@ class PathTest extends TestCase
         $this->assertEquals("{$s}my{$s}path{$s}to{$s}file.txt", $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinPathWithSeparatorSkippingEmptyElements()
     {
         // given
@@ -39,9 +36,7 @@ class PathTest extends TestCase
         $this->assertEquals("my{$s}file.txt", $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinPathWithTempDirectory()
     {
         // given
@@ -55,9 +50,7 @@ class PathTest extends TestCase
         $this->assertEquals("{$tmp}{$s}my{$s}file.txt", $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveDotsFromRelativePath()
     {
         //given
@@ -70,9 +63,7 @@ class PathTest extends TestCase
         $this->assertEquals("dir2/file.txt", $normalized);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveDotsFromAbsolutePath()
     {
         //given
@@ -85,9 +76,7 @@ class PathTest extends TestCase
         $this->assertEquals("/dir2/file.txt", $normalized);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotRemoveLeadingDots()
     {
         //given
@@ -100,9 +89,7 @@ class PathTest extends TestCase
         $this->assertEquals("../file.txt", $normalized);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveDoubleSlashes()
     {
         //given

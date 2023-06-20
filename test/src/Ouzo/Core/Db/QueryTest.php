@@ -3,19 +3,19 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Db\WhereClause\ArrayWhereClause;
 use Ouzo\Utilities\Arrays;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class QueryTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldCreateSelectQuery()
+    #[Test]
+    public function shouldCreateSelectQuery(): void
     {
         // when
         $query = Query::select();
@@ -25,10 +25,8 @@ class QueryTest extends TestCase
         $this->assertFalse($query->distinct);
     }
 
-    /**
-     * @test
-     */
-    public function shouldCreateSelectDistinctQuery()
+    #[Test]
+    public function shouldCreateSelectDistinctQuery(): void
     {
         // when
         $query = Query::selectDistinct();
@@ -38,10 +36,8 @@ class QueryTest extends TestCase
         $this->assertTrue($query->distinct);
     }
 
-    /**
-     * @test
-     */
-    public function shouldCreateSelectDistinctOnQuery()
+    #[Test]
+    public function shouldCreateSelectDistinctOnQuery(): void
     {
         // when
         $query = Query::select()->distinctOn(['col1', 'col2']);
@@ -52,10 +48,8 @@ class QueryTest extends TestCase
         $this->assertEquals(['col1', 'col2'], $query->distinctOnColumns);
     }
 
-    /**
-     * @test
-     */
-    public function shouldCreateSelectCountQuery()
+    #[Test]
+    public function shouldCreateSelectCountQuery(): void
     {
         // when
         $query = Query::count();
@@ -64,10 +58,8 @@ class QueryTest extends TestCase
         $this->assertEquals(QueryType::$COUNT, $query->type);
     }
 
-    /**
-     * @test
-     */
-    public function shouldCreateDeleteQuery()
+    #[Test]
+    public function shouldCreateDeleteQuery(): void
     {
         // when
         $query = Query::delete();
@@ -76,10 +68,8 @@ class QueryTest extends TestCase
         $this->assertEquals(QueryType::$DELETE, $query->type);
     }
 
-    /**
-     * @test
-     */
-    public function shouldCreateSelectQueryWithWhereOrderLimitOffset()
+    #[Test]
+    public function shouldCreateSelectQueryWithWhereOrderLimitOffset(): void
     {
         // when
         $query = Query::select()
@@ -99,10 +89,8 @@ class QueryTest extends TestCase
         $this->assertEquals(['name asc'], $query->order);
     }
 
-    /**
-     * @test
-     */
-    public function shouldCreateSelectQueryWithJoin()
+    #[Test]
+    public function shouldCreateSelectQueryWithJoin(): void
     {
         // when
         $query = Query::select()->join('table', 'id', 'other_id', 'tab');
@@ -115,10 +103,8 @@ class QueryTest extends TestCase
         $this->assertEquals('other_id', $join->joinedColumn);
     }
 
-    /**
-     * @test
-     */
-    public function shouldCreateSelectQueryWithColumns()
+    #[Test]
+    public function shouldCreateSelectQueryWithColumns(): void
     {
         // when
         $query = Query::select(['name', 'id']);
@@ -128,11 +114,9 @@ class QueryTest extends TestCase
         $this->assertEquals(['name', 'id'], $query->selectColumns);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
-    public function shouldLockForUpdate()
+    #[Test]
+    #[Group('non-sqlite3')]
+    public function shouldLockForUpdate(): void
     {
         // when
         $query = Query::select()->lockForUpdate();
@@ -141,11 +125,9 @@ class QueryTest extends TestCase
         $this->assertTrue($query->lockForUpdate);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
-    public function selectShouldNotLockForUpdateByDefault()
+    #[Test]
+    #[Group('non-sqlite3')]
+    public function selectShouldNotLockForUpdateByDefault(): void
     {
         // when
         $query = Query::select();

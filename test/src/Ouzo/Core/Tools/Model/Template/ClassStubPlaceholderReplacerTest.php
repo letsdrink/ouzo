@@ -3,19 +3,18 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tools\Model\Template\ClassStubPlaceholderReplacer;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Tools\Model\Template\TableInfo;
-
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ClassStubPlaceholderReplacerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDoNotAddTableNameIfIsDefault()
     {
         //given
@@ -35,9 +34,7 @@ class ClassStubPlaceholderReplacerTest extends TestCase
             ->doesNotContain("'table'");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDoNotAddPrimaryKeyNameIfIsDefault()
     {
         //given
@@ -57,9 +54,7 @@ class ClassStubPlaceholderReplacerTest extends TestCase
             ->doesNotContain("'primaryKey'");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDoNotAddSequenceNameIfIsDefault()
     {
         //given
@@ -81,9 +76,7 @@ class ClassStubPlaceholderReplacerTest extends TestCase
             ->doesNotContain("'sequence'");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddEmptyPrimaryKeyEntryWhenNoFoundPrimaryKeyInTable()
     {
         //given

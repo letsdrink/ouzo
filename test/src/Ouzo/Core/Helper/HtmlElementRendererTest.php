@@ -5,13 +5,12 @@
  */
 
 use Ouzo\Helper\HtmlElementRenderer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class HtmlElementRendererTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRenderAnchorElement()
     {
         //given
@@ -27,9 +26,7 @@ class HtmlElementRendererTest extends TestCase
         $this->assertEquals('<a id="element-id" data-a="\'dta\'&quot; txt" href="https://link.to">some link</a>', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRenderInputElementWithScript()
     {
         //given
@@ -43,9 +40,7 @@ class HtmlElementRendererTest extends TestCase
         $this->assertEquals('<input type="text" onclick="window.location.href = \'https://link.to/?param=val\'"/>', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRenderConditionalFlag()
     {
         //given

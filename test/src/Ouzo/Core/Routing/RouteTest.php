@@ -9,6 +9,7 @@ use Ouzo\Routing\GroupedRoute;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class UsersMockController extends Controller
@@ -33,9 +34,7 @@ class RouteTest extends TestCase
         Route::$isDebug = false;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddGetRoute()
     {
         //given
@@ -49,9 +48,7 @@ class RouteTest extends TestCase
         $this->assertCount(2, $routes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnCorrectRouteRule()
     {
         //given
@@ -66,9 +63,7 @@ class RouteTest extends TestCase
         $this->assertEquals('index', $route->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddPostRoute()
     {
         //given
@@ -82,9 +77,7 @@ class RouteTest extends TestCase
         $this->assertCount(2, $routes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddAnyRoute()
     {
         //given
@@ -98,9 +91,7 @@ class RouteTest extends TestCase
         $this->assertCount(2, $routes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSearchRouteForController()
     {
         //given
@@ -116,9 +107,7 @@ class RouteTest extends TestCase
         $this->assertCount(3, Route::getRoutes());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyArrayIfNoRoutesForController()
     {
         //given
@@ -132,9 +121,7 @@ class RouteTest extends TestCase
         $this->assertEmpty($controllerRoutes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionForDuplicatedRules()
     {
         //given
@@ -154,9 +141,7 @@ class RouteTest extends TestCase
         $this->assertEquals('save_one', $routes[0]->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDefineMultipleRulesWithDifferentTypes()
     {
         //given
@@ -170,9 +155,7 @@ class RouteTest extends TestCase
         $this->assertCount(2, $routes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateRouteForResource()
     {
         //given
@@ -185,9 +168,7 @@ class RouteTest extends TestCase
         Assert::thatArray($routes)->hasSize(8);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteForAllowingAllActionsInController()
     {
         //given
@@ -202,9 +183,7 @@ class RouteTest extends TestCase
         $this->assertNull($routes[0]->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotValidateExistingRoutes()
     {
         //given
@@ -220,9 +199,7 @@ class RouteTest extends TestCase
         Assert::thatArray($routes)->hasSize(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetRuleNameToGetMethod()
     {
         //given
@@ -235,9 +212,7 @@ class RouteTest extends TestCase
         $this->assertEquals('indexUsersMockPath', $routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetCustomRuleNameToGetMethod()
     {
         //given
@@ -250,9 +225,7 @@ class RouteTest extends TestCase
         $this->assertEquals('allUsersPath', $routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetRuleNameToPostMethod()
     {
         //given
@@ -265,9 +238,7 @@ class RouteTest extends TestCase
         $this->assertEquals('saveUsersMockPath', $routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetCustomRuleNameToPostMethod()
     {
         //given
@@ -280,9 +251,7 @@ class RouteTest extends TestCase
         $this->assertEquals('addUserPath', $routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetRuleNameToAnyMethod()
     {
         //given
@@ -295,9 +264,7 @@ class RouteTest extends TestCase
         $this->assertEquals('addUsersMockPath', $routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetCustomRuleNameToAnyMethod()
     {
         //given
@@ -310,9 +277,7 @@ class RouteTest extends TestCase
         $this->assertEquals('createUserPath', $routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotSetRuleNameToAllowAllMethod()
     {
         //given
@@ -325,9 +290,7 @@ class RouteTest extends TestCase
         $this->assertEmpty($routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotSetCustomRuleNameToAllowAllMethod()
     {
         //given
@@ -340,9 +303,7 @@ class RouteTest extends TestCase
         $this->assertEmpty($routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetRulesNameToResourceMethod()
     {
         //given
@@ -357,9 +318,7 @@ class RouteTest extends TestCase
             ->contains('usersMockPath', 'freshUsersMockPath', 'editUsersMockPath', 'usersMockPath');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetRuleNameForMultipartControllerNames()
     {
         //given
@@ -374,9 +333,7 @@ class RouteTest extends TestCase
             ->contains('bigFeetPath', 'freshBigFootPath', 'editBigFootPath', 'bigFootPath');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetRuleNameForMultipartCamelcaseAction()
     {
         //given
@@ -389,9 +346,7 @@ class RouteTest extends TestCase
         $this->assertEquals('saveMyUserUsersMockPath', $routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateNameForNestedRoute()
     {
         //given
@@ -404,9 +359,7 @@ class RouteTest extends TestCase
         $this->assertEquals('saveMyUserUsersAdminPath', $routes[0]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateNameForNestedResourceRoute()
     {
         //given
@@ -421,9 +374,7 @@ class RouteTest extends TestCase
             ->contains('usersAdminPath', 'freshUserAdminPath', 'editUserAdminPath', 'userAdminPath');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddPutRoute()
     {
         //given
@@ -437,9 +388,7 @@ class RouteTest extends TestCase
         $this->assertEquals('save', $routes[0]->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddDeleteRoute()
     {
         //given
@@ -453,9 +402,7 @@ class RouteTest extends TestCase
         $this->assertEquals('delete', $routes[0]->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddRouteInGroup()
     {
         //given
@@ -474,9 +421,7 @@ class RouteTest extends TestCase
         $this->assertEquals('POST', $routes[0]->getMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddAllowAll()
     {
         //given
@@ -490,9 +435,7 @@ class RouteTest extends TestCase
         $this->assertCount(2, $routes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddOptions()
     {
         //given
@@ -506,9 +449,7 @@ class RouteTest extends TestCase
         $this->assertEquals('OPTIONS', $routes[0]->getMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSkipActionValidationForResource()
     {
         //given

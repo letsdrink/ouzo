@@ -11,13 +11,13 @@ use Ouzo\Db\BatchInserter;
 use Ouzo\Db\OnConflict;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 
 class BatchInserterTest extends DbTransactionalTestCase
 {
-    /**
-     * @group postgres
-     * @test
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldBuildBatchInsertSql()
     {
         //given
@@ -36,10 +36,8 @@ class BatchInserterTest extends DbTransactionalTestCase
         $this->assertNotNull(Product::where(['name' => 'c'])->fetch());
     }
 
-    /**
-     * @group postgres
-     * @test
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldBatchInsertWithoutReturning()
     {
         //given
@@ -59,10 +57,8 @@ class BatchInserterTest extends DbTransactionalTestCase
         $this->assertNotNull(OrderProduct::where(['id_order' => $order2->getId()])->fetch());
     }
 
-    /**
-     * @test
-     * @group postgres
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldBatchInsertWhenModelHasFetchedRelation()
     {
         //given
@@ -81,10 +77,8 @@ class BatchInserterTest extends DbTransactionalTestCase
         $this->assertNotNull(Product::where(['name' => 'product2'])->fetch());
     }
 
-    /**
-     * @test
-     * @group postgres
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldBatchInsertOnConflictDoNothing()
     {
         //given
@@ -107,10 +101,8 @@ class BatchInserterTest extends DbTransactionalTestCase
             ->containsOnly([$product->getId(), $order->getId()]);
     }
 
-    /**
-     * @test
-     * @group postgres
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldBatchInsertOnConflictUpdate()
     {
         //given

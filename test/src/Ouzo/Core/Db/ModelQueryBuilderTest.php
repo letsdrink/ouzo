@@ -9,6 +9,7 @@ use Application\Model\Test\Manufacturer;
 use Application\Model\Test\Order;
 use Application\Model\Test\OrderProduct;
 use Application\Model\Test\Product;
+use Ouzo\Config;
 use Ouzo\Db;
 use Ouzo\Db\Any;
 use Ouzo\Db\ModelQueryBuilder;
@@ -25,6 +26,8 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
 {
@@ -32,11 +35,10 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
     {
         parent::setUp();
         $_SESSION = [];
+        Config::overrideProperty('debug')->with(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptStringInWhere()
     {
         //given
@@ -49,9 +51,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchResultWhenNoParameters()
     {
         //given
@@ -64,9 +64,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptArrayOfColumnValuePairsInWhere()
     {
         //given
@@ -79,9 +77,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptArrayOfValuesInWhere()
     {
         //given
@@ -95,9 +91,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(2, $loadedProducts);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldIgnoreEmptyArrayForArrayOfValuesInWhere()
     {
         //given
@@ -111,9 +105,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(0, $loadedProducts);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptMultipleArraysOfValuesMixedWithSingleValuesInWhere()
     {
         //given
@@ -129,9 +121,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $loadedProducts[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptRestrictionsMixedWithValuesInWhere()
     {
         //given
@@ -147,9 +137,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOrderResults()
     {
         //given
@@ -165,9 +153,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product2, $loadedProducts[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOrderResultsByTwoColumns()
     {
         //given
@@ -185,9 +171,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product1, $loadedProducts[2]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLimitAndOffsetResults()
     {
         //given
@@ -203,9 +187,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $loadedProducts[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinWithOtherTable()
     {
         //given
@@ -225,9 +207,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product->getId(), $products[0]->getId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindWhereExists()
     {
         //given
@@ -246,9 +226,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product->getId(), $products[0]->getId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinThroughOtherRelation()
     {
         //given
@@ -271,9 +249,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         return Arrays::getValue($model->attributes(), $attribute);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStoreJoinedModelsInAttributeForMultipleJoins()
     {
         //given
@@ -290,9 +266,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($orderProduct, self::getNoLazy($products[0], 'orderProduct'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStoreJoinedModelInAttribute()
     {
         //given
@@ -307,9 +281,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotOverrideFetchedModelWhenDuplicatedJoinWithDifferentAlias()
     {
         //given
@@ -330,9 +302,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($vans, self::getNoLazy(self::getNoLazy($orderProduct, 'product'), 'category'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotOverrideFetchedModelWhenThereIsWithForJoinedField()
     {
         //given
@@ -349,9 +319,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($vans, self::getNoLazy(self::getNoLazy($orderProduct, 'product'), 'category'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinHasOneRelation()
     {
         //given
@@ -365,9 +333,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($orderProduct, $fetched->orderProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinInlineRelation()
     {
         //given
@@ -386,9 +352,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($orderProduct, self::getNoLazy($fetched, 'op'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinInlineRelationWithNestedRelations()
     {
         //given
@@ -408,9 +372,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($order, self::getNoLazy($fetched, 'op')->order);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotStoreJoinedModelInAttributeIfNotFound()
     {
         //given
@@ -424,9 +386,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertNull($products[0]->category);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInnerJoinWithOtherTable()
     {
         //given
@@ -442,10 +402,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
     }
 
-    /**
-     * @test
-     * @group non-sqlite3
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldRightJoinWithOtherTable()
     {
         //given
@@ -463,12 +421,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(5, $products);
     }
 
-    /**
-     * @test
-     * @group sqlite3
-     * @throws \Ouzo\Exception\ValidationException
-     * @throws Exception
-     */
+    #[Test]
+    #[Group('sqlite3')]
     public function shouldThrowExceptionRightJoinWithOtherTable()
     {
         //given
@@ -487,10 +441,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(BadMethodCallException::class);
     }
 
-    /**
-     * @test
-     * @throws \Ouzo\Exception\ValidationException
-     */
+    #[Test]
     public function shouldLeftJoinWithOtherTable()
     {
         //given
@@ -506,9 +457,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(3, $products);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCountRecords()
     {
         //given
@@ -522,9 +471,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals(2, $count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnZeroForCountingQueryThatAlwaysReturnsNothing()
     {
         //when
@@ -534,9 +481,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals(0, $count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCountRecordsWithJoinWithOtherTable()
     {
         //given
@@ -555,9 +500,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals(1, $products);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchWithRelationWhenTwoObjectReferenceTheSameForeignKey()
     {
         //given
@@ -573,9 +516,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, self::getNoLazy($products[1], 'category'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasOneRelation()
     {
         //given
@@ -589,9 +530,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($orderProduct, self::getNoLazy($fetched[0], 'orderProduct'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchBelongsToRelation()
     {
         //given
@@ -605,9 +544,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasManyRelation()
     {
         //given
@@ -623,11 +560,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray(self::getNoLazy($category, 'products'))->containsOnly($product1, $product2);
     }
 
-    /**
-     * @test
-     * @throws \Ouzo\Exception\ValidationException
-     * @throws Exception
-     */
+    #[Test]
     public function shouldThrowExceptionIfMultipleValuesForHasOne()
     {
         //given
@@ -641,9 +574,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotFetchJoinedRelationOnHasMany()
     {
         //given
@@ -659,9 +590,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, $joined);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotFetchRelationJoinedThroughHasMany()
     {
         //given
@@ -680,9 +609,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, $joined);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchWithRelationWhenObjectHasNoForeignKeyValue()
     {
         //given
@@ -695,9 +622,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals(null, $products[0]->category);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchRelationThroughOtherRelation()
     {
         //given
@@ -718,9 +643,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($cars, $orderProducts[0]->product->category->parent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchRelationThroughOneToManyRelation()
     {
         //given
@@ -749,9 +672,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(0, Stats::$queries); //no lazily loaded relations
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchRelationThroughNullRelation()
     {
         $order = Order::create(['name' => 'name']);
@@ -766,9 +687,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertNull($orderProducts[0]->product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchOtherObjectsByArbitraryAttributes()
     {
         //given
@@ -782,9 +701,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, $products[0]->categoryWithNameByDescription);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotThrowExceptionIfNoRelationWithForeignKey()
     {
         //given
@@ -798,9 +715,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertNull($products[0]->categoryWithNameByDescription);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDistinctResults()
     {
         //given
@@ -817,10 +732,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('john', $result[1][0]);
     }
 
-    /**
-     * @test
-     * @group postgres
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldReturnDistinctOnResults()
     {
         //given
@@ -841,9 +754,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('john', $products[1]->description);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSpecifiedColumnAsArray()
     {
         //given
@@ -860,9 +771,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('c', $result[1][0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSpecifiedColumnAsArrayByName()
     {
         //given
@@ -879,9 +788,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('c', $result[1]['name']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSpecifiedColumnsAsArrayOfArrays()
     {
         //given
@@ -900,9 +807,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('bob', $result[1][1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSpecifiedColumnByStringAsArrayOfArrays()
     {
         //given
@@ -917,9 +822,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('a', $result[0][0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotTryToDeleteIfEmptyInClause()
     {
         //given
@@ -935,9 +838,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Mock::verify($mockDb)->neverReceived();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDeleteRecord()
     {
         //given
@@ -951,10 +852,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(0, $allProducts);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldDeleteRecordsWithUsingClause()
     {
         //given
@@ -973,9 +872,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray(Product::all())->containsExactly($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionOnInvalidQuery()
     {
         $this->expectException(DbException::class);
@@ -983,9 +880,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::select('non existing column')->where()->fetchAll();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAllowChainedWheres()
     {
         //given
@@ -1002,9 +897,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($products)->containsOnly($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleBooleanTrueInWhere()
     {
         //given
@@ -1018,9 +911,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($products)->containsOnly($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleBooleanFalseInWhere()
     {
         //given
@@ -1034,9 +925,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($products)->containsOnly($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAllowEmptyWheres()
     {
         //given
@@ -1052,9 +941,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($products)->containsOnly($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAllowEmptyParametersInWhere()
     {
         //given
@@ -1070,9 +957,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($products)->containsOnly($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAllowEmptyStringAsParameterInWhere()
     {
         //given
@@ -1088,9 +973,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($products)->containsOnly($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptNullParametersInWhere()
     {
         //it will return nothing but we don't want to force users to add null checks
@@ -1107,9 +990,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEmpty($products);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCloneBuilder()
     {
         //given
@@ -1123,9 +1004,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($product, $query->fetch());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAliasTables()
     {
         //given
@@ -1147,9 +1026,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAliasTablesInNestedJoin()
     {
         //given
@@ -1173,9 +1050,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($cars, self::getNoLazy($fetchedProduct, 'category'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDoSelfJoinWithConditions()
     {
         //given
@@ -1196,9 +1071,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($vehicles, self::getNoLazy($parent, 'parent'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOptimizeDuplicatedJoins()
     {
         //given
@@ -1223,9 +1096,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(1, Stats::$queries);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOptimizeDuplicatedRelationFetches()
     {
         //given
@@ -1251,9 +1122,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(4, Stats::$queries);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchEmptyHasManyRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
     {
         //given
@@ -1268,9 +1137,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals([], self::getNoLazy($category, 'products'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchEmptyHasOneRelationSoThatLazyLoadingDoesNotTryToLoadItAgain()
     {
         //given
@@ -1288,9 +1155,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(0, Stats::$queries);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetEmptyRelationInJoinSoThatLazyLoadingDoesNotTryToLoadItAgain()
     {
         //given
@@ -1305,9 +1170,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($product->attributes())->containsKeyAndValue(['category' => null]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUpdateModel()
     {
         //given
@@ -1321,9 +1184,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals(1, $affectedRows);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGroupByCategory()
     {
         //given
@@ -1340,9 +1201,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($result)->containsOnly([$category1->getId(), 2], [$category2->getId(), 1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGroupByCategoryUsingArray()
     {
         //given
@@ -1356,9 +1215,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($result)->containsOnly([$category->getId(), 1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionForGroupByWithoutSelect()
     {
         $this->expectException(DbException::class);
@@ -1366,9 +1223,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Product::where()->groupBy('id_category');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSelectFunctionShouldSelectOnlySpecifiedColumns()
     {
         //given
@@ -1384,10 +1239,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($names)->containsExactly('category for billy');
     }
 
-    /**
-     * @test
-     * @group non-sqlite3
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldAliasTableInUpdateQuery()
     {
         //given
@@ -1406,10 +1259,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray(Category::all())->onProperty('name')->containsExactly('new');
     }
 
-    /**
-     * @test
-     * @group sqlite3
-     */
+    #[Test]
+    #[Group('sqlite3')]
     public function shouldThrowExceptionIfAliasInUpdateQuery()
     {
         //when
@@ -1425,9 +1276,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSearchAnyOf()
     {
         //given
@@ -1444,9 +1293,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->onProperty('name')->containsExactly($category1->name, $category3->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSearchAnyOfWithRestrictions()
     {
         //given
@@ -1464,9 +1311,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->onProperty('name')->containsExactly($category1->name, $category2->name, $category3->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSearchAnyOfAndWhereValues()
     {
         //given
@@ -1489,9 +1334,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
             ->onProperty('id')->containsExactly($product1->getId(), $product2->getId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSearchForNullValue()
     {
         //given
@@ -1505,9 +1348,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatModel($search)->isEqualTo($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchIteratorAndFetchRelationsInBatches()
     {
         //given
@@ -1525,9 +1366,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(3, Stats::$queries);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenTryingToBindObjectAsArgument()
     {
         //given
@@ -1540,9 +1379,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDeleteEach()
     {
         //given

@@ -4,10 +4,10 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-use Ouzo\Routing\Route;
 use Ouzo\Routing\GroupedRoute;
+use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
-
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class GroupedRouteTest extends TestCase
@@ -20,9 +20,7 @@ class GroupedRouteTest extends TestCase
         Route::$isDebug = false;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddGetRoute()
     {
         //given
@@ -38,9 +36,7 @@ class GroupedRouteTest extends TestCase
             ->containsOnly('/api/user/index', '/api/user/show/id/:id');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddPostRoute()
     {
         //given
@@ -56,9 +52,7 @@ class GroupedRouteTest extends TestCase
             ->containsOnly('/api/user/save', '/api/user/update/id/:id');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddAnyRoute()
     {
         //given
@@ -74,9 +68,7 @@ class GroupedRouteTest extends TestCase
             ->containsOnly('/api/user/save', '/api/user/update/id/:id');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddDeleteRoute()
     {
         //given
@@ -91,9 +83,7 @@ class GroupedRouteTest extends TestCase
             ->containsOnly('/api/user/delete/:id');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateRouteForResource()
     {
         //given

@@ -3,19 +3,18 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tools\Model\Template\DatabaseColumn;
 use Ouzo\Tools\Model\Template\Dialect\Dialect;
 use Ouzo\Tools\Model\Template\TableInfo;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class TableInfoTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFieldsWithoutPrimaryKeyWhenIsNotDefault()
     {
         //given
@@ -36,9 +35,7 @@ class TableInfoTest extends TestCase
         Assert::thatArray($columns)->onProperty('name')->containsOnly('sale', 'description');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFieldsWithPrimaryKeyWhenIsDefault()
     {
         //given

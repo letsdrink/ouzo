@@ -11,6 +11,7 @@ use Ouzo\Db\Dialect\Dialect;
 use Ouzo\Db\OnConflict;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
@@ -26,9 +27,7 @@ class GeneratorTest extends TestCase
         parent::setUp();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectForConfiguredDialect()
     {
         //given
@@ -44,9 +43,7 @@ class GeneratorTest extends TestCase
         $this->assertStringEndsWith($generatorDialectClassName, $configuredDialectClassPath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveTablePrefixFromClass()
     {
         //given
@@ -59,9 +56,7 @@ class GeneratorTest extends TestCase
         $this->assertEquals('MyTable', $modelName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSingularizeTableName()
     {
         //given
@@ -74,9 +69,7 @@ class GeneratorTest extends TestCase
         $this->assertEquals('OrderProduct', $modelName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTableInformation()
     {
         //given
@@ -93,10 +86,7 @@ class GeneratorTest extends TestCase
         Assert::thatArray($dialectAdapter->columns())->onProperty('type')->contains('string', 'string', 'int', 'int');
     }
 
-    /**
-     * @test
-     * @throws \Exception
-     */
+    #[Test]
     public function shouldThrowExceptionWhenDialectAdapterNotExists()
     {
         //given
@@ -110,9 +100,7 @@ class GeneratorTest extends TestCase
         Config::revertProperty('sql_dialect');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSaveToFile()
     {
         //given
@@ -127,9 +115,7 @@ class GeneratorTest extends TestCase
         unlink($fileName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenFileAlreadyExists()
     {
         //given
@@ -145,9 +131,7 @@ class GeneratorTest extends TestCase
         unlink($fileName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPrepareTemplateContents()
     {
         //given
@@ -161,9 +145,7 @@ class GeneratorTest extends TestCase
         $this->assertStringContainsString('string description', $template);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetCorrectNamespace()
     {
         //given

@@ -9,6 +9,7 @@ use Ouzo\View\DefaultViewPathProvider;
 use Ouzo\View\PhtmlRenderer;
 use Ouzo\View\ViewRenderer;
 use Ouzo\View\ViewRendererFactory;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DummyRenderer implements ViewRenderer
@@ -24,9 +25,7 @@ class DummyRenderer implements ViewRenderer
 
 class ViewRendererFactoryTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreatePhtmlRendererWhenRendererWasNotConfigured()
     {
         //when
@@ -36,9 +35,7 @@ class ViewRendererFactoryTest extends TestCase
         $this->assertInstanceOf(PhtmlRenderer::class, $renderer);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateDefaultRendererAsSetInConfiguration()
     {
         //given
@@ -51,9 +48,7 @@ class ViewRendererFactoryTest extends TestCase
         $this->assertInstanceOf('DummyRenderer', $renderer);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateRendererAsSetInConfigurationForParticularView()
     {
         //given
@@ -66,9 +61,7 @@ class ViewRendererFactoryTest extends TestCase
         $this->assertInstanceOf('DummyRenderer', $renderer);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateRendererAsSetInConfigurationForParticularViewEvenThoughDefaultRendererIsSpecified()
     {
         //given

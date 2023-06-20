@@ -7,14 +7,14 @@
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\GeneralAssert;
 use Ouzo\Tests\Mock\Mock;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 class GeneralAssertTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnInstance()
     {
         // when
@@ -24,9 +24,7 @@ class GeneralAssertTest extends TestCase
         $this->assertInstanceOf(GeneralAssert::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeInstanceOf()
     {
         // then
@@ -34,7 +32,16 @@ class GeneralAssertTest extends TestCase
         GeneralAssert::that(Mock::create(stdClass::class))->isInstanceOf(stdClass::class);
     }
 
-    function notInstanceOf()
+    #[Test]
+    #[DataProvider('notInstanceOf')]
+    public function shouldNotBeInstanceOf(mixed $instance, string $name): void
+    {
+        CatchException::when(GeneralAssert::that($instance))->isInstanceOf($name);
+
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+    }
+
+    public static function notInstanceOf(): array
     {
         return [
             [[], stdClass::class],
@@ -45,38 +52,68 @@ class GeneralAssertTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider notInstanceOf
-     * @param $instance
-     * @param string $name
-     */
-    public function shouldNotBeInstanceOf($instance, $name)
-    {
-        CatchException::when(GeneralAssert::that($instance))->isInstanceOf($name);
-
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
-    }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeNull()
     {
         GeneralAssert::that(null)->isNull();
     }
 
-    /**
-     * @test
-     * @dataProvider notNull
-     * @param $notNull
-     */
-    public function shouldBeNotNull($notNull)
+    #[Test]
+    #[DataProvider('notNull')]
+    public function shouldBeNotNull(mixed $notNull): void
     {
         GeneralAssert::that($notNull)->isNotNull();
     }
 
-    function notNull()
+    public static function notEqualToNull(): array
+    {
+        return [
+            [1],
+            ['1'],
+            ['0'],
+            [5.4],
+            ['word'],
+            [true],
+            ['true'],
+            ['false'],
+            [[]]
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('notNull')]
+    public function shouldNotBeNull(mixed $notNull): void
+    {
+        CatchException::when(GeneralAssert::that($notNull))->isNull();
+
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+    }
+
+    #[Test]
+    public function shouldNotBeNotNull()
+    {
+        CatchException::when(GeneralAssert::that(null))->isNotNull();
+
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+    }
+
+    #[Test]
+    #[DataProvider('notNull')]
+    public function shouldBeEqual(mixed $notNull): void
+    {
+        GeneralAssert::that($notNull)->isEqualTo($notNull);
+    }
+
+    #[Test]
+    #[DataProvider('notEqualToNull')]
+    public function shouldNotBeEqual(mixed $notNull): void
+    {
+        CatchException::when(GeneralAssert::that(null))->isEqualTo($notNull);
+
+        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
+    }
+
+    public static function notNull(): array
     {
         return [
             [1],
@@ -91,65 +128,6 @@ class GeneralAssertTest extends TestCase
             ['false'],
             [[]]
         ];
-    }
-
-    function notEqualToNull()
-    {
-        return [
-            [1],
-            ['1'],
-            ['0'],
-            [5.4],
-            ['word'],
-            [true],
-            ['true'],
-            ['false'],
-            [[]]
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider notNull
-     * @param $notNull
-     */
-    public function shouldNotBeNull($notNull)
-    {
-        CatchException::when(GeneralAssert::that($notNull))->isNull();
-
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotBeNotNull()
-    {
-        CatchException::when(GeneralAssert::that(null))->isNotNull();
-
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
-    }
-
-    /**
-     * @test
-     * @dataProvider notNull
-     * @param $notNull
-     */
-    public function shouldBeEqual($notNull)
-    {
-        GeneralAssert::that($notNull)->isEqualTo($notNull);
-    }
-
-    /**
-     * @test
-     * @dataProvider notEqualToNull
-     * @param $notNull
-     */
-    public function shouldNotBeEqual($notNull)
-    {
-        CatchException::when(GeneralAssert::that(null))->isEqualTo($notNull);
-
-        CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 }
 

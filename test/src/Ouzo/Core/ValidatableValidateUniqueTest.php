@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Validatable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class UniquenessValidatable extends Validatable
@@ -23,9 +24,7 @@ class UniquenessValidatable extends Validatable
 
 class ValidatableValidateUniqueTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeValidIfUniqueValues()
     {
         //given
@@ -38,9 +37,7 @@ class ValidatableValidateUniqueTest extends TestCase
         $this->assertTrue($valid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeValidIfNonUniqueValues()
     {
         //given

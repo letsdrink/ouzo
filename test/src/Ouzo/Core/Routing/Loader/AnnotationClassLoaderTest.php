@@ -13,6 +13,7 @@ use Application\Model\Test\SimpleController;
 use Ouzo\Routing\Loader\AnnotationClassLoader;
 use Ouzo\Routing\Loader\RouteMetadata;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AnnotationClassLoaderTest extends TestCase
@@ -25,9 +26,7 @@ class AnnotationClassLoaderTest extends TestCase
         $this->loader = new AnnotationClassLoader();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenClassNonExists()
     {
         //then
@@ -37,9 +36,7 @@ class AnnotationClassLoaderTest extends TestCase
         $this->loader->load(['ClassThatDoesNotExist']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotLoadAnyRouteMetadata()
     {
         //when
@@ -49,9 +46,7 @@ class AnnotationClassLoaderTest extends TestCase
         $this->assertEquals(0, $routes->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadRouteMetadata()
     {
         //when
@@ -64,9 +59,7 @@ class AnnotationClassLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadRouteMetadataFromSingleMethod()
     {
         //when
@@ -80,9 +73,7 @@ class AnnotationClassLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadRouteMetadataFromSingleMethodForRepeatedAttributes()
     {
         //when
@@ -96,9 +87,7 @@ class AnnotationClassLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadRouteMetadataFromManyMethods()
     {
         //when
@@ -114,9 +103,7 @@ class AnnotationClassLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadRouteMetadataWithGlobalUriPrefix()
     {
         //when

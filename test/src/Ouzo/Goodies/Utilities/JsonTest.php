@@ -9,13 +9,13 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
 use Ouzo\Utilities\JsonEncodeException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class JsonTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDecodeJsonToObject()
     {
         //given
@@ -30,9 +30,7 @@ class JsonTest extends TestCase
         $this->assertEquals('127.0.0.1', $decoded->ip);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDetectJsonError()
     {
         //given
@@ -46,9 +44,7 @@ class JsonTest extends TestCase
         $this->assertEquals(JSON_ERROR_SYNTAX, $error);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDecodeJsonAsArray()
     {
         //given
@@ -61,9 +57,7 @@ class JsonTest extends TestCase
         ArrayAssert::that($decoded)->hasSize(3)->contains('john', 123, '127.0.0.1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEncodeArrayToJson()
     {
         //given
@@ -76,17 +70,13 @@ class JsonTest extends TestCase
         $this->assertEquals('{"key1":"value1","key2":"value2","key3":"value3"}', $encoded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decodeShouldReturnNullForEmptyString()
     {
         $this->assertNull(Json::safeDecode(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResetJsonError()
     {
         //given
@@ -100,13 +90,9 @@ class JsonTest extends TestCase
         $this->assertEquals(JSON_ERROR_NONE, $error);
     }
 
-    /**
-     * @test
-     * @dataProvider validJson
-     * @param string $validJson
-     * @throws Throwable
-     */
-    public function shouldNotThrowOnInvalidJson($validJson)
+    #[Test]
+    #[DataProvider('validJson')]
+    public function shouldNotThrowOnInvalidJson(string $validJson): void
     {
         //when
         CatchException::when(new Json())->decode($validJson);
@@ -115,13 +101,9 @@ class JsonTest extends TestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     * @dataProvider invalidJson
-     * @param string $invalidJson
-     * @throws Exception
-     */
-    public function shouldThrowOnInvalidJson($invalidJson)
+    #[Test]
+    #[DataProvider('invalidJson')]
+    public function shouldThrowOnInvalidJson(string $invalidJson): void
     {
         //when
         CatchException::when(new Json())->decode($invalidJson);
@@ -130,9 +112,7 @@ class JsonTest extends TestCase
         CatchException::assertThat()->isInstanceOf(JsonDecodeException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEncodeThrowOnMalformedUtf8Syntax()
     {
         // when
@@ -148,9 +128,7 @@ class JsonTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEncodeThrowOnInfiniteValue()
     {
         // when
@@ -166,7 +144,7 @@ class JsonTest extends TestCase
         }
     }
 
-    function invalidJson(): array
+    public static function invalidJson(): array
     {
         return [
             ['()'],
@@ -178,7 +156,7 @@ class JsonTest extends TestCase
         ];
     }
 
-    function validJson(): array
+    public static function validJson(): array
     {
         return [
             [''],
