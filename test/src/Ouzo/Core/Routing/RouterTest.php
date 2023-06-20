@@ -13,6 +13,7 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -163,12 +164,8 @@ class RouterTest extends TestCase
         $this->assertEquals('save', $rule->getAction());
     }
 
-    /**
-     * @test
-     * @dataProvider requestMethods
-     * @param string $method
-     */
-    public function shouldFindRouteAny($method)
+    #[DataProvider('requestMethods')]
+    public function shouldFindRouteAny(string $method): void
     {
         //given
         Route::any('/user/save', 'Controller\\UserController', 'save');
@@ -184,13 +181,8 @@ class RouterTest extends TestCase
         $this->assertEquals('save', $rule->getAction());
     }
 
-    /**
-     * @test
-     * @dataProvider requestRestMethods
-     * @param string $method
-     * @param string $uri
-     */
-    public function shouldFindRouteResource($method, $uri)
+    #[DataProvider('requestRestMethods')]
+    public function shouldFindRouteResource(string $method, string $uri): void
     {
         //given
         Route::resource('Controller\\AlbumsController', 'albums');
@@ -555,7 +547,7 @@ class RouterTest extends TestCase
         $this->assertEquals('18', $parameters['order_id']);
     }
 
-    public function requestMethods()
+    public static function requestMethods(): array
     {
         return [
             ['GET'],
@@ -566,7 +558,7 @@ class RouterTest extends TestCase
         ];
     }
 
-    public function requestRestMethods()
+    public static function requestRestMethods(): array
     {
         return [
             ['GET', '/albums'],

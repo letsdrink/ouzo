@@ -12,6 +12,8 @@ use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\FileNotFoundException;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class FilesTest extends TestCase
@@ -75,13 +77,8 @@ class FilesTest extends TestCase
         CatchException::assertThat()->isInstanceOf(FileNotFoundException::class);
     }
 
-    /**
-     * @test
-     * @dataProvider units
-     * @param int $size
-     * @param string $result
-     */
-    public function shouldConvertUnits($size, $result)
+    #[DataProvider('units')]
+    public function shouldConvertUnits(int $size, string $result): void
     {
         //when
         $unit = Files::convertUnitFileSize($size);
@@ -135,7 +132,7 @@ class FilesTest extends TestCase
         Assert::thatArray($files)->hasSize(3)->contains($file1, $file2, $file3);
     }
 
-    public function units()
+    public static function units(): array
     {
         return [
             [10, '10 B'],

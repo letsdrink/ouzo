@@ -9,6 +9,7 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
 use Ouzo\Utilities\JsonEncodeException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -89,13 +90,8 @@ class JsonTest extends TestCase
         $this->assertEquals(JSON_ERROR_NONE, $error);
     }
 
-    /**
-     * @test
-     * @dataProvider validJson
-     * @param string $validJson
-     * @throws Throwable
-     */
-    public function shouldNotThrowOnInvalidJson($validJson)
+    #[DataProvider('validJson')]
+    public function shouldNotThrowOnInvalidJson(string $validJson): void
     {
         //when
         CatchException::when(new Json())->decode($validJson);
@@ -104,13 +100,8 @@ class JsonTest extends TestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     * @dataProvider invalidJson
-     * @param string $invalidJson
-     * @throws Exception
-     */
-    public function shouldThrowOnInvalidJson($invalidJson)
+    #[DataProvider('invalidJson')]
+    public function shouldThrowOnInvalidJson(string $invalidJson): void
     {
         //when
         CatchException::when(new Json())->decode($invalidJson);
@@ -151,7 +142,7 @@ class JsonTest extends TestCase
         }
     }
 
-    function invalidJson(): array
+    public static function invalidJson(): array
     {
         return [
             ['()'],
@@ -163,7 +154,7 @@ class JsonTest extends TestCase
         ];
     }
 
-    function validJson(): array
+    public static function validJson(): array
     {
         return [
             [''],
