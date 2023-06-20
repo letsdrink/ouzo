@@ -6,10 +6,10 @@
 
 namespace Ouzo\View;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class OuzoTwigExtension extends Twig_Extension
+class OuzoTwigExtension extends AbstractExtension
 {
     public function getFunctions()
     {
@@ -19,7 +19,7 @@ class OuzoTwigExtension extends Twig_Extension
             't', 'linkTo', 'linkButton', 'formButton', 'translatableOptions', 'labelTag',
             'hiddenTag', 'textFieldTag', 'textAreaTag', 'checkboxTag', 'selectTag', 'optionTag', 'passwordFieldTag',
             'radioButtonTag', 'endFormTag', 'formTag', 'formFor', 'showErrors', 'showNotices', 'showSuccess',
-            'showWarnings', 'renderPartial'
+            'showWarnings', 'renderPartial',
         ];
 
         return array_merge(
@@ -37,7 +37,7 @@ class OuzoTwigExtension extends Twig_Extension
     {
         $result = [];
         foreach ($functions as $function) {
-            $result[] = new Twig_SimpleFunction($function, $function, $options);
+            $result[] = new TwigFunction($function, $function, $options);
         }
         return $result;
     }
