@@ -6,15 +6,28 @@
 
 namespace Ouzo;
 
+use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Path;
 
 class Layout
 {
+    private array $attributes = [];
+
     private ?string $renderContent = null;
     private ?string $layout = null;
 
     public function __construct(public View $view)
     {
+    }
+
+    public function __get(string $name): mixed
+    {
+        return Arrays::getValue($this->attributes, $name);
+    }
+
+    public function __set(string $name, mixed $value): void
+    {
+        $this->attributes[$name] = $value;
     }
 
     public function setLayout(string $layout): static
