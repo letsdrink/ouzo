@@ -7,7 +7,6 @@
 namespace Ouzo\ExceptionHandling;
 
 use ErrorException;
-use JetBrains\PhpStorm\Pure;
 use Throwable;
 
 class ErrorHandler
@@ -15,7 +14,7 @@ class ErrorHandler
     public function register(): void
     {
         set_exception_handler(fn(Throwable $exception) => ErrorHandler::exceptionHandler($exception));
-        set_error_handler(fn(...$args) => ErrorHandler::errorHandler(...$args));
+        set_error_handler(fn(...$args) => ErrorHandler::errorHandler(...$args), E_ALL & ~E_DEPRECATED & ~E_STRICT);
         register_shutdown_function(fn() => ErrorHandler::shutdownHandler());
     }
 
