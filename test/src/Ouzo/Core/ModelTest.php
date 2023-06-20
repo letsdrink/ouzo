@@ -711,7 +711,7 @@ class ModelTest extends DbTransactionalTestCase
         $product = new Product(['id' => 0, 'name' => 'Phone']);
 
         //then
-        $this->assertTrue(0 === $product->id);
+        $this->assertEquals(0, $product->id);
     }
 
     #[Test]
