@@ -5,9 +5,9 @@
  */
 namespace Ouzo\View;
 
-use Twig_Environment;
+use Twig\Environment;
 
 interface TwigInitializer
 {
-    public function initialize(Twig_Environment $environment): void;
+    public function initialize(Environment $environment): void;
 }

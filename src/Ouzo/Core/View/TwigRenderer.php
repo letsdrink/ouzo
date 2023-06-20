@@ -9,8 +9,8 @@ namespace Ouzo\View;
 use Ouzo\ApplicationPaths;
 use Ouzo\Config;
 use Ouzo\Utilities\Path;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class TwigRenderer implements ViewRenderer
 {
@@ -30,11 +30,11 @@ class TwigRenderer implements ViewRenderer
     public function render(): string
     {
         $options = Config::getValue('twig', 'options') ?: [];
-        $loader = new Twig_Loader_Filesystem($this->loaderPath);
-        $environment = new Twig_Environment($loader, $options);
+        $loader = new FilesystemLoader($this->loaderPath);
+        $environment = new Environment($loader, $options);
         $environment->addExtension(new OuzoTwigExtension());
         $this->initialize($environment);
-        $template = $environment->loadTemplate($this->viewFilename);
+        $template = $environment->createTemplate($this->viewFilename);
         return $template->render($this->attributes);
     }
 
@@ -43,7 +43,7 @@ class TwigRenderer implements ViewRenderer
         return $this->viewPath;
     }
 
-    private function initialize(Twig_Environment $environment): void
+    private function initialize(Environment $environment): void
     {
         $initializerClass = Config::getValue('twig', 'initializer');
         if ($initializerClass) {
