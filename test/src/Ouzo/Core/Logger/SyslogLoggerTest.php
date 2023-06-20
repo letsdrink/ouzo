@@ -8,15 +8,10 @@ namespace Ouzo\Logger;
 
 
 use Ouzo\Config;
-use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
-use Ouzo\Tests\Mock\SimpleMock;
-use Ouzo\Utilities\Clock;
-use Psr\Log\LoggerInterface;
-
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class SyslogLoggerTest extends TestCase
 {

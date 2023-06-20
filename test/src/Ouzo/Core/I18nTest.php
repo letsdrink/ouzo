@@ -7,9 +7,8 @@
 use Ouzo\Config;
 use Ouzo\I18n;
 use Ouzo\Tests\CatchException;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class I18nTest extends TestCase
 {

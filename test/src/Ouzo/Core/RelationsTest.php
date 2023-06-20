@@ -6,9 +6,8 @@
 
 use Ouzo\Relations;
 use Ouzo\Tests\CatchException;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class RelationsTest extends TestCase
 {

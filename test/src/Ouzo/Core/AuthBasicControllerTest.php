@@ -10,7 +10,6 @@ use Ouzo\Extension\AuthBasicExtension;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class AuthSampleController extends Controller

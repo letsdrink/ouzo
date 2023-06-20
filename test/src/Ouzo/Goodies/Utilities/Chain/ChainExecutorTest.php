@@ -5,9 +5,8 @@
  */
 
 use Ouzo\Utilities\Chain\ChainExecutor;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ChainExecutorTest extends TestCase
 {

@@ -11,10 +11,8 @@ use Ouzo\Routing\Route;
 use Ouzo\Uri\JsUriHelperGenerator;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
-
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class JsUriHelperGeneratorTest extends TestCase
 {

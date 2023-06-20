@@ -3,11 +3,11 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Application\Model\Test\Product;
 use Ouzo\Csrf\CsrfProtector;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class FormHelperTest extends DbTransactionalTestCase

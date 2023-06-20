@@ -8,9 +8,8 @@ use Ouzo\Http\HttpMethod;
 use Ouzo\Routing\Loader\RouteMetadata;
 use Ouzo\Routing\Loader\RouteMetadataCollection;
 use Ouzo\Tests\Assert;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class RouteMetadataCollectionTest extends TestCase
 {

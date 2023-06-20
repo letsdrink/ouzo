@@ -13,9 +13,8 @@ use Application\Model\Test\SimpleController;
 use Ouzo\Routing\Loader\AnnotationClassLoader;
 use Ouzo\Routing\Loader\RouteMetadata;
 use Ouzo\Tests\Assert;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class AnnotationClassLoaderTest extends TestCase
 {

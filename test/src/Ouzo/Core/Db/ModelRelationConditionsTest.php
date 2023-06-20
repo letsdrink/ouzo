@@ -10,7 +10,6 @@ use Ouzo\Model;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class ModelRelationConditionsTest extends DbTransactionalTestCase

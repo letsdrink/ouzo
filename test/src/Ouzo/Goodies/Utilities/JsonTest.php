@@ -9,9 +9,8 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
 use Ouzo\Utilities\JsonEncodeException;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class JsonTest extends TestCase
 {

@@ -8,7 +8,6 @@ use Application\Model\Test\Product;
 use Ouzo\Db;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Iterator\BatchingIterator;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class StatementIteratorTest extends DbTransactionalTestCase

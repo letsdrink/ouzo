@@ -9,9 +9,8 @@ use Ouzo\Routing\Generator\RouteFileGenerator;
 use Ouzo\Routing\Loader\AnnotationClassLoader;
 use Ouzo\Routing\Loader\AnnotationDirectoryLoader;
 use Ouzo\Utilities\Path;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class RouteFileGeneratorTest extends TestCase
 {

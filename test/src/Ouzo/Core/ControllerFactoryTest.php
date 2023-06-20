@@ -7,8 +7,6 @@
 namespace Ouzo\Api;
 
 use Ouzo\Controller;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 class MultipleNsController extends Controller
 {
@@ -28,9 +26,8 @@ use Ouzo\Stats\SessionStats;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri\PathProvider;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class SimpleTestController extends Controller
 {

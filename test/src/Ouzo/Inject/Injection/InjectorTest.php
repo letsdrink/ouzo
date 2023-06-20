@@ -13,11 +13,10 @@ use Ouzo\Injection\Scope;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Proxy\VirtualProxyInterface;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 class InjectorTest extends TestCase
 {

@@ -8,9 +8,8 @@ use Ouzo\Db\Dialect\DialectUtil;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\WhereClause\WhereClause;
 use Ouzo\Tests\Assert;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class DialectUtilTest extends TestCase
 {

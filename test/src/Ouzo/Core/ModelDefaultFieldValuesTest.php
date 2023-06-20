@@ -6,7 +6,6 @@
 
 use Application\Model\Test\ProductWithDefaults;
 use Ouzo\Tests\DbTransactionalTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class ModelDefaultFieldValuesTest extends DbTransactionalTestCase

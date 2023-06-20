@@ -10,7 +10,6 @@ use Ouzo\Injection\InjectorConfig;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Tests\Mock\Mock;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class FrontControllerDisplayOutputTest extends ControllerTestCase

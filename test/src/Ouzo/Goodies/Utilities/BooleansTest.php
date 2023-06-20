@@ -6,9 +6,8 @@
 
 use Ouzo\Utilities\Booleans;
 use Ouzo\Utilities\Objects;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class BooleansTest extends TestCase
 {

@@ -14,9 +14,8 @@ use Ouzo\Routing\Loader\AnnotationDirectoryLoader;
 use Ouzo\Routing\Loader\RouteMetadataCollection;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class AnnotationDirectoryLoaderTest extends TestCase
 {

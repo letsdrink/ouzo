@@ -7,9 +7,8 @@
 use Ouzo\Config;
 use Ouzo\View\DefaultViewPathProvider;
 use Ouzo\View\PhtmlRenderer;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class PhtmlRendererTest extends TestCase
 {

@@ -7,8 +7,7 @@
 namespace Ouzo\ExceptionHandling;
 
 use Ouzo\Tests\Assert;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class OuzoExceptionTest extends TestCase
 {

@@ -26,9 +26,8 @@ use Ouzo\Tests\MockHeaderSender;
 use Ouzo\Tests\MockOutputRenderer;
 use Ouzo\Tests\MockRedirectHandler;
 use Ouzo\Tests\MockSessionStarterInterceptor;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class BootstrapSampleController extends Controller
 {

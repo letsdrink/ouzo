@@ -6,9 +6,8 @@
 
 use Ouzo\Tests\Assert;
 use Ouzo\Validatable;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ValidatableChild extends Validatable
 {

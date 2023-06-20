@@ -7,9 +7,8 @@
 use Ouzo\Config;
 use Ouzo\Http\HttpMethod;
 use Ouzo\Routing\Annotation\Route;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class RouteAnnotationTest extends TestCase
 {

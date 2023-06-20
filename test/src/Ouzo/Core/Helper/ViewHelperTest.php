@@ -3,11 +3,11 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
+use PHPUnit\Framework\TestCase;
 
 require_once ROOT_PATH . 'src/Ouzo/Core/Helper/ViewHelper.php';
-
-use PHPUnit\Framework\TestCase; 
 
 class ViewHelperTest extends TestCase
 {

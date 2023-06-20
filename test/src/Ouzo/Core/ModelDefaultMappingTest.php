@@ -7,7 +7,6 @@
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class TestModel extends Model

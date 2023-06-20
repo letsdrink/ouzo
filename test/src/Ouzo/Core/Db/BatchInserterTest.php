@@ -11,8 +11,6 @@ use Ouzo\Db\BatchInserter;
 use Ouzo\Db\OnConflict;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 class BatchInserterTest extends DbTransactionalTestCase
 {

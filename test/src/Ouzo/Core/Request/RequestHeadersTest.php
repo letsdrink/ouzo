@@ -4,11 +4,9 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-use Ouzo\Db\ModelDefinition;
 use Ouzo\Request\RequestHeaders;
 use Ouzo\Tests\Assert;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class RequestHeadersTest extends TestCase
 {

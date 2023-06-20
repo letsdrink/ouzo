@@ -26,7 +26,6 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase

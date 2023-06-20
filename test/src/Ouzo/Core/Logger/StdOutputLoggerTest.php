@@ -9,10 +9,9 @@ use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 class StdOutputLoggerTest extends TestCase
 {

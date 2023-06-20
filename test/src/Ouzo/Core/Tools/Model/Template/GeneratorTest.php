@@ -11,11 +11,10 @@ use Ouzo\Db\Dialect\Dialect;
 use Ouzo\Db\OnConflict;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 class GeneratorTest extends TestCase
 {

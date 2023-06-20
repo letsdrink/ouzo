@@ -6,10 +6,9 @@
 
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 class StringAssertTest extends TestCase
 {

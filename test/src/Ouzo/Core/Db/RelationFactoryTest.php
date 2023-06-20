@@ -5,8 +5,7 @@
  */
 
 use Ouzo\Db\RelationFactory;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class RelationFactoryTest extends TestCase
 {

@@ -8,9 +8,8 @@ use Ouzo\Db\PDOPreparedStatementExecutor;
 use Ouzo\DbException;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class PDOPreparedStatementExecutorTest extends TestCase
 {

@@ -12,8 +12,7 @@ use Ouzo\Utilities\DeleteDirectory;
 use Ouzo\Utilities\FileNotFoundException;
 use Ouzo\Utilities\Files;
 use Ouzo\Utilities\Path;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class FilesTest extends TestCase
 {

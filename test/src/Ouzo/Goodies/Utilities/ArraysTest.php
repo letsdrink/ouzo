@@ -10,9 +10,8 @@ use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\Functions;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ArraysTest extends TestCase
 {

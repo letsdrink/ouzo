@@ -4,13 +4,11 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-use Ouzo\Routing\Route;
 use Ouzo\Routing\GroupedRoute;
+use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
-
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class GroupedRouteTest extends TestCase
 {

@@ -17,7 +17,6 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class SampleControllerException extends Exception

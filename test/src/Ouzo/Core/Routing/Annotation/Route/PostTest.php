@@ -8,9 +8,9 @@ use Ouzo\Http\HttpMethod;
 use Ouzo\Http\HttpStatus;
 use Ouzo\Routing\Annotation\Route;
 use Ouzo\Routing\Annotation\Route\Post;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class PostTest extends TestCase
 {

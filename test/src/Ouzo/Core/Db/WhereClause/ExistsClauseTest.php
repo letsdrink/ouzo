@@ -8,8 +8,7 @@ namespace Ouzo\Db\WhereClause;
 
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class ExistsClauseTest extends TestCase
 {

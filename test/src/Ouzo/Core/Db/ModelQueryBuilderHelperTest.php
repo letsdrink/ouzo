@@ -9,9 +9,8 @@ use Ouzo\Db\ModelQueryBuilderHelper;
 use Ouzo\Db\Relation;
 use Ouzo\Db\RelationWithAlias;
 use Ouzo\Tests\Assert;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ModelQueryBuilderHelperTest extends TestCase
 {

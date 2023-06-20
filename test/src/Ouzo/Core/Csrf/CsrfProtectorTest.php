@@ -10,7 +10,6 @@ use Ouzo\Exception\ForbiddenException;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class CsrfSampleController extends Controller

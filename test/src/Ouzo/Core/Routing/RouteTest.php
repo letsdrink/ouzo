@@ -9,9 +9,8 @@ use Ouzo\Routing\GroupedRoute;
 use Ouzo\Routing\Route;
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Arrays;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class UsersMockController extends Controller
 {

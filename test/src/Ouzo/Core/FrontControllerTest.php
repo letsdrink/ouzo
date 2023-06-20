@@ -18,7 +18,6 @@ use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Utilities\Arrays;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class FrontControllerTest extends ControllerTestCase

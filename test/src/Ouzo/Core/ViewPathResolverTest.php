@@ -6,9 +6,8 @@
 
 namespace Ouzo;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ViewPathResolverTest extends TestCase
 {

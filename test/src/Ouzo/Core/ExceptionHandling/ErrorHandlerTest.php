@@ -8,8 +8,7 @@ namespace Ouzo\ExceptionHandling;
 
 use Ouzo\PageNotFoundException;
 use Ouzo\Tests\Mock\Mock;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class ErrorHandlerTest extends TestCase
 {

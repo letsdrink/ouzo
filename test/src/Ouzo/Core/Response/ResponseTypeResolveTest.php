@@ -3,10 +3,10 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\ContentType;
 use Ouzo\Response\ResponseTypeResolve;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class ResponseTypeResolveTest extends TestCase
 {

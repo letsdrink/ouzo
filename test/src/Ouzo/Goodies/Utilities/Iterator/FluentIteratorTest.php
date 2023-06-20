@@ -11,8 +11,7 @@ use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentFunctions;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class FluentIteratorTest extends TestCase
 {

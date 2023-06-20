@@ -8,7 +8,6 @@ namespace Ouzo\Db\WhereClause;
 use Application\Model\Test\Product;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class EmptyWhereClauseTest extends DbTransactionalTestCase

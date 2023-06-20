@@ -9,10 +9,9 @@ use Ouzo\Tests\Mock\InOrderVerifier;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 class MockTestClass
 {

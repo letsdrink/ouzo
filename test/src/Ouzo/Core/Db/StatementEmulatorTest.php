@@ -11,7 +11,6 @@ use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\Mock\SimpleMock;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class SimpleModel extends Model

@@ -3,13 +3,13 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 use Ouzo\Config;
 use Ouzo\Db\Dialect\MySqlDialect;
 use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\Dialect\Sqlite3Dialect;
 use Ouzo\Restrictions;
-
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\TestCase;
 
 class RegexpRestrictionTest extends TestCase
 {

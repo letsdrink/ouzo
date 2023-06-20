@@ -7,9 +7,8 @@
 use Ouzo\Config;
 use Ouzo\Db\Stats;
 use Ouzo\FrontController;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class StatsTest extends TestCase
 {

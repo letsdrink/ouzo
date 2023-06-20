@@ -10,13 +10,10 @@ use Ouzo\Injection\Injector;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\Mock\MockInterface;
 use Ouzo\Utilities\Path;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
-use TestCommand    ;
-    use PHPUnitFrameworkAttributesDataProvider;
-    use PHPUnitFrameworkAttributesTest;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
+use TestCommand;
 
 class CommandsLoaderTest extends TestCase
 {

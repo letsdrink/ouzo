@@ -9,10 +9,9 @@ namespace Ouzo\Injection\Creator;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Injection\Scope;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 
 class ProxyManagerInstanceCreatorTest extends TestCase
 {

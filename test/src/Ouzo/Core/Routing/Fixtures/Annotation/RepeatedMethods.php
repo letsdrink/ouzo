@@ -7,7 +7,6 @@
 namespace Application\Model\Test;
 
 use Ouzo\Routing\Annotation\Route\Get;
-use Ouzo\Routing\Annotation\Route\Post;
 
 class RepeatedMethods
 {

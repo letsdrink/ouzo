@@ -124,9 +124,8 @@ if (version_compare('7.1.0', PHP_VERSION, '<=')) {
 }
 
 use Ouzo\Tests\Mock\MockInterface;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class DynamicProxyTest extends TestCase
 {
