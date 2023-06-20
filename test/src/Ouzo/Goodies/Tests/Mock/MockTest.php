@@ -495,10 +495,7 @@ class MockTest extends TestCase
         $this->assertNull($mock->method("something else"));
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldFailIfExpectedZeroInteractions()
     {
         //given
@@ -510,10 +507,7 @@ class MockTest extends TestCase
         CatchException::assertThat()->hasMessage('Expected zero interactions but got method1(2)');
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldVerifyZeroInteractions()
     {
         //given
@@ -538,10 +532,7 @@ class MockTest extends TestCase
         Mock::verify($mock)->method(Mock::argThat()->startsWith('matching'));
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldFailVerificationWithArgumentMatcher()
     {
         //given

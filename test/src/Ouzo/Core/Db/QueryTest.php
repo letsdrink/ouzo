@@ -8,12 +8,14 @@ use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Db\WhereClause\ArrayWhereClause;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class QueryTest extends TestCase
 {
     #[Test]
-    public function shouldCreateSelectQuery()
+    public function shouldCreateSelectQuery(): void
     {
         // when
         $query = Query::select();
@@ -24,7 +26,7 @@ class QueryTest extends TestCase
     }
 
     #[Test]
-    public function shouldCreateSelectDistinctQuery()
+    public function shouldCreateSelectDistinctQuery(): void
     {
         // when
         $query = Query::selectDistinct();
@@ -35,7 +37,7 @@ class QueryTest extends TestCase
     }
 
     #[Test]
-    public function shouldCreateSelectDistinctOnQuery()
+    public function shouldCreateSelectDistinctOnQuery(): void
     {
         // when
         $query = Query::select()->distinctOn(['col1', 'col2']);
@@ -47,7 +49,7 @@ class QueryTest extends TestCase
     }
 
     #[Test]
-    public function shouldCreateSelectCountQuery()
+    public function shouldCreateSelectCountQuery(): void
     {
         // when
         $query = Query::count();
@@ -57,7 +59,7 @@ class QueryTest extends TestCase
     }
 
     #[Test]
-    public function shouldCreateDeleteQuery()
+    public function shouldCreateDeleteQuery(): void
     {
         // when
         $query = Query::delete();
@@ -67,7 +69,7 @@ class QueryTest extends TestCase
     }
 
     #[Test]
-    public function shouldCreateSelectQueryWithWhereOrderLimitOffset()
+    public function shouldCreateSelectQueryWithWhereOrderLimitOffset(): void
     {
         // when
         $query = Query::select()
@@ -88,7 +90,7 @@ class QueryTest extends TestCase
     }
 
     #[Test]
-    public function shouldCreateSelectQueryWithJoin()
+    public function shouldCreateSelectQueryWithJoin(): void
     {
         // when
         $query = Query::select()->join('table', 'id', 'other_id', 'tab');
@@ -102,7 +104,7 @@ class QueryTest extends TestCase
     }
 
     #[Test]
-    public function shouldCreateSelectQueryWithColumns()
+    public function shouldCreateSelectQueryWithColumns(): void
     {
         // when
         $query = Query::select(['name', 'id']);
@@ -112,11 +114,9 @@ class QueryTest extends TestCase
         $this->assertEquals(['name', 'id'], $query->selectColumns);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
-    public function shouldLockForUpdate()
+    #[Test]
+    #[Group('non-sqlite3')]
+    public function shouldLockForUpdate(): void
     {
         // when
         $query = Query::select()->lockForUpdate();
@@ -125,11 +125,9 @@ class QueryTest extends TestCase
         $this->assertTrue($query->lockForUpdate);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
-    public function selectShouldNotLockForUpdateByDefault()
+    #[Test]
+    #[Group('non-sqlite3')]
+    public function selectShouldNotLockForUpdateByDefault(): void
     {
         // when
         $query = Query::select();

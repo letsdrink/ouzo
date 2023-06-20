@@ -146,6 +146,7 @@ class StopwatchTest extends TestCase
         $this->assertEquals(0, $stopwatch->elapsed(TimeUnit::NANOSECONDS));
     }
 
+    #[Test]
     #[DataProvider('elapsedTimes')]
     public function shouldReturnElapsedInTimeUnit(int $time, string $timeUnit, int $expectedTime): void
     {

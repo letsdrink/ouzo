@@ -129,10 +129,7 @@ class ControllerTest extends ControllerTestCase
         SimpleTestController::$stream = 'php://input';
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldReturnClassNameInUnderscoreAsDefaultTab()
     {
         // given
@@ -176,10 +173,7 @@ class ControllerTest extends ControllerTestCase
         ], $requestHeaders);
     }
 
-    /**
-     * @test
-     * @covers \Ouzo\DownloadHandler
-     */
+    #[Test]
     public function shouldDownloadFile()
     {
         //given

@@ -86,10 +86,7 @@ class GeneratorTest extends TestCase
         Assert::thatArray($dialectAdapter->columns())->onProperty('type')->contains('string', 'string', 'int', 'int');
     }
 
-    /**
-     * @test
-     * @throws \Exception
-     */
+    #[Test]
     public function shouldThrowExceptionWhenDialectAdapterNotExists()
     {
         //given

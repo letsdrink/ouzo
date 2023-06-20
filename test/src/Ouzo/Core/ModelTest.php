@@ -18,6 +18,7 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 class ModelTest extends DbTransactionalTestCase
@@ -181,10 +182,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals($id, $savedId);
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldFailIfModelWithGivenIdDoesNotExists()
     {
         //given
@@ -509,10 +507,7 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Product', $modelName);
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldThrowExceptionIfNoRelation()
     {
         $model = new Model(['fields' => ['field1']]);
@@ -790,10 +785,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('new name', $model->reload()->name);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldSelectForUpdate()
     {
         // given
@@ -888,10 +881,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('modified', $product1->reload()->name);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function createOrUpdateShouldInsertProductWhenNotExist()
     {
         //when
@@ -902,10 +893,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('Tech', $product->name);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function createOrUpdateShouldUpdateProductWhenOneAlreadyExists()
     {
         //given
@@ -919,10 +908,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertEquals('new name', $product->name);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function upsertShouldReturnIdOnInsert()
     {
         //given
@@ -935,10 +922,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNotNull($id);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function upsertShouldReturnIdOnUpdate()
     {
         //given
@@ -952,10 +937,8 @@ class ModelTest extends DbTransactionalTestCase
         $this->assertNotNull($id);
     }
 
-    /**
-     * @group postgres
-     * @test
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldInsertOrDoNothing()
     {
         //given

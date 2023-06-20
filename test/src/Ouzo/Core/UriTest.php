@@ -299,6 +299,7 @@ class UriTest extends TestCase
         StreamStub::unregister();
     }
 
+    #[Test]
     #[DataProvider('malformedSlashes')]
     public function shouldReplaceTwoBackSlashes(string $broken, string $good): void
     {
@@ -325,6 +326,7 @@ class UriTest extends TestCase
         $this->assertNull($path);
     }
 
+    #[Test]
     #[DataProvider('protocols')]
     public function shouldReturnCorrectProtocol(string $header, mixed $value, string $expected): void
     {

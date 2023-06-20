@@ -37,6 +37,7 @@ class BooleanAssertTest extends TestCase
         BooleanAssert::that(false)->isFalse();
     }
 
+    #[Test]
     #[DataProvider('notTrue')]
     public function shouldNotBeTrue($notTrue): void
     {
@@ -45,6 +46,7 @@ class BooleanAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
+    #[Test]
     #[DataProvider('notFalse')]
     public function shouldNotBeFalse($notFalse): void
     {

@@ -7,10 +7,12 @@
 use Ouzo\TranslatableTimeAgo;
 use Ouzo\Utilities\Clock;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TranslatableTimeAgoTest extends TestCase
 {
+    #[Test]
     #[DataProvider('dates')]
     public function shouldCreateTranslatableTimeAgo($currentDate, $date, $expectedText): void
     {

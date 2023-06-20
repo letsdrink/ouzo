@@ -21,6 +21,7 @@ class DeleteTest extends TestCase
         $this->assertInstanceOf(Route::class, new Delete(''));
     }
 
+    #[Test]
     #[DataProvider('getValidParameters')]
     public function testRouteParameters(string $path, ?int $httpResponseCode): void
     {

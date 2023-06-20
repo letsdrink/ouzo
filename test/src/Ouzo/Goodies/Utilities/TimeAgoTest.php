@@ -7,10 +7,12 @@
 use Ouzo\Utilities\Clock;
 use Ouzo\Utilities\TimeAgo;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TimeAgoTest extends TestCase
 {
+    #[Test]
     #[DataProvider('dates')]
     public function shouldCreateTimeAgo($currentDate, $date, $expectedKey, $expectedParams): void
     {

@@ -77,6 +77,7 @@ class FilesTest extends TestCase
         CatchException::assertThat()->isInstanceOf(FileNotFoundException::class);
     }
 
+    #[Test]
     #[DataProvider('units')]
     public function shouldConvertUnits(int $size, string $result): void
     {

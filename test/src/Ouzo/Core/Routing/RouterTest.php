@@ -164,6 +164,7 @@ class RouterTest extends TestCase
         $this->assertEquals('save', $rule->getAction());
     }
 
+    #[Test]
     #[DataProvider('requestMethods')]
     public function shouldFindRouteAny(string $method): void
     {
@@ -181,6 +182,7 @@ class RouterTest extends TestCase
         $this->assertEquals('save', $rule->getAction());
     }
 
+    #[Test]
     #[DataProvider('requestRestMethods')]
     public function shouldFindRouteResource(string $method, string $uri): void
     {

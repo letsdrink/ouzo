@@ -6,10 +6,12 @@
 
 use Ouzo\Utilities\Strings;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class StringsTest extends TestCase
 {
+    #[Test]
     #[DataProvider('underscoreToCamelCase')]
     public function shouldConvertUnderscoreToCamelCase($string, $expected): void
     {
@@ -29,6 +31,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('camelCaseToUnderscore')]
     public function shouldConvertCamelCaseToUnderscore($string, $expected): void
     {
@@ -50,6 +53,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('removePrefix')]
     public function shouldRemovePrefix($string, $prefix, $expected): void
     {
@@ -70,6 +74,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('removePrefixes')]
     public function shouldRemovePrefixes($string, $prefixes, $expected): void
     {
@@ -90,6 +95,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('removeSuffix')]
     public function shouldRemoveSuffix($string, $suffix, $expected): void
     {
@@ -109,6 +115,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('startsWith')]
     public function shouldReturnTrueIfStringStartsWithPrefix($string, $prefix, $expected): void
     {
@@ -133,6 +140,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('endsWith')]
     public function shouldReturnTrueIfStringEndsWithPrefix($string, $suffix, $expected): void
     {
@@ -159,6 +167,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('equalsIgnoreCase')]
     public function shouldCheckEqualityIgnoringCase($string1, $string2, $expected): void
     {
@@ -186,6 +195,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('remove')]
     public function shouldRemovePartOfString($string, $toRemove, $expected): void
     {
@@ -205,6 +215,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('appendSuffix')]
     public function shouldAppendSuffix($string, $suffix, $expected): void
     {
@@ -224,6 +235,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('appendPrefix')]
     public function shouldAppendPrefix($string, $prefix, $expected): void
     {
@@ -243,6 +255,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('appendIfMissing')]
     public function shouldAppendSuffixIfNecessary($string, $suffix, $expected): void
     {
@@ -263,6 +276,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('prependIfMissing')]
     public function shouldAppendPrefixIfNecessary($string, $prefix, $expected): void
     {
@@ -283,6 +297,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('tableize')]
     public function shouldTableizeSimpleClassName($class, $expected): void
     {
@@ -303,6 +318,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('escapeNewLines')]
     public function shouldEscapeNewLines($string, $expected): void
     {
@@ -322,6 +338,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('htmlEntities')]
     public function shouldConvertEntitiesWithUtfChars($string, $expected): void
     {
@@ -341,6 +358,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('equal')]
     public function shouldReturnTrueForObjectWithTheSameStringRepresentation($object1, $object2, $expected): void
     {
@@ -364,6 +382,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('isBlank')]
     public function shouldReturnFalseForNotBlankString($string, $expected): void
     {
@@ -386,6 +405,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('isNotBlank')]
     public function shouldTestIfStringIsNotBlank($string, $expected): void
     {
@@ -408,6 +428,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('abbreviate')]
     public function shouldAbbreviateString($string, $maxWidth, $expected): void
     {
@@ -427,6 +448,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('trimToNull')]
     public function shouldTrimString($string, $expected): void
     {
@@ -446,6 +468,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('sprintAssoc')]
     public function shouldSprintfStringWithAssocArrayAsParam($sprintfString, $assocArray, $expected): void
     {
@@ -466,6 +489,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('sprintAssocDefault')]
     public function shouldSprintfStringAndReplaceWithEmptyIfNoPlaceholderFound($sprintfString, $assocArray, $default, $expected): void
     {
@@ -487,6 +511,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('contains')]
     public function shouldCheckStringContainsSubstring($string, $substring, $expected): void
     {
@@ -508,6 +533,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('containsIgnoreCase')]
     public function shouldCheckStringContainsSubstringIgnoringCase($string, $substring, $expected): void
     {
@@ -529,6 +555,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('substringBefore')]
     public function shouldGetSubstringBeforeSeparator($string, $separator, $expected): void
     {
@@ -550,6 +577,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('substringAfter')]
     public function shouldGetSubstringAfterSeparator($string, $separator, $expected): void
     {
@@ -572,6 +600,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('replaceNth')]
     public function shouldReplaceNthString($subject, $search, $replace, $nth, $expected): void
     {
@@ -593,6 +622,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('removeAccent')]
     public function shouldRemoveAccents($string, $expected): void
     {
@@ -611,6 +641,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('uppercaseFirst')]
     public function shouldUpperCaseFirstLetter($string, $expected): void
     {
@@ -630,6 +661,7 @@ class StringsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('defaultIfBlank')]
     public function shouldDefaultIfBlank($string, $default, $expected): void
     {

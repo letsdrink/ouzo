@@ -205,6 +205,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2017-03-26 04:31:50', $clock->format());
     }
 
+    #[Test]
     #[DataProvider('monthChange')]
     public function shouldChangeMonthsProperly($date, $change, $expectedDate): void
     {

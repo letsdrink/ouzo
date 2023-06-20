@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class LoggerUtilsTest extends TestCase
 {
+    #[Test]
     #[DataProvider('classes')]
     public function shouldShortenName($class, $length, $expected): void
     {

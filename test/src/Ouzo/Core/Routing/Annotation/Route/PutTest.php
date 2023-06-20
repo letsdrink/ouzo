@@ -21,6 +21,7 @@ class PutTest extends TestCase
         $this->assertInstanceOf(Route::class, new Put(''));
     }
 
+    #[Test]
     #[DataProvider('getValidParameters')]
     public function testRouteParameters(string $path, ?int $httpResponseCode): void
     {

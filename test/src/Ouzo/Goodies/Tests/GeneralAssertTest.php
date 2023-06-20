@@ -32,6 +32,7 @@ class GeneralAssertTest extends TestCase
         GeneralAssert::that(Mock::create(stdClass::class))->isInstanceOf(stdClass::class);
     }
 
+    #[Test]
     #[DataProvider('notInstanceOf')]
     public function shouldNotBeInstanceOf(mixed $instance, string $name): void
     {
@@ -57,6 +58,7 @@ class GeneralAssertTest extends TestCase
         GeneralAssert::that(null)->isNull();
     }
 
+    #[Test]
     #[DataProvider('notNull')]
     public function shouldBeNotNull(mixed $notNull): void
     {
@@ -78,6 +80,7 @@ class GeneralAssertTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('notNull')]
     public function shouldNotBeNull(mixed $notNull): void
     {
@@ -94,12 +97,14 @@ class GeneralAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
+    #[Test]
     #[DataProvider('notNull')]
     public function shouldBeEqual(mixed $notNull): void
     {
         GeneralAssert::that($notNull)->isEqualTo($notNull);
     }
 
+    #[Test]
     #[DataProvider('notEqualToNull')]
     public function shouldNotBeEqual(mixed $notNull): void
     {

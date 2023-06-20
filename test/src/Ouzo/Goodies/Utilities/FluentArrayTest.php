@@ -329,6 +329,7 @@ class FluentArrayTest extends TestCase
         $this->assertEquals([1 => 'b', 3 => 'c'], $result);
     }
 
+    #[Test]
     #[DataProvider('associativeAndSequentialValueArrays')]
     public function shouldValuesResetInternalArrayPointer(array $inputArray): void
     {

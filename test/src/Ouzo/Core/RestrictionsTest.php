@@ -8,6 +8,7 @@ use Application\Model\Test\Product;
 use Ouzo\Restrictions;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 class RestrictionsTest extends DbTransactionalTestCase
@@ -147,10 +148,8 @@ class RestrictionsTest extends DbTransactionalTestCase
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldReturnModelUsingRegexpRestriction()
     {
         //given

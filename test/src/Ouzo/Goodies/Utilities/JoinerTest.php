@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class JoinerTest extends TestCase
 {
+    #[Test]
     #[DataProvider('arrayJoinedWithSeparator')]
     public function shouldJoinArrayWithSeparator(array $array, string $expectedResult): void
     {

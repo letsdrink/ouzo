@@ -10,6 +10,7 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Functions;
+use PHPUnit\Framework\Attributes\Test;
 
 class ExtractorTestClass
 {
@@ -143,10 +144,7 @@ class ExtractorTest extends DbTransactionalTestCase
         Assert::thatString($result)->isEqualTo('category');
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldThrowExceptionIfNoOperationGiven()
     {
         //given

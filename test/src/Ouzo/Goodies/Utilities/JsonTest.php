@@ -90,6 +90,7 @@ class JsonTest extends TestCase
         $this->assertEquals(JSON_ERROR_NONE, $error);
     }
 
+    #[Test]
     #[DataProvider('validJson')]
     public function shouldNotThrowOnInvalidJson(string $validJson): void
     {
@@ -100,6 +101,7 @@ class JsonTest extends TestCase
         CatchException::assertThat()->notCaught();
     }
 
+    #[Test]
     #[DataProvider('invalidJson')]
     public function shouldThrowOnInvalidJson(string $invalidJson): void
     {

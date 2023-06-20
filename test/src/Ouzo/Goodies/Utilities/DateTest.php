@@ -84,6 +84,7 @@ class DateTest extends TestCase
         $this->assertGreaterThan(Clock::nowAsString(), $date);
     }
 
+    #[Test]
     #[DataProvider('intervalsAndDates')]
     public function shouldModifyDate(string $interval, string $expectedDate): void
     {

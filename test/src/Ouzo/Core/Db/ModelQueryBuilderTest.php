@@ -26,6 +26,7 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\FluentArray;
 use Ouzo\Utilities\Functions;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 
 class ModelQueryBuilderTest extends DbTransactionalTestCase
@@ -401,10 +402,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals($category, self::getNoLazy($products[0], 'category'));
     }
 
-    /**
-     * @test
-     * @group non-sqlite3
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldRightJoinWithOtherTable()
     {
         //given
@@ -422,12 +421,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(5, $products);
     }
 
-    /**
-     * @test
-     * @group sqlite3
-     * @throws \Ouzo\Exception\ValidationException
-     * @throws Exception
-     */
+    #[Test]
+    #[Group('sqlite3')]
     public function shouldThrowExceptionRightJoinWithOtherTable()
     {
         //given
@@ -446,10 +441,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         CatchException::assertThat()->isInstanceOf(BadMethodCallException::class);
     }
 
-    /**
-     * @test
-     * @throws \Ouzo\Exception\ValidationException
-     */
+    #[Test]
     public function shouldLeftJoinWithOtherTable()
     {
         //given
@@ -568,11 +560,7 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray(self::getNoLazy($category, 'products'))->containsOnly($product1, $product2);
     }
 
-    /**
-     * @test
-     * @throws \Ouzo\Exception\ValidationException
-     * @throws Exception
-     */
+    #[Test]
     public function shouldThrowExceptionIfMultipleValuesForHasOne()
     {
         //given
@@ -744,10 +732,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertEquals('john', $result[1][0]);
     }
 
-    /**
-     * @test
-     * @group postgres
-     */
+    #[Test]
+    #[Group('postgres')]
     public function shouldReturnDistinctOnResults()
     {
         //given
@@ -866,10 +852,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         $this->assertCount(0, $allProducts);
     }
 
-    /**
-     * @group non-sqlite3
-     * @test
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldDeleteRecordsWithUsingClause()
     {
         //given
@@ -1255,10 +1239,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray($names)->containsExactly('category for billy');
     }
 
-    /**
-     * @test
-     * @group non-sqlite3
-     */
+    #[Test]
+    #[Group('non-sqlite3')]
     public function shouldAliasTableInUpdateQuery()
     {
         //given
@@ -1277,10 +1259,8 @@ class ModelQueryBuilderTest extends DbTransactionalTestCase
         Assert::thatArray(Category::all())->onProperty('name')->containsExactly('new');
     }
 
-    /**
-     * @test
-     * @group sqlite3
-     */
+    #[Test]
+    #[Group('sqlite3')]
     public function shouldThrowExceptionIfAliasInUpdateQuery()
     {
         //when

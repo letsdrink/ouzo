@@ -202,6 +202,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertEquals('<input type="hidden" name="product[id_category]" value="0"/><input type="checkbox" id="product_id_category" name="product[id_category]" value="1" checked/>', $result);
     }
 
+    #[Test]
     #[DataProvider('requestUnsupportedMethods')]
     public function shouldCreateWorkAroundForUnsupportedMethods(string $method): void
     {
@@ -213,6 +214,7 @@ class FormHelperTest extends DbTransactionalTestCase
         $this->assertStringContainsString('name="_method" value="' . $method . '"', $form);
     }
 
+    #[Test]
     #[DataProvider('requestSupportedMethods')]
     public function shouldNoCreateWorkAroundWhenSupportedMethods(string $method): void
     {

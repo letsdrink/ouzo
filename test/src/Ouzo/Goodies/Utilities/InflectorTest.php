@@ -17,12 +17,14 @@ class InflectorTest extends TestCase
         Inflector::reset();
     }
 
+    #[Test]
     #[DataProvider('dataSampleWords')]
     public function testInflectingSingulars(string $singular, string $plural): void
     {
         $this->assertEquals($singular, Inflector::singularize($plural), "'{$plural}' should be singularized to '{$singular}'");
     }
 
+    #[Test]
     #[DataProvider('dataSampleWords')]
     public function testInflectingPlurals(string $singular, string $plural): void
     {

@@ -47,10 +47,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('save');
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldThrowExceptionIfNoRouteFound()
     {
         //given
@@ -128,10 +125,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('fresh');
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldRouteRestFreshWithIncorrectMethod()
     {
         //given
@@ -183,10 +177,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('show=12');
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldRouteRestShowWithIncorrectMethod()
     {
         //given
@@ -212,10 +203,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('edit=12');
     }
 
-    /**
-     * @test
-     * @throws Exception
-     */
+    #[Test]
     public function shouldRouteRestEditWithIncorrectMethod()
     {
         //given

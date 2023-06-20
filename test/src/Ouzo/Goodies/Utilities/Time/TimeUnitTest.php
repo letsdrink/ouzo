@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class TimeUnitTest extends TestCase
 {
+    #[Test]
     #[DataProvider('durations')]
     public function shouldConvertFromNanos(int $duration, string $timeUnit, int $expectedTime): void
     {
