@@ -6,12 +6,12 @@
 use Ouzo\Restrictions;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class IsNullRestrictionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSql()
     {
         //given

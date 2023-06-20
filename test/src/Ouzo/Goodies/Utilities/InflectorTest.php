@@ -6,6 +6,8 @@
 
 use Ouzo\Utilities\Inflector;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class InflectorTest extends TestCase
 {
@@ -15,7 +17,19 @@ class InflectorTest extends TestCase
         Inflector::reset();
     }
 
-    public function dataSampleWords(): array
+    #[DataProvider('dataSampleWords')]
+    public function testInflectingSingulars(string $singular, string $plural): void
+    {
+        $this->assertEquals($singular, Inflector::singularize($plural), "'{$plural}' should be singularized to '{$singular}'");
+    }
+
+    #[DataProvider('dataSampleWords')]
+    public function testInflectingPlurals(string $singular, string $plural): void
+    {
+        $this->assertEquals($plural, Inflector::pluralize($singular), "'{$singular}' should be pluralized to '{$plural}'");
+    }
+
+    public static function dataSampleWords(): array
     {
         Inflector::reset();
         // in the format array('singular', 'plural')
@@ -65,27 +79,7 @@ class InflectorTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dataSampleWords
-     */
-    public function testInflectingSingulars(string $singular, string $plural)
-    {
-        $this->assertEquals($singular, Inflector::singularize($plural), "'{$plural}' should be singularized to '{$singular}'");
-    }
-
-    /**
-     * @test
-     * @dataProvider dataSampleWords
-     */
-    public function testInflectingPlurals(string $singular, string $plural)
-    {
-        $this->assertEquals($plural, Inflector::pluralize($singular), "'{$singular}' should be pluralized to '{$plural}'");
-    }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function testCustomPluralRule()
     {
         Inflector::reset();
@@ -107,9 +101,7 @@ class InflectorTest extends TestCase
         $this->assertEquals(Inflector::pluralize('phone'), 'phonezes');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testCustomSingularRule()
     {
         Inflector::reset();
@@ -130,9 +122,7 @@ class InflectorTest extends TestCase
         $this->assertEquals(Inflector::singularize('singulars'), 'singulars');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testRulesClearsCaches()
     {
         Inflector::reset();
@@ -152,9 +142,7 @@ class InflectorTest extends TestCase
         $this->assertEquals(Inflector::pluralize('corpus'), 'corpora', 'Was inflected with old irregular form.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testCustomRuleWithReset()
     {
         Inflector::reset();

@@ -6,12 +6,12 @@
 
 use Ouzo\Utilities\StrSubstitutor;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class StrSubstitutorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteWithValues()
     {
         //given
@@ -24,9 +24,7 @@ class StrSubstitutorTest extends TestCase
         $this->assertEquals('Czesc Marek Kowalski', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLeaveMissingPlaceholders()
     {
         //given
@@ -39,9 +37,7 @@ class StrSubstitutorTest extends TestCase
         $this->assertEquals('Czesc {{NAME}}', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReplaceMissingPlaceholdersWithDefault()
     {
         //given
@@ -54,9 +50,7 @@ class StrSubstitutorTest extends TestCase
         $this->assertEquals('Hi Unknown', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReplaceMissingPlaceholdersWithEmptyDefault()
     {
         //given
@@ -69,9 +63,7 @@ class StrSubstitutorTest extends TestCase
         $this->assertEquals('Hi ', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldChangeToEmptyString()
     {
         //given
@@ -84,9 +76,7 @@ class StrSubstitutorTest extends TestCase
         $this->assertEquals('Czesc ', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReplaceUnicodeChar()
     {
         //given
@@ -99,9 +89,7 @@ class StrSubstitutorTest extends TestCase
         $this->assertEquals('Oddział: krakowski', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReplaceWithSpaceInPlaceholderName()
     {
         //given

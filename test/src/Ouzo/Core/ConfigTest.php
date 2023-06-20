@@ -53,9 +53,7 @@ class ConfigTest extends TestCase
         Config::overridePropertyArray(['global', 'prefix_system'], '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNullForMissingSections()
     {
         // when
@@ -65,9 +63,7 @@ class ConfigTest extends TestCase
         $this->assertNull($section);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReadSampleConfig()
     {
         // given
@@ -80,9 +76,7 @@ class ConfigTest extends TestCase
         $this->assertEquals('bar', $value['foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnConfigValue()
     {
         // given
@@ -95,9 +89,7 @@ class ConfigTest extends TestCase
         $this->assertEquals('dog', $value['cat']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNestedConfigValue()
     {
         // given
@@ -110,9 +102,7 @@ class ConfigTest extends TestCase
         $this->assertEquals('bilbo', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReadMultipleSampleConfigs()
     {
         // given
@@ -127,9 +117,7 @@ class ConfigTest extends TestCase
         $this->assertEquals('emet', $value['dolor']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOverrideProperty()
     {
         // given
@@ -143,9 +131,7 @@ class ConfigTest extends TestCase
         Config::clearProperty('key'); // cleanup
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOverrideMultidimensionalProperty()
     {
         // given
@@ -159,9 +145,7 @@ class ConfigTest extends TestCase
         Config::clearProperty('key1', 'key2'); // cleanup
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRevertProperty()
     {
         // given
@@ -178,9 +162,7 @@ class ConfigTest extends TestCase
         Config::clearProperty('key1', 'key2'); // cleanup
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function revertCalledSecondTimeShouldDoNothingMore()
     {
         // given
@@ -198,9 +180,7 @@ class ConfigTest extends TestCase
         Config::clearProperty('key'); // cleanup
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function revertOnNonExistingKeyShouldThrowException()
     {
         // then
@@ -210,9 +190,7 @@ class ConfigTest extends TestCase
         Config::revertProperty('key', 'does', 'not', 'exist');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldClearProperty()
     {
         // given
@@ -226,9 +204,7 @@ class ConfigTest extends TestCase
         $this->assertEmpty($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnAllConfigValues()
     {
         // given
@@ -242,9 +218,7 @@ class ConfigTest extends TestCase
         Config::clearProperty('key'); // cleanup
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOverrideConfigPropertyBySession()
     {
         // when
@@ -255,9 +229,7 @@ class ConfigTest extends TestCase
         Assert::thatArray($values['global'])->contains('/sample');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenConfigMethodIsNotAnObject()
     {
         // then
@@ -268,9 +240,7 @@ class ConfigTest extends TestCase
         Config::registerConfig('config');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenTryToAddCustomConfigWithoutGetConfigMethod()
     {
         // then
@@ -281,9 +251,7 @@ class ConfigTest extends TestCase
         Config::registerConfig(new NoGetConfigMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenTryToAddCustomConfigWhenGetConfigMethodIsNotPublic()
     {
         // then

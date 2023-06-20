@@ -6,12 +6,12 @@
 
 use Application\Model\Test\ProductWithDefaults;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseDefaultValueWhenCreatingNewInstance()
     {
         //when
@@ -22,9 +22,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
         $this->assertEquals('no name', $product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldOverrideDefaultValueWithAttributesWhenCreatingNewInstance()
     {
         //when
@@ -35,9 +33,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
         $this->assertEquals('overridden name', $product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createShouldUseDefaultValue()
     {
         //when
@@ -48,9 +44,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
         $this->assertEquals('no name', $product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createShouldOverrideDefaultValueWithAttributes()
     {
         //when
@@ -61,9 +55,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
         $this->assertEquals('overridden name', $product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotUseDefaultValueWhenObjectIsLoadedFromDb()
     {
         // given
@@ -78,9 +70,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
         $this->assertEquals('Mighty pirate!', $product->description);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEvaluateCallableDefaultsEveryTime()
     {
         // given
@@ -95,9 +85,7 @@ class ModelDefaultFieldValuesTest extends DbTransactionalTestCase
         $this->assertEquals('new default', $product2->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEvaluateDefaultsEveryTime()
     {
         // given

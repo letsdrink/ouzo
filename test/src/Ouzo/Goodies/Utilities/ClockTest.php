@@ -6,13 +6,13 @@
 use Ouzo\Tests\Assert;
 use Ouzo\Utilities\Clock;
 
-use PHPUnit\Framework\TestCase; 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 class ClockTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResetFreezeDate()
     {
         //given
@@ -25,9 +25,7 @@ class ClockTest extends TestCase
         $this->assertNotEquals('2013-12-11 15:52:01', Clock::nowAsString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFreezeGivenDate()
     {
         //when
@@ -37,9 +35,7 @@ class ClockTest extends TestCase
         $this->assertNotEquals('2011-01-02 12:34', Clock::nowAsString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseGivenFormat()
     {
         //given
@@ -52,9 +48,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2011-01-02', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddIntervals()
     {
         //given
@@ -74,9 +68,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2001-03-04 04:05:06', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubtractIntervals()
     {
         //given
@@ -96,9 +88,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2000-01-01 00:00:00', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTimestamp()
     {
         //given
@@ -112,9 +102,7 @@ class ClockTest extends TestCase
         $this->assertEquals($dateTime->getTimestamp(), $timestamp);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateClockForGivenDate()
     {
         //given
@@ -127,9 +115,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2011-01-02 12:34:13', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldChangeIfDateIsAfterAnotherDate()
     {
         $this->assertTrue(Clock::at('2011-01-02 12:34:13')->isAfter(Clock::at('2011-01-01 12:34:13')));
@@ -140,9 +126,7 @@ class ClockTest extends TestCase
         $this->assertTrue(Clock::at('2011-01-02 12:34:13')->isAfterOrEqualTo(Clock::at('2011-01-02 12:34:13')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldChangeIfDateIsBeforeAnotherDate()
     {
         $this->assertTrue(Clock::at('2011-01-01 12:34:13')->isBefore(Clock::at('2011-01-02 12:34:13')));
@@ -153,9 +137,7 @@ class ClockTest extends TestCase
         $this->assertTrue(Clock::at('2011-01-01 12:34:13')->isBeforeOrEqualTo(Clock::at('2011-01-01 12:34:13')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateClockForGivenTimestamp()
     {
         //given
@@ -168,9 +150,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2015-03-24 14:23:21', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotModifyClock()
     {
         // given
@@ -184,9 +164,7 @@ class ClockTest extends TestCase
         Assert::thatString($modifiedClock->format())->isEqualTo('2017-02-06 16:00:00');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotModifyTimeZone()
     {
         // given
@@ -201,9 +179,7 @@ class ClockTest extends TestCase
         Assert::that($modifiedClock->toDateTime()->getTimezone())->isEqualTo(new DateTimeZone('UTC'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleDSTChange()
     {
         //given
@@ -216,9 +192,7 @@ class ClockTest extends TestCase
         $this->assertEquals('2017-03-26 03:31:50', $clock->format());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleDSTChangeWhenAddingMultipleHours()
     {
         //given
@@ -231,7 +205,13 @@ class ClockTest extends TestCase
         $this->assertEquals('2017-03-26 04:31:50', $clock->format());
     }
 
-    function monthChange(): array
+    #[DataProvider('monthChange')]
+    public function shouldChangeMonthsProperly($date, $change, $expectedDate): void
+    {
+        $this->assertEquals($expectedDate, Clock::at($date)->plusMonths($change)->format('Y-m-d'));
+    }
+
+    public static function monthChange(): array
     {
         return [
             ['2017-01-01', 1, '2017-02-01'],
@@ -247,14 +227,5 @@ class ClockTest extends TestCase
             ['2017-02-28', -1, '2017-01-28'],
             ['2018-01-31', -1, '2017-12-31']
         ];
-    }
-
-    /**
-     * @dataProvider monthChange
-     * @test
-     */
-    public function shouldChangeMonthsProperly($date, $change, $expectedDate)
-    {
-        $this->assertEquals($expectedDate, Clock::at($date)->plusMonths($change)->format('Y-m-d'));
     }
 }

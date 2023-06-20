@@ -18,6 +18,8 @@ use Ouzo\Tests\ArrayAssert;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\ControllerTestCase;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class FrontControllerTest extends ControllerTestCase
 {
@@ -33,9 +35,7 @@ class FrontControllerTest extends ControllerTestCase
         Config::clearProperty('debug');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckRouteGetIfRequestValid()
     {
         //given
@@ -62,9 +62,7 @@ class FrontControllerTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExceptActionInAllAllow()
     {
         //given
@@ -79,9 +77,7 @@ class FrontControllerTest extends ControllerTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteWithQueryString()
     {
         //given
@@ -94,9 +90,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('save');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestIndexWithCorrectMethod()
     {
         //given
@@ -109,9 +103,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('index');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestIndexWithIncorrectMethod()
     {
         //given
@@ -124,9 +116,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isNotEqualTo('index');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestFreshWithCorrectMethod()
     {
         //given
@@ -155,9 +145,7 @@ class FrontControllerTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestCreateWithCorrectMethod()
     {
         //given
@@ -170,9 +158,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('create');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestCreateWithIncorrectMethod()
     {
         //given
@@ -185,9 +171,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isNotEqualTo('create');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestShowWithCorrectMethod()
     {
         //given
@@ -216,9 +200,7 @@ class FrontControllerTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestEditWithCorrectMethod()
     {
         //given
@@ -247,9 +229,7 @@ class FrontControllerTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestPutWithCorrectMethod()
     {
         //given
@@ -262,9 +242,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('update=12');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestPutWithIncorrectMethod()
     {
         //given
@@ -277,9 +255,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isNotEqualTo('update=12');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestPatchWithCorrectMethod()
     {
         //given
@@ -292,9 +268,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('update=12');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestPatchWithIncorrectMethod()
     {
         //given
@@ -307,9 +281,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isNotEqualTo('update=12');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestDeleteWithCorrectMethod()
     {
         //given
@@ -322,9 +294,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('destroy=12');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteRestDeleteWithIncorrectMethod()
     {
         //given
@@ -337,9 +307,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isNotEqualTo('destroy=12');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveDuplicatedPrefixFromUrlWhenExists()
     {
         //given
@@ -352,9 +320,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRedirectsTo('/sample/add');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRouteToRoot()
     {
         //given
@@ -367,9 +333,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('index');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetCurrentRequestContextController()
     {
         //given
@@ -383,9 +347,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertEquals(RestfulController::class, $currentController);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTraceRequestInfo()
     {
         //given
@@ -400,9 +362,7 @@ class FrontControllerTest extends ControllerTestCase
         ArrayAssert::that($queries['request_params'][0])->hasSize(1)->containsKeyAndValue(['param' => 1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleControllerInNamespace()
     {
         //given
@@ -415,9 +375,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('some controller - action');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCallbackInvokeAfterInit()
     {
         //given
@@ -433,9 +391,7 @@ class FrontControllerTest extends ControllerTestCase
         CatchException::assertThat()->hasMessage("afterInitCallback");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotSaveStatsIfDebugDisabled()
     {
         //given
@@ -450,9 +406,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertEmpty(Session::get('stats_queries'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSaveStatsIfDebugIsOn()
     {
         //given
@@ -467,9 +421,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertNotEmpty(Session::get('stats_queries'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddSomeExampleFieldIntoRequestObject()
     {
         //given
@@ -488,9 +440,7 @@ class FrontControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('save');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetRequestIdUsingMiddleware()
     {
         //given

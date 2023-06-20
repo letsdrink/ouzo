@@ -9,9 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class EqualToRestrictionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSql()
     {
         //given

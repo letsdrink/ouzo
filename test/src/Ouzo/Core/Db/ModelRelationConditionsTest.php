@@ -10,6 +10,8 @@ use Ouzo\Model;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ModelRelationConditionsTest extends DbTransactionalTestCase
 {
@@ -24,9 +26,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Product::create(['name' => 'peter', 'id_category' => $this->category->getId()]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazilyFetchHasManyWithStringCondition()
     {
         //when
@@ -36,9 +36,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Assert::thatArray($products_starting_from_b)->hasSize(2)->onProperty('name')->containsOnly('bob', 'billy');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasManyWithStringCondition()
     {
         //when
@@ -50,9 +48,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
             ->onProperty('name')->containsOnly('bob', 'billy');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazilyFetchHasManyWithCallbackCondition()
     {
         //when
@@ -62,9 +58,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Assert::thatArray($products_ending_with_b_or_y)->hasSize(2)->onProperty('name')->containsOnly('bob', 'billy');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasManyWithCallbackCondition()
     {
         //when
@@ -76,9 +70,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
             ->onProperty('name')->containsOnly('bob', 'billy');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazilyFetchHasManyWithArrayCondition()
     {
         //when
@@ -88,9 +80,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Assert::thatArray($products_name_bob)->hasSize(1)->onProperty('name')->containsOnly('bob');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasManyWithArrayCondition()
     {
         //when
@@ -102,9 +92,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
             ->onProperty('name')->containsOnly('bob');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasManyJoinWithStringCondition()
     {
         //given
@@ -118,9 +106,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Assert::thatArray($searchCategory)->hasSize(2)->onProperty('name')->containsOnly('sony', 'sony');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasManyJoinWithCallbackCondition()
     {
         //given
@@ -134,9 +120,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Assert::thatArray($searchCategory)->hasSize(2)->onProperty('name')->containsOnly('sony', 'sony');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasManyJoinWithArrayCondition()
     {
         //given
@@ -150,9 +134,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         Assert::thatArray($searchCategory)->hasSize(1)->onProperty('name')->containsOnly('sony');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasOneJoinWithStringCondition()
     {
         //when
@@ -163,9 +145,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         $this->assertEquals('billy', $product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazilyFetchHasOneWithStringCondition()
     {
         //when
@@ -175,9 +155,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         $this->assertEquals('billy', $product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasOneWithStringCondition()
     {
         //when
@@ -188,9 +166,7 @@ class ModelRelationConditionsTest extends DbTransactionalTestCase
         $this->assertEquals('billy', $product->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchHasOneWithAlias()
     {
         //when

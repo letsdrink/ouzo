@@ -7,6 +7,8 @@
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class TestModel extends Model
 {
@@ -24,9 +26,7 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
         ModelDefinition::resetCache();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateModelWithGivenMapping()
     {
         //when
@@ -43,9 +43,7 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
         $this->assertEquals('sequence', $testModel->getSequenceName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateModelWithDefaultMapping()
     {
         //when
@@ -59,9 +57,7 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
         $this->assertEquals('test_models_id_seq', $testModel->getSequenceName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateModelWithDefaultSequenceWhenPrimaryKeyGiven()
     {
         //when
@@ -75,9 +71,7 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
         $this->assertEquals('test_models_key_seq', $testModel->getSequenceName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateModelWithDefaultSequenceWhenTableGiven()
     {
         //when
@@ -90,9 +84,7 @@ class ModelDefaultMappingTest extends DbTransactionalTestCase
         $this->assertEquals('table_id_seq', $testModel->getSequenceName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateModelWithEmptyPrimaryKeyAndSequence()
     {
         //when

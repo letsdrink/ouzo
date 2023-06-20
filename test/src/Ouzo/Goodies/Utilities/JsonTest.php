@@ -10,12 +10,12 @@ use Ouzo\Utilities\Json;
 use Ouzo\Utilities\JsonDecodeException;
 use Ouzo\Utilities\JsonEncodeException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class JsonTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDecodeJsonToObject()
     {
         //given
@@ -30,9 +30,7 @@ class JsonTest extends TestCase
         $this->assertEquals('127.0.0.1', $decoded->ip);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDetectJsonError()
     {
         //given
@@ -46,9 +44,7 @@ class JsonTest extends TestCase
         $this->assertEquals(JSON_ERROR_SYNTAX, $error);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDecodeJsonAsArray()
     {
         //given
@@ -61,9 +57,7 @@ class JsonTest extends TestCase
         ArrayAssert::that($decoded)->hasSize(3)->contains('john', 123, '127.0.0.1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEncodeArrayToJson()
     {
         //given
@@ -76,17 +70,13 @@ class JsonTest extends TestCase
         $this->assertEquals('{"key1":"value1","key2":"value2","key3":"value3"}', $encoded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decodeShouldReturnNullForEmptyString()
     {
         $this->assertNull(Json::safeDecode(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResetJsonError()
     {
         //given
@@ -130,9 +120,7 @@ class JsonTest extends TestCase
         CatchException::assertThat()->isInstanceOf(JsonDecodeException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEncodeThrowOnMalformedUtf8Syntax()
     {
         // when
@@ -148,9 +136,7 @@ class JsonTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEncodeThrowOnInfiniteValue()
     {
         // when

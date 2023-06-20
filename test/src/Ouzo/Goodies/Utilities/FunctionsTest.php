@@ -12,9 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class FunctionsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractId()
     {
         //given
@@ -27,9 +25,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals(1, $id);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTrimWhiteCharacters()
     {
         //given
@@ -42,27 +38,21 @@ class FunctionsTest extends TestCase
         $this->assertEquals('snow', $trimmed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNegatePredicate()
     {
         $this->assertFalse(Functions::call(Functions::not(Functions::identity()), true));
         $this->assertTrue(Functions::call(Functions::not(Functions::identity()), false));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTestIfArgumentIsArray()
     {
         $this->assertFalse(Functions::call(Functions::isArray(), 'string'));
         $this->assertTrue(Functions::call(Functions::isArray(), []));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPrependPrefixToArgument()
     {
         //given
@@ -75,9 +65,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('white snow', $prefixed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAppendPostfixToArgument()
     {
         //given
@@ -90,9 +78,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('white snow', $modified);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldComposeFunctions()
     {
         //given
@@ -106,9 +92,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals('a', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSurroundStringWithGivenCharacter()
     {
         //when
@@ -118,36 +102,28 @@ class FunctionsTest extends TestCase
         $this->assertEquals('.test.', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIfParameterIsEqualToValue()
     {
         $this->assertFalse(Functions::call(Functions::equals('value'), 'other'));
         $this->assertTrue(Functions::call(Functions::equals('value'), 'value'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIfParameterIsNotEqualToValue()
     {
         $this->assertTrue(Functions::call(Functions::notEquals('value'), 'other'));
         $this->assertFalse(Functions::call(Functions::notEquals('value'), 'value'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIfParameterIsInstanceOfGivenType()
     {
         $this->assertTrue(Functions::call(Functions::isInstanceOf('stdClass'), new \stdClass()));
         $this->assertFalse(Functions::call(Functions::isInstanceOf('stdClass'), 'value'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extractFieldRecursivelyShouldReturnNullWhenFieldNotFoundAndNoDefaultValueWasSpecified()
     {
         //given
@@ -160,9 +136,7 @@ class FunctionsTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractFieldIfPhpFunctionWithTheSameNameExists()
     {
         //given
@@ -176,9 +150,7 @@ class FunctionsTest extends TestCase
         $this->assertEquals($object->date, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateRandomNumber()
     {
         //given
@@ -192,9 +164,7 @@ class FunctionsTest extends TestCase
         $this->assertLessThanOrEqual(getrandmax(), $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateRandomNumberInRange()
     {
         for ($i = 0; $i < 100; ++$i) {
@@ -210,9 +180,7 @@ class FunctionsTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsInArray()
     {
         //given
@@ -225,9 +193,7 @@ class FunctionsTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsNotInArray()
     {
         //given
@@ -240,45 +206,35 @@ class FunctionsTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotEqualUseTypeCheck()
     {
         //then
         $this->assertTrue(Functions::call(Functions::notEquals('value'), 0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEqualUseTypeCheck()
     {
         //then
         $this->assertFalse(Functions::call(Functions::equals('value'), 0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckNotNull()
     {
         //then
         $this->assertTrue(Functions::call(Functions::notNull(), 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckNull()
     {
         //then
         $this->assertFalse(Functions::call(Functions::notNull(), null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIfStringIsEqualIgnoringCaseToValue()
     {
         $this->assertFalse(Functions::call(Functions::equalsIgnoreCase('value'), 'other'));
@@ -286,9 +242,7 @@ class FunctionsTest extends TestCase
         $this->assertTrue(Functions::call(Functions::equalsIgnoreCase('VaLuE'), 'value'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeEmpty()
     {
         // then
@@ -297,9 +251,7 @@ class FunctionsTest extends TestCase
         $this->assertTrue(Functions::call(Functions::isEmpty(), null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeEmpty()
     {
         // then
@@ -308,9 +260,7 @@ class FunctionsTest extends TestCase
         $this->assertFalse(Functions::call(Functions::notEmpty(), null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeBlank()
     {
         // then
@@ -319,9 +269,7 @@ class FunctionsTest extends TestCase
         $this->assertTrue(Functions::call(Functions::isBlank(), ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeBlank()
     {
         // then

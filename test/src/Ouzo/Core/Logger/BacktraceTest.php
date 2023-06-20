@@ -6,12 +6,12 @@
 
 use Ouzo\Logger\Backtrace;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class BacktraceTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnCallingClassWithEmptyIgnoreList()
     {
         //when
@@ -21,9 +21,7 @@ class BacktraceTest extends TestCase
         $this->assertStringStartsWith('BacktraceTest:', $callingClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnCallingClassWithDefaultIgnoreList()
     {
         //when
@@ -33,9 +31,7 @@ class BacktraceTest extends TestCase
         $this->assertStringStartsWith('BacktraceTest:', $callingClass);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnCallingClassWithCustomIgnoreList()
     {
         //when

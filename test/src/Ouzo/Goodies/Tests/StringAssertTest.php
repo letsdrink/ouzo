@@ -8,12 +8,12 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class StringAssertTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfStringDoesNotMatchRegex()
     {
         CatchException::when(Assert::thatString("Frodo"))->matches('/Fro\d+/');
@@ -21,25 +21,19 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMatchRegex()
     {
         Assert::thatString("Frodo12")->matches('/Fro\w+\d+/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeEqualIgnoringCase()
     {
         Assert::thatString("Frodo")->isEqualToIgnoringCase('frodo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeEqualIgnoringCase()
     {
         CatchException::when(Assert::thatString("Frodo12"))->isEqualToIgnoringCase('frodo');
@@ -47,17 +41,13 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldContainSubstring()
     {
         Assert::thatString("Frodo")->contains('od');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfDoesNotContainSubstring()
     {
         CatchException::when(Assert::thatString("Frodo"))->contains('invalid');
@@ -65,17 +55,13 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStartWithPrefix()
     {
         Assert::thatString("Frodo")->startsWith('Fr');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfDoesNotStartWithPrefix()
     {
         CatchException::when(Assert::thatString("Frodo"))->startsWith('invalid');
@@ -83,17 +69,13 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldEndWithPrefix()
     {
         Assert::thatString("Frodo")->endsWith('do');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfDoesNotEndWithPrefix()
     {
         CatchException::when(Assert::thatString("Frodo"))->endsWith('invalid');
@@ -101,17 +83,13 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptCorrectSize()
     {
         Assert::thatString("Frodo")->hasSize(5);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfDifferentSize()
     {
         CatchException::when(Assert::thatString("Frodo"))->hasSize(7);
@@ -119,17 +97,13 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssertThatDoesNotContainSubstring()
     {
         Assert::thatString("Frodo")->doesNotContain('asd');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailForAssertThatDoesNotContainSubstring()
     {
         CatchException::when(Assert::thatString("Frodo"))->doesNotContain('od');
@@ -137,17 +111,13 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssertThatStringsAreEqual()
     {
         Assert::thatString("Frodo")->isEqualTo('Frodo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfStringsAreNotEqual()
     {
         CatchException::when(Assert::thatString("Frodo"))->isEqualTo('od');
@@ -155,17 +125,13 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssertThatStringsAreNotEqual()
     {
         Assert::thatString("Frodo")->isNotEqualTo('asd');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailIfStringsAreEqualWhenTheyShouldNotBe()
     {
         CatchException::when(Assert::thatString("Frodo"))->isNotEqualTo('Frodo');
@@ -173,33 +139,25 @@ class StringAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsStringIsNull()
     {
         Assert::thatString(null)->isNull();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsStringIsNotNull()
     {
         Assert::thatString('Floki')->isNotNull();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsStringIsEmpty()
     {
         Assert::thatString('')->isEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsStringIsNotEmpty()
     {
         Assert::thatString('Lady Stoneheart')->isNotEmpty();

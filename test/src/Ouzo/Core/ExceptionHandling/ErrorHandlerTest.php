@@ -13,9 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class ErrorHandlerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRender404OnRouterException()
     {
         //given

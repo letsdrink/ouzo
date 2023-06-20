@@ -13,9 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExistsClauseTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBuildExistsClause()
     {
         // when
@@ -28,9 +26,7 @@ class ExistsClauseTest extends TestCase
             ->endsWith('FROM products WHERE name = ?)');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBuildNotExistsClause()
     {
         // when

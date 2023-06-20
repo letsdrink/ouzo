@@ -9,23 +9,20 @@ use Ouzo\Http\HttpStatus;
 use Ouzo\Routing\Annotation\Route;
 use Ouzo\Routing\Annotation\Route\Put;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class PutTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtendRouteAnnotationClass()
     {
         //then
         $this->assertInstanceOf(Route::class, new Put(''));
     }
 
-    /**
-     * @test
-     * @dataProvider getValidParameters
-     */
-    public function testRouteParameters(string $path, ?int $httpResponseCode)
+    #[DataProvider('getValidParameters')]
+    public function testRouteParameters(string $path, ?int $httpResponseCode): void
     {
         //when
         $route = new Put($path, $httpResponseCode);
@@ -36,7 +33,7 @@ class PutTest extends TestCase
         $this->assertEquals($httpResponseCode, $route->getHttpResponseCode());
     }
 
-    public function getValidParameters(): array
+    public static function getValidParameters(): array
     {
         return [
             ['/foo', null],

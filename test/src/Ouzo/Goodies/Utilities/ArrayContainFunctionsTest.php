@@ -6,12 +6,12 @@
 use Ouzo\Utilities\ArrayContainFunctions;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ArrayContainFunctionsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldForEmptyArrays()
     {
         $this->assertFalse(ArrayContainFunctions::contains([], []));
@@ -25,9 +25,7 @@ class ArrayContainFunctionsTest extends TestCase
         $this->assertFalse(ArrayContainFunctions::contains([], new stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldForBooleans()
     {
         $this->assertTrue(ArrayContainFunctions::contains([true, 3], true));
@@ -51,9 +49,7 @@ class ArrayContainFunctionsTest extends TestCase
         $this->assertFalse(ArrayContainFunctions::contains([false, 3], new stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldForNull()
     {
         $this->assertTrue(ArrayContainFunctions::contains([null, 1], null));
@@ -66,9 +62,7 @@ class ArrayContainFunctionsTest extends TestCase
         $this->assertFalse(ArrayContainFunctions::contains([null, 1], new stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldForPrimitives()
     {
         $this->assertTrue(ArrayContainFunctions::contains([1, 2, 3], 1));
@@ -87,9 +81,7 @@ class ArrayContainFunctionsTest extends TestCase
         $this->assertFalse(ArrayContainFunctions::contains([1, 2, 3], new stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsAllShouldWorkForArraysValues()
     {
         $this->assertTrue(ArrayContainFunctions::containsAll([[1], [2]], [[1]]));
@@ -111,9 +103,7 @@ class ArrayContainFunctionsTest extends TestCase
         $this->assertFalse(ArrayContainFunctions::containsAll([['1' => 'a', '2' => 'b'], ['1' => 'c', '2' => 'd']], ['x' => 'a', 'y' => 'd']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldForArraysValues()
     {
         $this->assertTrue(ArrayContainFunctions::contains([[1], [2]], [1]));
@@ -132,27 +122,21 @@ class ArrayContainFunctionsTest extends TestCase
         $this->assertFalse(ArrayContainFunctions::contains([['1' => 'a', '2' => 'b'], ['1' => 'c', '2' => 'd']], ['x' => 'a', 'y' => 'd']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldNotTreatOneAsTrue()
     {
         $this->assertFalse(ArrayContainFunctions::contains([[1], [2]], [true]));
         $this->assertFalse(ArrayContainFunctions::containsAll([[1], [2]], [true]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldNotTreatNumbersAsTrue()
     {
         $this->assertFalse(ArrayContainFunctions::contains([[3], [2]], [true]));
         $this->assertFalse(ArrayContainFunctions::containsAll([[3], [2]], [true]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldBeSymmetric()
     {
         $this->assertEquals(
@@ -161,9 +145,7 @@ class ArrayContainFunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldBeSymmetricForArrays()
     {
         $this->assertEquals(
@@ -172,25 +154,19 @@ class ArrayContainFunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldNotTreatOneAsTrue1()
     {
         $this->assertFalse(ArrayContainFunctions::contains([1, 2], true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsAllShouldCompareWholeElements()
     {
         $this->assertFalse(ArrayContainFunctions::containsAll([['a', 'b'], ['c', 'd']], ['a', 'd']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldForObjectsValues()
     {
         $a = new stdClass();

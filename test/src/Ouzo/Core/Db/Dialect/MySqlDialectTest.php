@@ -13,6 +13,8 @@ use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
 use Ouzo\Tests\CatchException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class MySqlDialectTest extends TestCase
 {
@@ -24,9 +26,7 @@ class MySqlDialectTest extends TestCase
         $this->dialect = new MySqlDialect();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectFrom()
     {
         // given
@@ -40,9 +40,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectFromWithAlias()
     {
         // given
@@ -57,9 +55,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products AS p', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDeleteFrom()
     {
         // given
@@ -74,9 +70,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('DELETE FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDeleteFromWithJoin()
     {
         // given
@@ -92,9 +86,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('DELETE FROM products USING products INNER JOIN categories AS c WHERE (c.id_category = products.id)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectCountFrom()
     {
         // given
@@ -109,9 +101,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT count(*) FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectColumnsFrom()
     {
         // given
@@ -126,9 +116,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT id, name FROM products', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithSingleOrderBy()
     {
         // given
@@ -143,9 +131,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products ORDER BY id asc', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithMultipleOrderBy()
     {
         // given
@@ -160,9 +146,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products ORDER BY id asc, name desc', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithLimit()
     {
         // given
@@ -177,9 +161,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products LIMIT ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnGroupBy()
     {
         // given
@@ -194,9 +176,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT category, count(*) FROM products GROUP BY category', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithOffset()
     {
         // given
@@ -211,9 +191,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products OFFSET ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithSingleWhere()
     {
         // given
@@ -228,9 +206,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithMultipleWhere()
     {
         // given
@@ -245,9 +221,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithWhereIn()
     {
         // given
@@ -262,9 +236,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name IN (?, ?)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithJoin()
     {
         // given
@@ -279,9 +251,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products LEFT JOIN categories ON categories.id_category = products.id_category', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectForChainedWhere()
     {
         // given
@@ -297,9 +267,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE name = ? AND id = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSkipEmptyWheres()
     {
         // given
@@ -315,9 +283,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products WHERE id = ?', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithMultipleJoins()
     {
         //given
@@ -336,9 +302,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals($expected, $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectWithMultipleJoinsWithAliases()
     {
         //given
@@ -357,9 +321,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals($expected, $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnSelectForUpdate()
     {
         // given
@@ -374,9 +336,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('SELECT * FROM products FOR UPDATE', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowOnBatchInsert()
     {
         //given
@@ -395,9 +355,7 @@ class MySqlDialectTest extends TestCase
         Config::overrideProperty('sql_dialect')->with($previous);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBuildUpsertQuery()
     {
         //given

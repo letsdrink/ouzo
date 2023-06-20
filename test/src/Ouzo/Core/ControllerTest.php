@@ -25,6 +25,8 @@ use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\Arrays;
 use Ouzo\View\ViewException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class SimpleTestController extends Controller
 {
@@ -118,6 +120,7 @@ class ControllerTest extends ControllerTestCase
         StreamStub::register('json');
         SimpleTestController::$stream = 'json://input';
         Route::clear();
+        Config::overrideProperty('debug')->with(true);
     }
 
     public function tearDown(): void
@@ -143,9 +146,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertEquals('simple_test', $tab);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnRequestHeaders()
     {
         //given
@@ -192,9 +193,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertDownloadsFile('file.txt');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPassUrlParametersToControllerAction()
     {
         // given
@@ -207,9 +206,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('Param1: Cersei Param2: about-us');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPassOnlyUrlParametersNotPostOrGet()
     {
         // given
@@ -224,9 +221,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo(null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionIfMethodDoesNotExist()
     {
         //given
@@ -239,9 +234,7 @@ class ControllerTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(NoControllerActionException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseQueryString()
     {
         //given
@@ -254,9 +247,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertEquals(['p1' => 'v1', 'p2' => 'v2'], $this->getAssigned('params'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAppendParamsToUrlWithoutParams()
     {
         //given
@@ -273,9 +264,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertEquals(['p1' => 'v1', 'p2' => 'v2'], $this->getAssigned('params'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAppendParamsToUrlWithParams()
     {
         //given
@@ -293,9 +282,7 @@ class ControllerTest extends ControllerTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseQueryStringWithNestedParams()
     {
         //given
@@ -312,9 +299,7 @@ class ControllerTest extends ControllerTestCase
         Assert::thatArray($actual['id'])->hasSize(3)->containsExactly(1, 2, 3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseQueryStringIfParamHasNoValue()
     {
         //given
@@ -327,9 +312,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertEquals(['p1' => null], $this->getAssigned('params'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetEmptyParamsIfNoParameters()
     {
         //given
@@ -342,9 +325,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertEmpty($this->getAssigned('params'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldKeepNoticeToNextRequest()
     {
         //given
@@ -358,9 +339,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('Keep this');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotKeepNoticeToNextRequest()
     {
         //given
@@ -374,9 +353,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo(null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldKeepNoticeToFirstUrlVisit()
     {
         //given
@@ -390,9 +367,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('Keep this');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveNoticeOnFirstUrlVisit()
     {
         //given
@@ -407,9 +382,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo(null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsHeaderIsCorrectly()
     {
         //given
@@ -422,9 +395,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertResponseHeader('HTTP/1.1 200 OK');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveNoticeIfShortUrlMatches()
     {
         //given
@@ -439,9 +410,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isNull();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveNoticeIfFullUrlMatches()
     {
         //given
@@ -460,9 +429,7 @@ class ControllerTest extends ControllerTestCase
         Config::revertProperty('global', 'prefix_system');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotRemoveNoticeIfUrlDoesNotMatch()
     {
         //given
@@ -477,9 +444,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertRenderedContent()->isEqualTo('notice');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotStoreEmptyUrlForNotices()
     {
         //given
@@ -505,9 +470,7 @@ class ControllerTest extends ControllerTestCase
         Config::revertPropertyArray(['global', 'prefix_system']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRenderAjaxViewWithoutViewName()
     {
         //given
@@ -520,9 +483,7 @@ class ControllerTest extends ControllerTestCase
         CatchException::assertThat()->isInstanceOf(ViewException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveNoticeIfUrlIsWithQueryPath()
     {
         //given
@@ -536,9 +497,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertEmpty(Session::get('messages'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetStringOutput()
     {
         //given
@@ -551,9 +510,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertEquals('ONLY OUTPUT', $this->getActualContent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReadParametersFromStream()
     {
         //given
@@ -569,9 +526,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertEquals(['key' => 'value'], $this->getAssigned('params'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCountTimeAndNumberOfQueries()
     {
         //given
@@ -585,9 +540,7 @@ class ControllerTest extends ControllerTestCase
         $this->assertCount(2, $_SESSION['stats_queries']['/simple_test/tracing#']['queries']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTraceInfoAboutHttpRequest()
     {
         //given
@@ -601,9 +554,7 @@ class ControllerTest extends ControllerTestCase
             ->containsKeyAndValue(['param1' => 'value1', 'param2' => 'value2']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGroupStatsByRequest()
     {
         //given

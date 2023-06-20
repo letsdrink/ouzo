@@ -6,12 +6,12 @@
 
 use Ouzo\Http\ResponseMapper;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ResponseMapperTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnResponse()
     {
         //when
@@ -21,9 +21,7 @@ class ResponseMapperTest extends TestCase
         $this->assertEquals('404 Not Found', $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDefaultResponseWhenNotFoundCode()
     {
         //when
@@ -33,9 +31,7 @@ class ResponseMapperTest extends TestCase
         $this->assertEquals('500 Internal Server Error', $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnResponseWithProtocol()
     {
         //when

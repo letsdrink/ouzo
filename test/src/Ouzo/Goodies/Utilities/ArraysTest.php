@@ -11,12 +11,12 @@ use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Comparator;
 use Ouzo\Utilities\Functions;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ArraysTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindIntZeroInArray()
     {
         //given
@@ -35,9 +35,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('k3', $zeroKey);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMapKeys()
     {
         //given
@@ -57,9 +55,7 @@ class ArraysTest extends TestCase
         ], $arrayWithNewKeys);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMapValues()
     {
         //given
@@ -72,9 +68,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['new_k1', 'new_k2', 'new_k3'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMapEntries()
     {
         //given
@@ -87,9 +81,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['a' => 'a_1', 'b' => 'b_2', 'c' => 'c_3'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterValues()
     {
         //given
@@ -102,9 +94,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([2 => 3, 3 => 4], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseIdentityAsDefaultValueFunctionInToMap()
     {
         //given
@@ -117,9 +107,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([10 => 1, 20 => 2], $map);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetLastElementOfArray()
     {
         //given
@@ -132,9 +120,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('c', $last);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenElementsAreEmptyInLast()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -142,9 +128,7 @@ class ArraysTest extends TestCase
         Arrays::last([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenElementsAreEmptyInFirst()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -152,9 +136,7 @@ class ArraysTest extends TestCase
         Arrays::first([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetFirstKeyInteger()
     {
         //given
@@ -167,9 +149,7 @@ class ArraysTest extends TestCase
         Assert::thatString($first)->isEqualTo('bar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetFirstKeyString()
     {
         //given
@@ -182,9 +162,7 @@ class ArraysTest extends TestCase
         Assert::thatString($first)->isEqualTo('bar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetFirstKeyAccordingToOrder()
     {
         //given
@@ -197,9 +175,7 @@ class ArraysTest extends TestCase
         Assert::thatString($first)->isEqualTo('bar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFirstOnNullReturnFirst()
     {
         //given
@@ -212,9 +188,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('foo', $return);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFirstOrNullReturnNullForEmptyArray()
     {
         //given
@@ -227,9 +201,7 @@ class ArraysTest extends TestCase
         $this->assertNull($return);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLastOrNullReturnLast()
     {
         //given
@@ -242,9 +214,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('bar', $return);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLastOrNullReturnNullForEmptyArray()
     {
         //given
@@ -257,9 +227,7 @@ class ArraysTest extends TestCase
         $this->assertNull($return);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTrueIfAllElementSatisfyPredicate()
     {
         //given
@@ -272,9 +240,7 @@ class ArraysTest extends TestCase
         $this->assertTrue($all);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFalseIfNotAllElementSatisfyPredicate()
     {
         //given
@@ -287,9 +253,7 @@ class ArraysTest extends TestCase
         $this->assertFalse($all);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsAnyIsBool()
     {
         //given
@@ -302,9 +266,7 @@ class ArraysTest extends TestCase
         $this->assertTrue($any);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterByAllowedKeys()
     {
         //given
@@ -317,9 +279,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['a' => 1, 'b' => 2], $filtered);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterByKeys()
     {
         //given
@@ -332,9 +292,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['a1' => 1, 'a2' => 2], $filtered);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGroupByFunctionResult()
     {
         //given
@@ -352,9 +310,7 @@ class ArraysTest extends TestCase
             '2' => [$product2, $product3]], $grouped);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleEmptyArrayInGroupBy()
     {
         //given
@@ -367,9 +323,7 @@ class ArraysTest extends TestCase
         $this->assertEmpty($grouped);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGroupByAndSort()
     {
         //given
@@ -387,9 +341,7 @@ class ArraysTest extends TestCase
             '2' => [$product3, $product2]], $grouped);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSortArrayByField()
     {
         //given
@@ -405,9 +357,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([$product3, $product1, $product2], $sorted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSortArrayByCompoundComparator()
     {
         //given
@@ -426,9 +376,7 @@ class ArraysTest extends TestCase
         Assert::thatArray($sorted)->containsExactly($product1, $product2, $product3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSortArrayByCompareByWithMultipleExpressions()
     {
         //given
@@ -447,9 +395,7 @@ class ArraysTest extends TestCase
         Assert::thatArray($sorted)->containsExactly($product3, $product1, $product2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSortArrayIndependentlyFromInitialOrder()
     {
         //given
@@ -473,9 +419,7 @@ class ArraysTest extends TestCase
         $this->assertEquals($sorted2, $sorted3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSortArrayByDefaultExtractor()
     {
         //given
@@ -488,9 +432,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([1, 2, 3], $sorted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayShouldReturnSameArrayForArray()
     {
         // given
@@ -503,9 +445,7 @@ class ArraysTest extends TestCase
         $this->assertEquals($array, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayShouldReturnArrayForNonArray()
     {
         // when
@@ -515,9 +455,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['test'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayShouldReturnEmptyArrayForNull()
     {
         // when
@@ -527,9 +465,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayShouldReturnArrayWithOneElementForFalse()
     {
         // when
@@ -539,9 +475,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([false], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayShouldReturnArrayWithOneElementForZero()
     {
         // when
@@ -551,9 +485,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([0], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toArrayShouldReturnArrayWithOneElementForEmptyString()
     {
         // when
@@ -563,9 +495,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([''], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetRandomElement()
     {
         //given
@@ -578,9 +508,7 @@ class ArraysTest extends TestCase
         $this->assertContains($result, $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNullIfNotFindRandomElement()
     {
         //given
@@ -593,9 +521,7 @@ class ArraysTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetValueFromArray()
     {
         //given
@@ -608,9 +534,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('john', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDefaultValueIfNotGetValueFromArray()
     {
         //given
@@ -623,9 +547,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('--not found--', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnCombinedArray()
     {
         //given
@@ -641,9 +563,7 @@ class ArraysTest extends TestCase
             ->containsKeyAndValue(['id' => 1, 'name' => 'john', 'surname' => 'smith']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlattenAnArray()
     {
         //given
@@ -671,9 +591,7 @@ class ArraysTest extends TestCase
             ->containsExactly('john', 'peter', 'bill', 'cheese', 'milk', 'brie');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsKeyExists()
     {
         //given
@@ -686,9 +604,7 @@ class ArraysTest extends TestCase
         $this->assertTrue($return);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReduceAnArray()
     {
         //given
@@ -708,9 +624,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('isset($id) && isset($name) && isset($phone)', $reduced);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindElement()
     {
         //when
@@ -722,9 +636,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('b', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findShouldReturnNullWhenElementWasNotFound()
     {
         //when
@@ -736,9 +648,7 @@ class ArraysTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnArraysIntersection()
     {
         //given
@@ -752,9 +662,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['1', '4'], $intersection);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNestedValue()
     {
         //given
@@ -767,9 +675,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('value', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNestedValueShouldReturnNullWhenKeyNotFound()
     {
         //given
@@ -782,9 +688,7 @@ class ArraysTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNestedValueShouldReturnNullWhenZeroStringKeyNotFound()
     {
         //given
@@ -797,9 +701,7 @@ class ArraysTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNestedValueShouldReturnNullWhenZeroIntKeyNotFound()
     {
         //given
@@ -812,9 +714,7 @@ class ArraysTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNestedValueShouldReturnNullWhenMultipleStringZeroKeysNotFound()
     {
         //given
@@ -827,9 +727,7 @@ class ArraysTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNestedValueShouldReturnEmptyValue()
     {
         //given
@@ -842,9 +740,7 @@ class ArraysTest extends TestCase
         $this->assertTrue($value === '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNestedValueShouldReturnZero()
     {
         //given
@@ -857,9 +753,7 @@ class ArraysTest extends TestCase
         $this->assertTrue($value === '0');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetNestedValue()
     {
         //given
@@ -872,9 +766,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['1' => ['2' => ['3' => 'value']]], $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveNestedKeyAtRoot()
     {
         //given
@@ -887,9 +779,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([], $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveNestedKeyWithoutEmptyParent()
     {
         //given
@@ -902,9 +792,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['1' => []], $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveNestedKeyWithEmptyParent()
     {
         //given
@@ -917,9 +805,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([], $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotRemoveNestedKeyWhenKeyNotFoundAndValueIsNull()
     {
         //given
@@ -932,9 +818,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['1' => null], $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotChangeInputArrayWhenKeyNotFound()
     {
         //given
@@ -947,9 +831,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['1' => ['2' => ['3' => 'value']]], $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowDeprecatedExceptionWhenUseRemoveNestedValue()
     {
         //given
@@ -964,9 +846,7 @@ class ArraysTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotRemoveNestedKeyWhenKeyNotFound()
     {
         //given
@@ -979,9 +859,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['1' => ['2' => ['3' => 'value']]], $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotRemoveKeyWhenKeyNotFoundInTheFirstLevel()
     {
         //given
@@ -994,9 +872,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['1' => ['2' => 'value']], $array);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIfArrayHasNestedKey()
     {
         //given
@@ -1009,9 +885,7 @@ class ArraysTest extends TestCase
         $this->assertTrue($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIfArrayHasNestedKeyForRoot()
     {
         //given
@@ -1024,9 +898,7 @@ class ArraysTest extends TestCase
         $this->assertTrue($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNestedKeyShouldReturnFalseWhenKeyDoesNotExist()
     {
         //given
@@ -1039,9 +911,7 @@ class ArraysTest extends TestCase
         $this->assertFalse($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNestedKeyShouldReturnTrueWhenKeyIsNullAndNullIsValue()
     {
         //given
@@ -1054,9 +924,7 @@ class ArraysTest extends TestCase
         $this->assertTrue($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNestedKeyShouldReturnFalseWhenKeyIsNullAndNullIsNotValue()
     {
         //given
@@ -1069,9 +937,7 @@ class ArraysTest extends TestCase
         $this->assertFalse($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNestedKeyShouldReturnFalseWhenKeyStringZeroDoesNotExist()
     {
         //given
@@ -1084,9 +950,7 @@ class ArraysTest extends TestCase
         $this->assertFalse($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFilterNotBlank()
     {
         //given
@@ -1105,9 +969,7 @@ class ArraysTest extends TestCase
         Assert::thatArray($filtered)->hasSize(2)->contains('foo', -1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyArrayWhenNotFoundInNestedValue()
     {
         //given
@@ -1120,9 +982,7 @@ class ArraysTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateArrayWithFlattenKeys()
     {
         //given
@@ -1158,9 +1018,7 @@ class ArraysTest extends TestCase
         $this->assertEquals($expected, $flatten);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCountElements()
     {
         //given
@@ -1175,9 +1033,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(2, $count);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectsUniqueByField()
     {
         //given
@@ -1194,9 +1050,7 @@ class ArraysTest extends TestCase
         Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectsUniqueByFunctionResults()
     {
         //given
@@ -1213,9 +1067,7 @@ class ArraysTest extends TestCase
         Assert::thatArray($uniqueByName)->onProperty('name')->containsExactly('bob', 'john');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectsUniqueByNestedField()
     {
         //given
@@ -1236,9 +1088,7 @@ class ArraysTest extends TestCase
         Assert::thatArray($uniqueByName)->hasSize(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractRecursivelyArrayColumn()
     {
         //given
@@ -1255,9 +1105,7 @@ class ArraysTest extends TestCase
             ->containsOnly(90, 100);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnAdditionalValueInRecursiveDiff()
     {
         //given
@@ -1271,9 +1119,7 @@ class ArraysTest extends TestCase
         $this->assertEquals(['a' => ['d' => 'e'], 'f' => ['b' => 'c'], 'z'], $recursiveDiff);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIfArrayIsAssociative()
     {
         $this->assertTrue(Arrays::isAssociative(['a' => 1, 2, 'c']));
@@ -1281,9 +1127,7 @@ class ArraysTest extends TestCase
         $this->assertFalse(Arrays::isAssociative(['a', 'b', 'c']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConcatArrays()
     {
         //given
@@ -1296,9 +1140,7 @@ class ArraysTest extends TestCase
         $this->assertEquals([1, 2, 3, 4], $flattened);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConcatEmptyArray()
     {
         //given
@@ -1311,17 +1153,13 @@ class ArraysTest extends TestCase
         $this->assertEquals([], $flattened);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldWorkForDifferentTypes()
     {
         $this->assertTrue(Arrays::contains([1, 2, 3], 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnShuffledArrayWithKeyAssociation()
     {
         //given
@@ -1337,17 +1175,13 @@ class ArraysTest extends TestCase
             ->containsKeyAndValue([3 => 'c']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shuffleShouldReturnEmptyArrayForEmptyArray()
     {
         $this->assertEmpty(Arrays::shuffle([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetDuplicates()
     {
         $this->assertEquals(['a', 'b', 'd'], Arrays::getDuplicates(['1', 'a', 'b', 'c', 'd', 'b', 'b', 'd', 'b', 'd', 'a']));
@@ -1355,9 +1189,7 @@ class ArraysTest extends TestCase
         $this->assertEmpty(Arrays::getDuplicates([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetDuplicatesAssoc()
     {
         $this->assertEquals([2 => 'a', 3 => 'b', 6 => 'c'], Arrays::getDuplicatesAssoc(['1', '2', 'a', 'b', '3', 'b', 'c', 'b', 'c', 'b', 'c', 'a']));
@@ -1365,9 +1197,7 @@ class ArraysTest extends TestCase
         $this->assertEmpty(Arrays::getDuplicatesAssoc([]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetValues()
     {
         //given
@@ -1380,9 +1210,7 @@ class ArraysTest extends TestCase
         Assert::thatArray($keys)->isEqualTo([4, 'Arya', 'Stark']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResetInternalArrayPointer()
     {
         //given
@@ -1396,9 +1224,7 @@ class ArraysTest extends TestCase
         $this->assertEquals('one', current($values));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetKeys()
     {
         //given

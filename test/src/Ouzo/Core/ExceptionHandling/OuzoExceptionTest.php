@@ -12,9 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class OuzoExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnErrorMessages()
     {
         //given

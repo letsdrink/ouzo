@@ -7,12 +7,12 @@
 namespace Ouzo\ExceptionHandling;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ExceptionLoggerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotWritePasswordToLog()
     {
         // when
@@ -22,9 +22,7 @@ class ExceptionLoggerTest extends TestCase
         $this->assertEquals('[<login> => "xxx", <password> => "***"]', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLogSource()
     {
         //given

@@ -13,9 +13,7 @@ function getenv(?string $name, bool $local_only = false): array|string|false
 
 class EnvironmentTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInitializeWhenIsNotConsoleAndServerEnvironmentNotExist(): void
     {
         //given

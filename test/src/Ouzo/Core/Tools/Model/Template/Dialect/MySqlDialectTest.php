@@ -12,9 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class MySqlDialectTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMapIntQslDataTypeToPhpDataType()
     {
         //given
@@ -29,9 +27,7 @@ class MySqlDialectTest extends TestCase
         $this->assertEquals('int', $phpIntType2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMapFloatQslDataTypeToPhpDataType()
     {
         //given

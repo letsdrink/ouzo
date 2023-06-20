@@ -6,10 +6,22 @@
 
 use Ouzo\Utilities\Joiner;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class JoinerTest extends TestCase
 {
-    public function arrayJoinedWithSeparator(): array
+    #[DataProvider('arrayJoinedWithSeparator')]
+    public function shouldJoinArrayWithSeparator(array $array, string $expectedResult): void
+    {
+        //when
+        $result = Joiner::on(', ')->join($array);
+
+        //then
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    public static function arrayJoinedWithSeparator(): array
     {
         return [
             [['A', 'B', 'C'], 'A, B, C'],
@@ -23,22 +35,7 @@ class JoinerTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider arrayJoinedWithSeparator
-     */
-    public function shouldJoinArrayWithSeparator(array $array, string $expectedResult)
-    {
-        //when
-        $result = Joiner::on(', ')->join($array);
-
-        //then
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinArrayWithEmptySeparator()
     {
         //when
@@ -48,9 +45,7 @@ class JoinerTest extends TestCase
         $this->assertEquals('ABC', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinArrayAndSkipNulls()
     {
         //when
@@ -60,9 +55,7 @@ class JoinerTest extends TestCase
         $this->assertEquals('A, C', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinArrayAndSkipEmptyStringsOnSkipNulls()
     {
         //when
@@ -72,9 +65,7 @@ class JoinerTest extends TestCase
         $this->assertEquals('A, C', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinMap()
     {
         //when
@@ -84,9 +75,7 @@ class JoinerTest extends TestCase
         $this->assertEquals('A, B, C', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinArrayApplyingFunction()
     {
         //when
@@ -98,9 +87,7 @@ class JoinerTest extends TestCase
         $this->assertEquals('a, b, c', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinMapApplyingFunction()
     {
         //when
@@ -112,9 +99,7 @@ class JoinerTest extends TestCase
         $this->assertEquals('1 => A, 2 => B, 3 => C', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldJoinMapApplyingFunctionOnValues()
     {
         //when

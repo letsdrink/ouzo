@@ -13,9 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class TableInfoTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFieldsWithoutPrimaryKeyWhenIsNotDefault()
     {
         //given
@@ -36,9 +34,7 @@ class TableInfoTest extends TestCase
         Assert::thatArray($columns)->onProperty('name')->containsOnly('sale', 'description');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFieldsWithPrimaryKeyWhenIsDefault()
     {
         //given

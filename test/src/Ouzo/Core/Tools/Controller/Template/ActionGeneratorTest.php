@@ -7,12 +7,12 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tools\Controller\Template\ActionGenerator;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ActionGeneratorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnReplacedTemplateContents()
     {
         //given

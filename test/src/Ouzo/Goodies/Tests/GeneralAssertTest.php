@@ -9,12 +9,12 @@ use Ouzo\Tests\GeneralAssert;
 use Ouzo\Tests\Mock\Mock;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class GeneralAssertTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnInstance()
     {
         // when
@@ -24,9 +24,7 @@ class GeneralAssertTest extends TestCase
         $this->assertInstanceOf(GeneralAssert::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeInstanceOf()
     {
         // then
@@ -58,9 +56,7 @@ class GeneralAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeNull()
     {
         GeneralAssert::that(null)->isNull();
@@ -120,9 +116,7 @@ class GeneralAssertTest extends TestCase
         CatchException::assertThat()->isInstanceOf(ExpectationFailedException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeNotNull()
     {
         CatchException::when(GeneralAssert::that(null))->isNotNull();

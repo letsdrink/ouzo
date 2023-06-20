@@ -11,9 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClassPathResolverTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindFileNameForClassNameAndNamespace()
     {
         //given
@@ -26,9 +24,7 @@ class ClassPathResolverTest extends TestCase
         Assert::thatString($classPath)->endsWith(Path::join('Application', 'Model', 'My', 'Name', 'Space', 'UserAcl.php'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveFilePathForDefaultNamespaces()
     {
         //given
@@ -41,9 +37,7 @@ class ClassPathResolverTest extends TestCase
         Assert::thatString($classPath)->endsWith(Path::join('Application', 'Model', 'UserAcl.php'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveDirectoryPath()
     {
         //given

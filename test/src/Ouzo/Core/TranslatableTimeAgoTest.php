@@ -7,10 +7,25 @@
 use Ouzo\TranslatableTimeAgo;
 use Ouzo\Utilities\Clock;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class TranslatableTimeAgoTest extends TestCase
 {
-    public function dates(): array
+    #[DataProvider('dates')]
+    public function shouldCreateTranslatableTimeAgo($currentDate, $date, $expectedText): void
+    {
+        //given
+        Clock::freeze($currentDate);
+
+        //when
+        $translatableTimeAgo = TranslatableTimeAgo::create($date)->asString();
+
+        //then
+        $this->assertEquals($expectedText, $translatableTimeAgo, 'Error in [' . $date . '] with expected [' . $expectedText . ']');
+    }
+
+    public static function dates(): array
     {
         return [
             ['2012-02-20 12:00', '2012-02-20 11:59', 'just now'],
@@ -26,21 +41,5 @@ class TranslatableTimeAgoTest extends TestCase
             ['2012-02-20 12:00', '2011-01-20 11:59', '2011-01-20'],
             ['2012-02-20 12:00', '2011-01-20 11:55', '2011-01-20']
         ];
-    }
-
-    /**
-     * @test
-     * @dataProvider dates
-     */
-    public function shouldCreateTranslatableTimeAgo($currentDate, $date, $expectedText)
-    {
-        //given
-        Clock::freeze($currentDate);
-
-        //when
-        $translatableTimeAgo = TranslatableTimeAgo::create($date)->asString();
-
-        //then
-        $this->assertEquals($expectedText, $translatableTimeAgo, 'Error in [' . $date . '] with expected [' . $expectedText . ']');
     }
 }

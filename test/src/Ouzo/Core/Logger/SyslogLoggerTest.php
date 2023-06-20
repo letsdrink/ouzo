@@ -15,6 +15,8 @@ use Ouzo\Utilities\Clock;
 use Psr\Log\LoggerInterface;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class SyslogLoggerTest extends TestCase
 {
@@ -34,9 +36,7 @@ class SyslogLoggerTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWriteErrorMessage()
     {
         //when

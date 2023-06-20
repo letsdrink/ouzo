@@ -7,6 +7,8 @@
 use Application\Model\Test\Category;
 use Ouzo\Config;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class DbFunctionTest extends DbTransactionalTestCase
 {
@@ -20,9 +22,7 @@ class DbFunctionTest extends DbTransactionalTestCase
         parent::setUp();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCallDbFunction()
     {
         //given

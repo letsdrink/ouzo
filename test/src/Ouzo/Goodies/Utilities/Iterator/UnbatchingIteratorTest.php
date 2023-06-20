@@ -10,9 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class UnbatchingIteratorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFlattenChunks()
     {
         //given

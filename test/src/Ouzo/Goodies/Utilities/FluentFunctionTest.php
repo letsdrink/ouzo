@@ -11,9 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class FluentFunctionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldChainFunctionCalls()
     {
         //given
@@ -30,9 +28,7 @@ class FluentFunctionTest extends TestCase
         $this->assertEquals('*** extra phone! ***', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNegate()
     {
         //given

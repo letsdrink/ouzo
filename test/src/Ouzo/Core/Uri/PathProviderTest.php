@@ -7,6 +7,8 @@
 use Ouzo\Uri\PathProvider;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class PathProviderTest extends TestCase
 {
@@ -19,9 +21,7 @@ class PathProviderTest extends TestCase
         unset($_SERVER['REQUEST_URI']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnRedirectUrlIfExists()
     {
         // given
@@ -35,9 +35,7 @@ class PathProviderTest extends TestCase
         $this->assertEquals('/redirect/url', $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnRedirectUrlWithRedirectQueryStringIfExists()
     {
         // given
@@ -52,9 +50,7 @@ class PathProviderTest extends TestCase
         $this->assertEquals('/redirect/url?id=1&name=john', $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnRequestUriIfRedirectUrlNotExist()
     {
         // given

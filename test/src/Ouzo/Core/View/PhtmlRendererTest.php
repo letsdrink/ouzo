@@ -8,6 +8,8 @@ use Ouzo\Config;
 use Ouzo\View\DefaultViewPathProvider;
 use Ouzo\View\PhtmlRenderer;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class PhtmlRendererTest extends TestCase
 {
@@ -23,9 +25,7 @@ class PhtmlRendererTest extends TestCase
         Config::revertProperty('path', 'view');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRenderView()
     {
         //given
@@ -38,9 +38,7 @@ class PhtmlRendererTest extends TestCase
         $this->assertEquals('Hello World!', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRenderViewWithAttributes()
     {
         //given

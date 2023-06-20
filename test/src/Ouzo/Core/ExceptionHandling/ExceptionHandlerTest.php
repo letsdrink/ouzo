@@ -13,9 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExceptionHandlerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleException()
     {
         //given

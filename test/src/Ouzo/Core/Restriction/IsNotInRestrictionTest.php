@@ -9,9 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class IsNotInRestrictionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSql()
     {
         //given
@@ -24,9 +22,7 @@ class IsNotInRestrictionTest extends TestCase
         $this->assertEquals('category_id NOT IN(?, ?, ?)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyStringForEmptyArray()
     {
         //given

@@ -8,12 +8,12 @@ namespace Ouzo\Utilities\Iterator;
 
 use ArrayIterator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class BatchingIteratorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldChunkElementsWhenLengthDivisibleByChunk()
     {
         //given
@@ -30,9 +30,7 @@ class BatchingIteratorTest extends TestCase
         $this->assertEquals([[1, 2], [3, 4]], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldChunkElementsWhenLengthNotDivisibleByChunk()
     {
         //given
@@ -49,9 +47,7 @@ class BatchingIteratorTest extends TestCase
         $this->assertEquals([[1, 2], [3]], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeValidForEmptyArray()
     {
         //given
@@ -64,9 +60,7 @@ class BatchingIteratorTest extends TestCase
         $this->assertFalse($valid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRewindIterator()
     {
         $ait = new ArrayIterator(['a', 'b', 'c', 'd']);
@@ -81,9 +75,7 @@ class BatchingIteratorTest extends TestCase
         $this->assertEquals([['a', 'b'], ['c', 'd']], iterator_to_array($batchIterator));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPreserveKeysInChunk()
     {
         //given

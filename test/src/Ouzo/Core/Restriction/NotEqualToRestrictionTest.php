@@ -9,9 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class NotEqualToRestrictionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSql()
     {
         //given
@@ -25,9 +23,7 @@ class NotEqualToRestrictionTest extends TestCase
         $this->assertEquals(['value'], $restriction->getValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSqlForEmptyString()
     {
         //given

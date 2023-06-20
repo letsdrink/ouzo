@@ -9,6 +9,8 @@ use Ouzo\Routing\GroupedRoute;
 use Ouzo\Tests\Assert;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class GroupedRouteTest extends TestCase
 {
@@ -20,9 +22,7 @@ class GroupedRouteTest extends TestCase
         Route::$isDebug = false;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddGetRoute()
     {
         //given
@@ -38,9 +38,7 @@ class GroupedRouteTest extends TestCase
             ->containsOnly('/api/user/index', '/api/user/show/id/:id');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddPostRoute()
     {
         //given
@@ -56,9 +54,7 @@ class GroupedRouteTest extends TestCase
             ->containsOnly('/api/user/save', '/api/user/update/id/:id');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddAnyRoute()
     {
         //given
@@ -74,9 +70,7 @@ class GroupedRouteTest extends TestCase
             ->containsOnly('/api/user/save', '/api/user/update/id/:id');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddDeleteRoute()
     {
         //given
@@ -91,9 +85,7 @@ class GroupedRouteTest extends TestCase
             ->containsOnly('/api/user/delete/:id');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateRouteForResource()
     {
         //given

@@ -11,9 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class ViewHelperTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConstructUrlForController()
     {
         $url = url(['controller' => 'users', 'action' => 'show', 'extraParams' => ['id' => 3, 'age' => 34]]);
@@ -21,9 +19,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals(Config::getPrefixSystem() . '/users/show/id/3/age/34', $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConstructUrlForAddress()
     {
         $url = url(['string' => '/users/show']);
@@ -31,9 +27,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals(Config::getPrefixSystem() . '/users/show', $url);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionForInvalidArguments()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -41,9 +35,7 @@ class ViewHelperTest extends TestCase
         url(['action' => 'show', 'extraParams' => ['id' => 3]]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionForEmptyParams()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -51,9 +43,7 @@ class ViewHelperTest extends TestCase
         url([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionForEmptyString()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -61,9 +51,7 @@ class ViewHelperTest extends TestCase
         url("");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNullForNullDateInFormat()
     {
         //given
@@ -76,9 +64,7 @@ class ViewHelperTest extends TestCase
         $this->assertNull($formattedDate);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlToCssFile()
     {
         //given
@@ -92,9 +78,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlToJsFile()
     {
         //given
@@ -108,9 +92,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddCacheSuffix()
     {
         //given
@@ -124,9 +106,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRemoveStringFromHtmlFileTag()
     {
         //given
@@ -140,9 +120,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals('<script type="text/javascript" src="/public/test.js?1234"></script>' . PHP_EOL, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatDate()
     {
         //given
@@ -155,9 +133,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals('2001-10-10', $formatted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatDateTime()
     {
         //given
@@ -170,9 +146,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals('2001-10-10 12:00', $formatted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFormatDateTimeWithSeconds()
     {
         //given
@@ -185,9 +159,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals('2001-10-10 12:00:43', $formatted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTranslate()
     {
         //given
@@ -200,9 +172,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals('Product description', $translated);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldConvertObjectToString()
     {
         //given
@@ -218,9 +188,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals('stdClass {<name> => "John", <id> => 1}', $toString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInflectWord()
     {
         //given
@@ -233,9 +201,7 @@ class ViewHelperTest extends TestCase
         $this->assertEquals('client', $inflected);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNullWhenFileInfoIsEmpty()
     {
         //when
@@ -245,9 +211,7 @@ class ViewHelperTest extends TestCase
         $this->assertNull($file);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNullWhenTypeIsNullInHtmlFileTag()
     {
         //when

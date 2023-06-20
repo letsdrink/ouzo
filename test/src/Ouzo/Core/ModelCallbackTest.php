@@ -48,9 +48,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
         ModelDefinition::resetCache();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCallAfterSaveCallbackOnInsert()
     {
         //given
@@ -65,9 +63,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
         $this->assertEquals([$model], $callback->args);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCallAfterSaveCallbackOnUpdate()
     {
         //given
@@ -83,9 +79,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
         $this->assertEquals([$model], $callback->args);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCallBeforeSaveCallbackOnInsert()
     {
         //given
@@ -101,9 +95,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
         $this->assertEquals('bmw_updated', $model->reload()->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCallBeforeSaveCallbackOnUpdate()
     {
         //given
@@ -120,9 +112,7 @@ class ModelCallbackTest extends DbTransactionalTestCase
         $this->assertEquals('audi_updated', $model->reload()->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCallMemberFunctionCallback()
     {
         //given

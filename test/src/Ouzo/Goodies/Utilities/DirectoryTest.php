@@ -27,9 +27,7 @@ class DirectoryTest extends TestCase
         DeleteDirectory::recursive($this->directory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetDirectorySize()
     {
         //when

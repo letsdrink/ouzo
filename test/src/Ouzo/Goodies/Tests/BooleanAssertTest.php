@@ -8,12 +8,12 @@ use Ouzo\Tests\BooleanAssert;
 use Ouzo\Tests\CatchException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class BooleanAssertTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnInstance()
     {
         // when
@@ -23,18 +23,14 @@ class BooleanAssertTest extends TestCase
         $this->assertInstanceOf(BooleanAssert::class, $instance);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeTrue()
     {
         // then
         BooleanAssert::that(true)->isTrue();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeFalse()
     {
         // then

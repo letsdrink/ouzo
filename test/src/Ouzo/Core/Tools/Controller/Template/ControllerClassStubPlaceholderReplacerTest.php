@@ -7,12 +7,12 @@ use Ouzo\Tests\Assert;
 use Ouzo\Tools\Controller\Template\ControllerGenerator;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ControllerClassStubPlaceholderReplacerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReplaceClassNameAndNamespace()
     {
         //given

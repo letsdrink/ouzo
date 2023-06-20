@@ -17,9 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class FilesTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDeleteFile()
     {
         //given
@@ -34,9 +32,7 @@ class FilesTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenNotFoundFileToDelete()
     {
         //given
@@ -49,9 +45,7 @@ class FilesTest extends TestCase
         CatchException::assertThat()->isInstanceOf(FileNotFoundException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMoveFile()
     {
         //given
@@ -69,9 +63,7 @@ class FilesTest extends TestCase
         Files::delete($newPath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenNotFoundSourceFileToMove()
     {
         //given
@@ -99,9 +91,7 @@ class FilesTest extends TestCase
         $this->assertEquals($result, $unit);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnWhenZeroPassed()
     {
         //when
@@ -111,9 +101,7 @@ class FilesTest extends TestCase
         $this->assertEquals('0 B', $unit);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFileSize()
     {
         //given
@@ -127,9 +115,7 @@ class FilesTest extends TestCase
         $this->assertEquals(4, $size);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetFilesRecursivelyByExtension()
     {
         //given
@@ -164,9 +150,7 @@ class FilesTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCopyFileContent()
     {
         //given
@@ -186,9 +170,7 @@ class FilesTest extends TestCase
         $this->assertEquals('content', $content);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnMimeType()
     {
         //given
@@ -201,9 +183,7 @@ class FilesTest extends TestCase
         $this->assertEquals('image/png', $mimeType);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldDeleteFileIfExists()
     {
         //given
@@ -218,9 +198,7 @@ class FilesTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFalseIfNotExistsAnTryToDelete()
     {
         //when
@@ -231,9 +209,7 @@ class FilesTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssumeThatFileContainsClass()
     {
         //given
@@ -246,9 +222,7 @@ class FilesTest extends TestCase
         $this->assertEquals('TestClass', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssumeThatFileDoesNotContainClass()
     {
         //given

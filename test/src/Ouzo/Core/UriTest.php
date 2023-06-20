@@ -14,6 +14,8 @@ use Ouzo\Tests\StreamStub;
 use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
 use Ouzo\Utilities\JsonDecodeException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class UriTest extends TestCase
@@ -31,9 +33,7 @@ class UriTest extends TestCase
         unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractController()
     {
         //given
@@ -44,9 +44,7 @@ class UriTest extends TestCase
         $this->assertEquals('user', $this->uri->getRawController());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractAction()
     {
         //given
@@ -56,9 +54,7 @@ class UriTest extends TestCase
         $this->assertEquals('add', $this->uri->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetParamValueByName()
     {
         //given
@@ -69,9 +65,7 @@ class UriTest extends TestCase
         $this->assertEquals(5, $this->uri->getParam('id'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetNullValueByNonExistingNameWhenAnyParamsPassed()
     {
         //given
@@ -81,9 +75,7 @@ class UriTest extends TestCase
         $this->assertNull($this->uri->getParam('surname'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetNullValueByNonExistingNameWhenNoParamsPassed()
     {
         //given
@@ -93,9 +85,7 @@ class UriTest extends TestCase
         $this->assertNull($this->uri->getParam('surname'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleOddNumberOfParameters()
     {
         //given
@@ -108,9 +98,7 @@ class UriTest extends TestCase
         $this->assertNull($param);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSplitPathWithoutLimit()
     {
         //given
@@ -124,9 +112,7 @@ class UriTest extends TestCase
         $this->assertEquals($paramsExpected, $callMethod);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSplitPathWithLimit()
     {
         //given
@@ -140,9 +126,7 @@ class UriTest extends TestCase
         $this->assertEquals($paramsExpected, $callMethod);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetAllParams()
     {
         //given
@@ -156,9 +140,7 @@ class UriTest extends TestCase
         $this->assertEquals($paramsExpected, $params);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTrueWhenAjaxRequest()
     {
         //given
@@ -171,9 +153,7 @@ class UriTest extends TestCase
         $this->assertTrue($isAjax);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseUrlWithParamsWhenGETDataAdded()
     {
         //given
@@ -187,9 +167,7 @@ class UriTest extends TestCase
         $this->assertEquals($paramsExpected, $params);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseUrlWithoutParamsWhenGETDataAdded()
     {
         //given
@@ -203,9 +181,7 @@ class UriTest extends TestCase
         $this->assertEquals($paramsExpected, $params);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseUrlWhenSlashInGET()
     {
         //given
@@ -219,9 +195,7 @@ class UriTest extends TestCase
         $this->assertEquals($paramsExpected, $params);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParsePutRequestInStream()
     {
         //given
@@ -241,6 +215,7 @@ class UriTest extends TestCase
         StreamStub::unregister();
     }
 
+    #[Test]
     public function shouldCorrectParseStream()
     {
         //given
@@ -255,9 +230,7 @@ class UriTest extends TestCase
         StreamStub::unregister();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCorrectParseJsonInStream()
     {
         //given
@@ -278,9 +251,7 @@ class UriTest extends TestCase
         return Uri::getRequestParameters($stream);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailForInvalidJson()
     {
         //given
@@ -296,9 +267,7 @@ class UriTest extends TestCase
         StreamStub::unregister();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptUtfLiteralsInJson()
     {
         //given
@@ -314,9 +283,7 @@ class UriTest extends TestCase
         StreamStub::unregister();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptEmptyJson()
     {
         //given
@@ -332,11 +299,8 @@ class UriTest extends TestCase
         StreamStub::unregister();
     }
 
-    /**
-     * @test
-     * @dataProvider malformedSlashes
-     */
-    public function shouldReplaceTwoBackSlashes(string $broken, string $good)
+    #[DataProvider('malformedSlashes')]
+    public function shouldReplaceTwoBackSlashes(string $broken, string $good): void
     {
         //given
         $this->path(Config::getPrefixSystem() . $broken);
@@ -348,9 +312,7 @@ class UriTest extends TestCase
         $this->assertEquals($good, $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyArrayWhenParsePathIsNull()
     {
         //given
@@ -363,11 +325,8 @@ class UriTest extends TestCase
         $this->assertNull($path);
     }
 
-    /**
-     * @test
-     * @dataProvider protocols
-     */
-    public function shouldReturnCorrectProtocol(string $header, mixed $value, string $expected)
+    #[DataProvider('protocols')]
+    public function shouldReturnCorrectProtocol(string $header, mixed $value, string $expected): void
     {
         //given
         $_SERVER[$header] = $value;
@@ -379,7 +338,7 @@ class UriTest extends TestCase
         $this->assertEquals($expected, $protocol);
     }
 
-    public function protocols(): array
+    public static function protocols(): array
     {
         return [
             ['HTTP_X_FORWARDED_PROTO', 'https', 'https://'],
@@ -389,7 +348,7 @@ class UriTest extends TestCase
         ];
     }
 
-    public function malformedSlashes(): array
+    public static function malformedSlashes(): array
     {
         return [
             ['/users//index', '/users/index'],
@@ -398,7 +357,7 @@ class UriTest extends TestCase
         ];
     }
 
-    private function path(?string $path)
+    private function path(?string $path): void
     {
         Mock::when($this->pathProviderMock)->getPath()->thenReturn($path);
     }

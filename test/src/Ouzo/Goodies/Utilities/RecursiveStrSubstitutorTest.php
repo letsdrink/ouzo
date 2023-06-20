@@ -9,9 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class RecursiveStrSubstitutorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteNormalValues()
     {
         //given
@@ -24,9 +22,7 @@ class RecursiveStrSubstitutorTest extends TestCase
         $this->assertEquals('Hi John Smith', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteRecursively()
     {
         //given
@@ -39,9 +35,7 @@ class RecursiveStrSubstitutorTest extends TestCase
         $this->assertEquals('Best website: ouzoframework.org', $substituted);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnValueWhenInfinityLoopOccurs()
     {
         //given

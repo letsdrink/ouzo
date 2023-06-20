@@ -7,12 +7,12 @@ namespace Ouzo\Db\WhereClause;
 
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class SqlWhereClauseTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptSingleValueAsParams()
     {
         // when
@@ -23,9 +23,7 @@ class SqlWhereClauseTest extends TestCase
         $this->assertEquals('name = ?', $result->toSql());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldWrapSqlWithOrInParenthesis()
     {
         // when
@@ -36,9 +34,7 @@ class SqlWhereClauseTest extends TestCase
         $this->assertEquals('(name = ? OR name = ?)', $result->toSql());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAcceptSingleNullValueAsParam()
     {
         // when

@@ -8,12 +8,12 @@ use Application\Model\Test\Product;
 use Ouzo\Restrictions;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class RestrictionsTest extends DbTransactionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnResultUsingEqualToRestriction()
     {
         //given
@@ -26,9 +26,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         $this->assertEquals($product, $loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnResultUsingLikeRestriction()
     {
         //given
@@ -41,9 +39,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         $this->assertEquals($product, $loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNothingUsingEqualToRestrictionWhenRestrictionDoesNotMatch()
     {
         //given
@@ -56,9 +52,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         $this->assertNull($loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNothingUsingLikeRestrictionWhenRestrictionDoesNotMatch()
     {
         //given
@@ -71,9 +65,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         $this->assertNull($loadedProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnModelUsingIsNullRestriction()
     {
         //given
@@ -87,9 +79,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnModelUsingIsNotNullRestriction()
     {
         //given
@@ -103,9 +93,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnModelUsingIsNotInRestriction()
     {
         //given
@@ -119,9 +107,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnModelUsingIsNotInRestrictionWithEmptyArray()
     {
         //given
@@ -134,9 +120,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnModelUsingIsNotInRestrictionWithEmptyArrayAndMultipleItemsInWhereClause()
     {
         //given
@@ -149,9 +133,7 @@ class RestrictionsTest extends DbTransactionalTestCase
         Assert::thatModel($loadedProduct)->isEqualTo($product);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnModelUsingIsNotInRestrictionWithEmptyArrayAndMultipleItemsInWhereClauseWithSeveralWhere()
     {
         //given

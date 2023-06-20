@@ -7,12 +7,12 @@
 use Ouzo\Config;
 use Ouzo\Translator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class TranslatorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTranslateSimpleKey()
     {
         //given
@@ -26,9 +26,7 @@ class TranslatorTest extends TestCase
         $this->assertEquals('translation', $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTranslateSimpleKeyWhenValueIsEmpty()
     {
         //given
@@ -42,9 +40,7 @@ class TranslatorTest extends TestCase
         $this->assertEquals('', $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSubstituteParams()
     {
         //given
@@ -58,9 +54,7 @@ class TranslatorTest extends TestCase
         $this->assertEquals('translation value1', $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSupportPluralizationForEnglish()
     {
         //given
@@ -76,9 +70,7 @@ class TranslatorTest extends TestCase
         $this->assertEquals("I've got 2 legs", $translation2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSupportPluralizationAndReturnLastPossibleEntryWhenProperWasNotFound()
     {
         //given
@@ -92,9 +84,7 @@ class TranslatorTest extends TestCase
         $this->assertEquals("I've got 5 leg", $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSupportPluralizationForPolish()
     {
         //given
@@ -112,9 +102,7 @@ class TranslatorTest extends TestCase
         $this->assertEquals("Mam 5 lat", $translation3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleNestedKeys()
     {
         //given
@@ -128,9 +116,7 @@ class TranslatorTest extends TestCase
         $this->assertEquals('translation', $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnKeyIfTranslationNotFound()
     {
         //given
@@ -144,9 +130,7 @@ class TranslatorTest extends TestCase
         $this->assertEquals('prefix1.prefix2.key', $translation);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTranslateWithPseudoLocalization()
     {
         //given
@@ -164,9 +148,7 @@ class TranslatorTest extends TestCase
         Config::clearProperty('pseudo_localization');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldTranslateArrayWithPseudoLocalization()
     {
         //given

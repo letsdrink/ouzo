@@ -33,9 +33,7 @@ class PhotoFrame
 
 class ArrayAssertTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldAssertThatArrayContainsElement()
     {
         Assert::thatArray(['1'])->contains('1');
@@ -46,9 +44,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray(['1', '2', '3'])->contains('3', '2', '1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldAssertThatArrayContainsElementWithProperty()
     {
         $object = new stdClass();
@@ -57,9 +53,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray([$object])->onProperty('prop')->contains(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotContainElementOpProperty()
     {
         //given
@@ -70,9 +64,7 @@ class ArrayAssertTest extends TestCase
         $this->assertNot(fn() => Assert::thatArray([$object])->onProperty('prop')->contains(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldThrowException()
     {
         $this->assertNot(fn() => Assert::thatArray([null])->contains('1'));
@@ -82,9 +74,7 @@ class ArrayAssertTest extends TestCase
         $this->assertNot(fn() => Assert::thatArray([['1', '2']])->contains('1', '2', '3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasSizeShouldAssertThatArrayHasSpecifiedSize()
     {
         Assert::thatArray([])->hasSize(0);
@@ -92,9 +82,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray(['1', '2'])->hasSize(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasSizeShouldThrowException()
     {
         $this->assertNot(fn() => Assert::thatArray([])->hasSize(1));
@@ -102,42 +90,32 @@ class ArrayAssertTest extends TestCase
         $this->assertNot(fn() => Assert::thatArray(['1', '2'])->hasSize(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isEmptyShouldAssertThatArrayHasNoElements()
     {
         Assert::thatArray([])->isEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isEmptyShouldThrowException()
     {
         $this->assertNot(fn() => Assert::thatArray(['1', '2'])->isEmpty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotEmptyShouldAssertThatArrayHasElements()
     {
         Assert::thatArray(['1'])->isNotEmpty();
         Assert::thatArray(['1', '2'])->isNotEmpty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotEmptyShouldThrowException()
     {
         $this->assertNot(fn() => Assert::thatArray([])->isNotEmpty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsOnlyShouldAssertThatArrayContainsElement()
     {
         Assert::thatArray(['1'])->containsOnly('1');
@@ -145,9 +123,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray(['1', '2', '3'])->containsOnly('3', '1', '2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsOnlyShouldThrowException()
     {
         $this->assertNot(fn() => Assert::thatArray([null])->containsOnly('1'));
@@ -160,18 +136,14 @@ class ArrayAssertTest extends TestCase
         $this->assertNot(fn() => Assert::thatArray([['1', '2', '3']])->containsOnly('1', '2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsExactlyShouldAssertThatArrayContainsElementInGivenOrder()
     {
         Assert::thatArray(['1'])->containsExactly('1');
         Assert::thatArray(['1', '2', '3'])->containsExactly('1', '2', '3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsExactlyShouldThrowException()
     {
         $this->assertNot(fn() => Assert::thatArray([null])->containsExactly('1'));
@@ -185,9 +157,7 @@ class ArrayAssertTest extends TestCase
         $this->assertNot(fn() => Assert::thatArray([['1', '2', '3']])->containsExactly('3', '1', '2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsKeyAndValueShouldAssertThatArrayContainsKeyValues()
     {
         //given
@@ -197,9 +167,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($array)->containsKeyAndValue(['id' => 123, 'name' => 'john']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsKeyAndValueShouldThrowException()
     {
         //given
@@ -210,9 +178,7 @@ class ArrayAssertTest extends TestCase
         $this->assertNot(fn() => Assert::thatArray($haystack)->containsKeyAndValue(['id' => 123, 'name' => 'john', 'surname' => 'smith', 'new_key' => 'new_value']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldAssertThatArrayUsingOnMethod()
     {
         $photos[] = new Photo('photo1');
@@ -221,9 +187,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($photos)->onMethod('getPhotoName')->containsOnly('photo1', 'photo2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldNotAssertThatArrayUsingOnMethod()
     {
         $photos[] = new Photo('photo1');
@@ -232,9 +196,7 @@ class ArrayAssertTest extends TestCase
         $this->assertNot(fn() => Assert::thatArray($photos)->onMethod('getPhotoName')->contains('photo3'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldCheckSequences()
     {
         $array = ['ccc', 'aaa', 'bbb', 'ccc', 'ddd'];
@@ -243,41 +205,31 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($array)->containsSequence('aaa');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isEqualToShouldPassForEqualArrays()
     {
         Assert::thatArray(['ccc', 'aaa'])->isEqualTo(['ccc', 'aaa']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isEqualToShouldThrowExceptionForDifferentArrays()
     {
         $this->assertNot(fn() => Assert::thatArray(['ccc', 'aaa'])->isEqualTo(['ddd', 'ccc']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldThrowExceptionWhenOrderIsIncorrect()
     {
         $this->assertNot(fn() => Assert::thatArray(['ccc', 'aaa', 'bbb', 'ccc', 'ddd'])->containsSequence('ddd', 'ccc'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldThrowExceptionWhenIsNotSequence()
     {
         $this->assertNot(fn() => Assert::thatArray(['ccc', 'aaa', 'bbb', 'ccc', 'ddd'])->containsSequence('aaa', 'ddd'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsShouldThrowExceptionWhenPassTooManyParameters()
     {
         //given
@@ -287,26 +239,20 @@ class ArrayAssertTest extends TestCase
         $this->assertNot(fn() => Assert::thatArray($haystack)->containsSequence('ccc', 'aaa', 'bbb', 'ccc', 'ddd', 'zzz'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function excludesShouldThrowExceptionWhenFoundInArray()
     {
         $this->assertNot(fn() => Assert::thatArray(['1', '2', '3', '4'])->excludes('7', '8', '4'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function excludeShouldCheckExclude()
     {
         Assert::thatArray(['1', '2', '3', '4'])->excludes('7', '8', '9');
         Assert::thatArray(['one', 'two', 'three', 'four'])->excludes('eleven');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractPropertyRecursively()
     {
         $obj[0] = new stdClass();
@@ -319,9 +265,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($obj)->onProperty('property1->name')->containsExactly('name1', 'name2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractPrivateProperty()
     {
         $photos = [new Photo('vacation', 'vvv'), new Photo('portrait', 'ppp')];
@@ -329,9 +273,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($photos)->onProperty('data')->containsExactly('vvv', 'ppp');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractPrivatePropertyRecursively()
     {
         $photos = [new PhotoFrame(new Photo('vacation', 'vvv'))];
@@ -339,9 +281,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($photos)->onProperty('photo->data')->containsExactly('vvv');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function onPropertyFailureShouldShowNiceMessage()
     {
         //given
@@ -355,9 +295,7 @@ class ArrayAssertTest extends TestCase
             ->hasMessage('Cannot find expected ["prop3"] in actual ["prop1", "prop2"]');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckKeysRecursivelyAreEqual()
     {
         //given
@@ -389,9 +327,7 @@ class ArrayAssertTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssertUsingExtractingForMultipleSelectors()
     {
         $photos[] = new Photo('photo1', 'd1');
@@ -400,9 +336,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($photos)->extracting('getPhotoName()', 'data')->contains(['photo1', 'd1'], ['photo2', 'd2']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssertUsingExtractingForSingleSelector()
     {
         //given
@@ -413,9 +347,7 @@ class ArrayAssertTest extends TestCase
         Assert::thatArray($photos)->extracting('data')->contains('d1', 'd2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssertUsingKeys()
     {
         // given

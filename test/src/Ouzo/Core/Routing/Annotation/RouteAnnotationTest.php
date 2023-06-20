@@ -8,6 +8,8 @@ use Ouzo\Config;
 use Ouzo\Http\HttpMethod;
 use Ouzo\Routing\Annotation\Route;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class RouteAnnotationTest extends TestCase
 {
@@ -18,9 +20,7 @@ class RouteAnnotationTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReadPathFromConfig(): void
     {
         //given
@@ -35,9 +35,7 @@ class RouteAnnotationTest extends TestCase
         $this->assertEquals('/api/sample/path', $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnConfigKeyWhenConfigValueIsNotSet(): void
     {
         //given

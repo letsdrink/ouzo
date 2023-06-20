@@ -10,9 +10,7 @@ class TransactionalProxyTest extends TestCase
 {
     public bool $transactionStatus;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunMethodInTransaction()
     {
         //when
@@ -22,9 +20,7 @@ class TransactionalProxyTest extends TestCase
         $this->assertTrue($this->transactionStatus);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRunFunctionInTransaction()
     {
         //given

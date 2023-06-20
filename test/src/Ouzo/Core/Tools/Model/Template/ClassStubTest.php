@@ -11,9 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClassStubTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReplacePlaceholderInStubFile()
     {
         //given
@@ -27,9 +25,7 @@ class ClassStubTest extends TestCase
         $this->assertStringContainsString('fieldA, fieldB', $classStub->contents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddPropertyWithType()
     {
         //given
@@ -42,9 +38,7 @@ class ClassStubTest extends TestCase
         $this->assertStringContainsString('test_field', $classStub->contents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReplaceAllPlaceholders()
     {
         //given
@@ -64,9 +58,7 @@ class ClassStubTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('/{(\w*)}/', $classStub->contents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSplitFieldsToNewLines()
     {
         //given
@@ -88,9 +80,7 @@ class ClassStubTest extends TestCase
         $this->assertStringContainsString("'field7', \n", $classStub->getFieldsAsString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateClassWithShortArrays()
     {
         //given

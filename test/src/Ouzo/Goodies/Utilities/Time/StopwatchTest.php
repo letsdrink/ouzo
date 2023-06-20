@@ -11,6 +11,8 @@ use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\Mock\MockInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class StopwatchTest extends TestCase
 {
@@ -22,9 +24,7 @@ class StopwatchTest extends TestCase
         $this->ticker = Mock::create(Ticker::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMeasureElapsedTime()
     {
         //given
@@ -43,9 +43,7 @@ class StopwatchTest extends TestCase
         $this->assertEquals(6, $elapsed3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMeasureElapsedTimeAfterStop()
     {
         //given
@@ -61,9 +59,7 @@ class StopwatchTest extends TestCase
         $this->assertEquals(10, $elapsed);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStartAfterStop()
     {
         //given
@@ -77,9 +73,7 @@ class StopwatchTest extends TestCase
         $this->assertTrue($stopwatch->isRunning());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeRunningAfterStop()
     {
         //given
@@ -92,9 +86,7 @@ class StopwatchTest extends TestCase
         $this->assertFalse($stopwatch->isRunning());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeRunningAfterCreatingUnstarted()
     {
         //when
@@ -104,9 +96,7 @@ class StopwatchTest extends TestCase
         $this->assertFalse($stopwatch->isRunning());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldBeRunningAfterCreatingStarted()
     {
         //when
@@ -116,9 +106,7 @@ class StopwatchTest extends TestCase
         $this->assertTrue($stopwatch->isRunning());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailWhenStoppingAlreadyStopped()
     {
         //given
@@ -131,9 +119,7 @@ class StopwatchTest extends TestCase
         CatchException::assertThat()->isInstanceOf(LogicException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFailWhenStartingAlreadyStarted()
     {
         //given
@@ -146,9 +132,7 @@ class StopwatchTest extends TestCase
         CatchException::assertThat()->isInstanceOf(LogicException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotBeRunningAfterReset()
     {
         //given
@@ -162,11 +146,8 @@ class StopwatchTest extends TestCase
         $this->assertEquals(0, $stopwatch->elapsed(TimeUnit::NANOSECONDS));
     }
 
-    /**
-     * @test
-     * @dataProvider elapsedTimes
-     */
-    public function shouldReturnElapsedInTimeUnit(int $time, string $timeUnit, int $expectedTime)
+    #[DataProvider('elapsedTimes')]
+    public function shouldReturnElapsedInTimeUnit(int $time, string $timeUnit, int $expectedTime): void
     {
         //given
         Mock::when($this->ticker)->read()->thenReturn(0, $time);
@@ -180,7 +161,7 @@ class StopwatchTest extends TestCase
         $this->assertEquals($expectedTime, $elapsed);
     }
 
-    public function elapsedTimes(): array
+    public static function elapsedTimes(): array
     {
         return [
             [10, TimeUnit::NANOSECONDS, 10],

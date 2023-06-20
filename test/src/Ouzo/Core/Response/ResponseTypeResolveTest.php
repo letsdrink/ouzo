@@ -10,9 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseTypeResolveTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnTypeFromAcceptHeader()
     {
         //given
@@ -25,9 +23,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('application/json', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnBestMatchForAcceptHeader()
     {
         //given
@@ -40,9 +36,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('text/html', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnContentTypeIfEmptyAccept()
     {
         //given
@@ -56,9 +50,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('application/json', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnContentTypeIfWildcardInAccept()
     {
         //given
@@ -72,9 +64,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('application/json', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlIfNoAcceptAndNoContentType()
     {
         //given
@@ -89,9 +79,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('text/html', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnRequestContentTypeForUnsupportedAccept()
     {
         //given
@@ -105,9 +93,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('application/json', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlForUnsupportedAcceptAndUnsupportedRequestContentType()
     {
         //given
@@ -121,9 +107,7 @@ class ResponseTypeResolveTest extends TestCase
         $this->assertEquals('text/html', $resolved);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnHtmlForUnsupportedAcceptAndNoRequestContentType()
     {
         //given

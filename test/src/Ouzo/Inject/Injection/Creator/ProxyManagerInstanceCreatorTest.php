@@ -11,14 +11,14 @@ use Ouzo\Injection\InjectorConfig;
 use Ouzo\Injection\Scope;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ProxyManagerInstanceCreatorTest extends TestCase
 {
     public static bool $constructorInvoked;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazyCreateInstance()
     {
         // given
@@ -33,9 +33,7 @@ class ProxyManagerInstanceCreatorTest extends TestCase
         $this->assertFalse(self::$constructorInvoked);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInvokeConstructorAfterInteraction()
     {
         // given
@@ -50,9 +48,7 @@ class ProxyManagerInstanceCreatorTest extends TestCase
         $this->assertTrue(self::$constructorInvoked);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLazyCreateMultipleInstances()
     {
         //given

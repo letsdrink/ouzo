@@ -10,9 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class RelationFactoryTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetDefaultLocalKeyForBelongsTo()
     {
         // when
@@ -23,9 +21,7 @@ class RelationFactoryTest extends TestCase
         $this->assertEquals('product_id', $relation->getLocalKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetDefaultLocalKeyForBelongsToForShortVersion()
     {
         // when
@@ -36,9 +32,7 @@ class RelationFactoryTest extends TestCase
         $this->assertEquals('product_id', $relation->getLocalKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetDefaultLocalKeyForHasOne()
     {
         // when
@@ -50,9 +44,7 @@ class RelationFactoryTest extends TestCase
         $this->assertEquals('user_id', $relation->getForeignKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetDefaultLocalKeyForHasMany()
     {
         // when

@@ -13,9 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class PostgresDialectTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractSequenceNameFromPrimaryKeyDefault()
     {
         //given

@@ -10,12 +10,12 @@ use Ouzo\Routing\Loader\AnnotationClassLoader;
 use Ouzo\Routing\Loader\AnnotationDirectoryLoader;
 use Ouzo\Utilities\Path;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class RouteFileGeneratorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateRouteFileTemplate()
     {
         //given

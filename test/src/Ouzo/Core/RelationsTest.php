@@ -7,12 +7,12 @@
 use Ouzo\Relations;
 use Ouzo\Tests\CatchException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class RelationsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionIfDuplicatedRelation()
     {
         //given

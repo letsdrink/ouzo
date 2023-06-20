@@ -12,9 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class ModelAttributesMatcherTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldMatchOnlyModelFields()
     {
         //given
@@ -30,9 +28,7 @@ class ModelAttributesMatcherTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnFalseIfDifferentAttributes()
     {
         //given
@@ -48,9 +44,7 @@ class ModelAttributesMatcherTest extends TestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDescription()
     {
         //given

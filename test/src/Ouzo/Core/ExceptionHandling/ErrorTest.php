@@ -11,9 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 class ErrorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Config::clearProperty('debug');
+    }
+
+    #[Test]
     public function shouldGetErrorForUserException()
     {
         //given

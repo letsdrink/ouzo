@@ -10,12 +10,12 @@ use Ouzo\Db\Relation;
 use Ouzo\Db\RelationWithAlias;
 use Ouzo\Tests\Assert;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ModelQueryBuilderHelperTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractNestedRelations()
     {
         //given
@@ -31,9 +31,7 @@ class ModelQueryBuilderHelperTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractInlineRelation()
     {
         //given
@@ -49,9 +47,7 @@ class ModelQueryBuilderHelperTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssociateRelationsWithAliasesIfFewerAliases()
     {
         //given
@@ -67,9 +63,7 @@ class ModelQueryBuilderHelperTest extends TestCase
             new RelationWithAlias($relation2, null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssociateRelationsWithNullAliases()
     {
         //given
@@ -85,9 +79,7 @@ class ModelQueryBuilderHelperTest extends TestCase
             new RelationWithAlias($relation2, null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAssociateRelationsWithAliasesByRelationNames()
     {
         //given

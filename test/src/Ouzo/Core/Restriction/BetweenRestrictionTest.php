@@ -10,9 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class BetweenRestrictionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSql()
     {
         //given
@@ -26,9 +24,7 @@ class BetweenRestrictionTest extends TestCase
         $this->assertEquals([1, 3], $restriction->getValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleExclusiveMode()
     {
         //given
@@ -41,9 +37,7 @@ class BetweenRestrictionTest extends TestCase
         $this->assertEquals('(key > ? AND key < ?)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleLeftExclusiveMode()
     {
         //given
@@ -56,9 +50,7 @@ class BetweenRestrictionTest extends TestCase
         $this->assertEquals('(key > ? AND key <= ?)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandleRightExclusiveMode()
     {
         //given

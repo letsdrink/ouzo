@@ -162,9 +162,7 @@ class ValueInjectTests extends TestCase
         $this->injector = new Injector(new InjectorConfig(), $attributeInjectorRegistry);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectValueIntoProperty()
     {
         //given
@@ -178,9 +176,7 @@ class ValueInjectTests extends TestCase
         $this->assertEquals('property to filed', $field);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectValueIntoConstructorArgument()
     {
         //given
@@ -194,9 +190,7 @@ class ValueInjectTests extends TestCase
         $this->assertEquals(999, $constructorParameter);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectValueIntoConstructorArgumentWithAnotherClass()
     {
         //given
@@ -211,9 +205,7 @@ class ValueInjectTests extends TestCase
         $this->assertInstanceOf(InjectedClass::class, $sampleClass->getInjectedClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectExactValueInto()
     {
         //given
@@ -227,9 +219,7 @@ class ValueInjectTests extends TestCase
         $this->assertEquals('properties.field', $exactValue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionWhenTryToInjectMismatchedParameterType()
     {
         //given
@@ -245,9 +235,7 @@ class ValueInjectTests extends TestCase
         Config::revertProperty('properties', 'constructor_parameter');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectConfigValueWhichIsArray()
     {
         //given
@@ -261,9 +249,7 @@ class ValueInjectTests extends TestCase
         Assert::thatArray($errors)->containsOnly('error1', 'error2', 'error3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectClassWithValuesAsProperties()
     {
         //given
@@ -278,9 +264,7 @@ class ValueInjectTests extends TestCase
         Assert::thatArray($injectedClassWithConfig->getErrors())->containsOnly('error1', 'error2', 'error3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDefaultStringValue()
     {
         //given
@@ -294,9 +278,7 @@ class ValueInjectTests extends TestCase
         $this->assertEquals('test', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDefaultIntValue()
     {
         //given
@@ -310,9 +292,7 @@ class ValueInjectTests extends TestCase
         $this->assertEquals(123, $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDefaultEmptyValue()
     {
         //given
@@ -326,9 +306,7 @@ class ValueInjectTests extends TestCase
         $this->assertEmpty($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDefaultTrueValue()
     {
         //given
@@ -342,9 +320,7 @@ class ValueInjectTests extends TestCase
         $this->assertTrue($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInjectDefaultFalseValue()
     {
         //given

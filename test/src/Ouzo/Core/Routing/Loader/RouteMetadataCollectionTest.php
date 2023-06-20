@@ -9,12 +9,12 @@ use Ouzo\Routing\Loader\RouteMetadata;
 use Ouzo\Routing\Loader\RouteMetadataCollection;
 use Ouzo\Tests\Assert;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class RouteMetadataCollectionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddRouteMetadata()
     {
         //given
@@ -37,9 +37,7 @@ class RouteMetadataCollectionTest extends TestCase
         $this->assertEquals(2, $collection2->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSortRoutesWithParametersAtBottomOfArray()
     {
         //given
@@ -74,9 +72,7 @@ class RouteMetadataCollectionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSortRoutesWithTheSameUrisAndDifferentMethods()
     {
         //given

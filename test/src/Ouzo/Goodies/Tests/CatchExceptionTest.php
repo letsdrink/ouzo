@@ -21,9 +21,7 @@ class MyClass
 
 class CatchExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCatchException()
     {
         // given
@@ -36,9 +34,7 @@ class CatchExceptionTest extends TestCase
         CatchException::assertThat()->isInstanceOf('Exception');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCatchException()
     {
         // given
@@ -51,9 +47,7 @@ class CatchExceptionTest extends TestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsMessageContains()
     {
         //given
@@ -66,9 +60,7 @@ class CatchExceptionTest extends TestCase
         CatchException::assertThat()->hasMessage('Fatal error');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldReturnException()
     {
         // given
@@ -82,9 +74,7 @@ class CatchExceptionTest extends TestCase
         $this->assertInstanceOf('Exception', $exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCheckIsCodeEquals()
     {
         //given

@@ -29,9 +29,7 @@ class CallableWrapper
 
 class ComparatorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareByExpression()
     {
         //given
@@ -52,9 +50,7 @@ class ComparatorTest extends TestCase
         $this->assertEquals(0, $equal);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldProperlyCompareUsingReversed()
     {
         //given
@@ -71,9 +67,7 @@ class ComparatorTest extends TestCase
         $this->assertEquals(0, $equal);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldProperlyCompareUsingDefault()
     {
         //given
@@ -90,9 +84,7 @@ class ComparatorTest extends TestCase
         $this->assertEquals(0, $equal);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotInvokeTieBreakersWhenMainComparatorResolves()
     {
         //given
@@ -107,9 +99,7 @@ class ComparatorTest extends TestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInvokeFirstTieBreaker()
     {
         //given
@@ -125,9 +115,7 @@ class ComparatorTest extends TestCase
         CatchException::assertThat()->notCaught();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldInvokeFirstLastTieBreaker()
     {
         //given
@@ -142,9 +130,7 @@ class ComparatorTest extends TestCase
         CatchException::assertThat()->hasMessage('second should be invoked');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUseFinalTieBreaker()
     {
         //given
@@ -166,9 +152,7 @@ class ComparatorTest extends TestCase
         $this->assertEquals(0, $equal);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotUseFinalTieBreakerWhenAnyPriorResolves()
     {
         //given

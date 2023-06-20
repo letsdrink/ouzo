@@ -12,7 +12,11 @@ use Ouzo\Tests\Mock\MockInterface;
 use Ouzo\Utilities\Path;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
-use TestCommand;
+use TestCommand    ;
+    use PHPUnitFrameworkAttributesDataProvider;
+    use PHPUnitFrameworkAttributesTest;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class CommandsLoaderTest extends TestCase
 {
@@ -34,9 +38,7 @@ class CommandsLoaderTest extends TestCase
         $this->testCommandsPath = Path::join(ROOT_PATH, 'test', 'resources', 'commands');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSearchCommandsInSpecifiedPath()
     {
         //when
@@ -46,9 +48,7 @@ class CommandsLoaderTest extends TestCase
         Mock::verify($this->application)->addCommands([new TestCommand()]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldLoadCommandsUsingInjector()
     {
         //when
@@ -59,9 +59,7 @@ class CommandsLoaderTest extends TestCase
         Mock::verify($this->injector)->getInstance('\TestCommand');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotLoadAbstractClass()
     {
         //when

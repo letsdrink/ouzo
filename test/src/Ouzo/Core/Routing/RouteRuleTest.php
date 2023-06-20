@@ -7,12 +7,12 @@
 use Application\Controller\TestController;
 use Ouzo\Routing\RouteRule;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class RouteRuleTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetControllerName()
     {
         //given

@@ -7,12 +7,12 @@
 use Ouzo\Restrictions;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class IsInRestrictionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSql()
     {
         //given
@@ -25,9 +25,7 @@ class IsInRestrictionTest extends TestCase
         $this->assertEquals('category_id IN(?, ?, ?)', $sql);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnEmptyStringForEmptyArray()
     {
         //given

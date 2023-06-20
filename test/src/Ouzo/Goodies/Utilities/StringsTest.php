@@ -6,14 +6,13 @@
 
 use Ouzo\Utilities\Strings;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class StringsTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider underscoreToCamelCase
-     */
-    public function shouldConvertUnderscoreToCamelCase($string, $expected)
+    #[DataProvider('underscoreToCamelCase')]
+    public function shouldConvertUnderscoreToCamelCase($string, $expected): void
     {
         //when
         $camelcase = Strings::underscoreToCamelCase($string);
@@ -22,7 +21,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $camelcase);
     }
 
-    public function underscoreToCamelCase(): array
+    public static function underscoreToCamelCase(): array
     {
         return [
             ['lannisters_always_pay_their_debts', 'LannistersAlwaysPayTheirDebts'],
@@ -31,11 +30,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider camelCaseToUnderscore
-     */
-    public function shouldConvertCamelCaseToUnderscore($string, $expected)
+    #[DataProvider('camelCaseToUnderscore')]
+    public function shouldConvertCamelCaseToUnderscore($string, $expected): void
     {
         //when
         $underscored = Strings::camelCaseToUnderscore($string);
@@ -44,7 +40,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $underscored);
     }
 
-    public function camelCaseToUnderscore(): array
+    public static function camelCaseToUnderscore(): array
     {
         return [
             ['LannistersĄlwaysPayTheirDebtsĘlephant', 'lannisters_ąlways_pay_their_debts_ęlephant'],
@@ -55,11 +51,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider removePrefix
-     */
-    public function shouldRemovePrefix($string, $prefix, $expected)
+    #[DataProvider('removePrefix')]
+    public function shouldRemovePrefix($string, $prefix, $expected): void
     {
         //when
         $withoutPrefix = Strings::removePrefix($string, $prefix);
@@ -68,7 +61,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $withoutPrefix);
     }
 
-    public function removePrefix(): array
+    public static function removePrefix(): array
     {
         return [
             ['prefixRest', 'prefix', 'Rest'],
@@ -78,11 +71,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider removePrefixes
-     */
-    public function shouldRemovePrefixes($string, $prefixes, $expected)
+    #[DataProvider('removePrefixes')]
+    public function shouldRemovePrefixes($string, $prefixes, $expected): void
     {
         //when
         $withoutPrefix = Strings::removePrefixes($string, $prefixes);
@@ -91,7 +81,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $withoutPrefix);
     }
 
-    public function removePrefixes(): array
+    public static function removePrefixes(): array
     {
         return [
             ['prefixRest', ['pre', 'fix'], 'Rest'],
@@ -101,11 +91,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider removeSuffix
-     */
-    public function shouldRemoveSuffix($string, $suffix, $expected)
+    #[DataProvider('removeSuffix')]
+    public function shouldRemoveSuffix($string, $suffix, $expected): void
     {
         //when
         $withoutSuffix = Strings::removeSuffix($string, $suffix);
@@ -114,7 +101,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $withoutSuffix);
     }
 
-    public function removeSuffix(): array
+    public static function removeSuffix(): array
     {
         return [
             ['JohnSnow', 'Snow', 'John'],
@@ -123,11 +110,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider startsWith
-     */
-    public function shouldReturnTrueIfStringStartsWithPrefix($string, $prefix, $expected)
+    #[DataProvider('startsWith')]
+    public function shouldReturnTrueIfStringStartsWithPrefix($string, $prefix, $expected): void
     {
         //when
         $result = Strings::startsWith($string, $prefix);
@@ -136,7 +120,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function startsWith(): array
+    public static function startsWith(): array
     {
         return [
             ['prefixRest', 'prefix', true],
@@ -150,11 +134,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider endsWith
-     */
-    public function shouldReturnTrueIfStringEndsWithPrefix($string, $suffix, $expected)
+    #[DataProvider('endsWith')]
+    public function shouldReturnTrueIfStringEndsWithPrefix($string, $suffix, $expected): void
     {
         //when
         $result = Strings::endsWith($string, $suffix);
@@ -163,7 +144,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function endsWith(): array
+    public static function endsWith(): array
     {
         return [
             ['StringSuffix', 'Suffix', true],
@@ -179,11 +160,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider equalsIgnoreCase
-     */
-    public function shouldCheckEqualityIgnoringCase($string1, $string2, $expected)
+    #[DataProvider('equalsIgnoreCase')]
+    public function shouldCheckEqualityIgnoringCase($string1, $string2, $expected): void
     {
         //when
         $result = Strings::equalsIgnoreCase($string1, $string2);
@@ -192,7 +170,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result, "Equality failed for '{$string1}' and '{$string2}'");
     }
 
-    public function equalsIgnoreCase(): array
+    public static function equalsIgnoreCase(): array
     {
         return [
             ['', '', true],
@@ -209,11 +187,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider remove
-     */
-    public function shouldRemovePartOfString($string, $toRemove, $expected)
+    #[DataProvider('remove')]
+    public function shouldRemovePartOfString($string, $toRemove, $expected): void
     {
         //when
         $result = Strings::remove($string, $toRemove);
@@ -222,7 +197,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function remove(): array
+    public static function remove(): array
     {
         return [
             ['winter is coming???!!!', '???', 'winter is coming!!!'],
@@ -231,11 +206,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider appendSuffix
-     */
-    public function shouldAppendSuffix($string, $suffix, $expected)
+    #[DataProvider('appendSuffix')]
+    public function shouldAppendSuffix($string, $suffix, $expected): void
     {
         //when
         $stringWithSuffix = Strings::appendSuffix($string, $suffix);
@@ -244,7 +216,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $stringWithSuffix);
     }
 
-    public function appendSuffix(): array
+    public static function appendSuffix(): array
     {
         return [
             ['Daenerys', ' Targaryen', 'Daenerys Targaryen'],
@@ -253,11 +225,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider appendPrefix
-     */
-    public function shouldAppendPrefix($string, $prefix, $expected)
+    #[DataProvider('appendPrefix')]
+    public function shouldAppendPrefix($string, $prefix, $expected): void
     {
         //when
         $stringWithSuffix = Strings::appendPrefix($string, $prefix);
@@ -266,7 +235,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $stringWithSuffix);
     }
 
-    public function appendPrefix(): array
+    public static function appendPrefix(): array
     {
         return [
             ['Targaryen', 'Daenerys ', 'Daenerys Targaryen'],
@@ -275,11 +244,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider appendIfMissing
-     */
-    public function shouldAppendSuffixIfNecessary($string, $suffix, $expected)
+    #[DataProvider('appendIfMissing')]
+    public function shouldAppendSuffixIfNecessary($string, $suffix, $expected): void
     {
         // when
         $result = Strings::appendIfMissing($string, $suffix);
@@ -288,7 +254,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function appendIfMissing(): array
+    public static function appendIfMissing(): array
     {
         return [
             ['You know nothing, Jon Snow', ', Jon Snow', 'You know nothing, Jon Snow'],
@@ -298,11 +264,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider prependIfMissing
-     */
-    public function shouldAppendPrefixIfNecessary($string, $prefix, $expected)
+    #[DataProvider('prependIfMissing')]
+    public function shouldAppendPrefixIfNecessary($string, $prefix, $expected): void
     {
         // when
         $original = Strings::prependIfMissing($string, $prefix);
@@ -311,7 +274,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $original);
     }
 
-    public function prependIfMissing(): array
+    public static function prependIfMissing(): array
     {
         return [
             ['Khal Drogo', 'Khal ', 'Khal Drogo'],
@@ -321,11 +284,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tableize
-     */
-    public function shouldTableizeSimpleClassName($class, $expected)
+    #[DataProvider('tableize')]
+    public function shouldTableizeSimpleClassName($class, $expected): void
     {
         //when
         $table = Strings::tableize($class);
@@ -334,7 +294,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $table);
     }
 
-    public function tableize(): array
+    public static function tableize(): array
     {
         return [
             ['Dragon', 'dragons'],
@@ -344,11 +304,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider escapeNewLines
-     */
-    public function shouldEscapeNewLines($string, $expected)
+    #[DataProvider('escapeNewLines')]
+    public function shouldEscapeNewLines($string, $expected): void
     {
         //when
         $escaped = Strings::escapeNewLines($string);
@@ -357,7 +314,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $escaped);
     }
 
-    public function escapeNewLines(): array
+    public static function escapeNewLines(): array
     {
         return [
             ["My name is <strong>Reek</strong> \nit rhymes with leek", "My name is &lt;strong&gt;Reek&lt;/strong&gt; <br />\nit rhymes with leek"],
@@ -366,11 +323,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider htmlEntities
-     */
-    public function shouldConvertEntitiesWithUtfChars($string, $expected)
+    #[DataProvider('htmlEntities')]
+    public function shouldConvertEntitiesWithUtfChars($string, $expected): void
     {
         //when
         $entities = Strings::htmlEntities($string);
@@ -379,7 +333,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $entities);
     }
 
-    public function htmlEntities(): array
+    public static function htmlEntities(): array
     {
         return [
             ['<strong>someting</strong> with ó', '&lt;strong&gt;someting&lt;/strong&gt; with ó'],
@@ -388,11 +342,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider equal
-     */
-    public function shouldReturnTrueForObjectWithTheSameStringRepresentation($object1, $object2, $expected)
+    #[DataProvider('equal')]
+    public function shouldReturnTrueForObjectWithTheSameStringRepresentation($object1, $object2, $expected): void
     {
         //when
         $result = Strings::equal($object1, $object2);
@@ -401,13 +352,12 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function equal(): array
+    public static function equal(): array
     {
         return [
             ['123', 123, true],
             [123, '123', true],
             [null, null, true],
-
             ['0123', 123, false],
             [123, '0123', false],
             [null, '0123', false],
@@ -415,11 +365,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isBlank
-     */
-    public function shouldReturnFalseForNotBlankString($string, $expected)
+    #[DataProvider('isBlank')]
+    public function shouldReturnFalseForNotBlankString($string, $expected): void
     {
         //when
         $result = Strings::isBlank($string);
@@ -428,12 +375,11 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function isBlank(): array
+    public static function isBlank(): array
     {
         return [
             ['0', false],
             ['a ', false],
-
             [null, true],
             ['', true],
             [' ', true],
@@ -441,11 +387,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isNotBlank
-     */
-    public function shouldTestIfStringIsNotBlank($string, $expected)
+    #[DataProvider('isNotBlank')]
+    public function shouldTestIfStringIsNotBlank($string, $expected): void
     {
         //when
         $result = Strings::isNotBlank($string);
@@ -454,12 +397,11 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function isNotBlank(): array
+    public static function isNotBlank(): array
     {
         return [
             ['0', true],
             ['a ', true],
-
             [null, false],
             ['', false],
             [' ', false],
@@ -467,11 +409,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider abbreviate
-     */
-    public function shouldAbbreviateString($string, $maxWidth, $expected)
+    #[DataProvider('abbreviate')]
+    public function shouldAbbreviateString($string, $maxWidth, $expected): void
     {
         //when
         $abbreviated = Strings::abbreviate($string, $maxWidth);
@@ -480,7 +419,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $abbreviated);
     }
 
-    public function abbreviate(): array
+    public static function abbreviate(): array
     {
         return [
             ['ouzo is great', 5, 'ouzo ...'],
@@ -489,11 +428,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider trimToNull
-     */
-    public function shouldTrimString($string, $expected)
+    #[DataProvider('trimToNull')]
+    public function shouldTrimString($string, $expected): void
     {
         //when
         $result = Strings::trimToNull($string);
@@ -502,7 +438,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function trimToNull(): array
+    public static function trimToNull(): array
     {
         return [
             ['  sdf ', 'sdf'],
@@ -511,11 +447,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sprintAssoc
-     */
-    public function shouldSprintfStringWithAssocArrayAsParam($sprintfString, $assocArray, $expected)
+    #[DataProvider('sprintAssoc')]
+    public function shouldSprintfStringWithAssocArrayAsParam($sprintfString, $assocArray, $expected): void
     {
         //when
         $resultString = Strings::sprintAssoc($sprintfString, $assocArray);
@@ -524,7 +457,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $resultString);
     }
 
-    public function sprintAssoc(): array
+    public static function sprintAssoc(): array
     {
         return [
             ['This is %{what}! %{what}? This is %{place}!', ['what' => 'madness', 'place' => 'Sparta'], 'This is madness! madness? This is Sparta!'],
@@ -534,11 +467,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sprintAssocDefault
-     */
-    public function shouldSprintfStringAndReplaceWithEmptyIfNoPlaceholderFound($sprintfString, $assocArray, $default, $expected)
+    #[DataProvider('sprintAssocDefault')]
+    public function shouldSprintfStringAndReplaceWithEmptyIfNoPlaceholderFound($sprintfString, $assocArray, $default, $expected): void
     {
         //when
         $resultString = Strings::sprintAssocDefault($sprintfString, $assocArray, $default);
@@ -547,7 +477,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $resultString);
     }
 
-    public function sprintAssocDefault(): array
+    public static function sprintAssocDefault(): array
     {
         return [
             ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', ['what' => 'madness', 'place' => 'Sparta'], '', 'This is madness! This is Sparta! No, this is invalid  placeholder!'],
@@ -558,11 +488,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider contains
-     */
-    public function shouldCheckStringContainsSubstring($string, $substring, $expected)
+    #[DataProvider('contains')]
+    public function shouldCheckStringContainsSubstring($string, $substring, $expected): void
     {
         //when
         $contains = Strings::contains($string, $substring);
@@ -571,7 +498,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $contains);
     }
 
-    public function contains(): array
+    public static function contains(): array
     {
         return [
             ['Fear cuts deeper than swords', 'deeper', true],
@@ -582,11 +509,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider containsIgnoreCase
-     */
-    public function shouldCheckStringContainsSubstringIgnoringCase($string, $substring, $expected)
+    #[DataProvider('containsIgnoreCase')]
+    public function shouldCheckStringContainsSubstringIgnoringCase($string, $substring, $expected): void
     {
         //when
         $contains = Strings::containsIgnoreCase($string, $substring);
@@ -595,7 +519,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $contains);
     }
 
-    public function containsIgnoreCase(): array
+    public static function containsIgnoreCase(): array
     {
         return [
             ['Fear cuts deeper than swords', 'deeper', true],
@@ -606,11 +530,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider substringBefore
-     */
-    public function shouldGetSubstringBeforeSeparator($string, $separator, $expected)
+    #[DataProvider('substringBefore')]
+    public function shouldGetSubstringBeforeSeparator($string, $separator, $expected): void
     {
         //when
         $result = Strings::substringBefore($string, $separator);
@@ -619,7 +540,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function substringBefore(): array
+    public static function substringBefore(): array
     {
         return [
             ['winter is coming???!!!', '?', 'winter is coming'],
@@ -630,11 +551,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider substringAfter
-     */
-    public function shouldGetSubstringAfterSeparator($string, $separator, $expected)
+    #[DataProvider('substringAfter')]
+    public function shouldGetSubstringAfterSeparator($string, $separator, $expected): void
     {
         //when
         $result = Strings::substringAfter($string, $separator);
@@ -643,7 +561,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function substringAfter(): array
+    public static function substringAfter(): array
     {
         return [
             ['abc+efg+hij', '+', 'efg+hij'],
@@ -655,11 +573,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider replaceNth
-     */
-    public function shouldReplaceNthString($subject, $search, $replace, $nth, $expected)
+    #[DataProvider('replaceNth')]
+    public function shouldReplaceNthString($subject, $search, $replace, $nth, $expected): void
     {
         //when
         $replaceNth = Strings::replaceNth($subject, $search, $replace, $nth);
@@ -668,7 +583,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $replaceNth);
     }
 
-    public function replaceNth(): array
+    public static function replaceNth(): array
     {
         return [
             ['name = ? AND description =    ?', '\\=\\s*\\?', 'IS NULL', 1, 'name = ? AND description IS NULL'],
@@ -679,11 +594,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider removeAccent
-     */
-    public function shouldRemoveAccents($string, $expected)
+    #[DataProvider('removeAccent')]
+    public function shouldRemoveAccents($string, $expected): void
     {
         //when
         $removeAccent = Strings::removeAccent($string);
@@ -692,7 +604,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $removeAccent);
     }
 
-    public function removeAccent(): array
+    public static function removeAccent(): array
     {
         return [
             ['String with śżźćółŹĘ ÀÁÂ', 'String with szzcolZE AAA'],
@@ -700,11 +612,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider uppercaseFirst
-     */
-    public function shouldUpperCaseFirstLetter($string, $expected)
+    #[DataProvider('uppercaseFirst')]
+    public function shouldUpperCaseFirstLetter($string, $expected): void
     {
         //when
         $uppercaseFirst = Strings::uppercaseFirst($string);
@@ -713,7 +622,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $uppercaseFirst);
     }
 
-    public function uppercaseFirst(): array
+    public static function uppercaseFirst(): array
     {
         return [
             ['łukasz', 'Łukasz'],
@@ -722,11 +631,8 @@ class StringsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider defaultIfBlank
-     */
-    public function shouldDefaultIfBlank($string, $default, $expected)
+    #[DataProvider('defaultIfBlank')]
+    public function shouldDefaultIfBlank($string, $default, $expected): void
     {
         //when
         $defaultIfBlank = Strings::defaultIfBlank($string, $default);
@@ -735,7 +641,7 @@ class StringsTest extends TestCase
         $this->assertSame($expected, $defaultIfBlank);
     }
 
-    public function defaultIfBlank(): array
+    public static function defaultIfBlank(): array
     {
         return [
             [null, '<NULL>', '<NULL>'],

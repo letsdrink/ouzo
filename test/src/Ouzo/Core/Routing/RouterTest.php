@@ -14,6 +14,8 @@ use Ouzo\Tests\Mock\Mock;
 use Ouzo\Uri;
 use Ouzo\Uri\PathProvider;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class RouterTest extends TestCase
 {
@@ -24,9 +26,7 @@ class RouterTest extends TestCase
         Route::$isDebug = false;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteGet()
     {
         //given
@@ -43,9 +43,7 @@ class RouterTest extends TestCase
         $this->assertEquals('index', $rule->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotMatchOnlyPrefixForGet()
     {
         //given
@@ -60,9 +58,7 @@ class RouterTest extends TestCase
         $this->assertEquals('posts', $rule->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotMatchSuffix()
     {
         //given
@@ -78,9 +74,7 @@ class RouterTest extends TestCase
         $this->assertEquals('User', $rule->getController());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotMatchControllerPrefixForAllowAll()
     {
         //given
@@ -94,9 +88,7 @@ class RouterTest extends TestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotFindRouteIfRequestMethodIsInvalid()
     {
         //given
@@ -110,9 +102,7 @@ class RouterTest extends TestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotFindRouteIfRequestIsDifferentFromDeclaration()
     {
         //given
@@ -126,9 +116,7 @@ class RouterTest extends TestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteWithPlaceholderValue()
     {
         //given
@@ -145,9 +133,7 @@ class RouterTest extends TestCase
         $this->assertEquals('show', $rule->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotFindRouteWhenRequestAndDefinitionIsNotEqualWithPlaceholder()
     {
         //given
@@ -161,9 +147,7 @@ class RouterTest extends TestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRoutePost()
     {
         //given
@@ -221,9 +205,7 @@ class RouterTest extends TestCase
         $this->assertEquals('Controller\\AlbumsController', $rule->getController());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteForAllInController()
     {
         //given
@@ -238,9 +220,7 @@ class RouterTest extends TestCase
         $this->assertEquals('Controller\\UsersController', $rule->getController());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotFindRouteWhenExceptAction()
     {
         //given
@@ -254,9 +234,7 @@ class RouterTest extends TestCase
         CatchException::assertThat()->isInstanceOf(RouterException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteWhenDeclaredAnIsInExcept()
     {
         //given
@@ -274,9 +252,7 @@ class RouterTest extends TestCase
         $this->assertEquals('Controller\\UsersController', $rule->getController());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteAndGetParamsFromPath()
     {
         //given
@@ -290,9 +266,7 @@ class RouterTest extends TestCase
         Assert::thatArray($rule->getParameters())->hasSize(2)->containsKeyAndValue(['id' => 1, 'call_id' => 2]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRestIndex()
     {
         //given
@@ -308,9 +282,7 @@ class RouterTest extends TestCase
         $this->assertEmpty($rule->getParameters());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRestNew()
     {
         //given
@@ -326,9 +298,7 @@ class RouterTest extends TestCase
         $this->assertEmpty($rule->getParameters());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRestCreate()
     {
         //given
@@ -344,9 +314,7 @@ class RouterTest extends TestCase
         $this->assertEmpty($rule->getParameters());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRestShow()
     {
         //given
@@ -362,9 +330,7 @@ class RouterTest extends TestCase
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRestEdit()
     {
         //given
@@ -380,9 +346,7 @@ class RouterTest extends TestCase
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRestUpdatePut()
     {
         //given
@@ -398,9 +362,7 @@ class RouterTest extends TestCase
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRestUpdatePatch()
     {
         //given
@@ -416,9 +378,7 @@ class RouterTest extends TestCase
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRestDestroy()
     {
         //given
@@ -434,9 +394,7 @@ class RouterTest extends TestCase
         Assert::thatArray($rule->getParameters())->containsKeyAndValue(['id' => 12]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRuleWithDefaultRoute()
     {
         //given
@@ -451,9 +409,7 @@ class RouterTest extends TestCase
         $this->assertEquals('index', $rule->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteWithSpecialCharactersInParameter()
     {
         //given
@@ -469,9 +425,7 @@ class RouterTest extends TestCase
         ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(['file' => 'file_name.js']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteWithNamespace()
     {
         //given
@@ -487,9 +441,7 @@ class RouterTest extends TestCase
         ArrayAssert::that($rule->getParameters())->hasSize(1)->containsKeyAndValue(['id' => '12']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRulePut()
     {
         //given
@@ -506,9 +458,7 @@ class RouterTest extends TestCase
         $this->assertEquals('index', $rule->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRuleDelete()
     {
         //given
@@ -526,9 +476,7 @@ class RouterTest extends TestCase
         Assert::thatArray($rule->getParameters())->hasSize(1)->containsKeyAndValue(['id' => 12]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFindRouteRuleUtf8()
     {
         //given
@@ -545,9 +493,7 @@ class RouterTest extends TestCase
         $this->assertEquals('free', $rule->getAction());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseParameterWithAtChar()
     {
         //given
@@ -562,9 +508,7 @@ class RouterTest extends TestCase
         $this->assertEquals('john.doe@foo.bar', $parameters['email']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseParameterWithPercentChar()
     {
         //given
@@ -580,9 +524,7 @@ class RouterTest extends TestCase
         $this->assertEquals('18', $parameters['order_id']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseParameterWithPlusChar()
     {
         //given
@@ -598,9 +540,7 @@ class RouterTest extends TestCase
         $this->assertEquals('18', $parameters['order_id']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseParameterWithSpace()
     {
         //given

@@ -12,9 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class QueryTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSelectQuery()
     {
         // when
@@ -25,9 +23,7 @@ class QueryTest extends TestCase
         $this->assertFalse($query->distinct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSelectDistinctQuery()
     {
         // when
@@ -38,9 +34,7 @@ class QueryTest extends TestCase
         $this->assertTrue($query->distinct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSelectDistinctOnQuery()
     {
         // when
@@ -52,9 +46,7 @@ class QueryTest extends TestCase
         $this->assertEquals(['col1', 'col2'], $query->distinctOnColumns);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSelectCountQuery()
     {
         // when
@@ -64,9 +56,7 @@ class QueryTest extends TestCase
         $this->assertEquals(QueryType::$COUNT, $query->type);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateDeleteQuery()
     {
         // when
@@ -76,9 +66,7 @@ class QueryTest extends TestCase
         $this->assertEquals(QueryType::$DELETE, $query->type);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSelectQueryWithWhereOrderLimitOffset()
     {
         // when
@@ -99,9 +87,7 @@ class QueryTest extends TestCase
         $this->assertEquals(['name asc'], $query->order);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSelectQueryWithJoin()
     {
         // when
@@ -115,9 +101,7 @@ class QueryTest extends TestCase
         $this->assertEquals('other_id', $join->joinedColumn);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateSelectQueryWithColumns()
     {
         // when

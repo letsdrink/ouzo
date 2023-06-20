@@ -7,14 +7,13 @@
 namespace Ouzo\Utilities;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class LoggerUtilsTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider classes
-     */
-    public function shouldShortenName($class, $length, $expected)
+    #[DataProvider('classes')]
+    public function shouldShortenName($class, $length, $expected): void
     {
         //when
         $shortenClassName = LoggerUtils::shortenClassName($class, $length);
@@ -23,7 +22,7 @@ class LoggerUtilsTest extends TestCase
         $this->assertEquals($expected, $shortenClassName);
     }
 
-    public function classes(): array
+    public static function classes(): array
     {
         return [
             ['Ouzo\Utilities\LoggerUtils', null, 'Ouzo\Utilities\LoggerUtils'],

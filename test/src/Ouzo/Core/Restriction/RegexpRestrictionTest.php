@@ -19,9 +19,7 @@ class RegexpRestrictionTest extends TestCase
         Config::revertProperty('sql_dialect');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSqlForPostgres()
     {
         //given
@@ -36,9 +34,7 @@ class RegexpRestrictionTest extends TestCase
         $this->assertEquals(['value'], $restriction->getValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSqlForMysql()
     {
         //given
@@ -53,9 +49,7 @@ class RegexpRestrictionTest extends TestCase
         $this->assertEquals(['value'], $restriction->getValues());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateProperSqlForSqlite()
     {
         //given

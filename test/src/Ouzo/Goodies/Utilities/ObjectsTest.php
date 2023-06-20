@@ -27,9 +27,7 @@ class ClassWithProperty
 
 class ObjectsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldExtractFieldsRecursively()
     {
         //given
@@ -44,9 +42,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('value', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFieldRecursivelyShouldReturnDefaultValueWhenFieldNotFound()
     {
         //given
@@ -59,9 +55,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('default', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnDefaultForNonExistentProperty()
     {
         //given
@@ -74,9 +68,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('default', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnValueForPrivatePropertyWhenFlagIsOn()
     {
         //given
@@ -89,9 +81,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('private value', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnNullForPrivatePropertyWhenFlagIsOff()
     {
         //given
@@ -104,9 +94,7 @@ class ObjectsTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnValueOfExistingNotNullProperty()
     {
         //given
@@ -120,9 +108,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('prop', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFieldRecursivelyShouldReturnNullWhenFieldNotFoundAndNoDefaultValueWasSpecified()
     {
         //given
@@ -135,9 +121,7 @@ class ObjectsTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFieldRecursivelyShouldReturnNonNestedValue()
     {
         //given
@@ -151,9 +135,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('value', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGetFieldNamed0()
     {
         //given
@@ -168,9 +150,7 @@ class ObjectsTest extends TestCase
         $this->assertSame('value', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnObjectIfEmptyField()
     {
         //given
@@ -183,9 +163,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals($object, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetValueRecursivelyForNonNestedField()
     {
         //given
@@ -198,9 +176,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('value', $object->field1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetValueRecursivelyForNestedField()
     {
         //given
@@ -214,9 +190,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('value', $object->field1->field2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSetValueRecursivelyForNonExistentNestedField()
     {
         //given
@@ -229,9 +203,7 @@ class ObjectsTest extends TestCase
         $this->assertFalse(isset($object->field1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStringifyBool()
     {
         //given
@@ -244,9 +216,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('true', $stringifyBool);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStringifyNull()
     {
         //given
@@ -259,9 +229,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('null', $stringifyNull);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStringifyString()
     {
         //given
@@ -274,9 +242,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('"string"', $stringifyString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStringifyInt()
     {
         //given
@@ -289,9 +255,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('1', $stringifyInt);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStringifyNotAssociativeArray()
     {
         //given
@@ -304,9 +268,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('["a", 1]', $stringifyArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStringifyAssociativeArray()
     {
         //given
@@ -320,9 +282,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('[<key> => "value1", <key2> => "value2"]', $stringifyArray);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStringifyObject()
     {
         //given
@@ -338,9 +298,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('stdClass {<field1> => "field1", <field2> => "field2"}', $stringifyObject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldStringifyObjectWithToString()
     {
         //given
@@ -353,9 +311,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('string', $stringifiedObject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnStringWhenNoMatchedTypes()
     {
         //given
@@ -368,9 +324,7 @@ class ObjectsTest extends TestCase
         $this->assertSame('1', $string);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnValueFormArray()
     {
         //given
@@ -383,9 +337,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('John', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnValueFormMultidimensionalArray()
     {
         //given
@@ -407,9 +359,7 @@ class ObjectsTest extends TestCase
         $this->assertEquals('2343-de', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareWithNull()
     {
         $this->assertTrue(Objects::equal(null, null));
@@ -423,9 +373,7 @@ class ObjectsTest extends TestCase
         $this->assertFalse(Objects::equal(null, new stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareWithEmptyString()
     {
         $this->assertTrue(Objects::equal('', ''));
@@ -439,9 +387,7 @@ class ObjectsTest extends TestCase
         $this->assertFalse(Objects::equal('', new stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareStrings()
     {
         $this->assertTrue(Objects::equal('', ''));
@@ -451,9 +397,7 @@ class ObjectsTest extends TestCase
         $this->assertFalse(Objects::equal('a', 'b'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareStringsWithIntegers()
     {
         $this->assertTrue(Objects::equal('1', 1));
@@ -463,9 +407,7 @@ class ObjectsTest extends TestCase
         $this->assertFalse(Objects::equal(2, '1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareArrays()
     {
         $this->assertTrue(Objects::equal(['1'], [1]));
@@ -486,9 +428,7 @@ class ObjectsTest extends TestCase
         $this->assertFalse(Objects::equal([false], [new stdClass()]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareNestedArrays()
     {
         $array = [
@@ -528,9 +468,7 @@ class ObjectsTest extends TestCase
         $this->assertFalse(Objects::equal($array, $arrayWithDifferentKey));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCompareObjects()
     {
         $a = new stdClass();
@@ -548,9 +486,7 @@ class ObjectsTest extends TestCase
         $this->assertFalse(Objects::equal($a, new stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldHandle0InSelector()
     {
         //given

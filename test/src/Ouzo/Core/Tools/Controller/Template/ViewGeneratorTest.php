@@ -26,9 +26,7 @@ class ViewGeneratorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCreateDirectoryForController()
     {
         //given
@@ -42,9 +40,7 @@ class ViewGeneratorTest extends TestCase
         $this->assertFileExists($this->path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAppendViewFile()
     {
         //given
@@ -60,9 +56,7 @@ class ViewGeneratorTest extends TestCase
         $this->assertFileExists(Path::join($this->path, $actionGenerator->getActionViewFile()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotAppendFileWhenExists()
     {
         //given

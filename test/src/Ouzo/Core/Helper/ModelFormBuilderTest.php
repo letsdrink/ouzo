@@ -7,6 +7,8 @@ use Application\Model\Test\Product;
 use Ouzo\Helper\ModelFormBuilder;
 use Ouzo\Tests\DbTransactionalTestCase;
 use Ouzo\View;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class ModelFormBuilderTest extends DbTransactionalTestCase
 {
@@ -16,9 +18,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         new View('test');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddErrorClass()
     {
         //given
@@ -33,9 +33,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         $this->assertStringContainsString('class="error"', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldAddErrorClassIfClassGiven()
     {
         //given
@@ -50,9 +48,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         $this->assertStringContainsString('class="class1 class2 error"', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotAddEmptyClassAttribute()
     {
         //given
@@ -66,9 +62,7 @@ class ModelFormBuilderTest extends DbTransactionalTestCase
         $this->assertStringNotContainsString('class="', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldGenerateNameForField()
     {
         //given
