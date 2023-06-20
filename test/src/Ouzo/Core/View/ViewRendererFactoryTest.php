@@ -9,6 +9,7 @@ use Ouzo\View\DefaultViewPathProvider;
 use Ouzo\View\PhtmlRenderer;
 use Ouzo\View\ViewRenderer;
 use Ouzo\View\ViewRendererFactory;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DummyRenderer implements ViewRenderer

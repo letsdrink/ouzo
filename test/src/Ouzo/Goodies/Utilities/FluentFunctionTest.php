@@ -7,6 +7,7 @@
 use Application\Model\Test\Product;
 use Ouzo\Utilities\FluentFunctions;
 use Ouzo\Utilities\Functions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class FluentFunctionTest extends TestCase

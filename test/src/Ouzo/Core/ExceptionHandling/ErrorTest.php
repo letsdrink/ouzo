@@ -7,6 +7,7 @@
 use Ouzo\Config;
 use Ouzo\ExceptionHandling\Error;
 use Ouzo\UserException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ErrorTest extends TestCase

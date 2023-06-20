@@ -7,6 +7,7 @@
 use Ouzo\Tests\Assert;
 use Ouzo\Tools\Utils\ClassPathResolver;
 use Ouzo\Utilities\Path;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ClassPathResolverTest extends TestCase

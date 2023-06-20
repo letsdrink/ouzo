@@ -7,6 +7,7 @@ namespace Ouzo\Core\Tools\Model\Template;
 
 use Ouzo\Tools\Model\Template\DatabaseColumn;
 use Ouzo\Tools\Model\Template\Dialect\PostgresDialect;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_TestCase;
 

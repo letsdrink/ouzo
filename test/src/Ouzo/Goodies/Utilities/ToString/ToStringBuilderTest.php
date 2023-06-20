@@ -8,6 +8,7 @@ namespace Some\Test\Ns;
 
 use Ouzo\Utilities\ToString\ToStringBuilder;
 use Ouzo\Utilities\ToString\ToStringStyle;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ToStringBuilderClass

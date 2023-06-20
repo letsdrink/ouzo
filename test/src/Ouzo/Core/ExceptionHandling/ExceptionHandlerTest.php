@@ -8,6 +8,7 @@ namespace Ouzo\ExceptionHandling;
 
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ExceptionHandlerTest extends TestCase

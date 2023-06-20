@@ -9,6 +9,7 @@ use Ouzo\Db\Dialect\MySqlDialect;
 use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\Dialect\Sqlite3Dialect;
 use Ouzo\Restrictions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class RegexpRestrictionTest extends TestCase

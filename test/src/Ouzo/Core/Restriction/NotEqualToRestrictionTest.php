@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Restrictions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class NotEqualToRestrictionTest extends TestCase

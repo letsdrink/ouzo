@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Utilities\Objects;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ClassImplementingToString

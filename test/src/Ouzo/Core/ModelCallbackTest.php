@@ -7,6 +7,7 @@
 use Ouzo\Db\ModelDefinition;
 use Ouzo\Model;
 use Ouzo\Tests\DbTransactionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class TestCallback
 {

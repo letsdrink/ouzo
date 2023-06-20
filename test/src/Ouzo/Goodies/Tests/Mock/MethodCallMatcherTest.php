@@ -8,6 +8,7 @@ use Ouzo\Tests\Mock\AnyArgument;
 use Ouzo\Tests\Mock\AnyArgumentList;
 use Ouzo\Tests\Mock\MethodCall;
 use Ouzo\Tests\Mock\MethodCallMatcher;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class TestClass

@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Utilities\RecursiveStrSubstitutor;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class RecursiveStrSubstitutorTest extends TestCase

@@ -10,7 +10,7 @@ use Ouzo\Db\BatchLoadingSession;
 use Ouzo\Db\Stats;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\DbTransactionalTestCase;
-
+use PHPUnit\Framework\Attributes\Test;
 
 class BatchLoadingSessionTest extends DbTransactionalTestCase
 {

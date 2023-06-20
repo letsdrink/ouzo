@@ -6,6 +6,7 @@
 
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\CatchExceptionAssert;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 

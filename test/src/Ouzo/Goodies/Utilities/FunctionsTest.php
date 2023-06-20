@@ -6,6 +6,7 @@
 namespace Ouzo\Utilities;
 
 use Application\Model\Test\Product;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

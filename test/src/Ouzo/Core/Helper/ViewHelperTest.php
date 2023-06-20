@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Config;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 require_once ROOT_PATH . 'src/Ouzo/Core/Helper/ViewHelper.php';

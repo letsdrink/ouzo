@@ -6,6 +6,7 @@
 
 use Ouzo\Request\RequestHeaders;
 use Ouzo\Tests\Assert;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class RequestHeadersTest extends TestCase

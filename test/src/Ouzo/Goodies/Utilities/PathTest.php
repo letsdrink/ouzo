@@ -5,6 +5,7 @@
  */
 
 use Ouzo\Utilities\Path;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class PathTest extends TestCase
