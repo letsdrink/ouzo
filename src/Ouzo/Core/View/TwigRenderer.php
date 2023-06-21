@@ -34,7 +34,7 @@ class TwigRenderer implements ViewRenderer
         $environment = new Environment($loader, $options);
         $environment->addExtension(new OuzoTwigExtension());
         $this->initialize($environment);
-        $template = $environment->createTemplate($this->viewFilename);
+        $template = $environment->load($this->viewFilename);
         return $template->render($this->attributes);
     }
 
