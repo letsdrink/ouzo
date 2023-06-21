@@ -486,6 +486,7 @@ class StringsTest extends TestCase
             ['This is %{what}! %{what}? This is %{place}! And %{invalid_placeholder}!', ['what' => 'madness', 'place' => 'Sparta'], 'This is madness! madness? This is Sparta! And %{invalid_placeholder}!'],
             [null, ['what' => 'madness', 'place' => 'Sparta'], null],
             ['This is %{what}! %{what}? This is %{place}!', null, 'This is %{what}! %{what}? This is %{place}!'],
+            ['This is %{what}! %{what}? This is %{place}!', ['what' => 'madness', 'place' => null, null => 'Sparta'], 'This is madness! madness? This is %{place}!'],
         ];
     }
 
