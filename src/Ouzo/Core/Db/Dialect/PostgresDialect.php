@@ -81,4 +81,9 @@ class PostgresDialect extends Dialect
     {
         return 'DISTINCT ON (' . Joiner::on(', ')->join($this->query->distinctOnColumns) . ') ';
     }
+
+    protected function wrapQueryWithDistinctCount(string $sql): string
+    {
+        return "SELECT count(*) FROM ({$sql}) AS count_data";
+    }
 }
