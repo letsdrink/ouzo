@@ -208,8 +208,8 @@ class MyImagineDialect extends Dialect
         return '';
     }
 
-    protected function wrapQueryWithDistinctCount(): string
+    protected function wrapQueryWithDistinctCount(string $sql): string
     {
-        return '';
+        return $sql;
     }
 }
