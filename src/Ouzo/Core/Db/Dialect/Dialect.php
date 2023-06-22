@@ -22,14 +22,18 @@ abstract class Dialect
 {
     protected Query $query;
 
-    public function select(): string
+    public function select(int $queryType = null): string
     {
-        if ($this->query->type == QueryType::$SELECT) {
+        $type = $queryType ?: $this->query->type;
+        if ($type == QueryType::$SELECT) {
             $distinct = $this->query->distinct ? 'DISTINCT ' : (empty($this->query->distinctOnColumns) ? Strings::EMPTY_STRING : $this->getDistinctOnQuery());
             $columns = empty($this->query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::addAliases())->join($this->query->selectColumns);
             return "SELECT {$distinct}{$columns}";
         }
-        if ($this->query->type == QueryType::$COUNT) {
+        if ($type == QueryType::$COUNT) {
+            if ($this->query->distinct) {
+                throw new DbException('Illegal query, cannot use selectDistinct with count.');
+            }
             return 'SELECT count(*)';
         }
         return Strings::EMPTY_STRING;
@@ -182,6 +186,13 @@ abstract class Dialect
             $sql .= $this->from();
             $sql .= $this->using();
             $sql .= $this->whereWithUsing();
+        } elseif ($query->type == QueryType::$COUNT && !empty($query->distinctOnColumns)) {
+            $sql .= $this->select(QueryType::$SELECT);
+            $sql .= $this->from();
+            $sql .= $this->join();
+            $sql .= $this->where();
+            $sql .= $this->groupBy();
+            $sql = $this->wrapQueryWithDistinctCount($sql);
         } elseif ($query->type == QueryType::$COUNT) {
             $sql .= $this->select();
             $sql .= $this->from();
@@ -259,4 +270,6 @@ abstract class Dialect
     abstract protected function quote(string $word): string;
 
     abstract protected function getDistinctOnQuery(): string;
+
+    abstract protected function wrapQueryWithDistinctCount(string $sql) : string;
 }

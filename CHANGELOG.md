@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+Release 2.0.1
+--------
+
+Enhancements:
+* [ORM] Added support for count query with `DISTINCT` in PostgreSQL dialect.
+
 Release 2.0.0
 --------
 Support for PHP 7.x is dropped. Minimal PHP version required is 8.0.

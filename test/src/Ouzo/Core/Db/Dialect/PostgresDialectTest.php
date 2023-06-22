@@ -9,6 +9,9 @@ use Ouzo\Db\Dialect\PostgresDialect;
 use Ouzo\Db\JoinClause;
 use Ouzo\Db\Query;
 use Ouzo\Db\QueryType;
+use Ouzo\DbException;
+use Ouzo\Tests\CatchException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class PostgresDialectTest extends TestCase
@@ -511,6 +514,43 @@ class PostgresDialectTest extends TestCase
 
         // then
         $this->assertEquals('SELECT DISTINCT ON (description) * FROM products', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnSelectDistinctOnWithCount()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->type = QueryType::$COUNT;
+        $query->distinctOnColumns = ['description'];
+        $query->where('name = ?');
+
+        // when
+        $sql = $this->dialect->buildQuery($query);
+
+        // then
+        $this->assertEquals('SELECT count(*) FROM (SELECT DISTINCT ON (description) * FROM products WHERE name = ?) AS count_data', $sql);
+    }
+
+    /**
+     * @test
+     */
+    public function selectDistinctWithCountShouldNotBeSupported()
+    {
+        // given
+        $query = new Query();
+        $query->table = 'products';
+        $query->type = QueryType::$COUNT;
+        $query->distinct = true;
+
+        // when
+        CatchException::when($this->dialect)->buildQuery($query);
+
+        // then
+        CatchException::assertThat()->isInstanceOf(DbException::class);
     }
 
     /**
