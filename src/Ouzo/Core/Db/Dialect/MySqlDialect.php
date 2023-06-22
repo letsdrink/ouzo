@@ -74,4 +74,9 @@ class MySqlDialect extends Dialect
     {
         throw new InvalidArgumentException("DISTINCT ON is not supported in mysql");
     }
+
+    protected function fromForDistinctCount(): string
+    {
+        throw new InvalidArgumentException("DISTINCT for COUNT is not supported in mysql");
+    }
 }

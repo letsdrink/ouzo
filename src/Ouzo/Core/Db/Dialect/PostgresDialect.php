@@ -81,4 +81,11 @@ class PostgresDialect extends Dialect
     {
         return 'DISTINCT ON (' . Joiner::on(', ')->join($this->query->distinctOnColumns) . ') ';
     }
+
+    protected function fromForDistinctCount(): string
+    {
+        $alias = $this->query->aliasTable ?: $this->query->table;
+        $distinct = $this->getDistinctOnQuery();
+        return " FROM (SELECT {$distinct}* FROM {$this->tableOrSubQuery()}) AS {$alias}";
+    }
 }

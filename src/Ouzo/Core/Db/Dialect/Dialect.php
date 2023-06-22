@@ -30,6 +30,9 @@ abstract class Dialect
             return "SELECT {$distinct}{$columns}";
         }
         if ($this->query->type == QueryType::$COUNT) {
+            if ($this->query->distinct) {
+                throw new DbException('Illegal query, cannot use selectDistinct with count.');
+            }
             return 'SELECT count(*)';
         }
         return Strings::EMPTY_STRING;
@@ -148,6 +151,9 @@ abstract class Dialect
 
     public function from(): string
     {
+        if ($this->query->type == QueryType::$COUNT && !empty($this->query->distinctOnColumns)) {
+            return $this->fromForDistinctCount();
+        }
         return " FROM {$this->table()}";
     }
 
@@ -259,4 +265,6 @@ abstract class Dialect
     abstract protected function quote(string $word): string;
 
     abstract protected function getDistinctOnQuery(): string;
+
+    abstract protected function fromForDistinctCount() : string;
 }

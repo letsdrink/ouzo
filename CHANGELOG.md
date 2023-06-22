@@ -5,6 +5,8 @@ IN PROGRESS
 --------
 Support for PHP 8.0 is dropped. Minimal PHP version required is 8.2.
 
+Enhancements:
+* [ORM] Added support for count query with `DISTINCT` in PostgreSQL dialect.
 
 Release 2.0.0
 --------
