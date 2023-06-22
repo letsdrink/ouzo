@@ -101,7 +101,7 @@ class Sqlite3Dialect extends Dialect
         throw new InvalidArgumentException("DISTINCT ON is not supported in sqlite3");
     }
 
-    protected function fromForDistinctCount(): string
+    protected function wrapQueryWithDistinctCount(string $sql): string
     {
         throw new InvalidArgumentException("DISTINCT for COUNT is not supported in sqlite3");
     }

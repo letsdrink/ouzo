@@ -468,12 +468,13 @@ class PostgresDialectTest extends TestCase
         $query->table = 'products';
         $query->type = QueryType::$COUNT;
         $query->distinctOnColumns = ['description'];
+        $query->where('name = ?');
 
         // when
         $sql = $this->dialect->buildQuery($query);
 
         // then
-        $this->assertEquals('SELECT count(*) FROM (SELECT DISTINCT ON (description) * FROM products) AS products', $sql);
+        $this->assertEquals('SELECT count(*) FROM (SELECT DISTINCT ON (description) * FROM products WHERE name = ?) AS count_data', $sql);
     }
 
     #[Test]

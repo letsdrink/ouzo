@@ -208,7 +208,7 @@ class MyImagineDialect extends Dialect
         return '';
     }
 
-    protected function fromForDistinctCount(): string
+    protected function wrapQueryWithDistinctCount(): string
     {
         return '';
     }
