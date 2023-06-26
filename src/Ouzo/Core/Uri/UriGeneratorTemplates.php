@@ -7,6 +7,7 @@
 namespace Ouzo\Uri;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Strings;
 
 class UriGeneratorTemplates
 {
@@ -20,6 +21,9 @@ class UriGeneratorTemplates
 
     private static function replace(string $template, string $pattern, ?string $replacement): string
     {
+        if (Strings::isBlank($replacement)) {
+            $replacement = Strings::EMPTY_STRING;
+        }
         return str_replace(["/*{{$pattern}}*/", "%{{$pattern}}"], $replacement, $template);
     }
 
