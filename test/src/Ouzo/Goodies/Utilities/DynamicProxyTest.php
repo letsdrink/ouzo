@@ -399,4 +399,17 @@ class DynamicProxyTest extends TestCase
         $this->assertTrue($result);
     }
 
+    #[Test]
+    public function shouldCreateProxyForReadonlyClass(): void
+    {
+        //given
+        $testMethodHandler = new TestMethodHandler();
+        $proxy = DynamicProxy::newInstance(ReadonlyClass::class, $testMethodHandler);
+
+        //when
+        $result = $proxy->method();
+
+        //then
+        $this->assertEquals('TestMethodHandler method', $result);
+    }
 }
