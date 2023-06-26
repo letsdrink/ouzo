@@ -67,7 +67,7 @@ class HtmlElementRenderer
 
     public function setText(?string $text): HtmlElementRenderer
     {
-        $this->text = htmlspecialchars($text ?? Strings::EMPTY_STRING, ENT_COMPAT);
+        $this->text = htmlspecialchars($text ?? Strings::EMPTY, ENT_COMPAT);
         return $this;
     }
 
@@ -167,7 +167,7 @@ class HtmlElementRenderer
         $attributes = $this->sort($attributes);
 
         $attrs = Arrays::mapEntries($attributes, function ($key, $value) {
-            $escaped = htmlspecialchars($value ?? Strings::EMPTY_STRING, ENT_COMPAT);
+            $escaped = htmlspecialchars($value ?? Strings::EMPTY, ENT_COMPAT);
             return "$key=\"$escaped\"";
         });
         return implode(' ', $attrs);

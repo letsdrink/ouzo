@@ -26,7 +26,7 @@ abstract class Dialect
     {
         $type = $queryType ?: $this->query->type;
         if ($type == QueryType::$SELECT) {
-            $distinct = $this->query->distinct ? 'DISTINCT ' : (empty($this->query->distinctOnColumns) ? Strings::EMPTY_STRING : $this->getDistinctOnQuery());
+            $distinct = $this->query->distinct ? 'DISTINCT ' : (empty($this->query->distinctOnColumns) ? Strings::EMPTY : $this->getDistinctOnQuery());
             $columns = empty($this->query->selectColumns) ? '*' : Joiner::on(', ')->map(DialectUtil::addAliases())->join($this->query->selectColumns);
             return "SELECT {$distinct}{$columns}";
         }
@@ -36,7 +36,7 @@ abstract class Dialect
             }
             return 'SELECT count(*)';
         }
-        return Strings::EMPTY_STRING;
+        return Strings::EMPTY;
     }
 
     public function update(): string
