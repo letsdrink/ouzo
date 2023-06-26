@@ -36,3 +36,15 @@ class ClassWithMixedReturningMethod
         return $p1;
     }
 }
+
+readonly class ReadonlyClass
+{
+    public function __construct(private string $field)
+    {
+    }
+
+    public function method():string
+    {
+        return $this->field;
+    }
+}
