@@ -22,7 +22,7 @@ class UriGeneratorTemplates
     private static function replace(string $template, string $pattern, ?string $replacement): string
     {
         if (Strings::isBlank($replacement)) {
-            return Strings::EMPTY_STRING;
+            return $template;
         }
         return str_replace(["/*{{$pattern}}*/", "%{{$pattern}}"], $replacement, $template);
     }
