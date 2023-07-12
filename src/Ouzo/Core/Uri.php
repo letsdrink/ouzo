@@ -106,8 +106,8 @@ class Uri
     private function parsePath(string $path = null, int $limit = null): array
     {
         if ($path != null) {
-            $prefix = Config::getValue('global', 'prefix_system');
-            $pathWithoutPrefix = urldecode(str_replace($prefix, '', $path));
+            $prefix = Config::getValue('global', 'prefix_system') ?: Strings::EMPTY;
+            $pathWithoutPrefix = urldecode(str_replace($prefix, Strings::EMPTY, $path));
             return preg_split('#/|\?#', $pathWithoutPrefix, $limit ?: -1, PREG_SPLIT_NO_EMPTY);
         }
         return [];

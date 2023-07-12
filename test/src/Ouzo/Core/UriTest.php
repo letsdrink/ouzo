@@ -340,6 +340,21 @@ class UriTest extends TestCase
         $this->assertEquals($expected, $protocol);
     }
 
+    #[Test]
+    public function should(): void
+    {
+        //given
+        Config::overrideProperty('global', 'prefix_system')->with(null);
+
+        $this->path(Config::getPrefixSystem() . '/users');
+
+        //when
+        $rawController = $this->uri->getRawController();
+
+        //then
+        $this->assertEquals('users', $rawController);
+    }
+
     public static function protocols(): array
     {
         return [
