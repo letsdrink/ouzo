@@ -507,6 +507,8 @@ class StringsTest extends TestCase
         return [
             ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', ['what' => 'madness', 'place' => 'Sparta'], '', 'This is madness! This is Sparta! No, this is invalid  placeholder!'],
             ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', ['what' => 'madness', 'place' => 'Sparta'], 'tomato', 'This is madness! This is Sparta! No, this is invalid tomato placeholder!'],
+            ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', ['what' => 'madness', 'place' => null], 'tomato', 'This is madness! This is tomato! No, this is invalid tomato placeholder!'],
+            ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', ['what' => 'madness', 'place' => ''], 'tomato', 'This is madness! This is tomato! No, this is invalid tomato placeholder!'],
             [null, ['what' => 'madness', 'place' => 'Sparta'], 'tomato', null],
             ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', null, 'tomato', 'This is tomato! This is tomato! No, this is invalid tomato placeholder!'],
             ['This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!', null, null, 'This is %{what}! This is %{place}! No, this is invalid %{invalid_placeholder} placeholder!'],
