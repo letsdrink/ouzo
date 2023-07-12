@@ -226,7 +226,17 @@ class ClockTest extends TestCase
             ['2017-02-01', -1, '2017-01-01'],
             ['2017-03-01', -2, '2017-01-01'],
             ['2017-02-28', -1, '2017-01-28'],
-            ['2018-01-31', -1, '2017-12-31']
+            ['2018-01-31', -1, '2017-12-31'],
         ];
+    }
+
+    #[Test]
+    public function shouldHandleNullableDate(): void
+    {
+        //when
+        $clock = Clock::at(null);
+
+        //then
+        $this->assertNotNull($clock);
     }
 }
