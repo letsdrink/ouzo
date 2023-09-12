@@ -63,6 +63,11 @@ class PhtmlRenderer implements ViewRenderer
         $this->attributes[$name] = $value;
     }
 
+    public function __isset(string $name): bool
+    {
+        return isset($this->attributes[$name]);
+    }
+
     public function getViewPath(): string
     {
         return $this->viewPath;
