@@ -121,6 +121,7 @@ class BootstrapTest extends TestCase
     public function shouldRegisterCustomErrorHandler()
     {
         //given
+        Config::overrideProperty('debug')->with(false);
         /** @var ErrorHandler|MockInterface $errorHandler */
         $errorHandler = Mock::create(ErrorHandler::class);
 
