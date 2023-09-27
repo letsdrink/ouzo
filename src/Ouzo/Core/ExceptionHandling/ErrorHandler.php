@@ -13,9 +13,9 @@ class ErrorHandler
 {
     public function register(): void
     {
-        set_exception_handler(fn(Throwable $exception) => ErrorHandler::exceptionHandler($exception));
-        set_error_handler(fn(...$args) => ErrorHandler::errorHandler(...$args), E_ALL & ~E_DEPRECATED & ~E_STRICT);
-        register_shutdown_function(fn() => ErrorHandler::shutdownHandler());
+        set_exception_handler(fn(Throwable $exception) => static::exceptionHandler($exception));
+        set_error_handler(fn(...$args) => static::errorHandler(...$args), E_ALL & ~E_DEPRECATED & ~E_STRICT);
+        register_shutdown_function(fn() => static::shutdownHandler());
     }
 
     public static function exceptionHandler(Throwable $exception): void

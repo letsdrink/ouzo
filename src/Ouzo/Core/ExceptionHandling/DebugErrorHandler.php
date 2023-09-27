@@ -6,19 +6,11 @@
 
 namespace Ouzo\ExceptionHandling;
 
-use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
 class DebugErrorHandler extends ErrorHandler
 {
-    public function register(): void
-    {
-        set_exception_handler(fn(Throwable $exception) => DebugErrorHandler::exceptionHandler($exception));
-        set_error_handler(fn(...$args) => DebugErrorHandler::errorHandler(...$args));
-        register_shutdown_function(fn() => DebugErrorHandler::shutdownHandler());
-    }
-
     protected static function getRun(): Run
     {
         error_reporting(E_ALL);

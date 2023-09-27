@@ -35,6 +35,7 @@ class Bootstrap
     /** @var string[] */
     private array $interceptors = [];
     private bool $overrideMiddleware = false;
+    private ?ErrorHandler $errorHandler = null;
 
     public function __construct(Environment $environment)
     {
@@ -81,6 +82,12 @@ class Bootstrap
         return $this;
     }
 
+    public function withErrorHandler(ErrorHandler $errorHandler): static
+    {
+        $this->errorHandler = $errorHandler;
+        return $this;
+    }
+
     public function runApplication(): FrontController
     {
         if ($this->configRepository) {
@@ -102,11 +109,15 @@ class Bootstrap
     private function registerErrorHandlers(): void
     {
         if (Config::getValue('debug')) {
-            $handler = new DebugErrorHandler();
-        } else {
-            $handler = new ErrorHandler();
+            (new DebugErrorHandler())->register();
+            return;
         }
-        $handler->register();
+
+        if (!is_null($this->errorHandler)) {
+            $this->errorHandler->register();
+            return;
+        }
+        (new ErrorHandler())->register();
     }
 
     private function includeRoutes(): void
