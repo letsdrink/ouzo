@@ -7,7 +7,8 @@ Support for PHP 8.0 is dropped. Minimal PHP version required is 8.2.
 
 Enhancements:
 * [ORM] Added support for count query with `DISTINCT` in PostgreSQL dialect.
-* [Utilities] `Strings::EMPTY_STRING` is deprecated in favour of `Strings::EMPTY`. 
+* [Utilities] `Strings::EMPTY_STRING` is deprecated in favour of `Strings::EMPTY`.
+* [Core] `Bootstrap::withErrorHandler(ErroraHandler $errorHandler)` set custom error handler which is registered on `Bootstrap::runApplication()`.
 
 Release 2.0.0
 --------

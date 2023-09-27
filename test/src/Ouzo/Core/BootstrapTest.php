@@ -10,6 +10,7 @@ use Ouzo\Controller;
 use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
 use Ouzo\Environment;
+use Ouzo\ExceptionHandling\ErrorHandler;
 use Ouzo\HeaderSender;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Middleware\Interceptor\SessionStarter;
@@ -114,5 +115,21 @@ class BootstrapTest extends TestCase
 
         //then
         CatchException::assertThat()->hasMessage('stdClass class is not implementing Interceptor interface');
+    }
+
+    #[Test]
+    public function shouldRegisterCustomErrorHandler()
+    {
+        //given
+        /** @var ErrorHandler|MockInterface $errorHandler */
+        $errorHandler = Mock::create(ErrorHandler::class);
+
+        //when
+        $this->bootstrap
+            ->withErrorHandler($errorHandler)
+            ->runApplication();
+
+        //then
+        Mock::verify($errorHandler)->register();
     }
 }

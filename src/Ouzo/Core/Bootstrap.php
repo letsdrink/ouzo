@@ -35,6 +35,7 @@ class Bootstrap
     /** @var string[] */
     private array $interceptors = [];
     private bool $overrideMiddleware = false;
+    private ?ErrorHandler $errorHandler = null;
 
     public function __construct(Environment $environment)
     {
@@ -81,6 +82,12 @@ class Bootstrap
         return $this;
     }
 
+    public function withErrorHandler(ErrorHandler $errorHandler): static
+    {
+        $this->errorHandler = $errorHandler;
+        return $this;
+    }
+
     public function runApplication(): FrontController
     {
         if ($this->configRepository) {
@@ -101,21 +108,27 @@ class Bootstrap
 
     private function registerErrorHandlers(): void
     {
-        if (Config::getValue('debug')) {
-            $handler = new DebugErrorHandler();
-        } else {
-            $handler = new ErrorHandler();
+        if (!is_null($this->errorHandler)) {
+            $this->errorHandler->register();
+            return;
         }
-        $handler->register();
+
+        if (Config::getValue('debug')) {
+            (new DebugErrorHandler())->register();
+            return;
+        }
+        (new ErrorHandler())->register();
     }
 
-    private function includeRoutes(): void
+    private
+    function includeRoutes(): void
     {
         $routesPath = Path::join(ROOT_PATH, 'config', 'routes.php');
         Files::loadIfExists($routesPath);
     }
 
-    public function setupInjector(): Injector
+    public
+    function setupInjector(): Injector
     {
         $injector = $this->createInjector();
 
@@ -133,13 +146,15 @@ class Bootstrap
         return $injector;
     }
 
-    private function createInjector(): Injector
+    private
+    function createInjector(): Injector
     {
         $injectorConfig = $this->injectorConfig ?: new InjectorConfig();
         return $this->injector ?: new Injector($injectorConfig);
     }
 
-    private function createMiddlewareRepository(Injector $injector): MiddlewareRepository
+    private
+    function createMiddlewareRepository(Injector $injector): MiddlewareRepository
     {
         $middlewareRepository = new MiddlewareRepository();
 
@@ -162,7 +177,8 @@ class Bootstrap
         return $middlewareRepository;
     }
 
-    private function createInterceptor(Injector $injector): Closure
+    private
+    function createInterceptor(Injector $injector): Closure
     {
         return function ($interceptor) use ($injector) {
             $instance = $injector->getInstance($interceptor);
