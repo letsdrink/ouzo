@@ -49,7 +49,7 @@ class CatchExceptionTest extends TestCase
     }
 
     #[Test]
-    public function shouldCheckIsMessageContains()
+    public function shouldCheckMessageIsEqualTo()
     {
         //given
         $object = new MyClass();
@@ -59,6 +59,19 @@ class CatchExceptionTest extends TestCase
 
         //then
         CatchException::assertThat()->hasMessage('Fatal error');
+    }
+
+    #[Test]
+    public function shouldCheckMessageContains()
+    {
+        //given
+        $object = new MyClass();
+
+        //when
+        CatchException::when($object)->someMethodThatThrowsException();
+
+        //then
+        CatchException::assertThat()->messageContains('tal err');
     }
 
     #[Test]
