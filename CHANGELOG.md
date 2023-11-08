@@ -9,6 +9,7 @@ Enhancements:
 * [ORM] Added support for count query with `DISTINCT` in PostgreSQL dialect.
 * [Utilities] `Strings::EMPTY_STRING` is deprecated in favour of `Strings::EMPTY`.
 * [Core] `Bootstrap::withErrorHandler(ErroraHandler $errorHandler)` set custom error handler which is registered on `Bootstrap::runApplication()`.
+* [Tests] Added new assertion `messageContains` to `CatchException`.
 
 Release 2.0.0
 --------
