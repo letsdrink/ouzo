@@ -8,6 +8,7 @@ namespace Ouzo\ExceptionHandling;
 
 use Ouzo\PageNotFoundException;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -18,12 +19,14 @@ class ErrorHandlerTest extends TestCase
     {
         //given
         $pageNotFoundException = new PageNotFoundException();
-        ExceptionHandler::$errorRenderer = Mock::mock(ErrorRenderer::class);
+        /** @var Renderer|MockInterface $renderer */
+        $renderer = Mock::create(ErrorRenderer::class);
+        $handler = new ErrorHandler(new ExceptionHandler($renderer));
 
         //when
-        ErrorHandler::exceptionHandler($pageNotFoundException);
+        $handler->handleException($pageNotFoundException);
 
         //then
-        Mock::verify(ExceptionHandler::$errorRenderer)->render(Mock::any(), "exception");
+        Mock::verify($renderer)->render(Mock::any(), 'exception');
     }
 }

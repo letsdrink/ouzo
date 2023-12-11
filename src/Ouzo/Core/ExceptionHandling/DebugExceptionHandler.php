@@ -6,6 +6,7 @@
 
 namespace Ouzo\ExceptionHandling;
 
+use Ouzo\Http\MediaType;
 use Ouzo\Response\ResponseTypeResolve;
 use Ouzo\Uri;
 use Whoops\Handler\PrettyPageHandler;
@@ -13,9 +14,9 @@ use Whoops\Run;
 
 class DebugExceptionHandler extends ExceptionHandler
 {
-    public function runDefaultHandler($exception)
+    public function runDefaultHandler($exception): void
     {
-        if ($this->needPrettyHandler()) {
+        if ($this->isPrettyHandlerNeeded()) {
             $run = new Run();
             $run->pushHandler(new PrettyPageHandler());
             $run->pushHandler(new DebugErrorLogHandler());
@@ -25,9 +26,9 @@ class DebugExceptionHandler extends ExceptionHandler
         }
     }
 
-    private function needPrettyHandler(): bool
+    private function isPrettyHandlerNeeded(): bool
     {
-        $isHtmlResponse = ResponseTypeResolve::resolve() == "text/html";
+        $isHtmlResponse = ResponseTypeResolve::resolve() === MediaType::TEXT_HTML;
         return $isHtmlResponse && !Uri::isAjax();
     }
 }

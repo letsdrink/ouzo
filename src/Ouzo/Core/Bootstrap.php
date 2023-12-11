@@ -10,7 +10,9 @@ use Closure;
 use InvalidArgumentException;
 use Ouzo\Config\ConfigRepository;
 use Ouzo\ExceptionHandling\DebugErrorHandler;
+use Ouzo\ExceptionHandling\DebugExceptionHandler;
 use Ouzo\ExceptionHandling\ErrorHandler;
+use Ouzo\ExceptionHandling\ExceptionHandler;
 use Ouzo\Injection\Injector;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Injection\Scope;
@@ -109,7 +111,7 @@ class Bootstrap
     private function registerErrorHandlers(): void
     {
         if (Config::getValue('debug')) {
-            (new DebugErrorHandler())->register();
+            (new DebugErrorHandler(new DebugExceptionHandler()))->register();
             return;
         }
 
@@ -117,7 +119,7 @@ class Bootstrap
             $this->errorHandler->register();
             return;
         }
-        (new ErrorHandler())->register();
+        (new ErrorHandler(new ExceptionHandler()))->register();
     }
 
     private function includeRoutes(): void

@@ -13,26 +13,23 @@ class ErrorRenderer implements Renderer
 {
     public function render(OuzoExceptionData $exceptionData, ?string $viewName): void
     {
-        /** @noinspection PhpUnusedLocalVariableInspection */
         $errorMessage = $exceptionData->getMessage();
-        /** @noinspection PhpUnusedLocalVariableInspection */
         $errorTrace = $exceptionData->getStackTrace()->getTraceAsString();
 
         $this->clearOutputBuffers();
         header($exceptionData->getHeader());
         $responseType = ResponseTypeResolve::resolve();
-        header('Content-type: ' . $responseType);
+        header("Content-type: {$responseType}");
 
         $additionalHeaders = $exceptionData->getAdditionalHeaders();
         array_walk($additionalHeaders, function ($header) {
             header($header);
         });
 
-        /** @noinspection PhpIncludeInspection */
         require(ViewPathResolver::resolveViewPath($viewName, $responseType));
     }
 
-    private function clearOutputBuffers()
+    private function clearOutputBuffers(): void
     {
         while (ob_get_level()) {
             if (!ob_end_clean()) {
