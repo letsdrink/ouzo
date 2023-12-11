@@ -16,7 +16,7 @@ class DebugExceptionHandler extends ExceptionHandler
 {
     public function runDefaultHandler($exception): void
     {
-        if ($this->needPrettyHandler()) {
+        if ($this->isPrettyHandlerNeeded()) {
             $run = new Run();
             $run->pushHandler(new PrettyPageHandler());
             $run->pushHandler(new DebugErrorLogHandler());
@@ -26,7 +26,7 @@ class DebugExceptionHandler extends ExceptionHandler
         }
     }
 
-    private function needPrettyHandler(): bool
+    private function isPrettyHandlerNeeded(): bool
     {
         $isHtmlResponse = ResponseTypeResolve::resolve() === MediaType::TEXT_HTML;
         return $isHtmlResponse && !Uri::isAjax();
