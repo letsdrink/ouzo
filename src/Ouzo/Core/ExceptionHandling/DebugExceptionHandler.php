@@ -13,7 +13,7 @@ use Whoops\Run;
 
 class DebugExceptionHandler extends ExceptionHandler
 {
-    public function runDefaultHandler($exception)
+    public function runDefaultHandler($exception): void
     {
         if ($this->needPrettyHandler()) {
             $run = new Run();
@@ -27,7 +27,7 @@ class DebugExceptionHandler extends ExceptionHandler
 
     private function needPrettyHandler(): bool
     {
-        $isHtmlResponse = ResponseTypeResolve::resolve() == "text/html";
+        $isHtmlResponse = ResponseTypeResolve::resolve() === 'text/html';
         return $isHtmlResponse && !Uri::isAjax();
     }
 }

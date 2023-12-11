@@ -6,8 +6,10 @@
 
 namespace Ouzo\ExceptionHandling;
 
+use Exception;
 use Ouzo\Tests\CatchException;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -17,15 +19,16 @@ class ExceptionHandlerTest extends TestCase
     public function shouldHandleException()
     {
         //given
-        $exception = new \Exception("Some exception");
-        ExceptionHandler::$errorRenderer = Mock::mock(ErrorRenderer::class);
-        $handler = new ExceptionHandler();
+        $exception = new Exception('Some exception');
+        /** @var Renderer|MockInterface $renderer */
+        $renderer = Mock::create(ErrorRenderer::class);
+        $handler = new ExceptionHandler($renderer);
 
         //when
         CatchException::when($handler)->handleException($exception);
 
         //then
         CatchException::assertThat()->notCaught();
-        Mock::verify(ExceptionHandler::$errorRenderer)->render(OuzoExceptionData::forException(500, $exception), "exception");
+        Mock::verify($renderer)->render(OuzoExceptionData::forException(500, $exception), 'exception');
     }
 }

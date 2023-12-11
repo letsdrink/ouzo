@@ -13,74 +13,75 @@ use Ouzo\UserException;
 
 class ExceptionHandler
 {
-    private static bool $errorHandled = false;
-    private static bool $isCli = false;
-    public static ?Renderer $errorRenderer = null;
+    private bool $errorHandled = false;
+    private bool $isCli;
+    private Renderer $errorRenderer;
 
-    public static function setupErrorRenderer()
+    public function __construct(?Renderer $errorRenderer = null)
     {
         global $argv;
-        self::$isCli = isset($argv[0]);
-        self::$errorRenderer = self::$isCli ? new CliErrorRenderer() : new ErrorRenderer();
+        $this->isCli = isset($argv[0]);
+        $this->errorRenderer = is_null($errorRenderer) ? ($this->isCli ? new CliErrorRenderer() : new ErrorRenderer()) : $errorRenderer;
     }
 
-    public function handleException($exception)
+    public function handleException($exception): void
     {
         if (!$this->runOuzoExceptionHandler($exception)) {
             $this->runDefaultHandler($exception);
         }
     }
 
-    protected function runOuzoExceptionHandler($exception)
+    protected function runOuzoExceptionHandler($exception): bool
     {
         if ($exception instanceof UserException) {
             $this->renderUserError(OuzoExceptionData::forException(500, $exception));
             return true;
-        } elseif ($exception instanceof RouterException) {
+        }
+        if ($exception instanceof RouterException) {
             $this->handleError(OuzoExceptionData::forException(404, $exception));
             return true;
-        } elseif ($exception instanceof OuzoException) {
+        }
+        if ($exception instanceof OuzoException) {
             $this->handleError($exception->asExceptionData());
             return true;
         }
         return false;
     }
 
-    protected function runDefaultHandler($exception)
+    protected function runDefaultHandler($exception): void
     {
         $this->handleError(OuzoExceptionData::forException(500, $exception));
     }
 
-    public function handleExceptionData(OuzoExceptionData $exceptionData)
+    public function handleExceptionData(OuzoExceptionData $exceptionData): void
     {
         $this->handleError($exceptionData);
     }
 
-    public static function lastErrorHandled()
+    public function lastErrorHandled(): bool
     {
-        return self::$errorHandled;
+        return $this->errorHandled;
     }
 
-    protected function handleError($exception)
+    protected function handleError($exception): void
     {
         $this->renderError($exception);
     }
 
-    private function renderUserError($exception)
+    private function renderUserError($exception): void
     {
-        if (!self::$isCli) {
-            header("Contains-Error-Message: User");
+        if (!$this->isCli) {
+            header('Contains-Error-Message: User');
         }
         $this->renderError($exception, 'user_exception');
     }
 
-    protected function renderError(OuzoExceptionData $exceptionData, $viewName = 'exception')
+    protected function renderError(OuzoExceptionData $exceptionData, $viewName = 'exception'): void
     {
         try {
             ExceptionLogger::newInstance($exceptionData)->log();
-            $renderer = self::$errorRenderer ?: new ErrorRenderer();
-            $renderer->render($exceptionData, $viewName);
-            self::$errorHandled = true;
+            $this->errorRenderer->render($exceptionData, $viewName);
+            $this->errorHandled = true;
         } catch (Exception $e) {
             echo "Framework critical error. Exception thrown in exception handler.<br>\n";
             ExceptionLogger::forException($e)->log();
@@ -92,5 +93,3 @@ class ExceptionHandler
         }
     }
 }
-
-ExceptionHandler::setupErrorRenderer();

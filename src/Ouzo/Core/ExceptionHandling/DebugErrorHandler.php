@@ -25,12 +25,12 @@ class DebugErrorHandler extends ErrorHandler
         return new DebugExceptionHandler();
     }
 
-    public static function errorHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): void
+    public static function handleError(int $errorNumber, string $errorString, string $errorFile, int $errorLine): void
     {
         self::getRun()->handleError($errorNumber, $errorString, $errorFile, $errorLine);
     }
 
-    public static function shutdownHandler(): void
+    public static function handleShutdown(): void
     {
         self::getRun()->handleShutdown();
     }
