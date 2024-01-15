@@ -131,8 +131,11 @@ class Uri
 
     public static function getRequestParameters($stream = 'php://input'): array
     {
-        $parameters = self::parseRequest(stream_get_contents(fopen($stream, 'r')));
-        return Arrays::toArray($parameters);
+        if (self::isJsonContentType() || self::isPutFormUrlEncoded()) {
+            $parameters = self::parseRequest(stream_get_contents(fopen($stream, 'r')));
+            return Arrays::toArray($parameters);
+        }
+        return [];
     }
 
     private static function parseRequest(string $content): array
@@ -152,18 +155,12 @@ class Uri
 
     private static function jsonParameters(string $content): array
     {
-        if (Strings::equalsIgnoreCase(ContentType::value(), MediaType::APPLICATION_JSON)) {
-            return Arrays::toArray(Json::decode($content, true));
-        }
-        return [];
+        return self::isJsonContentType() ? Arrays::toArray(Json::decode($content, true)) : [];
     }
 
     private static function putRequestParameters(string $content): array
     {
-        if (
-            Strings::equal(Arrays::getValue($_SERVER, 'REQUEST_METHOD'), 'PUT')
-            && Strings::equalsIgnoreCase(ContentType::value(), 'application/x-www-form-urlencoded')
-        ) {
+        if (self::isPutFormUrlEncoded()) {
             parse_str($content, $parameters);
             return Arrays::toArray($parameters);
         }
@@ -185,7 +182,6 @@ class Uri
         return Strings::removePrefix(Strings::removePrefix($url, $prefix), $prefixForGetMethod);
     }
 
-
     public static function getProtocol(): string
     {
         return (
@@ -194,14 +190,25 @@ class Uri
         ) ? 'https://' : 'http://';
     }
 
+    public static function getHost(): ?string
+    {
+        return Arrays::getValue($_SERVER, 'HTTP_HOST');
+    }
+
     private static function isServerVariableSetAndHasValue(string $variableName, array|string $values): bool
     {
         $value = Arrays::getValue($_SERVER, $variableName);
         return in_array($value, Arrays::toArray($values));
     }
 
-    public static function getHost(): ?string
+    private static function isJsonContentType(): bool
     {
-        return Arrays::getValue($_SERVER, 'HTTP_HOST');
+        return Strings::equalsIgnoreCase(ContentType::value(), MediaType::APPLICATION_JSON);
+    }
+
+    private static function isPutFormUrlEncoded(): bool
+    {
+        return Strings::equal(Arrays::getValue($_SERVER, 'REQUEST_METHOD'), 'PUT')
+            && Strings::equalsIgnoreCase(ContentType::value(), 'application/x-www-form-urlencoded');
     }
 }
