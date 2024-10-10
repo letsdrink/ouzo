@@ -7,6 +7,7 @@
 namespace Ouzo\Db;
 
 use Closure;
+use Ouzo\Config;
 use Ouzo\Logger\Backtrace;
 use Ouzo\Logger\Logger;
 use Ouzo\Utilities\Objects;
@@ -76,10 +77,24 @@ class StatementExecutor
 
     public function createPdoStatement(array $options = []): PDOStatement
     {
-        $sqlString = sprintf("%s with params: %s", $this->humanizedSql, Objects::toString($this->boundValues));
+        $sqlString = $this->prepareSqlString();
+
         $callingClass = Backtrace::getCallingClass();
         Logger::getLogger(__CLASS__)->info("From: %s Query: %s", [$callingClass, $sqlString]);
 
         return $this->pdoExecutor->createPDOStatement($this->dbHandle, $this->sql, $this->boundValues, $sqlString, $options);
+    }
+
+    private function prepareSqlString(): string
+    {
+        $truncateLimit = Config::getValue('db', 'truncate_bound_values_string_limit');
+
+        $boundValuesAsString = Objects::toString($this->boundValues);
+        $boundValuesAsStringLength = mb_strlen($boundValuesAsString);
+        if (!is_null($truncateLimit) && $boundValuesAsStringLength > $truncateLimit) {
+            $boundValuesAsString = trim(mb_substr($boundValuesAsString, 0, $truncateLimit)) . "...\"] (truncated from {$boundValuesAsStringLength})";
+        }
+
+        return sprintf("%s with params: %s", $this->humanizedSql, $boundValuesAsString);
     }
 }
