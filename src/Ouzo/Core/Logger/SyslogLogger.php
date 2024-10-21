@@ -7,17 +7,19 @@
 namespace Ouzo\Logger;
 
 use Ouzo\Config;
+use Psr\Log\AbstractLogger;
 
-class SyslogLogger extends AbstractOuzoLogger
+class SyslogLogger extends AbstractLogger
 {
     const MAX_MESSAGE_SIZE = 1024;
 
     private SyslogAdapter $syslogAdapter;
+    private ?array $loggerConfiguration;
 
-    public function __construct($name, $configuration, SyslogAdapter $syslogAdapter = null)
+    public function __construct(string $name, string $configuration, SyslogAdapter $syslogAdapter = null)
     {
-        parent::__construct($name, $configuration);
         $this->syslogAdapter = $syslogAdapter ?: new SyslogAdapter();
+        $this->loggerConfiguration = Config::getValue('logger', $configuration);
     }
 
     public function __destruct()
@@ -25,16 +27,13 @@ class SyslogLogger extends AbstractOuzoLogger
         closelog();
     }
 
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
-        $loggerConfiguration = $this->getLoggerConfiguration();
         $syslogLevel = LogLevelTranslator::toSyslogLevel($level);
-        $this->logWithFunction(function ($message) use ($loggerConfiguration, $syslogLevel) {
-            if ($loggerConfiguration) {
-                $this->syslogAdapter->open($loggerConfiguration);
-            }
-            $this->logMessage($syslogLevel, $message);
-        }, $level, $message, $context);
+        if (!is_null($this->loggerConfiguration)) {
+            $this->syslogAdapter->open($this->loggerConfiguration);
+        }
+        $this->logMessage($syslogLevel, $message);
     }
 
     private function logMessage(string $level, string $message): void
