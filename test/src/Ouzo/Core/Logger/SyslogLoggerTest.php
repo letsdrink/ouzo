@@ -6,23 +6,22 @@
 
 namespace Ouzo\Logger;
 
-
 use Ouzo\Config;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 class SyslogLoggerTest extends TestCase
 {
-    private LoggerInterface $logger;
-    private SyslogAdapter $syslogAdapter;
+    private LoggerAdapter $logger;
+    private SyslogAdapter|MockInterface $syslogAdapter;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->syslogAdapter = Mock::create(SyslogAdapter::class);
-        $this->logger = new SyslogLogger('TEST', 'default', $this->syslogAdapter);
+        $this->logger = new LoggerAdapter('TEST', 'default', new SyslogLogger('TEST', 'default', $this->syslogAdapter));
     }
 
     protected function tearDown(): void
@@ -35,10 +34,9 @@ class SyslogLoggerTest extends TestCase
     public function shouldWriteErrorMessage()
     {
         //when
-        $this->logger->error('My error log line with param %s and %s.', [42, 'Zaphod']);
+        $this->logger->error('My error log line with param 42 and Zaphod.');
 
         //then
         Mock::verify($this->syslogAdapter)->log(LOG_ERR, 'TEST error: [ID: ] My error log line with param 42 and Zaphod.');
     }
-
 }

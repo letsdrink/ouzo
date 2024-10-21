@@ -15,6 +15,15 @@ class StdOutputLogger extends AbstractLogger
     {
     }
 
+    public function log($level, $message, array $context = []): void
+    {
+        $stdOut = $this->getStreamForLogLevel($level);
+        $date = Clock::nowAsString();
+        $fileHandle = fopen($stdOut, 'a');
+        fwrite($fileHandle, "$date: $message\n");
+        fclose($fileHandle);
+    }
+
     private function errorStreamName(): string
     {
         return "{$this->outputStreamIdentifier}://stderr";
@@ -31,14 +40,5 @@ class StdOutputLogger extends AbstractLogger
             return $this->standardStreamName();
         }
         return $this->errorStreamName();
-    }
-
-    public function log($level, $message, array $context = [])
-    {
-        $stdOut = $this->getStreamForLogLevel($level);
-        $date = Clock::nowAsString();
-        $fileHandle = fopen($stdOut, 'a');
-        fwrite($fileHandle, "$date: $message\n");
-        fclose($fileHandle);
     }
 }

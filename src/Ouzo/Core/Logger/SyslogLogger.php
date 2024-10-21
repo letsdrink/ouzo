@@ -27,7 +27,7 @@ class SyslogLogger extends AbstractLogger
         closelog();
     }
 
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         $syslogLevel = LogLevelTranslator::toSyslogLevel($level);
         if (!is_null($this->loggerConfiguration)) {
