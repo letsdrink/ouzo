@@ -7,12 +7,12 @@
 namespace Ouzo\Logger;
 
 use Ouzo\Utilities\Clock;
+use Psr\Log\AbstractLogger;
 
-class StdOutputLogger extends AbstractOuzoLogger
+class StdOutputLogger extends AbstractLogger
 {
     public function __construct(string $name, string $configuration, private string $outputStreamIdentifier = 'php')
     {
-        parent::__construct($name, $configuration);
     }
 
     private function errorStreamName(): string
@@ -25,7 +25,6 @@ class StdOutputLogger extends AbstractOuzoLogger
         return "{$this->outputStreamIdentifier}://stdout";
     }
 
-
     private function getStreamForLogLevel(string $logLevel): string
     {
         if (LogLevelTranslator::toSyslogLevel($logLevel) >= LOG_WARNING) {
@@ -37,11 +36,9 @@ class StdOutputLogger extends AbstractOuzoLogger
     public function log($level, $message, array $context = [])
     {
         $stdOut = $this->getStreamForLogLevel($level);
-        $this->logWithFunction(function ($message) use ($stdOut) {
-            $date = Clock::nowAsString();
-            $fileHandle = fopen($stdOut, 'a');
-            fwrite($fileHandle, "$date: $message\n");
-            fclose($fileHandle);
-        }, $level, $message, $context);
+        $date = Clock::nowAsString();
+        $fileHandle = fopen($stdOut, 'a');
+        fwrite($fileHandle, "$date: $message\n");
+        fclose($fileHandle);
     }
 }

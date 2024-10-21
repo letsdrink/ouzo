@@ -25,11 +25,11 @@ class Logger
 {
     private static array $loggers = [];
 
-    public static function getLogger(string $name, string $configuration = 'default'): LoggerInterface
+    public static function getLogger(string $name, string $configuration = 'default'): LoggerAdapter
     {
         $logger = Arrays::getNestedValue(self::$loggers, [$name, $configuration]);
-        if (!$logger) {
-            $logger = self::loadLogger($name, $configuration);
+        if (is_null($logger)) {
+            $logger = new LoggerAdapter($name, $configuration, self::loadLogger($name, $configuration));
             Arrays::setNestedValue(self::$loggers, [$name, $configuration], $logger);
         }
         return $logger;
@@ -43,7 +43,7 @@ class Logger
     private static function loadLogger(string $name, string $configuration): LoggerInterface
     {
         $logger = Config::getValue('logger', $configuration);
-        if (!$logger || !isset($logger['class'])) {
+        if (is_null($logger) || !isset($logger['class'])) {
             return new SyslogLogger($name, $configuration);
         }
         return new $logger['class']($name, $configuration);
