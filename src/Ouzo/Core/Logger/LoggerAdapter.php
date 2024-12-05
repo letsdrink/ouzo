@@ -93,50 +93,54 @@ class LoggerAdapter
 
     public function asLoggerInterface(): LoggerInterface
     {
-        return new class() implements LoggerInterface {
+        return new class($this) implements LoggerInterface {
+            public function __construct(private readonly LoggerAdapter $loggerAdapter)
+            {
+            }
+
             public function log($level, $message, array $context = []): void
             {
-                $this->log($level, $message, $context);
+                $this->loggerAdapter->log($level, $message, $context);
             }
 
-            public function emergency($message, array $context = array())
+            public function emergency($message, array $context = [])
             {
-                $this->emergency($message, $context);
+                $this->loggerAdapter->emergency($message, $context);
             }
 
-            public function alert($message, array $context = array())
+            public function alert($message, array $context = [])
             {
-                $this->alert($message, $context);
+                $this->loggerAdapter->alert($message, $context);
             }
 
-            public function critical($message, array $context = array())
+            public function critical($message, array $context = [])
             {
-                $this->critical($message, $context);
+                $this->loggerAdapter->critical($message, $context);
             }
 
-            public function error($message, array $context = array())
+            public function error($message, array $context = [])
             {
-                $this->error($message, $context);
+                $this->loggerAdapter->error($message, $context);
             }
 
-            public function warning($message, array $context = array())
+            public function warning($message, array $context = [])
             {
-                $this->warning($message, $context);
+                $this->loggerAdapter->warning($message, $context);
             }
 
-            public function notice($message, array $context = array())
+            public function notice($message, array $context = [])
             {
-                $this->notice($message, $context);
+                $this->loggerAdapter->notice($message, $context);
             }
 
-            public function info($message, array $context = array())
+            public function info($message, array $context = [])
             {
-                $this->info($message, $context);
+                $this->loggerAdapter->info($message, $context);
             }
 
             public function debug($message, array $context = array())
             {
-                $this->debug($message, $context);
+                $this->loggerAdapter->debug($message, $context);
             }
         };
     }

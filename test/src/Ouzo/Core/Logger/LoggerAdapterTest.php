@@ -9,6 +9,7 @@ use Ouzo\Logger\LoggerAdapter;
 use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
 use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\MockInterface;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
 use PHPUnit\Framework\Attributes\Test;
@@ -166,9 +167,16 @@ class LoggerAdapterTest extends TestCase
     public function shouldGetAsInstanceOfLoggerInterface(): void
     {
         // given
+        Config::overrideProperty('debug')->with(true);
+        $loggerInterface = $this->logger->asLoggerInterface();
         // when
+        $loggerInterface->debug('My debug log line without params.');
+
         // then
-        Assert::that($this->logger->asLoggerInterface())->isInstanceOf(LoggerInterface::class);
+        Assert::that($loggerInterface)->isInstanceOf(LoggerInterface::class);
+        $logContent = $this->readStreamContent('test://stdout');
+        Assert::thatString($logContent)->contains('2014-01-01 11:11:11: TEST debug: [ID: ] My debug log line without params.');
+
     }
 
     private function readStreamContent(string $streamFile): string
