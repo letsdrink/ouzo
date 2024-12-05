@@ -13,6 +13,7 @@ use Ouzo\Utilities\Clock;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
 
 class LoggerAdapterTest extends TestCase
 {
@@ -158,6 +159,15 @@ class LoggerAdapterTest extends TestCase
         $logContent = $this->readStreamContent('test://stdout');
         Assert::thatString($logContent)->hasSize(0);
         Config::clearProperty('debug');
+    }
+
+    #[Test]
+    public function shouldBeInstanceOfLoggerInterface(): void
+    {
+        // given
+        // when
+        // then
+        Assert::that($this->logger)->isInstanceOf(LoggerInterface::class);
     }
 
     private function readStreamContent(string $streamFile): string
