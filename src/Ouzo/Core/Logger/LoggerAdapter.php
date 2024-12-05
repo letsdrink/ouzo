@@ -91,6 +91,60 @@ class LoggerAdapter
         }
     }
 
+    public function asLoggerInterface(): LoggerInterface
+    {
+        return new class($this) implements LoggerInterface {
+            public function __construct(private readonly LoggerAdapter $loggerAdapter)
+            {
+            }
+
+            public function log($level, $message, array $context = []): void
+            {
+                $this->loggerAdapter->log($level, $message, $context);
+            }
+
+            public function emergency($message, array $context = [])
+            {
+                $this->loggerAdapter->emergency($message, $context);
+            }
+
+            public function alert($message, array $context = [])
+            {
+                $this->loggerAdapter->alert($message, $context);
+            }
+
+            public function critical($message, array $context = [])
+            {
+                $this->loggerAdapter->critical($message, $context);
+            }
+
+            public function error($message, array $context = [])
+            {
+                $this->loggerAdapter->error($message, $context);
+            }
+
+            public function warning($message, array $context = [])
+            {
+                $this->loggerAdapter->warning($message, $context);
+            }
+
+            public function notice($message, array $context = [])
+            {
+                $this->loggerAdapter->notice($message, $context);
+            }
+
+            public function info($message, array $context = [])
+            {
+                $this->loggerAdapter->info($message, $context);
+            }
+
+            public function debug($message, array $context = array())
+            {
+                $this->loggerAdapter->debug($message, $context);
+            }
+        };
+    }
+
     private function isDebug(): bool
     {
         return Config::getValue('debug') === true;

@@ -8,15 +8,21 @@ use Ouzo\Config;
 use Ouzo\Logger\LoggerAdapter;
 use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
+use Ouzo\Tests\Mock\Mock;
+use Ouzo\Tests\Mock\MockInterface;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 class LoggerAdapterTest extends TestCase
 {
     private LoggerAdapter $logger;
+
 
     protected function setUp(): void
     {
@@ -159,6 +165,65 @@ class LoggerAdapterTest extends TestCase
         Assert::thatString($logContent)->hasSize(0);
         Config::clearProperty('debug');
     }
+
+    #[Test]
+    public function shouldGetLoggerInterface(): void
+    {
+        // given
+        $loggerInterface = $this->logger->asLoggerInterface();
+
+        // when
+        // then
+        Assert::that($loggerInterface)->isInstanceOf(LoggerInterface::class);
+    }
+
+    #[Test]
+    #[DataProvider('logLevels')]
+    public function shouldWriteLoggingIsDelegatedToLoggerInterfaceLogWhenLogIsCalled(string $logLevel): void
+    {
+        // given
+        Config::overrideProperty('debug')->with(true);
+        $loggerInterface = $this->logger->asLoggerInterface();
+
+        // when
+        $loggerInterface->log($logLevel,  'My log line');
+
+        // then
+        $logContent = $this->readStreamContent('test://stdout');
+        Assert::thatString($logContent)->contains("2014-01-01 11:11:11: TEST $logLevel: [ID: ] My log line");
+    }
+
+    #[Test]
+    #[DataProvider('logLevels')]
+    public function shouldWriteLogWhenLoggingIsDelegatedToLoggerInterfaceAndAppropriateMethodIsCalled(string $logLevel): void
+    {
+        // given
+        Config::overrideProperty('debug')->with(true);
+        $loggerInterface = $this->logger->asLoggerInterface();
+
+        // when
+        $loggerInterface->$logLevel('My log line');
+
+        // then
+        $logContent = $this->readStreamContent('test://stdout');
+        Assert::thatString($logContent)->contains("2014-01-01 11:11:11: TEST $logLevel: [ID: ] My log line");
+    }
+
+    public static function logLevels(): array
+    {
+        return [
+            [LogLevel::INFO],
+            [LogLevel::DEBUG],
+            [LogLevel::ALERT],
+            [LogLevel::CRITICAL],
+            [LogLevel::ERROR],
+            [LogLevel::WARNING],
+            [LogLevel::NOTICE],
+            [LogLevel::EMERGENCY],
+        ];
+
+    }
+
 
     private function readStreamContent(string $streamFile): string
     {
