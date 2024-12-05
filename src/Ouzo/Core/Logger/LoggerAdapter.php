@@ -12,7 +12,7 @@ use Ouzo\Utilities\Strings;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class LoggerAdapter implements LoggerInterface
+class LoggerAdapter
 {
     private MessageFormatter $messageFormatter;
     private ?ContextEnhancer $contextEnhancer;
@@ -89,6 +89,56 @@ class LoggerAdapter implements LoggerInterface
             }
             $this->logger->log($level, $message, $context);
         }
+    }
+
+    public function asLoggerInterface(): LoggerInterface
+    {
+        return new class() implements LoggerInterface {
+            public function log($level, $message, array $context = []): void
+            {
+                $this->log($level, $message, $context);
+            }
+
+            public function emergency($message, array $context = array())
+            {
+                $this->emergency($message, $context);
+            }
+
+            public function alert($message, array $context = array())
+            {
+                $this->alert($message, $context);
+            }
+
+            public function critical($message, array $context = array())
+            {
+                $this->critical($message, $context);
+            }
+
+            public function error($message, array $context = array())
+            {
+                $this->error($message, $context);
+            }
+
+            public function warning($message, array $context = array())
+            {
+                $this->warning($message, $context);
+            }
+
+            public function notice($message, array $context = array())
+            {
+                $this->notice($message, $context);
+            }
+
+            public function info($message, array $context = array())
+            {
+                $this->info($message, $context);
+            }
+
+            public function debug($message, array $context = array())
+            {
+                $this->debug($message, $context);
+            }
+        };
     }
 
     private function isDebug(): bool

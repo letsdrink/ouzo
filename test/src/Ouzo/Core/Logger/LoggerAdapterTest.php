@@ -8,6 +8,7 @@ use Ouzo\Config;
 use Ouzo\Logger\LoggerAdapter;
 use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
+use Ouzo\Tests\Mock\Mock;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
 use PHPUnit\Framework\Attributes\Test;
@@ -162,12 +163,12 @@ class LoggerAdapterTest extends TestCase
     }
 
     #[Test]
-    public function shouldBeInstanceOfLoggerInterface(): void
+    public function shouldGetAsInstanceOfLoggerInterface(): void
     {
         // given
         // when
         // then
-        Assert::that($this->logger)->isInstanceOf(LoggerInterface::class);
+        Assert::that($this->logger->asLoggerInterface())->isInstanceOf(LoggerInterface::class);
     }
 
     private function readStreamContent(string $streamFile): string
