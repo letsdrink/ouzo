@@ -28,7 +28,7 @@ class Logger
     public static function getLogger(string $name, string $configuration = 'default'): LoggerAdapter
     {
         $logger = Arrays::getNestedValue(self::$loggers, [$name, $configuration]);
-        if (is_null($logger)) {
+        if (empty($logger)) {
             $logger = new LoggerAdapter($name, $configuration, self::loadLogger($name, $configuration));
             Arrays::setNestedValue(self::$loggers, [$name, $configuration], $logger);
         }
