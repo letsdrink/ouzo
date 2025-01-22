@@ -51,7 +51,7 @@ class StatementIterator implements Iterator
 
     public function closeCursor(): void
     {
-        Logger::getLogger(__CLASS__)->info("Closing cursor");
+        Logger::getLogger(__CLASS__)->asLoggerInterface()->info("Closing cursor");
         $this->statement->closeCursor();
     }
 }

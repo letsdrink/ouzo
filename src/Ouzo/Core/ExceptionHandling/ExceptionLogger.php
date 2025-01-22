@@ -41,7 +41,7 @@ class ExceptionLogger
     public function log(): void
     {
         $message = $this->getMessage();
-        Logger::getLogger(__CLASS__)->error($message);
+        Logger::getLogger(__CLASS__)->asLoggerInterface()->error($message);
     }
 
     public function getMessage(): string

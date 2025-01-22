@@ -28,7 +28,7 @@ class LogRequest implements Interceptor
 
     private function handleRequestContext(RequestContext $requestContext, Chain $next): mixed
     {
-        Logger::getLogger(__CLASS__)->info(sprintf('[Action: %s#%s] [Request: %s %s]',
+        Logger::getLogger(__CLASS__)->asLoggerInterface()->info(sprintf('[Action: %s#%s] [Request: %s %s]',
             $requestContext->getCurrentController(),
             $requestContext->getCurrentAction(),
             Uri::getRequestType(),

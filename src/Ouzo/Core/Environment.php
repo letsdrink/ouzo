@@ -20,7 +20,7 @@ class Environment
         $env = getenv('environment');
         if ($env === false) {
             $errorMessage = 'Can\'t determine configuration environment.';
-            Logger::getLogger(__CLASS__)->error($errorMessage);
+            Logger::getLogger(__CLASS__)->asLoggerInterface()->error($errorMessage);
             throw new RuntimeException($errorMessage);
         }
     }

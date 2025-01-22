@@ -80,7 +80,7 @@ class StatementExecutor
         $sqlString = $this->prepareSqlString();
 
         $callingClass = Backtrace::getCallingClass();
-        Logger::getLogger(__CLASS__)->info("From: {$callingClass} Query: {$sqlString}");
+        Logger::getLogger(__CLASS__)->asLoggerInterface()->info("From: {$callingClass} Query: {$sqlString}");
 
         return $this->pdoExecutor->createPDOStatement($this->dbHandle, $this->sql, $this->boundValues, $sqlString, $options);
     }
