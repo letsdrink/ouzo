@@ -39,6 +39,7 @@ class Controller
     private bool $keepMessage = false;
     private SessionStats $sessionStats;
     private ViewNameProvider $viewNameProvider;
+    private bool $loggerInterceptorEnabled = true;
 
     public static function createInstance(RouteRule $routeRule, RequestParameters $requestParameters, SessionStats $sessionStats): Controller
     {
@@ -194,6 +195,17 @@ class Controller
     {
         $class = get_called_class();
         throw new NoControllerActionException("No action [{$name}] defined in controller [{$class}].");
+    }
+
+
+    public function isLoggerInterceptorEnabled(): bool
+    {
+        return $this->loggerInterceptorEnabled;
+    }
+
+    public function setLoggerInterceptorEnabled(bool $loggerInterceptorEnabled): void
+    {
+        $this->loggerInterceptorEnabled = $loggerInterceptorEnabled;
     }
 
     private function wrapAsNotices(array $messages, ?string $url): array
