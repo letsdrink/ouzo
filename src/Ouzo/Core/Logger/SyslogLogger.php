@@ -7,9 +7,10 @@
 namespace Ouzo\Logger;
 
 use Ouzo\Config;
-use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
-class SyslogLogger extends AbstractLogger
+class SyslogLogger implements LoggerInterface
 {
     const MAX_MESSAGE_SIZE = 1024;
 
@@ -28,6 +29,51 @@ class SyslogLogger extends AbstractLogger
     }
 
     public function log($level, $message, array $context = []): void
+    {
+        $this->doLog($level, $message);
+    }
+
+    public function emergency($message, array $context = array())
+    {
+        $this->doLog(LogLevel::EMERGENCY, $message);
+    }
+
+    public function alert($message, array $context = array())
+    {
+        $this->doLog(LogLevel::ALERT, $message);
+    }
+
+    public function critical($message, array $context = array())
+    {
+        $this->doLog(LogLevel::CRITICAL, $message);
+    }
+
+    public function error($message, array $context = array())
+    {
+        $this->doLog(LogLevel::ERROR, $message);
+    }
+
+    public function warning($message, array $context = array())
+    {
+        $this->doLog(LogLevel::WARNING, $message);
+    }
+
+    public function notice($message, array $context = array())
+    {
+        $this->doLog(LogLevel::NOTICE, $message);
+    }
+
+    public function info($message, array $context = array())
+    {
+        $this->doLog(LogLevel::INFO, $message);
+    }
+
+    public function debug($message, array $context = array())
+    {
+        $this->doLog(LogLevel::DEBUG, $message);
+    }
+
+    private function doLog(mixed $level, string $message): void
     {
         $syslogLevel = LogLevelTranslator::toSyslogLevel($level);
         if (!is_null($this->loggerConfiguration)) {
