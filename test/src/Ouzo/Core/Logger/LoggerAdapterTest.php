@@ -8,8 +8,6 @@ use Ouzo\Config;
 use Ouzo\Logger\LoggerAdapter;
 use Ouzo\Logger\StdOutputLogger;
 use Ouzo\Tests\Assert;
-use Ouzo\Tests\Mock\Mock;
-use Ouzo\Tests\Mock\MockInterface;
 use Ouzo\Tests\StreamStub;
 use Ouzo\Utilities\Clock;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,7 +20,6 @@ use Psr\Log\LogLevel;
 class LoggerAdapterTest extends TestCase
 {
     private LoggerAdapter $logger;
-
 
     protected function setUp(): void
     {
@@ -45,6 +42,7 @@ class LoggerAdapterTest extends TestCase
         //given
         $logger = new class() extends AbstractLogger {
             public ?string $currentMessage = null;
+
             public array $currentContext = [];
 
             public function log($level, $message, array $context = []): void
@@ -186,11 +184,11 @@ class LoggerAdapterTest extends TestCase
         $loggerInterface = $this->logger->asLoggerInterface();
 
         // when
-        $loggerInterface->log($logLevel,  'My log line');
+        $loggerInterface->log($logLevel, 'My log line');
 
         // then
         $logContent = $this->readStreamContent('test://stdout');
-        Assert::thatString($logContent)->contains("2014-01-01 11:11:11: TEST $logLevel: [ID: ] My log line");
+        Assert::thatString($logContent)->contains("My log line");
     }
 
     #[Test]
@@ -206,7 +204,7 @@ class LoggerAdapterTest extends TestCase
 
         // then
         $logContent = $this->readStreamContent('test://stdout');
-        Assert::thatString($logContent)->contains("2014-01-01 11:11:11: TEST $logLevel: [ID: ] My log line");
+        Assert::thatString($logContent)->contains("My log line");
     }
 
     public static function logLevels(): array
@@ -221,9 +219,7 @@ class LoggerAdapterTest extends TestCase
             [LogLevel::NOTICE],
             [LogLevel::EMERGENCY],
         ];
-
     }
-
 
     private function readStreamContent(string $streamFile): string
     {

@@ -70,7 +70,7 @@ jobs:
         # I don't know how to run sqlite without it going into interactive mode, so I piped empty stream to it
 
       - name: Cache dependencies installed with Composer
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.cache/composer
           key: php${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}

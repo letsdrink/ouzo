@@ -35,47 +35,47 @@ class LoggerAdapter
 
     public function emergency(string $message, array $context = []): void
     {
-        $this->log(LogLevel::EMERGENCY, $message, $context);
+        $this->doLog(LogLevel::EMERGENCY, $message, $context);
     }
 
     public function alert(string $message, array $context = []): void
     {
-        $this->log(LogLevel::ALERT, $message, $context);
+        $this->doLog(LogLevel::ALERT, $message, $context);
     }
 
     public function critical(string $message, array $context = []): void
     {
-        $this->log(LogLevel::CRITICAL, $message, $context);
+        $this->doLog(LogLevel::CRITICAL, $message, $context);
     }
 
     public function error(string $message, array $context = []): void
     {
-        $this->log(LogLevel::ERROR, $message, $context);
+        $this->doLog(LogLevel::ERROR, $message, $context);
     }
 
     public function warning(string $message, array $context = []): void
     {
-        $this->log(LogLevel::WARNING, $message, $context);
+        $this->doLog(LogLevel::WARNING, $message, $context);
     }
 
     public function notice(string $message, array $context = []): void
     {
-        $this->log(LogLevel::NOTICE, $message, $context);
+        $this->doLog(LogLevel::NOTICE, $message, $context);
     }
 
     public function info(string $message, array $context = []): void
     {
-        $this->log(LogLevel::INFO, $message, $context);
+        $this->doLog(LogLevel::INFO, $message, $context);
     }
 
     public function debug(string $message, array $context = []): void
     {
         if ($this->isDebug()) {
-            $this->log(LogLevel::DEBUG, $message, $context);
+            $this->doLog(LogLevel::DEBUG, $message, $context);
         }
     }
 
-    public function log(string $level, $message, array $context = []): void
+    public function doLog(string $level, $message, array $context = []): void
     {
         $ouzoLevel = LogLevelTranslator::toSyslogLevel($level);
         $minimalLevel = $this->minimalLevels ? Arrays::getValue($this->minimalLevels, $this->name, LOG_DEBUG) : LOG_DEBUG;
@@ -93,56 +93,7 @@ class LoggerAdapter
 
     public function asLoggerInterface(): LoggerInterface
     {
-        return new class($this) implements LoggerInterface {
-            public function __construct(private readonly LoggerAdapter $loggerAdapter)
-            {
-            }
-
-            public function log($level, $message, array $context = []): void
-            {
-                $this->loggerAdapter->log($level, $message, $context);
-            }
-
-            public function emergency($message, array $context = [])
-            {
-                $this->loggerAdapter->emergency($message, $context);
-            }
-
-            public function alert($message, array $context = [])
-            {
-                $this->loggerAdapter->alert($message, $context);
-            }
-
-            public function critical($message, array $context = [])
-            {
-                $this->loggerAdapter->critical($message, $context);
-            }
-
-            public function error($message, array $context = [])
-            {
-                $this->loggerAdapter->error($message, $context);
-            }
-
-            public function warning($message, array $context = [])
-            {
-                $this->loggerAdapter->warning($message, $context);
-            }
-
-            public function notice($message, array $context = [])
-            {
-                $this->loggerAdapter->notice($message, $context);
-            }
-
-            public function info($message, array $context = [])
-            {
-                $this->loggerAdapter->info($message, $context);
-            }
-
-            public function debug($message, array $context = array())
-            {
-                $this->loggerAdapter->debug($message, $context);
-            }
-        };
+        return $this->logger;
     }
 
     private function isDebug(): bool
