@@ -190,7 +190,7 @@ class LoggerAdapterTest extends TestCase
 
         // then
         $logContent = $this->readStreamContent('test://stdout');
-        Assert::thatString($logContent)->contains("2014-01-01 11:11:11: TEST $logLevel: [ID: ] My log line");
+        Assert::thatString($logContent)->contains("2014-01-01 11:11:11: My log line");
     }
 
     #[Test]
@@ -206,7 +206,7 @@ class LoggerAdapterTest extends TestCase
 
         // then
         $logContent = $this->readStreamContent('test://stdout');
-        Assert::thatString($logContent)->contains("2014-01-01 11:11:11: TEST $logLevel: [ID: ] My log line");
+        Assert::thatString($logContent)->contains("2014-01-01 11:11:11: My log line");
     }
 
     public static function logLevels(): array
