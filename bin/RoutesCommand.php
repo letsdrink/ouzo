@@ -41,7 +41,7 @@ class RoutesCommand extends Command
     {
         $this->setName('ouzo:routes')
             ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL)
-            ->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'Path for JS helper generated file', Path::join(ROOT_PATH, 'public'))
+            ->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'Path for JS helper generated file')
             ->addOption('generate-all', 'a', InputOption::VALUE_NONE)
             ->addOption('generate-php', 'g', InputOption::VALUE_NONE)
             ->addOption('generate-js', 'j', InputOption::VALUE_NONE)
@@ -110,8 +110,12 @@ class RoutesCommand extends Command
 
     private function generateJsHelper()
     {
-        $routesJSHelperPath = $this->input->getOption('path');
-        $routesJSHelperPath = Path::join($routesJSHelperPath, 'generated_uri_helper.js');
+        $path = $this->input->getOption('path');
+        if (!$path) {
+            $config = Config::getValue('app', 'routes', 'helper-js') ?: [];
+            $path = Arrays::getValue($config, 'path') ?? Path::join(ROOT_PATH, 'public');
+        }
+        $routesJSHelperPath = Path::join($path, 'generated_uri_helper.js');
         if (JsUriHelperGenerator::generate()->saveToFile($routesJSHelperPath) !== false) {
             $this->output->writeln("File with JS uri helpers is generated in <info>$routesJSHelperPath</info>");
         }
