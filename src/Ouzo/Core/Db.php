@@ -7,13 +7,13 @@
 namespace Ouzo;
 
 use Closure;
-use Exception;
 use Ouzo\Db\PDOExceptionExtractor;
 use Ouzo\Db\StatementExecutor;
 use Ouzo\Db\TransactionalProxy;
 use Ouzo\Utilities\Arrays;
 use PDO;
 use PDOException;
+use Throwable;
 
 
 class Db
@@ -90,7 +90,7 @@ class Db
                 $result = call_user_func($callable);
                 $this->commitTransaction();
                 return $result;
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 $this->rollbackTransactionSilently();
                 throw $e;
             }
@@ -126,7 +126,7 @@ class Db
     {
         try {
             $this->rollbackTransaction();
-        } catch (Exception) {
+        } catch (Throwable) {
         }
     }
 

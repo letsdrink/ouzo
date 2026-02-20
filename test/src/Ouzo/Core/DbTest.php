@@ -62,10 +62,10 @@ class DbTest extends DbTransactionalTestCase
         $db->dbHandle = $dbHandle;
 
         //when
-        CatchException::when($db)->runInTransaction(fn() => throw new InvalidArgumentException());
+        CatchException::when($db)->runInTransaction(fn() => throw new Error());
 
         //then
-        CatchException::assertThat()->isInstanceOf('InvalidArgumentException');
+        CatchException::assertThat()->isInstanceOf('Error');
         Mock::verify($dbHandle)->beginTransaction();
         Mock::verify($dbHandle)->neverReceived()->commitTransaction();
         Mock::verify($dbHandle)->rollBack();
