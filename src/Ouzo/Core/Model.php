@@ -517,9 +517,9 @@ class Model extends Validatable implements JsonSerializable
         $this->attributes = $serialized;
     }
 
-    public function jsonSerialize(): string
+    public function jsonSerialize(): mixed
     {
-        return json_encode($this->attributes);
+        return $this->attributes;
     }
 
     public function getModelDefinition(): ModelDefinition
