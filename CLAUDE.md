@@ -8,7 +8,42 @@ All commit messages, PR titles, PR descriptions, code comments, and documentatio
 
 ## Code Style
 
-- Always import classes with `use` statements. Never use fully qualified class names (FQCN) inline (e.g. `\Ouzo\FrontController`). Add a `use Ouzo\FrontController;` import instead.
+### Imports
+- Always import classes with `use` statements. Never use fully qualified class names (FQCN) inline.
+- Order: PHP built-in → Ouzo framework → third-party.
+
+### Types
+- Always declare parameter types and return types.
+- Fluent methods return `static` (not `self`).
+- Use `is_null()` instead of `=== null`.
+
+### Strings & Arrays
+- Single quotes by default: `'value'`.
+- Double quotes only for interpolation: `"prefix_{$var}"`.
+- Always `[]` for arrays, never `array()`.
+
+### Docblocks
+- Only when types cannot be expressed in code or behavior needs explanation.
+- Do not add `@param`/`@return` when method signatures are sufficient.
+
+### Copyright header (every file)
+```php
+<?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
+```
+
+### Classes
+- `final` only on classes with constants only (e.g. `HttpMethod`, `HttpStatus`).
+- `readonly class` for immutable value objects.
+- No leading underscore on private methods.
+- Keep methods short (3-20 lines), extract longer logic into private helpers.
+
+### Error Handling
+- Throw exceptions immediately with readable messages, no error codes.
+- Never suppress or silently handle errors.
 
 ## What is Ouzo
 
@@ -62,9 +97,11 @@ Static API on `Route`: `get()`, `post()`, `put()`, `delete()`, `resource()`, `gr
 
 ## Testing Conventions
 
-- PHPUnit 10.2+ with `#[Test]` attributes (not `@test` annotations)
-- `#[Group('mysql')]`, `#[Group('postgres')]`, `#[Group('sqlite3')]`, `#[Group('non-sqlite3')]` for DB-specific tests
+- `#[Test]` attribute, not `test` prefix in method names
+- Method names: `shouldDoSomething()` pattern
 - Test structure: `//given`, `//when`, `//then` comments
+- `#[DataProvider('name')]` attribute, not `@dataProvider` annotation
+- `#[Group('mysql')]`, `#[Group('postgres')]`, `#[Group('sqlite3')]`, `#[Group('non-sqlite3')]` for DB-specific tests
 - Base classes:
   - `DbTransactionalTestCase` — wraps each test in a transaction that rolls back
   - `ControllerTestCase` — HTTP testing with request/response mocking
