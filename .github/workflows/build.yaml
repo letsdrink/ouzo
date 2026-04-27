@@ -83,10 +83,24 @@ jobs:
 
       - name: Run tests with coverage
         if: matrix.coverage != ''
-        run: ${{ matrix.phpunitEnv }} ./vendor/bin/phpunit ${{ matrix.phpunitArgs }} --coverage-clover build/logs/clover.xml
+        run: ${{ matrix.phpunitEnv }} ./vendor/bin/phpunit ${{ matrix.phpunitArgs }} --coverage-clover build/logs/clover.xml --coverage-html build/coverage-html
 
-      - name: Upload coverage results to Coveralls
+      - name: Coverage summary
         if: matrix.coverage != ''
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+        run: |
+          php -r '
+          $xml = simplexml_load_file("build/logs/clover.xml");
+          $metrics = $xml->project->metrics;
+          $stmts = (int)$metrics["statements"];
+          $covered = (int)$metrics["coveredstatements"];
+          $pct = $stmts > 0 ? round($covered / $stmts * 100, 2) : 0;
+          file_put_contents(getenv("GITHUB_STEP_SUMMARY"), "## Code Coverage\n\n**{$pct}%** ({$covered}/{$stmts} statements)\n");
+          '
+
+      - name: Upload coverage report
+        if: matrix.coverage != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: build/coverage-html
+          retention-days: 14
