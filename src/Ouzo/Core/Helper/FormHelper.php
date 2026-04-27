@@ -120,7 +120,7 @@ namespace Ouzo\Helper {
                     ->render();
         }
 
-        public static function selectTag(string $name, array $items = [], mixed $value = null, array $attributes = [], string $promptOption = null): string
+        public static function selectTag(string $name, array $items = [], mixed $value = null, array $attributes = [], ?string $promptOption = null): string
         {
             $value = Arrays::toArray($value);
 
@@ -279,7 +279,7 @@ namespace {
     }
 
     #[Deprecated(replacement: "FormHelper::selectTag(%parametersList%)")]
-    function selectTag(string $name, array $items = [], mixed $value = null, array $attributes = [], string $promptOption = null): string
+    function selectTag(string $name, array $items = [], mixed $value = null, array $attributes = [], ?string $promptOption = null): string
     {
         return FormHelper::selectTag($name, $items, $value, $attributes, $promptOption);
     }
