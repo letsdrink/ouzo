@@ -32,12 +32,7 @@ class Arrays
      */
     public static function all(array $elements, callable $predicate): bool
     {
-        foreach ($elements as $element) {
-            if (!Functions::call($predicate, $element)) {
-                return false;
-            }
-        }
-        return true;
+        return array_all($elements, $predicate);
     }
 
     /**
@@ -184,12 +179,7 @@ class Arrays
      */
     public static function any(array $elements, callable $predicate): bool
     {
-        foreach ($elements as $element) {
-            if (Functions::call($predicate, $element)) {
-                return true;
-            }
-        }
-        return false;
+        return array_any($elements, $predicate);
     }
 
     /**
@@ -633,12 +623,7 @@ class Arrays
      */
     public static function find(array $elements, callable $function): mixed
     {
-        foreach ($elements as $element) {
-            if ($function($element)) {
-                return $element;
-            }
-        }
-        return null;
+        return array_find($elements, $function);
     }
 
     /**
