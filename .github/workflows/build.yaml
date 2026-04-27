@@ -10,17 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '8.2.7' ]
+        php: [ '8.4' ]
         db: [ 'MySQL', 'PostgreSQL', 'SQLite' ]
         include:
           - db: MySQL
-            phpunitArgs: "--exclude-group postgres,sqlite3"
+            phpunitArgs: "--exclude-group postgres --exclude-group sqlite3"
             phpunitEnv: db=mysql # from config/test/config.php
           - db: PostgreSQL
-            phpunitArgs: "--exclude-group mysql,sqlite3"
+            phpunitArgs: "--exclude-group mysql --exclude-group sqlite3"
             phpunitEnv: db=postgres # from config/test/config.php
           - db: SQLite
-            phpunitArgs: "--exclude-group mysql,postgres,non-sqlite3"
+            phpunitArgs: "--exclude-group mysql --exclude-group postgres --exclude-group non-sqlite3"
             phpunitEnv: db=sqlite3 # from config/test/config.php
     services:
       mysql:
@@ -33,7 +33,7 @@ jobs:
         ports:
           - 3306:3306
       postgres:
-        image: postgres:10.0
+        image: postgres:16
         env:
           POSTGRES_DB: ouzo_test
           POSTGRES_USER: ouzo_user
@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
