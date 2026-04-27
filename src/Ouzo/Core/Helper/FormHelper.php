@@ -208,7 +208,6 @@ namespace Ouzo\Helper {
 
 namespace {
 
-    use Deprecated;
     use Ouzo\Helper\FormHelper;
     use Ouzo\Helper\ModelFormBuilder;
 

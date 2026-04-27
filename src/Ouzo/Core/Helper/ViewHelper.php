@@ -145,7 +145,6 @@ namespace Ouzo\Helper {
 
 namespace {
 
-    use Deprecated;
     use Ouzo\Helper\ViewHelper;
     use Ouzo\PluralizeOption;
 
