@@ -46,9 +46,9 @@ class BootstrapTest extends TestCase
     private Bootstrap $bootstrap;
     private bool $handlersRegistered = false;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function setUp(): void
     {
-        parent::__construct($name, $data, $dataName);
+        parent::setUp();
 
         $this->config = new InjectorConfig();
         $this->config->bind(OutputRenderer::class)->toInstance(new MockOutputRenderer());
@@ -57,13 +57,8 @@ class BootstrapTest extends TestCase
         $this->config->bind(RedirectHandler::class)->toInstance(new MockRedirectHandler());
         $this->config->bind(SessionStarter::class)->toInstance(new MockSessionStarterInterceptor());
         $this->config->bind(DownloadHandler::class)->toInstance(new MockDownloadHandler());
-    }
 
-    public function setUp(): void
-    {
-        parent::setUp();
         Route::clear();
-
         Route::get('/', BootstrapSampleController::class, 'index');
 
         /** @var Environment|MockInterface $environment */

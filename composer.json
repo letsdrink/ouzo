@@ -1,7 +1,7 @@
 {
   "config": {
     "platform": {
-      "php": "8.4.0"
+      "php": "8.4.1"
     },
     "allow-plugins": true
   },
@@ -49,7 +49,7 @@
     "friendsofphp/proxy-manager-lts": "^1.0.19"
   },
   "require-dev": {
-    "phpunit/phpunit": "^11.5",
+    "phpunit/phpunit": "^13.1",
     "php-coveralls/php-coveralls": "^2.9"
   },
   "replace": {
