@@ -81,7 +81,7 @@ class Arrays
      * )
      * </code>
      */
-    public static function toMap(array $elements, callable $keyFunction, callable $valueFunction = null): array
+    public static function toMap(array $elements, callable $keyFunction, ?callable $valueFunction = null): array
     {
         if ($valueFunction == null) {
             $valueFunction = Functions::identity();
@@ -379,7 +379,7 @@ class Arrays
      * )
      * </code>
      */
-    public static function groupBy(array $elements, callable $keyFunction, string $orderField = null): array
+    public static function groupBy(array $elements, callable $keyFunction, ?string $orderField = null): array
     {
         $map = [];
         if (!empty($orderField)) {
@@ -819,7 +819,7 @@ class Arrays
      * true
      * </code>
      */
-    public static function hasNestedKey(array $array, array $keys, int $flags = null): bool
+    public static function hasNestedKey(array $array, array $keys, ?int $flags = null): bool
     {
         foreach ($keys as $key) {
             if (!is_array($array) || !array_key_exists($key, $array) || (!($flags & self::TREAT_NULL_AS_VALUE) && !isset($array[$key]))) {

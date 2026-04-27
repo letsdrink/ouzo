@@ -18,7 +18,7 @@ class SyslogLogger implements LoggerInterface
     private SyslogAdapter $syslogAdapter;
     private ?array $loggerConfiguration;
 
-    public function __construct(string $name, string $configuration, SyslogAdapter $syslogAdapter = null)
+    public function __construct(string $name, string $configuration, ?SyslogAdapter $syslogAdapter = null)
     {
         $this->syslogAdapter = $syslogAdapter ?: new SyslogAdapter();
         $this->loggerConfiguration = Config::getValue('logger', $configuration);

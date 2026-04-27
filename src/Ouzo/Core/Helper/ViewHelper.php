@@ -131,7 +131,7 @@ namespace Ouzo\Helper {
             return $words[$count == 1 ? 'singular' : 'plural'];
         }
 
-        public static function t(string $textKey, array $params = [], PluralizeOption $pluralize = null): string|array
+        public static function t(string $textKey, array $params = [], ?PluralizeOption $pluralize = null): string|array
         {
             return I18n::t($textKey, $params, $pluralize);
         }
@@ -234,7 +234,7 @@ namespace {
     }
 
     #[Deprecated(replacement: "ViewHelper::t(%parametersList%)")]
-    function t(string $textKey, array $params = [], PluralizeOption $pluralize = null): string|array
+    function t(string $textKey, array $params = [], ?PluralizeOption $pluralize = null): string|array
     {
         return ViewHelper::t($textKey, $params, $pluralize);
     }

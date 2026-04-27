@@ -18,7 +18,7 @@ class CommandsLoader
     {
     }
 
-    public static function forApplicationAndInjector(Application $application, Injector $injector = null): static
+    public static function forApplicationAndInjector(Application $application, ?Injector $injector = null): static
     {
         return new self($application, $injector);
     }
