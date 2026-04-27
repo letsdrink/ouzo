@@ -6,8 +6,7 @@ What is it
 
 Utility classes, test assertions and mocking framework extracted from [Ouzo framework](https://github.com/letsdrink/ouzo). PHP 8.4 or later is required.
 
-[![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
-[![Coverage Status](https://coveralls.io/repos/letsdrink/ouzo/badge.svg)](https://coveralls.io/r/letsdrink/ouzo)
+[![Build Status](https://github.com/letsdrink/ouzo/workflows/build/badge.svg?branch=master)](https://github.com/letsdrink/ouzo/actions)
 [![Latest Stable Version](https://poser.pugx.org/letsdrink/ouzo-goodies/v/stable.svg)](https://packagist.org/packages/letsdrink/ouzo-goodies)
 [![Total Downloads](https://poser.pugx.org/letsdrink/ouzo-goodies/downloads.svg)](https://packagist.org/packages/letsdrink/ouzo-goodies)
 [![License](https://poser.pugx.org/letsdrink/ouzo-goodies/license.svg)](https://packagist.org/packages/letsdrink/ouzo-goodies)
