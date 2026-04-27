@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Language
+
+All commit messages, PR titles, PR descriptions, code comments, and documentation must be written in English.
+
 ## What is Ouzo
 
 Ouzo is a PHP MVC framework with built-in ORM, dependency injection, and utility libraries. Requires PHP 8.4+.
