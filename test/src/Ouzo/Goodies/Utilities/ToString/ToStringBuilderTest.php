@@ -43,7 +43,7 @@ class ToStringBuilderClass
 
     public function __toString(): string
     {
-        return (new ToStringBuilder($this, $this->style))
+        return new ToStringBuilder($this, $this->style)
             ->append('name', $this->name)
             ->append('age', $this->age)
             ->append('smoking', $this->smoking)
@@ -77,7 +77,7 @@ class ClassWithToString
 
     public function __toString(): string
     {
-        return (new ToStringBuilder($this))
+        return new ToStringBuilder($this)
             ->append('string', $this->string)
             ->toString();
     }

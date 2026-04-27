@@ -208,113 +208,113 @@ namespace Ouzo\Helper {
 
 namespace {
 
-    use JetBrains\PhpStorm\Deprecated;
+    use Deprecated;
     use Ouzo\Helper\FormHelper;
     use Ouzo\Helper\ModelFormBuilder;
 
-    #[Deprecated(replacement: "FormHelper::escapeText(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::escapeText() instead')]
     function escapeText(?string $text): ?string
     {
         return FormHelper::escapeText($text);
     }
 
-    #[Deprecated(replacement: "FormHelper::escapeNewLine(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::escapeNewLine() instead')]
     function escapeNewLine(?string $text): ?string
     {
         return FormHelper::escapeNewLine($text);
     }
 
-    #[Deprecated(replacement: "FormHelper::linkTo(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::linkTo() instead')]
     function linkTo(string $name, string $href, array $attributes = []): string
     {
         return FormHelper::linkTo($name, $href, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::linkButton(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::linkButton() instead')]
     function linkButton(array $params): string
     {
         return FormHelper::linkButton($params);
     }
 
-    #[Deprecated(replacement: "FormHelper::linkButton(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::formButton() instead')]
     function formButton(array $params): string
     {
         return FormHelper::formButton($params);
     }
 
-    #[Deprecated(replacement: "FormHelper::translatableOptions(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::translatableOptions() instead')]
     function translatableOptions(string $prefix, array $options): array
     {
         return FormHelper::translatableOptions($prefix, $options);
     }
 
-    #[Deprecated(replacement: "FormHelper::labelTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::labelTag() instead')]
     function labelTag(string $name, string $content, array $attributes = []): string
     {
         return FormHelper::labelTag($name, $content, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::hiddenTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::hiddenTag() instead')]
     function hiddenTag(string $name, ?string $value, array $attributes = []): string
     {
         return FormHelper::hiddenTag($name, $value, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::textFieldTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::textFieldTag() instead')]
     function textFieldTag(string $name, ?string $value, array $attributes = []): string
     {
         return FormHelper::textFieldTag($name, $value, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::textAreaTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::textAreaTag() instead')]
     function textAreaTag(string $name, ?string $content, array $attributes = []): string
     {
         return FormHelper::textAreaTag($name, $content, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::checkboxTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::checkboxTag() instead')]
     function checkboxTag(string $name, ?string $value, ?bool $checked, array $attributes = []): string
     {
         return FormHelper::checkboxTag($name, $value, $checked, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::selectTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::selectTag() instead')]
     function selectTag(string $name, array $items = [], mixed $value = null, array $attributes = [], ?string $promptOption = null): string
     {
         return FormHelper::selectTag($name, $items, $value, $attributes, $promptOption);
     }
 
-    #[Deprecated(replacement: "FormHelper::optionTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::optionTag() instead')]
     function optionTag(string $value, string $name, array $current, ?bool $disabled): string
     {
         return FormHelper::optionTag($value, $name, $current, $disabled);
     }
 
-    #[Deprecated(replacement: "FormHelper::passwordFieldTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::passwordFieldTag() instead')]
     function passwordFieldTag(string $name, ?string $value, array $attributes = []): string
     {
         return FormHelper::passwordFieldTag($name, $value, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::radioButtonTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::radioButtonTag() instead')]
     function radioButtonTag(string $name, ?string $value, array $attributes = []): string
     {
         return FormHelper::radioButtonTag($name, $value, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::formTag(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::formTag() instead')]
     function formTag(string $url, string $method = 'POST', array $attributes = []): string
     {
         return FormHelper::formTag($url, $method, $attributes);
     }
 
-    #[Deprecated(replacement: "FormHelper::endFormTag()")]
+    #[Deprecated(message: 'use FormHelper::endFormTag() instead')]
     function endFormTag(): string
     {
         return FormHelper::endFormTag();
     }
 
-    #[Deprecated(replacement: "FormHelper::formFor(%parametersList%)")]
+    #[Deprecated(message: 'use FormHelper::formFor() instead')]
     function formFor(mixed $model): ModelFormBuilder
     {
         return FormHelper::formFor($model);

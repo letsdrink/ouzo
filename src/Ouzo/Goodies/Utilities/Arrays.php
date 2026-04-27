@@ -6,6 +6,7 @@
 
 namespace Ouzo\Utilities;
 
+use Deprecated;
 use InvalidArgumentException;
 use function array_values;
 
@@ -754,10 +755,9 @@ class Arrays
         return $array;
     }
 
-    /** @deprecated */
+    #[Deprecated(message: 'use Arrays::removeNestedKey instead', since: '3.0')]
     public static function removeNestedValue(array &$array, array $keys): void
     {
-        trigger_error('Use Arrays::removeNestedKey instead', E_USER_DEPRECATED);
         self::removeNestedKey($array, $keys);
     }
 

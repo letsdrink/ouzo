@@ -10,6 +10,6 @@ class ClassFactory implements Factory
 {
     public function create(): ClassWithNoDep
     {
-        return (new ClassWithNoDep())->setThroughFactoryFlag();
+        return new ClassWithNoDep()->setThroughFactoryFlag();
     }
 }

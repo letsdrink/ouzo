@@ -363,7 +363,7 @@ class ArrayAssertTest extends TestCase
         try {
             $closure();
         } catch (Throwable $throwable) {
-            return (new CatchExceptionAssert($throwable))->isInstanceOf(ExpectationFailedException::class);
+            return new CatchExceptionAssert($throwable)->isInstanceOf(ExpectationFailedException::class);
         }
         return new CatchExceptionAssert(null);
     }

@@ -145,101 +145,101 @@ namespace Ouzo\Helper {
 
 namespace {
 
-    use JetBrains\PhpStorm\Deprecated;
+    use Deprecated;
     use Ouzo\Helper\ViewHelper;
     use Ouzo\PluralizeOption;
 
-    #[Deprecated(replacement: "ViewHelper::url(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::url() instead')]
     function url(array|string $params): string
     {
         return ViewHelper::url($params);
     }
 
-    #[Deprecated(replacement: "ViewHelper::renderWidget(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::renderWidget() instead')]
     function renderWidget(string $widgetName, array $attributes = []): string
     {
         return ViewHelper::renderWidget($widgetName, $attributes);
     }
 
-    #[Deprecated(replacement: "ViewHelper::renderPartial(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::renderPartial() instead')]
     function renderPartial(string $name, array $values = []): string
     {
         return ViewHelper::renderPartial($name, $values);
     }
 
-    #[Deprecated(replacement: "ViewHelper::addFile(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::addFile() instead')]
     function addFile(array $fileInfo = [], string $stringToRemove = ''): ?string
     {
         return ViewHelper::addFile($fileInfo, $stringToRemove);
     }
 
-    #[Deprecated(replacement: "ViewHelper::addScript(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::addScript() instead')]
     function addScript(string $url, string $stringToRemove = ''): ?string
     {
         return ViewHelper::addScript($url, $stringToRemove);
     }
 
-    #[Deprecated(replacement: "ViewHelper::addLink(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::addLink() instead')]
     function addLink(string $url, string $stringToRemove = ''): ?string
     {
         return ViewHelper::addLink($url, $stringToRemove);
     }
 
-    #[Deprecated(replacement: "ViewHelper::showErrors(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::showErrors() instead')]
     function showErrors(array $errors = []): ?string
     {
         return ViewHelper::showErrors($errors);
     }
 
-    #[Deprecated(replacement: "ViewHelper::showNotices(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::showNotices() instead')]
     function showNotices(array $notices = []): ?string
     {
         return ViewHelper::showNotices($notices);
     }
 
-    #[Deprecated(replacement: "ViewHelper::showSuccess(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::showSuccess() instead')]
     function showSuccess(array $notices = []): ?string
     {
         return ViewHelper::showSuccess($notices);
     }
 
-    #[Deprecated(replacement: "ViewHelper::showWarnings(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::showWarnings() instead')]
     function showWarnings(array $warnings = []): ?string
     {
         return ViewHelper::showWarnings($warnings);
     }
 
-    #[Deprecated(replacement: "ViewHelper::formatDate(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::formatDate() instead')]
     function formatDate(?string $date, string $format = 'Y-m-d'): ?string
     {
         return ViewHelper::formatDate($date, $format);
     }
 
-    #[Deprecated(replacement: "ViewHelper::formatDateTime(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::formatDateTime() instead')]
     function formatDateTime(?string $date, string $format = 'Y-m-d H:i'): ?string
     {
         return ViewHelper::formatDateTime($date, $format);
     }
 
-    #[Deprecated(replacement: "ViewHelper::formatDateTimeWithSeconds(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::formatDateTimeWithSeconds() instead')]
     function formatDateTimeWithSeconds(?string $date): ?string
     {
         return ViewHelper::formatDateTimeWithSeconds($date);
     }
 
-    #[Deprecated(replacement: "ViewHelper::pluralise(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::pluralise() instead')]
     function pluralise(int $count, array $words): ?string
     {
         return ViewHelper::pluralise($count, $words);
     }
 
-    #[Deprecated(replacement: "ViewHelper::t(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::t() instead')]
     function t(string $textKey, array $params = [], ?PluralizeOption $pluralize = null): string|array
     {
         return ViewHelper::t($textKey, $params, $pluralize);
     }
 
-    #[Deprecated(replacement: "ViewHelper::toString(%parametersList%)")]
+    #[Deprecated(message: 'use ViewHelper::toString() instead')]
     function toString(mixed $object): string
     {
         return ViewHelper::toString($object);
