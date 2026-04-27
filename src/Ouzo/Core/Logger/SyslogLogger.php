@@ -9,6 +9,7 @@ namespace Ouzo\Logger;
 use Ouzo\Config;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Stringable;
 
 class SyslogLogger implements LoggerInterface
 {
@@ -28,49 +29,49 @@ class SyslogLogger implements LoggerInterface
         closelog();
     }
 
-    public function log($level, $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
-        $this->doLog($level, $message);
+        $this->doLog($level, (string)$message);
     }
 
-    public function emergency($message, array $context = array())
+    public function emergency(string|Stringable $message, array $context = []): void
     {
-        $this->doLog(LogLevel::EMERGENCY, $message);
+        $this->doLog(LogLevel::EMERGENCY, (string)$message);
     }
 
-    public function alert($message, array $context = array())
+    public function alert(string|Stringable $message, array $context = []): void
     {
-        $this->doLog(LogLevel::ALERT, $message);
+        $this->doLog(LogLevel::ALERT, (string)$message);
     }
 
-    public function critical($message, array $context = array())
+    public function critical(string|Stringable $message, array $context = []): void
     {
-        $this->doLog(LogLevel::CRITICAL, $message);
+        $this->doLog(LogLevel::CRITICAL, (string)$message);
     }
 
-    public function error($message, array $context = array())
+    public function error(string|Stringable $message, array $context = []): void
     {
-        $this->doLog(LogLevel::ERROR, $message);
+        $this->doLog(LogLevel::ERROR, (string)$message);
     }
 
-    public function warning($message, array $context = array())
+    public function warning(string|Stringable $message, array $context = []): void
     {
-        $this->doLog(LogLevel::WARNING, $message);
+        $this->doLog(LogLevel::WARNING, (string)$message);
     }
 
-    public function notice($message, array $context = array())
+    public function notice(string|Stringable $message, array $context = []): void
     {
-        $this->doLog(LogLevel::NOTICE, $message);
+        $this->doLog(LogLevel::NOTICE, (string)$message);
     }
 
-    public function info($message, array $context = array())
+    public function info(string|Stringable $message, array $context = []): void
     {
-        $this->doLog(LogLevel::INFO, $message);
+        $this->doLog(LogLevel::INFO, (string)$message);
     }
 
-    public function debug($message, array $context = array())
+    public function debug(string|Stringable $message, array $context = []): void
     {
-        $this->doLog(LogLevel::DEBUG, $message);
+        $this->doLog(LogLevel::DEBUG, (string)$message);
     }
 
     private function doLog(mixed $level, string $message): void

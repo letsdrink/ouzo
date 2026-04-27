@@ -31,7 +31,7 @@ class ControllerGeneratorCommand extends Command
             ->addArgument('action', InputArgument::OPTIONAL, 'Action name');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;

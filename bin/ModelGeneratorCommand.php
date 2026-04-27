@@ -40,7 +40,7 @@ class ModelGeneratorCommand extends Command
             ->addOption('output-only', 'o', InputOption::VALUE_NONE, 'Only displaying generated model class.');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;

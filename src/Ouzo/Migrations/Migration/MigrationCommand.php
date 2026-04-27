@@ -43,7 +43,7 @@ abstract class MigrationCommand extends Command
         return $this->executeCommand($input, $output);
     }
 
-    protected abstract function executeCommand(InputInterface $input, OutputInterface $output);
+    protected abstract function executeCommand(InputInterface $input, OutputInterface $output): int;
 
-    protected abstract function configureCommand();
+    protected abstract function configureCommand(): void;
 }

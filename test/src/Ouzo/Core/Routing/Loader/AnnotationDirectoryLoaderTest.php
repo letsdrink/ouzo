@@ -8,7 +8,6 @@ use Application\Model\Test\CrudController;
 use Application\Model\Test\FooClass;
 use Application\Model\Test\MultipleMethods;
 use Application\Model\Test\SimpleController;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Ouzo\Routing\Loader\AnnotationClassLoader;
 use Ouzo\Routing\Loader\AnnotationDirectoryLoader;
 use Ouzo\Routing\Loader\RouteMetadataCollection;
@@ -25,8 +24,6 @@ class AnnotationDirectoryLoaderTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        AnnotationReader::addGlobalIgnoredName('test');
-        AnnotationReader::addGlobalIgnoredName('dataProvider');
         $this->annotationClassLoader = Mock::mock(AnnotationClassLoader::class);
         Mock::when($this->annotationClassLoader)->load(Mock::anyArgList())->thenReturn(new RouteMetadataCollection());
         $this->loader = new AnnotationDirectoryLoader($this->annotationClassLoader);

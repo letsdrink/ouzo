@@ -16,13 +16,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationSqlImporterCommand extends MigrationCommand
 {
-    public function configureCommand()
+    public function configureCommand(): void
     {
         $this->setName('migration:sql_import')
             ->addArgument('files', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'SQL file to import');
     }
 
-    public function executeCommand(InputInterface $input, OutputInterface $output)
+    public function executeCommand(InputInterface $input, OutputInterface $output): int
     {
         $dbConfig = new MigrationDbConfig($input);
         $files = $input->getArgument('files');

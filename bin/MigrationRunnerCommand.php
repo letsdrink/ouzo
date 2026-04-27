@@ -50,7 +50,7 @@ class MigrationRunnerCommand extends MigrationCommand
     /** @var bool */
     private $list;
 
-    public function configureCommand()
+    public function configureCommand(): void
     {
         $this->setName('migration:run')
             ->addOption('commit_early', 'c', InputOption::VALUE_NONE, 'Commit after each migration')
@@ -65,7 +65,7 @@ class MigrationRunnerCommand extends MigrationCommand
 
     }
 
-    public function executeCommand(InputInterface $input, OutputInterface $output)
+    public function executeCommand(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
