@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 All commit messages, PR titles, PR descriptions, code comments, and documentation must be written in English.
 
+## Code Style
+
+- Always import classes with `use` statements. Never use fully qualified class names (FQCN) inline (e.g. `\Ouzo\FrontController`). Add a `use Ouzo\FrontController;` import instead.
+
 ## What is Ouzo
 
 Ouzo is a PHP MVC framework with built-in ORM, dependency injection, and utility libraries. Requires PHP 8.4+.
