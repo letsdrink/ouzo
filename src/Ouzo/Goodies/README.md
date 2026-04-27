@@ -4,7 +4,7 @@ Ouzo Goodies
 What is it
 ----------
 
-Utility classes, test assertions and mocking framework extracted from [Ouzo framework](https://github.com/letsdrink/ouzo). We are compatible with PHP 7.2 and later.
+Utility classes, test assertions and mocking framework extracted from [Ouzo framework](https://github.com/letsdrink/ouzo). PHP 8.4 or later is required.
 
 [![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
 [![Coverage Status](https://coveralls.io/repos/letsdrink/ouzo/badge.svg)](https://coveralls.io/r/letsdrink/ouzo)
@@ -159,7 +159,10 @@ PhpStorm plugins:
 
 For ideas, questions, discussions write to *ouzo-framework@googlegroups.com*.
 
-Support for PHP 5.6, 7.0 and 7.1
+Support for older PHP versions
 -----------------
 
-Ouzo has dropped support for PHP versions older than 7.2 since Ouzo 2.x. If you want to use Ouzo with PHP 5.6, 7.0 or 7.1, please try Ouzo 1.x branch.
+Ouzo Goodies 4.x requires PHP 8.4 or later. For older PHP versions:
+* PHP 8.2 — use Ouzo 3.x branch
+* PHP 8.0 — use Ouzo 2.x branch
+* PHP 5.6 / 7.x — use Ouzo 1.x branch
