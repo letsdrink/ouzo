@@ -16,7 +16,7 @@ use Ouzo\Uri;
 
 class SessionStats
 {
-    public const NUMBER_OF_REQUESTS_TO_KEEP = 10;
+    public const int NUMBER_OF_REQUESTS_TO_KEEP = 10;
     private Uri $uri;
 
     #[Inject]

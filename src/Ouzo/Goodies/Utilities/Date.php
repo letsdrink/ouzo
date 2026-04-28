@@ -12,8 +12,8 @@ use DateTimeZone;
 
 class Date
 {
-    const DEFAULT_TIME_FORMAT = 'Y-m-d H:i';
-    const DEFAULT_TIMEZONE = 'UTC';
+    const string DEFAULT_TIME_FORMAT = 'Y-m-d H:i';
+    const string DEFAULT_TIMEZONE = 'UTC';
 
     public static function formatDate(?string $date, string $format = 'Y-m-d'): ?string
     {

@@ -13,7 +13,7 @@ use Ouzo\Utilities\Path;
 
 class I18n
 {
-    const DEFAULT_LANGUAGE = 'en';
+    const string DEFAULT_LANGUAGE = 'en';
 
     private static ?Translator $translator = null;
     private static ?array $labels = [];

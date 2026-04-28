@@ -13,7 +13,7 @@ use Ouzo\Utilities\Strings;
 
 class PhtmlRenderer implements ViewRenderer
 {
-    const EXTENSION = '.phtml';
+    const string EXTENSION = '.phtml';
 
     private string $viewPath;
 

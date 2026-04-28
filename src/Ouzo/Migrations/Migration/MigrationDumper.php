@@ -10,8 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationDumper
 {
-    private const SCHEMA = 'SCHEMA';
-    private const DATA = 'DATA';
+    private const string SCHEMA = 'SCHEMA';
+    private const string DATA = 'DATA';
 
     /* @var OutputInterface */
     private $output;

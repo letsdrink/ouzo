@@ -10,7 +10,7 @@ use Ouzo\Utilities\Arrays;
 
 class DownloadHandler
 {
-    const READ_BUFFER_SIZE = 1024 * 1024 * 20;
+    const int READ_BUFFER_SIZE = 1024 * 1024 * 20;
 
     public function downloadFile(array $fileData): void
     {

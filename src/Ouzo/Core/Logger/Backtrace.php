@@ -11,7 +11,7 @@ use Ouzo\Utilities\Strings;
 
 class Backtrace
 {
-    private const OUZO_PACKAGE_NAME = 'letsdrink/ouzo';
+    private const string OUZO_PACKAGE_NAME = 'letsdrink/ouzo';
 
     public static function getCallingClass(array $namesToIgnore = [self::OUZO_PACKAGE_NAME]): string
     {

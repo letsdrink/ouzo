@@ -11,7 +11,7 @@ use Ouzo\ExceptionHandling\OuzoException;
 
 class ValidationException extends OuzoException
 {
-    const HTTP_CODE = 400;
+    const int HTTP_CODE = 400;
 
     /**
      * @param Error[]|Error $errors

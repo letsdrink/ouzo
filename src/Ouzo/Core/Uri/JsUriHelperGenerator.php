@@ -13,7 +13,7 @@ use Ouzo\Utilities\Comparator;
 
 class JsUriHelperGenerator
 {
-    const INDENT = '    ';
+    const string INDENT = '    ';
 
     private string $generatedFunctions = '';
     /** @var RouteRule[] */

@@ -8,8 +8,8 @@ namespace Ouzo\Utilities;
 
 readonly class StrSubstitutor
 {
-    private const START = '{{';
-    private const END = '}}';
+    private const string START = '{{';
+    private const string END = '}}';
 
     public function __construct(
         private array $values = [],

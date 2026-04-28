@@ -13,7 +13,7 @@ use Stringable;
 
 class SyslogLogger implements LoggerInterface
 {
-    const MAX_MESSAGE_SIZE = 1024;
+    const int MAX_MESSAGE_SIZE = 1024;
 
     private SyslogAdapter $syslogAdapter;
     private ?array $loggerConfiguration;

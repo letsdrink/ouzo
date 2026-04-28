@@ -12,8 +12,8 @@ use function array_values;
 
 class Arrays
 {
-    const TREAT_NULL_AS_VALUE = 1;
-    const REMOVE_EMPTY_PARENTS = true;
+    const int TREAT_NULL_AS_VALUE = 1;
+    const bool REMOVE_EMPTY_PARENTS = true;
 
     /**
      * Returns true if every element in array satisfies the predicate.

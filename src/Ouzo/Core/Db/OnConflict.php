@@ -7,8 +7,8 @@ namespace Ouzo\Db;
 
 class OnConflict
 {
-    const DO_NOTHING = 'DO_NOTHING';
-    const UPDATE = 'UPDATE';
+    const string DO_NOTHING = 'DO_NOTHING';
+    const string UPDATE = 'UPDATE';
     private ?string $onConflictAction;
     private array $onConflictColumns;
     private array $onConflictUpdateValues;

@@ -10,11 +10,11 @@ use Deprecated;
 
 class Strings
 {
-    const EMPTY = '';
-    const SPACE = ' ';
+    const string EMPTY = '';
+    const string SPACE = ' ';
 
     #[Deprecated(message: 'use Strings::EMPTY instead', since: '3.0')]
-    const EMPTY_STRING = self::EMPTY;
+    const string EMPTY_STRING = self::EMPTY;
 
     /**
      * Example:

@@ -11,7 +11,7 @@ use Ouzo\ExceptionHandling\OuzoException;
 
 class InternalException extends OuzoException
 {
-    const HTTP_CODE = 500;
+    const int HTTP_CODE = 500;
 
     /**
      * @param Error[]|Error $errors

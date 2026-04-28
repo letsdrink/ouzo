@@ -14,7 +14,7 @@ use Twig\Loader\FilesystemLoader;
 
 class TwigRenderer implements ViewRenderer
 {
-    const EXTENSION = '.html.twig';
+    const string EXTENSION = '.html.twig';
 
     private string $loaderPath;
     private string $viewPath;

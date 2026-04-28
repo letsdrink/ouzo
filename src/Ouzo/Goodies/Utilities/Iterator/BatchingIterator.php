@@ -10,7 +10,7 @@ use Iterator;
 
 class BatchingIterator implements Iterator
 {
-    const OPTION_PRESERVER_KEYS = 0x2;
+    const int OPTION_PRESERVER_KEYS = 0x2;
 
     private Iterator $iterator;
     private int $chunkSize;

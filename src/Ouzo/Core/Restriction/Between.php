@@ -7,8 +7,8 @@ namespace Ouzo\Restriction;
 
 class Between
 {
-    const INCLUSIVE = 1;
-    const EXCLUSIVE = 2;
-    const LEFT_EXCLUSIVE = 3;
-    const RIGHT_EXCLUSIVE = 4;
+    const int INCLUSIVE = 1;
+    const int EXCLUSIVE = 2;
+    const int LEFT_EXCLUSIVE = 3;
+    const int RIGHT_EXCLUSIVE = 4;
 }

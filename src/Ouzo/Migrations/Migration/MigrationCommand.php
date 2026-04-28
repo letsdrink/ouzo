@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class MigrationCommand extends Command
 {
 
-    const LOG_STDOUT_ARGUMENT = 'log-stdout';
+    public const string LOG_STDOUT_ARGUMENT = 'log-stdout';
 
     protected function configure()
     {

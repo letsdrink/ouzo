@@ -11,7 +11,7 @@ use Ouzo\ExceptionHandling\OuzoException;
 
 class NotFoundException extends OuzoException
 {
-    const HTTP_CODE = 404;
+    const int HTTP_CODE = 404;
 
     /**
      * @param Error[]|Error $errors

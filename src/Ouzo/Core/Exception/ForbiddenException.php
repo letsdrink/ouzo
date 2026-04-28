@@ -11,7 +11,7 @@ use Ouzo\ExceptionHandling\OuzoException;
 
 class ForbiddenException extends OuzoException
 {
-    const HTTP_CODE = 403;
+    const int HTTP_CODE = 403;
 
     /** @param Error[]|Error $errors */
     public function __construct(array|Error $errors)

@@ -13,7 +13,7 @@ use Ouzo\Utilities\Path;
 
 class ClassStub
 {
-    const FIELDS_COUNT_IN_LINE = 7;
+    const int FIELDS_COUNT_IN_LINE = 7;
 
     private string $stubContent;
     private array $attributes = [];

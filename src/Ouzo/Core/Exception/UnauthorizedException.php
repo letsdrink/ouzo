@@ -11,7 +11,7 @@ use Ouzo\ExceptionHandling\OuzoException;
 
 class UnauthorizedException extends OuzoException
 {
-    const HTTP_CODE = 401;
+    const int HTTP_CODE = 401;
 
     /**
      * @param Error[]|Error $errors
