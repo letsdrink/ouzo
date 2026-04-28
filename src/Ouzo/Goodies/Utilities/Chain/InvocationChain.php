@@ -14,6 +14,7 @@ class InvocationChain implements Chain
     {
     }
 
+    #[Override]
     public function proceed(mixed $param): mixed
     {
         $invocation = $this->invocation;

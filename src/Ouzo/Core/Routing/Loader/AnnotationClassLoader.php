@@ -15,6 +15,7 @@ use ReflectionMethod;
 
 class AnnotationClassLoader implements Loader
 {
+    #[Override]
     public function load(array $classes): RouteMetadataCollection
     {
         $collection = new RouteMetadataCollection();

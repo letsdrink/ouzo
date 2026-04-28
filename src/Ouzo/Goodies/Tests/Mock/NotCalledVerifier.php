@@ -10,6 +10,7 @@ use PHPUnit\Framework\Assert;
 
 class NotCalledVerifier extends Verifier
 {
+    #[Override]
     public function __call(string $name, array $arguments): NotCalledVerifier
     {
         if (!$this->wasCalled($name, $arguments)) {

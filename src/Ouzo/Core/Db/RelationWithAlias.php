@@ -12,6 +12,7 @@ class RelationWithAlias
     {
     }
 
+    #[Override]
     public function __toString(): string
     {
         return "{$this->relation} {$this->alias}";

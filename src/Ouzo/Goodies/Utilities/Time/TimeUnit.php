@@ -122,6 +122,7 @@ class TimeUnit
         };
     }
 
+    #[Override]
     public function __toString(): string
     {
         return $this->timeUnit;

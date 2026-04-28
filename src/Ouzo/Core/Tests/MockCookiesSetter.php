@@ -12,6 +12,7 @@ class MockCookiesSetter extends CookiesSetter
 {
     private array $cookies = [];
 
+    #[Override]
     public function setCookies(array $cookies): void
     {
         $this->cookies = $cookies;

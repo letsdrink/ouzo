@@ -22,6 +22,7 @@ class OuzoException extends Exception
      * @param Error[]|Error $errors
      * @param string[] $headers
      */
+    #[Override]
     public function __construct(
         int $httpCode,
         string $message,

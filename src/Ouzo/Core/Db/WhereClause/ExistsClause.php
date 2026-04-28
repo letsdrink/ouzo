@@ -21,17 +21,20 @@ class ExistsClause extends WhereClause
         $this->negate = $negate;
     }
 
+    #[Override]
     public function isEmpty(): bool
     {
         return false;
     }
 
+    #[Override]
     public function toSql(): string
     {
         $sql = DialectFactory::create()->buildQuery($this->query);
         return $this->negate ? "NOT EXISTS ({$sql})" : "EXISTS ({$sql})";
     }
 
+    #[Override]
     public function getParameters(): array
     {
         $queryBindValuesExtractor = new QueryBoundValuesExtractor($this->query);

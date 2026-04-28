@@ -14,6 +14,7 @@ class ForbiddenException extends OuzoException
     const int HTTP_CODE = 403;
 
     /** @param Error[]|Error $errors */
+    #[Override]
     public function __construct(array|Error $errors)
     {
         parent::__construct(self::HTTP_CODE, "Forbidden.", $errors);

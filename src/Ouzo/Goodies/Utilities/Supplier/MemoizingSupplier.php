@@ -19,6 +19,7 @@ class MemoizingSupplier implements Supplier
         $this->function = Closure::fromCallable($function);
     }
 
+    #[Override]
     public function get(): mixed
     {
         if (!$this->invoked) {

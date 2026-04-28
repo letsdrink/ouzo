@@ -10,6 +10,7 @@ use Exception;
 
 class JsonDecodeException extends Exception
 {
+    #[Override]
     public function __construct(string $lastErrorMessage = '', int $lastErrorCode = 0)
     {
         parent::__construct("JSON decode error: {$lastErrorMessage}", $lastErrorCode);

@@ -21,6 +21,7 @@ abstract class MigrationCommand extends Command
 
     public const string LOG_STDOUT_ARGUMENT = 'log-stdout';
 
+    #[Override]
     protected function configure()
     {
         $this->addOption('db_name', 'N', InputOption::VALUE_REQUIRED, 'Database name')
@@ -34,6 +35,7 @@ abstract class MigrationCommand extends Command
         $this->configureCommand();
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         if ($input->getOption(self::LOG_STDOUT_ARGUMENT)) {

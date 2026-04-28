@@ -18,12 +18,14 @@ class UnbatchingIterator implements Iterator
     {
     }
 
+    #[Override]
     public function current(): mixed
     {
         $this->initializeChunkIterator();
         return $this->chunkIterator->current();
     }
 
+    #[Override]
     public function next(): void
     {
         $this->initializeChunkIterator();
@@ -38,17 +40,20 @@ class UnbatchingIterator implements Iterator
         }
     }
 
+    #[Override]
     public function key(): int
     {
         return $this->position;
     }
 
+    #[Override]
     public function valid(): bool
     {
         $this->initializeChunkIterator();
         return $this->chunkIterator->valid();
     }
 
+    #[Override]
     public function rewind(): void
     {
         $this->position = 0;

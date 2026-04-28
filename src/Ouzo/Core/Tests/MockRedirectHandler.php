@@ -12,6 +12,7 @@ class MockRedirectHandler extends RedirectHandler
 {
     private string $location;
 
+    #[Override]
     public function redirect(string $url): void
     {
         $this->location = $url;

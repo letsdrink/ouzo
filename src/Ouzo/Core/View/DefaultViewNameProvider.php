@@ -11,6 +11,7 @@ use Ouzo\Routing\RouteRule;
 class DefaultViewNameProvider implements ViewNameProvider
 {
 
+    #[Override]
     function getViewName(RouteRule $rule, ?string $action): string
     {
         $controllerName = $rule->getControllerName();

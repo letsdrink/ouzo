@@ -10,17 +10,20 @@ class ReindexingIterator extends ForwardingIterator
 {
     private int $index;
 
+    #[Override]
     public function key(): int
     {
         return $this->index;
     }
 
+    #[Override]
     public function next(): void
     {
         parent::next();
         $this->index++;
     }
 
+    #[Override]
     public function rewind(): void
     {
         parent::rewind();

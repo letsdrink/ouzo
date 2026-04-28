@@ -25,6 +25,7 @@ class AnnotationDirectoryLoader implements Loader
         $this->annotationClassLoader = $annotationClassLoader;
     }
 
+    #[Override]
     public function load(array $paths): RouteMetadataCollection
     {
         $collection = new RouteMetadataCollection();

@@ -12,17 +12,20 @@ use Ouzo\Utilities\Arrays;
 
 class PostgresDialect extends Dialect
 {
+    #[Override]
     public function primaryKey(): string
     {
         return $this->getPrimaryKey($this->tableName());
     }
 
+    #[Override]
     public function sequence(): string
     {
         $tableColumns = $this->getTableColumns($this->tableName());
         return $this->getSequenceName($tableColumns, $this->primaryKey());
     }
 
+    #[Override]
     public function columns(): array
     {
         return array_values($this->getTableColumns($this->tableName()));

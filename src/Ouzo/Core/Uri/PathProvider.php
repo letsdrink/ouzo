@@ -10,6 +10,7 @@ use Ouzo\Utilities\Arrays;
 
 class PathProvider implements PathProviderInterface
 {
+    #[Override]
     public function getPath(): string
     {
         $uri = Arrays::getValue($_SERVER, 'REDIRECT_URL');

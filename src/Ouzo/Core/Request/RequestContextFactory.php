@@ -23,6 +23,7 @@ class RequestContextFactory implements Factory
     {
     }
 
+    #[Override]
     public function create(): RequestContext
     {
         $controller = $this->routingService->getController();

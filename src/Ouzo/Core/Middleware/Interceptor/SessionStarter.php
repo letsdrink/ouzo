@@ -12,6 +12,7 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class SessionStarter implements Interceptor
 {
+    #[Override]
     public function handle(mixed $param, Chain $next): mixed
     {
         $sessionInitializer = new SessionInitializer();

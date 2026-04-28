@@ -25,12 +25,14 @@ class BatchingIterator implements Iterator
         $this->preserveKeys = $options && self::OPTION_PRESERVER_KEYS;
     }
 
+    #[Override]
     public function rewind(): void
     {
         $this->position = 0;
         $this->iterator->rewind();
     }
 
+    #[Override]
     public function valid(): bool
     {
         if (!isset($this->currentChunk)) {
@@ -39,16 +41,19 @@ class BatchingIterator implements Iterator
         return !empty($this->currentChunk);
     }
 
+    #[Override]
     public function key(): int
     {
         return $this->position;
     }
 
+    #[Override]
     public function current(): array
     {
         return $this->currentChunk;
     }
 
+    #[Override]
     public function next(): void
     {
         $this->position++;

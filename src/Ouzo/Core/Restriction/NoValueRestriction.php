@@ -8,6 +8,7 @@ namespace Ouzo\Restriction;
 
 abstract class NoValueRestriction extends Restriction
 {
+    #[Override]
     public function getValues(): array
     {
         return [];

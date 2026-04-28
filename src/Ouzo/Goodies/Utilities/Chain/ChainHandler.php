@@ -12,6 +12,7 @@ class ChainHandler implements Chain
     {
     }
 
+    #[Override]
     public function proceed(mixed $param): mixed
     {
         return $this->interceptor->handle($param, $this->next);

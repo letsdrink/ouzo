@@ -10,6 +10,7 @@ use Whoops\Handler\Handler;
 
 class DebugErrorLogHandler extends Handler
 {
+    #[Override]
     public function handle(): ?int
     {
         $exception = $this->getInspector()->getException();

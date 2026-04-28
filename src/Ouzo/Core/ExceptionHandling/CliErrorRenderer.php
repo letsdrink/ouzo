@@ -11,6 +11,7 @@ use Ouzo\Utilities\Objects;
 
 class CliErrorRenderer implements Renderer
 {
+    #[Override]
     public function render(OuzoExceptionData $exceptionData, ?string $viewName): void
     {
         global $argv;

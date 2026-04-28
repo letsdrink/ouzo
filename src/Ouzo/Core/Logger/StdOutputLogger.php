@@ -17,46 +17,55 @@ class StdOutputLogger implements LoggerInterface
     {
     }
 
+    #[Override]
     public function log($level, string|Stringable $message, array $context = []): void
     {
         $this->doLog($level, (string)$message);
     }
 
+    #[Override]
     public function emergency(string|Stringable $message, array $context = []): void
     {
         $this->doLog(LogLevel::EMERGENCY, (string)$message);
     }
 
+    #[Override]
     public function alert(string|Stringable $message, array $context = []): void
     {
         $this->doLog(LogLevel::ALERT, (string)$message);
     }
 
+    #[Override]
     public function critical(string|Stringable $message, array $context = []): void
     {
         $this->doLog(LogLevel::CRITICAL, (string)$message);
     }
 
+    #[Override]
     public function error(string|Stringable $message, array $context = []): void
     {
         $this->doLog(LogLevel::ERROR, (string)$message);
     }
 
+    #[Override]
     public function warning(string|Stringable $message, array $context = []): void
     {
         $this->doLog(LogLevel::WARNING, (string)$message);
     }
 
+    #[Override]
     public function notice(string|Stringable $message, array $context = []): void
     {
         $this->doLog(LogLevel::NOTICE, (string)$message);
     }
 
+    #[Override]
     public function info(string|Stringable $message, array $context = []): void
     {
         $this->doLog(LogLevel::INFO, (string)$message);
     }
 
+    #[Override]
     public function debug(string|Stringable $message, array $context = []): void
     {
         $this->doLog(LogLevel::DEBUG, (string)$message);

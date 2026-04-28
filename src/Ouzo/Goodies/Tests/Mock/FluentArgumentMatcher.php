@@ -13,11 +13,13 @@ class FluentArgumentMatcher extends FluentFunction implements ArgumentMatcher
 {
     private string $description = 'argThat()';
 
+    #[Override]
     public function matches(mixed $argument): mixed
     {
         return Functions::call($this, $argument);
     }
 
+    #[Override]
     public function __call(string $name, array $arguments): static
     {
         parent::__call($name, $arguments);
@@ -26,6 +28,7 @@ class FluentArgumentMatcher extends FluentFunction implements ArgumentMatcher
         return $this;
     }
 
+    #[Override]
     public function __toString(): string
     {
         return $this->description;

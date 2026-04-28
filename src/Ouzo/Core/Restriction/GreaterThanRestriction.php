@@ -8,6 +8,7 @@ namespace Ouzo\Restriction;
 
 class GreaterThanRestriction extends SingleValueRestriction
 {
+    #[Override]
     public function toSql(string $fieldName): string
     {
         return "{$fieldName} > ?";

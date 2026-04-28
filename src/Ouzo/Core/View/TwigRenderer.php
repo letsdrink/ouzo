@@ -27,6 +27,7 @@ class TwigRenderer implements ViewRenderer
         $this->viewPath = Path::join($this->loaderPath, $this->viewFilename);
     }
 
+    #[Override]
     public function render(): string
     {
         $options = Config::getValue('twig', 'options') ?: [];
@@ -38,6 +39,7 @@ class TwigRenderer implements ViewRenderer
         return $template->render($this->attributes);
     }
 
+    #[Override]
     public function getViewPath(): string
     {
         return $this->viewPath;

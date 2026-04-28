@@ -20,21 +20,25 @@ class StatementIterator implements Iterator
         $this->iterator = new IteratorIterator($statement);
     }
 
+    #[Override]
     public function current(): mixed
     {
         return $this->iterator->current();
     }
 
+    #[Override]
     public function next(): void
     {
         $this->iterator->next();
     }
 
+    #[Override]
     public function key(): float|bool|int|string|null
     {
         return $this->iterator->key();
     }
 
+    #[Override]
     public function valid(): bool
     {
         $valid = $this->iterator->valid();
@@ -44,6 +48,7 @@ class StatementIterator implements Iterator
         return $valid;
     }
 
+    #[Override]
     public function rewind(): void
     {
         $this->iterator->rewind();

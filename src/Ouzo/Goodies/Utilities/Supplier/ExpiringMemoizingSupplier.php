@@ -20,6 +20,7 @@ class ExpiringMemoizingSupplier implements Supplier
         $this->function = Closure::fromCallable($function);
     }
 
+    #[Override]
     public function get(): mixed
     {
         $function = $this->function;

@@ -102,6 +102,7 @@ class OuzoExceptionData
         return "E_UNKNOWN";
     }
 
+    #[Override]
     function __toString(): string
     {
         return __CLASS__ . Objects::toString(get_object_vars($this));

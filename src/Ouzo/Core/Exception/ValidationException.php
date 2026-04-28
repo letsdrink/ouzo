@@ -17,6 +17,7 @@ class ValidationException extends OuzoException
      * @param Error[]|Error $errors
      * @param string[] $headers
      */
+    #[Override]
     public function __construct(array|Error $errors, array $headers = [])
     {
         parent::__construct(self::HTTP_CODE, "Validation failed.", $errors, $headers);

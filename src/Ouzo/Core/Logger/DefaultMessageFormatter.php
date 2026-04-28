@@ -10,6 +10,7 @@ use Ouzo\FrontController;
 
 class DefaultMessageFormatter implements MessageFormatter
 {
+    #[Override]
     public function format(string $logger, string $level, string $message): string
     {
         return sprintf("%s %s: [ID: %s] %s", $logger, $level, FrontController::$requestId, $message);

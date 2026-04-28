@@ -15,6 +15,7 @@ class BetweenRestriction extends Restriction
     {
     }
 
+    #[Override]
     public function toSql(string $fieldName): string
     {
         return match ($this->betweenMode) {
@@ -25,6 +26,7 @@ class BetweenRestriction extends Restriction
         };
     }
 
+    #[Override]
     public function getValues(): array
     {
         return [$this->value1, $this->value2];

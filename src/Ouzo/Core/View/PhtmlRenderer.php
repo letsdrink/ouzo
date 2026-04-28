@@ -26,6 +26,7 @@ class PhtmlRenderer implements ViewRenderer
         $this->viewPath = $this->viewPathProvider->getViewPath($this->viewName, self::EXTENSION);
     }
 
+    #[Override]
     public function render(): string
     {
         ob_start();
@@ -68,6 +69,7 @@ class PhtmlRenderer implements ViewRenderer
         return isset($this->attributes[$name]);
     }
 
+    #[Override]
     public function getViewPath(): string
     {
         return $this->viewPath;

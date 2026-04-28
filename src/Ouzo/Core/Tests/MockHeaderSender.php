@@ -12,6 +12,7 @@ class MockHeaderSender extends HeaderSender
 {
     private array $headers;
 
+    #[Override]
     public function send(array $headers): void
     {
         $this->headers = $headers;

@@ -21,6 +21,7 @@ class LogRequest implements Interceptor
     {
     }
 
+    #[Override]
     public function handle(mixed $param, Chain $next): mixed
     {
         return $this->handleRequestContext($param, $next);

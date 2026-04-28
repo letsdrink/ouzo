@@ -43,22 +43,26 @@ class Extractor implements ArrayAccess
         return $input;
     }
 
+    #[Override]
     public function offsetGet(mixed $offset): static
     {
         $this->operations[] = fn($input) => isset($input[$offset]) ? $input[$offset] : null;
         return $this;
     }
 
+    #[Override]
     public function offsetExists(mixed $offset): bool
     {
         throw new BadMethodCallException();
     }
 
+    #[Override]
     public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new BadMethodCallException();
     }
 
+    #[Override]
     public function offsetUnset(mixed $offset): void
     {
         throw new BadMethodCallException();

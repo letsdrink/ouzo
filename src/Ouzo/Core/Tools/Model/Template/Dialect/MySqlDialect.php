@@ -12,11 +12,13 @@ use Ouzo\Utilities\Arrays;
 
 class MySqlDialect extends Dialect
 {
+    #[Override]
     public function primaryKey(): string
     {
         return $this->getPrimaryKey($this->tableName());
     }
 
+    #[Override]
     public function columns(): array
     {
         return array_values($this->getTableColumns($this->tableName()));
