@@ -13,16 +13,19 @@ use Ouzo\Utilities\Joiner;
 
 class PostgresDialect extends Dialect
 {
+    #[Override]
     public function getConnectionErrorCodes(): array
     {
         return ['57000', '57014', '57P01', '57P02', '57P03'];
     }
 
+    #[Override]
     public function getErrorCode(array $errorInfo): mixed
     {
         return Arrays::getValue($errorInfo, 0);
     }
 
+    #[Override]
     public function batchInsert(string $table, string $primaryKey, $columns, $batchSize, ?OnConflict $onConflict): string
     {
         $valueClause = '(' . implode(', ', array_fill(0, count($columns), '?')) . ')';
@@ -49,21 +52,25 @@ class PostgresDialect extends Dialect
         return $sql;
     }
 
+    #[Override]
     protected function insertEmptyRow(): string
     {
         return "INSERT INTO {$this->query->table} DEFAULT VALUES";
     }
 
+    #[Override]
     public function regexpMatcher(): string
     {
         return '~';
     }
 
+    #[Override]
     protected function quote(string $word): string
     {
         return "\"{$word}\"";
     }
 
+    #[Override]
     public function onConflictUpdate(): string
     {
         $attributes = DialectUtil::buildAttributesPartForUpdate($this->query->updateAttributes);
@@ -72,16 +79,19 @@ class PostgresDialect extends Dialect
         return " ON CONFLICT ({$joinedColumns}) DO UPDATE SET {$attributes}";
     }
 
+    #[Override]
     public function onConflictDoNothing(): string
     {
         return " ON CONFLICT DO NOTHING";
     }
 
+    #[Override]
     protected function getDistinctOnQuery(): string
     {
         return 'DISTINCT ON (' . Joiner::on(', ')->join($this->query->distinctOnColumns) . ') ';
     }
 
+    #[Override]
     protected function wrapQueryWithDistinctCount(string $sql): string
     {
         return "SELECT count(*) FROM ({$sql}) AS count_data";

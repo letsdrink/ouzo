@@ -8,6 +8,6 @@ namespace Ouzo\Injection;
 
 class Scope
 {
-    const SINGLETON = 'singleton';
-    const PROTOTYPE = 'prototype';
+    const string SINGLETON = 'singleton';
+    const string PROTOTYPE = 'prototype';
 }

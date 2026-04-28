@@ -27,6 +27,7 @@ class Notice
             ) === 0;
     }
 
+    #[Override]
     public function __toString(): string
     {
         return $this->message;

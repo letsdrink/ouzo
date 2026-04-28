@@ -8,6 +8,7 @@ namespace Ouzo\Tests\Mock;
 
 class AnyArgumentList
 {
+    #[Override]
     public function __toString(): string
     {
         return "any arguments";

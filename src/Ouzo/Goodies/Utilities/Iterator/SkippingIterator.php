@@ -12,11 +12,13 @@ class SkippingIterator extends ForwardingIterator
 {
     private bool $skipped = false;
 
+    #[Override]
     public function __construct(Iterator $iterator, private int $skipCount)
     {
         parent::__construct($iterator);
     }
 
+    #[Override]
     public function valid(): bool
     {
         if (!$this->skipped) {
@@ -28,6 +30,7 @@ class SkippingIterator extends ForwardingIterator
         return parent::valid();
     }
 
+    #[Override]
     public function rewind(): void
     {
         $this->skipped = false;

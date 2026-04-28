@@ -11,6 +11,7 @@ use Ouzo\ViewPathResolver;
 
 class ErrorRenderer implements Renderer
 {
+    #[Override]
     public function render(OuzoExceptionData $exceptionData, ?string $viewName): void
     {
         $errorMessage = $exceptionData->getMessage();

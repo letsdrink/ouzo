@@ -14,26 +14,31 @@ class ForwardingIterator implements Iterator
     {
     }
 
+    #[Override]
     public function current(): mixed
     {
         return $this->iterator->current();
     }
 
+    #[Override]
     public function next(): void
     {
         $this->iterator->next();
     }
 
+    #[Override]
     public function key(): mixed
     {
         return $this->iterator->key();
     }
 
+    #[Override]
     public function valid(): bool
     {
         return $this->iterator->valid();
     }
 
+    #[Override]
     public function rewind(): void
     {
         $this->iterator->rewind();

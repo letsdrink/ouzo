@@ -11,9 +11,9 @@ use Ouzo\Utilities\Strings;
 
 class ConfigValueSelector
 {
-    private const CONFIG_START = '${';
-    private const CONFIG_END = '}';
-    private const VALUE_SEPARATOR = ':';
+    private const string CONFIG_START = '${';
+    private const string CONFIG_END = '}';
+    private const string VALUE_SEPARATOR = ':';
 
     public static function selectConfigValue(string $selector): mixed
     {

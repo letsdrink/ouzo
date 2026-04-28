@@ -19,11 +19,13 @@ class AndArgumentMatcher implements ArgumentMatcher
         $this->matchers = $matchers;
     }
 
+    #[Override]
     public function matches(mixed $argument): bool
     {
         return Arrays::all($this->matchers, Functions::extract()->matches($argument));
     }
 
+    #[Override]
     public function __toString(): string
     {
         return implode(' and ', $this->matchers);

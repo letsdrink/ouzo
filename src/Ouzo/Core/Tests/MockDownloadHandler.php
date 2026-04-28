@@ -13,11 +13,13 @@ class MockDownloadHandler extends DownloadHandler
 {
     private array $fileData = [];
 
+    #[Override]
     public function downloadFile(array $fileData): void
     {
         $this->fileData = $fileData;
     }
 
+    #[Override]
     public function streamMediaFile(array $fileData): void
     {
         $this->fileData = $fileData;

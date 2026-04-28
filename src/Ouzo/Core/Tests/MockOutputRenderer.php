@@ -10,6 +10,7 @@ use Ouzo\OutputRenderer;
 
 class MockOutputRenderer extends OutputRenderer
 {
+    #[Override]
     public function display(string $content): void
     {
         echo '';

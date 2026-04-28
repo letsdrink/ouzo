@@ -32,6 +32,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
     protected FrontController $frontController;
     protected AttributeInjectorRegistry $attributeInjectorRegistry;
 
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();
@@ -59,6 +60,7 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
         unset($_SERVER['REMOTE_ADDR']);
     }
 
+    #[Override]
     public function tearDown(): void
     {
         parent::tearDown();

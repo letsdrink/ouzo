@@ -10,6 +10,7 @@ namespace Ouzo\Utilities\Chain;
 
 class EndChain implements Chain
 {
+    #[Override]
     public function proceed(mixed $param): Chain
     {
         return new EndChain();

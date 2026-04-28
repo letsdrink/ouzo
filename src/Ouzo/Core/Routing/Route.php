@@ -27,21 +27,25 @@ class Route implements RouteInterface
     private static array $routes = [];
     private static array $routeKeys = [];
 
+    #[Override]
     public static function get(string $uri, string $controller, string $action, array $options = []): void
     {
         self::addRoute(HttpMethod::GET, $uri, $controller, $action, true, $options);
     }
 
+    #[Override]
     public static function post(string $uri, string $controller, string $action, array $options = []): void
     {
         self::addRoute(HttpMethod::POST, $uri, $controller, $action, true, $options);
     }
 
+    #[Override]
     public static function put(string $uri, string $controller, string $action, array $options = []): void
     {
         self::addRoute(HttpMethod::PUT, $uri, $controller, $action, true, $options);
     }
 
+    #[Override]
     public static function delete(string $uri, string $controller, string $action, array $options = []): void
     {
         self::addRoute(HttpMethod::DELETE, $uri, $controller, $action, true, $options);
@@ -52,11 +56,13 @@ class Route implements RouteInterface
         self::addRoute(HttpMethod::OPTIONS, $uri, $controller, $action, true, $options);
     }
 
+    #[Override]
     public static function any(string $uri, string $controller, string $action, array $options = []): void
     {
         self::addRoute(self::$methods, $uri, $controller, $action, true, $options);
     }
 
+    #[Override]
     public static function resource(string $controller, string $uriPrefix): void
     {
         self::addResourceRoute($controller, $uriPrefix, HttpMethod::GET, '', 'index');

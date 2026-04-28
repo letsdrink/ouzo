@@ -10,6 +10,7 @@ use Ouzo\Db\Dialect\DialectFactory;
 
 class RegexpRestriction extends SingleValueRestriction
 {
+    #[Override]
     public function toSql(string $fieldName): string
     {
         $dialect = DialectFactory::create();

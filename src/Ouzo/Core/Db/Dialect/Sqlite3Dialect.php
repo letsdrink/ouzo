@@ -15,16 +15,19 @@ use Ouzo\Utilities\Strings;
 
 class Sqlite3Dialect extends Dialect
 {
+    #[Override]
     public function getConnectionErrorCodes(): array
     {
         return [10, 11, 14];
     }
 
+    #[Override]
     public function getErrorCode(array $errorInfo): mixed
     {
         return Arrays::getValue($errorInfo, 1);
     }
 
+    #[Override]
     public function update(): string
     {
         if ($this->query->aliasTable) {
@@ -33,6 +36,7 @@ class Sqlite3Dialect extends Dialect
         return parent::update();
     }
 
+    #[Override]
     public function join(): string
     {
         $any = Arrays::any($this->query->joinClauses, function (JoinClause $joinClause) {
@@ -44,6 +48,7 @@ class Sqlite3Dialect extends Dialect
         return parent::join();
     }
 
+    #[Override]
     public function lockForUpdate(): string
     {
         if ($this->query->lockForUpdate) {
@@ -52,6 +57,7 @@ class Sqlite3Dialect extends Dialect
         return '';
     }
 
+    #[Override]
     public function using(): string
     {
         if ($this->query->usingClauses) {
@@ -60,47 +66,56 @@ class Sqlite3Dialect extends Dialect
         return '';
     }
 
+    #[Override]
     public function batchInsert(string $table, string $primaryKey, $columns, $batchSize, ?OnConflict $onConflict): string
     {
         throw new InvalidArgumentException("Batch insert not supported in sqlite3");
     }
 
+    #[Override]
     protected function insertEmptyRow(): string
     {
         return "INSERT INTO {$this->query->table} DEFAULT VALUES";
     }
 
+    #[Override]
     public function regexpMatcher(): string
     {
         //needs package sqlite3-pcre to work correctly
         return 'REGEXP';
     }
 
+    #[Override]
     protected function quote(string $word): string
     {
         return "\"{$word}\"";
     }
 
+    #[Override]
     public function getIteratorOptions(): array
     {
         return [];
     }
 
+    #[Override]
     public function onConflictUpdate(): string
     {
         throw new BadMethodCallException('UPSERT is not supported in sqlite3');
     }
 
+    #[Override]
     public function onConflictDoNothing(): string
     {
         throw new BadMethodCallException('On conflict do nothing is not supported in sqlite3');
     }
 
+    #[Override]
     protected function getDistinctOnQuery(): string
     {
         throw new InvalidArgumentException("DISTINCT ON is not supported in sqlite3");
     }
 
+    #[Override]
     protected function wrapQueryWithDistinctCount(string $sql): string
     {
         throw new InvalidArgumentException("DISTINCT for COUNT is not supported in sqlite3");

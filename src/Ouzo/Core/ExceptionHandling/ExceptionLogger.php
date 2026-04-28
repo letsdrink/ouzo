@@ -17,9 +17,9 @@ use Ouzo\Utilities\Strings;
 
 class ExceptionLogger
 {
-    const PASSWORD_PLACEHOLDER = '***';
-    const UNAUTHORIZED = '401';
-    const NOT_FOUND = '404';
+    const string PASSWORD_PLACEHOLDER = '***';
+    const string UNAUTHORIZED = '401';
+    const string NOT_FOUND = '404';
 
     private OuzoExceptionData $exceptionData;
 

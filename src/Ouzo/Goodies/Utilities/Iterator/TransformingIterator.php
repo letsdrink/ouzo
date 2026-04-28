@@ -13,12 +13,14 @@ class TransformingIterator extends ForwardingIterator
 {
     private Closure $function;
 
+    #[Override]
     public function __construct(Iterator $iterator, callable $function)
     {
         parent::__construct($iterator);
         $this->function = Closure::fromCallable($function);
     }
 
+    #[Override]
     public function current(): mixed
     {
         return call_user_func($this->function, $this->iterator->current());

@@ -100,6 +100,7 @@ class Relation
         return new Relation($name, $this->class, $this->localKey, $this->foreignKey, $this->collection, $this->condition);
     }
 
+    #[Override]
     public function __toString(): string
     {
         return "Relation {$this->name} {$this->class} {$this->localKey} {$this->foreignKey}";

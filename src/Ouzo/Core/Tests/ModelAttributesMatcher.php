@@ -21,6 +21,7 @@ class ModelAttributesMatcher implements ArgumentMatcher
         $this->expectedAttributes = Arrays::filterByAllowedKeys($this->expected->attributes(), $this->expected->getFields());
     }
 
+    #[Override]
     public function matches(mixed $argument): bool
     {
         if (get_class($this->expected) !== get_class($argument)) {
@@ -30,6 +31,7 @@ class ModelAttributesMatcher implements ArgumentMatcher
         return $this->expectedAttributes == $actualAttributes;
     }
 
+    #[Override]
     public function __toString(): string
     {
         $attributes = print_r($this->expectedAttributes, true);

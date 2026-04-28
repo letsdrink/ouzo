@@ -13,8 +13,8 @@ use Ouzo\Utilities\Arrays;
 
 class ResponseTypeResolve
 {
-    const APPLICATION_ALL = 'application/*';
-    const TEXT_ALL = 'text/*';
+    const string APPLICATION_ALL = 'application/*';
+    const string TEXT_ALL = 'text/*';
 
     public static function resolve(): string
     {

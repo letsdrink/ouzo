@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class DbTransactionalTestCase extends TestCase
 {
+    #[Override]
     public function setUp(): void
     {
         Cache::clear();
@@ -21,6 +22,7 @@ abstract class DbTransactionalTestCase extends TestCase
         }
     }
 
+    #[Override]
     public function tearDown(): void
     {
         Cache::clear();

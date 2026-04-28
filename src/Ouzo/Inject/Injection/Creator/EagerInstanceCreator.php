@@ -13,6 +13,7 @@ use ReflectionClass;
 
 class EagerInstanceCreator implements InstanceCreator
 {
+    #[Override]
     public function create(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory): object
     {
         if (!empty($arguments)) {
@@ -23,6 +24,7 @@ class EagerInstanceCreator implements InstanceCreator
         return new $className();
     }
 
+    #[Override]
     public function createThroughFactory(string $className, ?array $arguments, InstanceRepository $repository, InstanceFactory $instanceFactory, Factory $factory): object
     {
         return $factory->create();

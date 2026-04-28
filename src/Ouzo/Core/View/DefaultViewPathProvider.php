@@ -11,6 +11,7 @@ use Ouzo\Utilities\Path;
 
 class DefaultViewPathProvider implements ViewPathProvider
 {
+    #[Override]
     function getViewPath(string $viewName, string $extension): string
     {
         return Path::join(ROOT_PATH, ApplicationPaths::getViewPath(), $viewName . $extension);

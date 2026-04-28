@@ -21,6 +21,7 @@ class GeneratingIterator implements Iterator
         $this->function = Closure::fromCallable($function);
     }
 
+    #[Override]
     public function current(): mixed
     {
         if (!$this->initialized) {
@@ -30,22 +31,26 @@ class GeneratingIterator implements Iterator
         return $this->current;
     }
 
+    #[Override]
     public function valid(): bool
     {
         return true;
     }
 
+    #[Override]
     public function key(): int
     {
         return $this->index;
     }
 
+    #[Override]
     public function next(): void
     {
         $this->index++;
         $this->generate();
     }
 
+    #[Override]
     public function rewind(): void
     {
         $this->index = 0;

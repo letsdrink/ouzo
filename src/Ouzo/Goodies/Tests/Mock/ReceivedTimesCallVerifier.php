@@ -12,12 +12,14 @@ class ReceivedTimesCallVerifier extends Verifier
 {
     private int $times;
 
+    #[Override]
     public function __construct(SimpleMock $mock, int $times)
     {
         parent::__construct($mock);
         $this->times = $times;
     }
 
+    #[Override]
     public function __call(string $name, array $arguments): ReceivedTimesCallVerifier
     {
         if ($this->numberOfActualCalls($name, $arguments) === $this->times) {

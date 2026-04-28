@@ -8,16 +8,19 @@ namespace Ouzo\Db\WhereClause;
 
 class EmptyWhereClause extends WhereClause
 {
+    #[Override]
     public function isEmpty(): bool
     {
         return true;
     }
 
+    #[Override]
     public function toSql(): string
     {
         return '';
     }
 
+    #[Override]
     public function getParameters(): array
     {
         return [];

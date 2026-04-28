@@ -8,13 +8,13 @@ namespace Ouzo\Utilities\Time;
 
 class TimeUnit
 {
-    public const DAYS = 'DAYS';
-    public const HOURS = 'HOURS';
-    public const MICROSECONDS = 'MICROSECONDS';
-    public const MILLISECONDS = 'MILLISECONDS';
-    public const MINUTES = 'MINUTES';
-    public const NANOSECONDS = 'NANOSECONDS';
-    public const SECONDS = 'SECONDS';
+    public const string DAYS = 'DAYS';
+    public const string HOURS = 'HOURS';
+    public const string MICROSECONDS = 'MICROSECONDS';
+    public const string MILLISECONDS = 'MILLISECONDS';
+    public const string MINUTES = 'MINUTES';
+    public const string NANOSECONDS = 'NANOSECONDS';
+    public const string SECONDS = 'SECONDS';
 
     private function __construct(private string $timeUnit)
     {
@@ -122,6 +122,7 @@ class TimeUnit
         };
     }
 
+    #[Override]
     public function __toString(): string
     {
         return $this->timeUnit;

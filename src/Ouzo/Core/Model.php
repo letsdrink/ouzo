@@ -491,6 +491,7 @@ class Model extends Validatable implements JsonSerializable
         return $this->modelDefinition->relations->getRelation($name);
     }
 
+    #[Override]
     public function __toString(): string
     {
         return $this->inspect();
@@ -517,6 +518,7 @@ class Model extends Validatable implements JsonSerializable
         $this->attributes = $serialized;
     }
 
+    #[Override]
     public function jsonSerialize(): mixed
     {
         return $this->attributes;

@@ -11,12 +11,13 @@ use Ouzo\ExceptionHandling\OuzoException;
 
 class InternalException extends OuzoException
 {
-    const HTTP_CODE = 500;
+    const int HTTP_CODE = 500;
 
     /**
      * @param Error[]|Error $errors
      * @param string[] $headers
      */
+    #[Override]
     public function __construct(array|Error $errors, array $headers = [])
     {
         parent::__construct(self::HTTP_CODE, "Internal error.", $errors, $headers);

@@ -31,22 +31,26 @@ class NonCallableExtractor implements ArrayAccess
         return $this->extractor;
     }
 
+    #[Override]
     public function offsetGet(mixed $offset): Extractor
     {
         $this->extractor->offsetGet($offset);
         return $this->extractor;
     }
 
+    #[Override]
     public function offsetExists(mixed $offset): bool
     {
         throw new BadMethodCallException();
     }
 
+    #[Override]
     public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new BadMethodCallException();
     }
 
+    #[Override]
     public function offsetUnset(mixed $offset): void
     {
         throw new BadMethodCallException();

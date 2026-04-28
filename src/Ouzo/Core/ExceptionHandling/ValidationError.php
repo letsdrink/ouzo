@@ -12,6 +12,7 @@ class ValidationError extends Error
 {
     private ?string $value;
 
+    #[Override]
     public function __construct(
         string $message,
         ?string $field = null,
@@ -24,6 +25,7 @@ class ValidationError extends Error
     }
 
     #[ArrayShape(['message' => "string", 'code' => "string", 'field' => "null|string"])]
+    #[Override]
     public function toArray(): array
     {
         $array = ['message' => $this->getMessage()];

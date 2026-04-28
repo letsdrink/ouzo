@@ -13,7 +13,7 @@ use Ouzo\Utilities\Strings;
 
 class MigrationLoader
 {
-    private const MIGRATION_FILE_MASK = '/[0-9]{9,}_.+\.php/';
+    private const string MIGRATION_FILE_MASK = '/[0-9]{9,}_.+\.php/';
 
     public function loadMigrations(array $dirs): array
     {

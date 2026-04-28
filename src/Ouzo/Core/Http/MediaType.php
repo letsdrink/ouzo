@@ -8,15 +8,15 @@ namespace Ouzo\Http;
 
 final class MediaType
 {
-    public const ALL = '*/*';
+    public const string ALL = '*/*';
 
-    public const APPLICATION_JSON = 'application/json';
+    public const string APPLICATION_JSON = 'application/json';
 
-    public const APPLICATION_XML = 'application/xml';
+    public const string APPLICATION_XML = 'application/xml';
 
-    public const TEXT_HTML = 'text/html';
+    public const string TEXT_HTML = 'text/html';
 
-    public const TEXT_JSON = 'text/json';
+    public const string TEXT_JSON = 'text/json';
 
-    public const TEXT_XML = 'text/xml';
+    public const string TEXT_XML = 'text/xml';
 }

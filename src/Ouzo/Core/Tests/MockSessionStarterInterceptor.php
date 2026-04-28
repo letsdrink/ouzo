@@ -11,6 +11,7 @@ use Ouzo\Utilities\Chain\Interceptor;
 
 class MockSessionStarterInterceptor implements Interceptor
 {
+    #[Override]
     public function handle(mixed $param, Chain $next): mixed
     {
         $mockSessionInitializer = new MockSessionInitializer();

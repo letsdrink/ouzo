@@ -19,21 +19,25 @@ class OrClause extends WhereClause
         $this->conditions = $conditions;
     }
 
+    #[Override]
     public function isEmpty(): bool
     {
         return Arrays::all($this->conditions, fn(WhereClause $where) => $where->isEmpty());
     }
 
+    #[Override]
     public function isNeverSatisfied(): bool
     {
         return Arrays::all($this->conditions, fn(WhereClause $where) => $where->isNeverSatisfied());
     }
 
+    #[Override]
     public function toSql(): string
     {
         return DialectUtil::joinClauses($this->conditions, 'OR', fn(WhereClause $where) => $where->toSql());
     }
 
+    #[Override]
     public function getParameters(): array
     {
         return Arrays::concat(Arrays::map($this->conditions, fn(WhereClause $where) => $where->getParameters()));

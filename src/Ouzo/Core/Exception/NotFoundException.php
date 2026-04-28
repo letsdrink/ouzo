@@ -11,12 +11,13 @@ use Ouzo\ExceptionHandling\OuzoException;
 
 class NotFoundException extends OuzoException
 {
-    const HTTP_CODE = 404;
+    const int HTTP_CODE = 404;
 
     /**
      * @param Error[]|Error $errors
      * @param string[] $headers
      */
+    #[Override]
     public function __construct(array|Error $errors, array $headers = [])
     {
         parent::__construct(self::HTTP_CODE, "Not found.", $errors, $headers);

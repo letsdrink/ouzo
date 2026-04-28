@@ -12,6 +12,7 @@ class SchemaMigration extends Model
 {
     public static $db;
 
+    #[Override]
     public function __construct($attributes = [])
     {
         parent::__construct([

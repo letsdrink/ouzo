@@ -44,6 +44,7 @@ class MigrationDbConfig
         return $this->dbConfig['dbname'];
     }
 
+    #[Override]
     public function __toString(): string
     {
         return Objects::toString($this->dbConfig);

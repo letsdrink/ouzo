@@ -19,7 +19,7 @@ use PDO;
 
 class ModelQueryBuilder
 {
-    const MODEL_QUERY_MARKER_COMMENT = 'orm:model';
+    const string MODEL_QUERY_MARKER_COMMENT = 'orm:model';
 
     private Db $db;
     /** @var ModelJoin[] */

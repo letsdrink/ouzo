@@ -12,6 +12,7 @@ class IsInRestriction extends Restriction
     {
     }
 
+    #[Override]
     public function toSql(string $fieldName): string
     {
         if (!count($this->values) > 0) {
@@ -21,6 +22,7 @@ class IsInRestriction extends Restriction
         return "{$fieldName} IN({$placeholders})";
     }
 
+    #[Override]
     public function getValues(): array
     {
         return $this->values;

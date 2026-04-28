@@ -15,31 +15,37 @@ class GroupedRoute implements RouteInterface
         self::$name = $name;
     }
 
+    #[Override]
     public static function get(string $uri, string $controller, string $action, array $options = []): void
     {
         Route::get(self::uri($uri), $controller, $action, $options);
     }
 
+    #[Override]
     public static function post(string $uri, string $controller, string $action, array $options = []): void
     {
         Route::post(self::uri($uri), $controller, $action, $options);
     }
 
+    #[Override]
     public static function put(string $uri, string $controller, string $action, array $options = []): void
     {
         Route::put(self::uri($uri), $controller, $action, $options);
     }
 
+    #[Override]
     public static function delete(string $uri, string $controller, string $action, array $options = []): void
     {
         Route::delete(self::uri($uri), $controller, $action, $options);
     }
 
+    #[Override]
     public static function any(string $uri, string $controller, string $action, array $options = []): void
     {
         Route::any(self::uri($uri), $controller, $action, $options);
     }
 
+    #[Override]
     public static function resource(string $controller, string $uriPrefix): void
     {
         Route::resource($controller, self::uri($uriPrefix));

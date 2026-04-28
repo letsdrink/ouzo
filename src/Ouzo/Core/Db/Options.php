@@ -7,5 +7,5 @@ namespace Ouzo\Db;
 
 class Options
 {
-    const EMULATE_PREPARES = 'EMULATE_PREPARES';
+    const string EMULATE_PREPARES = 'EMULATE_PREPARES';
 }

@@ -20,16 +20,19 @@ class SqlWhereClause extends WhereClause
         $this->values = $parameters === null ? [null] : Arrays::toArray($parameters);
     }
 
+    #[Override]
     public function toSql(): string
     {
         return stripos($this->sql, 'OR') ? "({$this->sql})" : $this->sql;
     }
 
+    #[Override]
     public function getParameters(): array
     {
         return $this->values;
     }
 
+    #[Override]
     public function isEmpty(): bool
     {
         return Strings::isBlank($this->sql);

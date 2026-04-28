@@ -23,6 +23,7 @@ class InjectListAttributeInjector implements AttributeInjector
     }
 
     /** @param ReflectionProperty[] $reflectionProperties */
+    #[Override]
     public function injectForProperties(object $instance, array $reflectionProperties, InstanceFactory $instanceFactory): void
     {
         foreach ($reflectionProperties as $reflectionProperty) {
@@ -43,6 +44,7 @@ class InjectListAttributeInjector implements AttributeInjector
         }
     }
 
+    #[Override]
     public function injectForConstructorParameter(ReflectionMethod $constructor, InstanceFactory $instanceFactory): array
     {
         $constructorParameters = [];

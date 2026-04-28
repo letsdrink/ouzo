@@ -11,12 +11,13 @@ use Ouzo\ExceptionHandling\OuzoException;
 
 class ValidationException extends OuzoException
 {
-    const HTTP_CODE = 400;
+    const int HTTP_CODE = 400;
 
     /**
      * @param Error[]|Error $errors
      * @param string[] $headers
      */
+    #[Override]
     public function __construct(array|Error $errors, array $headers = [])
     {
         parent::__construct(self::HTTP_CODE, "Validation failed.", $errors, $headers);

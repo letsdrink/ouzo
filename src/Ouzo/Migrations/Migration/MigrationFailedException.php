@@ -16,6 +16,7 @@ class MigrationFailedException extends Exception
     private $className;
     private $version;
 
+    #[Override]
     public function __construct(Throwable $throwable, $className, $version)
     {
         parent::__construct($throwable->getMessage(), $throwable->getCode(), $throwable);

@@ -27,6 +27,7 @@ class MethodCall
         return $this->name . '(' . Joiner::on(', ')->join(Arrays::map($this->arguments, Functions::toString())) . ')';
     }
 
+    #[Override]
     public function __toString(): string
     {
         return $this->toString();

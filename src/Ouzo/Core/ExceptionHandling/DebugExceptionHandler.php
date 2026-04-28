@@ -14,6 +14,7 @@ use Whoops\Run;
 
 class DebugExceptionHandler extends ExceptionHandler
 {
+    #[Override]
     public function runDefaultHandler($exception): void
     {
         if ($this->isPrettyHandlerNeeded()) {

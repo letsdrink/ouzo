@@ -12,6 +12,7 @@ use PDOStatement;
 
 class PDOPreparedStatementExecutor extends PDOExecutor
 {
+    #[Override]
     public function createPDOStatement(PDO $dbHandle, string $sql, array $boundValues, string $queryString, array $options = []): PDOStatement
     {
         try {

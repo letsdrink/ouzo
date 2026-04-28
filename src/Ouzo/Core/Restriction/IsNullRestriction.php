@@ -8,6 +8,7 @@ namespace Ouzo\Restriction;
 
 class IsNullRestriction extends NoValueRestriction
 {
+    #[Override]
     public function toSql(string $fieldName): string
     {
         return "{$fieldName} IS NULL";

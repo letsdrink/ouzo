@@ -30,22 +30,26 @@ class ArrayWhereClause extends WhereClause
         $this->operator = $operator;
     }
 
+    #[Override]
     public function isNeverSatisfied(): bool
     {
         return Arrays::any($this->where, fn($value) => is_array($value) && sizeof($value) == 0);
     }
 
+    #[Override]
     public function isEmpty(): bool
     {
         return empty($this->where);
     }
 
+    #[Override]
     public function toSql(): string
     {
         $whereKeys = self::buildWhereKeys($this->where);
         return DialectUtil::joinClauses($whereKeys, $this->operator);
     }
 
+    #[Override]
     public function getParameters(): array
     {
         return $this->values;

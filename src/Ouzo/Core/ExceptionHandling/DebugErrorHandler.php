@@ -11,11 +11,13 @@ use Whoops\Run;
 
 class DebugErrorHandler extends ErrorHandler
 {
+    #[Override]
     public function handleError(int $errorNumber, string $errorString, string $errorFile, int $errorLine): void
     {
         $this->createWhoops()->handleError($errorNumber, $errorString, $errorFile, $errorLine);
     }
 
+    #[Override]
     public function handleShutdown(): void
     {
         $this->createWhoops()->handleShutdown();

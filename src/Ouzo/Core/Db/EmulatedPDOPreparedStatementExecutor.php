@@ -11,6 +11,7 @@ use PDOStatement;
 
 class EmulatedPDOPreparedStatementExecutor extends PDOExecutor
 {
+    #[Override]
     public function createPDOStatement(PDO $dbHandle, string $sql, array $boundValues, string $queryString, array $options = []): PDOStatement
     {
         $sql = PreparedStatementEmulator::substitute($sql, $boundValues);
