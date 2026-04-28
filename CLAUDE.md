@@ -49,6 +49,23 @@ All commit messages, PR titles, PR descriptions, code comments, and documentatio
 
 Ouzo is a PHP MVC framework with built-in ORM, dependency injection, and utility libraries. Requires PHP 8.4+.
 
+## Environment
+
+PHP is run through Docker — do not use a local `php` binary.
+
+Available Docker images:
+- `php:8.4-cli` — plain PHP runtime, use for running `composer.phar` and other PHP commands
+- `ouzo-dev` — full dev image built from `Dockerfile-dev` (PHP 8.4 + pgsql extensions + xdebug)
+- `ouzo-postgres` — PostgreSQL instance for tests
+- `ouzo-commons-php` / `ouzo-commons-test` — additional test images
+
+Run PHP or Composer:
+
+```bash
+docker run --rm -v "$(pwd):/app" -w /app php:8.4-cli php <command>
+# Example: docker run --rm -v "$(pwd):/app" -w /app php:8.4-cli php composer.phar --version
+```
+
 ## Build & Test Commands
 
 ```bash
