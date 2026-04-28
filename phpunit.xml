@@ -10,9 +10,4 @@
             <directory suffix=".php">src</directory>
         </include>
     </source>
-    <groups>
-        <exclude>
-            <group>sqlite3</group>
-        </exclude>
-    </groups>
 </phpunit>
