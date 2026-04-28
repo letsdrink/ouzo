@@ -42,8 +42,8 @@
   "require": {
     "ext-json": "*",
     "ext-fileinfo": "*",
-    "symfony/console": "^7.4.8",
-    "symfony/event-dispatcher": "^7.4.8",
+    "symfony/console": "~7.4.8",
+    "symfony/event-dispatcher": "~7.4.8",
     "filp/whoops": "^2.18",
     "psr/log": "^3.0",
     "friendsofphp/proxy-manager-lts": "^1.0.19"
