@@ -26,7 +26,9 @@ abstract class DbTransactionalTestCase extends TestCase
         Cache::clear();
         if (Db::getInstance()->isConnected()) {
             Db::getInstance()->enableTransactions();
-            Db::getInstance()->rollbackTransaction();
+            if (Db::getInstance()->startedTransaction) {
+                Db::getInstance()->rollbackTransaction();
+            }
         }
     }
 }

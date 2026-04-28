@@ -1,7 +1,7 @@
 {
   "config": {
     "platform": {
-      "php": "8.2.7"
+      "php": "8.4.1"
     },
     "allow-plugins": true
   },
@@ -42,16 +42,14 @@
   "require": {
     "ext-json": "*",
     "ext-fileinfo": "*",
-    "symfony/console": "^5.4",
-    "symfony/event-dispatcher": "^5.4",
-    "filp/whoops": "^2.15",
-    "psr/log": "^1.1",
-    "friendsofphp/proxy-manager-lts": "1.0.16",
-    "doctrine/annotations": "^1.14"
+    "symfony/console": "~7.4.8",
+    "symfony/event-dispatcher": "~7.4.8",
+    "filp/whoops": "~2.18.4",
+    "psr/log": "~3.0.2",
+    "friendsofphp/proxy-manager-lts": "~1.0.19"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.2",
-    "php-coveralls/php-coveralls": "^2.5"
+    "phpunit/phpunit": "~13.1.7"
   },
   "replace": {
     "letsdrink/ouzo-goodies": "self.version",

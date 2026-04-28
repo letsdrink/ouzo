@@ -1,7 +1,27 @@
 CHANGELOG
 =========
 
-IN PROGRESS
+Release 4.0.0
+--------
+Support for PHP versions older than 8.4 is dropped. Minimal PHP version required is 8.4.
+
+Breaking changes:
+* [Core] `Model::jsonSerialize()` now returns `mixed` (attributes array) instead of `string` (JSON). Use `json_encode($model)` to get JSON string.
+* [Core] Upgraded to Symfony Console 7 / Event Dispatcher 7. `Command::execute()` must return `int`.
+* [Core] Upgraded to PSR-3 v3. Logger methods require `string|Stringable $message` parameter.
+* [Core] Removed `doctrine/annotations` dependency.
+
+Enhancements:
+* [ORM] Added support for count query with `DISTINCT` in PostgreSQL dialect.
+* [Core] `Bootstrap::withErrorHandler(ErrorHandler $errorHandler)` set custom error handler which is registered on `Bootstrap::runApplication()`.
+* [Tests] Added new assertion `messageContains` to `CatchException`.
+* [Tests] Upgraded to PHPUnit 11.
+* [Utilities] `Arrays::find()`, `Arrays::any()`, `Arrays::all()` now use native PHP 8.4 `array_find`, `array_any`, `array_all`.
+* [Utilities] `Strings::EMPTY_STRING` is deprecated in favour of `Strings::EMPTY` (now using native `#[Deprecated]` attribute).
+* [Utilities] Deprecated global helper functions in ViewHelper and FormHelper now use native `#[Deprecated]` attribute instead of JetBrains annotations.
+* [Core] Adopted PHP 8.4 "new without parentheses" syntax.
+
+Release 3.0.0
 --------
 Support for PHP 8.0 is dropped. Minimal PHP version required is 8.2.
 

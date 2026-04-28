@@ -32,19 +32,14 @@ abstract class ControllerTestCase extends DbTransactionalTestCase
     protected FrontController $frontController;
     protected AttributeInjectorRegistry $attributeInjectorRegistry;
 
-    public function __construct(string $name = null, array $data = [], int|string|null $dataName = '')
+    public function setUp(): void
     {
+        parent::setUp();
         $mockSessionInitializer = new MockSessionInitializer();
         $mockSessionInitializer->startSession();
         $this->attributeInjectorRegistry = new AttributeInjectorRegistry();
         $this->attributeInjectorRegistry->register(new ValueAttributeInjector());
         $this->injectorConfig = new InjectorConfig();
-        parent::__construct($name, $data, $dataName);
-    }
-
-    public function setUp(): void
-    {
-        parent::setUp();
         $_GET = [];
         $_POST = [];
         $_SESSION = [];

@@ -9,7 +9,7 @@ if ($db == 'mysql') {
     $config['db']['user'] = 'travis';
     $config['db']['pass'] = '';
     $config['db']['driver'] = 'mysql';
-    $config['db']['host'] = '127.0.0.1';
+    $config['db']['host'] = getenv('DB_HOST') ?: '127.0.0.1';
     $config['db']['port'] = '3306';
 } else if ($db == 'sqlite3') {
     $config['sql_dialect'] = Sqlite3Dialect::class;
@@ -20,7 +20,7 @@ if ($db == 'mysql') {
     $config['db']['user'] = 'ouzo_user';
     $config['db']['pass'] = 'password';
     $config['db']['driver'] = 'pgsql';
-    $config['db']['host'] = '127.0.0.1';
+    $config['db']['host'] = getenv('DB_HOST') ?: '127.0.0.1';
     $config['db']['port'] = '5432';
 }
 $config['db']['dbname'] = 'ouzo_test';

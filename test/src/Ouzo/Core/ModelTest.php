@@ -860,10 +860,11 @@ class ModelTest extends DbTransactionalTestCase
         $product = new Product(['name' => 'Sport']);
 
         // when
-        $json = $product->jsonSerialize();
+        $attributes = $product->jsonSerialize();
 
         // then
-        $this->assertEquals('{"name":"Sport"}', $json);
+        $this->assertEquals(['name' => 'Sport'], $attributes);
+        $this->assertEquals('{"name":"Sport"}', json_encode($product));
     }
 
     #[Test]

@@ -18,7 +18,7 @@ class ErrorHandler
     public function register(): void
     {
         set_exception_handler(fn(Throwable $exception) => $this->handleException($exception));
-        set_error_handler(fn(...$args) => $this->handleError(...$args), E_ALL & ~E_DEPRECATED & ~E_STRICT);
+        set_error_handler(fn(...$args) => $this->handleError(...$args), E_ALL & ~E_DEPRECATED);
         register_shutdown_function(fn() => $this->handleShutdown());
     }
 

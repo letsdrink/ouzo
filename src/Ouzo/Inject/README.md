@@ -1,7 +1,7 @@
 Ouzo Inject
 ==============
 
-This is experimental Dependency Injection framework for Ouzo.
+This is experimental Dependency Injection framework for Ouzo. PHP 8.4 or later is required.
 
 Usage:
 

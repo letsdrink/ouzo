@@ -1,11 +1,9 @@
 ![Ouzo Framework](https://raw.githubusercontent.com/letsdrink/ouzo-website/master/img/logo.png)
 
-Ouzo is a PHP MVC framework with built-in ORM and util libraries. PHP 8.2 or later is required.
+Ouzo is a PHP MVC framework with built-in ORM and util libraries. PHP 8.4 or later is required.
 
-[![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
 [![Build Status](https://github.com/letsdrink/ouzo/workflows/build/badge.svg?branch=master)](https://github.com/letsdrink/ouzo/actions)
 [![Documentation Status](https://readthedocs.org/projects/ouzo/badge/?version=latest)](https://readthedocs.org/projects/ouzo/?badge=latest)
-[![Coverage Status](https://coveralls.io/repos/letsdrink/ouzo/badge.svg?branch=master)](https://coveralls.io/r/letsdrink/ouzo?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/letsdrink/ouzo/v/stable.svg)](https://packagist.org/packages/letsdrink/ouzo)
 [![Total Downloads](https://poser.pugx.org/letsdrink/ouzo/downloads.svg)](https://packagist.org/packages/letsdrink/ouzo)
 [![License](https://poser.pugx.org/letsdrink/ouzo/license.svg)](https://packagist.org/packages/letsdrink/ouzo)
@@ -45,6 +43,9 @@ See the [release notes](https://github.com/letsdrink/ouzo/blob/master/CHANGELOG.
 * Don't forget to update the docs!
 * And the changelog as well.
 
-# Support for PHP versions older than 8.2
+# Support for older PHP versions
 
-Ouzo has dropped support for PHP versions older than 8.2 since Ouzo 3.x. If you want to use Ouzo with PHP 5.6 or 7.x, please try Ouzo 1.x branch, for PHP 8.0 use 2.x branch.
+Ouzo 4.x requires PHP 8.4 or later. For older PHP versions:
+* PHP 8.2 — use Ouzo 3.x branch
+* PHP 8.0 — use Ouzo 2.x branch
+* PHP 5.6 / 7.x — use Ouzo 1.x branch

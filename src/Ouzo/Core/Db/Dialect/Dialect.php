@@ -22,7 +22,7 @@ abstract class Dialect
 {
     protected Query $query;
 
-    public function select(int $queryType = null): string
+    public function select(?int $queryType = null): string
     {
         $type = $queryType ?: $this->query->type;
         if ($type == QueryType::$SELECT) {
@@ -250,7 +250,7 @@ abstract class Dialect
     }
 
     /** @param JoinClause[] $usingClauses */
-    protected function usingClause(array $usingClauses, string $glue = ', ', string $table = null, string $alias = null): string
+    protected function usingClause(array $usingClauses, string $glue = ', ', ?string $table = null, ?string $alias = null): string
     {
         $using = DialectUtil::buildUsingQuery($usingClauses, $glue, $table, $alias);
         if ($using) {

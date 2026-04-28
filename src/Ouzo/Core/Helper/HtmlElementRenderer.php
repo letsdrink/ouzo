@@ -41,7 +41,7 @@ class HtmlElementRenderer
 
     public static function input(string $type): HtmlElementRenderer
     {
-        return (new HtmlElementRenderer("input", true))
+        return new HtmlElementRenderer("input", true)
             ->setAttribute("type", $type);
     }
 

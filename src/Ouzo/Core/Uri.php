@@ -103,7 +103,7 @@ class Uri
         return Arrays::getValue($pathElements, 1);
     }
 
-    private function parsePath(string $path = null, int $limit = null): array
+    private function parsePath(?string $path = null, ?int $limit = null): array
     {
         if ($path != null) {
             $prefix = Config::getValue('global', 'prefix_system') ?: Strings::EMPTY;

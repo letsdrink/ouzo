@@ -4,7 +4,6 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Ouzo\Routing\Generator\RouteFileGenerator;
 use Ouzo\Routing\Loader\AnnotationClassLoader;
 use Ouzo\Routing\Loader\AnnotationDirectoryLoader;
@@ -18,8 +17,7 @@ class RouteFileGeneratorTest extends TestCase
     public function shouldGenerateRouteFileTemplate()
     {
         //given
-        $reader = new AnnotationReader();
-        $classLoader = new AnnotationClassLoader($reader);
+        $classLoader = new AnnotationClassLoader();
         $directoryLoader = new AnnotationDirectoryLoader($classLoader);
         $routeFileGenerator = new RouteFileGenerator($directoryLoader);
         $path = Path::joinWithTemp('GeneratedRoutes.php');

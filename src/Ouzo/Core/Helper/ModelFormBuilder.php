@@ -67,7 +67,7 @@ class ModelFormBuilder
         return FormHelper::textAreaTag($this->generateName($field), $this->object->$field, $attributes);
     }
 
-    public function selectField(string $field, array $items, array $options = [], string $promptOption = null): string
+    public function selectField(string $field, array $items, array $options = [], ?string $promptOption = null): string
     {
         $attributes = $this->generatePredefinedAttributes($field);
         $attributes = $this->mergeAttributes($attributes, $options);

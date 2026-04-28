@@ -18,8 +18,8 @@ class Injector
     private InstanceRepository $instanceRepository;
 
     public function __construct(
-        InjectorConfig $injectorConfig = null,
-        AttributeInjectorRegistry $attributeInjectorRegistry = null
+        ?InjectorConfig $injectorConfig = null,
+        ?AttributeInjectorRegistry $attributeInjectorRegistry = null
     )
     {
         $this->injectorConfig = $injectorConfig ?: new InjectorConfig();

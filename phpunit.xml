@@ -1,16 +1,13 @@
-<phpunit bootstrap="bootstrap_test.php">
-    <coverage>
+<phpunit bootstrap="bootstrap_test.php"
+         failOnWarning="false">
+    <testsuites>
+        <testsuite name="Ouzo">
+            <directory suffix="Test.php">test</directory>
+        </testsuite>
+    </testsuites>
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
-        <report>
-            <clover outputFile="build/logs/clover.xml"/>
-        </report>
-    </coverage>
-    <logging/>
-    <groups>
-        <exclude>
-            <group>sqlite3</group>
-        </exclude>
-    </groups>
+    </source>
 </phpunit>

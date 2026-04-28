@@ -15,8 +15,9 @@ class TestCommand extends Command
         $this->setName('ouzo:test');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln("Hello world");
+        return Command::SUCCESS;
     }
 }

@@ -40,7 +40,7 @@ class InstanceFactory
         return $this->lazyInstanceCreator->createThroughFactory($className, null, $repository, $this, $factory);
     }
 
-    private function injectDependencies(InstanceRepository $repository, object $instance, ReflectionClass $class = null): void
+    private function injectDependencies(InstanceRepository $repository, object $instance, ?ReflectionClass $class = null): void
     {
         $propertyFilter = ReflectionProperty::IS_PRIVATE;
         if (is_null($class)) {

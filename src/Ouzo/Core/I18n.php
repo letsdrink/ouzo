@@ -32,7 +32,7 @@ class I18n
         return self::$translator->translate($key, $params);
     }
 
-    public static function reset(Translator $translator = null): void
+    public static function reset(?Translator $translator = null): void
     {
         self::$translator = $translator;
         self::$labels = null;

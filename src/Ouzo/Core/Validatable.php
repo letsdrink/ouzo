@@ -70,7 +70,7 @@ class Validatable
     }
 
     /** Check whether passed string in `$value` parameter has 0 length or not */
-    public function validateNotBlank(mixed $value, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateNotBlank(mixed $value, string|Error $errorMessage, string|array|null $errorField = null): void
     {
         if (Strings::isBlank($value)) {
             $this->error($errorMessage);
@@ -82,7 +82,7 @@ class Validatable
      * Checks whether value is true, if not it saves error
      * (values which are considered as TRUE or FALSE are presented here http://php.net/manual/en/types.comparisons.php )
      */
-    public function validateTrue(mixed $value, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateTrue(mixed $value, string|Error $errorMessage, string|array|null $errorField = null): void
     {
         if (!$value) {
             $this->error($errorMessage);
@@ -91,7 +91,7 @@ class Validatable
     }
 
     /** Checks whether array does not contain duplicate values */
-    public function validateUnique(array $values, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateUnique(array $values, string|Error $errorMessage, string|array|null $errorField = null): void
     {
         if (count($values) !== count(array_unique($values))) {
             $this->error($errorMessage);
@@ -100,7 +100,7 @@ class Validatable
     }
 
     /** Checks whether $value can be converted to time by "strtotime" function */
-    public function validateDateTime(?string $value, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateDateTime(?string $value, string|Error $errorMessage, string|array|null $errorField = null): void
     {
         if (!strtotime($value)) {
             $this->error($errorMessage);
@@ -109,7 +109,7 @@ class Validatable
     }
 
     /** Checks whether string does not exceed max length */
-    public function validateStringMaxLength(?string $value, int $maxLength, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateStringMaxLength(?string $value, int $maxLength, string|Error $errorMessage, string|array|null $errorField = null): void
     {
         if (strlen($value) > $maxLength) {
             $this->error($errorMessage);
@@ -121,7 +121,7 @@ class Validatable
      * Checks whether $value is not empty
      * (table which explains that is here http://php.net/manual/en/types.comparisons.php)
      */
-    public function validateNotEmpty(mixed $value, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateNotEmpty(mixed $value, string|Error $errorMessage, string|array|null $errorField = null): void
     {
         if (empty($value)) {
             $this->error($errorMessage);
@@ -133,7 +133,7 @@ class Validatable
      * Validate whether $value is empty
      * (table which explains that is here http://php.net/manual/en/types.comparisons.php)
      */
-    public function validateEmpty(mixed $value, string|Error $errorMessage, string|array $errorField = null): void
+    public function validateEmpty(mixed $value, string|Error $errorMessage, string|array|null $errorField = null): void
     {
         if (!empty($value)) {
             $this->error($errorMessage);

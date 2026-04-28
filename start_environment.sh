@@ -18,7 +18,7 @@ fi
 
 docker build --pull --rm -f Dockerfile-postgres -t $DOCKER_DB_NAME .
 docker run --name $DOCKER_DB_NAME -e POSTGRES_PASSWORD=$DB_PASSWORD -e POSTGRES_USER=$DB_USER -e POSTGRES_DB=$DB_NAME -d $DOCKER_DB_NAME
-until docker exec $DOCKER_DB_NAME /usr/lib/postgresql/10/bin/pg_isready; do sleep 2; done
+until docker exec $DOCKER_DB_NAME pg_isready; do sleep 2; done
 
 docker rm -f $DOCKER_WEB_NAME
 set -e

@@ -48,7 +48,7 @@ class RoutesCommand extends Command
             ->addOption('generate-es6', 'e', InputOption::VALUE_NONE);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;

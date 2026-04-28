@@ -16,14 +16,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrationDumperCommand extends MigrationCommand
 {
-    public function configureCommand()
+    public function configureCommand(): void
     {
         $this->setName('migration:dump')
             ->addArgument('schema_file', InputArgument::REQUIRED, 'Schema output file')
             ->addArgument('data_file', InputArgument::REQUIRED, 'Data output file');
     }
 
-    public function executeCommand(InputInterface $input, OutputInterface $output)
+    public function executeCommand(InputInterface $input, OutputInterface $output): int
     {
         $dbConfig = new MigrationDbConfig($input);
         $schemaFile = $input->getArgument('schema_file');

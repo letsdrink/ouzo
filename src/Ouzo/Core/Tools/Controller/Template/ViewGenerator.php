@@ -49,7 +49,7 @@ class ViewGenerator
         return false;
     }
 
-    public function appendAction(ActionGenerator $actionGenerator = null): bool
+    public function appendAction(?ActionGenerator $actionGenerator = null): bool
     {
         if ($actionGenerator) {
             if ($this->isActionExists($actionGenerator->getActionViewFile())) {

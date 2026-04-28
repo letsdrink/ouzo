@@ -11,6 +11,7 @@ use Ouzo\CookiesSetter;
 use Ouzo\DownloadHandler;
 use Ouzo\Environment;
 use Ouzo\ExceptionHandling\ErrorHandler;
+use Ouzo\FrontController;
 use Ouzo\HeaderSender;
 use Ouzo\Injection\InjectorConfig;
 use Ouzo\Middleware\Interceptor\SessionStarter;
@@ -43,10 +44,11 @@ class BootstrapTest extends TestCase
 {
     private InjectorConfig $config;
     private Bootstrap $bootstrap;
+    private bool $handlersRegistered = false;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function setUp(): void
     {
-        parent::__construct($name, $data, $dataName);
+        parent::setUp();
 
         $this->config = new InjectorConfig();
         $this->config->bind(OutputRenderer::class)->toInstance(new MockOutputRenderer());
@@ -55,13 +57,8 @@ class BootstrapTest extends TestCase
         $this->config->bind(RedirectHandler::class)->toInstance(new MockRedirectHandler());
         $this->config->bind(SessionStarter::class)->toInstance(new MockSessionStarterInterceptor());
         $this->config->bind(DownloadHandler::class)->toInstance(new MockDownloadHandler());
-    }
 
-    public function setUp(): void
-    {
-        parent::setUp();
         Route::clear();
-
         Route::get('/', BootstrapSampleController::class, 'index');
 
         /** @var Environment|MockInterface $environment */
@@ -69,6 +66,7 @@ class BootstrapTest extends TestCase
 
         $this->bootstrap = new Bootstrap($environment);
         $this->bootstrap->withInjectorConfig($this->config);
+        $this->handlersRegistered = false;
 
         unset($_SERVER['REDIRECT_URL']);
         unset($_SERVER['REQUEST_URI']);
@@ -77,17 +75,27 @@ class BootstrapTest extends TestCase
 
     public function tearDown(): void
     {
+        if ($this->handlersRegistered) {
+            restore_error_handler();
+            restore_exception_handler();
+        }
         parent::tearDown();
         Config::clearProperty('debug');
+    }
+
+    private function runBootstrapApplication(): FrontController
+    {
+        $result = $this->bootstrap->runApplication();
+        $this->handlersRegistered = true;
+        return $result;
     }
 
     #[Test]
     public function shouldBindMiddlewareWithInterceptors()
     {
         //when
-        $frontController = $this->bootstrap
-            ->withMiddleware(SampleMiddleware::class)
-            ->runApplication();
+        $this->bootstrap->withMiddleware(SampleMiddleware::class);
+        $frontController = $this->runBootstrapApplication();
 
         //then
         $interceptors = $frontController->getMiddlewareRepository()->getInterceptors();
@@ -98,9 +106,8 @@ class BootstrapTest extends TestCase
     public function shouldOverrideMiddleware()
     {
         //when
-        $frontController = $this->bootstrap
-            ->overrideMiddleware(SampleMiddleware::class, MockSessionStarterInterceptor::class)
-            ->runApplication();
+        $this->bootstrap->overrideMiddleware(SampleMiddleware::class, MockSessionStarterInterceptor::class);
+        $frontController = $this->runBootstrapApplication();
 
         //then
         $interceptors = $frontController->getMiddlewareRepository()->getInterceptors();
@@ -112,6 +119,7 @@ class BootstrapTest extends TestCase
     {
         //when
         CatchException::when($this->bootstrap->withMiddleware(stdClass::class))->runApplication();
+        $this->handlersRegistered = true;
 
         //then
         CatchException::assertThat()->hasMessage('stdClass class is not implementing Interceptor interface');

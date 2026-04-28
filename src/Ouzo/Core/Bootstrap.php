@@ -111,7 +111,7 @@ class Bootstrap
     private function registerErrorHandlers(): void
     {
         if (Config::getValue('debug')) {
-            (new DebugErrorHandler(new DebugExceptionHandler()))->register();
+            new DebugErrorHandler(new DebugExceptionHandler())->register();
             return;
         }
 
@@ -119,7 +119,7 @@ class Bootstrap
             $this->errorHandler->register();
             return;
         }
-        (new ErrorHandler(new ExceptionHandler()))->register();
+        new ErrorHandler(new ExceptionHandler())->register();
     }
 
     private function includeRoutes(): void
